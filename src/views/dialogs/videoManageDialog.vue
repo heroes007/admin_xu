@@ -1,0 +1,483 @@
+<template>
+<el-dialog v-model="videoManageDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+    <base-input :baseInputWidth="600" @closedialog="handleClose">
+        <el-row slot="body">
+            <!-- <span class="dscj-webfont-remove-sign"></span> -->
+            <el-tabs type="border-card">
+                <el-tab-pane label="视频设置">
+                    <el-form ref="form" :model="form" label-width="80px">
+                        <el-form-item label="小节名称">
+                            <el-input v-model="form.title" placeholder="请输入小节名称"></el-input>
+                        </el-form-item>
+                        <!--<el-form-item label="视频状态">-->
+                            <!--<el-select v-model="form.region" placeholder="请选择视频状态">-->
+                                <!--<el-option label="区域一" value="shanghai"></el-option>-->
+                                <!--<el-option label="区域二" value="beijing"></el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                        <el-form-item label="视频时长（分）">
+                            <el-input v-model="form.duration" placeholder="请输入视频时长"></el-input>
+                        </el-form-item>
+                        <el-form-item label="观看权限（多选）">
+                            <el-select v-model="form.video_roles" placeholder="请选择观看权限" multiple>
+                                <el-option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.role_id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="上传视频" class="upload-form">
+                            <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler' :upload-config='uploaderConfig'>
+                                <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
+                            </upload-panel>
+                        </el-form-item>
+                        <el-form-item class="btns">
+                            <el-button type="primary" class="sub-btn" @click="handleSubmit">发布</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-tab-pane>
+                <el-tab-pane label="复制视频">
+                    <el-form ref="form" :model="form" label-width="80px" class="has-video-form">
+                        <el-form-item label="所属项目">
+                            <el-select v-model="projectId" @change='changeProjectHandler'>
+                                <el-option :label='item.name' :value='item.id' v-for='item in projectList' :key="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item class="course-list">
+                            <el-collapse @change='toggleCurriculum' :accordion='true'>
+                                <el-collapse-item :title="item.title" :name="index" v-for='(item,index) in curriculumList' :key="item.id">
+                                    <el-row class="course-item" v-for='catalog in item.chapterList' :key="catalog.id">
+                                        <el-col :span="3">
+                                            第{{catalog.chapterIndex + 1}}章
+                                        </el-col>
+                                        <el-col :span="18">
+                                            <span class="el-icon-star-on"></span><span>{{item.orderIndex}}</span> {{catalog.video_title?catalog.video_title:''}}{{catalog.video_test_title?catalog.video_test_title:''}}
+                                        </el-col>
+                                        <el-col :span="3">
+                                            <el-checkbox class="radio" v-model="catalog.isSelected" @change='changeVideoSelect(catalog)'></el-checkbox>
+                                        </el-col>
+                                    </el-row>
+                                </el-collapse-item>
+                            </el-collapse>
+                        </el-form-item>
+                        <el-form-item class="btns">
+                            <el-button type="primary" class="sub-btn" @click="handleSelect">保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-tab-pane>
+            </el-tabs>
+        </el-row>
+    </base-input>
+</el-dialog>
+</template>
+
+<script>
+import BaseInput from '../../components/BaseInput'
+import UploadButton from '../../components/UploadButton'
+import {
+    RemoveModal
+} from './mixins'
+import UploadPanel from '../../components/UploadPanel'
+import { get_detail,get_video_source } from '../../api/modules/tools_video'
+import { get_list } from '../../api/modules/tools_curriculum'
+import { get_catalog } from '../../api/modules/tools_curriculum_catalog'
+import { doSortFormatCatalogList } from '../../components/Util'
+import { Loading } from 'element-ui'
+import { Config } from '../../config/base'
+    import {
+    MPop
+} from '../../components/MessagePop'
+export default {
+    mixins: [RemoveModal,MPop],
+    props: {
+        remove: {
+            type: String
+        },
+        payload:{
+
+        }
+    },
+    components: {
+        'base-input': BaseInput,
+        'upload-button': UploadButton,
+        'upload-panel': UploadPanel
+    },
+    data() {
+        return {
+            videoManageDialog: true,
+            form: {
+                video_id:0,
+                title: '',
+                duration: '',
+                video_roles:[0],
+                dir:null,
+                filename:null,
+                video_url:null,
+                format:null,
+                curriculum_id:'',
+                group_orderby:0,
+                group_name:'',
+                orderby:0,
+                _fn:null
+            },
+            projectId:0,
+            curriculumList:[],
+            uploaderConfig:{
+                bucket:'dscj-video',
+                dir:'mspx',
+                type:2
+            },
+            selectedVideo:null
+        }
+    },
+    watch:{
+        projectId(val) {
+            
+        }
+    },
+    computed:{
+        roleList(){
+            return this.$store.state.roles.role_list;
+        },
+        projectList(){
+            return this.$store.state.project.project_list;
+        }
+    },
+    methods: {
+        changeVideoSelect(item) {
+            var i,j;
+            if(item.isSelected)
+                this.selectedVideo = item;
+            else
+                this.selectedVideo = null;
+            for(i=0;i<this.curriculumList.length;i++)
+            {
+                for(j=0;j<this.curriculumList[i].chapterList.length;j++)
+                {
+                    if(item.video_id !== this.curriculumList[i].chapterList[j].video_id)
+                        this.curriculumList[i].chapterList[j].isSelected = false;
+                }
+            }
+        },
+        changeProjectHandler(val){
+            var loading = Loading.service({ text:'加载中，请稍后',fullscreen:true });
+            setTimeout(() => {
+                loading.close();
+            }, Config.base_timeout);
+            console.log(val)
+            get_list(val).then(res => {
+                if(res.data.res_code === 1)
+                {
+                    for(var i=0;i<res.data.msg.length;i++)
+                    {
+                        res.data.msg[i].chapterList = [];
+                    }
+
+                    this.curriculumList = res.data.msg;
+                    loading.close();
+                }
+            })
+        },
+        toggleCurriculum(index){
+            if(!index)
+                return;
+            var item = this.curriculumList[index];
+            var i,j;
+            for(i=0;i<this.curriculumList.length;i++)
+            {
+                if(this.curriculumList[i].chapterList)
+                {
+                    for(j=0;j<this.curriculumList[i].chapterList.length;j++)
+                {
+                    this.curriculumList[i].chapterList[j].isSelected = false;
+                }
+                }
+            }
+            if(item.chapterList.length === 0)
+            {
+                var loading = Loading.service({ text:'加载中，请稍后',fullscreen:true });
+                setTimeout(() => {
+                loading.close();
+            }, Config.base_timeout);
+                get_catalog(item.curriculum_id).then(res => {
+                    if(res.data.res_code === 1)
+                    {
+                        var catalogList = doSortFormatCatalogList(res.data.msg);
+                        for(i=0;i<catalogList.length;i++)
+                        {
+                            for(j=0;j<catalogList[i].classList.length;j++)
+                            {
+                                catalogList[i].classList[j].chapterIndex = i;
+                                catalogList[i].classList[j].orderIndex = j;
+                                catalogList[i].classList[j].isSelected = false;
+                            }
+
+                            item.chapterList = item.chapterList.concat(catalogList[i].classList);
+                        }
+
+                        loading.close();
+                    }
+                })
+            }
+        },
+        handleClose() {
+            this.videoManageDialog = false;
+        },
+        handleSubmit() {
+
+            if(this.form.video_roles.length === 0)
+            {
+                this.$alert('请选择观看权限', '提示', {
+                                        confirmButtonText: '确定',
+                                        callback: action => { }
+                                    });
+                return;
+            }
+
+            if(this.payload.video_id)
+            {
+                this.$store.dispatch('edit_online_curriculum_video',this.form);
+            }
+            else
+            {
+                this.$store.dispatch('add_online_curriculum_video',this.form);
+            }
+        },
+        handleSelect() {
+
+            if(!this.selectedVideo)
+            {
+                this.$alert('请选择一个已有视频', '提示', {
+                                        confirmButtonText: '确定',
+                                        callback: action => { }
+                                    });
+                return;
+            }
+            this.form.title = this.selectedVideo.video_title;
+            this.form.video_id = this.selectedVideo.video_id;
+            this.$store.dispatch('select_online_curriculum_video',this.form);
+        },
+        uploadCompleteHandler(url){
+            this.form.video_url = url;
+            var l = url.split('/');
+            this.form.filename = l[l.length - 1];
+            this.form.dir = this.uploaderConfig.dir;
+            this.form.format = 720;
+        }
+    },
+    mounted(){
+        this.$store.dispatch('get_role_list'); 
+        this.form.curriculum_id = this.payload.curriculum_id;
+        this.form.group_name = this.payload.group_name;
+        this.form.group_orderby = this.payload.group_orderby;
+        this.form.orderby = this.payload.orderby;
+        var vm = this;
+        this.form._fn = function()
+        {
+            vm.handleClose();
+            vm.showPop('保存成功！',1000);
+        }
+        if(this.payload.video_id)
+        {
+            get_detail(this.payload.video_id).then(res => {
+                if(res.data.res_code === 1)
+                {
+                    this.form.video_id = this.payload.video_id;
+                    this.form.title = res.data.msg.video[0].title;
+                    this.form.duration = res.data.msg.video[0].duration;
+                    this.form.video_roles = res.data.msg.video_role?res.data.msg.video_role:[];
+                }
+            })
+            get_video_source(this.payload.video_id,720).then(res => {
+                if(res.data.res_code === 1)
+                {
+                    this.form.video_url = res.data.msg;
+                }
+            })
+        }
+        else
+        {
+            this.form.format = 720;
+        }
+    }
+}
+</script>
+<style lang="scss">
+#video-manage-container {
+    @import "base.scss";
+    input,
+    textarea {
+        resize: none;
+        outline: none;
+    }
+    .close-dialog-panel{
+      position: absolute;
+      top: 10px;
+      right: 13.5px;
+      z-index: 99999;
+      font-size: 30px;
+      cursor: pointer;
+      &:before{
+        // color: #fff;
+        color: #757575;
+      }
+    }
+    .el-dialog {
+      .el-dialog__title{
+        font-weight: 500;
+      }
+        .el-dialog__header {
+            display: none;
+        }
+        .el-dialog__body {
+            padding: 0;
+            .el-tabs--border-card {
+                border: none;
+                background: none;
+            }
+            .el-form-item__label {
+                font-size: 14px;
+                color: #141111;
+                letter-spacing: 0;
+            }
+            .el-tabs__header {
+                background: #333333;
+                border-radius: 4px 4px 0 0;
+                height: 50px;
+                .el-tabs__item:first-child {
+                    margin-left: 0;
+                    border-top-left-radius: 4px;
+                }
+                .el-tabs__item {
+                    font-size: 16px;
+                    letter-spacing: 0;
+                    color: #fff;
+                    height: 51px;
+                    line-height: 51px;
+                    padding: 0 30px;
+                }
+                .is-active {
+                    font-size: 16px;
+                    color: #141111;
+                    letter-spacing: 0;
+                }
+
+            }
+            .el-tabs__content {
+                border-radius: 0 0 4px 4px;
+                background: #fff;
+                padding: 0;
+            }
+            .el-form {
+                width: 80%;
+                margin: 20px auto;
+                input{
+                  border: 1px solid #CCCCCC;
+                }
+                .upload-form {
+                    text-align: left;
+                    margin-bottom: 0;
+                    .el-radio-group {
+                        margin-top: 50px;
+                    }
+                }
+                .el-select {
+                    width: 100%;
+                }
+                .el-form-item__content {
+
+                    line-height: 0;
+                }
+                input {
+                    border-radius: 0;
+                }
+                .el-dragger {
+                    width: 100%;
+                    background: #F6F6F6;
+                    border: 1px solid #CCCCCC;
+                    border-radius: 0;
+                    .el-dragger__text {
+                        font-size: 14px;
+                        color: #757575;
+                        letter-spacing: 0;
+                        line-height: 14px;
+                        margin-top: 20px;
+                    }
+                }
+
+                .sub-btn {
+                    background: #FB843E;
+                    border-radius: 4px;
+                    width: 200px;
+                    height: 36px;
+                    border: 0;
+                    margin-left: 55px;
+                    margin-top: 32px;
+                }
+
+            }
+            .has-video-form {
+                width: 100%;
+                margin: 0;
+                .el-form-item:first-child {
+                    width: 80%;
+                    margin: 20px auto;
+                }
+                .course-list {
+                    .el-form-item__content {
+                        margin-left: 0 !important;
+                        line-height: 0;
+                    }
+                    .el-collapse-item__header__arrow {
+                        position: absolute;
+                        right: 18px;
+                        margin-top: 15px;
+
+                    }
+                    .el-collapse-item__header {
+                        padding-left: 20px;
+                        text-align: left;
+                        font-size: 16px;
+                        color: #141111;
+                        letter-spacing: 0;
+                        i {
+                            color: #CCCCCC;
+                            transform: rotateZ(90deg);
+                        }
+                    }
+                    .is-active {
+                        i {
+                            transform: rotateZ(-90deg);
+                        }
+                    }
+                    .course-item {
+                        margin-right: 8px;
+                        font-size: 14px;
+                        margin-left: -6px;
+                        color: #3B3B3B;
+                        letter-spacing: 0;
+                        .el-icon-star-on{
+                          margin-right: 10px;
+                          margin-left: 4px;
+                        }
+                        .el-checkbox-group {
+                            text-align: right;
+                        }
+                        .el-col-18 {
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+            .btns {
+              padding-top: 10px;
+              padding-bottom: 8px;
+                .el-form-item__content {
+                    margin-left: 0 !important;
+                    button {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+</style>

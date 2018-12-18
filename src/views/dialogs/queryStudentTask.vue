@@ -1,0 +1,239 @@
+<template>
+<el-dialog :title="taskType === 0?'查看任务':'查看作业'" v-model="queryStudentCourse" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
+    <base-input @closedialog="handleClose">
+        <el-row slot="body">
+            <el-row class="body-top" v-if="true">
+                <el-row type='flex' justify='center' align='middle' v-if='dataList.length === 0'>
+                    {{taskType === 0?'该用户没有任务':'该用户没有作业'}}
+                </el-row>
+                <el-row v-for="item in dataList" :key="item.id" class="course-item" v-if='dataList.length > 0'>
+                    <el-col :span="16">
+                        <p class="title">{{item.name}}</p>
+                    </el-col>
+                    <el-col :span="4">
+                      <span v-if='taskType === 0'>{{item.unlock ? '已发送'  : '未发送'}}</span>
+                    </el-col>
+                    <el-col :span="4">
+                      <span>{{item.state === 1 ? '未上传'  : item.state === 2 ? '未批阅' : '已通过'}}</span>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-button type="primary" class="ok-btn" @click="queryOk">确认</el-button>
+                </el-row>
+            </el-row>
+        </el-row>
+    </base-input>
+</el-dialog>
+</template>
+
+<script>
+import BaseInput from '../../components/BaseInput'
+import {
+    RemoveModal
+} from './mixins'
+import UploadPanel from '../../components/UploadPanel'
+import {
+    get_student_detail
+} from '../../api/modules/tools_student'
+import {
+    Loading
+} from 'element-ui'
+import {
+    Config
+} from '../../config/base'
+import {
+    get_student_task_list,
+    get_student_work_list
+} from '../../api/modules/tools_task'
+import defaultAvator from '../../assets/img/side-menu/default-header.jpg'
+export default {
+    mixins: [RemoveModal],
+    props: {
+        remove: {
+            type: String
+        },
+        payload: {}
+    },
+    components: {
+        'base-input': BaseInput
+    },
+    data() {
+        return {
+            queryStudentCourse: true,
+            dataList: [],
+        }
+    },
+    methods: {
+        handleClose() {
+            this.queryStudentCourse = false;
+        },
+        handleUploadComplete(url) {
+            this.form.img_url = url;
+        },
+        queryOk() {
+            this.queryStudentCourse = false;
+        },
+        headerImage(v) {
+            if (v) {
+                return v
+            } else {
+                return defaultAvator
+            }
+        },
+        handleResultProgress(total, learned){
+            var resultTotal = total ? total : 0;
+            return {
+              progress: (learned && JSON.parse(learned).length / resultTotal) * 100 + '%',
+              specific: learned && JSON.parse(learned).length + '/' + resultTotal
+            }
+        }
+    },
+    mounted() {
+        this.$store.commit('STUDENT_SHOW_LOADING')
+        if(this.taskType === 0)
+        {
+            get_student_task_list(this.payload.project_id,this.payload.user_id).then(res => {
+            if (res.data.res_code == 1) {
+                this.dataList = res.data.msg;
+            }
+            })
+        }
+        else
+        {
+            get_student_work_list(this.payload.project_id,this.payload.user_id).then(res => {
+            if (res.data.res_code == 1) {
+                this.dataList = res.data.msg;
+            }
+            })
+        }
+    },
+    computed:{
+        taskType(){
+            return this.payload.type;
+        }
+    }
+}
+</script>
+<style lang="scss">
+#query-student-task-container {
+    @import "base.scss";
+    input,
+    textarea {
+        resize: none;
+        outline: none;
+    }
+    .close-dialog-panel {
+        position: absolute;
+        top: -70px;
+        right: -13.5px;
+        z-index: 99999;
+        font-size: 30px;
+        cursor: pointer;
+        &:before {
+            // color: #fff;
+            color: #757575;
+        }
+    }
+    .el-dialog {
+        width: 600px;
+        background: none;
+
+        .el-dialog__header {
+            background: #333333;
+            border-radius: 4px 4px 0 0;
+            padding: 16px;
+        }
+
+        .el-dialog__body {
+            margin-bottom: -20px;
+            background-color: #fff;
+            border-radius: 0 0 4px 4px;
+            padding-bottom: 10px;
+            .el-form-item__label {
+                font-size: 14px;
+                color: #141111;
+                letter-spacing: 0;
+            }
+            .el-date-editor--date {
+                width: 100%;
+            }
+        }
+        .course-item {
+            padding-bottom: 10px;
+            padding-top: 10px;
+            display: -webkit-box;
+            /* 老版本语法: Safari 3.1-6,  iOS 6-, Android browser, older WebKit browsers.  */
+            display: -moz-box;
+            /* 老版本语法: Firefox 19- (buggy but mostly works) */
+            display: -ms-flexbox;
+            /* 混合版本语法: IE 10 */
+            display: -webkit-flex;
+            /* 新版本语法： Chrome 21+ */
+            display: flex;
+            /* 新版本语法： Opera 12.1, Firefox 22+ */
+            align-items: center;
+            /*老版本语法*/
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            /*混合版本语法*/
+            -ms-flex-align: center;
+            .avator {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                overflow: hidden;
+                border-radius: 50% 50%;
+                img {
+                    width: 100%;
+                }
+                +p{
+                  text-align: center;
+                  margin: 0;
+                  font-size: 12px;
+                }
+            }
+            &:hover{
+              background-color: #fbfbfb;
+            }
+            p {
+                text-align: left;
+            }
+            .title {
+                width: 300px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            .progress{
+              width: 300px;
+              height: 10px;
+              border: 1px solid #E5E5E5;
+              position: relative;
+              background: #F6F6F6;
+              span:first-child{
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: inline-block;
+                height: 100%;
+                background-color: #79BC51;
+              }
+              .specific{
+                display: inline-block;
+                position: absolute;
+                top: -4px;
+                right: -50px;
+              }
+            }
+        }
+        .ok-btn {
+            background: #FB843E;
+            border-radius: 4px;
+            width: 200px;
+            height: 36px;
+            border: 0;
+            margin-top: 30px;
+        }
+    }
+}
+</style>

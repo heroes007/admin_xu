@@ -1,0 +1,796 @@
+<template>
+<div class='manage-recruit-view'>
+    <header-component title='招生管理' :type='0' :showAdd='true' addText='导师管理' @addClick='teacherArrangementHandler'></header-component>
+    <el-row>
+        <el-form :inline="true" :model="formInline" class="find-by-term">
+            <el-form-item label="学科" label-width="40px">
+                <el-select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
+                    <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="面试结果" label-width="80px">
+                <el-select v-model="formInline.interview_state" placeholder="请选择面试结果" @change='changeFilterHandler'>
+                    <el-option label="笔试通过" :value="3"></el-option>
+                    <el-option label="未面试" :value="0"></el-option>
+                    <el-option label="面试通过" :value="1"></el-option>
+                    <el-option label="面试未通过" :value="2"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="" label-width="80px">
+              <el-input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
+                <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
+                  <el-option label="姓名" :value="1"></el-option>
+                  <el-option label="电话号" :value="2"></el-option>
+                </el-select>
+                <el-button slot="append" class="append-btn" @click='handleRealname'>搜索</el-button>
+              </el-input>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--<el-row>
+        <el-form :inline='true' :model='formInline' class='find-by-term'>
+            <el-form-item>
+                <el-row>
+                    <el-col :span="10">
+                        <el-select class="select-user" v-model="formInline.classify" placeholder="">
+                            <el-option label="手机号" value="phone"></el-option>
+                            <el-option label="昵称" value="username"></el-option>
+                            <el-option label="真实姓名" value="realname"></el-option>
+                            <el-option label="用户ID" value="user_id"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="14">
+                        <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
+                    </el-col>
+                </el-row>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onClear">清除</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>-->
+    <!--<keep-alive>-->
+    <data-list class='data-list light-header' @withdraw='withdrawHandler' @interviewTimeChange='interviewTimeChangeHandler' @sendMessage='sendMessageHandler' @showDetail='showDetailHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'
+         :comboModelList='comboDataList'></data-list>
+    <!--</keep-alive>-->
+    <el-row class='pager' type='flex' justify='end' align='middle'>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total">
+        </el-pagination>
+    </el-row>
+</div>
+</template>
+
+
+
+<script>
+import Header from "../../components/Header";
+import SubjectFilter from "../../components/SubjectFilter";
+import BaseList from "../../components/BaseList";
+import BackToTop from "../../components/BackToTop";
+import { MPop } from "../../components/MessagePop";
+import api from "../../api/modules/config";
+import { set_user_student_mrzx } from "../../api/modules/student";
+import { send_interview_msg } from "../../api/modules/exam";
+import { Loading } from "element-ui";
+import { Dialog } from "../dialogs";
+import {
+  RECRUIT_DETAIL,
+  INTERVIEW_TEACHER_ARRANGEMENT
+} from "../dialogs/types";
+import { Config } from "../../config/base";
+import { mapState, mapActions } from "vuex";
+import { doDateFormat, doTimeFormat } from "../../components/Util";
+
+export default {
+  mixins: [Dialog, MPop],
+  data() {
+    return {
+      user: {
+        user_id: 0,
+        realname: "",
+        subject_id: 1,
+        period_id: 1,
+        start_school_time: "",
+        times: 0,
+        more: "",
+        type: "1"
+      },
+      formInline: {
+        subject_id: [],
+        interview_state: 0
+      },
+      input: '',
+      select: '',
+      realname: '',
+      phone: '',
+      loadingInstance: null,
+      searchData: "",
+      searchType: "phone",
+      curPage: 1,
+      pageSize: 20
+    };
+  },
+
+  methods: {
+    ...mapActions([
+      "get_recruit_list",
+      "get_subject_list",
+      "get_grade_list",
+      "get_dealer_list",
+      "get_teachers",
+      "drop_student_signup",
+      "get_production_list"
+    ]),
+    withdrawHandler(index, row) {
+      console.log(11111);
+      this.$confirm("是否确认打回改报名信息？", "提示", {
+        type: "info"
+      })
+        .then(() => {
+          var vm = this;
+          this.drop_student_signup({
+            id: row.id,
+            _fn: function() {
+              vm.showPop("打回成功！", 1000);
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    teacherArrangementHandler() {
+      this.handleSelModal(INTERVIEW_TEACHER_ARRANGEMENT);
+    },
+    interviewTimeChangeHandler() {
+      this.$alert(
+        "注意，确认面试时间后请点击发送短信，否则新的面试时间将不会被保存。",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          callback: action => {}
+        }
+      );
+    },
+    // 姓名筛选
+    handleRealname () {
+      var formData = this.getData();
+      this.get_recruit_list(formData);
+    },
+    sendMessageHandler(index, row) {
+      this.$confirm(
+        "注意，确认后，该面试时间会立即以短信形式发送到学员手机，确认发送？",
+        "提示",
+        {
+          type: "info"
+        }
+      )
+        .then(() => {
+          send_interview_msg(row.id, row.interview_time).then(res => {
+            if (res.data.res_code === 1) {
+              this.showPop("发送成功！", 1000);
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    showDetailHandler(index, row) {
+      this.handleSelModal(RECRUIT_DETAIL, row.id);
+    },
+    changeFilterHandler() {
+      var formData = this.getData();
+      this.get_recruit_list(formData);
+    },
+    getData() {
+      var states, results, written_hg,realname, phone;
+
+      if (this.formInline.interview_state === 0) {
+        states = 0;
+        results = 0;
+      } else {
+        if (this.formInline.interview_state === 1) {
+          states = 1;
+          results = 1;
+        } else {
+          states = 1;
+          results = 0;
+        }
+      }
+      if (this.select == 1) {
+        realname = this.input;
+      } else if (this.select == 2) {
+        phone = this.input;
+      }
+      // 笔试通过
+      if (this.formInline.interview_state === 3) {
+        written_hg = 1;
+        states = null;
+        results = null;
+      }
+
+      var formData = {
+        curPage: 1,
+        pageSize: this.pageSize,
+        project_id: this.$store.state.project.select_project_id,
+        subject_id:
+          this.formInline.subject_id.length === 0
+            ? null
+            : this.formInline.subject_id,
+        interview_state: states,
+        interview_result: results,
+        written_hg,
+        realname: realname,
+        phone: phone
+      };
+      formData[this.formInline.classify] = this.formInline.classifyValue;
+      return formData;
+    },
+    handleSizeChange(val) {
+      if (val !== this.pageSize) {
+        this.pageSize = val;
+        var data = this.getData();
+        data.curPage = this.curPage;
+        data.pageSize = val;
+        // this.$store.dispatch('get_student_list', {
+        //     curPage: this.curPage,
+        //     pageSize: val,
+        //     project_id: this.$store.state.project.select_project_id
+        // });
+        this.get_recruit_list(formData);
+      }
+    },
+    onSubmit() {
+      //   var formData = {
+      //       is_test_user:this.formInline.is_test_user,
+      //       project_id: this.$store.state.project.select_project_id
+      //     // grade_id: this.formInline.grade_id,
+      //     // subject_id: this.formInline.subject_id,
+      //     // project_id: this.$store.state.project.select_project_id
+
+      //   }
+      //   formData[this.formInline.classify] = this.formInline.classifyValue;
+      var formData = this.getData();
+      this.$store.dispatch("get_student_list", formData);
+    },
+    onClear() {
+      this.formInline.classifyValue = "";
+      this.formInline.is_test_user = 0;
+      // var formData = {
+      //     project_id: this.$store.state.project.select_project_id,
+      //     is_test_user:this.formInline.is_test_user
+      // // grade_id: this.formInline.grade_id,
+      // // subject_id: this.formInline.subject_id,
+      // // project_id: this.$store.state.project.select_project_id
+
+      // }
+      // formData[this.formInline.classify] = this.formInline.classifyValue;
+      var formData = this.getData();
+      this.$store.dispatch("get_student_list", formData);
+    },
+    handleCurrentChange(val) {
+      // console.log(val,this.curPage)
+      // if (val && val !== this.curPage) {
+      this.curPage = val;
+      var data = this.getData();
+      data.curPage = val;
+      data.pageSize = this.pageSize;
+      this.get_recruit_list(data);
+      // }
+    }
+  },
+  mounted() {
+    this.get_subject_list();
+    this.get_grade_list();
+    this.get_dealer_list();
+    var data = this.getData();
+    this.get_recruit_list(data);
+    this.get_teachers();
+    this.get_production_list({
+      project_id: this.projectId,
+      page_index: 0,
+      page_size: 999
+    });
+  },
+  watch: {
+    isLoading(val) {
+      if (val) {
+        this.loadingInstance = Loading.service({
+          text: "加载中，请稍后",
+          fullscreen: true
+        });
+        setTimeout(() => {
+          this.loadingInstance && this.loadingInstance.close();
+        }, Config.base_timeout);
+      } else {
+        this.loadingInstance && this.loadingInstance.close();
+        this.dirty = false;
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      isLoading: state => state.recruit.isLoading,
+      dataList: state => state.recruit.recruit_list,
+      subjectList: state => state.subject.subject_list,
+      gradeList: state => state.grade.grade_list,
+      dealerList: state => state.dealer.dealer_list,
+      resultList: state => state.recruit.result_list,
+      total: state => state.recruit.total,
+      teacherList: state => state.user.getTeachers,
+      projectId: state => state.project.select_project_id,
+      productList: state => state.production.production_list
+    }),
+    comboDataList() {
+      var r = [];
+      var v = [];
+      for (var i = 0; i < this.dataList.length; i++) {
+        r.push(this.dataList[i].interview_time);
+      }
+      return r;
+    },
+    columnComboData() {
+      return [this.resultList];
+    },
+    searchResult() {
+      return this.$store.state.student.search_result;
+    },
+    resultMsg() {
+      return this.$store.state.student.search_msg;
+    },
+    dataHeader() {
+      return [
+        {
+          prop: "user_id",
+          label: "用户ID",
+          width: 80
+        },
+        {
+          prop: "create_time",
+          label: "报名时间",
+          width: 150
+        },
+        {
+          prop: "realname",
+          label: "姓名",
+          width: 100
+        },
+        {
+          prop: "phone",
+          label: "电话",
+          width: 130
+        },
+        {
+          prop: "school_grade",
+          label: "学历",
+          width: 100
+        },
+        {
+          prop: "grade_id",
+          label: "学段",
+          width: 100
+          // useFilter:true
+        },
+        {
+          prop: "subject_id",
+          label: "学科",
+          width: 100
+          // useFilter:true
+        },
+        {
+          prop: "product_id",
+          label: "产品",
+          width: 160
+        },
+        {
+          prop: "from_domain",
+          label: "分站",
+          width: 160
+        },
+        {
+          prop: "",
+          label: "笔试成绩",
+          width: 150,
+          mixColumn: true,
+          mixFunc: function(data) {
+            if (data.school_grade.indexOf("研") === 0) {
+              return "免笔试";
+            } else if (!data.total_score && !data.score) {
+              return "未笔试";
+            } else if (data.score === data.total_score) {
+              return "满分(" + data.score + "/" + data.total_score + ")";
+            }
+            if (data.subject_id === 1) {
+              if (data.score >= 60) {
+                return "通过(" + data.score + "/" + data.total_score + ")";
+              } else {
+                return "不通过(" + data.score + "/" + data.total_score + ")";
+              }
+            } else if (data.subject_id === 2) {
+              if (data.score >= 70) {
+                return "通过(" + data.score + "/" + data.total_score + ")";
+              } else {
+                return "不通过(" + data.score + "/" + data.total_score + ")";
+              }
+            } else if (data.subject_id === 3) {
+              if (data.score >= 70) {
+                return "通过(" + data.score + "/" + data.total_score + ")";
+              } else {
+                return "不通过(" + data.score + "/" + data.total_score + ")";
+              }
+            } else if (data.subject_id === 4) {
+              if (data.score >= 60) {
+                return "通过(" + data.score + "/" + data.total_score + ")";
+              } else {
+                return "不通过(" + data.score + "/" + data.total_score + ")";
+              }
+            } else if (data.subject_id === 5) {
+              if (data.score >= 60) {
+                return "通过(" + data.score + "/" + data.total_score + ")";
+              } else {
+                return "不通过(" + data.score + "/" + data.total_score + ")";
+              }
+            }
+          }
+        },
+        {
+          prop: "interview_time",
+          label: "面试安排",
+          useTimePicker: true,
+          width: 250,
+          actionName: "change_interview_time",
+          param: "interviewTimeChange"
+        },
+        {
+          prop: "interview_user_id",
+          label: "面试导师",
+          width: 100
+        },
+        {
+          prop: "",
+          label: "面试结果",
+          mixColumn: true,
+          minwidth: 100,
+          mixFunc: function(data) {
+            if (data.interview_state === 0) {
+              return "未面试";
+            } else {
+              if (data.interview_result === 0) return "未通过";
+              else return "已通过";
+            }
+          }
+        },
+        {
+          label: "操作",
+          width: 280,
+          groupBtn: [
+            {
+              text: "查看",
+              param: "showDetail"
+            },
+            {
+              text: "打回",
+              param: "withdraw"
+            },
+            {
+              text: "发送短信",
+              param: "sendMessage"
+            }
+          ]
+        }
+      ];
+    },
+    listColumnFormatter() {
+      return [
+        {
+          columnName: "create_time",
+          doFormat: doTimeFormat
+        },
+        {
+          columnName: "grade_id",
+          dataIndex: 0,
+          dataProp: "id",
+          dataValue: "name"
+        },
+        {
+          columnName: "subject_id",
+          dataIndex: 1,
+          dataProp: "id",
+          dataValue: "name"
+        },
+        {
+          columnName: "interview_user_id",
+          dataIndex: 2,
+          dataProp: "user_id",
+          dataValue: "nickname"
+        },
+        {
+          columnName: "product_id",
+          dataIndex: 3,
+          dataProp: "id",
+          dataValue: "title"
+        },
+        {
+          columnName: "from_domain",
+          dataIndex: 4,
+          dataProp: "id",
+          dataValue: "company"
+        }
+      ];
+    },
+    listColumnFormatterData() {
+      return [
+        this.gradeList,
+        this.subjectList,
+        this.teacherList,
+        this.productList,
+        this.dealerList
+      ];
+    },
+    listHeight() {
+      return window.innerHeight - 60 - 20 - 97;
+    }
+  },
+  components: {
+    "header-component": Header,
+    "subject-filter": SubjectFilter,
+    "data-list": BaseList,
+    "back-to-top": BackToTop
+  }
+};
+</script>
+<style lang="scss">
+.el-tooltip__popper {
+  &.is-light {
+    background: #ffffff;
+    border: 1px solid #e7e8ea;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+    .more-tip {
+      max-width: 278px;
+      line-height: 1.2;
+      font-size: 14px;
+      color: #2e3e47;
+
+      & + .popper__arrow {
+        border-top-color: #e7e8ea;
+        &:after {
+          //border-top-color:#E7E8EA;
+        }
+      }
+    }
+  }
+}
+
+.manage-recruit-view {
+  .base-list-container {
+    .base-list-row {
+      height: 60px;
+      .cell {
+        .el-button {
+          margin-right: 2px;
+          &:last-child {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+  .find-by-term {
+    padding-top: 22px;
+    text-align: left;
+    margin-left: 20px;
+    .el-input__inner {
+      border-radius: 0;
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+    }
+    .el-form-item__label {
+      font-size: 14px;
+      color: #141111;
+      letter-spacing: 0;
+    }
+    .el-select {
+      width: 300px;
+      &.select-user {
+        width: 100%;
+        .el-input__inner {
+          border-right: 0;
+        }
+      }
+    }
+    button {
+      background: #fb843e;
+      border: 1px solid #f06b1d;
+      border-radius: 4px;
+      width: 100px;
+      height: 36px;
+    }
+    .append-btn {
+      width: 70px;
+      color: #fff;
+      border: none;
+    }
+  }
+  .pager {
+    margin: 30px 0;
+    padding-right: 40px;
+
+    .el-pagination {
+      button {
+        &.disabled {
+          background-color: #ebebec;
+          border-color: #b0b3c5;
+          color: #8b9fa9;
+        }
+      }
+      .el-pager {
+        li {
+          &.active {
+            background-color: #8b9fa9;
+          }
+        }
+      }
+    }
+  }
+
+  .btn-add {
+    color: #5fa137;
+  }
+  .data-container {
+    background-color: #ffffff;
+    margin: 0 20px 20px;
+    .list {
+      .data-header {
+        height: 50px;
+        .el-col {
+          line-height: 50px;
+        }
+      }
+      .data-item {
+        height: 40px;
+        border-top: 1px solid #cecece;
+
+        &.bg-gray {
+          background-color: #fbfbfb;
+        }
+
+        .el-col {
+          line-height: 40px;
+          .el-button {
+            a {
+              color: #5fa137;
+              font-size: 14px;
+            }
+          }
+          p {
+            margin: 0;
+            display: -webkit-box;
+            white-space: normal;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            -webkit-line-clamp: 1;
+          }
+        }
+      }
+      .pager {
+        margin: 30px 0;
+        padding-right: 40px;
+
+        .el-pagination {
+          button {
+            &.disabled {
+              background-color: #ebebec;
+              border-color: #b0b3c5;
+              color: #8b9fa9;
+            }
+          }
+          .el-pager {
+            li {
+              &.active {
+                background-color: #8b9fa9;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .back-to-top {
+    top: 80%;
+    right: 20px;
+  }
+}
+
+//添加框
+.add-student-view {
+  .img {
+    margin-top: 100px;
+    img {
+      width: 150px;
+      height: 150px;
+    }
+  }
+  .title {
+    margin-top: 25px;
+    h1 {
+      font-size: 28px;
+      color: #2e3e47;
+      font-weight: 200;
+      font-family: MicrosoftYaHei;
+      margin: 0;
+    }
+  }
+  .search-bar {
+    margin-top: 40px;
+    .el-input-group {
+      width: 380px;
+      .el-input__inner {
+        height: 46px;
+      }
+      .el-input-group__append {
+        background-color: #7ab854;
+
+        .el-button {
+          height: 100%;
+          width: 80px;
+          color: #ffffff;
+          font-size: 16px;
+        }
+      }
+      .el-input-group__prepend {
+        background-color: #7ab854;
+
+        .el-select {
+          height: 100%;
+          width: 110px;
+          color: #ffffff;
+          font-size: 16px;
+        }
+
+        i {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+  .result {
+    margin: 15px 0 76px;
+    .data-form {
+      width: 550px;
+      background-color: #ffffff;
+      border: 1px solid #ebebec;
+      border-radius: 6px;
+      padding: 20px 0;
+      .user-info {
+        font-size: 14px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #ebebec;
+        padding: 0 20px;
+        span {
+          color: #7ab854;
+          margin-right: 15px;
+        }
+      }
+      .user-data {
+        font-size: 14px;
+        margin-bottom: 15px;
+        padding: 0 20px;
+
+        .el-button {
+          width: 140px;
+          height: 36px;
+          background-color: #7ab854;
+          color: #ffffff;
+        }
+
+        &.desc {
+          width: 100%;
+          .el-input {
+            width: 330px;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

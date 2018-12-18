@@ -1,0 +1,21 @@
+{
+  "name": "dscj-admin-xg-server",
+  "version": "1.0.0",
+  "description": "学管后台服务端",
+  "author": "lesonli <307771861@qq.com>",
+  "private": true,
+  "scripts": {
+    "server": "node server.js"
+  },
+  "config": {
+    "port": "4003",
+    "env": "development"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  }
+}

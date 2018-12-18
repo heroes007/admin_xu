@@ -1,0 +1,421 @@
+<template>
+    <el-dialog :title="payload.type == 1 ? '添加课程' : '编辑课程'" :show-close="false" v-model="addOfflineCourseDialog" @close="handleRemoveModal(remove)"
+        size="auto" :closeOnClickModal="false">
+        <base-input @closedialog="handleClose">
+            <el-row slot="body">
+                <el-row class="body-top">
+                    <el-form ref="myForm" :rules="rules" :model="form" label-width="80px" class="add-offline-course-form">
+                        <el-form-item label="课程名称" prop="name" required>
+                            <el-input v-model="form.name" placeholder="请输入课程名称"></el-input>
+                        </el-form-item>
+                        <el-form-item label="开课时间" prop="start_time" required>
+                            <el-date-picker v-model="form.start_time" type="datetime" placeholder="选择时间">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="结课时间" prop="end_time" required>
+                            <el-date-picker v-model="form.end_time" type="datetime" placeholder="选择时间">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="课程讲师" prop="teacher_id" required>
+                            <el-select v-model="form.teacher_id" placeholder="请选择讲师">
+                                <el-option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="课程类型" prop="type" required>
+                            <el-select v-model="form.type" placeholder="请选择讲师">
+                                <el-option label="讲座" value="1">讲座</el-option>
+                                <el-option label="实践" value="2">实践</el-option>
+                            </el-select>
+                        </el-form-item>
+                        <!--<el-form-item label="讲师描述" prop="teacher_description">
+                            <el-input type="textarea" :rows="6" placeholder="请对讲师进行描述" v-model="form.teacher_description">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="讲师照片" prop="teacher_img_url" class="upload-form1">
+                            <upload-panel ref="upload_panel" :resourse="form.teacher_img_url" :upload-config="uploadConfig" @uploadcomplete="handleUploadComplete">
+                                <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
+                            </upload-panel>
+                             <el-input type="file" :change="getMyForm.teacher_img_url"></el-input> 
+                        </el-form-item>-->
+                        <el-form-item class="btns">
+                            <el-button @click="handleSave('myForm',true)">完成</el-button>
+                            <el-button type="primary" class="finish-btn" @click="handleReset('myForm')" v-if='payload.type == 1'>继续添加</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-row>
+            </el-row>
+        </base-input>
+        </el-dialog>
+</template>
+
+<script>
+    import BaseInput from '../../components/BaseInput'
+    import UploadButton from '../../components/UploadButton'
+    import {
+        RemoveModal
+    } from './mixins'
+    import UploadPanel from '../../components/UploadPanel'
+    import {
+        mapActions,
+        mapState
+    } from 'vuex';
+    import _ from 'lodash'
+    import dateFormat from '../../config/timeFormat'
+    import {
+    MPop
+} from '../../components/MessagePop'
+    export default {
+        mixins: [RemoveModal,MPop],
+        props: {
+            remove: {
+                type: String
+            },
+            payload: {
+
+            }
+        },
+        components: {
+            'base-input': BaseInput,
+            'upload-button': UploadButton,
+            'upload-panel': UploadPanel
+        },
+        mounted() {
+            if (this.$store.state.teacher.teacher_list.length == 0) {
+                this.get_teacher_list();
+            }
+
+            if (this.payload.type == 2) {
+                // this.rules.teacher_description[0].required = true;
+                // this.rules.teacher_img_url[0].required = true;
+                this.form = {
+                    name: this.payload.data[0].title,
+                    teacher_id: this.payload.data[0].teacher_id,
+                    // stage: [this.payload.data[0].start_time, this.payload.data[0].end_time],
+                    start_time: new Date(this.payload.data[0].start_time),
+                    end_time: new Date(this.payload.data[0].end_time),
+                    // teacher_description: this.payload.data[0].teacher_description,
+                    type: this.payload.data[0].type == 1 ? '讲座' : '实践'
+                    // teacher_img_url: this.payload.data[0].teacher_img_url
+                }
+            }
+        },
+        computed: {
+            ...mapState({
+                query_teacher_list: state => state.teacher.teacher_list,
+                query_teacher_roles: state => state.roles.role_list,
+                query_offline_course_list: state => state.offline_curriculum.offline_curriculum_list,
+                result_msg1: state => state.offline_curriculum.result_msg
+            }),
+            selectTeacherName(){
+                for(var i=0;i<this.query_teacher_list.length;i++)
+                {
+                    if(this.form.teacher_id === this.query_teacher_list[i].id)
+                    {
+                        return this.query_teacher_list[i].name;
+                    }
+                }
+                return '';
+            }
+        },
+        data() {
+            return {
+                addOfflineCourseDialog: true,
+                uploadConfig: {
+                    bucket: 'dscj-app',
+                    dir: 'user_task',
+                    type: 1
+                },
+                form: {
+                    name: '',
+                    teacher_id: '',
+                    roles: [],
+                    // stage: [],
+                    start_time: '',
+                    end_time: '',
+                    teacher_description: '',
+                    type: '',
+                    teacher_img_url: ''
+                },
+                rules: {
+                    name: [{
+                        required: true,
+                        message: '请输入课程名称',
+                        trigger: 'blur'
+                    }],
+                    // stage: [{
+                    //     type: 'array',
+                    //     required: true,
+                    //     message: '请选择时间范围',
+                    //     trigger: 'change'
+                    // }],
+                    start_time: [{
+                        type: 'date',
+                        required: true,
+                        message: '请输入开课时间',
+                        trigger: 'change'
+                    }],
+                    end_time: [{
+                        type: 'date',
+                        required: true,
+                        message: '请输入结课时间',
+                        trigger: 'change'
+                    }],
+                    teacher_id: [{
+                        type:'number',
+                        required: true,
+                        message: '请选择讲师',
+                        trigger: 'change'
+                    }],
+                    type: [{
+                        required: true,
+                        message: '请选择课程类型',
+                        trigger: 'change'
+                    }]
+                    // teacher_description: [{
+                    //     required: false,
+                    //     message: '请输入讲师描述',
+                    //     trigger: 'blur'
+                    // }],
+                    // teacher_img_url: [{
+                    //     required: false,
+                    //     message: '请选择讲师照片',
+                    //     trigger: 'change'
+                    // }]
+                }
+            }
+        },
+        methods: {
+            ...mapActions([
+                'get_teacher_list',
+                'get_role_list',
+                'get_offline_curriculum_list',
+                'add_offline_curriculum',
+                'edit_offline_curriculum'
+            ]),
+            handleClose() {
+                this.addOfflineCourseDialog = false;
+            },
+            handleTypeTransform(v) {
+                switch (v) {
+                    case 1:
+                        return '讲座';
+                    case 2:
+                        return '实践';
+                }
+            },
+            handleSave(formName, closeAfterSave) {
+                var vm = this;
+                if (this.payload.type == 1) {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            this.add_offline_curriculum({
+                                offline_term_id: this.payload.row.id,
+                                title: this.form.name,
+                                type: this.form.type,
+                                start_time: dateFormat(this.form.start_time),
+                                end_time: dateFormat(this.form.end_time),
+                                teacher_id: this.form.teacher_id,
+                                teacher_name:this.selectTeacherName,
+                                // teacher_img_url: this.form.teacher_img_url,
+                                // teacher_description: this.form.teacher_description,
+                                description: '',
+                                callback() {
+                                    if (closeAfterSave)
+                                    {
+                                        vm.handleClose();
+                                        vm.showPop('添加成功！',1000);
+                                    }
+                                    else
+                                        this.$refs[formName].resetFields();
+                                }
+                            })
+                            return true;
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                } else {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            this.edit_offline_curriculum({
+                                curriculum_id: this.payload.row.childData[this.payload.index].id,
+                                offline_term_id: this.payload.row.id,
+                                title: this.form.name,
+                                type: this.form.type == '讲座' ? 1 : 2,
+                                start_time: dateFormat(this.form.start_time),
+                                end_time: dateFormat(this.form.end_time),
+                                teacher_id: this.form.teacher_id,
+                                teacher_name:this.selectTeacherName,
+                                // teacher_img_url: this.form.teacher_img_url,
+                                // teacher_description: this.form.teacher_description,
+                                description: this.form.teacher_description,
+                                index: this.payload.index,
+                                callback() {
+                                    if (closeAfterSave)
+                                    {
+                                        vm.handleClose();
+                                        vm.showPop('修改成功！',1000);
+                                    }
+                                    else
+                                        vm.$refs[formName].resetFields();
+                                }
+                            });
+                            return true;
+                        } else {
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
+                }
+            },
+            handleReset(formName) {
+                this.handleSave(formName, false);
+            },
+            handleUploadComplete(v) {
+                this.form.teacher_img_url = v;
+            }
+        }
+    }
+
+</script>
+<style lang="scss">
+    #add-offline-course-container {
+        @import "base.scss";
+        .close-dialog-panel {
+            position: absolute;
+            top: -70px;
+            right: -10px;
+            z-index: 99999;
+            font-size: 30px;
+            cursor: pointer;
+            &:before {
+                // color: #fff;
+                color: #757575;
+            }
+        }
+        input,
+        textarea {
+            resize: none;
+            outline: none;
+        }
+        .el-dialog {
+            width: 600px;
+            background: none;
+            .body-top {
+                padding-bottom: 15px;
+            }
+            .el-dialog__header {
+                background: #333333;
+                border-radius: 4px 4px 0 0;
+                padding: 16px;
+            }
+            .el-dialog__body {
+                padding-bottom: 0;
+                margin-bottom: -20px;
+                background-color: #fff;
+                border-radius: 0 0 4px 4px;
+                .el-form-item__label {
+                    font-size: 14px;
+                    color: #141111;
+                    letter-spacing: 0;
+                    &:before {
+                        margin-right: 0;
+                    }
+                }
+            }
+            .add-offline-course-form {
+                width: 90%;
+                margin: 0 auto;
+                .el-date-editor--datetimerange,
+                .el-select,
+                .el-date-editor.el-input {
+                    width: 100%;
+                }
+                input {
+                    border-radius: 0;
+                    border: 1px solid #CCCCCC;
+                }
+                @mixin el-upload-common($w) {
+                    .el-upload {
+                        text-align: left;
+                        width: 100%;
+                        .el-icon-upload {
+                            color: #999999;
+                        }
+                        .el-upload__tip {
+                            font-size: 12px;
+                            color: #757575;
+                            letter-spacing: 0;
+                            line-height: 20px;
+                            text-align: left;
+                            margin-top: 0;
+                        }
+                        .el-dragger {
+                            // float: left;
+                            // width: 240px;
+                            border-radius: 0;
+                            background-color: #F6F6F6;
+                            border: 1px solid #CCCCCC;
+                            width: 100%;
+                            height: $w;
+                            .el-icon-upload {
+                                margin-left: 0;
+                                // margin-top: $_top;
+                            }
+                            .el-dragger__text {
+                                font-size: 14px;
+                                color: #757575;
+                                letter-spacing: 0;
+                                line-height: 14px;
+                                margin-top: 20px;
+                            }
+                        }
+                    }
+                }
+                .upload-form1 {
+                    @include el-upload-common(200px);
+                }
+                .btns {
+                    .el-form-item__content {
+                        margin-left: 0 !important;
+                        margin-top: 10px !important;
+                        line-height: 0;
+                        .finish-btn {
+                            margin-left: 0;
+                            margin-top: 20px;
+                            background: #FB843E;
+                            border-radius: 4px;
+                            width: 160px;
+                            height: 36px;
+                            border: 0;
+                            &:last-child {
+                                margin-left: 8px;
+                            }
+                        }
+                        button {
+                            width: 100px;
+                            height: 36px;
+                            background: #FFFFFF;
+                            border: 1px solid #999999;
+                            border-radius: 4px;
+                        }
+                    }
+                }
+                .el-form-item__content {
+                    // margin-left: 0 !important;
+                    line-height: 0;
+                    .el-textarea {
+                        .el-textarea__inner {
+                            background: #FFFFFF;
+                            border: 1px solid #CCCCCC;
+                            // height: 140px;
+                            border-radius: 0;
+                            // width: 390px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
