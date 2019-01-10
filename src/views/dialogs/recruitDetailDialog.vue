@@ -1,8 +1,8 @@
 <template>
 <el-dialog title="报名详情" v-model="recruitDetailDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top">
+        <Row slot="body">
+            <Row class="body-top">
                 <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
                     <el-form-item label="ID">
                          <el-input v-model="form.user_id" disabled></el-input>
@@ -57,8 +57,8 @@
                         <el-button type="primary" class="sub-btn" @click="saveHandler" :v-if='false'>保存</el-button>
                     </el-form-item>-->
                 </el-form>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

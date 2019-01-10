@@ -1,8 +1,8 @@
 <template>
 <el-dialog :title="payload.selectedType == 0 ? payload.type == 1 ? '创建任务' : '编辑任务' : payload.type == 1 ? '创建作业' : '编辑作业'" :show-close="false" v-model="addTaskDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top">
+        <Row slot="body">
+            <Row class="body-top">
                 <el-form ref="form" :rules="rules" :model="form" label-width="121px" class="add-task-form">
                     <el-form-item v-show="nextStep == 0" :label="typeStr('','名称')" prop="name" required>
                         <el-input v-model="form.name" :placeholder="typeStr('请输入','名称')"></el-input>
@@ -59,13 +59,13 @@
                             <!--<span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>-->
                         </upload-panel>
                         <!-- <el-input type="file" :change="getMyForm.teacher_img_url"></el-input> -->
-                        <el-row class="upload-file-list">
-                            <el-row class="file-item" v-for="(item,index) in form.upload_files" :key="item.id">
+                        <Row class="upload-file-list">
+                            <Row class="file-item" v-for="(item,index) in form.upload_files" :key="item.id">
                                 <span class="filename">{{item.name}}</span>
                                 <span class="el-icon-delete" @click="handleDeleteUploadItem(index)"></span>
                                 <span class="datetime">{{ item. datetime | zonetime }}</span>
-                            </el-row>
-                        </el-row>
+                            </Row>
+                        </Row>
                     </el-form-item>
                     <el-form-item class="btns">
                         <el-button type='text' v-show='nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</el-button>
@@ -73,7 +73,7 @@
                         <el-button v-show="nextStep == 0" class="btn-orange" @click="handleNextStep('form')">下一步</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
+            </Row>
             <!-- <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
                 <el-form-item prop="name" required>
                     <el-input placeholder="作业名称" v-model="form.name"></el-input>
@@ -116,23 +116,23 @@
                     </el-checkbox-group>
                 </el-form-item>
                 <el-form-item>
-                    <el-row>
-                        <el-col>
+                    <Row>
+                        <Col>
                             <upload-button :bucket="upload.bucket" :dir="upload.dir" :host="upload.host" @uploadcomplete="handleGetUrl"></upload-button>
-                        </el-col>
-                        <el-col>
-                            <el-row v-for="(item,index) in form.upload_files">
+                        </Col>
+                        <Col>
+                            <Row v-for="(item,index) in form.upload_files">
                                 <span>{{item.name}}</span>
                                 <span @click="handleDeleteUploadItem(index)">删除</span>
-                            </el-row>
-                        </el-col>
-                    </el-row>
+                            </Row>
+                        </Col>
+                    </Row>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="handleSubmit('form')">提交</el-button>
                 </el-form-item>
             </el-form> -->
-        </el-row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

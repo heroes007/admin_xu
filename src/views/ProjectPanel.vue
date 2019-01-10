@@ -1,32 +1,24 @@
 <template>
-    <el-row class="project">
-        <el-col :span="4" class="project-left">
+    <Row class="project">
+        <Col :span="4" class="project-left">
             <side-menu></side-menu>
-        </el-col>
-        <el-col :span="20" class="project-right">
+        </Col>
+        <Col :span="20" class="project-right">
             <project-list/>
-        </el-col>
-    </el-row>
+        </Col>
+    </Row>
 </template>
 
 <script>
-    import {
-        mapState,
-        mapActions
-    } from 'vuex'
-    import {
-        Loading
-    } from 'element-ui'
-    import {
-        Config
-    } from '../config/base'
-    import {
-        doTimeFormat
-    } from '../components/Util'
+    import { mapState,  mapActions } from 'vuex'
+    import { Loading } from 'element-ui'
+    import {  Config } from '../config/base'
+    import { doTimeFormat } from '../components/Util'
     import Header from '../components/Header'
     import SideMenu from '../components/SideMenuForProject'
     import ProjectList from '../components/ProjectList'
     export default {
+        components: { 'side-menu': SideMenu, 'project-list':ProjectList },
         data() {
             return {
                 loadingInstance: null
@@ -37,10 +29,6 @@
                 projectList: state => state.project.project_list,
                 isLoading: state => state.project.isLoading
             })
-        },
-        components: {
-            'side-menu': SideMenu,
-            'project-list':ProjectList
         },
         filters: {
             Numfilter(v) {
@@ -66,16 +54,11 @@
         watch: {
             isLoading(val) {
                 if (val) {
-                    this.loadingInstance = Loading.service({
-                        text:'加载中，请稍后',
-                        fullscreen: true
-                    });
+                   this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                     setTimeout(() => {
-                        this.loadingInstance.close();
+                        this.loadingInstance.close()
                     }, Config.base_timeout);
-                } else {
-                    this.loadingInstance.close();
-                }
+                } else if(this.loadingInstance) this.loadingInstance.close()
             }
         },
         mounted() {

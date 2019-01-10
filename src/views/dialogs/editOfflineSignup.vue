@@ -2,7 +2,7 @@
     <el-dialog title="编辑回执" v-model="editOfflineSignupDialog" :show-close="false" @close="handleRemoveModal(remove)" size="auto"
         :closeOnClickModal="false">
         <base-input @closedialog="handleClose" :baseInputWidth="500">
-            <el-row slot="body">
+            <Row slot="body">
                 <el-form :model="formInline1" class="row1-test-form" label-width="80px">
                     <el-form-item label="姓名">
                         <el-input v-model="formInline1.name" placeholder="请输入姓名"></el-input>
@@ -40,7 +40,7 @@
                         <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
+            </Row>
         </base-input>
         </el-dialog>
 </template>

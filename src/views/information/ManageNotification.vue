@@ -9,33 +9,33 @@
 
             </el-tab-pane>
             <el-tab-pane class='message-content' label="私信" name="chat">
-                <el-row class='message-content-container' type='flex' align='top'>
-                    <el-col :span='10'>
-                        <el-row class='group_header' type='flex'>
-                            <el-col class='active'>
+                <Row class='message-content-container' type='flex' align='top'>
+                    <Col :span='10'>
+                        <Row class='group_header' type='flex'>
+                            <Col class='active'>
                                 全部学员
-                            </el-col>
-                            <el-col>
+                            </Col>
+                            <Col>
                                 小组学员
-                            </el-col>
-                        </el-row>
+                            </Col>
+                        </Row>
                         <data-list class='student-list' :can-select='true' :is-stripe='false' @rowClick='rowClickHandler' :table-data='studentList'
                             :header-data='studentHeader' :show-header='false' :column-formatter='studentlistColumnFormatter'
                             :column-formatter-data='studentlistColumnFormatterData' />
-                    </el-col>
-                    <el-col class='message-list' v-if='selectStudent'>
+                    </Col>
+                    <Col class='message-list' v-if='selectStudent'>
                         <div class='message-wrap' ref="mwrapper">
                             <div class='message-detail'>
                                 <div class='message-item' v-for='(item, index) in messageList'>
-                                    <el-row class='time' type='flex' justify='center' align='middle' v-if='getTimeShow(item, index)'>
+                                    <Row class='time' type='flex' justify='center' align='middle' v-if='getTimeShow(item, index)'>
                                         <span>{{getTimeStr(item.time)}}</span>
-                                    </el-row>
-                                    <el-row class='message-detail-content'>
+                                    </Row>
+                                    <Row class='message-detail-content'>
                                         <img :src='getHeadImg(item)' />
                                         <p>
                                             <span>{{item.from_user_id === selectStudent.user_id?selectStudent.realname:'我'}}：</span>                                            {{item.content}}
                                         </p>
-                                    </el-row>
+                                    </Row>
                                 </div>
                             </div>
                         </div>
@@ -43,8 +43,8 @@
                         <el-input type="textarea" :autosize='false' placeholder="请输入内容" v-model="messageContent">
                         </el-input>
                         <el-button class='btn-submit' type='primary' @click='sendMsg'>发送</el-button>
-                    </el-col>
-                </el-row>
+                    </Col>
+                </Row>
             </el-tab-pane>
         </el-tabs>
 
@@ -432,7 +432,7 @@
                 .message-content-container {}
                 .group_header {
                     height: 60px;
-                    .el-col {
+                    .Col {
                         font-size: 16px;
                         color: #171515;
                         letter-spacing: 0;

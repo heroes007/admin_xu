@@ -1,13 +1,13 @@
 <template>
     <div class='base-list-container'>
-        <el-row type='flex' justify='space-between' align='middle'>
+        <Row type='flex' justify='space-between' align='middle'>
             <div class='tab-bar'>
                 <slot name='tabBar'></slot>
             </div>
             <div class='control-bar'>
                 <slot name='controlBar'></slot>
             </div>
-        </el-row>
+        </Row>
         <el-table @selection-change='selectionChangeHandler' :row-class-name="rowClassName" :highlight-current-row='canSelect' :show-header='showHeader' :stripe="isStripe"
             :data="tableData" :height="tableHeight" @expand="rowExpandHandler" @row-click='rowClickHandler'>
             <el-table-column width="60" v-for='item in badgeHeader' :key="item.id">

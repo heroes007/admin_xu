@@ -2,37 +2,37 @@
     <el-dialog title="查看线上课" v-model="queryStudentCourse" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false"
         :show-close="false">
         <base-input @closedialog="handleClose">
-            <el-row slot="header" type='flex' justify='space-between' align='middle'>
+            <Row slot="header" type='flex' justify='space-between' align='middle'>
                 <h3>已完成：{{totalProgress}}%</h3>
                 <el-button type='text' @click='clearVideoLog'>清除观看记录</el-button>
-            </el-row>
-            <el-row slot="body">
-                <el-row class="body-top" v-if="true">
-                    <el-row v-for="item in dataList" :key="item.id" class="course-item">
-                        <el-col :span="4">
+            </Row>
+            <Row slot="body">
+                <Row class="body-top" v-if="true">
+                    <Row v-for="item in dataList" :key="item.id" class="course-item">
+                        <Col :span="4">
                             <div class="avator"><img :src="headerImage(item.teacher_img)" alt=""></div>
                             <p>{{item.teacher_name}}</p>
-                        </el-col>
-                        <el-col :span="12">
+                        </Col>
+                        <Col :span="12">
                             <p class="title">{{item.title}}</p>
                             <p class="progress">
                                 <span :style="{'width': handleResultProgress(item.video_total_count, item.complete_video_test_ids, item.see_video_ids).progress }"></span>
                                 <span class="specific">{{handleResultProgress(item.video_total_count, item.complete_video_test_ids, item.see_video_ids).specific}}</span>
                             </p>
-                        </el-col>
-                        <el-col :span="4">
+                        </Col>
+                        <Col :span="4">
                             <!--<span>{{item.unlock ? '已解锁'  : '未解锁'}}</span>-->
                             <i :class="{'xght-webfont-lock':!item.unlock,'xght-webfont-play-sign':!handleResultProgress(item.video_total_count, item.complete_video_test_ids, item.see_video_ids).allFinish && item.unlock,'xght-webfont-ok-sign':handleResultProgress(item.video_total_count, item.complete_video_test_ids, item.see_video_ids).allFinish}"></i>
-                        </el-col>
-                        <el-col :span="4">
+                        </Col>
+                        <Col :span="4">
                             <el-button type='primary' @click='unlockTest(item)'>解锁测验</el-button>
-                        </el-col>
-                    </el-row>
-                    <el-row>
+                        </Col>
+                    </Row>
+                    <Row>
                         <el-button type="primary" class="ok-btn" @click="queryOk">确认</el-button>
-                    </el-row>
-                </el-row>
-            </el-row>
+                    </Row>
+                </Row>
+            </Row>
         </base-input>
         </el-dialog>
 </template>

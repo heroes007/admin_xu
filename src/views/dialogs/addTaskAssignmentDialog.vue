@@ -2,10 +2,10 @@
     <el-dialog :title="payload.row.name" :show-close="false" v-model="addTaskAssignmentDialog" @close="handleRemoveModal(remove)"
         size="auto" :closeOnClickModal="false">
         <base-input @closedialog="handleClose">
-            <el-row slot="body">
-                <el-row class="body-top">
+            <Row slot="body">
+                <Row class="body-top">
                     <div class='data-container'>
-                        <el-row class='file-item' type='flex' justify='space-between' align='middle' v-for='item in jsonParse(data.upload_files)' :key="item.id">
+                        <Row class='file-item' type='flex' justify='space-between' align='middle' v-for='item in jsonParse(data.upload_files)' :key="item.id">
                             <div class='title'>
                                 <i class='xght-webfont-film'></i>{{item.name}}
                             </div>
@@ -22,17 +22,17 @@
 </el-popover>
                                 <a :href="item.url" target="_blank" :download='item.name'>下载</a>
                             </div>
-                        </el-row>
+                        </Row>
                         <div class='readover-content'>
                             <el-input type="textarea" :rows="20" placeholder="请输入评价内容" v-model="data.read_over_content">
                             </el-input>
                         </div>
-                        <el-row class='btn-submit' type='flex' justify='center'>
+                        <Row class='btn-submit' type='flex' justify='center'>
                             <el-button type='primary' @click='doSubmit'>确定</el-button>
-                        </el-row>
+                        </Row>
                     </div>
-                </el-row>
-            </el-row>
+                </Row>
+            </Row>
         </base-input>
         </el-dialog>
 </template>

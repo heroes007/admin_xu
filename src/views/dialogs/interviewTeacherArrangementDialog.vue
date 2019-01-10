@@ -1,8 +1,8 @@
 <template>
 <el-dialog title="导师安排" v-model="interviewTeacherArrangementDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top" v-if="true">
+        <Row slot="body">
+            <Row class="body-top" v-if="true">
                 <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
                     <el-form-item v-for='(item, index) in subjectList' :key='item.id' :label="item.name">
                         <el-select v-model="form.arrangement[index]" placeholder="请选择学科">
@@ -13,8 +13,8 @@
                         <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

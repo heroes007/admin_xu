@@ -2,8 +2,8 @@
     <el-dialog :title="payload.type == 1 ? '添加课程' : '编辑课程'" :show-close="false" v-model="addOfflineCourseDialog" @close="handleRemoveModal(remove)"
         size="auto" :closeOnClickModal="false">
         <base-input @closedialog="handleClose">
-            <el-row slot="body">
-                <el-row class="body-top">
+            <Row slot="body">
+                <Row class="body-top">
                     <el-form ref="myForm" :rules="rules" :model="form" label-width="80px" class="add-offline-course-form">
                         <el-form-item label="课程名称" prop="name" required>
                             <el-input v-model="form.name" placeholder="请输入课程名称"></el-input>
@@ -42,8 +42,8 @@
                             <el-button type="primary" class="finish-btn" @click="handleReset('myForm')" v-if='payload.type == 1'>继续添加</el-button>
                         </el-form-item>
                     </el-form>
-                </el-row>
-            </el-row>
+                </Row>
+            </Row>
         </base-input>
         </el-dialog>
 </template>

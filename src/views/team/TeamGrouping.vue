@@ -1,11 +1,11 @@
 <template>
     <div class='team-grouping-view'>
-        <el-row class='handle-bar' type='flex' justify='center' align='middle'>
+        <Row class='handle-bar' type='flex' justify='center' align='middle'>
             <el-button type='text' @click='dialogVisible = true' v-if="activeName === 'step1'">修改规则</el-button>
             <el-button type='primary' @click='makeGroupHandler' v-if="activeName === 'step1'">生成分组</el-button>
             <h3 v-if="activeName === 'step2'">共筛选出 {{teamGroupData.length}} 种分组方式</h3>
             <el-button type='primary' @click="activeName = 'step1'" v-if="activeName === 'step2'">返回</el-button>
-        </el-row>
+        </Row>
         <div class='radar-modal' v-if='showDetail' @click='showDetail = false'>
             <my-radar class='radar-container' :style='radarStyle' :data='radarData' :options='radarOption'/>
         </div>
@@ -16,26 +16,26 @@
             </el-tab-pane>
             <el-tab-pane name='step2'>
                 <div class='result-container'>
-                    <el-row type='flex' class='result-item' justify='center' align='middle'>
-                        <el-col>
+                    <Row type='flex' class='result-item' justify='center' align='middle'>
+                        <Col>
                             第一组
-                        </el-col>
-                        <el-col>
+                        </Col>
+                        <Col>
                             剩余队员
-                        </el-col>
-                    </el-row>
-                    <el-row class='result-item' type='flex' :key="index" v-for='(item,index) in teamGroupData' justify='center' align='middle'>
-                        <el-col>
+                        </Col>
+                    </Row>
+                    <Row class='result-item' type='flex' :key="index" v-for='(item,index) in teamGroupData' justify='center' align='middle'>
+                        <Col>
                             <div @click='detailHandler(item.team1)'>
                                 <span :key="m_idx" v-for='(m,m_idx) in item.team1'>{{m.name}}</span>
                             </div>
-                        </el-col>
-                        <el-col>
+                        </Col>
+                        <Col>
                             <div @click='detailHandler(item.team2)'>
                                 <span :key="m_idx" v-for='(m,m_idx) in item.team2'>{{m.name}}</span>
                             </div>
-                        </el-col>
-                    </el-row>
+                        </Col>
+                    </Row>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -478,7 +478,7 @@ import MyRadarChart from '../../components/RadarChart'
                     border-bottom: 1px solid #cccccc;
                 }
                 padding: 5px 0;
-                .el-col {
+                .Col {
                     &:first-child {
                         border-right: 1px solid #cccccc;
                     }

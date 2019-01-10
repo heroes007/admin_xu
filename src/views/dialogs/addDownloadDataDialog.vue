@@ -1,8 +1,8 @@
 <template>
 <el-dialog :title="payload === 0?'添加公共资料':'课程资料上传'" v-model="addDownloadDataDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top" v-if="true">
+        <Row slot="body">
+            <Row class="body-top" v-if="true">
                 <el-form ref="form" :model="form" label-width="70px" class="add-teacher-form">
                     <el-form-item label="资料名称">
                         <el-input v-model="form.name" placeholder="请输入分类名称"></el-input>
@@ -26,8 +26,8 @@
                         <el-button type="primary" class="sub-btn" @click="saveHandler">完成</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

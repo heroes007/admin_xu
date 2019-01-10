@@ -5,25 +5,34 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: [{
       test: /\.vue$/,
-      loader: "vue-loader",
-      options: {
-        loaders: {
-          css: ExtractTextPlugin.extract({
-            use: 'css-loader',
-            fallback: 'vue-style-loader'
-          }),
-          scss: ExtractTextPlugin.extract({
-            use: ["css-loader", "sass-loader"],
-            fallback: 'vue-style-loader'
-          })
+      use: [{
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            css: ExtractTextPlugin.extract({
+              use: 'css-loader',
+              fallback: 'vue-style-loader'
+            }),
+            scss: ExtractTextPlugin.extract({
+              use: ["css-loader", "sass-loader"],
+              fallback: 'vue-style-loader'
+            })
+          }
         }
-      }
+      },
+      {
+          loader: 'iview-loader',
+          options: {
+              prefix: false
+          }
+      }]
     },{
       test: /\.css$/,
       use: ExtractTextPlugin.extract({
@@ -51,13 +60,15 @@ var webpackConfig = merge(baseWebpackConfig, {
     filename: config.base.assetsPath + '/js/[name].[chunkhash].js',
     chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
+  mode: 'production',
   //devtool: "#source-map",
   plugins: [
+    new VueLoaderPlugin(),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-    new webpack.optimize.UglifyJsPlugin(),
+    // new webpack.DefinePlugin({
+    //   'process.env.NODE_ENV': JSON.stringify('production')
+    // }),
+    // new webpack.optimize.UglifyJsPlugin(),
     // extract css into its own file
     new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
     // generate dist index.html with correct asset hash for caching.

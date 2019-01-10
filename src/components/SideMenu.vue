@@ -1,10 +1,10 @@
 /** * Created by lesonli on 2016/11/16. */
 <template>
     <div class='side-menu'>
-        <el-row class='logo' type='flex' justify='center' align='middle'>
+        <Row class='logo' type='flex' justify='center' align='middle'>
             <img src='../assets/img/logo-white.png'>
-        </el-row>
-        <el-row type='flex' justify='center' align='middle'>
+        </Row>
+        <Row type='flex' justify='center' align='middle'>
             <div class='head-img'>
                 <img :src='userHeader'>
             </div>
@@ -20,17 +20,17 @@
                 </i>
                 <div class='hover-glow'></div>
             </el-button>
-        </el-row>
-        <el-row class='user-name'>
+        </Row>
+        <Row class='user-name'>
             <el-tooltip :content="getRoleStr()" placement="right" effect="light">
                 <p><i class='el-icon-information'></i><span>{{ getRoleStr() }}</span></p>
             </el-tooltip>
-        </el-row>
-        <!--<el-row class='user-name' type='flex' justify='center' align='middle'>-->
+        </Row>
+        <!--<Row class='user-name' type='flex' justify='center' align='middle'>-->
         <!--{{userInfo.nickname}}-->
-        <!--</el-row>-->
-        <el-row>
-            <el-col>
+        <!--</Row>-->
+        <Row>
+            <Col>
                 <el-menu class="slider-menu" @open="handleOpen" @close="handleClose" @select="selectItem" :default-active='activeIndex'>
                     <el-submenu index="1" v-if="checkRole('admin')">
                         <template slot="title"><i class="xght-webfont-folder-open"></i>超级管理员</template>
@@ -78,8 +78,8 @@
                     </el-submenu>
                     <el-menu-item index="manage-project"><i class="xght-webfont-folder-open"></i>项目管理</el-menu-item>
                 </el-menu>
-            </el-col>
-        </el-row>
+            </Col>
+        </Row>
     </div>
 </template>
 

@@ -2,7 +2,7 @@
     <el-dialog title="修改内容" @close="handleRemoveModal(remove)" v-model="ManagePlatformDialog" :show-close="false" size="auto"
         :closeOnClickModal="false">
         <base-input @closedialog="handleClose" :baseInputWidth="400">
-            <el-row slot="body">
+            <Row slot="body">
                 <el-form :model="formInline" class="row1-test-form" label-width="50px">
                     <el-form-item label="名称">
                         <el-input v-model="formInline.version"></el-input>
@@ -23,7 +23,7 @@
                         <el-button type="primary" class="sub-btn" @click="handleClose">取消</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
+            </Row>
         </base-input>
     </el-dialog>
 </template>

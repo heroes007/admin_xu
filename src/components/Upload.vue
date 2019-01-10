@@ -13,9 +13,9 @@
                 </form>
             </div>
         </div>
-        <el-row type='flex' justify='end' align='middle'>
+        <Row type='flex' justify='end' align='middle'>
             <p class="description">最多上传{{maxFileCount}}个{{filtersString}}文件,且不超过{{maxFileSize | file_size_filter}}</p>
-        </el-row>
+        </Row>
     </div>
 </template>
 <script>

@@ -1,7 +1,7 @@
 <template>
 <el-dialog v-model="videoManageDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input :baseInputWidth="600" @closedialog="handleClose">
-        <el-row slot="body">
+        <Row slot="body">
             <!-- <span class="dscj-webfont-remove-sign"></span> -->
             <el-tabs type="border-card">
                 <el-tab-pane label="视频设置">
@@ -44,17 +44,17 @@
                         <el-form-item class="course-list">
                             <el-collapse @change='toggleCurriculum' :accordion='true'>
                                 <el-collapse-item :title="item.title" :name="index" v-for='(item,index) in curriculumList' :key="item.id">
-                                    <el-row class="course-item" v-for='catalog in item.chapterList' :key="catalog.id">
-                                        <el-col :span="3">
+                                    <Row class="course-item" v-for='catalog in item.chapterList' :key="catalog.id">
+                                        <Col :span="3">
                                             第{{catalog.chapterIndex + 1}}章
-                                        </el-col>
-                                        <el-col :span="18">
+                                        </Col>
+                                        <Col :span="18">
                                             <span class="el-icon-star-on"></span><span>{{item.orderIndex}}</span> {{catalog.video_title?catalog.video_title:''}}{{catalog.video_test_title?catalog.video_test_title:''}}
-                                        </el-col>
-                                        <el-col :span="3">
+                                        </Col>
+                                        <Col :span="3">
                                             <el-checkbox class="radio" v-model="catalog.isSelected" @change='changeVideoSelect(catalog)'></el-checkbox>
-                                        </el-col>
-                                    </el-row>
+                                        </Col>
+                                    </Row>
                                 </el-collapse-item>
                             </el-collapse>
                         </el-form-item>
@@ -64,7 +64,7 @@
                     </el-form>
                 </el-tab-pane>
             </el-tabs>
-        </el-row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>
@@ -461,7 +461,7 @@ export default {
                         .el-checkbox-group {
                             text-align: right;
                         }
-                        .el-col-18 {
+                        .Col-18 {
                             text-align: left;
                         }
                     }

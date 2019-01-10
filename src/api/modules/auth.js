@@ -16,6 +16,5 @@ export function login_pwd(name,password,debug) {
 }
 
 export function user_info(){
-    return api.post('api/user/user_info', {
-    });
+    return api.post('api/user/user_info', {});
 }

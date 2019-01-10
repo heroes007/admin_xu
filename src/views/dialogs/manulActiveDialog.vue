@@ -1,8 +1,8 @@
 <template>
 <el-dialog title="手动激活" :show-close="false" v-model="manulActiveDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-    <el-row class='search-bar' type='flex' justify='center' align='middle'>
+        <Row slot="body">
+    <Row class='search-bar' type='flex' justify='center' align='middle'>
                 <el-input placeholder="请输入用户名" v-model="searchData">
                     <el-select v-model="searchType" slot="prepend" placeholder="请选择">
                         <el-option label="ID" value="id"></el-option>
@@ -12,7 +12,7 @@
                     </el-select>
                     <el-button slot="append" type='text' @click='searchStudent'>搜索</el-button>
                 </el-input>
-     </el-row>
+     </Row>
             <el-table ref="table" :data="queryTaskUserList" style="width: 100%" @selection-change="handleSelectionChange">
                 <el-table-column label="ID" width="80">
                     <template slot-scope="props">{{ props.row.user_id }}
@@ -50,8 +50,8 @@
     type="selection">
   </el-table-column>
 </el-table>
-        <el-row>
-          <el-col :span="21">
+        <Row>
+          <Col :span="21">
             <el-pagination
                @size-change="handleSizeChange"
                @current-change="handleCurrentChange"
@@ -61,15 +61,15 @@
                small
                :total="totalNum">
              </el-pagination>
-          </el-col>
-          <el-col :span="3">
+          </Col>
+          <Col :span="3">
               <el-checkbox class="check-all" v-model="checked" @change="handleSelectedAll">全选</el-checkbox>
-          </el-col>
-        </el-row>
-          <el-row class="btns">
+          </Col>
+        </Row>
+          <Row class="btns">
             <el-button class="send-btn" @click="handleSendTask">发送</el-button>
-          </el-row>
-          </el-row>
+          </Row>
+          </Row>
       </base-input>
   </el-dialog>
 </template>

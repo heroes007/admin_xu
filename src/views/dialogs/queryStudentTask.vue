@@ -1,27 +1,27 @@
 <template>
 <el-dialog :title="taskType === 0?'查看任务':'查看作业'" v-model="queryStudentCourse" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top" v-if="true">
-                <el-row type='flex' justify='center' align='middle' v-if='dataList.length === 0'>
+        <Row slot="body">
+            <Row class="body-top" v-if="true">
+                <Row type='flex' justify='center' align='middle' v-if='dataList.length === 0'>
                     {{taskType === 0?'该用户没有任务':'该用户没有作业'}}
-                </el-row>
-                <el-row v-for="item in dataList" :key="item.id" class="course-item" v-if='dataList.length > 0'>
-                    <el-col :span="16">
+                </Row>
+                <Row v-for="item in dataList" :key="item.id" class="course-item" v-if='dataList.length > 0'>
+                    <Col :span="16">
                         <p class="title">{{item.name}}</p>
-                    </el-col>
-                    <el-col :span="4">
+                    </Col>
+                    <Col :span="4">
                       <span v-if='taskType === 0'>{{item.unlock ? '已发送'  : '未发送'}}</span>
-                    </el-col>
-                    <el-col :span="4">
+                    </Col>
+                    <Col :span="4">
                       <span>{{item.state === 1 ? '未上传'  : item.state === 2 ? '未批阅' : '已通过'}}</span>
-                    </el-col>
-                </el-row>
-                <el-row>
+                    </Col>
+                </Row>
+                <Row>
                     <el-button type="primary" class="ok-btn" @click="queryOk">确认</el-button>
-                </el-row>
-            </el-row>
-        </el-row>
+                </Row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

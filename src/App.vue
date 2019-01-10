@@ -1,8 +1,5 @@
-/**
-* Created by lesonli on 2016/11/15.
-*/
 <template>
-<div id="app" v-loading.fullscreen.lock='fullscreenLoading' element-loading-text="正在读取项目列表，请稍后...">
+<div id="app">
     <router-view></router-view>
 </div>
 </template>
@@ -20,47 +17,32 @@ export default {
     data() {
         return {
             loadingInstance:null,
-            fullscreenLoading:false
+            fullscreenLoading:null
         }
     },
     computed: {
         ...mapState({
             projectShowLoading:state => state.project.isLoading
         }),
-        userInfo() {
-            return this.$store.state.auth.userInfo;
-        },
-        isLogin() {
-            return this.$store.state.auth.isLogin;
-        }
+        userInfo() { return this.$store.state.auth.userInfo },
+        isLogin() { return this.$store.state.auth.isLogin }
     },
     beforeCreate() {
         var vm = this;
         api.interceptors.request.use(function(config) {
-            // Do something before request is sent
-            if (config.data) {
-                config.data.token = '' || vm.$localStorage.get('token');
-            }
-            else
-            {
-                config.data = {token:vm.$localStorage.get('token')}
-            }
-
+            if (config.data) config.data.token = '' || vm.$localStorage.get('token');
+            else config.data = {token:vm.$localStorage.get('token')}
             return config;
         }, function(error) {
-            // Do something with request error
             return Promise.reject(error);
         });
         api.interceptors.response.use(function(response) {
-            // Do something with response data
             if (response.data.res_code < 0) {
-                    if(response.data.res_code >= -999 &&  response.data.res_code <= -995)
-                    {
+                    if(response.data.res_code >= -999 &&  response.data.res_code <= -995){
                         vm.$router.push({
                             path: '/login'
                         });
-                    }
-                    else if (response.data.res_code == -6) {
+                    }else if (response.data.res_code == -6) {
                         vm.$router.push({
                             path: '/login'
                         });
@@ -73,14 +55,8 @@ export default {
             }
             return response;
         }, function(error) {
-            // Do something with response error
             return Promise.reject(error);
         });
-        // if (vm.$route.name !== 'login')
-        //     this.$store.dispatch('get_user_info');
-    },
-    mounted() {
-        
     },
     watch: {
         userInfo(val) {
@@ -117,16 +93,8 @@ export default {
             //                }
         },
         projectShowLoading(val) {
-            if(val)
-            {
-                // this.loadingInstance1 = Loading.service({ fullscreen: true,text:'正在读取项目列表，请稍后...' });
-                this.fullscreenLoading = true;
-           }
-            else
-            {
-                // this.loadingInstance1.close();
-                this.fullscreenLoading = false;
-            }
+            if(val) this.fullscreenLoading = this.$LoadingY({message: "正在读取项目列表，请稍后...",show: true})
+            else if(this.fullscreenLoading) this.fullscreenLoading.close()
         }
     }
 }

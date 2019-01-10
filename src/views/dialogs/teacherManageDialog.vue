@@ -2,7 +2,7 @@
 <template>
 <el-dialog title="" v-model="teacherManageDialog" @close="handleRemoveModal(remove)" :show-close="false" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body" class="top-nav">
+        <Row slot="body" class="top-nav">
             <span class="dscj-webfont-remove-sign"></span>
             <el-tabs type="border-card">
                 <el-tab-pane label="讲师信息">
@@ -36,7 +36,7 @@
                     </el-table>
                 </el-tab-pane>
             </el-tabs>
-        </el-row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

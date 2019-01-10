@@ -4,7 +4,6 @@ var config = require('./config')
 function pathResolve(relPath) {
     return path.resolve(__dirname, relPath);
 }
-
 module.exports = {
     entry: {
         app: './src/main.js',
@@ -29,14 +28,16 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: ['babel-loader'],
-                exclude: /node_modules/
+                exclude: /(node_modules|bower_components)/,
             }, {
                 test: /\.(png|jpg|jpeg|gif|svg|svgz)(\?.*)?$/,
                 use: [{
                     loader: 'url-loader',
                     options: {
                         limit: 10000,
-                        name: config.base.assetsPath + '/img/[name].[hash:7].[ext]'
+                        name: config.base.assetsPath + '/img/[name].[hash:7].[ext]',
+                        presets: ['@babel/preset-env'],
+                        plugins: ['@babel/transform-runtime']
                     }
                 }]
             }, {

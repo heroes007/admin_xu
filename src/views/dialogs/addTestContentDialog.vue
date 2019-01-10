@@ -2,7 +2,7 @@
 <template>
 <el-dialog title="添加测验" v-model="addTestContentDialog" :show-close="false" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose" :baseInputWidth="900">
-        <el-row slot="body">
+        <Row slot="body">
             <el-form :inline="true" :model="formInline1" class="row1-test-form" label-width="80px">
                 <el-form-item label="测验名称">
                     <el-input v-model="formInline1.title" placeholder="请输入测验的名称" :disabled='isEdit'></el-input>
@@ -19,8 +19,8 @@
                 </el-form-item>
             </el-form>
             <el-form :inline="true" :model="formInline2" class="row2-test-form" label-width="80px">
-                <el-row class="row2-top">
-                    <el-col :span="12" class="col2-left">
+                <Row class="row2-top">
+                    <Col :span="12" class="col2-left">
                         <el-form-item label="题干名称">
                             <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body">
                             </el-input>
@@ -37,27 +37,27 @@
                         <el-form-item label="排列序号">
                             <el-input-number v-model="formInline2.orderby" :min="1" ></el-input-number>
                         </el-form-item>
-                    </el-col>
-                    <el-col :span="12" class="col2-right">
+                    </Col>
+                    <Col :span="12" class="col2-right">
                         <el-form-item v-for='item in answerList' :key="item.id">
-                            <el-col :span="4">
+                            <Col :span="4">
                                 <el-checkbox-group v-model="item.answer">
                                     <el-checkbox :label="item.name"></el-checkbox>
                                 </el-checkbox-group>
-                            </el-col>
-                            <el-col :span="20">
+                            </Col>
+                            <Col :span="20">
                                 <el-input placeholder="请输入内容" v-model="item.desc">
                                 </el-input>
-                            </el-col>
+                            </Col>
                         </el-form-item>
                         <!-- <span style="clear: left"></span> -->
                         <el-form-item class="save-test-item">
                             <el-button type="" @click="cancelSaveHandler" class="cancel-test-item-btn">取消</el-button>
                             <el-button type="primary" @click="saveTestDetailHandler" class="save-test-item-btn">保存题干</el-button>
                         </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row class="quetion-list">
+                    </Col>
+                </Row>
+                <Row class="quetion-list">
                     <data-list @edit='editHandler'
                                @delete='deleteHandler'
                                class='data-list light-header'
@@ -65,9 +65,9 @@
                                :header-data='dataHeader'
                                :column-formatter='listColumnFormatter'
                                :is-stripe='false'></data-list>
-                </el-row>
+                </Row>
             </el-form>
-        </el-row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

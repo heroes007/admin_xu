@@ -1,8 +1,8 @@
 <template>
     <div class='back-to-top' v-if='isShown'>
-        <el-row>
+        <Row>
             <el-button class='btn' type='primary' icon="caret-top" @click='back'>返回顶部</el-button>
-        </el-row>
+        </Row>
     </div>
 </template>
 

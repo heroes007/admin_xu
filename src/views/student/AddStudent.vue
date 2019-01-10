@@ -1,13 +1,13 @@
 <template>
     <div class='add-student-view'>
         <header-component title='添加学员'></header-component>
-        <el-row class='img' type='flex' justify='center' align='middle'>
+        <Row class='img' type='flex' justify='center' align='middle'>
             <img src='../../assets/img/pic-search.png'>
-        </el-row>
-        <el-row class='title' type='flex' justify='center' align='middle'>
+        </Row>
+        <Row class='title' type='flex' justify='center' align='middle'>
             <h1>添加学员</h1>
-        </el-row>
-        <el-row class='search-bar' type='flex' justify='center' align='middle'>
+        </Row>
+        <Row class='search-bar' type='flex' justify='center' align='middle'>
             <el-input placeholder="请输入用户名" v-model="searchData">
                 <el-select v-model="searchType" slot="prepend" placeholder="请选择">
                     <el-option label="用户名" value="nickname"></el-option>
@@ -15,35 +15,35 @@
                 </el-select>
                 <el-button slot="append" type='text' @click='searchStudent'>搜索</el-button>
             </el-input>
-        </el-row>
-        <el-row class='result' type='flex' justify='center' align='middle' v-if='initData'>
-            <el-row type='flex' justify='center' align='middle' v-if='isLoading'>
+        </Row>
+        <Row class='result' type='flex' justify='center' align='middle' v-if='initData'>
+            <Row type='flex' justify='center' align='middle' v-if='isLoading'>
                 <i class='el-icon-loading'></i>
-            </el-row>
+            </Row>
             <div class='data-form' v-if='!isLoading'>
-                <el-row class='user-info' type='flex' justify='start' align='middle' v-if='searchResult'>
+                <Row class='user-info' type='flex' justify='start' align='middle' v-if='searchResult'>
                     搜索结果：ID:<span>{{searchResult.user_id}}</span>用户名:<span>{{searchResult.nickname}}</span>注册手机:<span>{{searchResult.phone}}</span>
-                </el-row>
-                <el-row class='user-info' type='flex' justify='start' align='middle' v-if='!searchResult'>
+                </Row>
+                <Row class='user-info' type='flex' justify='start' align='middle' v-if='!searchResult'>
                     搜索结果：<span>{{resultMsg}}</span>
-                </el-row>
-                <el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
+                </Row>
+                <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     学员真实姓名：
                     <el-input placeholder='请输入内容' v-model='user.realname'></el-input>
-                </el-row>
-                <el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
+                </Row>
+                <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     入学时间：
                     <el-date-picker
                             v-model="user.start_school_time"
                             type="date"
                             placeholder="选择日期">
                     </el-date-picker>
-                </el-row>
-                <el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
+                </Row>
+                <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     报名期数：
                     <el-input-number v-model="user.times"></el-input-number>
-                </el-row>
-                <el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
+                </Row>
+                <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     所属学科：
                     <el-select v-model="user.subject_id" placeholder="请选择学科">
                         <el-option
@@ -52,12 +52,12 @@
                                 :value="item.id">
                         </el-option>
                     </el-select>
-                </el-row>
-                <el-row class='user-data desc' type='flex' justify='start' align='middle' v-if='searchResult'>
+                </Row>
+                <Row class='user-data desc' type='flex' justify='start' align='middle' v-if='searchResult'>
                     学员备注：
                     <el-input placeholder='请输入内容' v-model='user.more'></el-input>
-                </el-row>
-                <el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
+                </Row>
+                <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     学员类型：
                     <el-select v-model="user.type" placeholder="请选择学员类型">
                         <el-option
@@ -73,12 +73,12 @@
                                 value="3">
                         </el-option>
                     </el-select>
-                </el-row>
-                <el-row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>
+                </Row>
+                <Row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>
                     <el-button @click='setStudent'>确认</el-button>
-                </el-row>
+                </Row>
             </div>
-        </el-row>
+        </Row>
     </div>
 </template>
 

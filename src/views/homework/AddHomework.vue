@@ -6,28 +6,28 @@
           <el-breadcrumb-item>设置任务包</el-breadcrumb-item>
             <el-breadcrumb-item>{{data.auto?'线上作业':'线下任务'}}</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-row class='tab-bar' type='flex' align='middle'>
-            <el-col class='tab-item' :class="{'active':!data.auto}" v-if='!isEdit || (isEdit && !data.auto)'>
+        <Row class='tab-bar' type='flex' align='middle'>
+            <Col class='tab-item' :class="{'active':!data.auto}" v-if='!isEdit || (isEdit && !data.auto)'>
                 <div @click='data.auto = false'>
                     线下任务
                 </div>
-            </el-col>
-            <el-col class='tab-item' :class="{'active':data.auto}" v-if='!isEdit || (isEdit && data.auto)'>
+            </Col>
+            <Col class='tab-item' :class="{'active':data.auto}" v-if='!isEdit || (isEdit && data.auto)'>
                 <div @click='data.auto = true'>
                     线上作业
                 </div>
-            </el-col>
-            <el-col>
+            </Col>
+            <Col>
                 <div></div>
-            </el-col>
-        </el-row>
-        <el-row type='flex' justify='center' class='data-container'>
+            </Col>
+        </Row>
+        <Row type='flex' justify='center' class='data-container'>
             <div class='data-inputs'>
-                <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                <Row class='input-rows' type='flex' justify='left' align='middle'>
                     <span class='m-label'>{{data.auto?'作业':'任务'}}名称</span>
                     <el-input placeholder='请输入任务名称' v-model='data.task_name'></el-input>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle'>
                     <span class='m-label'>{{data.auto?'作业':'任务'}}分类</span>
                     <el-select v-model="data.task_category_id" placeholder="请选择分类">
                         <el-option
@@ -36,8 +36,8 @@
                           :value="item.id">
                         </el-option>
                       </el-select>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle'>
                     <span class='m-label'>所属学科</span>
                     <el-select v-model="data.subject_id" placeholder="请选择学科">
                         <el-option
@@ -46,8 +46,8 @@
                           :value="item.id">
                         </el-option>
                       </el-select>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle'>
                     <span class='m-label'>上传格式</span>
                     <el-select v-model="data.upload_type" multiple placeholder="请选择上传格式">
                         <el-option
@@ -68,8 +68,8 @@
                         </el-option>
                       </el-select>
                      <span class='m-label'>（多选）</span>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle'>
                     <span class='m-label'>{{data.auto?'作业':'任务'}}要求</span>
                     <el-input
                       class='desc'
@@ -77,16 +77,16 @@
                       :autosize="{ minRows: 2, maxRows: 4}"
                       placeholder="请输入具体要求"
                       v-model="data.task_require"></el-input>
-                </el-row>
-                <!--<el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
+                </Row>
+                <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
                     <!--<span class='m-label'>自动触发</span>-->
                     <!--<el-switch-->
                       <!--v-model="data.auto"-->
                       <!--off-color='#cecece'-->
                       <!--on-color="#69BA6D">-->
                     <!--</el-switch>-->
-                <!--</el-row>-->
-                <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='data.auto && !isEdit'>
+                <!--</Row>-->
+                <Row class='input-rows' type='flex' justify='left' align='middle' v-if='data.auto && !isEdit'>
                     <span class='m-label'>完成课程</span>
                     <el-select v-model="data.auto_curriculum_id" placeholder="请选择课程">
                         <el-option
@@ -95,17 +95,17 @@
                           :value="item.curriculum_id">
                         </el-option>
                       </el-select>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>
                     <span class='m-label'>上传次数</span>
                     <el-input-number v-model="data.upload_count" :min='1'></el-input-number>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>
                     <span class='m-label'>间隔天数</span>
                     <el-input-number v-model="data.interval_days" :disabled='data.upload_count == 1'></el-input-number>
                     <span v-if='data.upload_count == 1'>上传次数为1时，间隔天数只能为0</span>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>
                     <span class='m-label'>开始时间</span>
                     <el-date-picker
                           v-model="data.start_time"
@@ -113,8 +113,8 @@
                           placeholder="选择日期"
                           :picker-options="pickerOptions">
                     </el-date-picker>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>
                     <span class='m-label'>选择学员</span>
                     <el-date-picker
                           v-model="student_search_date"
@@ -123,15 +123,15 @@
                           style="width: 220px">
                         </el-date-picker>
                     <span class='m-label gray' v-if='student_search_date'>已选{{data.to_user_ids.length}}学员</span>
-                </el-row>
-                <el-row class='input-rows' type='flex' justify='right' align='middle' v-show='!data.auto && student_search_date && !isEdit'>
+                </Row>
+                <Row class='input-rows' type='flex' justify='right' align='middle' v-show='!data.auto && student_search_date && !isEdit'>
                     <user-list v-on:listChange='listChangeHandler' :searchRange='student_search_date'></user-list>
-                </el-row>
-                <el-row class='btns' type='flex' justify='center' align='middle'>
+                </Row>
+                <Row class='btns' type='flex' justify='center' align='middle'>
                     <el-button @click='submit'>提交</el-button>
-                </el-row>
+                </Row>
             </div>
-        </el-row>
+        </Row>
     </div>
 </template>
 
@@ -140,7 +140,7 @@
         .tab-bar {
             margin:0 20px;
             background-color:#ffffff;
-            .el-col {
+            .Col {
 
                 &.tab-item {
                     width:120px;

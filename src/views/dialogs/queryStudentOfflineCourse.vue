@@ -1,32 +1,32 @@
 <template>
 <el-dialog title="查看线下课" v-model="queryStudentCourse" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top" v-if="true">
-                <el-row type='flex' justify='center' align='middle' v-if='dataList.length === 0'>
+        <Row slot="body">
+            <Row class="body-top" v-if="true">
+                <Row type='flex' justify='center' align='middle' v-if='dataList.length === 0'>
                     该用户没有线下课
-                </el-row>
-                <el-row v-for="item in dataList" :key="item.id" class="course-item" v-if='dataList.length > 0'>
-                    <!--<el-col :span="4">
+                </Row>
+                <Row v-for="item in dataList" :key="item.id" class="course-item" v-if='dataList.length > 0'>
+                    <!--<Col :span="4">
                         <div class="avator"><img :src="headerImage(item.teacher_img)" alt=""></div>
                         <p>{{item.teacher_name}}</p>
-                    </el-col>-->
-                    <el-col :span="16">
+                    </Col>-->
+                    <Col :span="16">
                         <p class="title">{{item.title}}</p>
                         <!--<p class="progress">
                           <span :style="{'width': handleResultProgress(item.video_total_count, item.see_video_ids).progress }"></span>
                           <span class="specific">{{handleResultProgress(item.video_total_count, item.see_video_ids).specific}}</span>
                         </p>-->
-                    </el-col>
-                    <!--<el-col :span="4">
+                    </Col>
+                    <!--<Col :span="4">
                       <span>{{item.unlock ? '已解锁'  : '未解锁'}}</span>
-                    </el-col>-->
-                </el-row>
-                <el-row>
+                    </Col>-->
+                </Row>
+                <Row>
                     <el-button type="primary" class="ok-btn" @click="queryOk">确认</el-button>
-                </el-row>
-            </el-row>
-        </el-row>
+                </Row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

@@ -1,19 +1,19 @@
 <template>
     <div class='statistics-data-view'>
         <header-component title='点击量统计' :type='0' :showAdd='false'></header-component>
-        <el-row>
+        <Row>
             <el-form :inline="true" :model="formInline" class="find-by-term">
                 <el-form-item label="选择时间" label-width="80px">
                     <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围" @change='changeTimeHandler'>
                     </el-date-picker>
                 </el-form-item>
             </el-form>
-        </el-row>
+        </Row>
         <data-list class='data-list light-header' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
-        <!-- <el-row class='pager' type='flex' justify='end' align='middle'>
+        <!-- <Row class='pager' type='flex' justify='end' align='middle'>
                     <el-pagination @current-change="handleCurrentChange" :current-page="curPage" :page-size='20' layout="prev, pager, next" :total="total">
                     </el-pagination>
-                </el-row> -->
+                </Row> -->
     </div>
 </template>
 
@@ -258,7 +258,7 @@ export default {
         .list {
             .data-header {
                 height: 50px;
-                .el-col {
+                .Col {
                     line-height: 50px;
                 }
             }
@@ -268,7 +268,7 @@ export default {
                 &.bg-gray {
                     background-color: #fbfbfb;
                 }
-                .el-col {
+                .Col {
                     line-height: 40px;
                     .el-button {
                         a {

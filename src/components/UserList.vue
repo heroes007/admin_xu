@@ -1,51 +1,51 @@
 <template>
     <div class='list-container'>
-        <el-row class='search-bar' type='flex' justify='space-between' align='middle'>
-            <el-col>
+        <Row class='search-bar' type='flex' justify='space-between' align='middle'>
+            <Col>
                 <input placeholder='搜索学员姓名' v-model='m_search_data'/>
-            </el-col>
-            <el-col>
+            </Col>
+            <Col>
                 <el-button type='text' icon='search' @click='doSearch'>
                 </el-button>
-            </el-col>
-        </el-row>
-        <el-row class='header-bar' type='flex' justify='left' align='middle'>
-            <el-col>
+            </Col>
+        </Row>
+        <Row class='header-bar' type='flex' justify='left' align='middle'>
+            <Col>
                 <el-checkbox v-model="checkAll" :disabled='users.length === 0'></el-checkbox>
-            </el-col>
-            <el-col>
+            </Col>
+            <Col>
                 日期
-            </el-col>
-            <el-col>
+            </Col>
+            <Col>
                 姓名
-            </el-col>
-            <el-col>
-                <el-row class='header-bar' type='flex' justify='center' align='middle'>
+            </Col>
+            <Col>
+                <Row class='header-bar' type='flex' justify='center' align='middle'>
                     学科
                     <div class='arrow'>
                         <i class='el-icon-caret-top'></i>
                         <i class='el-icon-caret-bottom'></i>
                     </div>
-                </el-row>
-            </el-col>
-        </el-row>
-        <el-row class='list-row' type='flex' justify='left' align='middle' v-for='item in users' :key="item.id">
-            <el-col>
+                </Row>
+            </Col>
+        </Row>
+        <Row class='list-row' type='flex' justify='left' align='middle' v-for='item in users' :key="item.id">
+            <Col>
                 <el-checkbox v-model='item.checked' @change='selectChange'></el-checkbox>
-            </el-col>
-            <el-col>
+            </Col>
+            <Col>
                 {{item.start_school_time | zonetime}}
-            </el-col>
-            <el-col>
+            </Col>
+            <Col>
                 {{item.realname}}
-            </el-col>
-            <el-col>
+            </Col>
+            <Col>
                 <subject-filter :sid='item.subject_id'></subject-filter>
-            </el-col>
-        </el-row>
-        <el-row class='footer-bar' type='flex' justify='center' align='middle'>
+            </Col>
+        </Row>
+        <Row class='footer-bar' type='flex' justify='center' align='middle'>
         <!--    <el-button type='text'>确认</a>-->
-        </el-row>
+        </Row>
     </div>
 </template>
 
@@ -56,7 +56,7 @@
 
         .search-bar {
             padding:0 10px;
-            .el-col {
+            .Col {
                 text-align:left;
                 padding-right:37px;
                 &:last-child {
@@ -90,7 +90,7 @@
             background-color:#E0E6ED;
             color:#475669;
 
-            .el-col {
+            .Col {
                 .arrow {
                     display:inline;
                     margin-left:10px;
@@ -106,7 +106,7 @@
             height:44px;
             padding:5px 0;
             border-bottom:1px solid #cecece;
-            .el-col {
+            .Col {
                 color:#1F2D3D;
                 font-size:14px;
                 div {

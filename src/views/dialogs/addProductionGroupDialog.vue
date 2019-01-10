@@ -1,8 +1,8 @@
 <template>
 <el-dialog :title="!payload? '创建专题' : '编辑专题'" :show-close="false" v-model="addProductionGroupDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top">
+        <Row slot="body">
+            <Row class="body-top">
                 <el-form ref="form" :model="form" label-width="121px" class="add-task-form">
                     <el-form-item label="专题名称">
 <el-input v-model="form.name" placeholder="请输入专题名称"></el-input>
@@ -25,8 +25,8 @@
                         <el-button class="btn-orange" @click="handleSubmit('form')">保存</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

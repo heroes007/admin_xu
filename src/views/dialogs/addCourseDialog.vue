@@ -2,11 +2,11 @@
 <template>
 <el-dialog :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :show-close="false" v-model="addCourseDialogVisible" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top" v-if="dialogIndex==1">
+        <Row slot="body">
+            <Row class="body-top" v-if="dialogIndex==1">
                 <el-form ref="form" :model="form" label-width="80px" class="add-course-form" :label-position="labelPosition">
-                    <el-row>
-                        <el-col :span="11">
+                    <Row>
+                        <Col :span="11">
                             <el-form-item label="课程名称">
                                 <el-input v-model="form.title" placeholder="请输入课程名称"></el-input>
                             </el-form-item>
@@ -25,8 +25,8 @@
                                     <el-option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
-                        </el-col>
-                        <el-col :span="11" :offset="2">
+                        </Col>
+                        <Col :span="11" :offset="2">
                             <el-form-item label="开课时间">
                                 <el-date-picker v-model="selectDateRange" type="daterange" placeholder="选择日期范围">
                                 </el-date-picker>
@@ -46,103 +46,103 @@
                                 <el-select v-model="form.data_center_id" placeholder="请选择课程资料(没有请重新上传)">
                                     <el-option v-for="item in curriculum_data_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                                <el-row type='flex' justify='end'>
+                                <Row type='flex' justify='end'>
                                     <el-button type='text' v-if='!newData.show' @click='showAddData'>新建资料</el-button>
                                     <el-button class='save-data' type='text' v-if='newData.show' @click='saveData'>保存资料</el-button>
                                     <el-button type='text' v-if='newData.show' @click='cancelAddData'>取消</el-button>
-                                </el-row>
+                                </Row>
                             </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
+                        </Col>
+                    </Row>
+                    <Row>
                         <div class='add-download-data' v-if='newData.show'>
-                            <el-row type='flex' align='middle'>
-                                <el-col :span='4'>
+                            <Row type='flex' align='middle'>
+                                <Col :span='4'>
                                     资料名称：
-                                </el-col>
-                                <el-col>
+                                </Col>
+                                <Col>
                                     <el-input v-model="newData.name" placeholder="请输入课程名称"></el-input>
-                                </el-col>
-                            </el-row>
+                                </Col>
+                            </Row>
                             <file-uploader :filters="dataFilters" maxFileCount="1"
                                     :maxFileSize="10000"  @uploadComplete="uploadComplete" 
                                      bucket="dscj-static-file" :dir="getDir"/>
                         </div>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="11">
+                    </Row>
+                    <Row>
+                        <Col :span="11">
                             <el-form-item label="展示图片">
                                 <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                     <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
                                 </upload-panel>
                             </el-form-item>
-                        </el-col>
-                        <el-col :span="11" :offset="2">
+                        </Col>
+                        <Col :span="11" :offset="2">
                             <el-form-item label="文字图片">
                                 <upload-panel ref="upload_panel" :resourse="form.img_3_8" :upload-config="uploadConfig" @uploadcomplete="handle38UploadComplete">
                                     <span slot="file-require">只能上传 jpg/png 文件，且图片480*180</span>
                                 </upload-panel>
                             </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row class="course-description">
+                        </Col>
+                    </Row>
+                    <Row class="course-description">
                         <el-form-item label="课程简介">
                             <el-input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description">
                             </el-input>
                         </el-form-item>
-                    </el-row>
-                    <el-row>
+                    </Row>
+                    <Row>
                         <el-form-item class="btns">
                             <el-button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</el-button>
                         </el-form-item>
-                    </el-row>
+                    </Row>
                 </el-form>
-            </el-row>
-            <el-row v-if="dialogIndex==2">
-                <el-row class="primary-course">
-                    <el-col :span="12">
-                        <el-row class="course-list-container">
-                            <el-row class="un-top-course">
-                                <el-col :span="12">
+            </Row>
+            <Row v-if="dialogIndex==2">
+                <Row class="primary-course">
+                    <Col :span="12">
+                        <Row class="course-list-container">
+                            <Row class="un-top-course">
+                                <Col :span="12">
                                     <!-- <el-checkbox label="全选" name="type" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox> -->
                                     可选课程
-                                </el-col>
-                            </el-row>
-                            <el-row class="course-list" style="height: ">
+                                </Col>
+                            </Row>
+                            <Row class="course-list" style="height: ">
                                 <el-checkbox-group v-model="unchecked_top_courses" @change="handleCheckedCitiesChange" class="course-item">
                                     <el-checkbox v-for="(item, index) in query_replace_online_course_list" :key="item.id" :label="item">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
                                     </el-checkbox>
                                 </el-checkbox-group>
-                            </el-row>
-                        </el-row>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-row class="course-list-container">
-                            <el-row class="top-course">
-                                <el-col :span="12">
+                            </Row>
+                        </Row>
+                    </Col>
+                    <Col :span="12">
+                        <Row class="course-list-container">
+                            <Row class="top-course">
+                                <Col :span="12">
                                     <!-- <el-checkbox label="全选" name="type" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox> -->
                                     已选课程
-                                </el-col>
-                            </el-row>
-                            <el-row class="course-list">
+                                </Col>
+                            </Row>
+                            <Row class="course-list">
                                 <el-checkbox-group v-model="checked_top_courses" @change="handleUnCheckedCitiesChange" class="course-item">
                                     <el-checkbox v-for="(item, index) in top_course_list" :key="item.id" :label="item">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
                                     </el-checkbox>
                                 </el-checkbox-group>
-                            </el-row>
-                        </el-row>
-                    </el-col>
-                </el-row>
-                <el-row class="btns">
+                            </Row>
+                        </Row>
+                    </Col>
+                </Row>
+                <Row class="btns">
                     {{this.result_msg1}}
                     <el-button type="text" @click="dialogIndex = 1" class="pre-btn">上一步</el-button>
                     <el-button type="primary" class="public-btn" @click="handleSubmit">保存</el-button>
-                </el-row>
-            </el-row>
+                </Row>
+            </Row>
 
-        </el-row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>
@@ -729,7 +729,7 @@ export default {
                 line-height: 36px;
                 padding-left: 10px;
                 color: #468F19;
-                .el-col-12 {
+                .Col-12 {
 
                     text-align: left;
                     // .add-btn {

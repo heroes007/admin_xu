@@ -1,20 +1,20 @@
 <template>
     <div class='manage-online-course-chapter'>
         <header-component :show-add='false' />
-        <el-row class='course-name' type='flex' justify='space-between' align='middle'>
+        <Row class='course-name' type='flex' justify='space-between' align='middle'>
             <div>
                 <h2>课程：{{curriculumName}}</h2>
             </div>
             <div>
                 <el-button type='text' @click='backClickHandler'>返回</el-button>
             </div>
-        </el-row>
+        </Row>
         <div class='chapter-container'>
             <div class='scroll-wrap'>
                 <div class='chapter-list'>
                     <div class='chapter-item' v-for='(item,index) in chapterList'>
                         <div @click="toggleListShow(index)">
-                            <el-row class='chapter-title' type='flex' justify='space-between' align='middle'>
+                            <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                                 <div>
                                     <span>第{{index + 1}}章</span>
                                     <h3>{{item.group_name}}</h3>
@@ -23,26 +23,26 @@
                                     <i class='el-icon-arrow-down' v-if='showListState[index] == 0'></i>
                                     <i class='el-icon-arrow-up' v-else-if='showListState[index] == 1'></i>
                                 </div>
-                            </el-row>
+                            </Row>
                         </div>
                         <data-list @edit='editHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @delete='deleteHandler' class='data-list light-header'
                             :table-data='item.classList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'
                             v-show='showListState[index] == 1 && item.classList.length > 0'></data-list>
-                            <el-row class='chapter-btns' type='flex' justify='space-between' align='middle' v-if='showListState[index] == 1 || (index == chapterList.length - 1 && !newChapterData.showAddChapter)'>
+                            <Row class='chapter-btns' type='flex' justify='space-between' align='middle' v-if='showListState[index] == 1 || (index == chapterList.length - 1 && !newChapterData.showAddChapter)'>
                                 <div>
                                     <el-button type='text' icon='plus' v-if='index == chapterList.length - 1 && !newChapterData.showAddChapter' @click.stop='addChapterHandler'>添加章节</el-button>
                                 </div>
-                                <el-row type='flex' align='middle' v-if='showListState[index] == 1'>
+                                <Row type='flex' align='middle' v-if='showListState[index] == 1'>
                                     <el-button type='text' @click="addVideo(item)">添加视频</el-button>
                                     <div class='line'></div>
                                     <el-button type='text' @click="addTest(item)">添加测验</el-button>
                                     <!--<div class='line'></div>
                                     <el-button type='text' @click="handleSelModal('video-manage')">添加问卷</el-button>-->
-                                </el-row>
-                            </el-row>
+                                </Row>
+                            </Row>
                     </div>
                     <div class='chapter-item' v-if='newChapterData.showAddChapter'>
-                        <el-row class='chapter-title' type='flex' justify='space-between' align='middle'>
+                        <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                             <div>
                                 <span>第{{chapterList.length + 1}}章</span>
                                 <input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>
@@ -50,19 +50,19 @@
                             <div>
                                 <i class='el-icon-arrow-up'></i>
                             </div>
-                        </el-row>
-                        <el-row class='chapter-btns' type='flex' justify='space-between' align='middle'>
+                        </Row>
+                        <Row class='chapter-btns' type='flex' justify='space-between' align='middle'>
                             <div>
                                 <span class='warning'>请至少添加一个视频或测验，否则章节信息将无法保存成功。取消添加请点击返回。</span>
                             </div>
-                            <el-row type='flex' align='middle'>
+                            <Row type='flex' align='middle'>
                                 <el-button type='text' @click="addVideo()">添加视频</el-button>
                                 <div class='line'></div>
                                 <el-button type='text' @click="addTest()">添加测验</el-button>
                                 <!--<div class='line'></div>
                                 <el-button type='text' @click="handleSelModal('video-manage')">添加问卷</el-button>-->
-                            </el-row>
-                        </el-row>
+                            </Row>
+                        </Row>
                     </div>
                 </div>
             </div>

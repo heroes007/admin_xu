@@ -1,7 +1,7 @@
 <template>
 <el-dialog title="产品协议" :show-close="false" v-model="editProtocol" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-      <el-row slot="body">
+      <Row slot="body">
           <el-form class="add-task-form">
                 <el-form-item>
                     <text-editor ref='description_editor' :content='description'/>
@@ -10,7 +10,7 @@
                     <el-button class="btn-orange" @click="handleSubmit('form')">保存</el-button>
                 </el-form-item>
             </el-form>
-      </el-row>
+      </Row>
     </base-input>
 </el-dialog>
 </template>

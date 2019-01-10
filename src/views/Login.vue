@@ -1,46 +1,38 @@
-/** * Created by lesonli on 2016/11/16. */
 <template>
     <div class='login-container'>
         <div class='login-view'>
             <div class='left-bar'></div>
-            <!--<div class='middle-bar'></div>-->
-            <el-row class='logo' type='flex' justify='left' align='middle'>
+            <div class='logo'>
                 <img src='../assets/img/logo-white.png'>
-            </el-row>
-            <div class='data-input'>
-                <el-row justify='center' align='middle'>
-                    <el-input placeholder="输入用户名" v-model="name">
-                    </el-input>
-                </el-row>
-                <el-row justify='center' align='middle'>
-                    <el-input type='password' placeholder="输入密码" v-model="password">
-                    </el-input>
-                </el-row>
-                <el-row class='remember' type='flex' justify='space-between' align='middle'>
-                    <div>
-                        <el-switch v-model="remember" off-color='#cecece' on-color="#69BA6D" on-text='' off-text=''>
-                        </el-switch>
-                        记住我
-                    </div>
-                </el-row>
             </div>
-            <el-row class='submit'>
-                <el-button v-bind:class='{isLogining:isLogining}' :disabled='isLogining' v-on:click='doLogin'>
-                    <el-row type='flex' justify='center' align='middle'><span>登录</span>
-                        <ellipsis-ani v-if='isLogining' diameter="5px" pColor="#ffffff"></ellipsis-ani>
-                    </el-row>
-                </el-button>
-            </el-row>
+            <div class='data-input'>
+                <div class="elRow">
+                    <input  class="el-input" placeholder="输入用户名" v-model="name" />
+                </div>
+                <div class="elRow">
+                    <input class="el-input" type='password' placeholder="输入密码" v-model="password" />
+                </div>
+                <div class='remember elRowJustifyLeft'>
+                    <Switch v-model="remember" />
+                    <span class="rememberMeText">记住我</span>
+                </div>
+            </div>
+            <div class='submit'>
+                <Button class="el-button" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
+                    <div class="elRow"><span>登录</span>
+                        <EllipsisAni v-if='isLogining' diameter="5px" pColor="#ffffff"></EllipsisAni>
+                    </div>
+                </Button>
+            </div>
         </div>
     </div>
 </template>
-
 <script>
-    import ellipsisAni from '../components/EllipsisAni';
+    import EllipsisAni from '../components/EllipsisAni';
     import api from '../api/modules/config';
     import { login_pwd, user_info } from '../api/modules/auth'
-
     export default {
+        components: {  EllipsisAni  },
         data() {
             return {
                 name: '',
@@ -56,53 +48,34 @@
                 login_pwd(this.name, this.password, 1).then((res) => {
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
-                        //                        this.$store.dispatch('get_role');
-
-
+                        // this.$store.dispatch('get_role');
                         // this.$store.dispatch('get_user_info', { callback(){
                         //   vm.$router.replace({path: 'dashboard'});
                         // }});
                         user_info().then((res) => {
+                            console.log(res);
                             if (res.data.res_code === 1) {
-                                if (res.data.msg.role_arr.indexOf(1) > -1 || res.data.msg.role_arr.indexOf(7) > -1
-                                 || res.data.msg.role_arr.indexOf(8) > -1 || res.data.msg.role_arr.indexOf(9) > -1) {
+                                let roleArr = res.data.msg.role_arr
+                               if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {
                                     vm.$store.dispatch('set_user_info', res.data.msg);
                                     vm.$router.replace({ path: 'project' });
                                 }
-                                else {
-                                    // vm.$alert('权限错误，请重新登录！', '提示', {
-                                    //     confirmButtonText: '确定',
-                                    //     callback: action => { }
-                                    // });
-                                }
+                                else vm.$Message.warning('权限错误，请重新登录');
                             }
                         })
-
                         this.remember ? this.$localStorage.set('login_user', this.name) : this.$localStorage.remove('login_user');
                         this.$localStorage.set('token', res.data.token);
-                    }
-                    else {
-                        this.isLogining = false;
-                        // alert('登录失败，' + res.data.msg);
-                    }
+                    } else  this.isLogining = false;
                 });
             }
         },
         mounted() {
             this.$localStorage.get('login_user') ? this.name = this.$localStorage.get('login_user') : this.name = '';
-        },
-        components: {
-            'ellipsis-ani': ellipsisAni
         }
     }
 
 </script>
-<style lang="scss">
-    body {
-        background-color: #fff;
-        height: 100%;
-    }
-    
+<style lang="scss" scoped>
     .login-container {
         display: flex;
         align-items: center;
@@ -110,7 +83,6 @@
         height: 100%;
         background: #ffffff;
     }
-    
     .login-view {
         margin-top: -100px;
         max-width: 600px;
@@ -127,41 +99,25 @@
             height: 100%;
             background-color: #141111;
         }
-        .middle-bar {
-            position: absolute;
-            left: 40px;
-            top: 0;
-            width: 10px;
-            height: 100%;
-            background-color: #fc7643;
-            z-index: 999;
-        }
         img {
             width: 136px;
-            margin-left: 75px;
         }
         .data-input {
             background-color: #ffffff;
             //width:380px;
             padding: 20px 40px 20px 60px;
         }
-        .el-row {
+        .elRow {
             &.logo {
                 margin-bottom: 25px;
+                display: flex;
+                align-items: center;
+                box-sizing: border-box;
                 img {
                     opacity: 0.5;
                 }
             }
             margin-bottom: 14px;
-            &.remember {
-                margin-bottom: 0;
-                margin-top: 13px;
-                .el-switch {
-                    margin-right: 12px;
-                }
-                font-size: 14px;
-                color: #858585;
-            }
             &.submit {
                 .el-button {
                     width: 100%;
@@ -174,7 +130,7 @@
                     }
                     color: #ffffff;
                     font-size: 16px;
-                    .el-row {
+                    .elRow {
                         margin-bottom: 0;
                         span {
                             margin-right: 5px;
@@ -183,17 +139,16 @@
                 }
             }
             .el-input {
-                .el-input__inner {
-                    width: 278px;
-                    height: 48px;
-                    border-color: #b0bec5;
-                    border-radius: 0 8px 8px 0;
-                    background-color: #f7f9fa;
-                    color: #1f2d3d;
-                    &:focus {
-                        border-color: #69BA6D;
-                        background-color: #ffffff;
-                    }
+                width: 278px;
+                height: 48px;
+                border: 1px solid #b0bec5;
+                border-radius: 0 8px 8px 0;
+                background-color: #f7f9fa;
+                color: #1f2d3d;
+                &:focus {
+                    border-color: #69BA6D;
+                    background-color: #ffffff;
+                    outline: none
                 }
                 ::-webkit-input-placeholder {
                     color: #99ABB4;
@@ -209,5 +164,28 @@
                 }
             }
         }
+        .remember {
+            margin-bottom: 0;
+            margin-top: 13px;
+            font-size: 14px;
+            color: #858585;
+            .rememberMeText {
+                margin-left: 12px
+            }
+        }
+    }
+    .ivu-switch-checked{
+        background-color: #69BA6D !important;
+        border-color: #69BA6D !important
+    }
+    .ivu-btn,.ivu-btn:hover{
+        width: 100%;
+        height: 40px;
+        border-radius: 0;
+        border: 0;
+        background-color: #FB843E;
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 29px;
     }
 </style>

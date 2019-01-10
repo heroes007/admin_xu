@@ -1,21 +1,21 @@
 /** * Created by lesonli on 2016/11/16. */
 <template>
     <div class='side-menu-for-project'>
-        <el-row class='logo' type='flex' justify='center' align='middle'>
+        <div class='logo elRow' type='flex' justify='center' align='middle'>
             <img src='../assets/img/logo-white.png'>
-        </el-row>
-        <el-row type='flex' justify='center' align='middle'>
+        </div>
+        <div class="elRow" type='flex' justify='center' align='middle'>
             <div class='head-img'>
                 <img :src='userHeader'>
             </div>
-        </el-row>
-        <el-row>
-            <el-col>
+        </div>
+        <Row>
+            <Col>
                 <el-menu class="slider-menu" @open="handleOpen" @close="handleClose" @select="selectItem" :default-active='activeIndex'>
                     <el-menu-item index=""><i></i>项目管理</el-menu-item>
                 </el-menu>
-            </el-col>
-        </el-row>
+            </Col>
+        </Row>
     </div>
 </template>
 

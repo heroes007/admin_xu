@@ -1,7 +1,7 @@
 <template>
     <div class='manage-production-view'>
         <header-component title='点师动态' :type='0' :showAdd='true' addText='创建文章' @addClick='addNewsHandler'></header-component>
-        <el-row>
+        <Row>
             <el-form :inline="true" :model="formInline" class="find-by-term">
                 <el-form-item label="文章状态" label-width="80px">
                     <el-select v-model="formInline.state" placeholder="请选择文章状态" @change='changeFilterHandler'>
@@ -9,13 +9,13 @@
                     </el-select>
                 </el-form-item>
             </el-form>
-        </el-row>
+        </Row>
         <data-list class='data-list light-header' @edit='editHandler' @delete='deleteHandler' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
-            <el-row class='pager' type='flex' justify='end' align='middle'>
+            <Row class='pager' type='flex' justify='end' align='middle'>
                 <el-pagination @current-change="handleCurrentChange" :current-page="curPage" :page-size='20' layout="prev, pager, next" :total="total">
                 </el-pagination>
-            </el-row>
+            </Row>
     </div>
 </template>
 
@@ -291,7 +291,7 @@
             .list {
                 .data-header {
                     height: 50px;
-                    .el-col {
+                    .Col {
                         line-height: 50px;
                     }
                 }
@@ -301,7 +301,7 @@
                     &.bg-gray {
                         background-color: #fbfbfb;
                     }
-                    .el-col {
+                    .Col {
                         line-height: 40px;
                         .el-button {
                             a {

@@ -1,26 +1,26 @@
 <template>
 <el-dialog :title="!payload? '创建产品' : '编辑产品'" :show-close="false" v-model="addProductionDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class='curriculum-list' v-if='nextStep == 1'>
-                <el-row class='title' type='flex' justify='start' align='middle'>
+        <Row slot="body">
+            <Row class='curriculum-list' v-if='nextStep == 1'>
+                <Row class='title' type='flex' justify='start' align='middle'>
                     <h2>添加课程：（只能选择一个课）</h2>
-                </el-row>
-                <el-row class='search-bar' type='flex' justify='start' align='middle'>
-                    <el-col :span="18">
+                </Row>
+                <Row class='search-bar' type='flex' justify='start' align='middle'>
+                    <Col :span="18">
                         <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
-                    </el-col>
-                    <el-col :span="6">
+                    </Col>
+                    <Col :span="6">
                         <el-button class="sub-btn" type="primary" @click="searchCurriculum">查询</el-button>
                         <el-button class="sub-btn" type="primary" @click="clearSearch">清除</el-button>
-                    </el-col>
-                </el-row>
-                <el-row>
+                    </Col>
+                </Row>
+                <Row>
                     <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='curriculumList'
             :header-data='dataHeader'></data-list>
-                </el-row>
-            </el-row>
-            <el-row class="body-top">
+                </Row>
+            </Row>
+            <Row class="body-top">
                 <el-form ref="form" :model="form" label-width="121px" class="add-task-form">
                     <el-form-item v-show="nextStep == 0" label="编码">
                         <el-input v-model="form.code" placeholder="请输入产品编码"></el-input>
@@ -40,14 +40,14 @@
                         <el-input placeholder="售价必须小于等于定价" v-model="form.show_price"></el-input>
                     </el-form-item>
                     <el-form-item v-show="nextStep == 0" label="跳转配置">
-                        <el-row class='row-container' type='flex' justify='start' align='middle'>
+                        <Row class='row-container' type='flex' justify='start' align='middle'>
 <el-switch
   v-model="form.redirectType"
   on-text="自定义"
   off-text="默认"
   :width='75'>
 </el-switch>  
-                        </el-row>
+                        </Row>
                   </el-form-item>
                     <el-form-item v-if="nextStep == 0 && form.redirectType" label="跳转地址">
 <el-input v-model="form.h5_url" placeholder="请输入跳转地址"></el-input>
@@ -58,14 +58,14 @@
                                 </upload-panel>
                             </el-form-item>
                                                 <el-form-item v-show="nextStep == 0" label="产品视频">
-                        <el-row class='row-container' type='flex' justify='start' align='middle'>
+                        <Row class='row-container' type='flex' justify='start' align='middle'>
                         <el-switch
   v-model="form.displayVideo"
   on-text="使用"
   off-text="不使用"
   :width='75'>
 </el-switch>  
-                        </el-row>
+                        </Row>
                     </el-form-item>
                             <el-form-item label="展示视频" v-if="nextStep == 0 && form.displayVideo">
                                 <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
@@ -87,8 +87,8 @@
                         <el-button v-show="nextStep == 0 || nextStep == 1" class="btn-orange" @click="handleNextStep('form')">下一步</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

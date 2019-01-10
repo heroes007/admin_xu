@@ -1,8 +1,8 @@
 <template>
 <el-dialog title="创建用户" v-model="addUserDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top" v-if="true">
+        <Row slot="body">
+            <Row class="body-top" v-if="true">
                 <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
                     <el-form-item label="是否注册">
                           <el-checkbox v-model="form.doRegist"></el-checkbox>
@@ -11,11 +11,11 @@
                         <el-button type="primary" class="sub-btn" @click="createHandler">创建</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
-                            <el-row class='msg'>
+            </Row>
+                            <Row class='msg'>
                     勾选注册将会提供一个新的注册账号，不勾选将会返回一个手机验证码需要手动注册。
-                </el-row>
-        </el-row>
+                </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

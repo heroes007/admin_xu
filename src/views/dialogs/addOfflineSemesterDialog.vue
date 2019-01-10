@@ -1,7 +1,7 @@
 <template>
     <el-dialog v-model="addOfflineSemesterDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
         <base-input :baseInputWidth="600" @closedialog="handleClose">
-            <el-row slot="body" class="top-nav">
+            <Row slot="body" class="top-nav">
                 <el-tabs type="border-card">
                     <el-tab-pane :label="payload.type == 2 ? '编辑学期' : '添加学期'">
                         <el-form ref="myForm1" :rules="rules1" :model="form1" label-width="80px">
@@ -63,7 +63,7 @@
                         </el-form>
                     </el-tab-pane>
                 </el-tabs>
-            </el-row>
+            </Row>
         </base-input>
     </el-dialog>
 </template>
@@ -454,7 +454,7 @@
                             .el-checkbox-group {
                                 text-align: right;
                             }
-                            .el-col-18 {
+                            .Col-18 {
                                 text-align: left;
                             }
                         }

@@ -1,7 +1,7 @@
 <template>
     <el-dialog title='学员信息' v-model="studentInfoDetailDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
         <base-input :baseInputWidth="800" @closedialog="handleClose">
-            <el-row slot="body">
+            <Row slot="body">
                 <!-- <span class="dscj-webfont-remove-sign"></span> -->
                 <el-tabs type="border-card" @tab-click='changeTabHandler' :active-name='activeName'>
                     <el-tab-pane label="基础信息">
@@ -77,9 +77,9 @@
                         </el-form>
                     </el-tab-pane>
                     <el-tab-pane label="报名信息">
-                         <el-row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
+                         <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
                     该用户没有报名信息
-                </el-row>
+                </Row>
                         <el-form ref="form2" :model="form2" label-width="80px" class="add-teacher-form" v-if='form2.user_id !== 0'>
                             <el-form-item label="ID">
                                 <el-input v-model="form2.user_id" disabled></el-input>
@@ -133,90 +133,90 @@
                         </el-form>
                     </el-tab-pane>
                     <el-tab-pane label="线上课">
-                        <el-row>
-                            <el-row class='query-header' type='flex' justify="space-between" align='middle'>
+                        <Row>
+                            <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
                                 <el-button type='text' @click='clearVideoLog'>清除观看记录</el-button>
                                 <el-select v-model="form3.product_id" placeholder="请选择项目" @change='changeProductHandler'>
                                     <el-option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></el-option>
                                 </el-select>
-                            </el-row>     
+                            </Row>     
 
-                            <el-row class="body-top" v-if="true">
-                                <el-row v-for="item in form3.dataList" :key="item.id" class="course-item">
-                                    <el-col :span="4">
+                            <Row class="body-top" v-if="true">
+                                <Row v-for="item in form3.dataList" :key="item.id" class="course-item">
+                                    <Col :span="4">
                                         <div class="avator"><img :src="headerImage(item.teacher_img)" alt=""></div>
                                         <p>{{item.teacher_name}}</p>
-                                    </el-col>
-                                    <el-col :span="12">
+                                    </Col>
+                                    <Col :span="12">
                                         <p class="title">{{item.title}}</p>
                                         <p class="progress">
                                             <span :style="{'width': handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).progress }"></span>
                                             <span class="specific">{{handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).specific}}</span>
                                         </p>
-                                    </el-col>
-                                    <el-col :span="4">
+                                    </Col>
+                                    <Col :span="4">
                                         <!--<span>{{item.unlock ? '已解锁'  : '未解锁'}}</span>-->
                                         <i :class="{'xght-webfont-lock':!item.unlock,'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i>
-                                    </el-col>
-                                    <el-col :span="4">
+                                    </Col>
+                                    <Col :span="4">
                                         <el-button type='primary' @click='unlockTest(item)'>解锁测验</el-button>
-                                    </el-col>
-                                </el-row>
-                            </el-row>
-                        </el-row>
+                                    </Col>
+                                </Row>
+                            </Row>
+                        </Row>
                     </el-tab-pane>
                     <el-tab-pane label="线下课">
-                        <el-row class='query-header' type='flex' align='middle'>
+                        <Row class='query-header' type='flex' align='middle'>
                                 <h3>剩余报名次数：{{form6.real_count}}</h3>
                                 <el-input-number v-model="form6.remain_count" @change="changeRemainCountHandler" :min="0"></el-input-number>
-                            </el-row>  
-                        <el-row>
-                            <el-row class='empty-msg' type='flex' justify='center' align='middle' v-if='form6.dataList.length === 0'>
+                            </Row>  
+                        <Row>
+                            <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form6.dataList.length === 0'>
                     该用户没有线下课
-                </el-row>
-                <el-row v-for="item in form6.dataList" :key="item.id" class="course-item" v-if='form6.dataList.length > 0'>
-                    <el-col :span="16" :offset='2'>
+                </Row>
+                <Row v-for="item in form6.dataList" :key="item.id" class="course-item" v-if='form6.dataList.length > 0'>
+                    <Col :span="16" :offset='2'>
                         <p class="title">{{item.name}}</p>
-                    </el-col>
-                </el-row>
-                        </el-row>
+                    </Col>
+                </Row>
+                        </Row>
                     </el-tab-pane>
                     <el-tab-pane label="任务">
-                        <el-row class="body-top" v-if="true">
-                            <el-row class='empty-msg' type='flex' justify='center' align='middle' v-if='form4.dataList.length === 0'>
+                        <Row class="body-top" v-if="true">
+                            <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form4.dataList.length === 0'>
                                 该用户没有任务
-                            </el-row>
-                            <el-row v-for="item in form4.dataList" :key="item.id" class="course-item" v-if='form4.dataList.length > 0'>
-                                <el-col :span="16">
+                            </Row>
+                            <Row v-for="item in form4.dataList" :key="item.id" class="course-item" v-if='form4.dataList.length > 0'>
+                                <Col :span="16">
                                     <p class="title">{{item.name}}</p>
-                                </el-col>
-                                <el-col :span="4">
+                                </Col>
+                                <Col :span="4">
                                     <span>{{item.unlock ? '已发送'  : '未发送'}}</span>
-                                </el-col>
-                                <el-col :span="4">
+                                </Col>
+                                <Col :span="4">
                                     <span>{{item.state === 1 ? '未上传'  : item.state === 2 ? '未批阅' : '已通过'}}</span>
-                                </el-col>
-                            </el-row>
-                        </el-row>
+                                </Col>
+                            </Row>
+                        </Row>
                     </el-tab-pane>
                     <el-tab-pane label="作业">
-                        <el-row class="body-top" v-if="true">
-                            <el-row class='empty-msg' type='flex' justify='center' align='middle' v-if='form5.dataList.length === 0'>
+                        <Row class="body-top" v-if="true">
+                            <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form5.dataList.length === 0'>
                                 该用户没有作业
-                            </el-row>
-                            <el-row v-for="item in form5.dataList" :key="item.id" class="course-item" v-if='form5.dataList.length > 0'>
-                                <el-col :span="16">
+                            </Row>
+                            <Row v-for="item in form5.dataList" :key="item.id" class="course-item" v-if='form5.dataList.length > 0'>
+                                <Col :span="16">
                                     <p class="title">{{item.name}}</p>
-                                </el-col>
-                                <el-col :span="4">
+                                </Col>
+                                <Col :span="4">
                                     <span>{{item.state === 1 ? '未上传'  : item.state === 2 ? '未批阅' : '已通过'}}</span>
-                                </el-col>
-                            </el-row>
-                        </el-row>
+                                </Col>
+                            </Row>
+                        </Row>
                     </el-tab-pane>
                 </el-tabs>
-            </el-row>
+            </Row>
         </base-input>
     </el-dialog>
 </template>
@@ -900,7 +900,7 @@
                             .el-checkbox-group {
                                 text-align: right;
                             }
-                            .el-col-18 {
+                            .Col-18 {
                                 text-align: left;
                             }
                         }

@@ -1,16 +1,16 @@
 <template>
 <el-dialog title="课程列表" :show-close="false" v-model="selectCurriculumDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top">
+        <Row slot="body">
+            <Row class="body-top">
                 
                     <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='dataList'
             :header-data='dataHeader'></data-list>
-            </el-row>
-            <el-row>
+            </Row>
+            <Row>
                 <el-button type="primary" class="ok-btn" @click="addHandler">添加</el-button>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

@@ -2,16 +2,16 @@
     <el-dialog title="产品列表" :show-close="false" v-model="selectProductionDialog" @close="handleRemoveModal(remove)" size="auto"
         :closeOnClickModal="false">
         <base-input @closedialog="handleClose">
-            <el-row slot="body">
-                <el-row class="body-top">
+            <Row slot="body">
+                <Row class="body-top">
 
                     <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='dataList' :header-data='dataHeader'
                         :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
-                </el-row>
-                <el-row>
+                </Row>
+                <Row>
                     <el-button type="primary" class="ok-btn" @click="addHandler">保存</el-button>
-                </el-row>
-            </el-row>
+                </Row>
+            </Row>
         </base-input>
         </el-dialog>
 </template>

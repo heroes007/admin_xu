@@ -1,14 +1,14 @@
 <template>
     <div class='manage-student-view'>
         <header-component title='查看用户' :noSelect="noSelect" :showAdd='true' addText='创建用户' @addClick='addUserHandler'></header-component>
-        <el-row class='sub-header'>
+        <Row class='sub-header'>
                         <el-breadcrumb separator="/">
                 <el-breadcrumb-item>用户管理</el-breadcrumb-item>
                 <el-breadcrumb-item>查看用户</el-breadcrumb-item>
             </el-breadcrumb>
-        </el-row>
-        <el-row class='sub-header' type='flex' justify='space-between' align='middle'>
-            <el-row class='search-bar' type='flex' justify='end' align='middle'>
+        </Row>
+        <Row class='sub-header' type='flex' justify='space-between' align='middle'>
+            <Row class='search-bar' type='flex' justify='end' align='middle'>
                 <el-select class='search-role' v-model="searchRole" placeholder="请选择" @change='searchRoleChangeHandler'>
                     <el-option :label="item.role_name" :value="item.role_id" v-for='item in roleList' :key="item.id"></el-option>
                 </el-select>
@@ -23,18 +23,18 @@
                 <el-button class='btn-clear' type='text' @click='clearSearch'>清除搜索</el-button>-->
                 <el-form :inline='true' class='find-by-term'>
             <el-form-item>
-                <el-row>
-                    <el-col :span="10">
+                <Row>
+                    <Col :span="10">
                         <el-select class="select-user" v-model="searchType" placeholder="">
                             <el-option label="昵称" value="nickname"></el-option>
                         <el-option label="手机号" value="phone"></el-option>
                         <el-option label="用户ID" value="user_id"></el-option>
                         </el-select>
-                    </el-col>
-                    <el-col :span="14">
+                    </Col>
+                    <Col :span="14">
                         <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
-                    </el-col>
-                </el-row>
+                    </Col>
+                </Row>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="searchStudent">查询</el-button>
@@ -43,14 +43,14 @@
                 <el-button type="primary" @click="clearSearch">清除</el-button>
             </el-form-item>
         </el-form>
-            </el-row>
+            </Row>
             <!--<el-button class='btn-add' type='text'>搜索</el-button>-->
              <el-dialog title="修改分站" style="width:900px;margin:0 auto;" v-model="showDealerDialog" 
                 size="small" 
                 :close-on-click-modal='false' 
                 :close-on-press-escape='false'
                 custom-class='add-student-view'>
-                  <el-row class='user-info' type='flex' justify='center' align='middle'>
+                  <Row class='user-info' type='flex' justify='center' align='middle'>
                       用户分站：
                       <el-select v-model="userInfo.from_domain" placeholder="请选择" style="width:300px;">
                           <el-option
@@ -60,110 +60,110 @@
                             :value="dealer_item.id">
                           </el-option>
                       </el-select>
-                  </el-row>
-                  <el-row style="margin-top:50px;" type='flex' justify='center' align='middle'>
+                  </Row>
+                  <Row style="margin-top:50px;" type='flex' justify='center' align='middle'>
                     <el-button type="primary" style="width:100px;" @click='changeDealer'>保存</el-button>
-                  </el-row>
+                  </Row>
              </el-dialog>
             <el-dialog title="用户信息" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false'
                 custom-class='add-student-view'>
-                <el-row class='result' type='flex' justify='center' align='middle'>
+                <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form' v-if='!isLoading'>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户权限：
                             <el-select v-model="userData.user_roles" multiple placeholder="请选择用户权限" style="width:300px;" @change='roleChangeHandler'>
                                 <el-option v-for='item in filterRoles' :key="item.id" :label="item.role_name" :value="item.role_id">
                                 </el-option>
                             </el-select>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户ID：<span>{{userData.user_id}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             昵称：<span>{{userData.nickname}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             真实姓名：<span>{{userData.realname}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             电话：<span>{{userData.phone}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户头像：<img :src='userData.head_img_url'>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户描述：<span>{{userData.description}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             性别：<span>{{userData.sex === 1?'男':'女'}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户邮箱：<span>{{userData.email}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户qq：<span>{{userData.qq}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户金币数：<span>{{userData.gold_count}}</span>
-                        </el-row>
-                        <el-row class='user-info' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-info' type='flex' justify='start' align='middle'>
                             使用的邀请码：<span>{{userData.from_invitation_code_id}}</span>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='center' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='center' align='middle'>
                             <el-button @click='submit'>保存</el-button>
-                        </el-row>
+                        </Row>
                     </div>
-                </el-row>
+                </Row>
                 </el-dialog>
-        </el-row>
-        <el-row class='total-num' type='flex' justfy='start' align='middle'>
+        </Row>
+        <Row class='total-num' type='flex' justfy='start' align='middle'>
             <span>当前用户 {{total}} 人</span>
-        </el-row>
-        <el-row class='data-container'>
+        </Row>
+        <Row class='data-container'>
             <div class='list'>
-                <el-row class='data-header' type='flex'>
-                    <el-col>
+                <Row class='data-header' type='flex'>
+                    <Col>
                         用户ID
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         用户昵称
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         用户权限
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         手机号
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         分站
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         注册时间
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         操作
-                    </el-col>
-                </el-row>
-                <el-row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
-                    <el-col>
+                    </Col>
+                </Row>
+                <Row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
+                    <Col>
                         {{item.user_id}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{item.nickname}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{getRoleStr(item.roles)}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{item.phone}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{getDealerStr(item.from_domain)}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{item.create_time | zonetime}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         <el-button type='text' @click='editDealer(item)'>
                             <a href="javascript:;">修改分站</a>
                         </el-button>
@@ -173,15 +173,15 @@
                         <el-button type='text' @click='createStudent(item)'>
                             <a href="javascript:;">创建学员</a>
                         </el-button>
-                    </el-col>
-                </el-row>
-                <el-row class='pager' type='flex' justify='end' align='middle'>
+                    </Col>
+                </Row>
+                <Row class='pager' type='flex' justify='end' align='middle'>
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-sizes="[20, 50, 100]"
                         :page-size="pageSize" layout="sizes, prev, pager, next" :total="total">
                         </el-pagination>
-                </el-row>
+                </Row>
             </div>
-        </el-row>
+        </Row>
     </div>
 </template>
 
@@ -312,7 +312,7 @@
     .list {
       .data-header {
         height: 50px;
-        .el-col {
+        .Col {
           line-height: 50px;
         }
       }
@@ -322,7 +322,7 @@
         &.bg-gray {
           background-color: #fbfbfb;
         }
-        .el-col {
+        .Col {
           line-height: 40px;
           .el-button {
             a {

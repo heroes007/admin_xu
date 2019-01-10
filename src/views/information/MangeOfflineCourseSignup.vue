@@ -1,6 +1,6 @@
 <template>
     <div class='manage-offline-course-signup-view'>
-        <el-row class='header' type='flex' align='middle' justify='space-between'>
+        <Row class='header' type='flex' align='middle' justify='space-between'>
             <div>
                 <span class='title'>{{termData.name}}</span>
                 <span><i class='xght-webfont-user'></i>共{{total}}人参加</span>
@@ -8,8 +8,8 @@
             <div>
                 <el-button type='text' @click='backClickHandler'>返回</el-button>
             </div>
-        </el-row>
-        <el-row>
+        </Row>
+        <Row>
             <el-form :inline="true" :model="formInline" class="find-by-term">
                 <el-form-item label="截止日期" label-width="102px">
                     <el-date-picker
@@ -22,17 +22,17 @@
     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-row>
-                        <el-col :span="10">
+                    <Row>
+                        <Col :span="10">
                             <el-select class="select-user" v-model="formInline.classify" placeholder="">
                                 <el-option label="手机号" value="phone"></el-option>
                                 <el-option label="姓名" value="name"></el-option>
                             </el-select>
-                        </el-col>
-                        <el-col :span="14">
+                        </Col>
+                        <Col :span="14">
                             <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
-                        </el-col>
-                    </el-row>
+                        </Col>
+                    </Row>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -41,7 +41,7 @@
                     <el-button type="primary" @click="onClear">清除</el-button>
                 </el-form-item>
             </el-form>
-        </el-row>
+        </Row>
         <data-list class='data-list light-header' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
             :column-formatter-data='listColumnFormatterData' @edit='editHandler'></data-list>
     </div>

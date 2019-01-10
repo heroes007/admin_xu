@@ -1,6 +1,6 @@
 <template>
     <div class='project-header'>
-        <el-row class='header-container' type='flex' justify='space-between' align='middle'>
+        <Row class='header-container' type='flex' justify='space-between' align='middle'>
             <div class='title'>
                 <i class='el-icon-menu'></i>
                 <el-select v-model="project_id" placeholder="请选择" disabled>
@@ -22,20 +22,20 @@
                     {{ isEdit ? '编辑类型': '取消编辑'}}
                 </el-button>
                 <el-popover ref="teacherList" placement="bottom-end" width="500" trigger="click" popper-class='teacher-list'>
-                    <el-row class='teacher-list-head'>
+                    <Row class='teacher-list-head'>
                         <div class='head'>
                             全部讲师
                         </div>
                         <el-button type='text' icon='plus' @click='addTeacherHandler'>
                             添加
                         </el-button>
-                    </el-row>
+                    </Row>
                     <div class='teacher-list-container'>
-                        <el-row v-for='r in teacherListData' :key="r.id" type='flex'>
-                            <el-col v-for='t in r' :key="t.id" :span='4'>
+                        <Row v-for='r in teacherListData' :key="r.id" type='flex'>
+                            <Col v-for='t in r' :key="t.id" :span='4'>
                                 <teacher-head :tid='t.id' :img-url='t.img_url' :teacher-name='t.name' />
-                            </el-col>
-                        </el-row>
+                            </Col>
+                        </Row>
                     </div>
                 </el-popover>
 
@@ -46,7 +46,7 @@
                     {{addText}}
                 </el-button>
             </div>
-        </el-row>
+        </Row>
     </div>
 </template>
 

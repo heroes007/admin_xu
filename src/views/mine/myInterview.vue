@@ -1,7 +1,7 @@
 <template>
 <div class='manage-my-interview-view'>
     <header-component title='我的面试' :type='0'></header-component>
-    <el-row>
+    <Row>
         <el-form :inline="true" :model="formInline" class="find-by-term">
             <el-form-item label="面试状态" label-width="80px">
                 <el-select v-model="formInline.interview_state" placeholder="请选择面试状态" @change='changeFilterHandler'>
@@ -20,14 +20,14 @@
               </el-input>
             </div>
         </el-form>
-    </el-row>
+    </Row>
     <!--<keep-alive>-->
     <data-list class='data-list light-header' @finishInterview='finishInterviewHandler' @showComment='showCommentHandler' @showDetail='showDetailHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
     <!--</keep-alive>-->
-    <el-row class='pager' type='flex' justify='end' align='middle'>
+    <Row class='pager' type='flex' justify='end' align='middle'>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total">
         </el-pagination>
-    </el-row>
+    </Row>
 </div>
 </template>
 
@@ -526,7 +526,7 @@ export default {
     .list {
       .data-header {
         height: 50px;
-        .el-col {
+        .Col {
           line-height: 50px;
         }
       }
@@ -538,7 +538,7 @@ export default {
           background-color: #fbfbfb;
         }
 
-        .el-col {
+        .Col {
           line-height: 40px;
           .el-button {
             a {

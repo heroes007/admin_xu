@@ -1,9 +1,9 @@
 <template>
-    <el-row type='flex' justify='left' align='middle' class='input-container'>
+    <Row type='flex' justify='left' align='middle' class='input-container'>
         <input type='text' :placeholder='m_placeholder' @keypress='onKeyDown' v-model='m_model'/>
         <a @click='plus'><i class='el-icon-plus'></i></a>
         <a @click='minus'><i class='el-icon-minus'></i></a>
-    </el-row>
+    </Row>
 </template>
 
 <style lang="scss">

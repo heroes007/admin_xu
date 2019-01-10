@@ -1,7 +1,7 @@
 <template>
     <div class='manage-homework-view'>
         <header-component title='查看任务包'></header-component>
-        <el-row class='sub-header' type='flex' justify='space-between' align='middle'>
+        <Row class='sub-header' type='flex' justify='space-between' align='middle'>
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>任务管理</el-breadcrumb-item>
                 <el-breadcrumb-item>查看任务包</el-breadcrumb-item>
@@ -9,29 +9,29 @@
             </el-breadcrumb>
             <el-button class='btn-add' type='text' @click='addHomework()'>添加新任务</el-button>
             <el-dialog title="设置任务" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-homework-view'>
-                <el-row class='tab-bar' type='flex' align='middle'>
-                    <el-col class='tab-item' :class="{'active':!data.auto}" v-if='!isEdit || (isEdit && !data.auto)'>
+                <Row class='tab-bar' type='flex' align='middle'>
+                    <Col class='tab-item' :class="{'active':!data.auto}" v-if='!isEdit || (isEdit && !data.auto)'>
                         <div @click='data.auto = false'>
                             线下任务
                         </div>
-                    </el-col>
-                    <el-col class='tab-item' :class="{'active':data.auto}" v-if='!isEdit || (isEdit && data.auto)'>
+                    </Col>
+                    <Col class='tab-item' :class="{'active':data.auto}" v-if='!isEdit || (isEdit && data.auto)'>
                         <div @click='data.auto = true'>
                             线上作业
                         </div>
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         <div></div>
-                    </el-col>
-                </el-row>
-                <el-row type='flex' justify='center' class='data-container'>
+                    </Col>
+                </Row>
+                <Row type='flex' justify='center' class='data-container'>
                     <div class='data-inputs'>
-                        <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                        <Row class='input-rows' type='flex' justify='left' align='middle'>
                             <span class='m-label'>{{data.auto?'作业':'任务'}}名称</span>
                             <el-input placeholder='请输入任务名称' v-model='data.task_name'>
                                 </el-input>
-                        </el-row>
-                        <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                        </Row>
+                        <Row class='input-rows' type='flex' justify='left' align='middle'>
                             <span class='m-label'>上传格式</span>
                             <el-select v-model="data.upload_type" multiple placeholder="请选择上传格式">
                                 <el-option
@@ -52,8 +52,8 @@
                                 </el-option>
                             </el-select>
                             <span class='m-label'>（多选）</span>
-                        </el-row>
-                        <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
+                        </Row>
+                        <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
                             <span class='m-label'>{{data.auto?'作业':'任务'}}分类</span>
                             <el-select v-model="data.task_category_id" placeholder="请选择分类">
                                 <el-option
@@ -62,8 +62,8 @@
                                         :value="item.id">
                                 </el-option>
                             </el-select>
-                        </el-row>
-                        <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
+                        </Row>
+                        <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
                             <span class='m-label'>所属学段</span>
                             <el-select v-model="data.period_id" placeholder="请选择学科">
                                 <el-option
@@ -72,8 +72,8 @@
                                         :value="item.id">
                                 </el-option>
                             </el-select>
-                        </el-row>
-                        <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
+                        </Row>
+                        <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
                             <span class='m-label'>所属学科</span>
                             <el-select v-model="data.subject_id" placeholder="请选择学科">
                                 <el-option
@@ -82,8 +82,8 @@
                                         :value="item.id">
                                 </el-option>
                             </el-select>
-                        </el-row>
-                        <el-row class='input-rows' type='flex' justify='left' align='middle'>
+                        </Row>
+                        <Row class='input-rows' type='flex' justify='left' align='middle'>
                             <span class='m-label'>{{data.auto?'作业':'任务'}}要求</span>
                             <el-input
                                     class='desc'
@@ -92,16 +92,16 @@
                                     placeholder="请输入具体要求"
                                     v-model="data.task_require">
                             </el-input>
-                        </el-row>
-                        <!--<el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
+                        </Row>
+                        <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
                         <!--<span class='m-label'>自动触发</span>-->
                         <!--<el-switch-->
                         <!--v-model="data.auto"-->
                         <!--off-color='#cecece'-->
                         <!--on-color="#69BA6D">-->
                         <!--</el-switch>-->
-                        <!--</el-row>-->
-                        <el-row class='input-rows' type='flex' justify='left' align='middle' v-if='data.auto && !isEdit'>
+                        <!--</Row>-->
+                        <Row class='input-rows' type='flex' justify='left' align='middle' v-if='data.auto && !isEdit'>
                             <span class='m-label'>完成课程</span>
                             <el-select v-model="data.auto_curriculum_id" placeholder="请选择课程">
                                 <el-option
@@ -110,17 +110,17 @@
                                         :value="item.curriculum_id">
                                 </el-option>
                             </el-select>
-                        </el-row>
-                        <!--<el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
+                        </Row>
+                        <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
                             <!--<span class='m-label'>上传次数</span>-->
                             <!--<el-input-number v-model="data.upload_count" :min='1'></el-input-number>-->
-                        <!--</el-row>-->
-                        <!--<el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
+                        <!--</Row>-->
+                        <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
                             <!--<span class='m-label'>间隔天数</span>-->
                             <!--<el-input-number v-model="data.interval_days" :disabled='data.upload_count == 1'></el-input-number>-->
                             <!--<span v-if='data.upload_count == 1'>上传次数为1时，间隔天数只能为0</span>-->
-                        <!--</el-row>-->
-                        <!--<el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>-->
+                        <!--</Row>-->
+                        <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>-->
                             <!--<span class='m-label'>开始时间</span>-->
                             <!--<el-date-picker-->
                                     <!--v-model="data.start_time"-->
@@ -128,8 +128,8 @@
                                     <!--placeholder="选择日期"-->
                                     <!--:picker-options="pickerOptions">-->
                             <!--</el-date-picker>-->
-                        <!--</el-row>-->
-                        <!--<el-row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>-->
+                        <!--</Row>-->
+                        <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto && !isEdit'>-->
                             <!--<span class='m-label'>选择学员</span>-->
                             <!--<el-date-picker-->
                                     <!--v-model="student_search_date"-->
@@ -138,71 +138,71 @@
                                     <!--style="width: 220px">-->
                             <!--</el-date-picker>-->
                             <!--<span class='m-label gray' v-if='student_search_date'>已选{{data.to_user_ids.length}}学员</span>-->
-                        <!--</el-row>-->
-                        <!--<el-row class='input-rows' type='flex' justify='right' align='middle' v-show='!data.auto && student_search_date && !isEdit'>-->
+                        <!--</Row>-->
+                        <!--<Row class='input-rows' type='flex' justify='right' align='middle' v-show='!data.auto && student_search_date && !isEdit'>-->
                             <!--<user-list v-on:listChange='listChangeHandler' :searchRange='student_search_date'></user-list>-->
-                        <!--</el-row>-->
-                        <el-row class='btns' type='flex' justify='center' align='middle'>
+                        <!--</Row>-->
+                        <Row class='btns' type='flex' justify='center' align='middle'>
                             <el-button @click='submit'>提交</el-button>
-                        </el-row>
+                        </Row>
                     </div>
-                </el-row>
+                </Row>
             </el-dialog>
-        </el-row>
+        </Row>
 
-        <el-row class='data-container'>
+        <Row class='data-container'>
             <div class='list'>
-                <el-row class='data-tab' type='flex'>
-                    <el-col class='header-item' v-bind:class="{'active':tabIndex == 0}">
+                <Row class='data-tab' type='flex'>
+                    <Col class='header-item' v-bind:class="{'active':tabIndex == 0}">
                         <div @click='changeTab(0)'>
                             线下任务
                         </div>
-                    </el-col>
-                    <el-col class='header-item' v-bind:class="{'active':tabIndex == 1}">
+                    </Col>
+                    <Col class='header-item' v-bind:class="{'active':tabIndex == 1}">
                         <div @click='changeTab(1)'>
                             线上作业
                         </div>
-                    </el-col>
-                    <el-col>
-                    </el-col>
-                </el-row>
-                <el-row class='data-header' type='flex'>
-                    <el-col>
+                    </Col>
+                    <Col>
+                    </Col>
+                </Row>
+                <Row class='data-header' type='flex'>
+                    <Col>
                         ID
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         布置日期
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         任务名称
-                    </el-col>
-                    <el-col v-if='tabIndex === 1'>
+                    </Col>
+                    <Col v-if='tabIndex === 1'>
                         触发条件（完成课程）
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         布置人
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         操作
-                    </el-col>
-                </el-row>
-                <el-row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
-                    <el-col>
+                    </Col>
+                </Row>
+                <Row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
+                    <Col>
                         {{item.task_id}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{item.update_time | zonetime}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         <p>{{item.name}}</p>
-                    </el-col>
-                    <el-col v-if='tabIndex === 1'>
+                    </Col>
+                    <Col v-if='tabIndex === 1'>
                         <p>{{item.title}}</p>
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{item.nickname}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         <el-button type='text' v-if='tabIndex == 1'>
                             <!--<a :href="'/dashboard/add-homework/' + item.task_id ">编辑</a>-->
                             <a @click='editHomework(item)'>编辑</a>/<a @click='deleteHomework(item)'>删除</a>
@@ -211,9 +211,9 @@
                             <!--<a :href="'/dashboard/add-homework/' + item.task_id ">编辑</a>-->
                             <a @click='editHomework(item)'>编辑</a></a>
                         </el-button>
-                    </el-col>
-                </el-row>
-                <el-row class='pager' type='flex' justify='end' align='middle'>
+                    </Col>
+                </Row>
+                <Row class='pager' type='flex' justify='end' align='middle'>
                     <el-pagination
                           @size-change="handleSizeChange"
                           @current-change="handleCurrentChange"
@@ -223,9 +223,9 @@
                           layout="sizes, prev, pager, next"
                           :total="total">
                         </el-pagination>
-                </el-row>
+                </Row>
             </div>
-        </el-row>
+        </Row>
     </div>
 </template>
 
@@ -242,7 +242,7 @@
                 .data-tab {
                     height:48px;
 
-                    .el-col {
+                    .Col {
                         line-height:48px;
                         border-bottom:1px solid #cecece;
                     }
@@ -259,7 +259,7 @@
                 }
                 .data-header {
                     height:50px;
-                    .el-col {
+                    .Col {
                         line-height:50px;
                     }
                 }
@@ -271,7 +271,7 @@
                         background-color:#fbfbfb;
                     }
 
-                    .el-col {
+                    .Col {
                         line-height:60px;
                         .el-button {
                             color:#5fa137;
@@ -320,7 +320,7 @@
         .tab-bar {
             margin:0 20px;
             background-color:#ffffff;
-            .el-col {
+            .Col {
                 border-top:1px solid transparent;
                 &.tab-item {
                     width:120px;

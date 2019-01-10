@@ -13,28 +13,28 @@
   v-model='showPopper'>
   <div class='search-result'>
     <h2>{{searchResult.code_name}}</h2>
-    <el-row class='code' type='flex' justify='space-between'>
+    <Row class='code' type='flex' justify='space-between'>
         <span>兑换码：{{searchData}}</span>
         <span :class="{'not-use':searchResult.state !== -1}">
             <i :class='iconClass'></i>
             {{getCodeStateStr(searchResult.state)}}
         </span>
-    </el-row>
-    <el-row class='form-item' v-if='searchResult.state === -1'>
+    </Row>
+    <Row class='form-item' v-if='searchResult.state === -1'>
         用户ID：{{searchResult.user_id}}
-    </el-row>
-    <el-row class='form-item' v-if='searchResult.state === -1'>
+    </Row>
+    <Row class='form-item' v-if='searchResult.state === -1'>
         昵称：{{searchResult.nickname}}
-    </el-row>
-    <el-row class='form-item' v-if='searchResult.state === -1'>
+    </Row>
+    <Row class='form-item' v-if='searchResult.state === -1'>
         姓名：{{searchResult.realname}}
-    </el-row>
-    <el-row class='form-item' v-if='searchResult.state === -1'>
+    </Row>
+    <Row class='form-item' v-if='searchResult.state === -1'>
         电话：{{searchResult.phone}}
-    </el-row>
+    </Row>
   </div>
 </el-popover>
-    <el-row class='header' type='flex' justify='space-between' align='middle'>
+    <Row class='header' type='flex' justify='space-between' align='middle'>
         <el-input
   placeholder="兑换码查询"
   icon="search"
@@ -43,7 +43,7 @@
   v-popover:searchpop>
 </el-input>
 <el-button type='primary' icon="plus" @click='addCode'>添加兑换码</el-button>
-    </el-row>
+    </Row>
     <data-list class='data-list light-header' @export='exportHandler' @detail='detailHandler' :rowClassName='getRowClassName' :isStripe='false' :table-data='dataList' :header-data='dataHeader'
     :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
     </div>

@@ -3,17 +3,17 @@
  */
 <template>
     <div class='dashboard-view'>
-        <el-row type='flex' class='col-container'>
-            <el-col class='menu-bar'>
+        <Row type='flex' class='col-container'>
+            <Col class='menu-bar'>
                 <side-menu/>
-            </el-col>
-            <el-col class='sub-view'>
+            </Col>
+            <Col class='sub-view'>
                 <keep-alive>
                     <router-view v-if="$route.meta.keepAlive"></router-view>
                 </keep-alive>
                 <router-view v-if="!$route.meta.keepAlive"></router-view>
-            </el-col>
-        </el-row>
+            </Col>
+        </Row>
     </div>
 </template>
 
@@ -61,6 +61,7 @@
                 padding-bottom: 50px;
                 position: relative;
                 min-height: 100vh;
+                width: calc(100% - 200px)
                 /*background-color:#f9f9f9;*/
                 /*border-radius:0 20px 20px 0;*/
             }

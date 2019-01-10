@@ -1,32 +1,32 @@
 <template>
 <el-dialog :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top" v-if="payload.showList">
-                <el-row class='search-bar' type='flex' justify='center' align='middle'>
+        <Row slot="body">
+            <Row class="body-top" v-if="payload.showList">
+                <Row class='search-bar' type='flex' justify='center' align='middle'>
                 <el-form :inline='true' class='find-by-term' label-width="0px">
             <el-form-item>
-                <el-row>
-                    <el-col :span="10">
+                <Row>
+                    <Col :span="10">
                         <el-select class="select-user" v-model="searchType" placeholder="">
                             <el-option label="昵称" value="nickname"></el-option>
                         <el-option label="手机号" value="phone"></el-option>
                         <el-option label="用户ID" value="user_id"></el-option>
                         </el-select>
-                    </el-col>
-                    <el-col :span="14">
+                    </Col>
+                    <Col :span="14">
                         <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
-                    </el-col>
-                </el-row>
+                    </Col>
+                </Row>
             </el-form-item>
             <el-form-item>
                 <el-button class="sub-btn" type="primary" @click="searchStudent">查询</el-button>
             </el-form-item>
             <data-list @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
         </el-form>
-            </el-row>
-            </el-row>
-            <el-row class="body-top"  v-if="!payload.showList">
+            </Row>
+            </Row>
+            <Row class="body-top"  v-if="!payload.showList">
                 <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
                     <el-form-item label="选择项目">
                         <el-select v-model="form.project_id" placeholder="请选择项目" disabled>
@@ -109,8 +109,8 @@
                         <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
                     </el-form-item>
                 </el-form>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

@@ -5,7 +5,7 @@ var api = axios.create({
   baseURL: 'http://api2.laoshi123.com/',
   // baseURL: 'http://192.168.1.15:4005/',
   timeout: 10000,
-  withCredentials:true
+  withCredentials: true
 });
 
 export default api;

@@ -2,23 +2,23 @@
     <el-dialog title="面试评价" :show-close="false" v-model="addInterviewCommentDialog" @close="handleRemoveModal(remove)"
         size="auto" :closeOnClickModal="false">
         <base-input @closedialog="handleClose">
-            <el-row slot="body">
-                <el-row class="body-top">
+            <Row slot="body">
+                <Row class="body-top">
                     <div class='data-container'>
                         <div class='readover-content'>
                             <el-input type="textarea" placeholder="请输入评价内容" v-model="data.interview_comment">
                             </el-input>
                         </div>
-                        <el-row class='result' type='flex' justify='start'>
+                        <Row class='result' type='flex' justify='start'>
                             <el-radio class="radio" v-model="data.interview_result" :label="1">通过</el-radio>
                             <el-radio class="radio" v-model="data.interview_result" :label="0">未通过</el-radio>
-                        </el-row>
-                        <el-row class='btn-submit' type='flex' justify='center'>
+                        </Row>
+                        <Row class='btn-submit' type='flex' justify='center'>
                             <el-button type='primary' @click='doSubmit'>确定</el-button>
-                        </el-row>
+                        </Row>
                     </div>
-                </el-row>
-            </el-row>
+                </Row>
+            </Row>
         </base-input>
         </el-dialog>
 </template>

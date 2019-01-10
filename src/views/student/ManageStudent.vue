@@ -1,14 +1,14 @@
 <template>
 <div class='manage-student-view'>
     <header-component title='查看学员' @reRenderList="reRenderList"  :showAdd='true' addText='创建学员' @addClick='addStudentHandler'></header-component>
-    <!--<el-row class='sub-header' type='flex' justify='space-between' align='middle'>-->
+    <!--<Row class='sub-header' type='flex' justify='space-between' align='middle'>-->
     <!--<el-breadcrumb separator="/">-->
     <!--<el-breadcrumb-item>学员管理</el-breadcrumb-item>-->
     <!--<el-breadcrumb-item>查看学员</el-breadcrumb-item>-->
     <!--</el-breadcrumb>-->
     <!--<el-button class='btn-add' type='text' @click='dialogVisible=true'>添加新学员</el-button>-->
     <!--<el-dialog title="添加学员" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-student-view'>-->
-    <!--<el-row class='search-bar' type='flex' justify='center' align='middle'>-->
+    <!--<Row class='search-bar' type='flex' justify='center' align='middle'>-->
     <!--<el-input placeholder="请输入用户名" v-model="searchData">-->
     <!--<el-select v-model="searchType" slot="prepend" placeholder="请选择">-->
     <!--<el-option label="用户名" value="nickname"></el-option>-->
@@ -16,35 +16,35 @@
     <!--</el-select>-->
     <!--<el-button slot="append" type='text' @click='searchStudent'>搜索</el-button>-->
     <!--</el-input>-->
-    <!--</el-row>-->
-    <!--<el-row class='result' type='flex' justify='center' align='middle' v-if='initData'>-->
-    <!--<el-row type='flex' justify='center' align='middle' v-if='isLoading'>-->
+    <!--</Row>-->
+    <!--<Row class='result' type='flex' justify='center' align='middle' v-if='initData'>-->
+    <!--<Row type='flex' justify='center' align='middle' v-if='isLoading'>-->
     <!--<i class='el-icon-loading'></i>-->
-    <!--</el-row>-->
+    <!--</Row>-->
     <!--<div class='data-form' v-if='!isLoading'>-->
-    <!--<el-row class='user-info' type='flex' justify='start' align='middle' v-if='searchResult'>-->
+    <!--<Row class='user-info' type='flex' justify='start' align='middle' v-if='searchResult'>-->
     <!--搜索结果：ID:<span>{{searchResult.user_id}}</span>用户名:<span>{{searchResult.nickname}}</span>注册手机:<span>{{searchResult.phone}}</span>-->
-    <!--</el-row>-->
-    <!--<el-row class='user-info' type='flex' justify='start' align='middle' v-if='!searchResult'>-->
+    <!--</Row>-->
+    <!--<Row class='user-info' type='flex' justify='start' align='middle' v-if='!searchResult'>-->
     <!--搜索结果：<span>{{resultMsg}}</span>-->
-    <!--</el-row>-->
-    <!--<el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
+    <!--</Row>-->
+    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
     <!--学员真实姓名：-->
     <!--<el-input placeholder='请输入内容' v-model='user.realname'></e-input>-->
-    <!--</el-row>-->
-    <!--<el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
+    <!--</Row>-->
+    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
     <!--入学时间：-->
     <!--<el-date-picker-->
     <!--v-model="user.start_school_time"-->
     <!--type="date"-->
     <!--placeholder="选择日期">-->
     <!--</el-date-picker>-->
-    <!--</el-row>-->
-    <!--&lt;!&ndash;<el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>&ndash;&gt;-->
+    <!--</Row>-->
+    <!--&lt;!&ndash;<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>&ndash;&gt;-->
     <!--&lt;!&ndash;报名期数：&ndash;&gt;-->
     <!--&lt;!&ndash;<el-input-number v-model="user.times"></el-input-number>&ndash;&gt;-->
-    <!--&lt;!&ndash;</el-row>&ndash;&gt;-->
-    <!--<el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
+    <!--&lt;!&ndash;</Row>&ndash;&gt;-->
+    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
     <!--所属学段：-->
     <!--<el-select v-model="user.period_id" placeholder="请选择学段">-->
     <!--<el-option-->
@@ -53,8 +53,8 @@
     <!--:value="item.id">-->
     <!--</el-option>-->
     <!--</el-select>-->
-    <!--</el-row>-->
-    <!--<el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
+    <!--</Row>-->
+    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
     <!--所属学科：-->
     <!--<el-select v-model="user.subject_id" placeholder="请选择学科">-->
     <!--<el-option-->
@@ -63,12 +63,12 @@
     <!--:value="item.id">-->
     <!--</el-option>-->
     <!--</el-select>-->
-    <!--</el-row>-->
-    <!--<el-row class='user-data desc' type='flex' justify='start' align='middle' v-if='searchResult'>-->
+    <!--</Row>-->
+    <!--<Row class='user-data desc' type='flex' justify='start' align='middle' v-if='searchResult'>-->
     <!--学员备注：-->
     <!--<el-input placeholder='请输入内容' v-model='user.more'></e-input>-->
-    <!--</el-row>-->
-    <!--<el-row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
+    <!--</Row>-->
+    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
     <!--学员类型：-->
     <!--<el-select v-model="user.type" placeholder="请选择学员类型">-->
     <!--<el-option-->
@@ -84,20 +84,20 @@
     <!--value="3">-->
     <!--</el-option>-->
     <!--</el-select>-->
-    <!--</el-row>-->
-    <!--<el-row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>-->
+    <!--</Row>-->
+    <!--<Row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>-->
     <!--<el-button @click='setStudent'>确认</el-button>-->
-    <!--</el-row>-->
+    <!--</Row>-->
     <!--</div>-->
-    <!--</el-row>-->
+    <!--</Row>-->
     <!--</el-dialog>-->
-    <!--</el-row>-->
-    <!--<el-row class='data-container'>-->
+    <!--</Row>-->
+    <!--<Row class='data-container'>-->
     <!--<div class='list'>-->
     <!---->
     <!--</div>-->
-    <!--</el-row>-->
-    <el-row>
+    <!--</Row>-->
+    <Row>
         <el-form :inline="true" :model="formInline" class="find-by-term">
             <el-form-item label="类型" label-width="40px">
                 <el-select v-model="formInline.is_test_user" placeholder="请选择类型" @change='changeFilterHandler'>
@@ -127,23 +127,23 @@
                 </el-select>
             </el-form-item>
         </el-form>
-    </el-row>
-    <el-row>
+    </Row>
+    <Row>
         <el-form :inline='true' :model='formInline' class='find-by-term'>
             <el-form-item>
-                <el-row>
-                    <el-col :span="10">
+                <Row>
+                    <Col :span="10">
                         <el-select class="select-user" v-model="formInline.classify" placeholder="">
                             <el-option label="手机号" value="phone"></el-option>
                             <el-option label="昵称" value="username"></el-option>
                             <el-option label="真实姓名" value="realname"></el-option>
                             <el-option label="用户ID" value="user_id"></el-option>
                         </el-select>
-                    </el-col>
-                    <el-col :span="14">
+                    </Col>
+                    <Col :span="14">
                         <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
-                    </el-col>
-                </el-row>
+                    </Col>
+                </Row>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -152,19 +152,19 @@
                 <el-button type="primary" @click="onClear">清除</el-button>
             </el-form-item>
         </el-form>
-    </el-row>
-    <el-row class='total-num' type='flex' justfy='start' align='middle'>
+    </Row>
+    <Row class='total-num' type='flex' justfy='start' align='middle'>
         <span>当前学员 {{total}} 人</span>
-    </el-row>
+    </Row>
     <!--<keep-alive>-->
     <data-list class='data-list light-header' @showDetail='showDetailHandler' @queryHomework='queryHomeworkHandler' @queryTask='queryTaskHandler' @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'
         ></data-list>
     <!--</keep-alive>-->
     <back-to-top />
-    <el-row class='pager' type='flex' justify='end' align='middle'>
+    <Row class='pager' type='flex' justify='end' align='middle'>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="sizes, prev, pager, next" :total="total">
         </el-pagination>
-    </el-row>
+    </Row>
 </div>
 </template>
 
@@ -731,7 +731,7 @@ export default {
         .list {
             .data-header {
                 height: 50px;
-                .el-col {
+                .Col {
                     line-height: 50px;
                 }
             }
@@ -743,7 +743,7 @@ export default {
                     background-color: #fbfbfb;
                 }
 
-                .el-col {
+                .Col {
                     line-height: 40px;
                     .el-button {
                         a {

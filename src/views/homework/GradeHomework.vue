@@ -7,63 +7,63 @@
           <el-breadcrumb-item>{{typeStr}}</el-breadcrumb-item>
           <el-breadcrumb-item>{{tabIndex === 0?'未批阅':tabIndex === 1?'已批阅':'未上传'}}</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-row class='data-container'>
-            <el-row class='type-list' type='flex' justify='center' align='middle'>
-                <el-col v-for='(item, key) in categories' :key="item.id">
+        <Row class='data-container'>
+            <Row class='type-list' type='flex' justify='center' align='middle'>
+                <Col v-for='(item, key) in categories' :key="item.id">
                     <div class='type-item' @click='changeType(key)'>
                         <p>{{item.name}}</p>
                     </div>
-                </el-col>
-            </el-row>
+                </Col>
+            </Row>
             <div class='list'>
-                <el-row class='data-tab' type='flex'>
-                    <el-col class='header-item' v-bind:class="{'active':tabIndex == 0}">
+                <Row class='data-tab' type='flex'>
+                    <Col class='header-item' v-bind:class="{'active':tabIndex == 0}">
                         <div @click='changeTab(0)'>
                             未批阅
                         </div>
-                    </el-col>
-                    <el-col class='header-item' v-bind:class="{'active':tabIndex == 1}">
+                    </Col>
+                    <Col class='header-item' v-bind:class="{'active':tabIndex == 1}">
                         <div @click='changeTab(1)'>
                             已批阅
                         </div>
-                    </el-col>
-                    <el-col class='header-item' v-bind:class="{'active':tabIndex == 2}">
+                    </Col>
+                    <Col class='header-item' v-bind:class="{'active':tabIndex == 2}">
                         <div @click='changeTab(2)'>
                             未上传
                         </div>
-                    </el-col>
-                    <el-col>
-                    </el-col>
-                </el-row>
-                <el-row class='data-header' type='flex' align='middle'>
-                    <el-col>
+                    </Col>
+                    <Col>
+                    </Col>
+                </Row>
+                <Row class='data-header' type='flex' align='middle'>
+                    <Col>
                         任务名称
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         学员名称
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         应交日期
-                    </el-col>
-                    <el-col v-if='tabIndex === 0 || tabIndex === 1'>
+                    </Col>
+                    <Col v-if='tabIndex === 0 || tabIndex === 1'>
                         上传日期
-                    </el-col>
-                    <el-col v-if='tabIndex === 1'>
+                    </Col>
+                    <Col v-if='tabIndex === 1'>
                         批阅日期
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         查看任务
-                    </el-col>
-                    <el-col v-if='tabIndex === 1'>
+                    </Col>
+                    <Col v-if='tabIndex === 1'>
                         批阅老师
-                    </el-col>
-                    <el-col v-if='tabIndex === 0 || tabIndex === 1'>
+                    </Col>
+                    <Col v-if='tabIndex === 0 || tabIndex === 1'>
                         操作
-                    </el-col>
-                    <el-col v-if='tabIndex === 2'>
+                    </Col>
+                    <Col v-if='tabIndex === 2'>
                         布置老师
-                    </el-col>
-                    <el-col v-if='tabIndex === 2'>
+                    </Col>
+                    <Col v-if='tabIndex === 2'>
                         <el-select v-model="filterSubject" placeholder="所属学科">
                             <el-option
                                     v-for="item in subjects" :key="item.id"
@@ -71,39 +71,39 @@
                                     :value="item.id">
                             </el-option>
                         </el-select>
-                    </el-col>
-                </el-row>
-                <el-row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
-                    <el-col class='work-name'>
+                    </Col>
+                </Row>
+                <Row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
+                    <Col class='work-name'>
                         <p>{{item.task_name}}</p>
-                    </el-col>
-                    <el-col class='student-name'>
+                    </Col>
+                    <Col class='student-name'>
                         {{item.student_realname}}
-                    </el-col>
-                    <el-col class='dead-line'>
+                    </Col>
+                    <Col class='dead-line'>
                         {{item.expect_task_time | zonetime}}
-                    </el-col>
-                    <el-col class='upload-time' v-if='tabIndex === 0 || tabIndex === 1'>
+                    </Col>
+                    <Col class='upload-time' v-if='tabIndex === 0 || tabIndex === 1'>
                         {{item.upload_time | zonetime}}
-                    </el-col>
-                    <el-col class='grade-time' v-if='tabIndex === 1'>
+                    </Col>
+                    <Col class='grade-time' v-if='tabIndex === 1'>
                         2016-11-01
-                    </el-col>
-                    <el-col class='work-name'>
+                    </Col>
+                    <Col class='work-name'>
                         查看
-                    </el-col>
-                    <el-col class='teacher-name' v-if='tabIndex === 1 ||  tabIndex === 2'>
+                    </Col>
+                    <Col class='teacher-name' v-if='tabIndex === 1 ||  tabIndex === 2'>
                         {{item.teacher_name}}
-                    </el-col>
-                    <el-col class='subject' v-if='tabIndex === 2'>
+                    </Col>
+                    <Col class='subject' v-if='tabIndex === 2'>
                         {{item.subject_name}}
-                    </el-col>
-                    <el-col class='handle' v-if='tabIndex === 0 || tabIndex === 1'>
+                    </Col>
+                    <Col class='handle' v-if='tabIndex === 0 || tabIndex === 1'>
                         批阅|毕业
-                    </el-col>
-                </el-row>
+                    </Col>
+                </Row>
             </div>
-        </el-row>
+        </Row>
     </div>
 </template>
 
@@ -116,7 +116,7 @@
 
             .type-list {
                 padding:40px;
-                .el-col {
+                .Col {
                     height:120px;
                     width:120px;
                     margin:0 20px;
@@ -141,7 +141,7 @@
                 .data-tab {
                     height:48px;
                     border-top:1px solid #cecece;
-                    .el-col {
+                    .Col {
                         line-height:48px;
                         border-bottom:1px solid #cecece;
                     }
@@ -158,7 +158,7 @@
                 }
                 .data-header {
                     height:50px;
-                    .el-col {
+                    .Col {
                         line-height:50px;
                         .el-select {
                             .el-input {
@@ -179,7 +179,7 @@
                         background-color:#fbfbfb;
                     }
 
-                    .el-col {
+                    .Col {
                         line-height:60px;
                         .el-button {
                             color:#5fa137;

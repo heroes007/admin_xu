@@ -1,12 +1,12 @@
 <template>
 <el-dialog :title="payload.code_name" v-model="redeemCodeDetailDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
-            <el-row class="body-top">
+        <Row slot="body">
+            <Row class="body-top">
                     <data-list class='data-list' :isStripe='false' :table-data='dataList' :header-data='dataHeader'
                     :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
-            </el-row>
-            <el-row class='body-footer' type='flex' justify='space-between' align='middle'>
+            </Row>
+            <Row class='body-footer' type='flex' justify='space-between' align='middle'>
                 <div class='number'>
                     <span>已兑换：{{used_count}}个</span>
                     <span>未兑换：{{total_count - used_count}}个</span>
@@ -14,8 +14,8 @@
                 </div>
                 <el-pagination  @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total_count">
         </el-pagination>
-            </el-row>
-        </el-row>
+            </Row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

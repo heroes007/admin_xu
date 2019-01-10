@@ -1,11 +1,11 @@
 <template>
 <el-dialog :title="this.payload?'编辑通知':'创建通知'" :show-close="false" v-model="manulActiveDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
+        <Row slot="body">
                 <el-input type="textarea" :autosize='false' placeholder="请输入内容" v-model="notificationContent">
                             </el-input>
                 <el-button class='btn-submit' type='primary' @click='submitHandler'>提交</el-button>
-          </el-row>
+          </Row>
       </base-input>
   </el-dialog>
 </template>

@@ -1,13 +1,13 @@
 <template>
-<el-row class="base-input-container" :style="{ width: baseInputWidth + 'px' }">
-    <el-row class='body-header'>
+<Row class="base-input-container" :style="{ width: baseInputWidth + 'px' }">
+    <Row class='body-header'>
         <slot name="header"></slot>
-    </el-row>
-    <el-row class="body-content">
+    </Row>
+    <Row class="body-content">
         <span class="xght-webfont-close-sign close-dialog-panel" @click="closeDialog"></span>
         <slot name="body"></slot>
-    </el-row>
-</el-row>
+    </Row>
+</Row>
 </template>
 
 <script>

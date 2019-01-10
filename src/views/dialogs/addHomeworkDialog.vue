@@ -1,7 +1,7 @@
 <template>
 <el-dialog :title="payload.type == 1 ? '创建任务' : '编辑任务'" :show-close="false" v-model="addHomeworkDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
-        <el-row slot="body">
+        <Row slot="body">
             <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
                 <el-form-item prop="name" required>
                     <el-input placeholder="任务名称" v-model="form.name"></el-input>
@@ -39,22 +39,22 @@
                     </el-checkbox-group>
                 </el-form-item>
                 <el-form-item prop="upload_files" required>
-                    <el-row>
-                        <el-col>
+                    <Row>
+                        <Col>
                             <upload-button @uploadcomplete="handleGetUrl"></upload-button>
-                        </el-col>
-                        <el-col>
-                            <el-row v-for="item in form.upload_files" :key="item.id">
+                        </Col>
+                        <Col>
+                            <Row v-for="item in form.upload_files" :key="item.id">
                               <!-- {{item.name}}.{{item.url}} -->
-                            </el-row>
-                        </el-col>
-                    </el-row>
+                            </Row>
+                        </Col>
+                    </Row>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="handleSubmit('form')">提交</el-button>
                 </el-form-item>
             </el-form>
-        </el-row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>

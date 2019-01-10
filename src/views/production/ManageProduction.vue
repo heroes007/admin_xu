@@ -1,14 +1,14 @@
 <template>
     <div class='manage-production-view'>
         <header-component title='产品管理' :type='0' :showAdd='true' addText='新建产品' @addClick='addProductionHandler'></header-component>
-        <el-row>
+        <Row>
             <el-form :inline="true" :model="formInline" class="find-by-term">
                 <el-form-item label="产品名称" label-width="80px">
-                    <el-row>
-                        <el-col>
+                    <Row>
+                        <Col>
                             <el-input v-model="formInline.searchData" placeholder="请输入搜索内容"></el-input>
-                        </el-col>
-                    </el-row>
+                        </Col>
+                    </Row>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="search">查询</el-button>
@@ -17,7 +17,7 @@
                     <el-button type="primary" @click="clearSearch">清除</el-button>
                 </el-form-item>
             </el-form>
-        </el-row>
+        </Row>
         <data-list class='data-list light-header' 
             @editProtocol = 'editProtocol'
             @edit='editHandler' 
@@ -31,10 +31,10 @@
             :columnComboData='columnComboData'
             :comboModelList='comboDataList'>
         </data-list>
-            <el-row class='pager' type='flex' justify='end' align='middle'>
+            <Row class='pager' type='flex' justify='end' align='middle'>
                 <el-pagination @current-change="handleCurrentChange" :current-page="curPage" :page-size='20' layout="prev, pager, next" :total="total">
                 </el-pagination>
-            </el-row>
+            </Row>
     </div>
 </template>
 
@@ -451,7 +451,7 @@ export default {
     .list {
       .data-header {
         height: 50px;
-        .el-col {
+        .Col {
           line-height: 50px;
         }
       }
@@ -461,7 +461,7 @@ export default {
         &.bg-gray {
           background-color: #fbfbfb;
         }
-        .el-col {
+        .Col {
           line-height: 40px;
           .el-button {
             a {

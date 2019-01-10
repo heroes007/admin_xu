@@ -4,32 +4,32 @@
             <img-item @showDetail='showDetailHandler' v-for='item in dataList' :key="item.id" :imgUrl='item.imgUrl' :id='item.id'></img-item>
         </div>
         <div class='carousel-container' v-show='showDetail' @click="hideHandler">
-            <el-row type='flex' align='middle'>
-                <el-col class='btn' :span='2' :offset="1" v-if='!isPhone'>
+            <Row type='flex' align='middle'>
+                <Col class='btn' :span='2' :offset="1" v-if='!isPhone'>
                     <!-- <img src='../assets/img/pre.png' @click.stop='preHandler'> -->
-                </el-col>
-                <el-col :span='isPhone?24:16' :push='isPhone?0:1'>
+                </Col>
+                <Col :span='isPhone?24:16' :push='isPhone?0:1'>
                     <el-carousel :style='carouselStyle' ref='mySwaper' :height="carouselHeight + 'px'" :autoplay="false" arrow="never" indicator-position='none'>
                         <el-carousel-item v-for="item in detailList" :key="item.id">
-                            <el-row class='title'><p>测试文字撒打算打算打算打算打算打</p></el-row>
-                            <el-row class='content' v-if='!isPhone' type='flex' align='middle' justify='center'>
+                            <Row class='title'><p>测试文字撒打算打算打算打算打算打</p></Row>
+                            <Row class='content' v-if='!isPhone' type='flex' align='middle' justify='center'>
                                 <img :style='{width:getImgWidth(item),height:getImgHeight(item)}' @click.stop :src='item.url' v-if="item.type==='image'" />
                                 <video id='myVideo' @click.stop :src="item.url" controls="controls" v-if="item.type==='video'" />
-                            </el-row>
+                            </Row>
                             <v-touch class='content' @swipeleft="nextHandler" @swiperight='preHandler' v-if='isPhone'>
-                                <el-row class='content' type='flex' align='middle' justify='center'>
+                                <Row class='content' type='flex' align='middle' justify='center'>
                                     <img :style='{width:getImgWidth(item),height:getImgHeight(item)}' @click.stop :src='item.url' v-if="item.type==='image'" />
                                     <video id='myVideo' @click.stop :src="item.url" controls="controls" v-if="item.type==='video'" />
-                                </el-row>
+                                </Row>
                             </v-touch>
-                                                      <el-row class='title'><p>测试文字撒打算打算打算打算打算打</p></el-row>
+                                                      <Row class='title'><p>测试文字撒打算打算打算打算打算打</p></Row>
                         </el-carousel-item>
                     </el-carousel>
-                </el-col>
-                <el-col class='btn' :span='2' :push='2' v-if='!isPhone'>
+                </Col>
+                <Col class='btn' :span='2' :push='2' v-if='!isPhone'>
                     <!-- <img src='../assets/img/next.png' @click.stop='nextHandler' /> -->
-                </el-col>
-            </el-row>
+                </Col>
+            </Row>
         </div>
     </div>
 </template>
@@ -412,7 +412,7 @@ export default {
         height: 100%;
         box-sizing: border-box;
         background-color: rgba(0, 0, 0, 0.4);
-        .el-row {
+        .Row {
             // width: 100%;
             // height: 100%;
             .el-carousel {

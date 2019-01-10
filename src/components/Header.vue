@@ -4,23 +4,23 @@
 <template>
 <!-- <div class='c-header'> -->
 <!--<header-component/>-->
-<!-- <el-row>
-        <el-col :span="4">
+<!-- <Row>
+        <Col :span="4">
             <i class='el-icon-menu'></i>
             <el-select v-model="project_id" placeholder="请选择" @change="handleCheckProjectId">
                 <el-option v-for="item in projects" :label="item.name" :value="item.id">
                 </el-option>
             </el-select>
-        </el-col>
-        <el-col :span="20">
+        </Col>
+        <Col :span="20">
             <div>{{m_title}}</div>
-      </el-col>
-    </el-row> -->
+      </Col>
+    </Row> -->
 <!--<other-component/>-->
 <!-- </div> -->
 <div class='project-header1'>
-    <el-row class='header-container' type='flex' justify='space-between' align='middle'>
-        <el-col :span="6" class="project-list" v-if="!noSelect">
+    <Row class='header-container' type='flex' justify='space-between' align='middle'>
+        <Col :span="6" class="project-list" v-if="!noSelect">
             <div class='title'>
                 <i class='el-icon-menu'></i>
                 <el-select v-model="project_id" placeholder="请选择" @change="handleCheckProjectId" disabled>
@@ -28,16 +28,16 @@
                     </el-option>
                 </el-select>
             </div>
-        </el-col>
-        <el-col :span="noSelect ? !showAdd ? 24 : 18 :!showAdd? 18 : 12">
+        </Col>
+        <Col :span="noSelect ? !showAdd ? 24 : 18 :!showAdd? 18 : 12">
             <div class="st-title">{{m_title}}</div>
-        </el-col>
-        <el-col :span="6" v-if='showAdd'>
+        </Col>
+        <Col :span="6" v-if='showAdd'>
              <el-button class='btn-add' type='primary' icon="plus" v-if='showAdd' @click="addClickHandler">
                     {{addText}}
                 </el-button>
-        </el-col>
-    </el-row>
+        </Col>
+    </Row>
 </div>
 </template>
 <script>

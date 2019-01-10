@@ -1,7 +1,7 @@
 <template>
 <el-dialog title="视频设置" v-model="editVideoDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose" :baseInputWidth="600">
-        <el-row slot="body">
+        <Row slot="body">
             <span class="dscj-webfont-remove-sign"></span>
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="小节名称">
@@ -28,7 +28,7 @@
                     <el-button type="primary" class="sub-btn" @click="handleSubmit">保存</el-button>
                 </el-form-item>
             </el-form>
-        </el-row>
+        </Row>
     </base-input>
 </el-dialog>
 </template>
@@ -205,7 +205,7 @@ export default {
                         .el-checkbox-group {
                             text-align: right;
                         }
-                        .el-col-18 {
+                        .Col-18 {
                             text-align: left;
                         }
                     }

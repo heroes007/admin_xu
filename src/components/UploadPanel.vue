@@ -1,30 +1,30 @@
 <template>
-    <el-row class="upload-panel">
-        <el-row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
+    <Row class="upload-panel">
+        <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
             <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" v-loading.fullscreen.lock="fullscreenLoading"
             />
             <i class="el-icon-upload"></i>
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
 
-        </el-row>
+        </Row>
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
     </vue-cropper> -->
-        <el-row class="img" v-if="type=='image'&&!is_show">
+        <Row class="img" v-if="type=='image'&&!is_show">
             <img :src="resourse_url?resourse_url:resultUrl" alt="" />
             <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
-        </el-row>
+        </Row>
         <span style="display: none">{{resultUrl}}</span>
-        <el-row class="video" v-if="type=='video'&&!is_show">
+        <Row class="video" v-if="type=='video'&&!is_show">
             <video :src="resourse_url?resourse_url:resultUrl" controls="controls" autoplay/>
             <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
-        </el-row>
+        </Row>
         <div class="file-require">
             <slot name="file-require"></slot>
         </div>
-        <!-- <el-row class="uploaded-files-container" v-show="resultUrl">
-      <el-row class="uploaded-file"><span class="el-icon-document"></span>{{file_name}}</el-row>
-    </el-row> -->
-    </el-row>
+        <!-- <Row class="uploaded-files-container" v-show="resultUrl">
+      <Row class="uploaded-file"><span class="el-icon-document"></span>{{file_name}}</Row>
+    </Row> -->
+    </Row>
 </template>
 
 <script>

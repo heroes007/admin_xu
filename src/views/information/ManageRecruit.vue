@@ -1,7 +1,7 @@
 <template>
 <div class='manage-recruit-view'>
     <header-component title='招生管理' :type='0' :showAdd='true' addText='导师管理' @addClick='teacherArrangementHandler'></header-component>
-    <el-row>
+    <Row>
         <el-form :inline="true" :model="formInline" class="find-by-term">
             <el-form-item label="学科" label-width="40px">
                 <el-select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
@@ -26,23 +26,23 @@
               </el-input>
             </el-form-item>
         </el-form>
-    </el-row>
-    <!--<el-row>
+    </Row>
+    <!--<Row>
         <el-form :inline='true' :model='formInline' class='find-by-term'>
             <el-form-item>
-                <el-row>
-                    <el-col :span="10">
+                <Row>
+                    <Col :span="10">
                         <el-select class="select-user" v-model="formInline.classify" placeholder="">
                             <el-option label="手机号" value="phone"></el-option>
                             <el-option label="昵称" value="username"></el-option>
                             <el-option label="真实姓名" value="realname"></el-option>
                             <el-option label="用户ID" value="user_id"></el-option>
                         </el-select>
-                    </el-col>
-                    <el-col :span="14">
+                    </Col>
+                    <Col :span="14">
                         <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
-                    </el-col>
-                </el-row>
+                    </Col>
+                </Row>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -51,15 +51,15 @@
                 <el-button type="primary" @click="onClear">清除</el-button>
             </el-form-item>
         </el-form>
-    </el-row>-->
+    </Row>-->
     <!--<keep-alive>-->
     <data-list class='data-list light-header' @withdraw='withdrawHandler' @interviewTimeChange='interviewTimeChangeHandler' @sendMessage='sendMessageHandler' @showDetail='showDetailHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'
          :comboModelList='comboDataList'></data-list>
     <!--</keep-alive>-->
-    <el-row class='pager' type='flex' justify='end' align='middle'>
+    <Row class='pager' type='flex' justify='end' align='middle'>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total">
         </el-pagination>
-    </el-row>
+    </Row>
 </div>
 </template>
 
@@ -642,7 +642,7 @@ export default {
     .list {
       .data-header {
         height: 50px;
-        .el-col {
+        .Col {
           line-height: 50px;
         }
       }
@@ -654,7 +654,7 @@ export default {
           background-color: #fbfbfb;
         }
 
-        .el-col {
+        .Col {
           line-height: 40px;
           .el-button {
             a {

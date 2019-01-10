@@ -1,29 +1,29 @@
 <template>
     <div class='manage-student-view'>
         <header-component title='查看广告' :noSelect="noSelect"></header-component>
-        <el-row class='sub-header' type='flex' justify='space-between' align='middle'>
+        <Row class='sub-header' type='flex' justify='space-between' align='middle'>
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>广告图管理</el-breadcrumb-item>
                 <el-breadcrumb-item>查看广告</el-breadcrumb-item>
             </el-breadcrumb>
             <el-button class='btn-add' type='text' @click='addLb()'>添加广告图</el-button>
             <el-dialog title="广告信息" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-student-view'>
-                <el-row class='result' type='flex' justify='center' align='middle'>
+                <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form'>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             广告名称：
                             <el-input placeholder='请输入内容' v-model='lbData.name'></el-input>
-                        </el-row>
-                        <el-row class='user-data update-img' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data update-img' type='flex' justify='start' align='middle'>
                             广告图片：
                             <img v-if="lbData.img_url.url" :src='lbData.img_url.url'>
                             <btn-upload text='上传图片' type='image/gif, image/jpeg, image/png' bucket='dscj-app' dir='lb' @uploadcomplete='uploadImgComplete'></btn-upload>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             跳转地址：
                             <el-input placeholder='请输入内容' v-model='lbData.redirect_url'></el-input>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             显示位置：
                             <el-select v-model="lbData.position" placeholder="请选择学科">
                                 <el-option
@@ -32,29 +32,29 @@
                                         :value="item.value">
                                 </el-option>
                             </el-select>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             分享标题：
                             <el-input placeholder='请输入内容' v-model='lbData.share_title'></el-input>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             分享描述：
                             <el-input placeholder='请输入内容' v-model='lbData.share_desc'></el-input>
-                        </el-row>
-                        <el-row class='user-data update-img' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data update-img' type='flex' justify='start' align='middle'>
                             分享图片：
                             <img v-if="lbData.share_img_url.url" :src='lbData.share_img_url.url'>
                             <btn-upload text='上传图片' type='image/gif, image/jpeg, image/png' bucket='dscj-app' dir='lb' @uploadcomplete='uploadShareImgComplete'></btn-upload>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             分享链接：
                             <el-input placeholder='请输入内容' v-model='lbData.share_url'></el-input>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             排序序号：
                             <el-input-number v-model="lbData.orderby"></el-input-number>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='start' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='start' align='middle'>
                             上线状态：
                             <el-select v-model="lbData.state" placeholder="请选择学科">
                                 <el-option
@@ -63,47 +63,47 @@
                                         :value="item.value">
                                 </el-option>
                             </el-select>
-                        </el-row>
-                        <el-row class='user-data' type='flex' justify='center' align='middle'>
+                        </Row>
+                        <Row class='user-data' type='flex' justify='center' align='middle'>
                             <el-button @click='submit'>保存</el-button>
-                        </el-row>
+                        </Row>
                     </div>
-                </el-row>
+                </Row>
             </el-dialog>
-        </el-row>
-        <el-row class='data-container'>
+        </Row>
+        <Row class='data-container'>
             <div class='list'>
-                <el-row class='data-header' type='flex'>
-                    <el-col>
+                <Row class='data-header' type='flex'>
+                    <Col>
                         广告名称
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         显示位置
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         状态
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         操作
-                    </el-col>
-                </el-row>
-                <el-row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
-                    <el-col>
+                    </Col>
+                </Row>
+                <Row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
+                    <Col>
                         {{item.name}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{item.position}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         {{item.state === 1?'上线中':'已下线'}}
-                    </el-col>
-                    <el-col>
+                    </Col>
+                    <Col>
                         <el-button type='text'>
                             <a @click='editLb(item)'>编辑</a>
                         </el-button>
-                    </el-col>
-                </el-row>
-                <el-row class='pager' type='flex' justify='end' align='middle'>
+                    </Col>
+                </Row>
+                <Row class='pager' type='flex' justify='end' align='middle'>
                     <el-pagination
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
@@ -113,9 +113,9 @@
                             layout="sizes, prev, pager, next"
                             :total="total">
                     </el-pagination>
-                </el-row>
+                </Row>
             </div>
-        </el-row>
+        </Row>
     </div>
 </template>
 
@@ -151,7 +151,7 @@
             .list {
                 .data-header {
                     height: 50px;
-                    .el-col {
+                    .Col {
                         line-height: 50px;
                     }
                 }
@@ -163,7 +163,7 @@
                         background-color: #fbfbfb;
                     }
 
-                    .el-col {
+                    .Col {
                         line-height: 40px;
                         .el-button {
                             a {

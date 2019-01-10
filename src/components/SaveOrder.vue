@@ -4,10 +4,10 @@
             <p>...</p>
             <p>保存顺序</p>
         </div>-->
-        <el-row>
+        <Row>
             <el-button class='btn-cancel' type='primary' :plain='true' @click='cancelHandler'>取消</el-button>
             <el-button class='btn-save' type='primary' :plain='true' @click='saveHandler'>保存</el-button>
-        </el-row>
+        </Row>
     </div>
 </template>
 
