@@ -58,6 +58,7 @@ import { doDateFormat, doTimeFormat, reunitPrice } from "../../components/Util";
 
 export default {
   mixins: [Dialog, MPop],
+  components: { "header-component": Header, "subject-filter": SubjectFilter, "data-list": BaseList, "back-to-top": BackToTop },
   data() {
     return {
       loadingInstance: null,
@@ -69,12 +70,7 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      "get_production_list",
-      "change_production_vailid",
-      "delete_production",
-      "get_production_group_list"
-    ]),
+    ...mapActions([ "get_production_list", "change_production_vailid", "delete_production", "get_production_group_list" ]),
     addProductionHandler() {
       this.handleSelModal(ADD_PRODUCTION);
     },
@@ -347,12 +343,6 @@ export default {
     listColumnFormatterData() {
       return [this.productionGroupList];
     }
-  },
-  components: {
-    "header-component": Header,
-    "subject-filter": SubjectFilter,
-    "data-list": BaseList,
-    "back-to-top": BackToTop
   }
 };
 </script>

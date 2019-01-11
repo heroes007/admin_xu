@@ -1,6 +1,3 @@
-/**
- * Created by lesonli on 2016/11/16.
- */
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
@@ -20,16 +17,9 @@
 <script>
     import SideMenu from '../components/SideMenu'
     export default{
-        data(){
-            return{
-                msg:'hello vue'
-            }
-        },
-        components:{
-            'side-menu':SideMenu
-        },
+        components:{ 'side-menu':SideMenu },
         mounted(){
-                this.$store.dispatch('get_subject_list');
+            this.$store.dispatch('get_subject_list');
         }
     }
 </script>
@@ -37,7 +27,6 @@
     body{
         background-color:#333333;
     }
-
     .dashboard-view {
         box-sizing:border-box;
         /*border-radius:10px;*/
@@ -47,6 +36,7 @@
         background-color:#ffffff;
         .col-container {
             //height:100%;
+            flex-wrap: nowrap !important;
             .menu-bar {
                 max-width:200px;
                 min-width:200px;

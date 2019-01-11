@@ -44,7 +44,7 @@
         methods: {
             doLogin() {
                 this.isLogining = true;
-                var vm = this;
+                let vm = this;
                 login_pwd(this.name, this.password, 1).then((res) => {
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
@@ -59,13 +59,15 @@
                                if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {
                                     vm.$store.dispatch('set_user_info', res.data.msg);
                                     vm.$router.replace({ path: 'project' });
-                                }
-                                else vm.$Message.warning('权限错误，请重新登录');
+                                }else vm.$Message.warning('权限错误，请重新登录');
                             }
                         })
                         this.remember ? this.$localStorage.set('login_user', this.name) : this.$localStorage.remove('login_user');
                         this.$localStorage.set('token', res.data.token);
-                    } else  this.isLogining = false;
+                    } else {
+                        vm.$Message.warning(res.data.msg);
+                        this.isLogining = false;
+                    }
                 });
             }
         },

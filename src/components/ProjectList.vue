@@ -1,25 +1,22 @@
 <template>
     <div class='project-panel'>
-                <h1>项目管理系统</h1>
-                <p>欢迎来到点师成金后台，赶快选择一个项目进行管理吧！</p>
-                <div class='project-list'>
-                    <el-card class='project-item' v-for='(item, index) in projectList' :key="item.id">
-                        <div @click='changeSelectProject(item.id)'>
-                            <h3>{{item.name}}<span>{{index | Numfilter}}</span></h3>
-                            <p><!--<i class="xght-webfont-tag"></i>--></p>
-                        </div>
-                    </el-card>
-                </div>
-            </div>
+      <h1>项目管理系统</h1>
+      <p>欢迎来到点师成金后台，赶快选择一个项目进行管理吧！</p>
+      <div class='project-list'>
+          <Card class='project-item' v-for='(item, index) in projectList' :key="item.id">
+              <div @click='changeSelectProject(item.id)'>
+                  <h3>{{item.name}}<span>{{index | Numfilter}}</span></h3>
+                  <p><!--<i class="xght-webfont-tag"></i>--></p>
+              </div>
+          </Card>
+      </div>
+    </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import { Loading } from "element-ui";
 import { Config } from "../config/base";
 import { doTimeFormat } from "../components/Util";
-import Header from "../components/Header";
-import SideMenu from "../components/SideMenuForProject";
 export default {
   data() {
     return {
@@ -31,9 +28,6 @@ export default {
       projectList: state => state.project.project_list,
       isLoading: state => state.project.isLoading
     })
-  },
-  components: {
-    "side-menu": SideMenu
   },
   filters: {
     Numfilter(v) {

@@ -19,8 +19,8 @@ router.beforeEach((to, from, next) => {
           let roleArr = res.data.msg.role_arr
           if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {
             store.dispatch('set_user_info', res.data.msg);
-            if(Vue.prototype.localStorage.get('lastSelectedProject')){
-                store.dispatch('change_selected_project_id',parseInt(Vue.prototype.localStorage.get('lastSelectedProject')));
+            if(Vue.localStorage.get('lastSelectedProject')){
+                store.dispatch('change_selected_project_id',parseInt(Vue.localStorage.get('lastSelectedProject')));
                 store.dispatch('get_project_list');
                 next();
             }else{

@@ -9,13 +9,11 @@
                 <img :src='userHeader'>
             </div>
         </div>
-        <Row>
-            <Col>
-                <el-menu class="slider-menu" @open="handleOpen" @close="handleClose" @select="selectItem" :default-active='activeIndex'>
-                    <el-menu-item index=""><i></i>项目管理</el-menu-item>
-                </el-menu>
-            </Col>
-        </Row>
+        <Row><Col>
+            <Menu  @on-open-change="openChange" @on-select="selectItem" :active-name='activeIndex'>
+                <MenuItem  name="">项目管理</MenuItem>
+            </Menu>
+        </Col></Row>
     </div>
 </template>
 
@@ -30,11 +28,8 @@
             }
         },
         methods: {
-            handleOpen(key, keyPath) {
-                //console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                //console.log(key, keyPath);
+            openChange(name) {
+                //console.log(name);
             },
             selectItem(index) {
                 this.$router.push({ name: index });
@@ -59,10 +54,8 @@
                                 if (this.userInfo.role_arr[i] == 0) {
                                     continue;
                                 }
-                                if (result !== '')
-                                    result = result + ',' + this.roleList[j].role_name;
-                                else
-                                    result = result + this.roleList[j].role_name;
+                                if (result !== '') result = result + ',' + this.roleList[j].role_name;
+                                else result = result + this.roleList[j].role_name;
                                 break;
                             }
                         }
@@ -78,8 +71,7 @@
         },
         mounted() {
             this.initMenu();
-            if (this.$store.state.roles.role_list.length === 0)
-                this.$store.dispatch('get_role_list');
+            if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
         },
         computed: {
             roleList() {
@@ -89,14 +81,9 @@
                 return this.$store.state.auth.userInfo;
             },
             userHeader() {
-                if (!this.userInfo)
-                    return defaultHeader;
-                if (this.userInfo.head_img_url) {
-                    return this.userInfo.head_img_url;
-                }
-                else {
-                    return defaultHeader;
-                }
+                if (!this.userInfo)  return defaultHeader;
+                if (this.userInfo.head_img_url) return this.userInfo.head_img_url;
+                else return defaultHeader;
             },
             routeName() {
                 return this.$route.name;
@@ -105,19 +92,24 @@
     }
 
 </script>
-<style lang="scss">
-    .el-popover {
-        min-width: 105px;
-        padding: 0;
-        .quit {
-            width: 105px;
-            font-size: 14px;
-            color: #1f2d3d;
-            padding-left: 10px;
-            text-align: left;
-        }
+<style lang="scss" scoped>
+    /deep/.ivu-menu{
+        background-color: #333;
+        width: 100% !important;
     }
-    
+    /deep/.ivu-menu-item,.ivu-menu-item:hover{
+        text-align: left;
+        color: #FC7643 !important;
+    }
+    /deep/.ivu-menu-vertical.ivu-menu-light:after{
+        content: none !important
+    }
+    /deep/.ivu-menu-item-active{
+         background-color: #333 !important;
+    }
+    /deep/.ivu-menu-item-active:not(.ivu-menu-submenu):after{
+         background-color: #333 !important;
+    }
     .side-menu-for-project {
         padding: 27px 0;
         .logo {
@@ -185,77 +177,6 @@
                 -webkit-line-clamp: 1;
             }
             margin-bottom:50px;
-        }
-        .el-menu {
-            background-color: #333333;
-
-            .el-menu-item {
-                border-left: 4px solid transparent;
-                    background-color: #333333;
-                    color: #ffffff;
-                    font-size: 14px;
-                    font-weight: 200;
-                    text-align: left;
-                    padding-left: 75px;
-                    &:hover {
-                        color: #FC7643;
-                    }
-                    i {
-                        font-size: 22px;
-                        position: relative;
-                        top: 4px;
-                        margin-right: 10px;
-                        /*left:40px*/
-                    }
-                    &.is-active {
-                            color: #FC7643;
-                        }
-            }
-
-            .el-submenu {
-                &.is-opened {
-                    .el-submenu__title {
-                        /*border-color:#FC7643;*/
-                        color: #FC7643;
-                    }
-                }
-                .el-submenu__title {
-                    border-left: 4px solid transparent;
-                    background-color: #333333;
-                    color: #ffffff;
-                    font-size: 14px;
-                    font-weight: 200;
-                    text-align: left;
-                    padding-left: 75px;
-                    &:hover {
-                        color: #FC7643;
-                    }
-                    i {
-                        font-size: 22px;
-                        position: relative;
-                        top: 4px;
-                        margin-right: 10px;
-                        /*left:40px*/
-                    }
-                    .el-submenu__icon-arrow {
-                        display: none;
-                    }
-                }
-                .el-menu {
-                    .el-menu-item {
-                        background-color: rgba(0, 0, 0, 0.20);
-                        font-size: 14px;
-                        font-weight: 200;
-                        color: #ffffff;
-                        &:hover {
-                            color: #FC7643;
-                        }
-                        &.is-active {
-                            color: #FC7643;
-                        }
-                    }
-                }
-            }
         }
     }
 </style>

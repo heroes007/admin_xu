@@ -58,7 +58,7 @@
                     setTimeout(() => {
                         this.loadingInstance.close()
                     }, Config.base_timeout);
-                } else if(this.loadingInstance) this.loadingInstance.close()
+                }else if(this.loadingInstance) this.loadingInstance.close()
             }
         },
         mounted() {
@@ -69,8 +69,11 @@
 
 <style lang="scss">
     .project {
-        height: 100vh;
-        .project-left {}
+        height: 100% !important;
+        .project-left {
+            height: 100%;
+            background-color: #333;
+        }
         .project-right {
             .project-panel {
                 width: 100%;

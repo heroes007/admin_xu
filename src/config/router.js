@@ -38,7 +38,7 @@ import ManageNews from '../views/news/ManageNews';
 import StatisticsData from '../views/statistics/StatisticsData';
 import FromPageData from '../views/statistics/FromPageData';
 
-import TeamGrouping from '../views/team/TeamGrouping';
+// import TeamGrouping from '../views/team/TeamGrouping';
 import HolyWater from '../views/HolyWater';
 
 Vue.use(VueRouter);

@@ -3,12 +3,13 @@ var config = require('./config')
 var path = require('path')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-
+const devMode = process.env.NODE_ENV !== 'production'
 
 var webpackConfig = merge(baseWebpackConfig, {
+  mode: 'production',
   module: {
     rules: [{
       test: /\.vue$/,
@@ -16,14 +17,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         loader: 'vue-loader',
         options: {
           loaders: {
-            css: ExtractTextPlugin.extract({
-              use: 'css-loader',
-              fallback: 'vue-style-loader'
-            }),
-            scss: ExtractTextPlugin.extract({
-              use: ["css-loader", "sass-loader"],
-              fallback: 'vue-style-loader'
-            })
+            css: [MiniCssExtractPlugin.loader,"css-loader", "vue-style-loader"],
+            scss: [MiniCssExtractPlugin.loader,"css-loader", "vue-style-loader", "sass-loader"])
           }
         }
       },
@@ -35,16 +30,10 @@ var webpackConfig = merge(baseWebpackConfig, {
       }]
     },{
       test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        use: 'css-loader',
-        fallback: 'style-loader'
-      })
+      use: [MiniCssExtractPlugin.loader,"css-loader", "style-loader"]
     }, {
       test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        use: ['css-loader', 'sass-loader'],
-        fallback: 'style-loader'
-      })
+      use: [MiniCssExtractPlugin.loader,"css-loader", "style-loader", "sass-loader"]
     },],
     noParse: /videojs-contrib-hls/
   },
@@ -60,7 +49,21 @@ var webpackConfig = merge(baseWebpackConfig, {
     filename: config.base.assetsPath + '/js/[name].[chunkhash].js',
     chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
-  mode: 'production',
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: config.build.productionSourceMap,
+      }),
+      new OptimizeCSSPlugin({
+        // 可自己配置，建议第一次升级先不配置
+      }),
+    ],
+    splitChunks: {
+      // 可自己配置，建议第一次升级先不配置
+    }
+  },
   //devtool: "#source-map",
   plugins: [
     new VueLoaderPlugin(),
@@ -70,7 +73,11 @@ var webpackConfig = merge(baseWebpackConfig, {
     // }),
     // new webpack.optimize.UglifyJsPlugin(),
     // extract css into its own file
-    new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
+    // new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
+    new MiniCssExtractPlugin({
+      filename: utils.assetsPath('css/[name].[contenthash:12].css'),
+      allChunks: true,
+    }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin

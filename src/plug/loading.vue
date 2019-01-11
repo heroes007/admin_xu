@@ -1,7 +1,7 @@
 <template>
   <div class="load-container" v-show="show">
   <div class="loadSpinner">
-    <i class="loadingIcon el-icon-loading"></i>
+    <Icon type="ios-loading" size=24 class="loadingIcon demo-spin-icon-load"></Icon>
     <p class="loadText">{{message}}</p>
   </div>
   </div>
@@ -49,12 +49,19 @@ export default {
     position: absolute;
 }
 .loadingIcon{
-  font-size:16px;
   vertical-align: baseline;
   display: inline-block;
 }
 .loadText{
     margin: 3px 0;
     font-size: 14px;
+}
+.demo-spin-icon-load{
+      animation: ani-demo-spin 1s linear infinite;
+}
+@keyframes ani-demo-spin {
+    from { transform: rotate(0deg);}
+    50%  { transform: rotate(180deg);}
+    to   { transform: rotate(360deg);}
 }
 </style>
