@@ -3,30 +3,30 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <el-form ref="form" :model="form" label-width="100px" class="add-teacher-form">
-                    <el-form-item label="兑换码名称">
+                <Form ref="form" :model="form" label-width="100px" class="add-teacher-form">
+                    <FormItem label="兑换码名称">
                         <el-input v-model="form.code_name" placeholder="请输入分类名称"></el-input>
-                    </el-form-item>
-                    <el-form-item label="选择产品">
+                   </FormItem>
+                    <FormItem label="选择产品">
                         <el-select v-model="form.product_id" placeholder="请选择产品">
                             <el-option v-for="item in productionList" :key="item.id" :label="item.title" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="起止日期">
+                   </FormItem>
+                    <FormItem label="起止日期">
                                 <el-date-picker v-model="form.time" type="daterange" placeholder="请选择兑换码起止日期">
                                 </el-date-picker>
-                    </el-form-item>
-                     <el-form-item label="兑换码数量">
+                   </FormItem>
+                     <FormItem label="兑换码数量">
                                 <el-input-number placeholder="请输入1～10000的兑换码数量" v-model="form.count" :min='1'></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="线下学期次数">
+                   </FormItem>
+                    <FormItem label="线下学期次数">
                                 <el-input-number placeholder="请输入包含的线下学期次数" v-model="form.offline_term_count" :min='0'></el-input-number>
-                    </el-form-item>
-                    <el-form-item class="btn-content" label-width='0'>
-                        <el-button type="primary" class="cancel-btn" @click="handleClose">取消</el-button>
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">提交</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content" label-width='0'>
+                        <Button type="primary" class="cancel-btn" @click="handleClose">取消</Button>
+                        <Button type="primary" class="sub-btn" @click="saveHandler">提交</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </Row>
     </base-input>

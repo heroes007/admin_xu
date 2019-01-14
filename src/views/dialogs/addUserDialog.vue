@@ -3,14 +3,14 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
-                    <el-form-item label="是否注册">
+                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                    <FormItem label="是否注册">
                           <el-checkbox v-model="form.doRegist"></el-checkbox>
-                    </el-form-item>
-                    <el-form-item class="btn-content">
-                        <el-button type="primary" class="sub-btn" @click="createHandler">创建</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content">
+                        <Button type="primary" class="sub-btn" @click="createHandler">创建</Button>
+                   </FormItem>
+                </Form>
             </Row>
                             <Row class='msg'>
                     勾选注册将会提供一个新的注册账号，不勾选将会返回一个手机验证码需要手动注册。

@@ -2,21 +2,19 @@
     <div class='manage-production-view'>
         <header-component title='产品管理' :type='0' :showAdd='true' addText='新建产品' @addClick='addProductionHandler'></header-component>
         <Row>
-            <el-form :inline="true" :model="formInline" class="find-by-term">
-                <el-form-item label="产品名称" label-width="80px">
-                    <Row>
-                        <Col>
-                            <el-input v-model="formInline.searchData" placeholder="请输入搜索内容"></el-input>
-                        </Col>
-                    </Row>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="search">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="clearSearch">清除</el-button>
-                </el-form-item>
-            </el-form>
+            <Form :inline="true" :model="formInline" class="find-by-term">
+                <FormItem label="产品名称" :label-width="80">
+                    <Row><Col>
+                            <Input v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
+                    </Col></Row>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="search">查询</Button>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="clearSearch">清除</Button>
+                </FormItem>
+            </Form>
         </Row>
         <data-list class='data-list light-header' 
             @editProtocol = 'editProtocol'
@@ -32,17 +30,12 @@
             :comboModelList='comboDataList'>
         </data-list>
             <Row class='pager' type='flex' justify='end' align='middle'>
-                <el-pagination @current-change="handleCurrentChange" :current-page="curPage" :page-size='20' layout="prev, pager, next" :total="total">
-                </el-pagination>
+                <Page class="case-main-pages" :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
             </Row>
     </div>
 </template>
-
-
-
 <script>
 import Header from "../../components/Header";
-import SubjectFilter from "../../components/SubjectFilter";
 import BaseList from "../../components/BaseList";
 import BackToTop from "../../components/BackToTop";
 import { MPop } from "../../components/MessagePop";
@@ -55,10 +48,10 @@ import { ADD_PRODUCTION, EDIT_PROTOCOL } from "../dialogs/types";
 import { Config } from "../../config/base";
 import { mapState, mapActions, mapGetters } from "vuex";
 import { doDateFormat, doTimeFormat, reunitPrice } from "../../components/Util";
-
+import tableHeadData from './consts'
 export default {
   mixins: [Dialog, MPop],
-  components: { "header-component": Header, "subject-filter": SubjectFilter, "data-list": BaseList, "back-to-top": BackToTop },
+  components: { "header-component": Header, "data-list": BaseList },
   data() {
     return {
       loadingInstance: null,
@@ -68,7 +61,6 @@ export default {
       }
     };
   },
-
   methods: {
     ...mapActions([ "get_production_list", "change_production_vailid", "delete_production", "get_production_group_list" ]),
     addProductionHandler() {
@@ -78,7 +70,6 @@ export default {
       this.handleSelModal(ADD_PRODUCTION, row);
     },
     editProtocol(index, row) {
-      // console.log(index, row);
       this.handleSelModal(EDIT_PROTOCOL, row.id);
     },
     showCourseDetailHandler(index, row) {
@@ -90,19 +81,19 @@ export default {
       });
     },
     deleteHandler(index, row) {
-      var vm = this;
-      this.$confirm("是否确认删除该产品？", "提示", {
-        type: "info"
-      })
-        .then(() => {
-          this.delete_production({
+      this.$Modal.confirm({
+          title: '提示',
+          content: '是否确认删除该产品?',
+          onOk: () => {
+           this.delete_production({
             id: row.id,
             _fn: function() {
-              vm.showPop("删除成功！");
+              this.$Message.success('删除成功！');
             }
-          });
-        })
-        .catch(() => {});
+           });
+          },
+          onCancel: () => {}
+      });
     },
     clearSearch() {
       this.formInline.searchData = "";
@@ -128,6 +119,7 @@ export default {
     }
   },
   mounted() {
+    console.log(process);
     this.getData();
     this.get_production_group_list({
       page_index: 0,
@@ -137,18 +129,7 @@ export default {
   },
   watch: {
     isLoading(val) {
-      if (val) {
-        this.loadingInstance = Loading.service({
-          text: "加载中，请稍后",
-          fullscreen: true
-        });
-        setTimeout(() => {
-          this.loadingInstance && this.loadingInstance.close();
-        }, Config.base_timeout);
-      } else {
-        this.loadingInstance && this.loadingInstance.close();
-        this.dirty = false;
-      }
+       this.$config.IsLoading(val);
     }
   },
   computed: {
@@ -175,154 +156,7 @@ export default {
       return [this.stateList];
     },
     dataHeader() {
-      if (this.projectType === 0) {
-        return [
-          {
-            prop: "code",
-            label: "编码",
-            width: 150
-          },
-          {
-            prop: "title",
-            label: "产品名称",
-            width: 300
-          },
-          {
-            prop: "original_price",
-            label: "定价",
-            width: 100
-          },
-          {
-            prop: "price",
-            label: "售价",
-            width: 100
-          },
-          {
-            prop: "belong_specials",
-            label: "所属组合",
-            minwidth: 260
-          },
-          {
-            label: "产品协议",
-            width: 120,
-            groupBtn: [
-              {
-                text: "编辑",
-                param: "editProtocol"
-              }
-            ]
-          },
-          {
-            label: "产品状态",
-            prop: "state",
-            useCombo: true,
-            comboListIndex: 0,
-            listLabel: "name",
-            listValue: "id",
-            actionName: "change_production_state",
-            width: 200
-          },
-          {
-            label: "操作",
-            width: 320,
-            groupBtn: [
-              {
-                // isSwitch: true,
-                // switchKey: 'is_valid',
-                // onText: '启用',
-                // offText: '停用',
-                // disableText: '失效',
-                // actionName: 'change_production_vailid'
-              },
-              {
-                text: "编辑",
-                param: "edit"
-              },
-              {
-                text: "查看",
-                param: "detail"
-              },
-              {
-                text: "el-icon-delete",
-                param: "delete",
-                isIcon: true
-              }
-            ]
-          }
-        ];
-      } else {
-        return [
-          {
-            prop: "code",
-            label: "编码",
-            width: 150
-          },
-          {
-            prop: "title",
-            label: "产品名称",
-            width: 300
-          },
-          {
-            prop: "original_price",
-            label: "定价",
-            width: 100
-          },
-          {
-            prop: "price",
-            label: "售价",
-            width: 100
-          },
-          {
-            prop: "belong_specials",
-            label: "所属组合",
-            minwidth: 300
-          },
-          {
-            prop: "protocal",
-            label: "产品协议",
-            groupBtn: [
-              {
-                text: "编辑",
-                param: "editProtocol"
-              }
-            ],
-            width: 120
-          },
-          {
-            label: "产品状态",
-            prop: "state",
-            useCombo: true,
-            comboListIndex: 0,
-            listLabel: "name",
-            listValue: "id",
-            actionName: "change_production_state",
-            width: 300
-          },
-          {
-            label: "操作",
-            width: 320,
-            groupBtn: [
-              {
-                // isSwitch: true,
-                // switchKey: 'is_valid',
-                // onText: '启用',
-                // offText: '停用',
-                // disableText: '失效',
-                // actionName: 'change_production_vailid'
-              },
-              {
-                text: "编辑",
-                param: "edit"
-              },
-              {
-                text: "el-icon-delete",
-                param: "delete",
-                isIcon: true
-              }
-            ]
-          }
-        ];
-      }
+      return tableHeadData(this.projectType)
     },
     listColumnFormatter() {
       return [
@@ -347,26 +181,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.el-tooltip__popper {
-  &.is-light {
-    background: #ffffff;
-    border: 1px solid #e7e8ea;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-    .more-tip {
-      max-width: 278px;
-      line-height: 1.2;
-      font-size: 14px;
-      color: #2e3e47;
-      & + .popper__arrow {
-        border-top-color: #e7e8ea;
-        &:after {
-          //border-top-color:#E7E8EA;
-        }
-      }
-    }
-  }
-}
-
 .manage-production-view {
   .base-list-container {
     .base-list-row {
@@ -385,15 +199,8 @@ export default {
     padding-top: 22px;
     text-align: left;
     margin-left: 20px;
-    .el-input__inner {
-      border-radius: 0;
-      background: #ffffff;
-      border: 1px solid #e5e5e5;
-    }
-    .el-form-item__label {
-      font-size: 14px;
-      color: #141111;
-      letter-spacing: 0;
+    /deep/.ivu-input{
+      width: 160px;
     }
     .el-select {
       width: 300px;
@@ -410,26 +217,6 @@ export default {
       border-radius: 4px;
       width: 100px;
       height: 36px;
-    }
-  }
-  .pager {
-    margin: 30px 0;
-    padding-right: 40px;
-    .el-pagination {
-      button {
-        &.disabled {
-          background-color: #ebebec;
-          border-color: #b0b3c5;
-          color: #8b9fa9;
-        }
-      }
-      .el-pager {
-        li {
-          &.active {
-            background-color: #8b9fa9;
-          }
-        }
-      }
     }
   }
   .btn-add {
@@ -490,10 +277,6 @@ export default {
         }
       }
     }
-  }
-  .back-to-top {
-    top: 80%;
-    right: 20px;
   }
 }
 

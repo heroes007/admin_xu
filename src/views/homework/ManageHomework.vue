@@ -7,7 +7,7 @@
                 <el-breadcrumb-item>查看任务包</el-breadcrumb-item>
                 <el-breadcrumb-item>{{tabIndex === 0?'线下任务':'线上作业'}}</el-breadcrumb-item>
             </el-breadcrumb>
-            <el-button class='btn-add' type='text' @click='addHomework()'>添加新任务</el-button>
+            <Button class='btn-add' type='text' @click='addHomework()'>添加新任务</Button>
             <el-dialog title="设置任务" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-homework-view'>
                 <Row class='tab-bar' type='flex' align='middle'>
                     <Col class='tab-item' :class="{'active':!data.auto}" v-if='!isEdit || (isEdit && !data.auto)'>
@@ -143,7 +143,7 @@
                             <!--<user-list v-on:listChange='listChangeHandler' :searchRange='student_search_date'></user-list>-->
                         <!--</Row>-->
                         <Row class='btns' type='flex' justify='center' align='middle'>
-                            <el-button @click='submit'>提交</el-button>
+                            <Button @click='submit'>提交</Button>
                         </Row>
                     </div>
                 </Row>
@@ -203,14 +203,14 @@
                         {{item.nickname}}
                     </Col>
                     <Col>
-                        <el-button type='text' v-if='tabIndex == 1'>
+                        <Button type='text' v-if='tabIndex == 1'>
                             <!--<a :href="'/dashboard/add-homework/' + item.task_id ">编辑</a>-->
                             <a @click='editHomework(item)'>编辑</a>/<a @click='deleteHomework(item)'>删除</a>
-                        </el-button>
-                        <el-button type='text' v-if='tabIndex == 0'>
+                        </Button>
+                        <Button type='text' v-if='tabIndex == 0'>
                             <!--<a :href="'/dashboard/add-homework/' + item.task_id ">编辑</a>-->
                             <a @click='editHomework(item)'>编辑</a></a>
-                        </el-button>
+                        </Button>
                     </Col>
                 </Row>
                 <Row class='pager' type='flex' justify='end' align='middle'>
@@ -273,7 +273,7 @@
 
                     .Col {
                         line-height:60px;
-                        .el-button {
+                        .Button {
                             color:#5fa137;
                             a {
                                 color:#5fa137;

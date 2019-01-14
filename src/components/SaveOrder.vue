@@ -5,8 +5,8 @@
             <p>保存顺序</p>
         </div>-->
         <Row>
-            <el-button class='btn-cancel' type='primary' :plain='true' @click='cancelHandler'>取消</el-button>
-            <el-button class='btn-save' type='primary' :plain='true' @click='saveHandler'>保存</el-button>
+            <Button class='btn-cancel' type='primary' :plain='true' @click='cancelHandler'>取消</Button>
+            <Button class='btn-save' type='primary' :plain='true' @click='saveHandler'>保存</Button>
         </Row>
     </div>
 </template>

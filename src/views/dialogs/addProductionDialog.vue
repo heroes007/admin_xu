@@ -1,5 +1,6 @@
 <template>
-<el-dialog :title="!payload? '创建产品' : '编辑产品'" :show-close="false" v-model="addProductionDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+<Modal :title="!payload? '创建产品' : '编辑产品'" :footer-hide=true
+ v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class='curriculum-list' v-if='nextStep == 1'>
@@ -8,89 +9,84 @@
                 </Row>
                 <Row class='search-bar' type='flex' justify='start' align='middle'>
                     <Col :span="18">
-                        <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
+                        <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
                     </Col>
                     <Col :span="6">
-                        <el-button class="sub-btn" type="primary" @click="searchCurriculum">查询</el-button>
-                        <el-button class="sub-btn" type="primary" @click="clearSearch">清除</el-button>
+                        <Button class="sub-btn" type="primary" @click="searchCurriculum">查询</Button>
+                        <Button class="sub-btn" type="primary" @click="clearSearch">清除</Button>
                     </Col>
                 </Row>
                 <Row>
-                    <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='curriculumList'
-            :header-data='dataHeader'></data-list>
+                <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='curriculumList' :header-data='dataHeader'></data-list>
                 </Row>
             </Row>
             <Row class="body-top">
-                <el-form ref="form" :model="form" label-width="121px" class="add-task-form">
-                    <el-form-item v-show="nextStep == 0" label="编码">
-                        <el-input v-model="form.code" placeholder="请输入产品编码"></el-input>
-                    </el-form-item>
-                    <el-form-item label='考试类型'>
-                    <el-select v-model="form.examine_type" placeholder="请选择考试类型">
-                        <el-option v-for="item in examineTypeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                    <el-form-item v-show="nextStep == 0" label="产品名称">
-<el-input v-model="form.title" placeholder="请输入产品名称"></el-input>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" label="定价">
-                        <el-input placeholder="0为免费，单位默认（元）" v-model="form.show_original_price"></el-input>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" label="真实售价">
-                        <el-input placeholder="售价必须小于等于定价" v-model="form.show_price"></el-input>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" label="跳转配置">
-                        <Row class='row-container' type='flex' justify='start' align='middle'>
-<el-switch
-  v-model="form.redirectType"
-  on-text="自定义"
-  off-text="默认"
-  :width='75'>
-</el-switch>  
+                <Form ref="form" :model="form" :label-width="fromLabelWidth" class="add-task-form">
+                    <FormItem v-show="nextStep == 0" label="编码">
+                        <Input v-model="form.code" placeholder="请输入产品编码"></Input>
+                    </FormItem>
+                    <FormItem label='考试类型' :label-width="formItemLabelWidth">
+                    <Select v-model="form.examine_type" placeholder="请选择考试类型">
+                        <Option v-for="item in examineTypeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                    </Select>
+                </FormItem>
+                    <FormItem v-show="nextStep == 0" label="产品名称">
+                        <Input v-model="form.title" placeholder="请输入产品名称"></Input>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 0" label="定价">
+                        <Input placeholder="0为免费，单位默认（元）" v-model="form.show_original_price"></Input>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 0" label="真实售价">
+                        <Input placeholder="售价必须小于等于定价" v-model="form.show_price"></Input>
+                    </FormItem>
+                <FormItem v-show="nextStep == 0" label="跳转配置">
+                    <Row class='row-container' type='flex' justify='start' align='middle'>
+                    <Switch  v-model="form.redirectType" size="large">
+                            <span slot="open">自定义</span>
+                            <span slot="close">默认</span>
+                    </Switch>  
                         </Row>
-                  </el-form-item>
-                    <el-form-item v-if="nextStep == 0 && form.redirectType" label="跳转地址">
-<el-input v-model="form.h5_url" placeholder="请输入跳转地址"></el-input>
-                    </el-form-item>
-                    <el-form-item label="展示图片" v-if="nextStep == 0">
-                                <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
-                                    <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                                </upload-panel>
-                            </el-form-item>
-                                                <el-form-item v-show="nextStep == 0" label="产品视频">
+                  </FormItem>
+                    <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
+                    <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
+                    </FormItem>
+                    <FormItem label="展示图片" v-if="nextStep == 0">
+                        <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
+                            <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
+                        </upload-panel>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 0" label="产品视频">
                         <Row class='row-container' type='flex' justify='start' align='middle'>
-                        <el-switch
-  v-model="form.displayVideo"
-  on-text="使用"
-  off-text="不使用"
-  :width='75'>
-</el-switch>  
+                        <Switch  v-model="form.displayVideo" size="large">
+                              <span slot="open">使用</span>
+                              <span slot="close">不使用</span>
+                        </Switch>  
                         </Row>
-                    </el-form-item>
-                            <el-form-item label="展示视频" v-if="nextStep == 0 && form.displayVideo">
-                                <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
-                                <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
-                            </upload-panel>
-                            </el-form-item>
-                    <el-form-item v-show="nextStep == 0" label="产品简介">
-                        <el-input type="textarea" :rows="6" placeholder="请输入产品简介" v-model="form.short_description">
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 2" label="编辑产品课程图文详情:" label-width='160px'>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 2" label="" label-width='0'>
+                    </FormItem>
+                    <FormItem label="展示视频" v-if="nextStep == 0 && form.displayVideo">
+                        <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
+                        <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
+                    </upload-panel>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 0" label="产品简介">
+                        <Input type="textarea" :rows="6" placeholder="请输入产品简介" v-model="form.short_description">
+                        </Input>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 2" label="编辑产品课程图文详情:" :label-width='160'>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 2" label="" :label-width='0'>
                         <text-editor ref='description_editor' :content='form.description'/>
-                    </el-form-item>
-                    <el-form-item class="btns">
-                        <el-button type='text' v-show='nextStep == 2 || nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</el-button>
-                        <el-button v-show="nextStep == 2" class="btn-orange" @click="handleSubmit('form')">提交</el-button>
-                        <el-button v-show="nextStep == 0 || nextStep == 1" class="btn-orange" @click="handleNextStep('form')">下一步</el-button>
-                    </el-form-item>
-                </el-form>
+                    </FormItem>
+                    <FormItem class="btns">
+                        <Button type='text' v-show='nextStep == 2 || nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</Button>
+                        <Button v-show="nextStep == 2" class="btn-orange" @click="handleSubmit('form')">提交</Button>
+                        <Button v-show="nextStep == 0 || nextStep == 1" class="btn-orange btn-next" @click="handleNextStep('form')">下一步</Button>
+                    </FormItem>
+                </Form>
             </Row>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 <!-- task_id = 19 -->
 <script>
@@ -100,26 +96,15 @@ import Editor from '../../components/Editor'
 import BaseList from '../../components/BaseList'
 import { Loading } from 'element-ui'
 import { Config } from '../../config/base'
-import {
-    RemoveModal
-} from './mixins'
-import {
-    mapActions,
-    mapState,
-    mapGetters
-} from 'vuex';
-import {
-   get_list
-} from '../../api/modules/tools_curriculum'
-import {
-    get_detail
-} from '../../api/modules/tools_product'
+import { RemoveModal } from './mixins'
+import { mapActions, mapState, mapGetters } from 'vuex';
+import { get_list } from '../../api/modules/tools_curriculum'
+import { get_detail } from '../../api/modules/tools_product'
 import dateFormat from '../../config/dateFormat'
-    import {
-    MPop
-} from '../../components/MessagePop'
+import { MPop } from '../../components/MessagePop'
 export default {
     mixins: [RemoveModal,MPop],
+    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'text-editor':Editor,'data-list': BaseList },
     props: {
         remove: {
             type: String
@@ -164,17 +149,16 @@ export default {
             },
             searchData:'',
             curriculumList:[],
-            loadingInstance:null
+            loadingInstance:null,
+            fromLabelWidth:121,
+            formItemLabelWidth:121
         }
     },
     mounted() {
-        if(this.projectType === 1)
-        {
+        if(this.projectType === 1){
             get_list(this.projectId).then(res => {
-                if(res.data.res_code === 1)
-                {
-                    for(var i=0;i<res.data.msg.length;i++)
-                    {
+                if(res.data.res_code === 1){
+                    for(var i=0;i<res.data.msg.length;i++){
                         res.data.msg[i].is_valid = false;
                     }
                     this.curriculumList = res.data.msg;
@@ -182,9 +166,7 @@ export default {
                 }
             })
         }
-
-        if(this.payload)
-        {
+        if(this.payload){
             this.loadingInstance = Loading.service({
                 text:'加载中，请稍后',
                     fullscreen: true
@@ -194,8 +176,7 @@ export default {
                 }, Config.base_timeout);
             this.form.product_id = this.payload.id;
             get_detail(this.payload.id).then(res => {
-                if(res.data.res_code === 1)
-                {
+                if(res.data.res_code === 1){
                     this.form.code = res.data.msg.code;
                     this.form.title = res.data.msg.title;
                     this.form.show_price = (res.data.msg.price / 100).toString();
@@ -205,9 +186,7 @@ export default {
                     this.form.curriculum_id = res.data.msg.curriculum_id;
                     this.form.h5_url = res.data.msg.h5_url;
                     this.form.examine_type = res.data.msg.examine_type;
-                    if(this.form.h5_url)
-                        this.form.redirectType = true;
-
+                    if(this.form.h5_url) this.form.redirectType = true;
                     var arrObj = JSON.parse(res.data.msg.img_url_arr);
                     this.form.img_url = arrObj.default;
                     this.form.video_url = arrObj.video;
@@ -218,11 +197,8 @@ export default {
                 }
             })
         }
-
         var vm = this;
-
         this.form.project_id = this.projectId;
-
         this.form._fn = function(){
             vm.handleClose();
             vm.showPop('保存成功！');
@@ -272,12 +248,9 @@ export default {
             'update_production'
         ]),
         checkCurriculum() {
-            if(this.curriculumList.length > 0 && this.form.curriculum_id)
-            {
-                for(var i=0;i<this.curriculumList.length;i++)
-                {
-                    if(this.curriculumList[i].curriculum_id === this.form.curriculum_id)
-                    {
+            if(this.curriculumList.length > 0 && this.form.curriculum_id){
+                for(var i=0;i<this.curriculumList.length;i++){
+                    if(this.curriculumList[i].curriculum_id === this.form.curriculum_id){
                         this.curriculumList[i].is_valid = true;
                     }
                 }
@@ -286,10 +259,8 @@ export default {
         clearSearch(){
             this.searchData = '';
             get_list(this.projectId).then(res => {
-                if(res.data.res_code === 1)
-                {
-                    for(var i=0;i<res.data.msg.length;i++)
-                    {
+                if(res.data.res_code === 1){
+                    for(var i=0;i<res.data.msg.length;i++){
                         res.data.msg[i].is_valid = false;
                     }
                     this.curriculumList = res.data.msg;
@@ -299,10 +270,8 @@ export default {
         },
         searchCurriculum() {
             get_list(this.projectId,this.searchData).then(res => {
-                if(res.data.res_code === 1)
-                {
-                    for(var i=0;i<res.data.msg.length;i++)
-                    {
+                if(res.data.res_code === 1){
+                    for(var i=0;i<res.data.msg.length;i++){
                         res.data.msg[i].is_valid = false;
                     }
                     this.curriculumList = res.data.msg;
@@ -311,24 +280,12 @@ export default {
             })
         },
         changeRowSelectHandler(row) {
-            if(row.is_valid)
-            {
-                for(var i=0;i<this.curriculumList.length;i++)
-                {
-                    if(this.curriculumList[i].curriculum_id !== row.curriculum_id)
-                    {
-                        this.curriculumList[i].is_valid = false;
-                    }
-                    else
-                    {
-                        this.form.curriculum_id = row.curriculum_id;
-                    }
+            if(row.is_valid){
+                for(var i=0;i<this.curriculumList.length;i++){
+                    if(this.curriculumList[i].curriculum_id !== row.curriculum_id) this.curriculumList[i].is_valid = false;
+                    else this.form.curriculum_id = row.curriculum_id;
                 }
-            }
-            else
-            {
-                this.form.curriculum_id = null;
-            }
+            } else this.form.curriculum_id = null;
         },
         uploadCompleteHandler1(url){
             this.form.img_url = url;
@@ -341,32 +298,21 @@ export default {
             this.addProductionDialog = false;
         },
         handleNextStep(formName) {
-            if(this.projectType === 1)
-            {
-                if(this.nextStep === 0)
-                    this.nextStep = 1;  
-                else
-                    this.nextStep = 2;
-            }
-            else
-            {
-                this.nextStep = 2;
-            }
+            this.fromLabelWidth = 0;
+            this.formItemLabelWidth = 80
+            if(this.projectType === 1){
+                if(this.nextStep === 0)  this.nextStep = 1;  
+                else this.nextStep = 2;
+            }else this.nextStep = 2;
         },
         handlePreStep() {
-            if(this.projectType === 1)
-            {
-                if(this.nextStep === 2)
-                {
-                    this.nextStep = 1;
-                }
-                else
-                {
-                    this.nextStep = 0;
-                }
+            this.fromLabelWidth = 121
+            this.formItemLabelWidth = 121
+            if(this.projectType === 1){
+                if(this.nextStep === 2)  this.nextStep = 1;
+                else his.nextStep = 0;
             }
-            else
-                this.nextStep = 0;
+            else this.nextStep = 0;
         },
         handleSubmit() {
             var arrObj = {
@@ -378,35 +324,38 @@ export default {
             this.form.img_url_arr =JSON.stringify(arrObj);
              this.form.price = Math.round(parseFloat(this.form.show_price) * 100);
              this.form.original_price = Math.round(parseFloat(this.form.show_original_price) * 100);
-
-             if(this.form.price > this.form.original_price)
-             {
+             if(this.form.price > this.form.original_price){
                 this.$alert('真实售价不能高于定价！', '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => { }
-                                    });
-                                    return;
+                   confirmButtonText: '确定',
+                   callback: action => { }
+                   });
+                   return;
              }
-
-            if(this.payload)
-            {
-                this.update_production(this.form);
-            }
-            else
-            {
-                this.add_production(this.form);
-            }
+            if(this.payload) this.update_production(this.form);
+            else this.add_production(this.form);
         }
-    },
-    components: {
-        'base-input': BaseInput,
-        'upload-panel': UploadPanel,
-        'text-editor':Editor,
-        'data-list': BaseList,
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/ .ivu-modal{ width: 800px !important }
+.add-task-form{
+    width: 80% !important;
+    margin-left: 10%;
+}
+.btn-next{ margin-left: 20%; }
+.btn-orange:hover,.btn-next:hover{
+    background: #FB843E;
+    color: #fff;
+}
+.btn-orange{ 
+    margin-left: 20%;
+    background: #FB843E;
+    border: 1px solid #F06B1D;
+    border-radius: 4px;
+    color: #fff;
+    width: 200px;
+    height: 36px;}
 #add-production-container {
     @import "base.scss";
     input,
@@ -424,268 +373,6 @@ export default {
         &:before {
             // color: #fff;
             color: #757575;
-        }
-    }
-    .el-dialog {
-        width: 800px;
-        background: none;
-
-        .curriculum-list {
-            .title {
-                padding: 0 20px;
-                h2 {
-                    font-size: 16px;
-                }
-            }
-            .search-bar {
-                padding: 0 20px;
-                margin-bottom: 20px;
-                .el-button {
-                    background: #FB843E;
-                    border-radius: 4px;
-                    border:0;
-                }
-            }
-        }
-
-        .body-top {
-            padding-bottom: 10px;
-        }
-
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-        .el-dialog__body {
-            padding: 0;
-            background: #fff;
-            border-radius: 0 0 4px 4px;
-        }
-        .add-task-form {
-            width: 80%;
-            margin: 30px auto;
-            .el-date-editor--datetimerange,
-            .el-select {
-                width: 100%;
-            }
-            input {
-                border-radius: 0;
-                border: 1px solid #CCCCCC;
-            }
-            .approval {
-                .el-form-item__content {
-                    text-align: left;
-                    line-height: 38px;
-                }
-            }
-            
-            .row-container {
-                height:36px;
-            }
-
-            .el-input-number {
-                width: 100%;
-            }
-            // -------- 修改了单选框样式 ------------
-
-            .el-radio__inner {
-                display: inline-block;
-                position: relative;
-                border: 1px solid #bfcbd9;
-                border-radius: 4px;
-                box-sizing: border-box;
-                width: 18px;
-                height: 18px;
-                background-color: #fff;
-                z-index: 1;
-                transition: border-color 0.25s cubic-bezier(.71,-.46,.29,1.46),background-color 0.25s cubic-bezier(.71,-.46,.29,1.46);
-                border-color: #979797;
-                background-color: transparent;
-                &::after {
-                    box-sizing: content-box;
-                    content: "";
-                    border: 2px solid #fff;
-                    border-left: 0;
-                    border-top: 0;
-                    height: 8px;
-                    left: 5px;
-                    position: absolute;
-                    top: 1px;
-                    transform: rotate(45deg) scaleY(0);
-                    width: 4px;
-                    transition: transform 0.15s cubic-bezier(.71,-.46,.88,.6) 0.05s;
-                    transform-origin: center;
-                    border-radius: 0;
-                    background-color: transparent;
-                }
-            }
-            .is-checked {
-
-                .el-radio__label {
-                    border: 1px solid #5FA137;
-                    color: #5FA137;
-                }
-
-                .el-radio__inner {
-                    border-color: #5FA137;
-                    background-color: #5FA137;
-                }
-                .el-checkbox__inner {
-                    border-color: #5FA137;
-                    background-color: #5FA137;
-                }
-                .el-radio__inner::after {
-                    transform: rotate(45deg) scaleY(1);
-                }
-            }
-            // -------- 修改了单选框样式 ------------
-            @mixin el-upload-common($w) {
-                .el-upload {
-                    text-align: left;
-                    width: 100%;
-                    .el-icon-upload {
-                        color: #999999;
-                    }
-                    .el-upload__tip {
-                        font-size: 12px;
-                        color: #757575;
-                        letter-spacing: 0;
-                        line-height: 20px;
-                        text-align: left;
-                        margin-top: 0;
-                    }
-                    .el-dragger {
-                        // float: left;
-                        // width: 240px;
-                        border-radius: 0;
-                        background-color: #F6F6F6;
-                        border: 1px solid #CCCCCC;
-                        width: 100%;
-                        height: $w;
-                        .el-icon-upload {
-                            margin-left: 0;
-                            // margin-top: $_top;
-                        }
-                        .el-dragger__text {
-                            font-size: 14px;
-                            color: #757575;
-                            letter-spacing: 0;
-                            line-height: 14px;
-                            margin-top: 20px;
-                        }
-                    }
-                }
-            }
-            .upload-form1 {
-                @include el-upload-common(200px);
-            }
-            .check-upload {
-                text-align: left;
-            }
-            .inter-data {
-                .el-form-item__label {
-                    width: 100px !important;
-                }
-                .el-form-item__content {
-                    margin-left: 102px !important;
-                }
-            }
-            .upload-file-list {
-                text-align: left;
-                width: 40%;
-                .datetime{
-                  position: absolute;
-                  right: -170px;
-                  top: 16px;
-                }
-                .file-item {
-                    cursor: pointer;
-                    // padding-top: 6px;
-                    // padding-bottom: 6px;
-                    // margin-top: 15px;
-                    // margin-bottom: 15px;
-                    position: relative;
-
-                    &:hover {
-                        color: #FB843E;
-                    }
-                    .filename{
-                      width: 150px;
-                      overflow: hidden;
-                      height: 30px;
-                      line-height: 30px;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                      display: inline-block;
-                    }
-                    .el-icon-delete {
-                        position: absolute;
-                        right: -20px;
-                        top: 10px;
-                    }
-                }
-
-            }
-            .btns {
-                margin-top: 50px;
-                .el-form-item__content {
-                    margin-left: 0 !important;
-                    margin-top: 10px !important;
-                    line-height: 0;
-                    .finish-btn {
-                        margin-left: 0;
-                        margin-top: 20px;
-                        background: #FB843E;
-                        border-radius: 4px;
-                        width: 160px;
-                        height: 36px;
-                        border: 0;
-                        &:last-child {
-                            margin-left: 8px;
-                        }
-                    }
-                    // button {
-                    //     width: 100px;
-                    //     height: 36px;
-                    //     background: #FFFFFF;
-                    //     border: 1px solid #999999;
-                    //     border-radius: 4px;
-                    // }
-                }
-
-                .btn-pre {
-                    float: left;
-                    color:#333333;
-                }
-
-                .btn-orange {
-                    background: #FB843E;
-                    border: 1px solid #F06B1D;
-                    border-radius: 4px;
-                    color: #fff;
-                    width: 200px;
-                    height: 36px;
-                }
-            }
-            .el-form-item__content {
-                // margin-left: 0 !important;
-                line-height: 0;
-                .el-textarea {
-                    .el-textarea__inner {
-                        background: #FFFFFF;
-                        border: 1px solid #CCCCCC;
-                        // height: 140px;
-                        border-radius: 0;
-                        // width: 390px;
-                    }
-                }
-                .editor {
-                    .vueditor {
-                        line-height:100%;
-                    }
-                }  
-            }
         }
     }
 }

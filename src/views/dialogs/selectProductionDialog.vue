@@ -9,7 +9,7 @@
                         :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
                 </Row>
                 <Row>
-                    <el-button type="primary" class="ok-btn" @click="addHandler">保存</el-button>
+                    <Button type="primary" class="ok-btn" @click="addHandler">保存</Button>
                 </Row>
             </Row>
         </base-input>

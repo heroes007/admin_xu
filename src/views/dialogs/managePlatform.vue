@@ -3,26 +3,26 @@
         :closeOnClickModal="false">
         <base-input @closedialog="handleClose" :baseInputWidth="400">
             <Row slot="body">
-                <el-form :model="formInline" class="row1-test-form" label-width="50px">
-                    <el-form-item label="名称">
+                <Form :model="formInline" class="row1-test-form" label-width="50px">
+                    <FormItem label="名称">
                         <el-input v-model="formInline.version"></el-input>
-                    </el-form-item>
-                    <el-form-item label="平台">
+                   </FormItem>
+                    <FormItem label="平台">
                         <el-input v-model="formInline.platform_type"></el-input>
-                    </el-form-item>
-                    <el-form-item label="网址">
+                   </FormItem>
+                    <FormItem label="网址">
                         <el-input v-model="formInline.download_url"></el-input>
-                    </el-form-item>
-                    <el-form-item label="apk">
+                   </FormItem>
+                    <FormItem label="apk">
                         <upload-panel :resourse='formInline.apk_url' @uploadcomplete='uploadCompleteHandler' :upload-config='uploaderConfig'>
                             <span slot="file-require">只能上传.apk文件</span>
                         </upload-panel>
-                    </el-form-item>
-                    <el-form-item class="btns">
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">确认</el-button>
-                        <el-button type="primary" class="sub-btn" @click="handleClose">取消</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btns">
+                        <Button type="primary" class="sub-btn" @click="saveHandler">确认</Button>
+                        <Button type="primary" class="sub-btn" @click="handleClose">取消</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </base-input>
     </el-dialog>

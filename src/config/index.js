@@ -6,6 +6,8 @@ import { user_info, logout } from '../api/modules/auth';
 import { sync } from 'vuex-router-sync';
 import { Message } from 'iview';
 import LoadingY from '../plug/index';
+import config from './config';
+Vue.prototype.$config = config;
 Vue.use(LoadingY)
 // sync the router with the vuex store.
 // this registers `store.state.route`

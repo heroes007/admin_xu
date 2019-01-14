@@ -9,7 +9,7 @@
                         <el-option label="昵称" value="nickname"></el-option>
                         <el-option label="手机号" value="phone"></el-option>
                     </el-select>
-                    <el-button slot="append" type='text' @click='searchStudent'>搜索</el-button>
+                    <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
                 </el-input>
      </Row>
             <el-table ref="table" :data="queryOfflineUserList" style="width: 100%" @selection-change="handleSelectionChange">
@@ -61,7 +61,7 @@
             </Col>
           </Row>
           <Row class="btns">
-            <el-button class="send-btn" @click="handleSendTask">发送</el-button>
+            <Button class="send-btn" @click="handleSendTask">发送</Button>
           </Row>
           </Row>
       </base-input>

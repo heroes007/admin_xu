@@ -18,11 +18,11 @@
                         <el-option label="手机号" value="phone"></el-option>
                         <el-option label="用户ID" value="user_id"></el-option>
                     </el-select>
-                    <el-button slot="append" type='text' @click='searchStudent'>搜索</el-button>
+                    <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
                 </el-input>
-                <el-button class='btn-clear' type='text' @click='clearSearch'>清除搜索</el-button>-->
-                <el-form :inline='true' class='find-by-term'>
-            <el-form-item>
+                <Button class='btn-clear' type='text' @click='clearSearch'>清除搜索</Button>-->
+                <Form :inline='true' class='find-by-term'>
+            <FormItem>
                 <Row>
                     <Col :span="10">
                         <el-select class="select-user" v-model="searchType" placeholder="">
@@ -35,16 +35,16 @@
                         <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
                     </Col>
                 </Row>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="searchStudent">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="clearSearch">清除</el-button>
-            </el-form-item>
-        </el-form>
+           </FormItem>
+            <FormItem>
+                <Button type="primary" @click="searchStudent">查询</Button>
+           </FormItem>
+            <FormItem>
+                <Button type="primary" @click="clearSearch">清除</Button>
+           </FormItem>
+        </Form>
             </Row>
-            <!--<el-button class='btn-add' type='text'>搜索</el-button>-->
+            <!--<Button class='btn-add' type='text'>搜索</Button>-->
              <el-dialog title="修改分站" style="width:900px;margin:0 auto;" v-model="showDealerDialog" 
                 size="small" 
                 :close-on-click-modal='false' 
@@ -62,7 +62,7 @@
                       </el-select>
                   </Row>
                   <Row style="margin-top:50px;" type='flex' justify='center' align='middle'>
-                    <el-button type="primary" style="width:100px;" @click='changeDealer'>保存</el-button>
+                    <Button type="primary" style="width:100px;" @click='changeDealer'>保存</Button>
                   </Row>
              </el-dialog>
             <el-dialog title="用户信息" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false'
@@ -110,7 +110,7 @@
                             使用的邀请码：<span>{{userData.from_invitation_code_id}}</span>
                         </Row>
                         <Row class='user-data' type='flex' justify='center' align='middle'>
-                            <el-button @click='submit'>保存</el-button>
+                            <Button @click='submit'>保存</Button>
                         </Row>
                     </div>
                 </Row>
@@ -164,15 +164,15 @@
                         {{item.create_time | zonetime}}
                     </Col>
                     <Col>
-                        <el-button type='text' @click='editDealer(item)'>
+                        <Button type='text' @click='editDealer(item)'>
                             <a href="javascript:;">修改分站</a>
-                        </el-button>
-                        <el-button type='text' @click='editUser(item)'>
+                        </Button>
+                        <Button type='text' @click='editUser(item)'>
                             <a href="javascript:;">编辑</a>
-                        </el-button>
-                        <el-button type='text' @click='createStudent(item)'>
+                        </Button>
+                        <Button type='text' @click='createStudent(item)'>
                             <a href="javascript:;">创建学员</a>
-                        </el-button>
+                        </Button>
                     </Col>
                 </Row>
                 <Row class='pager' type='flex' justify='end' align='middle'>

@@ -210,20 +210,22 @@ export const MenuList =  [
             title: '页面来源统计'
         }]
     },
-    {
-        name: '5',
-        title: '资料管理',
-        icon: 'md-folder',
-        check: 'manager',
-        list:[{
-            name: 'course-download-data',
-            title: '课程资料'
-        },
-        {
-            name: 'public-download-data',
-            title: '推荐资料'
-        }]
-    },
+    // {
+    //     name: '5',
+    //     title: '资料管理',
+    //     icon: 'md-folder',
+    //     check: 'manager',
+    //     list:[{
+    //         name: 'course-download-data',
+    //         title: '课程资料'
+    //     },
+    //     {
+    //         name: 'public-download-data',
+    //         title: '推荐资料'
+    //     }]
+    // },
+
+    // 已完成
     {
         name: '6',
         title: '产品管理',

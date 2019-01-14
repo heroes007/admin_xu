@@ -5,8 +5,8 @@
                 <input placeholder='搜索学员姓名' v-model='m_search_data'/>
             </Col>
             <Col>
-                <el-button type='text' icon='search' @click='doSearch'>
-                </el-button>
+                <Button type='text' icon='search' @click='doSearch'>
+                </Button>
             </Col>
         </Row>
         <Row class='header-bar' type='flex' justify='left' align='middle'>
@@ -44,7 +44,7 @@
             </Col>
         </Row>
         <Row class='footer-bar' type='flex' justify='center' align='middle'>
-        <!--    <el-button type='text'>确认</a>-->
+        <!--    <Button type='text'>确认</a>-->
         </Row>
     </div>
 </template>

@@ -3,26 +3,26 @@
         :closeOnClickModal="false">
         <base-input @closedialog="handleClose" :baseInputWidth="500">
             <Row slot="body">
-                <el-form :model="formInline1" class="row1-test-form" label-width="80px">
-                    <el-form-item label="姓名">
+                <Form :model="formInline1" class="row1-test-form" label-width="80px">
+                    <FormItem label="姓名">
                         <el-input v-model="formInline1.name" placeholder="请输入姓名"></el-input>
-                    </el-form-item>
-                    <el-form-item label="性别">
+                   </FormItem>
+                    <FormItem label="性别">
                         <el-radio-group v-model="formInline1.sex" :disabled="disabled">
                             <el-radio :label="0">女</el-radio>
                             <el-radio :label="1">男</el-radio>
                         </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="身份证号">
+                   </FormItem>
+                    <FormItem label="身份证号">
                         <el-input v-model="formInline1.idcard" placeholder="请输入身份证号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="联系电话">
+                   </FormItem>
+                    <FormItem label="联系电话">
                         <el-input v-model="formInline1.phone" placeholder="请输入联系电话"></el-input>
-                    </el-form-item>
-                    <el-form-item label="E-mail">
+                   </FormItem>
+                    <FormItem label="E-mail">
                         <el-input v-model="formInline1.email" placeholder="请输入邮箱地址"></el-input>
-                    </el-form-item>
-                    <el-form-item label="选择城市">
+                   </FormItem>
+                    <FormItem label="选择城市">
                         <el-select v-model="formInline1.estimate_set_out_province_id" placeholder="请选择" @change="handleSelectedProvince">
                             <el-option v-for="(item, index) in privinceList" :key="item.id" :label="item.name" :value="item.id">
                             </el-option>
@@ -31,15 +31,15 @@
                             <el-option v-for="(item, index) in cities" :key="item.id" :label="item.name" :value="item.id">
                             </el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="出发时间">
+                   </FormItem>
+                    <FormItem label="出发时间">
                         <el-date-picker v-model="formInline1.estimate_set_out_time" type="date" placeholder="选择日期">
                         </el-date-picker>
-                    </el-form-item>
-                    <el-form-item class="btn-content">
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content">
+                        <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </base-input>
         </el-dialog>

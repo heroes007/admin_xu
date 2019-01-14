@@ -13,7 +13,7 @@
                     <el-option label="用户名" value="nickname"></el-option>
                     <el-option label="手机号" value="phone"></el-option>
                 </el-select>
-                <el-button slot="append" type='text' @click='searchStudent'>搜索</el-button>
+                <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
             </el-input>
         </Row>
         <Row class='result' type='flex' justify='center' align='middle' v-if='initData'>
@@ -75,7 +75,7 @@
                     </el-select>
                 </Row>
                 <Row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>
-                    <el-button @click='setStudent'>确认</el-button>
+                    <Button @click='setStudent'>确认</Button>
                 </Row>
             </div>
         </Row>

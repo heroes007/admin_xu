@@ -14,7 +14,7 @@
                             <el-radio class="radio" v-model="data.interview_result" :label="0">未通过</el-radio>
                         </Row>
                         <Row class='btn-submit' type='flex' justify='center'>
-                            <el-button type='primary' @click='doSubmit'>确定</el-button>
+                            <Button type='primary' @click='doSubmit'>确定</Button>
                         </Row>
                     </div>
                 </Row>

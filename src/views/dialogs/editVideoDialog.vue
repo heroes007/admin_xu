@@ -3,31 +3,31 @@
     <base-input @closedialog="handleClose" :baseInputWidth="600">
         <Row slot="body">
             <span class="dscj-webfont-remove-sign"></span>
-            <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="小节名称">
+            <Form ref="form" :model="form" label-width="80px">
+                <FormItem label="小节名称">
                     <el-input v-model="form.name" placeholder="请输入小节名称"></el-input>
-                </el-form-item>
-                <el-form-item label="视频状态">
+               </FormItem>
+                <FormItem label="视频状态">
                     <el-select v-model="form.region" placeholder="请选择视频状态">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="观看权限">
+               </FormItem>
+                <FormItem label="观看权限">
                     <el-select v-model="form.region" placeholder="请选择观看权限">
                         <el-option label="区域一" value="shanghai"></el-option>
                         <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="上传视频" class="upload-form">
+               </FormItem>
+                <FormItem label="上传视频" class="upload-form">
                     <upload-panel>
                         <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
                     </upload-panel>
-                </el-form-item>
-                <el-form-item class="btns">
-                    <el-button type="primary" class="sub-btn" @click="handleSubmit">保存</el-button>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+                <FormItem class="btns">
+                    <Button type="primary" class="sub-btn" @click="handleSubmit">保存</Button>
+               </FormItem>
+            </Form>
         </Row>
     </base-input>
 </el-dialog>

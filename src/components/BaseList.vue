@@ -35,12 +35,12 @@
                     <p v-if='!item.mixColumn && !item.isBtn && item.limit  && !item.useCombo && !item.useTimePicker'>
                         {{showLimiteValue(item.prop,scope.row,item.limit,item.actionName)}}
                         <span class='ellipsis' v-if='scope.row.needLimit && !scope.row.showAll'>...</span>
-                        <el-button type='text' class='show-all' v-if='scope.row.needLimit && !scope.row.showAll' @click='showLimitText(scope.row,item.actionName)'>显示全部</el-button>
-                        <el-button type='text' class='fold' v-if='scope.row.needLimit && scope.row.showAll' @click='hideLimitText(scope.row,item.actionName)'>折叠</el-button>
+                        <Button type='text' class='show-all' v-if='scope.row.needLimit && !scope.row.showAll' @click='showLimitText(scope.row,item.actionName)'>显示全部</Button>
+                        <Button type='text' class='fold' v-if='scope.row.needLimit && scope.row.showAll' @click='hideLimitText(scope.row,item.actionName)'>折叠</Button>
                     </p>
-                    <el-button :class="{'prop-btn':true}" type='text' v-if="!item.mixColumn && item.isBtn && !item.useCombo && !item.useTimePicker" @click="handleBtnClick(scope.$index,scope.row,item.param)">
+                    <Button :class="{'prop-btn':true}" type='text' v-if="!item.mixColumn && item.isBtn && !item.useCombo && !item.useTimePicker" @click="handleBtnClick(scope.$index,scope.row,item.param)">
                         {{showPropValue(item.prop,scope.row)}}
-                    </el-button>
+                    </Button>
                     <el-select v-if='item.useCombo' v-model="comboDataList[scope.$index]" :multiple='!comboIsSelect' placeholder="请选择" @change='comboChangeHandler(scope.row,scope.$index,item.actionName,item.prop)' :disabled="item.disabledFunc?item.disabledFunc(scope.row):false">
                         <el-option v-for="c in columnComboData[item.comboListIndex]" :key="c.curriculum_id" :label="c[item.listLabel]" :value="c[item.listValue]">
                         </el-option>
@@ -60,11 +60,11 @@
                     :key="item.id">
                     <template slot-scope="scope">
                         <div class='handle-component' v-for='btn in item.groupBtn' :key="btn.id" v-if='btn.showFunc?btn.showFunc(scope.row):true'>
-                            <el-button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]" @click="handleBtnClick(scope.$index,scope.row,btn.param)"
+                            <Button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]" @click="handleBtnClick(scope.$index,scope.row,btn.param)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox' :disabled="btn.canDisabled?btn.disabeldFunc(scope.row):false">
                                 <i :class='btn.text' v-if='btn.isIcon'></i>
                                 <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(scope.row)?btn.disabledText:btn.text:btn.text}}</span>
-                                </el-button>
+                                </Button>
                                 <el-switch :value='checkSwitchValue(scope.row,btn.switchKey)' :on-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.onText"
                                     :off-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.offText" :disabled="checkSwitchDisabled(scope.row,btn.disabledFuc)"
                                     on-color='#F06B1D' off-color='#757575' @change='changeSwitchValue(scope.row,btn.switchKey,btn.actionName,btn.param)'

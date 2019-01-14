@@ -1,7 +1,7 @@
 <template>
     <div class='back-to-top' v-if='isShown'>
         <Row>
-            <el-button class='btn' type='primary' icon="caret-top" @click='back'>返回顶部</el-button>
+            <Button class='btn' type='primary' icon="caret-top" @click='back'>返回顶部</Button>
         </Row>
     </div>
 </template>

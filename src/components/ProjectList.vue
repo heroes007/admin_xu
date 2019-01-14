@@ -18,11 +18,6 @@ import { mapState, mapActions } from "vuex";
 import { Config } from "../config/base";
 import { doTimeFormat } from "../components/Util";
 export default {
-  data() {
-    return {
-      loadingInstance: null
-    };
-  },
   computed: {
     ...mapState({
       projectList: state => state.project.project_list,
@@ -58,12 +53,7 @@ export default {
   },
   watch: {
     isLoading(val) {
-      if (val) {
-        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-        setTimeout(() => {
-          this.loadingInstance.close();
-        }, Config.base_timeout);
-      } else if(this.loadingInstance) this.loadingInstance.close();
+      this.$config.IsLoading(val);
     }
   },
   mounted() {

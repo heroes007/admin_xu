@@ -128,7 +128,7 @@
                     <user-list v-on:listChange='listChangeHandler' :searchRange='student_search_date'></user-list>
                 </Row>
                 <Row class='btns' type='flex' justify='center' align='middle'>
-                    <el-button @click='submit'>提交</el-button>
+                    <Button @click='submit'>提交</Button>
                 </Row>
             </div>
         </Row>

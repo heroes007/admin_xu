@@ -6,7 +6,7 @@
                 <el-breadcrumb-item>广告图管理</el-breadcrumb-item>
                 <el-breadcrumb-item>查看广告</el-breadcrumb-item>
             </el-breadcrumb>
-            <el-button class='btn-add' type='text' @click='addLb()'>添加广告图</el-button>
+            <Button class='btn-add' type='text' @click='addLb()'>添加广告图</Button>
             <el-dialog title="广告信息" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-student-view'>
                 <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form'>
@@ -65,7 +65,7 @@
                             </el-select>
                         </Row>
                         <Row class='user-data' type='flex' justify='center' align='middle'>
-                            <el-button @click='submit'>保存</el-button>
+                            <Button @click='submit'>保存</Button>
                         </Row>
                     </div>
                 </Row>
@@ -98,9 +98,9 @@
                         {{item.state === 1?'上线中':'已下线'}}
                     </Col>
                     <Col>
-                        <el-button type='text'>
+                        <Button type='text'>
                             <a @click='editLb(item)'>编辑</a>
-                        </el-button>
+                        </Button>
                     </Col>
                 </Row>
                 <Row class='pager' type='flex' justify='end' align='middle'>

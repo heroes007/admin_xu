@@ -2,83 +2,55 @@
     <div class='manage-production-group-view'>
         <header-component title='产品组合' :type='0' :showAdd='true' addText='新建专题' @addClick='addProductionGroupHandler'></header-component>
         <Row>
-            <el-form :inline="true" :model="formInline" class="find-by-term">
-                <el-form-item label="专题名称" label-width="80px">
+            <Form :inline="true" :model="formInline" class="find-by-term">
+                <FormItem label="专题名称" :label-width="80">
                     <Row>
                         <Col>
                             <el-input v-model="formInline.searchData" placeholder="请输入搜索内容"></el-input>
                         </Col>
                     </Row>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="search">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="clearSearch">清除</el-button>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="search">查询</Button>
+               </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="clearSearch">清除</Button>
+               </FormItem>
+            </Form>
         </Row>
         <data-list class='data-list light-header' @edit='editHandler' @detail='showCourseDetailHandler' @delete='deleteHandler' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
             <Row class='pager' type='flex' justify='end' align='middle'>
-                <el-pagination @current-change="handleCurrentChange" :current-page="curPage" :page-size='20' layout="prev, pager, next" :total="total">
-                </el-pagination>
+                <Page class="case-main-pages" :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
             </Row>
     </div>
 </template>
-
-
-
 <script>
     import Header from '../../components/Header'
-    import SubjectFilter from '../../components/SubjectFilter'
     import BaseList from '../../components/BaseList'
     import BackToTop from '../../components/BackToTop'
-    import {
-        MPop
-    } from '../../components/MessagePop'
+    import { MPop } from '../../components/MessagePop'
     import api from '../../api/modules/config'
-    import {
-        set_user_student_mrzx
-    } from '../../api/modules/student'
-    import {
-        send_interview_msg
-    } from '../../api/modules/exam'
-    import {
-        Loading
-    } from 'element-ui'
-    import {
-        Dialog
-    } from '../dialogs'
-    import {
-        ADD_PRODUCTION_GROUP,
-        SELECT_PRODUCTION
-    } from '../dialogs/types'
-    import {
-        Config
-    } from '../../config/base'
-    import {
-        mapState,
-        mapActions,
-        mapGetters
-    } from 'vuex'
-    import {
-        doDateFormat,
-        doTimeFormat
-    } from '../../components/Util'
-
+    import { set_user_student_mrzx } from '../../api/modules/student'
+    import { send_interview_msg } from '../../api/modules/exam'
+    import { Dialog  } from '../dialogs'
+    import { ADD_PRODUCTION_GROUP, SELECT_PRODUCTION } from '../dialogs/types'
+    import { Config } from '../../config/base'
+    import { mapState, mapActions, mapGetters } from 'vuex'
+    import { doDateFormat,doTimeFormat } from '../../components/Util'
     export default {
         mixins: [Dialog, MPop],
+        components: { 
+            'header-component': Header, 'data-list': BaseList,
+        },
         data() {
             return {
-                loadingInstance: null,
                 curPage: 1,
                 formInline: {
                     searchData: ''
                 },
             }
         },
-
         methods: {
             ...mapActions([
                 'get_production_group_list',
@@ -134,18 +106,7 @@
         },
         watch: {
             isLoading(val) {
-                if (val) {
-                    this.loadingInstance = Loading.service({
-                        text:'加载中，请稍后',
-                        fullscreen: true
-                    });
-                    setTimeout(() => {
-                        this.loadingInstance && this.loadingInstance.close();
-                    }, Config.base_timeout);
-                } else {
-                    this.loadingInstance && this.loadingInstance.close();
-                    this.dirty = false;
-                }
+                this.$config.IsLoading(val);
             }
         },
         computed: {
@@ -197,12 +158,6 @@
             listColumnFormatterData() {
                 return [];
             }
-        },
-        components: {
-            'header-component': Header,
-            'subject-filter': SubjectFilter,
-            'data-list': BaseList,
-            'back-to-top': BackToTop
         }
     }
 
@@ -351,10 +306,6 @@
                     }
                 }
             }
-        }
-        .back-to-top {
-            top: 80%;
-            right: 20px;
         }
     }
     

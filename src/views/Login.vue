@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class='submit'>
-                <Button class="el-button" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
+                <Button class="Button" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
                     <div class="elRow"><span>登录</span>
                         <EllipsisAni v-if='isLogining' diameter="5px" pColor="#ffffff"></EllipsisAni>
                     </div>

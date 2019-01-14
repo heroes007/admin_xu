@@ -6,9 +6,9 @@
                 <h2>产品：{{currentProduction.title}}</h2>
             </div>
             <div>
-                <el-button type='text' @click='backClickHandler'>返回</el-button>
+                <Button type='text' @click='backClickHandler'>返回</Button>
             </div>
-            <el-button class='btn-add' type='primary' @click='addProductionCurriculum()' v-if="activeName == 'online'">添加</el-button>
+            <Button class='btn-add' type='primary' @click='addProductionCurriculum()' v-if="activeName == 'online'">添加</Button>
         </Row>
         <el-tabs v-model="activeName" active-name='online'>
             <el-tab-pane class='online-content' label="线上课" name="online">

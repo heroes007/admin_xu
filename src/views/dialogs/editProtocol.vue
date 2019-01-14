@@ -1,18 +1,18 @@
 <template>
-<el-dialog title="产品协议" :show-close="false" v-model="editProtocol" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+<Modal title="产品协议" :footer-hide=true v-model="editProtocol" @on-cancel="handleRemoveModal(remove)" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
       <Row slot="body">
-          <el-form class="add-task-form">
-                <el-form-item>
+          <Form class="add-task-form">
+                <FormItem>
                     <text-editor ref='description_editor' :content='description'/>
-                </el-form-item>
-                <el-form-item class="btns">
-                    <el-button class="btn-orange" @click="handleSubmit('form')">保存</el-button>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+                <FormItem class="btns">
+                    <Button class="btn-orange" @click="handleSubmit('form')">保存</Button>
+               </FormItem>
+            </Form>
       </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 <!-- task_id = 19 -->
 <script>
@@ -20,7 +20,6 @@ import { RemoveModal } from "./mixins";
 import api from "../../api/modules/config";
 import Editor from "../../components/Editor";
 import BaseInput from "../../components/BaseInput";
-import { Loading, Message } from "element-ui";
 export default {
   mixins: [RemoveModal],
   components: {
@@ -61,7 +60,7 @@ export default {
             this.description = res.data.msg.content;
             this.current_protocol_id = res.data.msg.protocol_id;
           } else {
-            Message.warning(res.data.msg);
+            this.$Message.warning(res.data.msg);
           }
         })
         .catch(error => {
@@ -74,7 +73,7 @@ export default {
     handleSubmit() {
         var content = this.$refs.description_editor.editor.getContent();
             if(this.content){
-                Message.warning('请填写协议~');
+               this.$Message.warning('请填写协议~');
                 return false;
             }
       api
@@ -85,10 +84,10 @@ export default {
         })
         .then(res => {
           if (res.data.res_code == 1) {
-            Message.success("保存成功");
+            this.$Message.warning('保存成功');
             this.editProtocol = false;
           } else {
-            Message.warning(res.data.msg);
+            this.$Message.warning(res.data.msg);
           }
         })
         .catch(error => {

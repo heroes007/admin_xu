@@ -4,7 +4,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="header" type='flex' justify='space-between' align='middle'>
                 <h3>已完成：{{totalProgress}}%</h3>
-                <el-button type='text' @click='clearVideoLog'>清除观看记录</el-button>
+                <Button type='text' @click='clearVideoLog'>清除观看记录</Button>
             </Row>
             <Row slot="body">
                 <Row class="body-top" v-if="true">
@@ -25,11 +25,11 @@
                             <i :class="{'xght-webfont-lock':!item.unlock,'xght-webfont-play-sign':!handleResultProgress(item.video_total_count, item.complete_video_test_ids, item.see_video_ids).allFinish && item.unlock,'xght-webfont-ok-sign':handleResultProgress(item.video_total_count, item.complete_video_test_ids, item.see_video_ids).allFinish}"></i>
                         </Col>
                         <Col :span="4">
-                            <el-button type='primary' @click='unlockTest(item)'>解锁测验</el-button>
+                            <Button type='primary' @click='unlockTest(item)'>解锁测验</Button>
                         </Col>
                     </Row>
                     <Row>
-                        <el-button type="primary" class="ok-btn" @click="queryOk">确认</el-button>
+                        <Button type="primary" class="ok-btn" @click="queryOk">确认</Button>
                     </Row>
                 </Row>
             </Row>

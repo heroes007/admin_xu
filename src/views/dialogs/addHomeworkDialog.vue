@@ -2,43 +2,43 @@
 <el-dialog :title="payload.type == 1 ? '创建任务' : '编辑任务'" :show-close="false" v-model="addHomeworkDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
         <Row slot="body">
-            <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
-                <el-form-item prop="name" required>
+            <Form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
+                <FormItem prop="name" required>
                     <el-input placeholder="任务名称" v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item prop="duration" required>
+               </FormItem>
+                <FormItem prop="duration" required>
                     <el-input-number placeholder="持续时间（天）" v-model="form.duration" :min='0'></el-input-number>
-                </el-form-item>
-                <el-form-item prop="subject_id" required>
+               </FormItem>
+                <FormItem prop="subject_id" required>
                     <el-select v-model="form.subject_id" placeholder="请选择学科">
                         <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item prop="grade_id" required>
+               </FormItem>
+                <FormItem prop="grade_id" required>
                     <el-select v-model="form.grade_id" placeholder="请选择学段">
                         <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="批阅形式" prop="result_type" required>
+               </FormItem>
+                <FormItem label="批阅形式" prop="result_type" required>
                     <el-radio-group v-model="form.result_type">
                         <el-radio :label="1">常规批阅</el-radio>
                         <el-radio :label="2">内置打分批阅</el-radio>
                     </el-radio-group>
-                </el-form-item>
-                <el-form-item prop="activity_param" required>
+               </FormItem>
+                <FormItem prop="activity_param" required>
                     <el-select v-model="form.activity_param" multiple placeholder="请选择">
                         <el-option v-for="item in onlineCurrriculumList" :key="item.id" :label="item.title" :value="item.curriculum_id"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item prop="task_require" required>
+               </FormItem>
+                <FormItem prop="task_require" required>
                     <el-input type="textarea" v-model="form.task_require"></el-input>
-                </el-form-item>
-                <el-form-item>
+               </FormItem>
+                <FormItem>
                     <el-checkbox-group v-model="form.max_file_count">
                         <el-checkbox label="要求学员上传作业附件" name="type" value=""></el-checkbox>
                     </el-checkbox-group>
-                </el-form-item>
-                <el-form-item prop="upload_files" required>
+               </FormItem>
+                <FormItem prop="upload_files" required>
                     <Row>
                         <Col>
                             <upload-button @uploadcomplete="handleGetUrl"></upload-button>
@@ -49,11 +49,11 @@
                             </Row>
                         </Col>
                     </Row>
-                </el-form-item>
-                <el-form-item>
-                    <el-button @click="handleSubmit('form')">提交</el-button>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+                <FormItem>
+                    <Button @click="handleSubmit('form')">提交</Button>
+               </FormItem>
+            </Form>
         </Row>
     </base-input>
 </el-dialog>

@@ -4,54 +4,54 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="dialogIndex==1">
-                <el-form ref="form" :model="form" label-width="80px" class="add-course-form" :label-position="labelPosition">
+                <Form ref="form" :model="form" label-width="80px" class="add-course-form" :label-position="labelPosition">
                     <Row>
                         <Col :span="11">
-                            <el-form-item label="课程名称">
+                            <FormItem label="课程名称">
                                 <el-input v-model="form.title" placeholder="请输入课程名称"></el-input>
-                            </el-form-item>
-                            <el-form-item label="课程讲师">
+                           </FormItem>
+                            <FormItem label="课程讲师">
                                 <el-select v-model="form.teacher_id" placeholder="请选择观讲师">
                                     <el-option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="学段">
+                           </FormItem>
+                            <FormItem label="学段">
                                 <el-select v-model="form.grade_id" placeholder="请选择学段">
                                     <el-option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="课程状态">
+                           </FormItem>
+                            <FormItem label="课程状态">
                                 <el-select v-model="form.state" placeholder="请选择课程状态">
                                     <el-option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
+                           </FormItem>
                         </Col>
                         <Col :span="11" :offset="2">
-                            <el-form-item label="开课时间">
+                            <FormItem label="开课时间">
                                 <el-date-picker v-model="selectDateRange" type="daterange" placeholder="选择日期范围">
                                 </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="操作权限（多选）">
+                           </FormItem>
+                            <FormItem label="操作权限（多选）">
                                 <el-select v-model="form.curriculum_roles" multiple placeholder="请选择权限">
                                     <el-option v-for="item in query_teacher_roles" :key="item.id" :label="item.role_name" :value="item.role_id">
                                     </el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="学科">
+                           </FormItem>
+                            <FormItem label="学科">
                                 <el-select v-model="form.subject_id" placeholder="请选择学科">
                                     <el-option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                             <el-form-item label="课程资料">
+                           </FormItem>
+                             <FormItem label="课程资料">
                                 <el-select v-model="form.data_center_id" placeholder="请选择课程资料(没有请重新上传)">
                                     <el-option v-for="item in curriculum_data_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
                                 <Row type='flex' justify='end'>
-                                    <el-button type='text' v-if='!newData.show' @click='showAddData'>新建资料</el-button>
-                                    <el-button class='save-data' type='text' v-if='newData.show' @click='saveData'>保存资料</el-button>
-                                    <el-button type='text' v-if='newData.show' @click='cancelAddData'>取消</el-button>
+                                    <Button type='text' v-if='!newData.show' @click='showAddData'>新建资料</Button>
+                                    <Button class='save-data' type='text' v-if='newData.show' @click='saveData'>保存资料</Button>
+                                    <Button type='text' v-if='newData.show' @click='cancelAddData'>取消</Button>
                                 </Row>
-                            </el-form-item>
+                           </FormItem>
                         </Col>
                     </Row>
                     <Row>
@@ -71,32 +71,32 @@
                     </Row>
                     <Row>
                         <Col :span="11">
-                            <el-form-item label="展示图片">
+                            <FormItem label="展示图片">
                                 <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                     <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
                                 </upload-panel>
-                            </el-form-item>
+                           </FormItem>
                         </Col>
                         <Col :span="11" :offset="2">
-                            <el-form-item label="文字图片">
+                            <FormItem label="文字图片">
                                 <upload-panel ref="upload_panel" :resourse="form.img_3_8" :upload-config="uploadConfig" @uploadcomplete="handle38UploadComplete">
                                     <span slot="file-require">只能上传 jpg/png 文件，且图片480*180</span>
                                 </upload-panel>
-                            </el-form-item>
+                           </FormItem>
                         </Col>
                     </Row>
                     <Row class="course-description">
-                        <el-form-item label="课程简介">
+                        <FormItem label="课程简介">
                             <el-input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description">
                             </el-input>
-                        </el-form-item>
+                       </FormItem>
                     </Row>
                     <Row>
-                        <el-form-item class="btns">
-                            <el-button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</el-button>
-                        </el-form-item>
+                        <FormItem class="btns">
+                            <Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>
+                       </FormItem>
                     </Row>
-                </el-form>
+                </Form>
             </Row>
             <Row v-if="dialogIndex==2">
                 <Row class="primary-course">
@@ -137,8 +137,8 @@
                 </Row>
                 <Row class="btns">
                     {{this.result_msg1}}
-                    <el-button type="text" @click="dialogIndex = 1" class="pre-btn">上一步</el-button>
-                    <el-button type="primary" class="public-btn" @click="handleSubmit">保存</el-button>
+                    <Button type="text" @click="dialogIndex = 1" class="pre-btn">上一步</Button>
+                    <Button type="primary" class="public-btn" @click="handleSubmit">保存</Button>
                 </Row>
             </Row>
 
