@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class='el-upload__inner'>
-            <el-button type='primary' @click='handleStartUploadFile'>
+            <Button type='primary' @click='handleStartUploadFile'>
                 {{text}}
-            </el-button>
+            </Button>
             <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
         </div>
     </div>
@@ -51,6 +51,7 @@
                 this.$refs.input.click();
             },
             handleUploadChange(event) {
+                console.log(event)
                 var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
                 this.fileName = filename;
                 this.handleGetassignKey(event.target.files[0]);
@@ -65,18 +66,18 @@
                     this.resultUrl = url + '/' + this.resultUrl;
                     this.$emit('uploadcomplete',{name: this.fileName, url: this.resultUrl});
                     var f = this.$refs.input;
-                    if(f.value){  
-        try{  
-            f.value = ''; //for IE11, latest Chrome/Firefox/Opera...  
-        }catch(err){  
-        }  
-        if(f.value){ //for IE5 ~ IE10  
-            var form = document.createElement('form'), ref = f.nextSibling;  
-            form.appendChild(f);  
-            form.reset();  
-            ref.parentNode.insertBefore(f,ref);  
-        }  
-    }  
+                    if(f.value){
+        try{
+            f.value = ''; //for IE11, latest Chrome/Firefox/Opera...
+        }catch(err){
+        }
+        if(f.value){ //for IE5 ~ IE10
+            var form = document.createElement('form'), ref = f.nextSibling;
+            form.appendChild(f);
+            form.reset();
+            ref.parentNode.insertBefore(f,ref);
+        }
+    }
                 });
             },
             handleGetassignKey(fileItem) {

@@ -4,10 +4,10 @@
             <div class="file-name-field-layout">
                 <div class="fileName">
                     <span><span class="dscj-webfont-document"></span>{{ fileName }}</span>
-                    <el-progress :style="{'visibility':showFileName ? 'visible':'hidden'}" :percentage="percentage_improve" class="percentage"></el-progress>
+                    <Progress :style="{'visibility':showFileName ? 'visible':'hidden'}" :percent="percentage_improve" class="percentage"></Progress>
                 </div>
                 <form>
-                    <el-button v-bind:disabled="isDisabled" type="primary" class="upload-btn" @click="handleStartUploadFile">点击上传</el-button>
+                    <Button v-bind:disabled="isDisabled" type="primary" class="upload-btn" @click="handleStartUploadFile">点击上传</Button>
                     <input v-bind:disabled="isDisabled" type="file" ref="input" class="upload-input" name="file" v-on:change="handleUploadChange"
                         v-bind:accept="filtersString">
                 </form>
