@@ -5,50 +5,50 @@
             <Row class="body-top">
                 <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
                     <FormItem label="ID">
-                         <el-input v-model="form.user_id" disabled></el-input>
+                         <Input v-model="form.user_id" disabled></Input>
                    </FormItem>
                     <FormItem label="姓名">
-                         <el-input v-model="form.realname" placeholder="请输入考生真实姓名"></el-input>
+                         <Input v-model="form.realname" placeholder="请输入考生真实姓名"></Input>
                    </FormItem>
                     <FormItem label="电话">
-                         <el-input v-model="form.phone" placeholder="请输入考生电话"></el-input>
+                         <Input v-model="form.phone" placeholder="请输入考生电话"></Input>
                    </FormItem>
                     <FormItem label="选择学段">
-                        <el-select v-model="form.grade_id" placeholder="请选择学段">
-                            <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                        <Select v-model="form.grade_id" placeholder="请选择学段">
+                            <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                        </Select>
                    </FormItem>
                     <FormItem label="选择学科" >
-                        <el-select v-model="form.subject_id" placeholder="请选择学科">
-                            <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                        <Select v-model="form.subject_id" placeholder="请选择学科">
+                            <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                        </Select>
                    </FormItem>
                     <!--<FormItem label="笔试成绩">
-                         <el-select v-model="form.written_result" placeholder="请选择学段">
-                            <el-option v-for="item in written_results" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                         <Select v-model="form.written_result" placeholder="请选择学段">
+                            <Option v-for="item in written_results" :key="item.id" :label="item.name" :value="item.id"></Option>
+                        </Select>
                    </FormItem>-->
                     <FormItem label="笔试成绩">
-                         <el-input v-model="form.written_result" placeholder="请输入考生笔试成绩"></el-input>
+                         <Input v-model="form.written_result" placeholder="请输入考生笔试成绩"></Input>
                    </FormItem>
                     <FormItem label="出生年月">
                         <el-date-picker v-model="form.birth" type="date" placeholder="选择日期">
                         </el-date-picker>
                    </FormItem>
                     <FormItem label="邮箱">
-                         <el-input v-model="form.email" placeholder="请输入考生邮箱"></el-input>
+                         <Input v-model="form.email" placeholder="请输入考生邮箱"></Input>
                    </FormItem>
                     <FormItem label="所在院校">
-                         <el-input v-model="form.school" placeholder="请输入考生所在院校"></el-input>
+                         <Input v-model="form.school" placeholder="请输入考生所在院校"></Input>
                    </FormItem>
                     <FormItem label="所学专业">
-                         <el-input v-model="form.school_subject" placeholder="请输入考生所学专业"></el-input>
+                         <Input v-model="form.school_subject" placeholder="请输入考生所学专业"></Input>
                    </FormItem>
                      <FormItem label="在读年级">
-                         <el-input v-model="form.school_grade" placeholder="请输入考生在读年级"></el-input>
+                         <Input v-model="form.school_grade" placeholder="请输入考生在读年级"></Input>
                    </FormItem>
                      <FormItem label="期望就业城市" label-width='100px'>
-                         <el-input v-model="form.ex_citys" placeholder="请输入考生期望就业城市"></el-input>
+                         <Input v-model="form.ex_citys" placeholder="请输入考生期望就业城市"></Input>
                    </FormItem>
                     <FormItem label="验证图片">
                          <img :src="form.certificate"/>

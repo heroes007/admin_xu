@@ -4,9 +4,9 @@
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="文章状态" label-width="80px">
-                    <el-select v-model="formInline.state" placeholder="请选择文章状态" @change='changeFilterHandler'>
-                        <el-option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
+                    <Select v-model="formInline.state" placeholder="请选择文章状态" @change='changeFilterHandler'>
+                        <Option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                    </Select>
                </FormItem>
             </Form>
         </Row>

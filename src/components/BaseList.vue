@@ -41,10 +41,10 @@
                     <Button :class="{'prop-btn':true}" type='text' v-if="!item.mixColumn && item.isBtn && !item.useCombo && !item.useTimePicker" @click="handleBtnClick(scope.$index,scope.row,item.param)">
                         {{showPropValue(item.prop,scope.row)}}
                     </Button>
-                    <el-select v-if='item.useCombo' v-model="comboDataList[scope.$index]" :multiple='!comboIsSelect' placeholder="请选择" @change='comboChangeHandler(scope.row,scope.$index,item.actionName,item.prop)' :disabled="item.disabledFunc?item.disabledFunc(scope.row):false">
-                        <el-option v-for="c in columnComboData[item.comboListIndex]" :key="c.curriculum_id" :label="c[item.listLabel]" :value="c[item.listValue]">
-                        </el-option>
-                    </el-select>
+                    <Select v-if='item.useCombo' v-model="comboDataList[scope.$index]" :multiple='!comboIsSelect' placeholder="请选择" @change='comboChangeHandler(scope.row,scope.$index,item.actionName,item.prop)' :disabled="item.disabledFunc?item.disabledFunc(scope.row):false">
+                        <Option v-for="c in columnComboData[item.comboListIndex]" :key="c.curriculum_id" :label="c[item.listLabel]" :value="c[item.listValue]">
+                        </Option>
+                    </Select>
                     <el-date-picker v-if='item.useTimePicker'
                         v-model="comboDataList[scope.$index]"
                         type="datetime"

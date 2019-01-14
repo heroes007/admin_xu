@@ -4,26 +4,26 @@
     <Row>
         <Form :inline="true" :model="formInline" class="find-by-term">
             <FormItem label="学科" label-width="40px">
-                <el-select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
-                    <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
+                <Select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
+                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                </Select>
            </FormItem>
             <FormItem label="面试结果" label-width="80px">
-                <el-select v-model="formInline.interview_state" placeholder="请选择面试结果" @change='changeFilterHandler'>
-                    <el-option label="笔试通过" :value="3"></el-option>
-                    <el-option label="未面试" :value="0"></el-option>
-                    <el-option label="面试通过" :value="1"></el-option>
-                    <el-option label="面试未通过" :value="2"></el-option>
-                </el-select>
+                <Select v-model="formInline.interview_state" placeholder="请选择面试结果" @change='changeFilterHandler'>
+                    <Option label="笔试通过" :value="3"></Option>
+                    <Option label="未面试" :value="0"></Option>
+                    <Option label="面试通过" :value="1"></Option>
+                    <Option label="面试未通过" :value="2"></Option>
+                </Select>
            </FormItem>
             <FormItem label="" label-width="80px">
-              <el-input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
-                <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
-                  <el-option label="姓名" :value="1"></el-option>
-                  <el-option label="电话号" :value="2"></el-option>
-                </el-select>
+              <Input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
+                <Select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
+                  <Option label="姓名" :value="1"></Option>
+                  <Option label="电话号" :value="2"></Option>
+                </Select>
                 <Button slot="append" class="append-btn" @click='handleRealname'>搜索</Button>
-              </el-input>
+              </Input>
            </FormItem>
         </Form>
     </Row>
@@ -32,15 +32,15 @@
             <FormItem>
                 <Row>
                     <Col :span="10">
-                        <el-select class="select-user" v-model="formInline.classify" placeholder="">
-                            <el-option label="手机号" value="phone"></el-option>
-                            <el-option label="昵称" value="username"></el-option>
-                            <el-option label="真实姓名" value="realname"></el-option>
-                            <el-option label="用户ID" value="user_id"></el-option>
-                        </el-select>
+                        <Select class="select-user" v-model="formInline.classify" placeholder="">
+                            <Option label="手机号" value="phone"></Option>
+                            <Option label="昵称" value="username"></Option>
+                            <Option label="真实姓名" value="realname"></Option>
+                            <Option label="用户ID" value="user_id"></Option>
+                        </Select>
                     </Col>
                     <Col :span="14">
-                        <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
+                        <Input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></Input>
                     </Col>
                 </Row>
            </FormItem>

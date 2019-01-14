@@ -24,8 +24,8 @@
                             </div>
                         </Row>
                         <div class='readover-content'>
-                            <el-input type="textarea" :rows="20" placeholder="请输入评价内容" v-model="data.read_over_content">
-                            </el-input>
+                            <Input type="textarea" :rows="20" placeholder="请输入评价内容" v-model="data.read_over_content">
+                            </Input>
                         </div>
                         <Row class='btn-submit' type='flex' justify='center'>
                             <Button type='primary' @click='doSubmit'>确定</Button>

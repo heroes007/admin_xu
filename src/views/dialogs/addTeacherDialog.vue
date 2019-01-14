@@ -7,11 +7,11 @@
             <Row class="body-top" v-if="true">
                 <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
                     <FormItem label="讲师名称">
-                        <el-input v-model="form.name" placeholder="请输入讲师名称"></el-input>
+                        <Input v-model="form.name" placeholder="请输入讲师名称"></Input>
                    </FormItem>
                     <FormItem label="讲师描述">
-                        <el-input type="textarea"  :autosize="{ minRows: 6, maxRows: 6}" placeholder="请对讲师进行描述" v-model="form.description">
-                        </el-input>
+                        <Input type="textarea"  :autosize="{ minRows: 6, maxRows: 6}" placeholder="请对讲师进行描述" v-model="form.description">
+                        </Input>
                    </FormItem>
                     <FormItem label="讲师照片" class="upload-form1">
                         <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleUploadComplete">

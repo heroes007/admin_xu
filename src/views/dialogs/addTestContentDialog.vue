@@ -5,13 +5,13 @@
         <Row slot="body">
             <Form :inline="true" :model="formInline1" class="row1-test-form" label-width="80px">
                 <FormItem label="测验名称">
-                    <el-input v-model="formInline1.title" placeholder="请输入测验的名称" :disabled='isEdit'></el-input>
+                    <Input v-model="formInline1.title" placeholder="请输入测验的名称" :disabled='isEdit'></Input>
                </FormItem>
                 <FormItem label="测验权限">
-                    <el-select v-model="formInline1.video_test_roles" placeholder="选择测验权限" :disabled='isEdit' multiple>
-                        <el-option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.role_id">
-                        </el-option>
-                    </el-select>
+                    <Select v-model="formInline1.video_test_roles" placeholder="选择测验权限" :disabled='isEdit' multiple>
+                        <Option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.role_id">
+                        </Option>
+                    </Select>
                </FormItem>
                 <FormItem class="save-test">
                     <Button type="primary" @click="handleSaveTest" class="save-test-btn" v-if='!isEdit'>保存测验</Button>
@@ -22,17 +22,17 @@
                 <Row class="row2-top">
                     <Col :span="12" class="col2-left">
                         <FormItem label="题干名称">
-                            <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body">
-                            </el-input>
+                            <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body">
+                            </Input>
                        </FormItem>
                         <FormItem label="选项数量">
-                            <el-select v-model="formInline2.select_count" placeholder="选项数量">
-                                <el-option label="2" value="2"></el-option>
-                                <el-option label="3" value="3"></el-option>
-                                <el-option label="4" value="4"></el-option>
-                                <el-option label="5" value="5"></el-option>
-                                <el-option label="6" value="6"></el-option>
-                            </el-select>
+                            <Select v-model="formInline2.select_count" placeholder="选项数量">
+                                <Option label="2" value="2"></Option>
+                                <Option label="3" value="3"></Option>
+                                <Option label="4" value="4"></Option>
+                                <Option label="5" value="5"></Option>
+                                <Option label="6" value="6"></Option>
+                            </Select>
                        </FormItem>
                         <FormItem label="排列序号">
                             <el-input-number v-model="formInline2.orderby" :min="1" ></el-input-number>
@@ -46,8 +46,8 @@
                                 </el-checkbox-group>
                             </Col>
                             <Col :span="20">
-                                <el-input placeholder="请输入内容" v-model="item.desc">
-                                </el-input>
+                                <Input placeholder="请输入内容" v-model="item.desc">
+                                </Input>
                             </Col>
                        </FormItem>
                         <!-- <span style="clear: left"></span> -->

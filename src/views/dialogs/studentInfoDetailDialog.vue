@@ -7,22 +7,22 @@
                     <el-tab-pane label="基础信息">
                         <Form ref="form" :model="form1" label-width="80px">
                             <FormItem label="选择项目">
-                                <el-select v-model="form1.project_id" placeholder="请选择项目" disabled>
-                                    <el-option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form1.project_id" placeholder="请选择项目" disabled>
+                                    <Option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="真实姓名">
-                                <el-input v-model="form1.realname" placeholder="请输入学员真实姓名"></el-input>
+                                <Input v-model="form1.realname" placeholder="请输入学员真实姓名"></Input>
                            </FormItem>
                             <FormItem label="选择学段">
-                                <el-select v-model="form1.grade_id" placeholder="请选择学段">
-                                    <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form1.grade_id" placeholder="请选择学段">
+                                    <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="选择学科">
-                                <el-select v-model="form1.subject_id" placeholder="请选择学科">
-                                    <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form1.subject_id" placeholder="请选择学科">
+                                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="开课时间">
                                 <el-date-picker v-model="form1.start_school_time" type="date" placeholder="选择日期">
@@ -37,38 +37,38 @@
                                 </el-date-picker>
                            </FormItem>
                             <FormItem label="学员类型">
-                                <el-select v-model="form1.type" placeholder="请选择学员类型">
-                                    <el-option label="普通" value="1"></el-option>
-                                    <el-option label="协议" value="2"></el-option>
-                                    <el-option label="个人返钱" value="3"></el-option>
-                                    <el-option label="个人不返钱" value="4"></el-option>
-                                    <el-option label="内部账号" value="-1"></el-option>
-                                </el-select>
+                                <Select v-model="form1.type" placeholder="请选择学员类型">
+                                    <Option label="普通" value="1"></Option>
+                                    <Option label="协议" value="2"></Option>
+                                    <Option label="个人返钱" value="3"></Option>
+                                    <Option label="个人不返钱" value="4"></Option>
+                                    <Option label="内部账号" value="-1"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="选择导师">
-                                <el-select v-model="form1.tutor_user_id" placeholder="请选择导师">
-                                    <el-option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.user_id"></el-option>
-                                </el-select>
+                                <Select v-model="form1.tutor_user_id" placeholder="请选择导师">
+                                    <Option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.user_id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="选择学管">
-                                <el-select v-model="form1.xg_user_id" placeholder="请选择学管">
-                                    <el-option v-for="item in studentManagers" :key="item.id" :label="item.nickname" :value="item.user_id"></el-option>
-                                </el-select>
+                                <Select v-model="form1.xg_user_id" placeholder="请选择学管">
+                                    <Option v-for="item in studentManagers" :key="item.id" :label="item.nickname" :value="item.user_id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="状态">
-                                <el-select v-model="form1.state" placeholder="请选择学员状态">
-                                    <el-option label="正常" value="1"></el-option>
-                                    <el-option label="毕业" value="2"></el-option>
-                                    <el-option label="退学" value="3"></el-option>
-                                    <el-option label="延缓" value="4"></el-option>
-                                    <el-option label="删除" value="-1"></el-option>
-                                </el-select>
+                                <Select v-model="form1.state" placeholder="请选择学员状态">
+                                    <Option label="正常" value="1"></Option>
+                                    <Option label="毕业" value="2"></Option>
+                                    <Option label="退学" value="3"></Option>
+                                    <Option label="延缓" value="4"></Option>
+                                    <Option label="删除" value="-1"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="特殊类型">
-                                <el-select v-model="form1.is_test_user" placeholder="请选择学员特殊类型">
-                                    <el-option label="正式学员" :value="0"></el-option>
-                                    <el-option label="测试学员" :value="1"></el-option>
-                                </el-select>
+                                <Select v-model="form1.is_test_user" placeholder="请选择学员特殊类型">
+                                    <Option label="正式学员" :value="0"></Option>
+                                    <Option label="测试学员" :value="1"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem class="btn-content" label-width='0'>
                                 <Button type="ghost" @click="deleteStudent(form1.student_id)">删除学员</Button>
@@ -82,50 +82,50 @@
                 </Row>
                         <Form ref="form2" :model="form2" label-width="80px" class="add-teacher-form" v-if='form2.user_id !== 0'>
                             <FormItem label="ID">
-                                <el-input v-model="form2.user_id" disabled></el-input>
+                                <Input v-model="form2.user_id" disabled></Input>
                            </FormItem>
                             <FormItem label="姓名">
-                                <el-input v-model="form2.realname" placeholder="请输入考生真实姓名"></el-input>
+                                <Input v-model="form2.realname" placeholder="请输入考生真实姓名"></Input>
                            </FormItem>
                             <FormItem label="电话">
-                                <el-input v-model="form2.phone" placeholder="请输入考生电话"></el-input>
+                                <Input v-model="form2.phone" placeholder="请输入考生电话"></Input>
                            </FormItem>
                             <FormItem label="选择学段">
-                                <el-select v-model="form2.grade_id" placeholder="请选择学段">
-                                    <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form2.grade_id" placeholder="请选择学段">
+                                    <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="选择学科">
-                                <el-select v-model="form2.subject_id" placeholder="请选择学科">
-                                    <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form2.subject_id" placeholder="请选择学科">
+                                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="面试结果" v-if='form2.interview_state === 1'>
-                                <el-select v-model="form2.interview_result" placeholder="请选择学段">
-                                    <el-option v-for="item in interviewResultList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form2.interview_result" placeholder="请选择学段">
+                                    <Option v-for="item in interviewResultList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="笔试成绩">
-                                <el-input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></el-input>
+                                <Input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></Input>
                            </FormItem>
                             <FormItem label="出生年月">
                                 <el-date-picker v-model="form2.birth" type="date" placeholder="选择日期">
                                 </el-date-picker>
                            </FormItem>
                             <FormItem label="邮箱">
-                                <el-input v-model="form2.email" placeholder="请输入考生邮箱"></el-input>
+                                <Input v-model="form2.email" placeholder="请输入考生邮箱"></Input>
                            </FormItem>
                             <FormItem label="所在院校">
-                                <el-input v-model="form2.school" placeholder="请输入考生所在院校"></el-input>
+                                <Input v-model="form2.school" placeholder="请输入考生所在院校"></Input>
                            </FormItem>
                             <FormItem label="所学专业">
-                                <el-input v-model="form2.school_subject" placeholder="请输入考生所学专业"></el-input>
+                                <Input v-model="form2.school_subject" placeholder="请输入考生所学专业"></Input>
                            </FormItem>
                             <FormItem label="在读年级">
-                                <el-input v-model="form2.school_grade" placeholder="请输入考生在读年级"></el-input>
+                                <Input v-model="form2.school_grade" placeholder="请输入考生在读年级"></Input>
                            </FormItem>
                             <FormItem label="期望就业城市" label-width='100px'>
-                                <el-input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></el-input>
+                                <Input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></Input>
                            </FormItem>
                             <FormItem class="btn-content" label-width='0'>
                                 <Button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</Button>
@@ -137,9 +137,9 @@
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
                                 <Button type='text' @click='clearVideoLog'>清除观看记录</Button>
-                                <el-select v-model="form3.product_id" placeholder="请选择项目" @change='changeProductHandler'>
-                                    <el-option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form3.product_id" placeholder="请选择项目" @change='changeProductHandler'>
+                                    <Option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></Option>
+                                </Select>
                             </Row>     
 
                             <Row class="body-top" v-if="true">

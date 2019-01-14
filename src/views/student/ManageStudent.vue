@@ -1,130 +1,34 @@
 <template>
 <div class='manage-student-view'>
     <header-component title='查看学员' @reRenderList="reRenderList"  :showAdd='true' addText='创建学员' @addClick='addStudentHandler'></header-component>
-    <!--<Row class='sub-header' type='flex' justify='space-between' align='middle'>-->
-    <!--<el-breadcrumb separator="/">-->
-    <!--<el-breadcrumb-item>学员管理</el-breadcrumb-item>-->
-    <!--<el-breadcrumb-item>查看学员</el-breadcrumb-item>-->
-    <!--</el-breadcrumb>-->
-    <!--<Button class='btn-add' type='text' @click='dialogVisible=true'>添加新学员</Button>-->
-    <!--<el-dialog title="添加学员" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-student-view'>-->
-    <!--<Row class='search-bar' type='flex' justify='center' align='middle'>-->
-    <!--<el-input placeholder="请输入用户名" v-model="searchData">-->
-    <!--<el-select v-model="searchType" slot="prepend" placeholder="请选择">-->
-    <!--<el-option label="用户名" value="nickname"></el-option>-->
-    <!--<el-option label="手机号" value="phone"></el-option>-->
-    <!--</el-select>-->
-    <!--<Button slot="append" type='text' @click='searchStudent'>搜索</Button>-->
-    <!--</el-input>-->
-    <!--</Row>-->
-    <!--<Row class='result' type='flex' justify='center' align='middle' v-if='initData'>-->
-    <!--<Row type='flex' justify='center' align='middle' v-if='isLoading'>-->
-    <!--<i class='el-icon-loading'></i>-->
-    <!--</Row>-->
-    <!--<div class='data-form' v-if='!isLoading'>-->
-    <!--<Row class='user-info' type='flex' justify='start' align='middle' v-if='searchResult'>-->
-    <!--搜索结果：ID:<span>{{searchResult.user_id}}</span>用户名:<span>{{searchResult.nickname}}</span>注册手机:<span>{{searchResult.phone}}</span>-->
-    <!--</Row>-->
-    <!--<Row class='user-info' type='flex' justify='start' align='middle' v-if='!searchResult'>-->
-    <!--搜索结果：<span>{{resultMsg}}</span>-->
-    <!--</Row>-->
-    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
-    <!--学员真实姓名：-->
-    <!--<el-input placeholder='请输入内容' v-model='user.realname'></e-input>-->
-    <!--</Row>-->
-    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
-    <!--入学时间：-->
-    <!--<el-date-picker-->
-    <!--v-model="user.start_school_time"-->
-    <!--type="date"-->
-    <!--placeholder="选择日期">-->
-    <!--</el-date-picker>-->
-    <!--</Row>-->
-    <!--&lt;!&ndash;<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>&ndash;&gt;-->
-    <!--&lt;!&ndash;报名期数：&ndash;&gt;-->
-    <!--&lt;!&ndash;<el-input-number v-model="user.times"></el-input-number>&ndash;&gt;-->
-    <!--&lt;!&ndash;</Row>&ndash;&gt;-->
-    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
-    <!--所属学段：-->
-    <!--<el-select v-model="user.period_id" placeholder="请选择学段">-->
-    <!--<el-option-->
-    <!--v-for="item in periods"-->
-    <!--:label="item.name"-->
-    <!--:value="item.id">-->
-    <!--</el-option>-->
-    <!--</el-select>-->
-    <!--</Row>-->
-    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
-    <!--所属学科：-->
-    <!--<el-select v-model="user.subject_id" placeholder="请选择学科">-->
-    <!--<el-option-->
-    <!--v-for="item in subjects"-->
-    <!--:label="item.name"-->
-    <!--:value="item.id">-->
-    <!--</el-option>-->
-    <!--</el-select>-->
-    <!--</Row>-->
-    <!--<Row class='user-data desc' type='flex' justify='start' align='middle' v-if='searchResult'>-->
-    <!--学员备注：-->
-    <!--<el-input placeholder='请输入内容' v-model='user.more'></e-input>-->
-    <!--</Row>-->
-    <!--<Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>-->
-    <!--学员类型：-->
-    <!--<el-select v-model="user.type" placeholder="请选择学员类型">-->
-    <!--<el-option-->
-    <!--label="普通"-->
-    <!--value="1">-->
-    <!--</el-option>-->
-    <!--<el-option-->
-    <!--label="协议"-->
-    <!--value="2">-->
-    <!--</el-option>-->
-    <!--<el-option-->
-    <!--label="个人"-->
-    <!--value="3">-->
-    <!--</el-option>-->
-    <!--</el-select>-->
-    <!--</Row>-->
-    <!--<Row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>-->
-    <!--<Button @click='setStudent'>确认</Button>-->
-    <!--</Row>-->
-    <!--</div>-->
-    <!--</Row>-->
-    <!--</el-dialog>-->
-    <!--</Row>-->
-    <!--<Row class='data-container'>-->
-    <!--<div class='list'>-->
-    <!---->
-    <!--</div>-->
-    <!--</Row>-->
     <Row>
         <Form :inline="true" :model="formInline" :label-width="40" class="find-by-term">
             <FormItem label="类型" >
-                <el-select v-model="formInline.is_test_user" placeholder="请选择类型" @change='changeFilterHandler'>
-                    <el-option label="全部" :value="-1"></el-option>
-                    <el-option label="正式" :value="0"></el-option>
-                    <el-option label="测试" :value="1"></el-option>
-                </el-select>
+                <Select v-model="formInline.is_test_user" placeholder="请选择类型" @change='changeFilterHandler'>
+                    <Option label="全部" :value="-1"></Option>
+                    <Option label="正式" :value="0"></Option>
+                    <Option label="测试" :value="1"></Option>
+                </Select>
            </FormItem>
              <FormItem label="学段" >
-                <el-select multiple v-model="formInline.grade_id" placeholder="请选择学段" @change='changeFilterHandler'>
-                    <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
+                <Select multiple v-model="formInline.grade_id" placeholder="请选择学段" @change='changeFilterHandler'>
+                    <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                </Select>
            </FormItem>
             <FormItem label="学科">
-                <el-select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
-                    <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
+                <Select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
+                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                </Select>
            </FormItem>
             <FormItem label="状态" >
-                <el-select multiple v-model="formInline.state_id" placeholder="请选择学员状态" @change='changeFilterHandler'>
-                    <el-option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
+                <Select multiple v-model="formInline.state_id" placeholder="请选择学员状态" @change='changeFilterHandler'>
+                    <Option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                </Select>
            </FormItem>
             <FormItem label="产品">
-                <el-select v-model="formInline.product_id" placeholder="请选择产品" @change='changeFilterHandler'>
-                    <el-option v-for="item in productList" :key="item.id" :label="item.title" :value="item.id"></el-option>
-                </el-select>
+                <Select v-model="formInline.product_id" placeholder="请选择产品" @change='changeFilterHandler'>
+                    <Option v-for="item in productList" :key="item.id" :label="item.title" :value="item.id"></Option>
+                </Select>
            </FormItem>
         </Form>
     </Row>
@@ -133,15 +37,15 @@
             <FormItem>
                 <Row>
                     <Col :span="10">
-                        <el-select class="select-user" v-model="formInline.classify" placeholder="">
-                            <el-option label="手机号" value="phone"></el-option>
-                            <el-option label="昵称" value="username"></el-option>
-                            <el-option label="真实姓名" value="realname"></el-option>
-                            <el-option label="用户ID" value="user_id"></el-option>
-                        </el-select>
+                        <Select class="select-user" v-model="formInline.classify" placeholder="">
+                            <Option label="手机号" value="phone"></Option>
+                            <Option label="昵称" value="username"></Option>
+                            <Option label="真实姓名" value="realname"></Option>
+                            <Option label="用户ID" value="user_id"></Option>
+                        </Select>
                     </Col>
                     <Col :span="14">
-                        <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
+                        <Input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></Input>
                     </Col>
                 </Row>
            </FormItem>

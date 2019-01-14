@@ -5,17 +5,17 @@
             <Row class="body-top" v-if="true">
                 <Form ref="form" :model="form" :label-width="70" class="add-teacher-form">
                     <FormItem label="资料名称">
-                        <el-input v-model="form.name" placeholder="请输入分类名称"></el-input>
+                        <Input v-model="form.name" placeholder="请输入分类名称"></Input>
                    </FormItem>
                     <FormItem label="学科" v-if='payload === 0'>
-                                <el-select v-model="form.subject_id" placeholder="请选择学科">
-                                    <el-option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form.subject_id" placeholder="请选择学科">
+                                    <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                     <FormItem label="学段" v-if='payload === 0'>
-                                <el-select v-model="form.grade_id" placeholder="请选择学段">
-                                    <el-option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form.grade_id" placeholder="请选择学段">
+                                    <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                     <FormItem :label-width='0'>
                         <file-uploader :filters="dataFilters" maxFileCount="1"

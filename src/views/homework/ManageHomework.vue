@@ -28,70 +28,70 @@
                     <div class='data-inputs'>
                         <Row class='input-rows' type='flex' justify='left' align='middle'>
                             <span class='m-label'>{{data.auto?'作业':'任务'}}名称</span>
-                            <el-input placeholder='请输入任务名称' v-model='data.task_name'>
-                                </el-input>
+                            <Input placeholder='请输入任务名称' v-model='data.task_name'>
+                                </Input>
                         </Row>
                         <Row class='input-rows' type='flex' justify='left' align='middle'>
                             <span class='m-label'>上传格式</span>
-                            <el-select v-model="data.upload_type" multiple placeholder="请选择上传格式">
-                                <el-option
+                            <Select v-model="data.upload_type" multiple placeholder="请选择上传格式">
+                                <Option
                                         label="视频"
                                         value="0">
-                                </el-option>
-                                <el-option
+                                </Option>
+                                <Option
                                         label="文本"
                                         value="1">
-                                </el-option>
-                                <el-option
+                                </Option>
+                                <Option
                                         label="图片"
                                         value="2">
-                                </el-option>
-                                <el-option
+                                </Option>
+                                <Option
                                         label="音频"
                                         value="3">
-                                </el-option>
-                            </el-select>
+                                </Option>
+                            </Select>
                             <span class='m-label'>（多选）</span>
                         </Row>
                         <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
                             <span class='m-label'>{{data.auto?'作业':'任务'}}分类</span>
-                            <el-select v-model="data.task_category_id" placeholder="请选择分类">
-                                <el-option
+                            <Select v-model="data.task_category_id" placeholder="请选择分类">
+                                <Option
                                         v-for="item in categories" :key="item.id"
                                         :label="item.name"
                                         :value="item.id">
-                                </el-option>
-                            </el-select>
+                                </Option>
+                            </Select>
                         </Row>
                         <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
                             <span class='m-label'>所属学段</span>
-                            <el-select v-model="data.period_id" placeholder="请选择学科">
-                                <el-option
+                            <Select v-model="data.period_id" placeholder="请选择学科">
+                                <Option
                                         v-for="item in periods" :key="item.id"
                                         :label="item.name"
                                         :value="item.id">
-                                </el-option>
-                            </el-select>
+                                </Option>
+                            </Select>
                         </Row>
                         <Row class='input-rows' type='flex' justify='left' align='middle' v-if='!data.auto'>
                             <span class='m-label'>所属学科</span>
-                            <el-select v-model="data.subject_id" placeholder="请选择学科">
-                                <el-option
+                            <Select v-model="data.subject_id" placeholder="请选择学科">
+                                <Option
                                         v-for="item in subjects" :key="item.id"
                                         :label="item.name"
                                         :value="item.id">
-                                </el-option>
-                            </el-select>
+                                </Option>
+                            </Select>
                         </Row>
                         <Row class='input-rows' type='flex' justify='left' align='middle'>
                             <span class='m-label'>{{data.auto?'作业':'任务'}}要求</span>
-                            <el-input
+                            <Input
                                     class='desc'
                                     type="textarea"
                                     :autosize="{ minRows: 2, maxRows: 4}"
                                     placeholder="请输入具体要求"
                                     v-model="data.task_require">
-                            </el-input>
+                            </Input>
                         </Row>
                         <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
                         <!--<span class='m-label'>自动触发</span>-->
@@ -103,13 +103,13 @@
                         <!--</Row>-->
                         <Row class='input-rows' type='flex' justify='left' align='middle' v-if='data.auto && !isEdit'>
                             <span class='m-label'>完成课程</span>
-                            <el-select v-model="data.auto_curriculum_id" placeholder="请选择课程">
-                                <el-option
+                            <Select v-model="data.auto_curriculum_id" placeholder="请选择课程">
+                                <Option
                                         v-for="item in courses" :key="item.id"
                                         :label="item.title"
                                         :value="item.curriculum_id">
-                                </el-option>
-                            </el-select>
+                                </Option>
+                            </Select>
                         </Row>
                         <!--<Row class='input-rows' type='flex' justify='left' align='middle' v-if='!isEdit'>-->
                             <!--<span class='m-label'>上传次数</span>-->

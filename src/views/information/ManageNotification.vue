@@ -40,8 +40,8 @@
                             </div>
                         </div>
 
-                        <el-input type="textarea" :autosize='false' placeholder="请输入内容" v-model="messageContent">
-                        </el-input>
+                        <Input type="textarea" :autosize='false' placeholder="请输入内容" v-model="messageContent">
+                        </Input>
                         <Button class='btn-submit' type='primary' @click='sendMsg'>发送</Button>
                     </Col>
                 </Row>

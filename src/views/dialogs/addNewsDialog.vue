@@ -5,13 +5,13 @@
                 <Row class="body-top">
                     <Form ref="form" :model="form" label-width="121px" class="add-task-form">
                         <FormItem label="文章标题">
-                            <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
+                            <Input v-model="form.title" placeholder="请输入文章标题"></Input>
                        </FormItem>
                         <FormItem label="阅读数">
                             <el-input-number placeholder="请输入阅读数" v-model="form.default_count" :min='0'></el-input-number>
                        </FormItem>
                         <FormItem label="文章摘要">
-                            <el-input type="textarea" :autosize='{minRows:4}' v-model="form.description" placeholder="请输入文章摘要"></el-input>
+                            <Input type="textarea" :autosize='{minRows:4}' v-model="form.description" placeholder="请输入文章摘要"></Input>
                        </FormItem>
                         <FormItem label="文章正文">
                             <text-editor ref='content_editor' :content='contentData' />

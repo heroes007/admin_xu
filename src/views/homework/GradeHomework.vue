@@ -64,13 +64,13 @@
                         布置老师
                     </Col>
                     <Col v-if='tabIndex === 2'>
-                        <el-select v-model="filterSubject" placeholder="所属学科">
-                            <el-option
+                        <Select v-model="filterSubject" placeholder="所属学科">
+                            <Option
                                     v-for="item in subjects" :key="item.id"
                                     :label="item.name"
                                     :value="item.id">
-                            </el-option>
-                        </el-select>
+                            </Option>
+                        </Select>
                     </Col>
                 </Row>
                 <Row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">

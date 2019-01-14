@@ -7,22 +7,22 @@
                 <el-tab-pane label="视频设置">
                     <Form ref="form" :model="form" label-width="80px">
                         <FormItem label="小节名称">
-                            <el-input v-model="form.title" placeholder="请输入小节名称"></el-input>
+                            <Input v-model="form.title" placeholder="请输入小节名称"></Input>
                        </FormItem>
                         <!--<FormItem label="视频状态">-->
-                            <!--<el-select v-model="form.region" placeholder="请选择视频状态">-->
-                                <!--<el-option label="区域一" value="shanghai"></el-option>-->
-                                <!--<el-option label="区域二" value="beijing"></el-option>-->
-                            <!--</el-select>-->
+                            <!--<Select v-model="form.region" placeholder="请选择视频状态">-->
+                                <!--<Option label="区域一" value="shanghai"></Option>-->
+                                <!--<Option label="区域二" value="beijing"></Option>-->
+                            <!--</Select>-->
                         <!--</</FormItem>>-->
                         <FormItem label="视频时长（分）">
-                            <el-input v-model="form.duration" placeholder="请输入视频时长"></el-input>
+                            <Input v-model="form.duration" placeholder="请输入视频时长"></Input>
                        </FormItem>
                         <FormItem label="观看权限（多选）">
-                            <el-select v-model="form.video_roles" placeholder="请选择观看权限" multiple>
-                                <el-option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.role_id">
-                                </el-option>
-                            </el-select>
+                            <Select v-model="form.video_roles" placeholder="请选择观看权限" multiple>
+                                <Option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.role_id">
+                                </Option>
+                            </Select>
                        </FormItem>
                         <FormItem label="上传视频" class="upload-form">
                             <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler' :upload-config='uploaderConfig'>
@@ -37,9 +37,9 @@
                 <el-tab-pane label="复制视频">
                     <Form ref="form" :model="form" label-width="80px" class="has-video-form">
                         <FormItem label="所属项目">
-                            <el-select v-model="projectId" @change='changeProjectHandler'>
-                                <el-option :label='item.name' :value='item.id' v-for='item in projectList' :key="item.id"></el-option>
-                            </el-select>
+                            <Select v-model="projectId" @change='changeProjectHandler'>
+                                <Option :label='item.name' :value='item.id' v-for='item in projectList' :key="item.id"></Option>
+                            </Select>
                        </FormItem>
                         <FormItem class="course-list">
                             <el-collapse @change='toggleCurriculum' :accordion='true'>

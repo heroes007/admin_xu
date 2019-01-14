@@ -5,12 +5,12 @@
             <Row class="body-top" v-if="true">
                 <Form ref="form" :model="form" label-width="100px" class="add-teacher-form">
                     <FormItem label="兑换码名称">
-                        <el-input v-model="form.code_name" placeholder="请输入分类名称"></el-input>
+                        <Input v-model="form.code_name" placeholder="请输入分类名称"></Input>
                    </FormItem>
                     <FormItem label="选择产品">
-                        <el-select v-model="form.product_id" placeholder="请选择产品">
-                            <el-option v-for="item in productionList" :key="item.id" :label="item.title" :value="item.id"></el-option>
-                        </el-select>
+                        <Select v-model="form.product_id" placeholder="请选择产品">
+                            <Option v-for="item in productionList" :key="item.id" :label="item.title" :value="item.id"></Option>
+                        </Select>
                    </FormItem>
                     <FormItem label="起止日期">
                                 <el-date-picker v-model="form.time" type="daterange" placeholder="请选择兑换码起止日期">

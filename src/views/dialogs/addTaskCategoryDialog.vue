@@ -18,7 +18,7 @@
                         </el-radio-group>
                    </FormItem>
                     <FormItem label="分类名称">
-                        <el-input v-model="form.name" placeholder="请输入分类名称"></el-input>
+                        <Input v-model="form.name" placeholder="请输入分类名称"></Input>
                    </FormItem>
                     <FormItem class="btn-content">
                         <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
