@@ -6,7 +6,10 @@ var api = axios.create({
   // baseURL: 'http://192.168.1.15:4005/',
   baseURL: 'http://api.tl100.com/met/',
   timeout: 10000,
-  withCredentials: true
+  withCredentials: true,
+  data:{
+    token: localStorage.getItem('token') || ''
+  }
 });
 
 export default api;

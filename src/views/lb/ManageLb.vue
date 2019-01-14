@@ -90,7 +90,7 @@
     </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
     .ivu-input-wrapper{
         width: calc(100% - 70px) !important;
     }
