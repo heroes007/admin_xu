@@ -3,10 +3,10 @@
         <Row class='header-container' type='flex' justify='space-between' align='middle'>
             <div class='title'>
                 <i class='el-icon-menu'></i>
-                <el-select v-model="project_id" placeholder="请选择" disabled>
-                    <el-option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id">
-                    </el-option>
-                </el-select>
+                <Select v-model="project_id" placeholder="请选择" disabled>
+                    <Option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id">
+                    </Option>
+                </Select>
             </div>
             <div class='btn-group' v-if='type !== 0'>
                 <Button class='btn-add' type='primary' icon="plus" v-if='type === 1 && showAdd' @click="addCourseHandler">

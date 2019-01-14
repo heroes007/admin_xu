@@ -3,14 +3,14 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class='search-bar' type='flex' justify='center' align='middle'>
-                <el-input placeholder="请输入用户名" v-model="searchData">
-                    <el-select v-model="searchType" slot="prepend" placeholder="请选择">
-                        <el-option label="ID" value="id"></el-option>
-                        <el-option label="昵称" value="nickname"></el-option>
-                        <el-option label="手机号" value="phone"></el-option>
-                    </el-select>
+                <Input placeholder="请输入用户名" v-model="searchData">
+                    <Select v-model="searchType" slot="prepend" placeholder="请选择">
+                        <Option label="ID" value="id"></Option>
+                        <Option label="昵称" value="nickname"></Option>
+                        <Option label="手机号" value="phone"></Option>
+                    </Select>
                     <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
-                </el-input>
+                </Input>
      </Row>
             <el-table ref="table" :data="queryOfflineUserList" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column label="ID" width="80">

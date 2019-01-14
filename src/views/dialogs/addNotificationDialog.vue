@@ -2,8 +2,8 @@
 <el-dialog :title="this.payload?'编辑通知':'创建通知'" :show-close="false" v-model="manulActiveDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
         <Row slot="body">
-                <el-input type="textarea" :autosize='false' placeholder="请输入内容" v-model="notificationContent">
-                            </el-input>
+                <Input type="textarea" :autosize='false' placeholder="请输入内容" v-model="notificationContent">
+                            </Input>
                 <Button class='btn-submit' type='primary' @click='submitHandler'>提交</Button>
           </Row>
       </base-input>

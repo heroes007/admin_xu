@@ -5,20 +5,20 @@
             <Row class="body-top">
                 <Form ref="form" :rules="rules" :model="form" label-width="121px" class="add-task-form">
                     <FormItem v-show="nextStep == 0" :label="typeStr('','名称')" prop="name" required>
-                        <el-input v-model="form.name" :placeholder="typeStr('请输入','名称')"></el-input>
+                        <Input v-model="form.name" :placeholder="typeStr('请输入','名称')"></Input>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" :label="typeStr('','持续时间')" prop="duration" required>
                         <el-input-number placeholder="持续时间（天）" v-model="form.duration" :min='0'></el-input-number>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" label="选择学科" prop="subject_id" required>
-                        <el-select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2' @change="handleChangeType1">
-                            <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                        <Select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2' @change="handleChangeType1">
+                            <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                        </Select>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" label="选择学段" prop="grade_id" required>
-                        <el-select v-model="form.grade_id" placeholder="请选择学段" :disabled="disabled" @change="handleChangeType1">
-                            <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                        <Select v-model="form.grade_id" placeholder="请选择学段" :disabled="disabled" @change="handleChangeType1">
+                            <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                        </Select>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" class="approval" label="批阅形式" prop="result_type" required>
                         <el-radio-group v-model="form.result_type" :disabled="disabled">
@@ -34,19 +34,19 @@
                         </el-radio-group>
                    </FormItem>
                     <FormItem v-show="payload.selectedType == 1 && nextStep == 0" v-if="payload.selectedType == 1" label="前置课">
-                        <el-select v-model="form.activity_param" placeholder="请选择" :disabled="disabled1">
-                            <el-option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></el-option>
-                        </el-select>
+                        <Select v-model="form.activity_param" placeholder="请选择" :disabled="disabled1">
+                            <Option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></Option>
+                        </Select>
                    </FormItem>
                     <FormItem :class="{'inter-data': form.activity_type == 2}" v-show="payload.selectedType == 0 && nextStep == 0" v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : form.activity_type == 3 ? '前置课': ''" prop="activity_param" required>
-                        <el-input v-if="form.activity_type == 2" v-model="form.activity_param" :disabled="disabled" placeholder="请输入天数"></el-input>
-                        <el-select v-if="form.activity_type == 3" v-model="form.activity_param" placeholder="请选择" :disabled="disabled">
-                            <el-option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></el-option>
-                        </el-select>
+                        <Input v-if="form.activity_type == 2" v-model="form.activity_param" :disabled="disabled" placeholder="请输入天数"></Input>
+                        <Select v-if="form.activity_type == 3" v-model="form.activity_param" placeholder="请选择" :disabled="disabled">
+                            <Option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></Option>
+                        </Select>
                    </FormItem>
                     <FormItem v-show="nextStep == 1" :label="typeStr('','内容')" prop="task_require">
-                        <!--<el-input type="textarea" :rows="6" :placeholder="typeStr('请填写','内容')" v-model="form.task_require">
-                        </el-input>-->
+                        <!--<Input type="textarea" :rows="6" :placeholder="typeStr('请填写','内容')" v-model="form.task_require">
+                        </Input>-->
                         <text-editor ref='require_editor' :content='form.task_require'/>
                    </FormItem>
                     <FormItem class="check-upload" v-show="nextStep == 1">
@@ -58,7 +58,7 @@
                         <upload-panel ref="upload_panel" :upload-config="uploadConfig" @getuploadfile="handleGetUrl">
                             <!--<span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>-->
                         </upload-panel>
-                        <!-- <el-input type="file" :change="getMyForm.teacher_img_url"></el-input> -->
+                        <!-- <Input type="file" :change="getMyForm.teacher_img_url"></Input> -->
                         <Row class="upload-file-list">
                             <Row class="file-item" v-for="(item,index) in form.upload_files" :key="item.id">
                                 <span class="filename">{{item.name}}</span>
@@ -76,17 +76,17 @@
             </Row>
             <!-- <Form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
                 <FormItem prop="name" required>
-                    <el-input placeholder="作业名称" v-model="form.name"></el-input>
+                    <Input placeholder="作业名称" v-model="form.name"></Input>
                </FormItem>
                 <FormItem prop="subject_id" required>
-                    <el-select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2'>
-                        <el-option v-for="item in subjectList" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
+                    <Select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2'>
+                        <Option v-for="item in subjectList" :label="item.name" :value="item.id"></Option>
+                    </Select>
                </FormItem>
                 <FormItem prop="grade_id" required>
-                    <el-select v-model="form.grade_id" placeholder="请选择学段" :disabled='payload.type == 2'>
-                        <el-option v-for="item in gradeList" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
+                    <Select v-model="form.grade_id" placeholder="请选择学段" :disabled='payload.type == 2'>
+                        <Option v-for="item in gradeList" :label="item.name" :value="item.id"></Option>
+                    </Select>
                </FormItem>
                 <FormItem label="批阅形式" prop="result_type" required>
                     <el-radio-group v-model="form.result_type">
@@ -102,13 +102,13 @@
                     </el-radio-group>
                </FormItem>
                 <FormItem v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : ''" prop="activity_param" required>
-                    <el-input v-if="form.activity_type == 2" v-model="form.activity_param" placeholder="请输入天数"></el-input>
-                    <el-select v-if="form.activity_type == 3" v-model="form.activity_param" multiple placeholder="请选择">
-                        <el-option v-for="item in preCurriculum" :label="item.title" :value="item.id"></el-option>
-                    </el-select>
+                    <Input v-if="form.activity_type == 2" v-model="form.activity_param" placeholder="请输入天数"></Input>
+                    <Select v-if="form.activity_type == 3" v-model="form.activity_param" multiple placeholder="请选择">
+                        <Option v-for="item in preCurriculum" :label="item.title" :value="item.id"></Option>
+                    </Select>
                </FormItem>
                 <FormItem prop="task_require" required>
-                    <el-input type="textarea" v-model="form.task_require"></el-input>
+                    <Input type="textarea" v-model="form.task_require"></Input>
                </FormItem>
                 <FormItem>
                     <el-checkbox-group v-model="form.max_file_count">

@@ -6,7 +6,7 @@
                 <FormItem label="专题名称" :label-width="80">
                     <Row>
                         <Col>
-                            <el-input v-model="formInline.searchData" placeholder="请输入搜索内容"></el-input>
+                            <Input v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
                         </Col>
                     </Row>
                </FormItem>

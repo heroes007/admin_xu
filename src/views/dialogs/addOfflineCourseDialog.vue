@@ -6,7 +6,7 @@
                 <Row class="body-top">
                     <Form ref="myForm" :rules="rules" :model="form" label-width="80px" class="add-offline-course-form">
                         <FormItem label="课程名称" prop="name" required>
-                            <el-input v-model="form.name" placeholder="请输入课程名称"></el-input>
+                            <Input v-model="form.name" placeholder="请输入课程名称"></Input>
                        </FormItem>
                         <FormItem label="开课时间" prop="start_time" required>
                             <el-date-picker v-model="form.start_time" type="datetime" placeholder="选择时间">
@@ -17,25 +17,25 @@
                             </el-date-picker>
                        </FormItem>
                         <FormItem label="课程讲师" prop="teacher_id" required>
-                            <el-select v-model="form.teacher_id" placeholder="请选择讲师">
-                                <el-option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                            </el-select>
+                            <Select v-model="form.teacher_id" placeholder="请选择讲师">
+                                <Option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                            </Select>
                        </FormItem>
                         <FormItem label="课程类型" prop="type" required>
-                            <el-select v-model="form.type" placeholder="请选择讲师">
-                                <el-option label="讲座" value="1">讲座</el-option>
-                                <el-option label="实践" value="2">实践</el-option>
-                            </el-select>
+                            <Select v-model="form.type" placeholder="请选择讲师">
+                                <Option label="讲座" value="1">讲座</Option>
+                                <Option label="实践" value="2">实践</Option>
+                            </Select>
                        </FormItem>
                         <!--<FormItem label="讲师描述" prop="teacher_description">
-                            <el-input type="textarea" :rows="6" placeholder="请对讲师进行描述" v-model="form.teacher_description">
-                            </el-input>
+                            <Input type="textarea" :rows="6" placeholder="请对讲师进行描述" v-model="form.teacher_description">
+                            </Input>
                        </FormItem>
                         <FormItem label="讲师照片" prop="teacher_img_url" class="upload-form1">
                             <upload-panel ref="upload_panel" :resourse="form.teacher_img_url" :upload-config="uploadConfig" @uploadcomplete="handleUploadComplete">
                                 <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
                             </upload-panel>
-                             <el-input type="file" :change="getMyForm.teacher_img_url"></el-input> 
+                             <Input type="file" :change="getMyForm.teacher_img_url"></Input> 
                        </FormItem>-->
                         <FormItem class="btns">
                             <Button @click="handleSave('myForm',true)">完成</Button>

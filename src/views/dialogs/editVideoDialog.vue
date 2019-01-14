@@ -5,19 +5,19 @@
             <span class="dscj-webfont-remove-sign"></span>
             <Form ref="form" :model="form" label-width="80px">
                 <FormItem label="小节名称">
-                    <el-input v-model="form.name" placeholder="请输入小节名称"></el-input>
+                    <Input v-model="form.name" placeholder="请输入小节名称"></Input>
                </FormItem>
                 <FormItem label="视频状态">
-                    <el-select v-model="form.region" placeholder="请选择视频状态">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
+                    <Select v-model="form.region" placeholder="请选择视频状态">
+                        <Option label="区域一" value="shanghai"></Option>
+                        <Option label="区域二" value="beijing"></Option>
+                    </Select>
                </FormItem>
                 <FormItem label="观看权限">
-                    <el-select v-model="form.region" placeholder="请选择观看权限">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
+                    <Select v-model="form.region" placeholder="请选择观看权限">
+                        <Option label="区域一" value="shanghai"></Option>
+                        <Option label="区域二" value="beijing"></Option>
+                    </Select>
                </FormItem>
                 <FormItem label="上传视频" class="upload-form">
                     <upload-panel>

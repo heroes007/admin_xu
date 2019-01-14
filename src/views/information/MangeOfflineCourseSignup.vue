@@ -24,13 +24,13 @@
                 <FormItem>
                     <Row>
                         <Col :span="10">
-                            <el-select class="select-user" v-model="formInline.classify" placeholder="">
-                                <el-option label="手机号" value="phone"></el-option>
-                                <el-option label="姓名" value="name"></el-option>
-                            </el-select>
+                            <Select class="select-user" v-model="formInline.classify" placeholder="">
+                                <Option label="手机号" value="phone"></Option>
+                                <Option label="姓名" value="name"></Option>
+                            </Select>
                         </Col>
                         <Col :span="14">
-                            <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
+                            <Input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></Input>
                         </Col>
                     </Row>
                </FormItem>

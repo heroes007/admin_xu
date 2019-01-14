@@ -4,20 +4,20 @@
     <Row>
         <Form :inline="true" :model="formInline" class="find-by-term">
             <FormItem label="面试状态" label-width="80px">
-                <el-select v-model="formInline.interview_state" placeholder="请选择面试状态" @change='changeFilterHandler'>
-                    <el-option label="未面试" :value="0"></el-option>
-                    <el-option label="面试通过" :value="1"></el-option>
-                    <el-option label="面试未通过" :value="2"></el-option>
-                </el-select>
+                <Select v-model="formInline.interview_state" placeholder="请选择面试状态" @change='changeFilterHandler'>
+                    <Option label="未面试" :value="0"></Option>
+                    <Option label="面试通过" :value="1"></Option>
+                    <Option label="面试未通过" :value="2"></Option>
+                </Select>
            </FormItem>
             <div style="position:absolute;top:22px;left:500px;">
-              <el-input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
-                <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
-                  <el-option label="姓名" :value="1"></el-option>
-                  <el-option label="电话号" :value="2"></el-option>
-                </el-select>
+              <Input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
+                <Select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
+                  <Option label="姓名" :value="1"></Option>
+                  <Option label="电话号" :value="2"></Option>
+                </Select>
                 <Button slot="append" class="append-btn" @click='handleRealname'>搜索</Button>
-              </el-input>
+              </Input>
             </div>
         </Form>
     </Row>

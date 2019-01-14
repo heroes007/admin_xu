@@ -4,20 +4,20 @@
         <Row slot="body">
             <Form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
                 <FormItem prop="name" required>
-                    <el-input placeholder="任务名称" v-model="form.name"></el-input>
+                    <Input placeholder="任务名称" v-model="form.name"></Input>
                </FormItem>
                 <FormItem prop="duration" required>
                     <el-input-number placeholder="持续时间（天）" v-model="form.duration" :min='0'></el-input-number>
                </FormItem>
                 <FormItem prop="subject_id" required>
-                    <el-select v-model="form.subject_id" placeholder="请选择学科">
-                        <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
+                    <Select v-model="form.subject_id" placeholder="请选择学科">
+                        <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                    </Select>
                </FormItem>
                 <FormItem prop="grade_id" required>
-                    <el-select v-model="form.grade_id" placeholder="请选择学段">
-                        <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
+                    <Select v-model="form.grade_id" placeholder="请选择学段">
+                        <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                    </Select>
                </FormItem>
                 <FormItem label="批阅形式" prop="result_type" required>
                     <el-radio-group v-model="form.result_type">
@@ -26,12 +26,12 @@
                     </el-radio-group>
                </FormItem>
                 <FormItem prop="activity_param" required>
-                    <el-select v-model="form.activity_param" multiple placeholder="请选择">
-                        <el-option v-for="item in onlineCurrriculumList" :key="item.id" :label="item.title" :value="item.curriculum_id"></el-option>
-                    </el-select>
+                    <Select v-model="form.activity_param" multiple placeholder="请选择">
+                        <Option v-for="item in onlineCurrriculumList" :key="item.id" :label="item.title" :value="item.curriculum_id"></Option>
+                    </Select>
                </FormItem>
                 <FormItem prop="task_require" required>
-                    <el-input type="textarea" v-model="form.task_require"></el-input>
+                    <Input type="textarea" v-model="form.task_require"></Input>
                </FormItem>
                 <FormItem>
                     <el-checkbox-group v-model="form.max_file_count">

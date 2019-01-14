@@ -6,8 +6,8 @@
                 <Row class="body-top">
                     <div class='data-container'>
                         <div class='readover-content'>
-                            <el-input type="textarea" placeholder="请输入评价内容" v-model="data.interview_comment">
-                            </el-input>
+                            <Input type="textarea" placeholder="请输入评价内容" v-model="data.interview_comment">
+                            </Input>
                         </div>
                         <Row class='result' type='flex' justify='start'>
                             <el-radio class="radio" v-model="data.interview_result" :label="1">通过</el-radio>

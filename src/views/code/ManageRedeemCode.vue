@@ -35,13 +35,13 @@
   </div>
 </el-popover>
     <Row class='header' type='flex' justify='space-between' align='middle'>
-        <el-input
+        <Input
   placeholder="兑换码查询"
   icon="search"
   v-model="searchData"
   :on-icon-click="searchHandler"
   v-popover:searchpop>
-</el-input>
+</Input>
 <Button type='primary' icon="plus" @click='addCode'>添加兑换码</Button>
     </Row>
     <data-list class='data-list light-header' @export='exportHandler' @detail='detailHandler' :rowClassName='getRowClassName' :isStripe='false' :table-data='dataList' :header-data='dataHeader'

@@ -5,13 +5,13 @@
             <Row slot="body">
                 <Form :model="formInline" class="row1-test-form" label-width="50px">
                     <FormItem label="名称">
-                        <el-input v-model="formInline.version"></el-input>
+                        <Input v-model="formInline.version"></Input>
                    </FormItem>
                     <FormItem label="平台">
-                        <el-input v-model="formInline.platform_type"></el-input>
+                        <Input v-model="formInline.platform_type"></Input>
                    </FormItem>
                     <FormItem label="网址">
-                        <el-input v-model="formInline.download_url"></el-input>
+                        <Input v-model="formInline.download_url"></Input>
                    </FormItem>
                     <FormItem label="apk">
                         <upload-panel :resourse='formInline.apk_url' @uploadcomplete='uploadCompleteHandler' :upload-config='uploaderConfig'>

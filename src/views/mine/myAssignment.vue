@@ -3,42 +3,42 @@
         <header-component :type='4' @reRenderList="reRenderListHandler" style="margin-bottom:20px;"/>
          <Form :inline="true" label-width="80px" style="text-align:left">
              <FormItem label="学科：">
-                 <el-select v-model="selectSubject" placeholder="请选择" @change='getNewList'>
-                    <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id">
-                    </el-option>
-                </el-select>
+                 <Select v-model="selectSubject" placeholder="请选择" @change='getNewList'>
+                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id">
+                    </Option>
+                </Select>
             </FormItem>
              <FormItem label="学段：">
-                 <el-select v-model="selectGrade" placeholder="请选择" @change='getNewList'>
-                    <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id">
-                    </el-option>
-                </el-select>
+                 <Select v-model="selectGrade" placeholder="请选择" @change='getNewList'>
+                    <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id">
+                    </Option>
+                </Select>
             </FormItem>
              <FormItem label="类型：">
-                 <el-select v-model="selectType" placeholder="请选择" @change='getNewList'>
-                    <el-option :label="item.name" :value="item.id" v-for='item in categoryList' :key="item.id">
-                    </el-option>
-                </el-select>
+                 <Select v-model="selectType" placeholder="请选择" @change='getNewList'>
+                    <Option :label="item.name" :value="item.id" v-for='item in categoryList' :key="item.id">
+                    </Option>
+                </Select>
             </FormItem>
              <FormItem label="状态：">
-                 <el-select v-model="selectState" placeholder="请选择" @change='getNewList'>
-                    <el-option label="已发送" :value="0">
-                    </el-option>
-                    <el-option label="未上传" :value="1">
-                    </el-option>
-                    <el-option label="未批阅" :value="2">
-                    </el-option>
-                    <el-option label="已批阅" :value="3">
-                    </el-option>
-                </el-select>
+                 <Select v-model="selectState" placeholder="请选择" @change='getNewList'>
+                    <Option label="已发送" :value="0">
+                    </Option>
+                    <Option label="未上传" :value="1">
+                    </Option>
+                    <Option label="未批阅" :value="2">
+                    </Option>
+                    <Option label="已批阅" :value="3">
+                    </Option>
+                </Select>
             </FormItem>
          </Form>
         <Form :inline="true" label-width="80px" style="text-align:left">
             <FormItem label="电话：">
-                <el-input v-model="phone" placeholder="请输入电话"></el-input>
+                <Input v-model="phone" placeholder="请输入电话"></Input>
            </FormItem>
             <FormItem label="姓名：">
-                <el-input v-model="realname" placeholder="请输入姓名"></el-input>
+                <Input v-model="realname" placeholder="请输入姓名"></Input>
            </FormItem>
             <FormItem>
                 <Button type="primary" @click="getNewList">查询</Button>

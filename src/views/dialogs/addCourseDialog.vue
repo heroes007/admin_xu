@@ -8,22 +8,22 @@
                     <Row>
                         <Col :span="11">
                             <FormItem label="课程名称">
-                                <el-input v-model="form.title" placeholder="请输入课程名称"></el-input>
+                                <Input v-model="form.title" placeholder="请输入课程名称"></Input>
                            </FormItem>
                             <FormItem label="课程讲师">
-                                <el-select v-model="form.teacher_id" placeholder="请选择观讲师">
-                                    <el-option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form.teacher_id" placeholder="请选择观讲师">
+                                    <Option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="学段">
-                                <el-select v-model="form.grade_id" placeholder="请选择学段">
-                                    <el-option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form.grade_id" placeholder="请选择学段">
+                                    <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="课程状态">
-                                <el-select v-model="form.state" placeholder="请选择课程状态">
-                                    <el-option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form.state" placeholder="请选择课程状态">
+                                    <Option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                         </Col>
                         <Col :span="11" :offset="2">
@@ -32,20 +32,20 @@
                                 </el-date-picker>
                            </FormItem>
                             <FormItem label="操作权限（多选）">
-                                <el-select v-model="form.curriculum_roles" multiple placeholder="请选择权限">
-                                    <el-option v-for="item in query_teacher_roles" :key="item.id" :label="item.role_name" :value="item.role_id">
-                                    </el-option>
-                                </el-select>
+                                <Select v-model="form.curriculum_roles" multiple placeholder="请选择权限">
+                                    <Option v-for="item in query_teacher_roles" :key="item.id" :label="item.role_name" :value="item.role_id">
+                                    </Option>
+                                </Select>
                            </FormItem>
                             <FormItem label="学科">
-                                <el-select v-model="form.subject_id" placeholder="请选择学科">
-                                    <el-option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form.subject_id" placeholder="请选择学科">
+                                    <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                            </FormItem>
                              <FormItem label="课程资料">
-                                <el-select v-model="form.data_center_id" placeholder="请选择课程资料(没有请重新上传)">
-                                    <el-option v-for="item in curriculum_data_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
+                                <Select v-model="form.data_center_id" placeholder="请选择课程资料(没有请重新上传)">
+                                    <Option v-for="item in curriculum_data_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
                                 <Row type='flex' justify='end'>
                                     <Button type='text' v-if='!newData.show' @click='showAddData'>新建资料</Button>
                                     <Button class='save-data' type='text' v-if='newData.show' @click='saveData'>保存资料</Button>
@@ -61,7 +61,7 @@
                                     资料名称：
                                 </Col>
                                 <Col>
-                                    <el-input v-model="newData.name" placeholder="请输入课程名称"></el-input>
+                                    <Input v-model="newData.name" placeholder="请输入课程名称"></Input>
                                 </Col>
                             </Row>
                             <file-uploader :filters="dataFilters" maxFileCount="1"
@@ -87,8 +87,8 @@
                     </Row>
                     <Row class="course-description">
                         <FormItem label="课程简介">
-                            <el-input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description">
-                            </el-input>
+                            <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description">
+                            </Input>
                        </FormItem>
                     </Row>
                     <Row>

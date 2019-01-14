@@ -8,13 +8,13 @@
             <h1>添加学员</h1>
         </Row>
         <Row class='search-bar' type='flex' justify='center' align='middle'>
-            <el-input placeholder="请输入用户名" v-model="searchData">
-                <el-select v-model="searchType" slot="prepend" placeholder="请选择">
-                    <el-option label="用户名" value="nickname"></el-option>
-                    <el-option label="手机号" value="phone"></el-option>
-                </el-select>
+            <Input placeholder="请输入用户名" v-model="searchData">
+                <Select v-model="searchType" slot="prepend" placeholder="请选择">
+                    <Option label="用户名" value="nickname"></Option>
+                    <Option label="手机号" value="phone"></Option>
+                </Select>
                 <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
-            </el-input>
+            </Input>
         </Row>
         <Row class='result' type='flex' justify='center' align='middle' v-if='initData'>
             <Row type='flex' justify='center' align='middle' v-if='isLoading'>
@@ -29,7 +29,7 @@
                 </Row>
                 <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     学员真实姓名：
-                    <el-input placeholder='请输入内容' v-model='user.realname'></el-input>
+                    <Input placeholder='请输入内容' v-model='user.realname'></Input>
                 </Row>
                 <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     入学时间：
@@ -45,34 +45,34 @@
                 </Row>
                 <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     所属学科：
-                    <el-select v-model="user.subject_id" placeholder="请选择学科">
-                        <el-option
+                    <Select v-model="user.subject_id" placeholder="请选择学科">
+                        <Option
                                 v-for="item in subjects" :key="item.id"
                                 :label="item.name"
                                 :value="item.id">
-                        </el-option>
-                    </el-select>
+                        </Option>
+                    </Select>
                 </Row>
                 <Row class='user-data desc' type='flex' justify='start' align='middle' v-if='searchResult'>
                     学员备注：
-                    <el-input placeholder='请输入内容' v-model='user.more'></el-input>
+                    <Input placeholder='请输入内容' v-model='user.more'></Input>
                 </Row>
                 <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     学员类型：
-                    <el-select v-model="user.type" placeholder="请选择学员类型">
-                        <el-option
+                    <Select v-model="user.type" placeholder="请选择学员类型">
+                        <Option
                                 label="普通"
                                 value="1">
-                        </el-option>
-                        <el-option
+                        </Option>
+                        <Option
                                 label="协议"
                                 value="2">
-                        </el-option>
-                        <el-option
+                        </Option>
+                        <Option
                                 label="个人"
                                 value="3">
-                        </el-option>
-                    </el-select>
+                        </Option>
+                    </Select>
                 </Row>
                 <Row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>
                     <Button @click='setStudent'>确认</Button>

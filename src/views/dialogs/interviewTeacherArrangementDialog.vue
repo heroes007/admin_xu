@@ -5,9 +5,9 @@
             <Row class="body-top" v-if="true">
                 <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
                     <FormItem v-for='(item, index) in subjectList' :key='item.id' :label="item.name">
-                        <el-select v-model="form.arrangement[index]" placeholder="请选择学科">
-                            <el-option v-for="t in teacherList" :key="t.user_id" :label="t.nickname" :value="t.user_id"></el-option>
-                        </el-select>
+                        <Select v-model="form.arrangement[index]" placeholder="请选择学科">
+                            <Option v-for="t in teacherList" :key="t.user_id" :label="t.nickname" :value="t.user_id"></Option>
+                        </Select>
                    </FormItem>
                     <FormItem class="btn-content">
                         <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
