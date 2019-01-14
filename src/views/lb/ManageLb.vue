@@ -19,7 +19,7 @@
                         </Row>
                         <Row class='user-data update-img' type='flex' justify='start' align='middle'>
                             广告图片：
-                            <img v-if="lbData.img_url.url" :src='lbData.img_url.url'>
+                            <img style="width: 120px;" v-if="lbData.img_url.url" :src='lbData.img_url.url'>
                             <btn-upload text='上传图片' type='image/gif, image/jpeg, image/png' bucket='dscj-app' dir='lb' @uploadcomplete='uploadImgComplete'></btn-upload>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
@@ -79,18 +79,21 @@
                 <Button type="text" size="small" class="btn-text" @click="editLb(row)">编辑</Button>
             </template>
         </Table>
-        <Page
-                @on-page-size-change="handleSizeChange"
-                @on-change="handleCurrentChange"
-                :current="curPage"
-                :page-size-opts="[1,10, 20, 50, 100]"
-                :page-size="pageSize"
-                :total="total">
-        </Page>
+        <Row class='pager' type='flex' justify='end' align='middle'>
+            <Page
+                    @on-page-size-change="handleSizeChange"
+                    @on-change="handleCurrentChange"
+                    :current="curPage"
+                    :page-size-opts="[1,10, 20, 50, 100]"
+                    :page-size="pageSize"
+                    :total="total">
+            </Page>
+        </Row>
+
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
     .ivu-input-wrapper{
         width: calc(100% - 70px) !important;
     }
@@ -119,201 +122,16 @@
     .ivu-btn-primary{
         width: 140px;
     }
-    .ivu-table-cell{
+    /deep/ .ivu-table-cell{
         font-size: 16px;
         color: #657180;
         text-align: center;
     }
-    .ivu-table th{
+    /deep/ .ivu-table th{
         text-align: center;
     }
-    .el-tooltip__popper {
-        &.is-light {
-            background: #FFFFFF;
-            border: 1px solid #E7E8EA;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-            .more-tip {
-                max-width: 278px;
-                line-height: 1.2;
-                font-size: 14px;
-                color: #2e3e47;
-
-                & + .popper__arrow {
-                    border-top-color: #E7E8EA;
-                    &:after {
-                        //border-top-color:#E7E8EA;
-                    }
-                }
-            }
-        }
-    }
-
-    .manage-student-view {
-        .btn-add {
-            color: #5fa137;
-        }
-        .data-container {
-            background-color: #ffffff;
-            margin: 0 20px 20px 20px;
-            .list {
-                .data-header {
-                    height: 50px;
-                    .Col {
-                        line-height: 50px;
-                    }
-                }
-                .data-item {
-                    height: 40px;
-                    border-top: 1px solid #cecece;
-
-                    &.bg-gray {
-                        background-color: #fbfbfb;
-                    }
-
-                    .Col {
-                        line-height: 40px;
-                        .el-button {
-                            a {
-                                color: #5fa137;
-                                font-size: 14px;
-                            }
-                        }
-                        p {
-                            margin: 0;
-                            display: -webkit-box;
-                            white-space: normal;
-                            -webkit-box-orient: vertical;
-                            overflow: hidden;
-                            -webkit-line-clamp: 1;
-                        }
-                    }
-                }
-                .pager {
-                    margin: 30px 0;
-                    padding-right: 40px;
-
-                    .el-pagination {
-                        button {
-                            &.disabled {
-                                background-color: #ebebec;
-                                border-color: #b0b3c5;
-                                color: #8b9fa9;
-                            }
-                        }
-                        .el-pager {
-                            li {
-                                &.active {
-                                    background-color: #8b9fa9;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    //添加框
-    .add-student-view {
-        .img {
-            margin-top: 100px;
-            img {
-                width: 150px;
-                height: 150px;
-            }
-        }
-        .title {
-            margin-top: 25px;
-            h1 {
-                font-size: 28px;
-                color: #2e3e47;
-                font-weight: 200;
-                font-family: MicrosoftYaHei;
-                margin: 0;
-            }
-        }
-        .search-bar {
-            margin-top: 40px;
-            .el-input-group {
-                width: 380px;
-                .el-input__inner {
-                    height: 46px;
-                }
-                .el-input-group__append {
-                    background-color: #7ab854;
-
-                    .el-button {
-                        height: 100%;
-                        width: 80px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-                }
-                .el-input-group__prepend {
-                    background-color: #7ab854;
-
-                    .el-select {
-                        height: 100%;
-                        width: 110px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-
-                    i {
-                        color:#ffffff;
-                    }
-                }
-            }
-        }
-        .result {
-            margin:15px 0 76px;
-            .data-form {
-                width:550px;
-                background-color: #ffffff;
-                border: 1px solid #EBEBEC;
-                border-radius: 6px;
-                padding: 20px 0;
-                .user-info {
-                    font-size: 14px;
-                    margin-bottom:24px;
-                    border-bottom: 1px solid #EBEBEC;
-                    padding:0 20px;
-                    span {
-                        color:#7ab854;
-                        margin-right:15px;
-                    }
-                }
-                .update-img{
-                    img{
-                        width: 120px;
-                    }
-                }
-                .user-data {
-                    font-size: 14px;
-                    margin-bottom:15px;
-                    padding:0 20px;
-                    white-space: nowrap;
-
-                    .el-input {
-                        width: 100%;
-                    }
-
-                    .el-button {
-                        width: 140px;
-                        height: 36px;
-                        background-color: #7ab854;
-                        color:#ffffff;
-                    }
-
-                    &.desc {
-                        width: 100%;
-                        .el-input {
-                            width:330px;
-                        }
-                    }
-                }
-            }
-        }
+    /deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+        font-size: 14px;
     }
 </style>
 
@@ -409,7 +227,6 @@
                 this.$store.dispatch('search_userinfo_by_nickname_or_phone',{searchType:this.searchType,searchData:this.searchData});
             },
             handleBeforeUpload(file) {
-                console.log(file)
                 get_sign(file.type,new Date(),'dscj-app','questions',file.name,'put').then((res) => {
                     console.log(res)
                 })

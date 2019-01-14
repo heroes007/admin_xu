@@ -171,6 +171,17 @@
     /deep/ .ivu-table th{
         text-align: center;
     }
+    /deep/ .ivu-select-placeholder{
+        color: #8391a5 !important;
+        font-size: 14px !important;
+    }
+    /deep/ .ivu-select-multiple .ivu-select-item-selected{
+        color: #20a0ff;
+    }
+    /deep/ .ivu-select-multiple .ivu-select-item-selected:after{
+        color: #20a0ff;
+
+    }
     .modal-title{
         padding: 20px;
         text-align: center;
@@ -186,244 +197,6 @@
     .btn-text{
         color: #5fa137;
         font-size: 14px;
-    }
-    .el-tooltip__popper {
-        &.is-light {
-            background: #ffffff;
-            border: 1px solid #e7e8ea;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-            .more-tip {
-                max-width: 278px;
-                line-height: 1.2;
-                font-size: 14px;
-                color: #2e3e47;
-                & + .popper__arrow {
-                    border-top-color: #e7e8ea;
-                    &:after {
-                        //border-top-color:#E7E8EA;
-                    }
-                }
-            }
-        }
-    }
-
-    .manage-student-view {
-        .sub-header {
-            margin-bottom: 10px;
-        }
-        .search-bar {
-
-            .search-role {
-                margin-right: 50px;
-                width: 200px;
-                text-align: left;
-                color: #1f2d3d;
-            }
-
-            .el-input-group {
-                width: 380px;
-                .el-input__inner {
-                    height: 36px;
-                }
-                .el-input-group__append {
-                    background-color: #7ab854;
-
-                    .el-button {
-                        height: 100%;
-                        width: 80px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-                }
-                .el-input-group__prepend {
-                    background-color: #7ab854;
-
-                    .el-select {
-                        height: 100%;
-                        width: 110px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-
-                    i {
-                        color: #ffffff;
-                    }
-                }
-            }
-
-            .btn-clear {
-                margin-left: 20px;
-                color: #7ab854;
-            }
-        }
-        .btn-add {
-            color: #5fa137;
-        }
-        .total-num {
-            margin: 0 20px 10px;
-            font-size: 12px;
-            color: #5fa137;
-        }
-        .data-container {
-            background-color: #ffffff;
-            margin: 0 20px 20px 20px;
-            .list {
-                .data-header {
-                    height: 50px;
-                    .Col {
-                        line-height: 50px;
-                    }
-                }
-                .data-item {
-                    height: 40px;
-                    border-top: 1px solid #cecece;
-                    &.bg-gray {
-                        background-color: #fbfbfb;
-                    }
-                    .Col {
-                        line-height: 40px;
-                        .el-button {
-                            a {
-                                color: #5fa137;
-                                font-size: 14px;
-                            }
-                        }
-                        p {
-                            margin: 0;
-                            display: -webkit-box;
-                            white-space: normal;
-                            -webkit-box-orient: vertical;
-                            overflow: hidden;
-                            -webkit-line-clamp: 1;
-                        }
-                    }
-                }
-                .pager {
-                    margin: 30px 0;
-                    padding-right: 40px;
-                    .el-pagination {
-                        button {
-                            &.disabled {
-                                background-color: #ebebec;
-                                border-color: #b0b3c5;
-                                color: #8b9fa9;
-                            }
-                        }
-                        .el-pager {
-                            li {
-                                &.active {
-                                    background-color: #8b9fa9;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    //添加框
-    .add-student-view {
-        .img {
-            margin-top: 100px;
-            img {
-                width: 150px;
-                height: 150px;
-            }
-        }
-        .title {
-            margin-top: 25px;
-            h1 {
-                font-size: 28px;
-                color: #2e3e47;
-                font-weight: 200;
-                font-family: MicrosoftYaHei;
-                margin: 0;
-            }
-        }
-        .search-bar {
-            margin-top: 40px;
-            .el-input-group {
-                width: 380px;
-                .el-input__inner {
-                    height: 46px;
-                }
-                .el-input-group__append {
-                    background-color: #7ab854;
-                    .el-button {
-                        height: 100%;
-                        width: 80px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-                }
-                .el-input-group__prepend {
-                    background-color: #7ab854;
-                    .el-select {
-                        height: 100%;
-                        width: 110px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-                    i {
-                        color: #ffffff;
-                    }
-                }
-            }
-        }
-        .result {
-            margin: 15px 0 76px;
-            .data-form {
-                width: 550px;
-                background-color: #ffffff;
-                border: 1px solid #ebebec;
-                border-radius: 6px;
-                padding: 20px 0;
-                .user-info {
-                    font-size: 14px;
-                    margin-bottom: 24px;
-                    border-bottom: 1px solid #ebebec;
-                    padding: 0 20px;
-                    span {
-                        color: #7ab854;
-                        margin-right: 15px;
-                    }
-                    img {
-                        width: 80px;
-                        height: 80px;
-                        border-radius: 50%;
-                    }
-                    .el-select {
-                        width: 100%;
-                    }
-                }
-                .modal-btn-save{
-                    width: 140px;
-                    height: 36px;
-                    line-height: 22px;
-                    background-color: #7ab854;
-                    color: #ffffff;
-                    border: none;
-                }
-                .user-data {
-                    font-size: 14px;
-                    margin-bottom: 15px;
-                    padding: 0 20px;
-                    .el-button {
-                        width: 140px;
-                        height: 36px;
-                        background-color: #7ab854;
-                        color: #ffffff;
-                    }
-                    &.desc {
-                        width: 100%;
-                        .el-input {
-                            width: 330px;
-                        }
-                    }
-                }
-            }
-        }
     }
 </style>
 
@@ -744,6 +517,7 @@
           let user  = Object.assign({},e);
           user.roles = this.getRoleStr(user.roles)
           user.from_domain = this.getDealerStr(user.from_domain)
+          user.create_time = user.create_time.slice(0,10)
           return user;
         });
         return list;

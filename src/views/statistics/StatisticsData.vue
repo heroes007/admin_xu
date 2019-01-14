@@ -4,8 +4,7 @@
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="选择时间" label-width="80px">
-                    <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围" @change='changeTimeHandler'>
-                    </el-date-picker>
+                    <DatePicker v-model="timeRange" type="daterange" placeholder="选择日期范围" @change='changeTimeHandler'></DatePicker>
                </FormItem>
             </Form>
         </Row>
