@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class='submit'>
-                <Button class="el-button" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
+                <Button class="Button" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
                     <div class="elRow"><span>登录</span>
                         <EllipsisAni v-if='isLogining' diameter="5px" pColor="#ffffff"></EllipsisAni>
                     </div>
@@ -53,7 +53,6 @@
                         //   vm.$router.replace({path: 'dashboard'});
                         // }});
                         user_info().then((res) => {
-                            console.log(res);
                             if (res.data.res_code === 1) {
                                 let roleArr = res.data.msg.role_arr
                                if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {

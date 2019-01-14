@@ -4,63 +4,63 @@
             <Row slot="body" class="top-nav">
                 <el-tabs type="border-card">
                     <el-tab-pane :label="payload.type == 2 ? '编辑学期' : '添加学期'">
-                        <el-form ref="myForm1" :rules="rules1" :model="form1" label-width="80px">
-                            <el-form-item label="学期名称" prop="name1" required>
+                        <Form ref="myForm1" :rules="rules1" :model="form1" label-width="80px">
+                            <FormItem label="学期名称" prop="name1" required>
                                 <el-input v-model="form1.name1" placeholder="请输入学期名称"></el-input>
-                            </el-form-item>
-                            <el-form-item label="学期阶段" prop="level1" required>
+                           </FormItem>
+                            <FormItem label="学期阶段" prop="level1" required>
                                 <el-select v-model="form1.level1" placeholder="请选择学期阶段">
                                     <el-option label="一阶" :value="0"></el-option>
                                     <el-option label="二阶" :value="1"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="开课日期" prop="stage1" required>
+                           </FormItem>
+                            <FormItem label="开课日期" prop="stage1" required>
                                 <el-date-picker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围">
                                 </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="截止报名日期">
+                           </FormItem>
+                            <FormItem label="截止报名日期">
                                 <el-date-picker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @change='changeDeadlineHandler'>
                                 </el-date-picker>
-                            </el-form-item>
-                                <el-form-item label="学期描述" class="semester-description" prop="description1" required>
+                           </FormItem>
+                                <FormItem label="学期描述" class="semester-description" prop="description1" required>
                                     <el-input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description1">
                                     </el-input>
-                                </el-form-item>
-                                <el-form-item class="btn-content">
-                                    <el-button type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</el-button>
-                                </el-form-item>
-                        </el-form>
+                               </FormItem>
+                                <FormItem class="btn-content">
+                                    <Button type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
+                               </FormItem>
+                        </Form>
                     </el-tab-pane>
                     <el-tab-pane label="复制学期" v-if="payload.type == 1">
-                        <el-form ref="myForm2" :rules="rules2" :model="form2" label-width="80px">
-                            <el-form-item label="选择学期" prop="semester" required>
+                        <Form ref="myForm2" :rules="rules2" :model="form2" label-width="80px">
+                            <FormItem label="选择学期" prop="semester" required>
                                 <el-select v-model="form2.semester" placeholder="请选择学期" @change="handleSelectItem">
                                     <el-option v-for="(item,index) in offline_term_list1" :key="item.id" :label="item.name" :value="index"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="学期名称">
+                           </FormItem>
+                            <FormItem label="学期名称">
                                 <el-input v-model="form2.name2" placeholder="请输入学期名称"></el-input>
-                            </el-form-item>
-                            <el-form-item label="学期阶段">
+                           </FormItem>
+                            <FormItem label="学期阶段">
                                 <el-select v-model="form2.level2" placeholder="请选择学期阶段">
                                     <el-option label="一阶" value="0"></el-option>
                                     <el-option label="二阶" value="1"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="开课日期">
+                           </FormItem>
+                            <FormItem label="开课日期">
                                 <el-date-picker v-model="form2.stage2" type="datetimerange" placeholder="请选择时间范围">
                                 </el-date-picker>
-                            </el-form-item>
+                           </FormItem>
                             </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="学期描述" class="semester-description">
+                           </FormItem>
+                            <FormItem label="学期描述" class="semester-description">
                                 <el-input type="textarea" :rows="8" placeholder="请输入学期描述" v-model="form2.description2">
                                 </el-input>
-                            </el-form-item>
-                            <el-form-item class="btn-content">
-                                <el-button type="primary" class="sub-btn" @click="handleSave('myForm2')">保存</el-button>
-                            </el-form-item>
-                        </el-form>
+                           </FormItem>
+                            <FormItem class="btn-content">
+                                <Button type="primary" class="sub-btn" @click="handleSave('myForm2')">保存</Button>
+                           </FormItem>
+                        </Form>
                     </el-tab-pane>
                 </el-tabs>
             </Row>

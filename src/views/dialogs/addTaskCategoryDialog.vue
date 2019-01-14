@@ -6,8 +6,8 @@
         <Row slot="body">
             <Row class="body-top" v-if="true">
                 <p class="title">任务和类型不一样的喔，创建类型前请先选择好</p>
-                <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
-                    <el-form-item class='radio-container'>
+                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                    <FormItem class='radio-container'>
                         <el-radio-group v-model="form.type" type='flex' justify='start' align='middle' @change="handleChangeRadio">
                             <el-radio class="radio" :class="{'is-changed': isChanged == 0}" :label="0">
                                 <span class=""></span>任务
@@ -16,14 +16,14 @@
                                 <span class=""></span>作业
                             </el-radio>
                         </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="分类名称">
+                   </FormItem>
+                    <FormItem label="分类名称">
                         <el-input v-model="form.name" placeholder="请输入分类名称"></el-input>
-                    </el-form-item>
-                    <el-form-item class="btn-content">
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content">
+                        <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </Row>
     </base-input>

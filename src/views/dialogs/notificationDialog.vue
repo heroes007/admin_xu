@@ -3,8 +3,8 @@
 <el-dialog title="提示" v-model="notificationDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
   <p>{{payload.title}}</p>
   <span slot="footer" class="dialog-footer">
-    <el-button @click="notificationDialog = false">取 消</el-button>
-    <el-button type="primary" @click="handleDeleteOk">确 定</el-button>
+    <Button @click="notificationDialog = false">取 消</Button>
+    <Button type="primary" @click="handleDeleteOk">确 定</Button>
   </span>
 </el-dialog>
 </template>

@@ -3,7 +3,7 @@
         <header-component :type='0' />
         <el-tabs v-model="activeName" @tab-click="handleClick" active-name='notification'>
             <el-tab-pane class='notification-content' label="通知" name="notification">
-                <el-button class='btn-add' type='primary' @click='createNotificationHandler()'>创建通知</el-button>
+                <Button class='btn-add' type='primary' @click='createNotificationHandler()'>创建通知</Button>
                 <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
                     @send='sendHandler' @delete='deleteHandler' @edit='editHandler' />
 
@@ -42,7 +42,7 @@
 
                         <el-input type="textarea" :autosize='false' placeholder="请输入内容" v-model="messageContent">
                         </el-input>
-                        <el-button class='btn-submit' type='primary' @click='sendMsg'>发送</el-button>
+                        <Button class='btn-submit' type='primary' @click='sendMsg'>发送</Button>
                     </Col>
                 </Row>
             </el-tab-pane>

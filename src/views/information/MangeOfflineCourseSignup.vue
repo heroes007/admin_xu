@@ -6,12 +6,12 @@
                 <span><i class='xght-webfont-user'></i>共{{total}}人参加</span>
             </div>
             <div>
-                <el-button type='text' @click='backClickHandler'>返回</el-button>
+                <Button type='text' @click='backClickHandler'>返回</Button>
             </div>
         </Row>
         <Row>
-            <el-form :inline="true" :model="formInline" class="find-by-term">
-                <el-form-item label="截止日期" label-width="102px">
+            <Form :inline="true" :model="formInline" class="find-by-term">
+                <FormItem label="截止日期" label-width="102px">
                     <el-date-picker
       v-model="deadline"
       type="date"
@@ -20,8 +20,8 @@
       ref='date_picker'
       @change='changeDeadlineHandler'>
     </el-date-picker>
-                </el-form-item>
-                <el-form-item>
+               </FormItem>
+                <FormItem>
                     <Row>
                         <Col :span="10">
                             <el-select class="select-user" v-model="formInline.classify" placeholder="">
@@ -33,14 +33,14 @@
                             <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
                         </Col>
                     </Row>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onClear">清除</el-button>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="onSubmit">查询</Button>
+               </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="onClear">清除</Button>
+               </FormItem>
+            </Form>
         </Row>
         <data-list class='data-list light-header' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
             :column-formatter-data='listColumnFormatterData' @edit='editHandler'></data-list>

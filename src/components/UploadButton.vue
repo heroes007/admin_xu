@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class='el-upload__inner'>
-            <Button type='primary' @click='handleStartUploadFile'>
-                {{text}}
-            </Button>
+            <Button type='primary' @click='handleStartUploadFile'>{{text}} </Button>
             <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
         </div>
     </div>

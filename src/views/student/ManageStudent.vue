@@ -6,7 +6,7 @@
     <!--<el-breadcrumb-item>学员管理</el-breadcrumb-item>-->
     <!--<el-breadcrumb-item>查看学员</el-breadcrumb-item>-->
     <!--</el-breadcrumb>-->
-    <!--<el-button class='btn-add' type='text' @click='dialogVisible=true'>添加新学员</el-button>-->
+    <!--<Button class='btn-add' type='text' @click='dialogVisible=true'>添加新学员</Button>-->
     <!--<el-dialog title="添加学员" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-student-view'>-->
     <!--<Row class='search-bar' type='flex' justify='center' align='middle'>-->
     <!--<el-input placeholder="请输入用户名" v-model="searchData">-->
@@ -14,7 +14,7 @@
     <!--<el-option label="用户名" value="nickname"></el-option>-->
     <!--<el-option label="手机号" value="phone"></el-option>-->
     <!--</el-select>-->
-    <!--<el-button slot="append" type='text' @click='searchStudent'>搜索</el-button>-->
+    <!--<Button slot="append" type='text' @click='searchStudent'>搜索</Button>-->
     <!--</el-input>-->
     <!--</Row>-->
     <!--<Row class='result' type='flex' justify='center' align='middle' v-if='initData'>-->
@@ -86,7 +86,7 @@
     <!--</el-select>-->
     <!--</Row>-->
     <!--<Row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>-->
-    <!--<el-button @click='setStudent'>确认</el-button>-->
+    <!--<Button @click='setStudent'>确认</Button>-->
     <!--</Row>-->
     <!--</div>-->
     <!--</Row>-->
@@ -98,39 +98,39 @@
     <!--</div>-->
     <!--</Row>-->
     <Row>
-        <el-form :inline="true" :model="formInline" class="find-by-term">
-            <el-form-item label="类型" label-width="40px">
+        <Form :inline="true" :model="formInline" :label-width="40" class="find-by-term">
+            <FormItem label="类型" >
                 <el-select v-model="formInline.is_test_user" placeholder="请选择类型" @change='changeFilterHandler'>
                     <el-option label="全部" :value="-1"></el-option>
                     <el-option label="正式" :value="0"></el-option>
                     <el-option label="测试" :value="1"></el-option>
                 </el-select>
-            </el-form-item>
-             <el-form-item label="学段" label-width="40px">
+           </FormItem>
+             <FormItem label="学段" >
                 <el-select multiple v-model="formInline.grade_id" placeholder="请选择学段" @change='changeFilterHandler'>
                     <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="学科" label-width="40px">
+           </FormItem>
+            <FormItem label="学科">
                 <el-select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
                     <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="状态" label-width="40px">
+           </FormItem>
+            <FormItem label="状态" >
                 <el-select multiple v-model="formInline.state_id" placeholder="请选择学员状态" @change='changeFilterHandler'>
                     <el-option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="产品" label-width="40px">
+           </FormItem>
+            <FormItem label="产品">
                 <el-select v-model="formInline.product_id" placeholder="请选择产品" @change='changeFilterHandler'>
                     <el-option v-for="item in productList" :key="item.id" :label="item.title" :value="item.id"></el-option>
                 </el-select>
-            </el-form-item>
-        </el-form>
+           </FormItem>
+        </Form>
     </Row>
     <Row>
-        <el-form :inline='true' :model='formInline' class='find-by-term'>
-            <el-form-item>
+        <Form :inline='true' :model='formInline' class='find-by-term'>
+            <FormItem>
                 <Row>
                     <Col :span="10">
                         <el-select class="select-user" v-model="formInline.classify" placeholder="">
@@ -144,14 +144,14 @@
                         <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
                     </Col>
                 </Row>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onClear">清除</el-button>
-            </el-form-item>
-        </el-form>
+           </FormItem>
+            <FormItem>
+                <Button type="primary" @click="onSubmit">查询</Button>
+           </FormItem>
+            <FormItem>
+                <Button type="primary" @click="onClear">清除</Button>
+           </FormItem>
+        </Form>
     </Row>
     <Row class='total-num' type='flex' justfy='start' align='middle'>
         <span>当前学员 {{total}} 人</span>
@@ -659,7 +659,7 @@ export default {
     .base-list-container {
         .base-list-row {
             .cell {
-                .el-button{
+                .Button{
                     margin-right: 2px;
                     &:last-child {
                         margin-left: 10px;
@@ -745,7 +745,7 @@ export default {
 
                 .Col {
                     line-height: 40px;
-                    .el-button {
+                    .Button {
                         a {
                             color: #5fa137;
                             font-size: 14px;
@@ -819,7 +819,7 @@ export default {
             .el-input-group__append {
                 background-color: #7ab854;
 
-                .el-button {
+                .Button {
                     height: 100%;
                     width: 80px;
                     color: #ffffff;
@@ -865,7 +865,7 @@ export default {
                 margin-bottom: 15px;
                 padding: 0 20px;
 
-                .el-button {
+                .Button {
                     width: 140px;
                     height: 36px;
                     background-color: #7ab854;

@@ -1,26 +1,26 @@
 <template>
     <div class='my-assignment-view'>
         <header-component :type='4' @reRenderList="reRenderListHandler" style="margin-bottom:20px;"/>
-         <el-form :inline="true" label-width="80px" style="text-align:left">
-             <el-form-item label="学科：">
+         <Form :inline="true" label-width="80px" style="text-align:left">
+             <FormItem label="学科：">
                  <el-select v-model="selectSubject" placeholder="请选择" @change='getNewList'>
                     <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id">
                     </el-option>
                 </el-select>
-             </el-form-item>
-             <el-form-item label="学段：">
+            </FormItem>
+             <FormItem label="学段：">
                  <el-select v-model="selectGrade" placeholder="请选择" @change='getNewList'>
                     <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id">
                     </el-option>
                 </el-select>
-             </el-form-item>
-             <el-form-item label="类型：">
+            </FormItem>
+             <FormItem label="类型：">
                  <el-select v-model="selectType" placeholder="请选择" @change='getNewList'>
                     <el-option :label="item.name" :value="item.id" v-for='item in categoryList' :key="item.id">
                     </el-option>
                 </el-select>
-             </el-form-item>
-             <el-form-item label="状态：">
+            </FormItem>
+             <FormItem label="状态：">
                  <el-select v-model="selectState" placeholder="请选择" @change='getNewList'>
                     <el-option label="已发送" :value="0">
                     </el-option>
@@ -31,19 +31,19 @@
                     <el-option label="已批阅" :value="3">
                     </el-option>
                 </el-select>
-             </el-form-item>
-         </el-form>
-        <el-form :inline="true" label-width="80px" style="text-align:left">
-            <el-form-item label="电话：">
+            </FormItem>
+         </Form>
+        <Form :inline="true" label-width="80px" style="text-align:left">
+            <FormItem label="电话：">
                 <el-input v-model="phone" placeholder="请输入电话"></el-input>
-            </el-form-item>
-            <el-form-item label="姓名：">
+           </FormItem>
+            <FormItem label="姓名：">
                 <el-input v-model="realname" placeholder="请输入姓名"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="getNewList">查询</el-button>
-            </el-form-item>
-        </el-form>
+           </FormItem>
+            <FormItem>
+                <Button type="primary" @click="getNewList">查询</Button>
+           </FormItem>
+        </Form>
         <data-list @assign='assignHandler' class='data-list light-header' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
             :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
     </div>

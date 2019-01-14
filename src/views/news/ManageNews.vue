@@ -2,13 +2,13 @@
     <div class='manage-production-view'>
         <header-component title='点师动态' :type='0' :showAdd='true' addText='创建文章' @addClick='addNewsHandler'></header-component>
         <Row>
-            <el-form :inline="true" :model="formInline" class="find-by-term">
-                <el-form-item label="文章状态" label-width="80px">
+            <Form :inline="true" :model="formInline" class="find-by-term">
+                <FormItem label="文章状态" label-width="80px">
                     <el-select v-model="formInline.state" placeholder="请选择文章状态" @change='changeFilterHandler'>
                         <el-option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+            </Form>
         </Row>
         <data-list class='data-list light-header' @edit='editHandler' @delete='deleteHandler' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>

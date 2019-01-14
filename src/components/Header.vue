@@ -68,7 +68,10 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/ .ivu-btn > .ivu-icon{
+    line-height: normal;
+}
 .project-header1 {
     height: 60px;
     background-color: #333333;
@@ -88,8 +91,12 @@ export default {
                 border: none;
                 background-color: #333333;
                 color: #ffffff;
-                font-size: 14px;
                 font-weight: 600;
+                div{
+                    span{
+                       font-size: 14px !important;
+                    }
+                }
             }
         }
         .project-list{
@@ -98,11 +105,13 @@ export default {
         .st-title{
           color: #fff;
           font-weight: 600;
+          font-size: 14px;
         }
         .btn-add {
             background-color: #F06B1D;
             color:#ffffff;
             border-color: #F06B1D;
+            font-weight: 600;
         }
     }
 }

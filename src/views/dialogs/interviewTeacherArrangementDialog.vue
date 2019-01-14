@@ -3,16 +3,16 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
-                    <el-form-item v-for='(item, index) in subjectList' :key='item.id' :label="item.name">
+                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                    <FormItem v-for='(item, index) in subjectList' :key='item.id' :label="item.name">
                         <el-select v-model="form.arrangement[index]" placeholder="请选择学科">
                             <el-option v-for="t in teacherList" :key="t.user_id" :label="t.nickname" :value="t.user_id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item class="btn-content">
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content">
+                        <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </Row>
     </base-input>

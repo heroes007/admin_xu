@@ -11,8 +11,8 @@ body { background-color: #fff; height: 100%; }
     color: #141111 !important
 }
 .ivu-input:focus{
-    border-color: #e5e5e5 !important;
-    box-shadow: none !important;
+  border-color: #e5e5e5 !important;
+  box-shadow: none !important;
 }
 .case-main-pages{
     margin-top: 10px;
@@ -20,29 +20,40 @@ body { background-color: #fff; height: 100%; }
 }
 .case-main-pages>li{
     border: none;
-}
-.case-main-pages>li>a{
+  }
+  .case-main-pages>li>a{
     font-size: 16px;
     color: #686F92;
-}
-.case-main-pages>.ivu-page-disabled,.case-main-pages>.ivu-page-disabled:hover{
+  }
+  .case-main-pages>.ivu-page-disabled,.case-main-pages>.ivu-page-disabled:hover{
     background: #CDCED3;
-}
-.case-main-pages>.ivu-page-disabled>a>.ivu-icon-ios-arrow-back,.case-main-pages>.ivu-page-disabled>a>.ivu-icon-ios-arrow-forward{
+  }
+  .case-main-pages>.ivu-page-disabled>a>.ivu-icon-ios-arrow-back,.case-main-pages>.ivu-page-disabled>a>.ivu-icon-ios-arrow-forward{
     color: #fff;
-}
-.case-main-pages>.ivu-page-item-active{
+  }
+  .case-main-pages>.ivu-page-item-active{
     background: #FC7643;
     border: none;
-}
-.case-main-pages>li:hover{
+  }
+  .case-main-pages>li:hover{
     background: #FC7643;
     border: none;
-}
-.case-main-pages>li:hover a{
+  }
+  .case-main-pages>li:hover a{
     color: #fff;
-}
-.case-main-pages>.ivu-page-item-active>a{
+  }
+  .case-main-pages>.ivu-page-item-active>a{
     color: #fff;
     font-size: 16px;
+  }
+.ivu-modal-header-inner{
+    font-size: 16px !important;
+    text-align: center !important;
+    color: #fff !important
+}
+.ivu-modal-header{
+    background-color: #333 !important;
+}
+.ivu-modal-close .ivu-icon-ios-close,.ivu-modal-close .ivu-icon-ios-close:hover{
+    color: #fff !important
 }

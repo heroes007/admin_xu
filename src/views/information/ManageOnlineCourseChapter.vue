@@ -6,7 +6,7 @@
                 <h2>课程：{{curriculumName}}</h2>
             </div>
             <div>
-                <el-button type='text' @click='backClickHandler'>返回</el-button>
+                <Button type='text' @click='backClickHandler'>返回</Button>
             </div>
         </Row>
         <div class='chapter-container'>
@@ -30,14 +30,14 @@
                             v-show='showListState[index] == 1 && item.classList.length > 0'></data-list>
                             <Row class='chapter-btns' type='flex' justify='space-between' align='middle' v-if='showListState[index] == 1 || (index == chapterList.length - 1 && !newChapterData.showAddChapter)'>
                                 <div>
-                                    <el-button type='text' icon='plus' v-if='index == chapterList.length - 1 && !newChapterData.showAddChapter' @click.stop='addChapterHandler'>添加章节</el-button>
+                                    <Button type='text' icon='plus' v-if='index == chapterList.length - 1 && !newChapterData.showAddChapter' @click.stop='addChapterHandler'>添加章节</Button>
                                 </div>
                                 <Row type='flex' align='middle' v-if='showListState[index] == 1'>
-                                    <el-button type='text' @click="addVideo(item)">添加视频</el-button>
+                                    <Button type='text' @click="addVideo(item)">添加视频</Button>
                                     <div class='line'></div>
-                                    <el-button type='text' @click="addTest(item)">添加测验</el-button>
+                                    <Button type='text' @click="addTest(item)">添加测验</Button>
                                     <!--<div class='line'></div>
-                                    <el-button type='text' @click="handleSelModal('video-manage')">添加问卷</el-button>-->
+                                    <Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>-->
                                 </Row>
                             </Row>
                     </div>
@@ -56,11 +56,11 @@
                                 <span class='warning'>请至少添加一个视频或测验，否则章节信息将无法保存成功。取消添加请点击返回。</span>
                             </div>
                             <Row type='flex' align='middle'>
-                                <el-button type='text' @click="addVideo()">添加视频</el-button>
+                                <Button type='text' @click="addVideo()">添加视频</Button>
                                 <div class='line'></div>
-                                <el-button type='text' @click="addTest()">添加测验</el-button>
+                                <Button type='text' @click="addTest()">添加测验</Button>
                                 <!--<div class='line'></div>
-                                <el-button type='text' @click="handleSelModal('video-manage')">添加问卷</el-button>-->
+                                <Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>-->
                             </Row>
                         </Row>
                     </div>

@@ -5,23 +5,23 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
-                    <el-form-item label="讲师名称">
+                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                    <FormItem label="讲师名称">
                         <el-input v-model="form.name" placeholder="请输入讲师名称"></el-input>
-                    </el-form-item>
-                    <el-form-item label="讲师描述">
+                   </FormItem>
+                    <FormItem label="讲师描述">
                         <el-input type="textarea"  :autosize="{ minRows: 6, maxRows: 6}" placeholder="请对讲师进行描述" v-model="form.description">
                         </el-input>
-                    </el-form-item>
-                    <el-form-item label="讲师照片" class="upload-form1">
+                   </FormItem>
+                    <FormItem label="讲师照片" class="upload-form1">
                         <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleUploadComplete">
                             <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
                         </upload-panel>
-                    </el-form-item>
-                    <el-form-item class="btn-content">
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content">
+                        <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </Row>
     </base-input>

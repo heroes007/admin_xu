@@ -2,12 +2,12 @@
     <div class='statistics-data-view'>
         <header-component title='页面来源统计' :type='0' :showAdd='false'></header-component>
         <Row>
-            <el-form :inline="true" :model="formInline" class="find-by-term">
-                <el-form-item label="选择时间" label-width="80px">
+            <Form :inline="true" :model="formInline" class="find-by-term">
+                <FormItem label="选择时间" label-width="80px">
                     <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围" @change='changeTimeHandler'>
                     </el-date-picker>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+            </Form>
         </Row>
         <data-list class='data-list light-header' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
         <!-- <Row class='pager' type='flex' justify='end' align='middle'>

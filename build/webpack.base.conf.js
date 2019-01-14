@@ -20,7 +20,7 @@ module.exports = {
             'components': pathResolve('../src/components'),
             'views': pathResolve('../src/views'),
             'routes': pathResolve('../src/routes'),
-            'store': pathResolve('../src/store'),
+            'store': pathResolve('../src/store')
         }
     },
     module: {

@@ -4,8 +4,8 @@
         <Row slot="body">
             <Row class="body-top" v-if="payload.showList">
                 <Row class='search-bar' type='flex' justify='center' align='middle'>
-                <el-form :inline='true' class='find-by-term' label-width="0px">
-            <el-form-item>
+                <Form :inline='true' class='find-by-term' label-width="0px">
+            <FormItem>
                 <Row>
                     <Col :span="10">
                         <el-select class="select-user" v-model="searchType" placeholder="">
@@ -18,60 +18,60 @@
                         <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
                     </Col>
                 </Row>
-            </el-form-item>
-            <el-form-item>
-                <el-button class="sub-btn" type="primary" @click="searchStudent">查询</el-button>
-            </el-form-item>
+           </FormItem>
+            <FormItem>
+                <Button class="sub-btn" type="primary" @click="searchStudent">查询</Button>
+           </FormItem>
             <data-list @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
-        </el-form>
+        </Form>
             </Row>
             </Row>
             <Row class="body-top"  v-if="!payload.showList">
-                <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
-                    <el-form-item label="选择项目">
+                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                    <FormItem label="选择项目">
                         <el-select v-model="form.project_id" placeholder="请选择项目" disabled>
                             <el-option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="选择产品">
+                   </FormItem>
+                    <FormItem label="选择产品">
                         <el-select multiple v-model="form.product_id" placeholder="请选择项目">
                             <el-option v-for="item in productList" :key="item.id" :label="item.title" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="真实姓名">
+                   </FormItem>
+                    <FormItem label="真实姓名">
                          <el-input v-model="form.realname" placeholder="请输入学员真实姓名"></el-input>
-                    </el-form-item>
-                    <el-form-item label="选择学段">
+                   </FormItem>
+                    <FormItem label="选择学段">
                         <el-select v-model="form.grade_id" placeholder="请选择学段">
                             <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="选择学科" >
+                   </FormItem>
+                    <FormItem label="选择学科" >
                         <el-select v-model="form.subject_id" placeholder="请选择学科">
                             <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item v-if="false || payload.type == 1" class="send-offline-course">
+                   </FormItem>
+                    <FormItem v-if="false || payload.type == 1" class="send-offline-course">
                         <el-checkbox v-model="isSend" @change="handleGetOfflineTermList">是否发送线下课</el-checkbox>
-                    </el-form-item>
-                    <el-form-item label-width="110px" label="请选择线下课" v-if="isSend">
+                   </FormItem>
+                    <FormItem label-width="110px" label="请选择线下课" v-if="isSend">
                       <el-select v-model="form.offline_term_id" placeholder="请选择学科">
                           <el-option v-for="item in dataList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                       </el-select>
-                    </el-form-item>
-                    <el-form-item label="开课时间" v-if="payload.type == 2">
+                   </FormItem>
+                    <FormItem label="开课时间" v-if="payload.type == 2">
                         <el-date-picker v-model="form.start_school_time" type="date" placeholder="选择日期">
                         </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="毕业时间" v-if="payload.type == 2">
+                   </FormItem>
+                    <FormItem label="毕业时间" v-if="payload.type == 2">
                         <el-date-picker v-model="form.finish_school_time" type="date" placeholder="选择日期">
                         </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="离校时间" v-if="payload.type == 2">
+                   </FormItem>
+                    <FormItem label="离校时间" v-if="payload.type == 2">
                         <el-date-picker v-model="form.leave_school_time" type="date" placeholder="选择日期">
                         </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="学员类型" v-if="payload.type == 2">
+                   </FormItem>
+                    <FormItem label="学员类型" v-if="payload.type == 2">
                         <el-select v-model="form.type" placeholder="请选择学员类型">
                             <el-option label="普通" value="1"></el-option>
                             <el-option label="协议" value="2"></el-option>
@@ -79,18 +79,18 @@
                             <el-option label="个人不返钱" value="4"></el-option>
                             <el-option label="内部账号" value="-1"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="选择导师" v-if="payload.type == 2">
+                   </FormItem>
+                    <FormItem label="选择导师" v-if="payload.type == 2">
                         <el-select v-model="form.tutor_user_id" placeholder="请选择导师">
                             <el-option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.user_id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="选择学管" v-if="payload.type == 2">
+                   </FormItem>
+                    <FormItem label="选择学管" v-if="payload.type == 2">
                         <el-select v-model="form.xg_user_id" placeholder="请选择学管">
                             <el-option v-for="item in studentManagers" :key="item.id" :label="item.nickname" :value="item.user_id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="状态" v-if="payload.type == 2">
+                   </FormItem>
+                    <FormItem label="状态" v-if="payload.type == 2">
                         <el-select v-model="form.state" placeholder="请选择学员状态">
                             <el-option label="正常" value="1"></el-option>
                             <el-option label="毕业" value="2"></el-option>
@@ -98,17 +98,17 @@
                             <el-option label="延缓" value="4"></el-option>
                             <el-option label="删除" value="-1"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="特殊类型">
+                   </FormItem>
+                    <FormItem label="特殊类型">
                         <el-select v-model="form.is_test_user" placeholder="请选择学员特殊类型">
                             <el-option label="正式学员" :value="0"></el-option>
                             <el-option label="测试学员" :value="1"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item class="btn-content">
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content">
+                        <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </Row>
     </base-input>
@@ -118,31 +118,15 @@
 <script>
 import BaseInput from '../../components/BaseInput'
 import BaseList from '../../components/BaseList'
-import {
-    RemoveModal
-} from './mixins'
+import { RemoveModal } from './mixins'
 import UploadPanel from '../../components/UploadPanel'
-import {
-    get_student_detail
-} from '../../api/modules/tools_student'
-import {
-    get_list
-} from '../../api/modules/tools_product'
-import {
-    search_user
-} from '../../api/modules/tools_user'
-import {
-    Loading
-} from 'element-ui'
-import {
-    Config
-} from '../../config/base'
-import {
-    MPop
-} from '../../components/MessagePop'
-import {
-    mapState
-} from 'vuex'
+import { get_student_detail } from '../../api/modules/tools_student'
+import { get_list } from '../../api/modules/tools_product'
+import { search_user } from '../../api/modules/tools_user'
+import { Loading } from 'element-ui'
+import { Config } from '../../config/base'
+import { MPop } from '../../components/MessagePop'
+import { mapState } from 'vuex'
 export default {
     mixins: [RemoveModal,MPop],
     props: {
@@ -250,22 +234,23 @@ export default {
             });
         },
         saveHandler() {
-            if (this.payload.sid) {
-                this.$store.dispatch('edit_student', this.form);
-            } else {
-                var formInline = this.form;
-                this.$store.dispatch('add_student', formInline);
-                formInline.callback = () => {
-                  this.handleClose();
-                //   setTimeout(()=>{
-                //     this.$alert('成功创建学员!', '提示', {
-                //         confirmButtonText: '确定',
-                //         callback: action => {}
-                //     });
-                //   }, 800)
-                    this.showPop('保存成功！',1000);
-                }
-            }
+            // if (this.payload.sid) {
+          //     this.$store.dispatch('edit_student', this.form);
+          // } else {
+          //     var formInline = this.form;
+          //     this.$store.dispatch('add_student', formInline);
+          //     formInline.callback = () => {
+          //       this.handleClose();
+          //     //   setTimeout(()=>{
+          //     //     this.$alert('成功创建学员!', '提示', {
+          //     //         confirmButtonText: '确定',
+          //     //         callback: action => {}
+          //     //     });
+          //     //   }, 800)
+          //         this.showPop('保存成功！',1000);
+          //     }
+          // }
+          console.log(this.payload)
         },
         handleClose() {
             this.addStudentDialog = false;

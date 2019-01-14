@@ -3,9 +3,8 @@
         <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
             <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" v-loading.fullscreen.lock="fullscreenLoading"
             />
-            <i class="el-icon-upload"></i>
+            <Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
-
         </Row>
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
     </vue-cropper> -->
@@ -183,7 +182,7 @@
                             this.type = 'image';
                             return true;
                         } else {
-                            alert('只能上传图片！');
+                            this.$Message.warning('只能上传图片！');
                             this.fullscreenLoading = false;
                             return false;
                         }
@@ -192,7 +191,7 @@
                             this.type = 'video';
                             return true;
                         } else {
-                            alert('只能上传视频！');
+                            this.$Message.warning('只能上传视频！');
                             this.fullscreenLoading = false;
                             return false;
                         }
@@ -201,7 +200,7 @@
                             this.type = 'apk';
                             return true;
                         } else {
-                            alert('请上传apk后缀文件,请重试');
+                            this.$Message.warning('请上传apk后缀文件,请重试');
                             this.fullscreenLoading = false;
                             return false;
                         }
@@ -210,7 +209,7 @@
                             this.type = 'video';
                             return true;
                         } else {
-                            alert('只能上传视频！');
+                            this.$Message.warning('只能上传视频！');
                             this.fullscreenLoading = false;
                             return false;
                         }    
@@ -305,7 +304,10 @@
         }
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+    /deep/ .md-cloud-upload{
+        margin-top: 40px;
+    }
     .upload-panel {
         .file-require {
             font-size: 12px;

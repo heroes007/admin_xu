@@ -2,34 +2,34 @@
 <div class='manage-recruit-view'>
     <header-component title='招生管理' :type='0' :showAdd='true' addText='导师管理' @addClick='teacherArrangementHandler'></header-component>
     <Row>
-        <el-form :inline="true" :model="formInline" class="find-by-term">
-            <el-form-item label="学科" label-width="40px">
+        <Form :inline="true" :model="formInline" class="find-by-term">
+            <FormItem label="学科" label-width="40px">
                 <el-select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
                     <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="面试结果" label-width="80px">
+           </FormItem>
+            <FormItem label="面试结果" label-width="80px">
                 <el-select v-model="formInline.interview_state" placeholder="请选择面试结果" @change='changeFilterHandler'>
                     <el-option label="笔试通过" :value="3"></el-option>
                     <el-option label="未面试" :value="0"></el-option>
                     <el-option label="面试通过" :value="1"></el-option>
                     <el-option label="面试未通过" :value="2"></el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="" label-width="80px">
+           </FormItem>
+            <FormItem label="" label-width="80px">
               <el-input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
                 <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
                   <el-option label="姓名" :value="1"></el-option>
                   <el-option label="电话号" :value="2"></el-option>
                 </el-select>
-                <el-button slot="append" class="append-btn" @click='handleRealname'>搜索</el-button>
+                <Button slot="append" class="append-btn" @click='handleRealname'>搜索</Button>
               </el-input>
-            </el-form-item>
-        </el-form>
+           </FormItem>
+        </Form>
     </Row>
     <!--<Row>
-        <el-form :inline='true' :model='formInline' class='find-by-term'>
-            <el-form-item>
+        <Form :inline='true' :model='formInline' class='find-by-term'>
+            <FormItem>
                 <Row>
                     <Col :span="10">
                         <el-select class="select-user" v-model="formInline.classify" placeholder="">
@@ -43,14 +43,14 @@
                         <el-input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></el-input>
                     </Col>
                 </Row>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">查询</el-button>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onClear">清除</el-button>
-            </el-form-item>
-        </el-form>
+           </FormItem>
+            <FormItem>
+                <Button type="primary" @click="onSubmit">查询</Button>
+           </FormItem>
+            <FormItem>
+                <Button type="primary" @click="onClear">清除</Button>
+           </FormItem>
+        </Form>
     </Row>-->
     <!--<keep-alive>-->
     <data-list class='data-list light-header' @withdraw='withdrawHandler' @interviewTimeChange='interviewTimeChangeHandler' @sendMessage='sendMessageHandler' @showDetail='showDetailHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'

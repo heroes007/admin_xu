@@ -23,7 +23,7 @@
                     </Col>-->
                 </Row>
                 <Row>
-                    <el-button type="primary" class="ok-btn" @click="queryOk">确认</el-button>
+                    <Button type="primary" class="ok-btn" @click="queryOk">确认</Button>
                 </Row>
             </Row>
         </Row>

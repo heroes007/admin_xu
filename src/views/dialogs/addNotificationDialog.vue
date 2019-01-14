@@ -4,7 +4,7 @@
         <Row slot="body">
                 <el-input type="textarea" :autosize='false' placeholder="请输入内容" v-model="notificationContent">
                             </el-input>
-                <el-button class='btn-submit' type='primary' @click='submitHandler'>提交</el-button>
+                <Button class='btn-submit' type='primary' @click='submitHandler'>提交</Button>
           </Row>
       </base-input>
   </el-dialog>

@@ -3,29 +3,29 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <el-form ref="form" :model="form" label-width="70px" class="add-teacher-form">
-                    <el-form-item label="资料名称">
+                <Form ref="form" :model="form" :label-width="70" class="add-teacher-form">
+                    <FormItem label="资料名称">
                         <el-input v-model="form.name" placeholder="请输入分类名称"></el-input>
-                    </el-form-item>
-                    <el-form-item label="学科" v-if='payload === 0'>
+                   </FormItem>
+                    <FormItem label="学科" v-if='payload === 0'>
                                 <el-select v-model="form.subject_id" placeholder="请选择学科">
                                     <el-option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                    <el-form-item label="学段" v-if='payload === 0'>
+                           </FormItem>
+                    <FormItem label="学段" v-if='payload === 0'>
                                 <el-select v-model="form.grade_id" placeholder="请选择学段">
                                     <el-option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                    <el-form-item label-width='0'>
+                           </FormItem>
+                    <FormItem :label-width='0'>
                         <file-uploader :filters="dataFilters" maxFileCount="1"
                                     :maxFileSize="30000"  @uploadComplete="uploadComplete" 
                                     bucket="dscj-static-file" :dir='getDir()'/>
-                    </el-form-item>
-                    <el-form-item class="btn-content" label-width='0'>
-                        <el-button type="primary" class="sub-btn" @click="saveHandler">完成</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btn-content" label-width='0'>
+                        <Button type="primary" class="sub-btn" @click="saveHandler">完成</Button>
+                   </FormItem>
+                </Form>
             </Row>
         </Row>
     </base-input>

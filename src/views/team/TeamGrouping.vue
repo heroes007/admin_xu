@@ -1,10 +1,10 @@
 <template>
     <div class='team-grouping-view'>
         <Row class='handle-bar' type='flex' justify='center' align='middle'>
-            <el-button type='text' @click='dialogVisible = true' v-if="activeName === 'step1'">修改规则</el-button>
-            <el-button type='primary' @click='makeGroupHandler' v-if="activeName === 'step1'">生成分组</el-button>
+            <Button type='text' @click='dialogVisible = true' v-if="activeName === 'step1'">修改规则</Button>
+            <Button type='primary' @click='makeGroupHandler' v-if="activeName === 'step1'">生成分组</Button>
             <h3 v-if="activeName === 'step2'">共筛选出 {{teamGroupData.length}} 种分组方式</h3>
-            <el-button type='primary' @click="activeName = 'step1'" v-if="activeName === 'step2'">返回</el-button>
+            <Button type='primary' @click="activeName = 'step1'" v-if="activeName === 'step2'">返回</Button>
         </Row>
         <div class='radar-modal' v-if='showDetail' @click='showDetail = false'>
             <my-radar class='radar-container' :style='radarStyle' :data='radarData' :options='radarOption'/>
@@ -40,21 +40,21 @@
             </el-tab-pane>
         </el-tabs>
         <el-dialog title="分组规则" :visible.sync="dialogVisible" custom-class='team-grouping-rule-dialog'>
-            <el-form label-width="100px" class="rule-form">
-                <el-form-item :label="item.label" v-for='(item, index) in propList' :key='item.prop'>
+            <Form label-width="100px" class="rule-form">
+                <FormItem :label="item.label" v-for='(item, index) in propList' :key='item.prop'>
                     <el-input-number v-model="item.ruleCount" :min='0' :max='5'></el-input-number>
-                </el-form-item>
-                <el-form-item label="剩余人规则">
+               </FormItem>
+                <FormItem label="剩余人规则">
                     <el-switch v-model="sameRule" on-text="规则同上" off-text="自定义" :width='100'>
                     </el-switch>
-                </el-form-item>
-                <el-form-item :label="item.label" v-for='(item, index) in propList' :key='item.prop' v-if='!sameRule'>
+               </FormItem>
+                <FormItem :label="item.label" v-for='(item, index) in propList' :key='item.prop' v-if='!sameRule'>
                     <el-input-number v-model="item.team2RuleCount" :min='0' :max='5'></el-input-number>
-                </el-form-item>
-                <el-form-item label-width='0'>
-                    <el-button type='primary' @click='confirmRuleChange'>确认修改</el-button>
-                </el-form-item>
-            </el-form>
+               </FormItem>
+                <FormItem label-width='0'>
+                    <Button type='primary' @click='confirmRuleChange'>确认修改</Button>
+               </FormItem>
+            </Form>
         </el-dialog>
     </div>
 </template>

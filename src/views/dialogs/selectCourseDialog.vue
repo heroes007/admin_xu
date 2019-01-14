@@ -8,7 +8,7 @@
             :header-data='dataHeader'></data-list>
             </Row>
             <Row>
-                <el-button type="primary" class="ok-btn" @click="addHandler">添加</el-button>
+                <Button type="primary" class="ok-btn" @click="addHandler">添加</Button>
             </Row>
         </Row>
     </base-input>

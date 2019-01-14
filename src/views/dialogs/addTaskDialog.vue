@@ -3,58 +3,58 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
-                <el-form ref="form" :rules="rules" :model="form" label-width="121px" class="add-task-form">
-                    <el-form-item v-show="nextStep == 0" :label="typeStr('','名称')" prop="name" required>
+                <Form ref="form" :rules="rules" :model="form" label-width="121px" class="add-task-form">
+                    <FormItem v-show="nextStep == 0" :label="typeStr('','名称')" prop="name" required>
                         <el-input v-model="form.name" :placeholder="typeStr('请输入','名称')"></el-input>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" :label="typeStr('','持续时间')" prop="duration" required>
+                   </FormItem>
+                    <FormItem v-show="nextStep == 0" :label="typeStr('','持续时间')" prop="duration" required>
                         <el-input-number placeholder="持续时间（天）" v-model="form.duration" :min='0'></el-input-number>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" label="选择学科" prop="subject_id" required>
+                   </FormItem>
+                    <FormItem v-show="nextStep == 0" label="选择学科" prop="subject_id" required>
                         <el-select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2' @change="handleChangeType1">
                             <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" label="选择学段" prop="grade_id" required>
+                   </FormItem>
+                    <FormItem v-show="nextStep == 0" label="选择学段" prop="grade_id" required>
                         <el-select v-model="form.grade_id" placeholder="请选择学段" :disabled="disabled" @change="handleChangeType1">
                             <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" class="approval" label="批阅形式" prop="result_type" required>
+                   </FormItem>
+                    <FormItem v-show="nextStep == 0" class="approval" label="批阅形式" prop="result_type" required>
                         <el-radio-group v-model="form.result_type" :disabled="disabled">
                             <el-radio :label="1">常规批阅</el-radio>
                             <el-radio :label="2">内置打分批阅</el-radio>
                         </el-radio-group>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 0" :disabled="disabled" class="approval" v-if="payload.selectedType == 0" label="激活方式">
+                   </FormItem>
+                    <FormItem v-show="nextStep == 0" :disabled="disabled" class="approval" v-if="payload.selectedType == 0" label="激活方式">
                         <el-radio-group v-model="form.activity_type" :disabled="disabled" @change="handleChangeType">
                             <el-radio :label="1">手动激活</el-radio>
                             <el-radio :label="2">定时激活</el-radio>
                             <!--<el-radio :label="3">前置课激活</el-radio>-->
                         </el-radio-group>
-                    </el-form-item>
-                    <el-form-item v-show="payload.selectedType == 1 && nextStep == 0" v-if="payload.selectedType == 1" label="前置课">
+                   </FormItem>
+                    <FormItem v-show="payload.selectedType == 1 && nextStep == 0" v-if="payload.selectedType == 1" label="前置课">
                         <el-select v-model="form.activity_param" placeholder="请选择" :disabled="disabled1">
                             <el-option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item :class="{'inter-data': form.activity_type == 2}" v-show="payload.selectedType == 0 && nextStep == 0" v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : form.activity_type == 3 ? '前置课': ''" prop="activity_param" required>
+                   </FormItem>
+                    <FormItem :class="{'inter-data': form.activity_type == 2}" v-show="payload.selectedType == 0 && nextStep == 0" v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : form.activity_type == 3 ? '前置课': ''" prop="activity_param" required>
                         <el-input v-if="form.activity_type == 2" v-model="form.activity_param" :disabled="disabled" placeholder="请输入天数"></el-input>
                         <el-select v-if="form.activity_type == 3" v-model="form.activity_param" placeholder="请选择" :disabled="disabled">
                             <el-option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 1" :label="typeStr('','内容')" prop="task_require">
+                   </FormItem>
+                    <FormItem v-show="nextStep == 1" :label="typeStr('','内容')" prop="task_require">
                         <!--<el-input type="textarea" :rows="6" :placeholder="typeStr('请填写','内容')" v-model="form.task_require">
                         </el-input>-->
                         <text-editor ref='require_editor' :content='form.task_require'/>
-                    </el-form-item>
-                    <el-form-item class="check-upload" v-show="nextStep == 1">
+                   </FormItem>
+                    <FormItem class="check-upload" v-show="nextStep == 1">
                         <el-checkbox-group v-model="form.limit_count" >
                             <el-checkbox :label="typeStr('要求学员上传','附件')" :disabled="disabled" name="type" value="true"></el-checkbox>
                         </el-checkbox-group>
-                    </el-form-item>
-                    <el-form-item v-show="nextStep == 1" label="上传附件" class="upload-form1">
+                   </FormItem>
+                    <FormItem v-show="nextStep == 1" label="上传附件" class="upload-form1">
                         <upload-panel ref="upload_panel" :upload-config="uploadConfig" @getuploadfile="handleGetUrl">
                             <!--<span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>-->
                         </upload-panel>
@@ -66,56 +66,56 @@
                                 <span class="datetime">{{ item. datetime | zonetime }}</span>
                             </Row>
                         </Row>
-                    </el-form-item>
-                    <el-form-item class="btns">
-                        <el-button type='text' v-show='nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</el-button>
-                        <el-button v-show="nextStep == 1" class="btn-orange" @click="handleSubmit('form')">提交</el-button>
-                        <el-button v-show="nextStep == 0" class="btn-orange" @click="handleNextStep('form')">下一步</el-button>
-                    </el-form-item>
-                </el-form>
+                   </FormItem>
+                    <FormItem class="btns">
+                        <Button type='text' v-show='nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</Button>
+                        <Button v-show="nextStep == 1" class="btn-orange" @click="handleSubmit('form')">提交</Button>
+                        <Button v-show="nextStep == 0" class="btn-orange" @click="handleNextStep('form')">下一步</Button>
+                   </FormItem>
+                </Form>
             </Row>
-            <!-- <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
-                <el-form-item prop="name" required>
+            <!-- <Form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
+                <FormItem prop="name" required>
                     <el-input placeholder="作业名称" v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item prop="subject_id" required>
+               </FormItem>
+                <FormItem prop="subject_id" required>
                     <el-select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2'>
                         <el-option v-for="item in subjectList" :label="item.name" :value="item.id"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item prop="grade_id" required>
+               </FormItem>
+                <FormItem prop="grade_id" required>
                     <el-select v-model="form.grade_id" placeholder="请选择学段" :disabled='payload.type == 2'>
                         <el-option v-for="item in gradeList" :label="item.name" :value="item.id"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="批阅形式" prop="result_type" required>
+               </FormItem>
+                <FormItem label="批阅形式" prop="result_type" required>
                     <el-radio-group v-model="form.result_type">
                         <el-radio :label="1">常规批阅</el-radio>
                         <el-radio :label="2">内置打分批阅</el-radio>
                     </el-radio-group>
-                </el-form-item>
-                <el-form-item label="激活方式">
+               </FormItem>
+                <FormItem label="激活方式">
                     <el-radio-group v-model="form.activity_type" :disabled="disabled" @change="handleChangeType">
                         <el-radio :label="1">手动激活</el-radio>
                         <el-radio :label="2">定时激活</el-radio>
                         <el-radio :label="3">前置课激活</el-radio>
                     </el-radio-group>
-                </el-form-item>
-                <el-form-item v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : ''" prop="activity_param" required>
+               </FormItem>
+                <FormItem v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : ''" prop="activity_param" required>
                     <el-input v-if="form.activity_type == 2" v-model="form.activity_param" placeholder="请输入天数"></el-input>
                     <el-select v-if="form.activity_type == 3" v-model="form.activity_param" multiple placeholder="请选择">
                         <el-option v-for="item in preCurriculum" :label="item.title" :value="item.id"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item prop="task_require" required>
+               </FormItem>
+                <FormItem prop="task_require" required>
                     <el-input type="textarea" v-model="form.task_require"></el-input>
-                </el-form-item>
-                <el-form-item>
+               </FormItem>
+                <FormItem>
                     <el-checkbox-group v-model="form.max_file_count">
                         <el-checkbox label="要求学员上传作业附件" name="type" value=""></el-checkbox>
                     </el-checkbox-group>
-                </el-form-item>
-                <el-form-item>
+               </FormItem>
+                <FormItem>
                     <Row>
                         <Col>
                             <upload-button :bucket="upload.bucket" :dir="upload.dir" :host="upload.host" @uploadcomplete="handleGetUrl"></upload-button>
@@ -127,11 +127,11 @@
                             </Row>
                         </Col>
                     </Row>
-                </el-form-item>
-                <el-form-item>
-                    <el-button @click="handleSubmit('form')">提交</el-button>
-                </el-form-item>
-            </el-form> -->
+               </FormItem>
+                <FormItem>
+                    <Button @click="handleSubmit('form')">提交</Button>
+               </FormItem>
+            </Form> -->
         </Row>
     </base-input>
 </el-dialog>

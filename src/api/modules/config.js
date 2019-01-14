@@ -7,9 +7,7 @@ var api = axios.create({
   baseURL: 'http://api.tl100.com/met/',
   timeout: 10000,
   withCredentials: true,
-  data:{
-    token: localStorage.getItem('token') || ''
-  }
+  data: {  token: localStorage.getItem('token') || '' }
 });
 
 export default api;

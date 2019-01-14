@@ -7,20 +7,20 @@
                 :selected='getSelected(item.id, item.type)' @select='changeCategory(item)' />
         </div>
         <div class="create-panel">
-            <!-- <el-button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建</el-button> -->
-            <!-- <el-button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</el-button> -->
-            <el-button @click="addTask()">创建</el-button>
-            <!-- <el-button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</el-button> -->
+            <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建</Button> -->
+            <!-- <Button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</Button> -->
+            <Button @click="addTask()">创建</Button>
+            <!-- <Button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</Button> -->
         </div>
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler' class='data-list light-header' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
             <div class='manage-online-course'>
                 <!-- <header-component @addCourse='addCourseHandler'/> -->
 
-                <!-- <el-button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建作业</el-button> -->
-                <!-- <el-button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</el-button> -->
-                <!-- <el-button @click="handleSelModal(types.ADD_TASK, {type: 1})">创建任务</el-button> -->
-                <!-- <el-button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</el-button> -->
+                <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建作业</Button> -->
+                <!-- <Button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</Button> -->
+                <!-- <Button @click="handleSelModal(types.ADD_TASK, {type: 1})">创建任务</Button> -->
+                <!-- <Button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</Button> -->
             </div>
     </div>
 </template>

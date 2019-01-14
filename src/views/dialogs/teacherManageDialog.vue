@@ -6,23 +6,23 @@
             <span class="dscj-webfont-remove-sign"></span>
             <el-tabs type="border-card">
                 <el-tab-pane label="讲师信息">
-                    <el-form ref="form" :model="form" label-width="80px" class="add-teacher-form">
-                        <el-form-item label="讲师名称">
+                    <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                        <FormItem label="讲师名称">
                             <el-input v-model="form.teacher_name" placeholder="请输入课程名称"></el-input>
-                        </el-form-item>
-                        <el-form-item label="讲师描述">
+                       </FormItem>
+                        <FormItem label="讲师描述">
                             <el-input type="textarea" :autosize="{ minRows: 6, maxRows: 6}" placeholder="请对讲师进行描述" v-model="form.teacher_description">
                             </el-input>
-                        </el-form-item>
-                        <el-form-item label="讲师照片" class="upload-form1">
+                       </FormItem>
+                        <FormItem label="讲师照片" class="upload-form1">
                             <upload-panel ref="upload_panel">
                                 <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
                             </upload-panel>
-                        </el-form-item>
-                        <el-form-item class="btn-content">
-                            <el-button type="primary" class="sub-btn" @click="handleSave">保存</el-button>
-                        </el-form-item>
-                    </el-form>
+                       </FormItem>
+                        <FormItem class="btn-content">
+                            <Button type="primary" class="sub-btn" @click="handleSave">保存</Button>
+                       </FormItem>
+                    </Form>
                 </el-tab-pane>
                 <el-tab-pane label="讲师课程">
                     <el-table :data="tableData" style="width: 100%" class="teacher-course-table">

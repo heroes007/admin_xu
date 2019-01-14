@@ -2,24 +2,24 @@
 <div class='manage-my-interview-view'>
     <header-component title='我的面试' :type='0'></header-component>
     <Row>
-        <el-form :inline="true" :model="formInline" class="find-by-term">
-            <el-form-item label="面试状态" label-width="80px">
+        <Form :inline="true" :model="formInline" class="find-by-term">
+            <FormItem label="面试状态" label-width="80px">
                 <el-select v-model="formInline.interview_state" placeholder="请选择面试状态" @change='changeFilterHandler'>
                     <el-option label="未面试" :value="0"></el-option>
                     <el-option label="面试通过" :value="1"></el-option>
                     <el-option label="面试未通过" :value="2"></el-option>
                 </el-select>
-            </el-form-item>
+           </FormItem>
             <div style="position:absolute;top:22px;left:500px;">
               <el-input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
                 <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
                   <el-option label="姓名" :value="1"></el-option>
                   <el-option label="电话号" :value="2"></el-option>
                 </el-select>
-                <el-button slot="append" class="append-btn" @click='handleRealname'>搜索</el-button>
+                <Button slot="append" class="append-btn" @click='handleRealname'>搜索</Button>
               </el-input>
             </div>
-        </el-form>
+        </Form>
     </Row>
     <!--<keep-alive>-->
     <data-list class='data-list light-header' @finishInterview='finishInterviewHandler' @showComment='showCommentHandler' @showDetail='showDetailHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
@@ -540,7 +540,7 @@ export default {
 
         .Col {
           line-height: 40px;
-          .el-button {
+          .Button {
             a {
               color: #5fa137;
               font-size: 14px;

@@ -28,7 +28,7 @@
                             </el-input>
                         </div>
                         <Row class='btn-submit' type='flex' justify='center'>
-                            <el-button type='primary' @click='doSubmit'>确定</el-button>
+                            <Button type='primary' @click='doSubmit'>确定</Button>
                         </Row>
                     </div>
                 </Row>

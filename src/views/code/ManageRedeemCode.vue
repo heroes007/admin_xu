@@ -42,7 +42,7 @@
   :on-icon-click="searchHandler"
   v-popover:searchpop>
 </el-input>
-<el-button type='primary' icon="plus" @click='addCode'>添加兑换码</el-button>
+<Button type='primary' icon="plus" @click='addCode'>添加兑换码</Button>
     </Row>
     <data-list class='data-list light-header' @export='exportHandler' @detail='detailHandler' :rowClassName='getRowClassName' :isStripe='false' :table-data='dataList' :header-data='dataHeader'
     :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>

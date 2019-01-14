@@ -5,38 +5,38 @@
                 <!-- <span class="dscj-webfont-remove-sign"></span> -->
                 <el-tabs type="border-card" @tab-click='changeTabHandler' :active-name='activeName'>
                     <el-tab-pane label="基础信息">
-                        <el-form ref="form" :model="form1" label-width="80px">
-                            <el-form-item label="选择项目">
+                        <Form ref="form" :model="form1" label-width="80px">
+                            <FormItem label="选择项目">
                                 <el-select v-model="form1.project_id" placeholder="请选择项目" disabled>
                                     <el-option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="真实姓名">
+                           </FormItem>
+                            <FormItem label="真实姓名">
                                 <el-input v-model="form1.realname" placeholder="请输入学员真实姓名"></el-input>
-                            </el-form-item>
-                            <el-form-item label="选择学段">
+                           </FormItem>
+                            <FormItem label="选择学段">
                                 <el-select v-model="form1.grade_id" placeholder="请选择学段">
                                     <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="选择学科">
+                           </FormItem>
+                            <FormItem label="选择学科">
                                 <el-select v-model="form1.subject_id" placeholder="请选择学科">
                                     <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="开课时间">
+                           </FormItem>
+                            <FormItem label="开课时间">
                                 <el-date-picker v-model="form1.start_school_time" type="date" placeholder="选择日期">
                                 </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="毕业时间">
+                           </FormItem>
+                            <FormItem label="毕业时间">
                                 <el-date-picker v-model="form1.finish_school_time" type="date" placeholder="选择日期">
                                 </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="离校时间">
+                           </FormItem>
+                            <FormItem label="离校时间">
                                 <el-date-picker v-model="form1.leave_school_time" type="date" placeholder="选择日期">
                                 </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="学员类型">
+                           </FormItem>
+                            <FormItem label="学员类型">
                                 <el-select v-model="form1.type" placeholder="请选择学员类型">
                                     <el-option label="普通" value="1"></el-option>
                                     <el-option label="协议" value="2"></el-option>
@@ -44,18 +44,18 @@
                                     <el-option label="个人不返钱" value="4"></el-option>
                                     <el-option label="内部账号" value="-1"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="选择导师">
+                           </FormItem>
+                            <FormItem label="选择导师">
                                 <el-select v-model="form1.tutor_user_id" placeholder="请选择导师">
                                     <el-option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.user_id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="选择学管">
+                           </FormItem>
+                            <FormItem label="选择学管">
                                 <el-select v-model="form1.xg_user_id" placeholder="请选择学管">
                                     <el-option v-for="item in studentManagers" :key="item.id" :label="item.nickname" :value="item.user_id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="状态">
+                           </FormItem>
+                            <FormItem label="状态">
                                 <el-select v-model="form1.state" placeholder="请选择学员状态">
                                     <el-option label="正常" value="1"></el-option>
                                     <el-option label="毕业" value="2"></el-option>
@@ -63,80 +63,80 @@
                                     <el-option label="延缓" value="4"></el-option>
                                     <el-option label="删除" value="-1"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="特殊类型">
+                           </FormItem>
+                            <FormItem label="特殊类型">
                                 <el-select v-model="form1.is_test_user" placeholder="请选择学员特殊类型">
                                     <el-option label="正式学员" :value="0"></el-option>
                                     <el-option label="测试学员" :value="1"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item class="btn-content" label-width='0'>
-                                <el-button type="ghost" @click="deleteStudent(form1.student_id)">删除学员</el-button>
-                                <el-button type="primary" class="sub-btn" @click="saveHandler">保存</el-button>
-                            </el-form-item>
-                        </el-form>
+                           </FormItem>
+                            <FormItem class="btn-content" label-width='0'>
+                                <Button type="ghost" @click="deleteStudent(form1.student_id)">删除学员</Button>
+                                <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                           </FormItem>
+                        </Form>
                     </el-tab-pane>
                     <el-tab-pane label="报名信息">
                          <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
                     该用户没有报名信息
                 </Row>
-                        <el-form ref="form2" :model="form2" label-width="80px" class="add-teacher-form" v-if='form2.user_id !== 0'>
-                            <el-form-item label="ID">
+                        <Form ref="form2" :model="form2" label-width="80px" class="add-teacher-form" v-if='form2.user_id !== 0'>
+                            <FormItem label="ID">
                                 <el-input v-model="form2.user_id" disabled></el-input>
-                            </el-form-item>
-                            <el-form-item label="姓名">
+                           </FormItem>
+                            <FormItem label="姓名">
                                 <el-input v-model="form2.realname" placeholder="请输入考生真实姓名"></el-input>
-                            </el-form-item>
-                            <el-form-item label="电话">
+                           </FormItem>
+                            <FormItem label="电话">
                                 <el-input v-model="form2.phone" placeholder="请输入考生电话"></el-input>
-                            </el-form-item>
-                            <el-form-item label="选择学段">
+                           </FormItem>
+                            <FormItem label="选择学段">
                                 <el-select v-model="form2.grade_id" placeholder="请选择学段">
                                     <el-option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="选择学科">
+                           </FormItem>
+                            <FormItem label="选择学科">
                                 <el-select v-model="form2.subject_id" placeholder="请选择学科">
                                     <el-option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="面试结果" v-if='form2.interview_state === 1'>
+                           </FormItem>
+                            <FormItem label="面试结果" v-if='form2.interview_state === 1'>
                                 <el-select v-model="form2.interview_result" placeholder="请选择学段">
                                     <el-option v-for="item in interviewResultList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="笔试成绩">
+                           </FormItem>
+                            <FormItem label="笔试成绩">
                                 <el-input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></el-input>
-                            </el-form-item>
-                            <el-form-item label="出生年月">
+                           </FormItem>
+                            <FormItem label="出生年月">
                                 <el-date-picker v-model="form2.birth" type="date" placeholder="选择日期">
                                 </el-date-picker>
-                            </el-form-item>
-                            <el-form-item label="邮箱">
+                           </FormItem>
+                            <FormItem label="邮箱">
                                 <el-input v-model="form2.email" placeholder="请输入考生邮箱"></el-input>
-                            </el-form-item>
-                            <el-form-item label="所在院校">
+                           </FormItem>
+                            <FormItem label="所在院校">
                                 <el-input v-model="form2.school" placeholder="请输入考生所在院校"></el-input>
-                            </el-form-item>
-                            <el-form-item label="所学专业">
+                           </FormItem>
+                            <FormItem label="所学专业">
                                 <el-input v-model="form2.school_subject" placeholder="请输入考生所学专业"></el-input>
-                            </el-form-item>
-                            <el-form-item label="在读年级">
+                           </FormItem>
+                            <FormItem label="在读年级">
                                 <el-input v-model="form2.school_grade" placeholder="请输入考生在读年级"></el-input>
-                            </el-form-item>
-                            <el-form-item label="期望就业城市" label-width='100px'>
+                           </FormItem>
+                            <FormItem label="期望就业城市" label-width='100px'>
                                 <el-input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></el-input>
-                            </el-form-item>
-                            <el-form-item class="btn-content" label-width='0'>
-                                <el-button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</el-button>
-                            </el-form-item>
-                        </el-form>
+                           </FormItem>
+                            <FormItem class="btn-content" label-width='0'>
+                                <Button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</Button>
+                           </FormItem>
+                        </Form>
                     </el-tab-pane>
                     <el-tab-pane label="线上课">
                         <Row>
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
-                                <el-button type='text' @click='clearVideoLog'>清除观看记录</el-button>
+                                <Button type='text' @click='clearVideoLog'>清除观看记录</Button>
                                 <el-select v-model="form3.product_id" placeholder="请选择项目" @change='changeProductHandler'>
                                     <el-option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></el-option>
                                 </el-select>
@@ -160,7 +160,7 @@
                                         <i :class="{'xght-webfont-lock':!item.unlock,'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i>
                                     </Col>
                                     <Col :span="4">
-                                        <el-button type='primary' @click='unlockTest(item)'>解锁测验</el-button>
+                                        <Button type='primary' @click='unlockTest(item)'>解锁测验</Button>
                                     </Col>
                                 </Row>
                             </Row>
@@ -911,7 +911,7 @@
                     padding-bottom: 8px;
                     .el-form-item__content {
                         margin-left: 0 !important;
-                        button {
+                        el-button {
                             margin-left: 0;
                         }
                     }

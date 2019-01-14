@@ -1,10 +1,10 @@
 <template>
     <div class='editor'>
         <!-- <Vueditor ref='text_editor_main'></Vueditor> -->
-        <editor @ready='editorReadyHandler'></editor>
-        <Row class='editor-btns' type='flex' justify='start' align='middle'>
+        <VueUEditor @ready='editorReadyHandler'></VueUEditor>
+        <el-row class='editor-btns' type='flex' justify='start' align='middle'>
             <btn-upload text='插入图片' type='image/gif, image/jpeg, image/png' :host='host' @uploadcomplete='uploadImgComplete'></btn-upload>
-        </Row>
+        </el-row>
     </div>
 </template>
 <script>
@@ -67,7 +67,7 @@
         },
         components:{
             'btn-upload':UploadBtn,
-            'editor':VueUEditor
+            VueUEditor
         }
     }
 
@@ -78,12 +78,11 @@
             height:250px;
             text-align:left;
         }
-
         .edui-editor {
+            width: 100% !important;
             .edui-toolbar{
-text-align: left;
+                text-align: left;
             }
-            
         }
 
         .editor-btns {

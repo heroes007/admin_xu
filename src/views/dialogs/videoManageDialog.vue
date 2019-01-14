@@ -5,43 +5,43 @@
             <!-- <span class="dscj-webfont-remove-sign"></span> -->
             <el-tabs type="border-card">
                 <el-tab-pane label="视频设置">
-                    <el-form ref="form" :model="form" label-width="80px">
-                        <el-form-item label="小节名称">
+                    <Form ref="form" :model="form" label-width="80px">
+                        <FormItem label="小节名称">
                             <el-input v-model="form.title" placeholder="请输入小节名称"></el-input>
-                        </el-form-item>
-                        <!--<el-form-item label="视频状态">-->
+                       </FormItem>
+                        <!--<FormItem label="视频状态">-->
                             <!--<el-select v-model="form.region" placeholder="请选择视频状态">-->
                                 <!--<el-option label="区域一" value="shanghai"></el-option>-->
                                 <!--<el-option label="区域二" value="beijing"></el-option>-->
                             <!--</el-select>-->
-                        <!--</el-form-item>-->
-                        <el-form-item label="视频时长（分）">
+                        <!--</</FormItem>>-->
+                        <FormItem label="视频时长（分）">
                             <el-input v-model="form.duration" placeholder="请输入视频时长"></el-input>
-                        </el-form-item>
-                        <el-form-item label="观看权限（多选）">
+                       </FormItem>
+                        <FormItem label="观看权限（多选）">
                             <el-select v-model="form.video_roles" placeholder="请选择观看权限" multiple>
                                 <el-option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.role_id">
                                 </el-option>
                             </el-select>
-                        </el-form-item>
-                        <el-form-item label="上传视频" class="upload-form">
+                       </FormItem>
+                        <FormItem label="上传视频" class="upload-form">
                             <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler' :upload-config='uploaderConfig'>
                                 <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
                             </upload-panel>
-                        </el-form-item>
-                        <el-form-item class="btns">
-                            <el-button type="primary" class="sub-btn" @click="handleSubmit">发布</el-button>
-                        </el-form-item>
-                    </el-form>
+                       </FormItem>
+                        <FormItem class="btns">
+                            <Button type="primary" class="sub-btn" @click="handleSubmit">发布</Button>
+                       </FormItem>
+                    </Form>
                 </el-tab-pane>
                 <el-tab-pane label="复制视频">
-                    <el-form ref="form" :model="form" label-width="80px" class="has-video-form">
-                        <el-form-item label="所属项目">
+                    <Form ref="form" :model="form" label-width="80px" class="has-video-form">
+                        <FormItem label="所属项目">
                             <el-select v-model="projectId" @change='changeProjectHandler'>
                                 <el-option :label='item.name' :value='item.id' v-for='item in projectList' :key="item.id"></el-option>
                             </el-select>
-                        </el-form-item>
-                        <el-form-item class="course-list">
+                       </FormItem>
+                        <FormItem class="course-list">
                             <el-collapse @change='toggleCurriculum' :accordion='true'>
                                 <el-collapse-item :title="item.title" :name="index" v-for='(item,index) in curriculumList' :key="item.id">
                                     <Row class="course-item" v-for='catalog in item.chapterList' :key="catalog.id">
@@ -57,11 +57,11 @@
                                     </Row>
                                 </el-collapse-item>
                             </el-collapse>
-                        </el-form-item>
-                        <el-form-item class="btns">
-                            <el-button type="primary" class="sub-btn" @click="handleSelect">保存</el-button>
-                        </el-form-item>
-                    </el-form>
+                       </FormItem>
+                        <FormItem class="btns">
+                            <Button type="primary" class="sub-btn" @click="handleSelect">保存</Button>
+                       </FormItem>
+                    </Form>
                 </el-tab-pane>
             </el-tabs>
         </Row>

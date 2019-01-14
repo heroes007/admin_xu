@@ -9,26 +9,26 @@
                 </el-select>
             </div>
             <div class='btn-group' v-if='type !== 0'>
-                <el-button class='btn-add' type='primary' icon="plus" v-if='type === 1 && showAdd' @click="addCourseHandler">
+                <Button class='btn-add' type='primary' icon="plus" v-if='type === 1 && showAdd' @click="addCourseHandler">
                     添加课程
-                </el-button>
-                <el-button class='btn-add' type='primary' icon="plus" v-if='type === 2 && showAdd' @click="addOfflineSemester">
+                </Button>
+                <Button class='btn-add' type='primary' icon="plus" v-if='type === 2 && showAdd' @click="addOfflineSemester">
                     添加学期
-                </el-button>
-                <el-button class='btn-add' type='primary' icon="plus" v-if='type === 3 && showAdd' @click="addTaskCategory">
+                </Button>
+                <Button class='btn-add' type='primary' icon="plus" v-if='type === 3 && showAdd' @click="addTaskCategory">
                     添加分类
-                </el-button>
-                <el-button class='btn-edit' type='text' icon="setting" v-if='type === 3 && showAdd' @click="editTaskCategory">
+                </Button>
+                <Button class='btn-edit' type='text' icon="setting" v-if='type === 3 && showAdd' @click="editTaskCategory">
                     {{ isEdit ? '编辑类型': '取消编辑'}}
-                </el-button>
+                </Button>
                 <el-popover ref="teacherList" placement="bottom-end" width="500" trigger="click" popper-class='teacher-list'>
                     <Row class='teacher-list-head'>
                         <div class='head'>
                             全部讲师
                         </div>
-                        <el-button type='text' icon='plus' @click='addTeacherHandler'>
+                        <Button type='text' icon='plus' @click='addTeacherHandler'>
                             添加
-                        </el-button>
+                        </Button>
                     </Row>
                     <div class='teacher-list-container'>
                         <Row v-for='r in teacherListData' :key="r.id" type='flex'>
@@ -39,12 +39,12 @@
                     </div>
                 </el-popover>
 
-                <el-button class='btn-teacher' type='text' v-popover:teacherList v-if='type === 1 || type === 2'><i class='icon-xg-icon-xy'></i>讲师设置</el-button>
+                <Button class='btn-teacher' type='text' v-popover:teacherList v-if='type === 1 || type === 2'><i class='icon-xg-icon-xy'></i>讲师设置</Button>
             </div>
             <div class='btn-group'  v-if='type === 0'>
-                <el-button class='btn-add' type='primary' icon="plus" v-if='showAdd' @click="addClickHandler">
+                <Button class='btn-add' type='primary' icon="plus" v-if='showAdd' @click="addClickHandler">
                     {{addText}}
-                </el-button>
+                </Button>
             </div>
         </Row>
     </div>

@@ -3,23 +3,23 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
-                    <el-form ref="form" :model="form" label-width="121px" class="add-task-form">
-                        <el-form-item label="文章标题">
+                    <Form ref="form" :model="form" label-width="121px" class="add-task-form">
+                        <FormItem label="文章标题">
                             <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
-                        </el-form-item>
-                        <el-form-item label="阅读数">
+                       </FormItem>
+                        <FormItem label="阅读数">
                             <el-input-number placeholder="请输入阅读数" v-model="form.default_count" :min='0'></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="文章摘要">
+                       </FormItem>
+                        <FormItem label="文章摘要">
                             <el-input type="textarea" :autosize='{minRows:4}' v-model="form.description" placeholder="请输入文章摘要"></el-input>
-                        </el-form-item>
-                        <el-form-item label="文章正文">
+                       </FormItem>
+                        <FormItem label="文章正文">
                             <text-editor ref='content_editor' :content='contentData' />
-                        </el-form-item>
-                        <el-form-item class="btns">
-                            <el-button class="btn-orange" @click="handleSubmit">保存</el-button>
-                        </el-form-item>
-                    </el-form>
+                       </FormItem>
+                        <FormItem class="btns">
+                            <Button class="btn-orange" @click="handleSubmit">保存</Button>
+                       </FormItem>
+                    </Form>
                 </Row>
             </Row>
         </base-input>
