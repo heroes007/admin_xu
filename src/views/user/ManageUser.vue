@@ -134,7 +134,7 @@
     </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="scss" scoped>
     /deep/ .ivu-breadcrumb{
         text-align: left;
         margin-left: 20px;

@@ -60,48 +60,34 @@
     <Row class='total-num' type='flex' justfy='start' align='middle'>
         <span>当前学员 {{total}} 人</span>
     </Row>
-    <!--<keep-alive>-->
     <data-list class='data-list light-header' @showDetail='showDetailHandler' @queryHomework='queryHomeworkHandler' @queryTask='queryTaskHandler' @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'
         ></data-list>
-    <!--</keep-alive>-->
     <back-to-top />
     <Row class='pager' type='flex' justify='end' align='middle'>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="sizes, prev, pager, next" :total="total">
-        </el-pagination>
+         <Page class="case-main-pages" :current="curPage" @on-page-size-change="handleSizeChange" :page-size='pageSize' @on-change="handleCurrentChange" :total="total" />
     </Row>
 </div>
 </template>
-
-
-
 <script>
 import Header from '../../components/Header'
 import SubjectFilter from '../../components/SubjectFilter'
 import BaseList from '../../components/BaseList'
 import BackToTop from '../../components/BackToTop'
 import api from '../../api/modules/config'
-import {
-    set_user_student_mrzx
-} from '../../api/modules/student'
-import {
-    Loading
-} from 'element-ui'
-import {
-    Dialog
-} from '../dialogs'
+import { set_user_student_mrzx } from '../../api/modules/student'
+import { Loading } from 'element-ui'
+import { Dialog } from '../dialogs'
 import { doDateFormat, doTimeFormat } from "../../components/Util";
-import {
-    ADD_STUDENT,
-    QUERY_STUDENT_COURSE,
-    QUERY_STUDENT_OFFLINE_COURSE,
-    QUERY_STUDENT_TASK,
-    STUDENT_INFO_DETAIL
-} from '../dialogs/types'
-import {
-    Config
-} from '../../config/base'
+import { ADD_STUDENT, QUERY_STUDENT_COURSE, QUERY_STUDENT_OFFLINE_COURSE, QUERY_STUDENT_TASK, STUDENT_INFO_DETAIL } from '../dialogs/types'
+import { Config } from '../../config/base'
 export default {
     mixins: [Dialog],
+    components: {
+        'header-component': Header,
+        'subject-filter': SubjectFilter,
+        'data-list': BaseList,
+        'back-to-top':BackToTop
+    },
     data() {
         return {
             user: {
@@ -178,24 +164,10 @@ export default {
                 var data = this.getData();
                 data.curPage = this.curPage;
                 data.pageSize = val;
-                // this.$store.dispatch('get_student_list', {
-                //     curPage: this.curPage,
-                //     pageSize: val,
-                //     project_id: this.$store.state.project.select_project_id
-                // });
                 this.$store.dispatch('get_student_list', data);
             }
         },
         onSubmit() {
-        //   var formData = {
-        //       is_test_user:this.formInline.is_test_user,
-        //       project_id: this.$store.state.project.select_project_id
-        //     // grade_id: this.formInline.grade_id,
-        //     // subject_id: this.formInline.subject_id,
-        //     // project_id: this.$store.state.project.select_project_id
-
-        //   }
-        //   formData[this.formInline.classify] = this.formInline.classifyValue;
         var formData = this.getData();
           this.$store.dispatch('get_student_list', formData);
         },
@@ -203,26 +175,14 @@ export default {
             this.formInline.classifyValue = '';
             this.formInline.is_test_user = 0;
             this.formInline.product_id = null;
-            // var formData = {
-            //     project_id: this.$store.state.project.select_project_id,
-            //     is_test_user:this.formInline.is_test_user
-            // // grade_id: this.formInline.grade_id,
-            // // subject_id: this.formInline.subject_id,
-            // // project_id: this.$store.state.project.select_project_id
-
-            // }
-            // formData[this.formInline.classify] = this.formInline.classifyValue;
-             var formData = this.getData();
+            var formData = this.getData();
             this.$store.dispatch('get_student_list', formData);
         },
         handleCurrentChange(val) {
-            // console.log(val,this.curPage)
-            // if (val && val !== this.curPage) {
              var   data = this.getData();
                 data.curPage = val;
                 data.pageSize = this.pageSize;
             this.$store.dispatch('get_student_list', data);
-            // }
         },
         searchStudent() {
             if (!this.initData)
@@ -234,11 +194,6 @@ export default {
         },
         reRenderList(v) {
             if (this.$store.state.project.project_list.length > 0 && this.dataList.length === 0) {
-                // this.$store.dispatch('get_student_list', {
-                //     no_group: 0,
-                //     project_id: v,
-                //     is_test_user:0
-                // });
                 var   data = this.getData();
                 data.no_group = 0;
                 data.is_test_user = 0;
@@ -250,22 +205,28 @@ export default {
             this.user.user_id = this.searchResult.user_id;
             set_user_student_mrzx(this.user).then((res) => {
                 if (res.data.res_code === 1) {
-                    alert('保存成功！');
+                    this.showPop('保存成功！')
                     this.$store.dispatch('get_student_list', {
                         curPage: 1,
                         pageSize: 100000,
                         is_test_user:0
                     });
-                } else {
-                    alert('保存失败，' + res.data.msg);
-                }
+                } else this.showPop('保存失败，'+ res.data.msg);
             });
         },
         editData(index) {
-            this.$notify({
+            this.$Notice.open({
                 title: '提示',
-                message: '<p>显示按钮</p><button>保存</button>',
-                duration: 0
+                duration: 0,
+                render: h => {
+                    render: h => {
+                        return h('div', [
+                            h('p', '显示按钮'),
+                            h('br'), h('br'), 
+                            h('Button', '保存')
+                        ])
+                    }
+                }
             })
         },
         deleteData(index) {},
@@ -280,32 +241,16 @@ export default {
                 sid: row.id
             });
         },
-        // provideCourse(index, row){
-        //   this.$confirm('是否给该学员添加线上课？', '提示', {
-        //       type: 'info'
-        //   }).then(() => {
-        //       this.$store.dispatch('send_student_online_curriculum', {user_id: row.user_id, project_id: row.project_id});
-        //   }).catch(() => {});
-        //
-        // },
         queryHandler(index, row) {
-            // get_student_online_curriculum({user_id: row.user_id, project_id: row.project_id}).then(res => {
-            //   if(res.data.res_code == 1){
-            //     console.log(res.data.msg);
-            //   }
-            // })
             this.handleSelModal(QUERY_STUDENT_COURSE, row)
         },
-        queryOfflineHandler(index, row)
-        {
+        queryOfflineHandler(index, row){
             this.handleSelModal(QUERY_STUDENT_OFFLINE_COURSE, row)
         },
-        queryTaskHandler(index, row)
-        {
+        queryTaskHandler(index, row){
             this.handleSelModal(QUERY_STUDENT_TASK, {project_id:row.project_id,user_id:row.user_id,type:0});
         },
-        queryHomeworkHandler(index, row)
-        {
+        queryHomeworkHandler(index, row){
             this.handleSelModal(QUERY_STUDENT_TASK, {project_id:row.project_id,user_id:row.user_id,type:1})
         }
     },
@@ -315,33 +260,22 @@ export default {
             this.$store.dispatch('get_project_list', {
                 callback(v) {
                     if (vm.$store.state.student.student_list.length === 0) {
-                        // vm.$store.dispatch('get_student_list', {
-                        //     no_group: 0,
-                        //     project_id: v,
-                        //     is_test_user:0
-                        // });
-                                        var   data = vm.getData();
-                data.no_group = 0;
-                data.is_test_user = 0;
-                data.project_id = v
-            vm.$store.dispatch('get_student_list', data);
+                        var   data = vm.getData();
+                        data.no_group = 0;
+                        data.is_test_user = 0;
+                        data.project_id = v
+                        vm.$store.dispatch('get_student_list', data);
                     }
-                                vm.$store.dispatch('get_production_list',{
-            project_id: v,
-            page_index: 0,
-            page_size: 999,
-        })
-                }
-            });
+                      vm.$store.dispatch('get_production_list',{
+                            project_id: v,
+                            page_index: 0,
+                            page_size: 999,
+                        })
+                       }
+                    });
         } else {
-            if(this.dataList.length === 0)
-            {
-                // this.$store.dispatch('get_student_list', {
-                //     no_group: 0,
-                //     project_id: this.$store.state.project.select_project_id,
-                //     is_test_user:0
-                // });
-                                var   data = this.getData();
+            if(this.dataList.length === 0){
+            var  data = this.getData();
                 data.no_group = 0;
                 data.is_test_user = 0;
                 data.project_id = this.$store.state.project.select_project_id;
@@ -353,31 +287,12 @@ export default {
             page_size: 999,
         })
         }
-
-        // if(this.$store.state.subject.subject_list.length === 0)
-        // {
         this.$store.dispatch('get_subject_list');
-        // }
-
-        // if(this.$store.state.grade.grade_list.length === 0){
         this.$store.dispatch('get_grade_list')
-            // }
-
     },
     watch: {
         isLoading(val) {
-            if (val) {
-                this.loadingInstance = Loading.service({
-                    text:'加载中，请稍后',
-                    fullscreen: true
-                });
-                setTimeout(() => {
-                    this.loadingInstance && this.loadingInstance.close();
-                }, Config.base_timeout);
-            } else {
-                this.loadingInstance && this.loadingInstance.close();
-                this.dirty = false;
-            }
+            this.$config.IsLoading(val);
         }
     },
     computed: {
@@ -528,12 +443,6 @@ export default {
         listHeight(){
             return window.innerHeight - 60 - 20 - 97;
         }
-    },
-    components: {
-        'header-component': Header,
-        'subject-filter': SubjectFilter,
-        'data-list': BaseList,
-        'back-to-top':BackToTop
     }
 }
 </script>

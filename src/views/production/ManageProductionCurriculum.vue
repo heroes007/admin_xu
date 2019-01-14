@@ -10,16 +10,16 @@
             </div>
             <Button class='btn-add' type='primary' @click='addProductionCurriculum()' v-if="activeName == 'online'">添加</Button>
         </Row>
-        <el-tabs v-model="activeName" active-name='online'>
-            <el-tab-pane class='online-content' label="线上课" name="online">
+        <Tabs value="activeName">
+            <TabPane class='online-content' label="线上课" name="online">
                 <data-list class='data-list' :table-data='currentProduction.online_curriculum_list' :header-data='onlineHeader' :columnComboData='columnComboData'
                     :comboModelList='comboDataList' @delete='deleteHandler' />
 
-            </el-tab-pane>
-            <el-tab-pane class='offline-content' label="线下课" name="offline">
+            </TabPane>
+            <TabPane class='offline-content' label="线下课" name="offline">
 
-            </el-tab-pane>
-        </el-tabs>
+            </TabPane>
+        </Tabs>
     </div>
 </template>
 
@@ -174,7 +174,22 @@
     }
 
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
+    .btn-add {
+            position: absolute;
+            z-index: 999;
+            background-color: #F06B1D;
+            color:#ffffff;
+            border: 0;
+            padding: 0;
+            border-radius: 2px;
+            width: 120px;
+            height: 26px;
+            padding: 0 !important;
+            line-height: 24px; 
+            top: 120px;
+            right: 50px;
+        }
     .manage-production-curriculum {
         .course-name {
             height: 60px;
@@ -186,24 +201,6 @@
                 letter-spacing: 0;
                 font-weight: 400;
             }
-            .el-button {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-            .btn-add {
-                    position: absolute;
-                    z-index: 999;
-                    background-color: #F06B1D;
-                    color:#ffffff;
-                    border: 0;
-                    padding: 0;
-                    border-radius: 2px;
-                    width: 120px;
-                    height: 26px;
-                    top: 82px;
-                    right: 50px;
-                }
         }
         .el-tabs {
             .el-tabs__header {

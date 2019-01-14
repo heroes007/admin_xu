@@ -1,33 +1,33 @@
 <template>
-<el-dialog :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
+<Modal :title="payload.type == 1 ? '创建学员' : '编辑学员'"  :width="600" v-model="addStudentDialog" :footer-hide=true @on-cancel="handleRemoveModal(remove)">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="payload.showList">
                 <Row class='search-bar' type='flex' justify='center' align='middle'>
-                <Form :inline='true' class='find-by-term' label-width="0px">
-            <FormItem>
-                <Row>
-                    <Col :span="10">
-                        <Select class="select-user" v-model="searchType" placeholder="">
-                            <Option label="昵称" value="nickname"></Option>
-                        <Option label="手机号" value="phone"></Option>
-                        <Option label="用户ID" value="user_id"></Option>
-                        </Select>
-                    </Col>
-                    <Col :span="14">
-                        <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
-                    </Col>
-                </Row>
-           </FormItem>
-            <FormItem>
-                <Button class="sub-btn" type="primary" @click="searchStudent">查询</Button>
-           </FormItem>
-            <data-list @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
-        </Form>
-            </Row>
+                <Form :inline='true' class='find-by-term' :label-width="0">
+                    <FormItem class="student-form-item">
+                    <Row>
+                        <Col :span="10">
+                            <Select class="select-user" v-model="searchType" placeholder="">
+                                <Option label="昵称" value="nickname"></Option>
+                            <Option label="手机号" value="phone"></Option>
+                            <Option label="用户ID" value="user_id"></Option>
+                            </Select>
+                        </Col>
+                        <Col :span="14" class="searchDataCol">
+                            <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
+                        </Col>
+                    </Row>
+                    </FormItem>
+                    <FormItem>
+                    <Button class="sub-btn" type="primary" @click="searchStudent">查询</Button>
+                    </FormItem>
+                    <data-list @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
+                </Form>
+             </Row>
             </Row>
             <Row class="body-top"  v-if="!payload.showList">
-                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem label="选择项目">
                         <Select v-model="form.project_id" placeholder="请选择项目" disabled>
                             <Option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></Option>
@@ -54,7 +54,7 @@
                     <FormItem v-if="false || payload.type == 1" class="send-offline-course">
                         <el-checkbox v-model="isSend" @change="handleGetOfflineTermList">是否发送线下课</el-checkbox>
                    </FormItem>
-                    <FormItem label-width="110px" label="请选择线下课" v-if="isSend">
+                    <FormItem :label-width="110" label="请选择线下课" v-if="isSend">
                       <Select v-model="form.offline_term_id" placeholder="请选择学科">
                           <Option v-for="item in dataList" :key="item.id" :label="item.name" :value="item.id"></Option>
                       </Select>
@@ -112,7 +112,7 @@
             </Row>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>
@@ -237,16 +237,13 @@ export default {
     },
     methods: {
         createStudentHandler(index, row){
-
             this.form.user_id = row.user_id;
             this.form.nickname = row.nickname;
             this.payload.showList = false;
         },
         searchStudent(){
             search_user(this.searchType, this.searchData, 0, 10, 0).then((res) => {
-                    if (res.data.res_code === 1) {
-                        this.userList = res.data.msg.list;
-                    }
+                    if (res.data.res_code === 1)  this.userList = res.data.msg.list;
             });
         },
         saveHandler() {
@@ -257,12 +254,6 @@ export default {
                 this.$store.dispatch('add_student', formInline);
                 formInline.callback = () => {
                   this.handleClose();
-                //   setTimeout(()=>{
-                //     this.$alert('成功创建学员!', '提示', {
-                //         confirmButtonText: '确定',
-                //         callback: action => {}
-                //     });
-                //   }, 800)
                     this.showPop('保存成功！',1000);
                 }
             }
@@ -337,26 +328,17 @@ export default {
                     this.loadingInstance.close();
                 }
             })
-
-            //            if(this.payload)
-            //            {
-            //                this.loadingInstance = Loading.service({ fullscreen:true });
-            //                get_detail(this.payload).then(res => {
-            //                    if(res.data.res_code === 1)
-            //                    {
-            //                        this.form = res.data.msg[0];
-            //                        this.form._fn = function(){
-            //                            vm.handleClose();
-            //                        };
-            //                        this.loadingInstance.close();
-            //                    }
-            //                })
-            //            }
         }
     }
 }
 </script>
 <style lang="scss">
+.student-form-item{
+    width: calc(100% - 100px)
+}
+.searchDataCol{
+padding-left: 10px;
+}
 #add-student-container {
     @import "base.scss";
     input,
@@ -376,42 +358,6 @@ export default {
             color: #757575;
         }
     }
-    .el-dialog {
-        width: 600px;
-        background: none;
-
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-
-        .el-dialog__body {
-            margin-bottom: -20px;
-            background-color: #fff;
-            border-radius: 0 0 4px 4px;
-            padding-bottom: 10px;
-            .el-form-item__label {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-            .el-date-editor--date {
-                width: 100%;
-            }
-            .send-offline-course{
-              text-align: left;
-              .el-checkbox__inner {
-                  border-color: #5FA137;
-              }
-              .is-checked{
-                .el-checkbox__inner {
-                    border-color: #5FA137;
-                    background-color: #5FA137;
-                }
-              }
-            }
-        }
         .search-bar {
             .select-user {
                 margin-right: 10px;
@@ -421,6 +367,7 @@ export default {
             width: 380px;
             .el-input__inner {
                 height: 36px;
+                width: 380px;
             }
             .el-input-group__append {
                 background-color: #7ab854;
@@ -543,6 +490,5 @@ export default {
                 border: 0;
             }
         }
-    }
 }
 </style>

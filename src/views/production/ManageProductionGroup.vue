@@ -68,15 +68,18 @@
             },
             deleteHandler(index, row) {
                 var vm = this;
-                this.$confirm('是否确认删除该专题？', '提示', {
-                    type: 'info'
-                }).then(() => {
+                 this.$Modal.confirm({
+                    title: '提示',
+                    content: '是否确认删除该专题?',
+                    onOk: () => {
                     this.delete_production_group({
                         id: row.id, _fn: function () {
                             vm.showPop('删除成功！');
                         }
                     })
-                }).catch(() => { });
+                    },
+                    onCancel: () => {}
+                });
             },
             clearSearch() {
                 this.formInline.searchData = '';

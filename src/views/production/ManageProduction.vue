@@ -88,7 +88,7 @@ export default {
            this.delete_production({
             id: row.id,
             _fn: function() {
-              this.$Message.success('删除成功！');
+             vm.showPop('删除成功！');
             }
            });
           },

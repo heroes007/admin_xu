@@ -128,7 +128,8 @@ export const MenuList =  [
         {
             name: 'manage-lb',
             title: '广告图管理'
-        },{
+        },
+        {
             name: 'manage-app',
             title: '平台更新'
         },
