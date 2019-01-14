@@ -1,18 +1,21 @@
-<template>
+    <template>
     <div class='manage-student-view'>
         <header-component title='查看广告' :noSelect="noSelect"></header-component>
         <Row class='sub-header' type='flex' justify='space-between' align='middle'>
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>广告图管理</el-breadcrumb-item>
-                <el-breadcrumb-item>查看广告</el-breadcrumb-item>
-            </el-breadcrumb>
+            <Breadcrumb separator="/">
+                <BreadcrumbItem>广告图管理</BreadcrumbItem>
+                <BreadcrumbItem>查看广告</BreadcrumbItem>
+            </Breadcrumb>
             <Button class='btn-add' type='text' @click='addLb()'>添加广告图</Button>
-            <el-dialog title="广告信息" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false' custom-class='add-student-view'>
+            <Modal v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="50%">
+                <div slot="header" class="modal-header">
+                    <div>广告信息</div>
+                </div>
                 <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form'>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
-                            广告名称：
-                            <el-input placeholder='请输入内容' v-model='lbData.name'></el-input>
+                            <span>广告名称：</span>
+                            <Input placeholder='请输入内容' v-model='lbData.name'></Input>
                         </Row>
                         <Row class='user-data update-img' type='flex' justify='start' align='middle'>
                             广告图片：
@@ -21,25 +24,25 @@
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             跳转地址：
-                            <el-input placeholder='请输入内容' v-model='lbData.redirect_url'></el-input>
+                            <Input placeholder='请输入内容' v-model='lbData.redirect_url'></Input>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             显示位置：
-                            <el-select v-model="lbData.position" placeholder="请选择学科">
-                                <el-option
+                            <Select v-model="lbData.position" placeholder="请选择学科">
+                                <Option
                                         v-for="item in positionList" :key="item.id"
                                         :label="item.label"
                                         :value="item.value">
-                                </el-option>
-                            </el-select>
+                                </Option>
+                            </Select>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             分享标题：
-                            <el-input placeholder='请输入内容' v-model='lbData.share_title'></el-input>
+                            <Input placeholder='请输入内容' v-model='lbData.share_title'></Input>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             分享描述：
-                            <el-input placeholder='请输入内容' v-model='lbData.share_desc'></el-input>
+                            <Input placeholder='请输入内容' v-model='lbData.share_desc'></Input>
                         </Row>
                         <Row class='user-data update-img' type='flex' justify='start' align='middle'>
                             分享图片：
@@ -48,78 +51,82 @@
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             分享链接：
-                            <el-input placeholder='请输入内容' v-model='lbData.share_url'></el-input>
+                            <Input placeholder='请输入内容' v-model='lbData.share_url'></Input>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             排序序号：
-                            <el-input-number v-model="lbData.orderby"></el-input-number>
+                            <InputNumber v-model="lbData.orderby"></InputNumber>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             上线状态：
-                            <el-select v-model="lbData.state" placeholder="请选择学科">
-                                <el-option
+                            <Select v-model="lbData.state" placeholder="请选择学科">
+                                <Option
                                         v-for="item in stateList" :key="item.id"
                                         :label="item.label"
                                         :value="item.value">
-                                </el-option>
-                            </el-select>
+                                </Option>
+                            </Select>
                         </Row>
                         <Row class='user-data' type='flex' justify='center' align='middle'>
-                            <Button @click='submit'>保存</Button>
+                            <Button type="primary" @click='submit'>保存</Button>
                         </Row>
                     </div>
                 </Row>
-            </el-dialog>
+            </Modal>
         </Row>
-        <Row class='data-container'>
-            <div class='list'>
-                <Row class='data-header' type='flex'>
-                    <Col>
-                        广告名称
-                    </Col>
-                    <Col>
-                        显示位置
-                    </Col>
-                    <Col>
-                        状态
-                    </Col>
-                    <Col>
-                        操作
-                    </Col>
-                </Row>
-                <Row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
-                    <Col>
-                        {{item.name}}
-                    </Col>
-                    <Col>
-                        {{item.position}}
-                    </Col>
-                    <Col>
-                        {{item.state === 1?'上线中':'已下线'}}
-                    </Col>
-                    <Col>
-                        <Button type='text'>
-                            <a @click='editLb(item)'>编辑</a>
-                        </Button>
-                    </Col>
-                </Row>
-                <Row class='pager' type='flex' justify='end' align='middle'>
-                    <el-pagination
-                            @size-change="handleSizeChange"
-                            @current-change="handleCurrentChange"
-                            :current-page="curPage"
-                            :page-sizes="[1,10, 20, 50, 100]"
-                            :page-size="pageSize"
-                            layout="sizes, prev, pager, next"
-                            :total="total">
-                    </el-pagination>
-                </Row>
-            </div>
-        </Row>
+        <Table :columns="columns1" :data="list">
+            <template slot-scope="{ row, index }" slot="action">
+                <Button type="text" size="small" class="btn-text" @click="editLb(row)">编辑</Button>
+            </template>
+        </Table>
+        <Page
+                @on-page-size-change="handleSizeChange"
+                @on-change="handleCurrentChange"
+                :current="curPage"
+                :page-size-opts="[1,10, 20, 50, 100]"
+                :page-size="pageSize"
+                :total="total">
+        </Page>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+    .ivu-input-wrapper{
+        width: calc(100% - 70px) !important;
+    }
+    .ivu-select{
+        width: calc(100% - 70px) !important;
+    }
+    .ivu-modal-header{
+        background-color: #546573;
+        border-radius: 6px 6px 0 0;
+        padding: 20px !important;
+
+    }
+    .modal-header{
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        color: #fff;
+    }
+    .ivu-icon-ios-close{
+        color: #bfcbd9 !important;
+
+        &:hover{
+            color: #4098ff !important;
+        }
+    }
+    .ivu-btn-primary{
+        width: 140px;
+    }
+    .ivu-table-cell{
+        font-size: 16px;
+        color: #657180;
+        text-align: center;
+    }
+    .ivu-table th{
+        text-align: center;
+    }
     .el-tooltip__popper {
         &.is-light {
             background: #FFFFFF;
@@ -357,7 +364,25 @@
                     name:''
                 },
                 isEdit: false,
-                noSelect: true
+                noSelect: true,
+                columns1:[
+                  {
+                    title: '广告名称',
+                    key: 'name'
+                  },
+                  {
+                    title: '显示位置',
+                    key: 'position'
+                  },
+                  {
+                    title: '状态',
+                    key: 'state'
+                  },
+                  {
+                    title: '操作',
+                    slot: 'action'
+                  },
+                ]
             }
         },
         methods: {
@@ -475,18 +500,18 @@
 //     if(!n || n < 1) {
 //         return [];
 //     }
- 
+
 //     var resultArrs = [],
 //         flagArr = [],
 //         isEnd = false,
 //         i, j, leftCnt;
- 
+
 //     for (i = 0; i < m; i++) {
 //         flagArr[i] = i < n ? 1 : 0;
 //     }
- 
+
 //     resultArrs.push(flagArr.concat());
- 
+
 //     while (!isEnd) {
 //         leftCnt = 0;
 //         for (i = 0; i < m - 1; i++) {
@@ -516,7 +541,14 @@
         },
         computed: {
             list(){
-                return this.$store.state.lb.lb_list;
+              console.log(this.$store.state.lb.lb_list);
+              let list = this.$store.state.lb.lb_list.map((e,i) => {
+                let user = Object.assign({},e);
+                if(e.state) user.state = '上线中'
+                else user.state = '已下线'
+                return user
+              })
+              return list;
             },
             pageSize(){
                 return this.$store.state.lb.pageSize;

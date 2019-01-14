@@ -2,79 +2,75 @@
     <div class='manage-student-view'>
         <header-component title='查看用户' :noSelect="noSelect" :showAdd='true' addText='创建用户' @addClick='addUserHandler'></header-component>
         <Row class='sub-header'>
-                        <el-breadcrumb separator="/">
-                <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-                <el-breadcrumb-item>查看用户</el-breadcrumb-item>
-            </el-breadcrumb>
+            <Breadcrumb separator="/">
+                <BreadcrumbItem>用户管理</BreadcrumbItem>
+                <BreadcrumbItem>查看用户</BreadcrumbItem>
+            </Breadcrumb>
         </Row>
         <Row class='sub-header' type='flex' justify='space-between' align='middle'>
             <Row class='search-bar' type='flex' justify='end' align='middle'>
-                <el-select class='search-role' v-model="searchRole" placeholder="请选择" @change='searchRoleChangeHandler'>
-                    <el-option :label="item.role_name" :value="item.role_id" v-for='item in roleList' :key="item.id"></el-option>
-                </el-select>
-                <!--<el-input placeholder="请输入用户名" v-model="searchData">
-                    <el-select v-model="searchType" slot="prepend" placeholder="请选择">
-                        <el-option label="昵称" value="nickname"></el-option>
-                        <el-option label="手机号" value="phone"></el-option>
-                        <el-option label="用户ID" value="user_id"></el-option>
-                    </el-select>
-                    <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
-                </el-input>
-                <Button class='btn-clear' type='text' @click='clearSearch'>清除搜索</Button>-->
+                <Select class='search-role' v-model="searchRole" placeholder="请选择" @on-change='searchStudent'>
+                    <Option :label="item.role_name" :value="item.role_id" v-for='item in roleList' :key="item.id"></Option>
+                </Select>
                 <Form :inline='true' class='find-by-term'>
-            <FormItem>
-                <Row>
-                    <Col :span="10">
-                        <el-select class="select-user" v-model="searchType" placeholder="">
-                            <el-option label="昵称" value="nickname"></el-option>
-                        <el-option label="手机号" value="phone"></el-option>
-                        <el-option label="用户ID" value="user_id"></el-option>
-                        </el-select>
-                    </Col>
-                    <Col :span="14">
-                        <el-input v-model="searchData" placeholder="请输入搜索内容"></el-input>
-                    </Col>
-                </Row>
-           </FormItem>
-            <FormItem>
-                <Button type="primary" @click="searchStudent">查询</Button>
-           </FormItem>
-            <FormItem>
-                <Button type="primary" @click="clearSearch">清除</Button>
-           </FormItem>
-        </Form>
+                    <FormItem>
+                        <Row>
+                            <Col :span="10">
+                                <Select class="select-user" v-model="searchType" placeholder="">
+                                    <Option label="昵称" value="nickname"></Option>
+                                    <Option label="手机号" value="phone"></Option>
+                                    <Option label="用户ID" value="user_id"></Option>
+                                </Select>
+                            </Col>
+                            <Col :span="14">
+                                <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
+                            </Col>
+                        </Row>
+                    </FormItem>
+                    <FormItem>
+                        <Button type="primary" @click="searchStudent">查询</Button>
+                    </FormItem>
+                    <FormItem>
+                        <Button type="primary" @click="clearSearch">清除</Button>
+                    </FormItem>
+                </Form>
             </Row>
-            <!--<Button class='btn-add' type='text'>搜索</Button>-->
-             <el-dialog title="修改分站" style="width:900px;margin:0 auto;" v-model="showDealerDialog" 
-                size="small" 
-                :close-on-click-modal='false' 
-                :close-on-press-escape='false'
-                custom-class='add-student-view'>
-                  <Row class='user-info' type='flex' justify='center' align='middle'>
-                      用户分站：
-                      <el-select v-model="userInfo.from_domain" placeholder="请选择" style="width:300px;">
-                          <el-option
-                            v-for="(dealer_item,index) in dealer_list"
-                            :key="index"
-                            :label="dealer_item.company"
-                            :value="dealer_item.id">
-                          </el-option>
-                      </el-select>
-                  </Row>
-                  <Row style="margin-top:50px;" type='flex' justify='center' align='middle'>
+            <Modal v-model="showDealerDialog"
+                   :styles="{width: '440px'}"
+                   size="small"
+                   :footer-hide="true"
+                   class='add-student-view'>
+                <div slot="header" class="modal-title">修改分站</div>
+                <Row class='modal-user' type='flex' justify='center' align='middle'>
+                    用户分站：
+                    <Select v-model="userInfo.from_domain" placeholder="请选择" style="width:300px;">
+                        <Option
+                                v-for="(dealer_item,index) in dealer_list"
+                                :key="index"
+                                :label="dealer_item.company"
+                                :value="dealer_item.id">
+                        </Option>
+                    </Select>
+                </Row>
+                <Row style="margin-top:50px;" type='flex' justify='center' align='middle'>
                     <Button type="primary" style="width:100px;" @click='changeDealer'>保存</Button>
-                  </Row>
-             </el-dialog>
-            <el-dialog title="用户信息" v-model="dialogVisible" size="small" :close-on-click-modal='false' :close-on-press-escape='false'
-                custom-class='add-student-view'>
+                </Row>
+            </Modal>
+            <Modal v-model="dialogVisible" size="small"
+                   class='add-student-view'
+                   :footer-hide="true"
+                    :styles="{width: '900px'}">
+                <div slot="header" class="modal-title">
+                    用户信息
+                </div>
                 <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form' v-if='!isLoading'>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户权限：
-                            <el-select v-model="userData.user_roles" multiple placeholder="请选择用户权限" style="width:300px;" @change='roleChangeHandler'>
-                                <el-option v-for='item in filterRoles' :key="item.id" :label="item.role_name" :value="item.role_id">
-                                </el-option>
-                            </el-select>
+                            <Select v-model="userData.user_roles" multiple placeholder="请选择用户权限" style="width:300px;" @change='roleChangeHandler'>
+                                <Option v-for='item in filterRoles' :key="item.id" :label="item.role_name" :value="item.role_id">
+                                </Option>
+                            </Select>
                         </Row>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户ID：<span>{{userData.user_id}}</span>
@@ -110,673 +106,678 @@
                             使用的邀请码：<span>{{userData.from_invitation_code_id}}</span>
                         </Row>
                         <Row class='user-data' type='flex' justify='center' align='middle'>
-                            <Button @click='submit'>保存</Button>
+                            <Button class="modal-btn-save" @click='submit'>保存</Button>
                         </Row>
                     </div>
                 </Row>
-                </el-dialog>
+            </Modal>
         </Row>
         <Row class='total-num' type='flex' justfy='start' align='middle'>
             <span>当前用户 {{total}} 人</span>
         </Row>
         <Row class='data-container'>
             <div class='list'>
-                <Row class='data-header' type='flex'>
-                    <Col>
-                        用户ID
-                    </Col>
-                    <Col>
-                        用户昵称
-                    </Col>
-                    <Col>
-                        用户权限
-                    </Col>
-                    <Col>
-                        手机号
-                    </Col>
-                    <Col>
-                        分站
-                    </Col>
-                    <Col>
-                        注册时间
-                    </Col>
-                    <Col>
-                        操作
-                    </Col>
-                </Row>
-                <Row class='data-item bg-gray' type='flex' v-for='item in list' :key="item.id">
-                    <Col>
-                        {{item.user_id}}
-                    </Col>
-                    <Col>
-                        {{item.nickname}}
-                    </Col>
-                    <Col>
-                        {{getRoleStr(item.roles)}}
-                    </Col>
-                    <Col>
-                        {{item.phone}}
-                    </Col>
-                    <Col>
-                        {{getDealerStr(item.from_domain)}}
-                    </Col>
-                    <Col>
-                        {{item.create_time | zonetime}}
-                    </Col>
-                    <Col>
-                        <Button type='text' @click='editDealer(item)'>
-                            <a href="javascript:;">修改分站</a>
-                        </Button>
-                        <Button type='text' @click='editUser(item)'>
-                            <a href="javascript:;">编辑</a>
-                        </Button>
-                        <Button type='text' @click='createStudent(item)'>
-                            <a href="javascript:;">创建学员</a>
-                        </Button>
-                    </Col>
-                </Row>
+                <Table :columns="columns1" :data="list">
+                    <template slot-scope="{ row, index }" slot="action">
+                        <Button type="text" size="small" class="btn-text" @click="editDealer(row)">修改分站</Button>
+                        <Button type="text" size="small" class="btn-text" @click="editUser(row)">编辑</Button>
+                        <Button type="text" size="small" class="btn-text" @click="createStudent(row)">创建学员</Button>
+                    </template>
+                </Table>
                 <Row class='pager' type='flex' justify='end' align='middle'>
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-sizes="[20, 50, 100]"
-                        :page-size="pageSize" layout="sizes, prev, pager, next" :total="total">
-                        </el-pagination>
+                    <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size-opts="[20, 50, 100]"
+                                   :page-size="pageSize" :total="total">
+                    </Page>
                 </Row>
             </div>
         </Row>
     </div>
 </template>
 
-<style lang="scss">
-.el-tooltip__popper {
-  &.is-light {
-    background: #ffffff;
-    border: 1px solid #e7e8ea;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-    .more-tip {
-      max-width: 278px;
-      line-height: 1.2;
-      font-size: 14px;
-      color: #2e3e47;
-      & + .popper__arrow {
-        border-top-color: #e7e8ea;
-        &:after {
-          //border-top-color:#E7E8EA;
-        }
-      }
+<style scoped lang="scss">
+    /deep/ .ivu-breadcrumb{
+        text-align: left;
+        margin-left: 20px;
     }
-  }
-}
-
-.manage-student-view {
-  .sub-header {
-    margin-bottom: 10px;
-  }
-  .search-bar {
-    /*margin-top: 40px;*/
-    .search-role {
-      margin-right: 50px;
-      //     .el-input {
-      //         height: 26px;
-      //         i {
-      //                 color: #ffffff;
-      //             }
-      //         .el-input__inner {
-      //             height: 26px;
-      //             border-radius: 0;
-      //             background-color: #7ab854;
-      //             color: #ffffff;
-      //         }
-      //     }
-      //     height: 100%;
-      //     width: 120px;
-
-      //     font-size: 14px;
-      // }
-      // i {
-      //     color: #ffffff;
-      // }
-      // .el-input-group {
-      //     width: 340px;
-      //     .el-input__inner {
-      //         height: 26px;
-      //     }
-      //     .el-input-group__append {
-      //         background-color: #7ab854;
-      //         .el-button {
-      //             height: 100%;
-      //             width: 60px;
-      //             color: #ffffff;
-      //             font-size: 14px;
-      //         }
-      //     }
-      //     .el-input-group__prepend {
-      //         background-color: #7ab854;
-      //         .el-select {
-      //             height: 100%;
-      //             width: 90px;
-      //             color: #ffffff;
-      //             font-size: 14px;
-      //         }
-      //         i {
-      //             color: #ffffff;
-      //         }
-      //     }
+    /deep/ .ivu-select-selected-value{
+        font-size: 14px !important;
+        padding: 3px 25px 3px 10px;
+        line-height: 28px !important;
     }
-
-    .el-input-group {
-      width: 380px;
-      .el-input__inner {
-        height: 36px;
-      }
-      .el-input-group__append {
-        background-color: #7ab854;
-
-        .el-button {
-          height: 100%;
-          width: 80px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-      }
-      .el-input-group__prepend {
-        background-color: #7ab854;
-
-        .el-select {
-          height: 100%;
-          width: 110px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-
-        i {
-          color: #ffffff;
-        }
-      }
+    /deep/ .ivu-select-item{
+        font-size: 14px !important;
+        padding: 8px 10px;
+        color: #48576a;
+        line-height: 1.5;
     }
+    /deep/ .ivu-modal-header{
+        padding: 0;
+    }
+    /deep/ .ivu-icon-ios-close{
+        color: #bfcbd9 !important;
 
-    .btn-clear {
-      margin-left: 20px;
-      color: #7ab854;
+        &:hover{
+            color: #4098ff !important;
+        }
     }
-  }
-  .btn-add {
-    color: #5fa137;
-  }
-  .total-num {
-    margin: 0 20px 10px;
-    font-size: 12px;
-    color: #5fa137;
-  }
-  .data-container {
-    background-color: #ffffff;
-    margin: 0 20px 20px 20px;
-    .list {
-      .data-header {
-        height: 50px;
-        .Col {
-          line-height: 50px;
-        }
-      }
-      .data-item {
-        height: 40px;
-        border-top: 1px solid #cecece;
-        &.bg-gray {
-          background-color: #fbfbfb;
-        }
-        .Col {
-          line-height: 40px;
-          .el-button {
-            a {
-              color: #5fa137;
-              font-size: 14px;
-            }
-          }
-          p {
-            margin: 0;
-            display: -webkit-box;
-            white-space: normal;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            -webkit-line-clamp: 1;
-          }
-        }
-      }
-      .pager {
-        margin: 30px 0;
-        padding-right: 40px;
-        .el-pagination {
-          button {
-            &.disabled {
-              background-color: #ebebec;
-              border-color: #b0b3c5;
-              color: #8b9fa9;
-            }
-          }
-          .el-pager {
-            li {
-              &.active {
-                background-color: #8b9fa9;
-              }
-            }
-          }
-        }
-      }
+    /deep/ .ivu-modal-body{
+        padding: 30px 20px;
     }
-  }
-}
-
-//添加框
-.add-student-view {
-  .img {
-    margin-top: 100px;
-    img {
-      width: 150px;
-      height: 150px;
+    /deep/ .ivu-table-cell{
+        font-size: 16px;
+        color: #657180;
+        text-align: center;
     }
-  }
-  .title {
-    margin-top: 25px;
-    h1 {
-      font-size: 28px;
-      color: #2e3e47;
-      font-weight: 200;
-      font-family: MicrosoftYaHei;
-      margin: 0;
+    /deep/ .ivu-table th{
+        text-align: center;
     }
-  }
-  .search-bar {
-    margin-top: 40px;
-    .el-input-group {
-      width: 380px;
-      .el-input__inner {
-        height: 46px;
-      }
-      .el-input-group__append {
-        background-color: #7ab854;
-        .el-button {
-          height: 100%;
-          width: 80px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-      }
-      .el-input-group__prepend {
-        background-color: #7ab854;
-        .el-select {
-          height: 100%;
-          width: 110px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-        i {
-          color: #ffffff;
-        }
-      }
+    .modal-title{
+        padding: 20px;
+        text-align: center;
+        background-color: #546573;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 6px 6px 0 0;
     }
-  }
-  .result {
-    margin: 15px 0 76px;
-    .data-form {
-      width: 550px;
-      background-color: #ffffff;
-      border: 1px solid #ebebec;
-      border-radius: 6px;
-      padding: 20px 0;
-      .user-info {
+    .modal-user{
         font-size: 14px;
-        margin-bottom: 24px;
-        border-bottom: 1px solid #ebebec;
-        padding: 0 20px;
-        span {
-          color: #7ab854;
-          margin-right: 15px;
-        }
-        img {
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-        }
-        .el-select {
-          width: 100%;
-        }
-      }
-      .user-data {
-        font-size: 14px;
-        margin-bottom: 15px;
-        padding: 0 20px;
-        .el-button {
-          width: 140px;
-          height: 36px;
-          background-color: #7ab854;
-          color: #ffffff;
-        }
-        &.desc {
-          width: 100%;
-          .el-input {
-            width: 330px;
-          }
-        }
-      }
     }
-  }
-}
+    .btn-text{
+        color: #5fa137;
+        font-size: 14px;
+    }
+    .el-tooltip__popper {
+        &.is-light {
+            background: #ffffff;
+            border: 1px solid #e7e8ea;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+            .more-tip {
+                max-width: 278px;
+                line-height: 1.2;
+                font-size: 14px;
+                color: #2e3e47;
+                & + .popper__arrow {
+                    border-top-color: #e7e8ea;
+                    &:after {
+                        //border-top-color:#E7E8EA;
+                    }
+                }
+            }
+        }
+    }
+
+    .manage-student-view {
+        .sub-header {
+            margin-bottom: 10px;
+        }
+        .search-bar {
+
+            .search-role {
+                margin-right: 50px;
+                width: 200px;
+                text-align: left;
+                color: #1f2d3d;
+            }
+
+            .el-input-group {
+                width: 380px;
+                .el-input__inner {
+                    height: 36px;
+                }
+                .el-input-group__append {
+                    background-color: #7ab854;
+
+                    .el-button {
+                        height: 100%;
+                        width: 80px;
+                        color: #ffffff;
+                        font-size: 16px;
+                    }
+                }
+                .el-input-group__prepend {
+                    background-color: #7ab854;
+
+                    .el-select {
+                        height: 100%;
+                        width: 110px;
+                        color: #ffffff;
+                        font-size: 16px;
+                    }
+
+                    i {
+                        color: #ffffff;
+                    }
+                }
+            }
+
+            .btn-clear {
+                margin-left: 20px;
+                color: #7ab854;
+            }
+        }
+        .btn-add {
+            color: #5fa137;
+        }
+        .total-num {
+            margin: 0 20px 10px;
+            font-size: 12px;
+            color: #5fa137;
+        }
+        .data-container {
+            background-color: #ffffff;
+            margin: 0 20px 20px 20px;
+            .list {
+                .data-header {
+                    height: 50px;
+                    .Col {
+                        line-height: 50px;
+                    }
+                }
+                .data-item {
+                    height: 40px;
+                    border-top: 1px solid #cecece;
+                    &.bg-gray {
+                        background-color: #fbfbfb;
+                    }
+                    .Col {
+                        line-height: 40px;
+                        .el-button {
+                            a {
+                                color: #5fa137;
+                                font-size: 14px;
+                            }
+                        }
+                        p {
+                            margin: 0;
+                            display: -webkit-box;
+                            white-space: normal;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            -webkit-line-clamp: 1;
+                        }
+                    }
+                }
+                .pager {
+                    margin: 30px 0;
+                    padding-right: 40px;
+                    .el-pagination {
+                        button {
+                            &.disabled {
+                                background-color: #ebebec;
+                                border-color: #b0b3c5;
+                                color: #8b9fa9;
+                            }
+                        }
+                        .el-pager {
+                            li {
+                                &.active {
+                                    background-color: #8b9fa9;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //添加框
+    .add-student-view {
+        .img {
+            margin-top: 100px;
+            img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        .title {
+            margin-top: 25px;
+            h1 {
+                font-size: 28px;
+                color: #2e3e47;
+                font-weight: 200;
+                font-family: MicrosoftYaHei;
+                margin: 0;
+            }
+        }
+        .search-bar {
+            margin-top: 40px;
+            .el-input-group {
+                width: 380px;
+                .el-input__inner {
+                    height: 46px;
+                }
+                .el-input-group__append {
+                    background-color: #7ab854;
+                    .el-button {
+                        height: 100%;
+                        width: 80px;
+                        color: #ffffff;
+                        font-size: 16px;
+                    }
+                }
+                .el-input-group__prepend {
+                    background-color: #7ab854;
+                    .el-select {
+                        height: 100%;
+                        width: 110px;
+                        color: #ffffff;
+                        font-size: 16px;
+                    }
+                    i {
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+        .result {
+            margin: 15px 0 76px;
+            .data-form {
+                width: 550px;
+                background-color: #ffffff;
+                border: 1px solid #ebebec;
+                border-radius: 6px;
+                padding: 20px 0;
+                .user-info {
+                    font-size: 14px;
+                    margin-bottom: 24px;
+                    border-bottom: 1px solid #ebebec;
+                    padding: 0 20px;
+                    span {
+                        color: #7ab854;
+                        margin-right: 15px;
+                    }
+                    img {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 50%;
+                    }
+                    .el-select {
+                        width: 100%;
+                    }
+                }
+                .modal-btn-save{
+                    width: 140px;
+                    height: 36px;
+                    line-height: 22px;
+                    background-color: #7ab854;
+                    color: #ffffff;
+                    border: none;
+                }
+                .user-data {
+                    font-size: 14px;
+                    margin-bottom: 15px;
+                    padding: 0 20px;
+                    .el-button {
+                        width: 140px;
+                        height: 36px;
+                        background-color: #7ab854;
+                        color: #ffffff;
+                    }
+                    &.desc {
+                        width: 100%;
+                        .el-input {
+                            width: 330px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 </style>
 
 <script>
-import Header from "../../components/Header";
-import SubjectFilter from "../../components/SubjectFilter.vue";
-import api from "../../api/modules/config";
-import { set_user_student_mrzx } from "../../api/modules/student";
-import { Loading } from "element-ui";
-import { get_detail,changeDealer } from "../../api/modules/tools_user";
-import { get_list, set_role } from "../../api/modules/tools_role";
-import { Dialog } from "../dialogs";
-import { ADD_STUDENT, ADD_USER } from "../dialogs/types";
-import { Config } from "../../config/base";
-import Vue from "vue";
+  import Header from "../../components/Header";
+  import SubjectFilter from "../../components/SubjectFilter.vue";
+  import api from "../../api/modules/config";
+  import { set_user_student_mrzx } from "../../api/modules/student";
+  import { Loading } from "element-ui";
+  import { get_detail,changeDealer } from "../../api/modules/tools_user";
+  import { get_list, set_role } from "../../api/modules/tools_role";
+  import { Dialog } from "../dialogs";
+  import { ADD_STUDENT, ADD_USER } from "../dialogs/types";
+  import { Config } from "../../config/base";
+  import Vue from "vue";
 
-export default {
-  mixins: [Dialog],
-  data() {
-    return {
-      userData: {
-        user_id: 0,
-        nickname: "",
-        realname: "",
-        phone: "",
-        head_img_url: "",
-        description: "",
-        sex: 0,
-        email: "",
-        qq: "",
-        gold_count: 0,
-        from_invitation_code_id: ""
+  export default {
+    mixins: [Dialog],
+    data() {
+      return {
+        userData: {
+          user_id: 0,
+          nickname: "",
+          realname: "",
+          phone: "",
+          head_img_url: "",
+          description: "",
+          sex: 0,
+          email: "",
+          qq: "",
+          gold_count: 0,
+          from_invitation_code_id: ""
+        },
+        userInfo:{
+          from_domain:0,
+        },
+        preRoleList: [],
+        searchData: "",
+        searchType: "phone",
+        searchRole: 0,
+        initData: false,
+        dialogVisible: false,
+        showDealerDialog:false,
+        noSelect: true,
+        initingRole: false,
+        columns1: [
+          {
+            title: '用户ID',
+            key: 'user_id',
+          },
+          {
+            title: '用户昵称',
+            key: 'nickname'
+          },
+          {
+            title: '用户权限',
+            key: 'roles'
+          },
+          {
+            title: '手机号',
+            key: 'phone'
+          },
+          {
+            title: '分站',
+            key: 'from_domain',
+            width: 260
+          },
+          {
+            title: '注册时间',
+            key: 'create_time'
+          },
+          {
+            title: '操作',
+            slot: 'action',
+          },
+        ],
+        data1: []
+      };
+    },
+    methods: {
+      addUserHandler() {
+        this.handleSelModal(ADD_USER);
       },
-      userInfo:{
-        from_domain:0,
-      },
-      preRoleList: [],
-      searchData: "",
-      searchType: "phone",
-      searchRole: 0,
-      initData: false,
-      dialogVisible: false,
-      showDealerDialog:false,
-      noSelect: true,
-      initingRole: false
-    };
-  },
-  methods: {
-    addUserHandler() {
-      this.handleSelModal(ADD_USER);
-    },
-    handleSizeChange(val) {
-      if (val !== this.pageSize) {
-        this.$store.dispatch("get_user_list", {
-          curPage: this.curPage,
-          pageSize: val,
-          role_id: this.searchRole
-        });
-      }
-    },
-    handleCurrentChange(val) {
-      if (val && val !== this.curPage) {
-        this.$store.dispatch("get_user_list", {
-          curPage: val,
-          pageSize: this.pageSize,
-          role_id: this.searchRole
-        });
-      }
-    },
-    changeDealer(){
-      changeDealer({
-        change_user_id:this.userInfo.user_id,
-        dealer_id:this.userInfo.from_domain
-      }).then(res =>{
-        res = res.data;
-        if(res.res_code == 1){
-          this.showDealerDialog = false;
-          alert('修改成功！');
+      handleSizeChange(val) {
+        if (val !== this.pageSize) {
           this.$store.dispatch("get_user_list", {
             curPage: this.curPage,
+            pageSize: val,
+            role_id: this.searchRole
+          });
+        }
+      },
+      handleCurrentChange(val) {
+        if (val && val !== this.curPage) {
+          this.$store.dispatch("get_user_list", {
+            curPage: val,
             pageSize: this.pageSize,
             role_id: this.searchRole
           });
         }
-      })
-    },
-    // searchStudent() {
-    // //   this.$store.dispatch("get_user_list", {
-    // //     curPage: 1,
-    // //     pageSize: 20,
-    // //     role_id: this.searchRole
-    // //   });
-
-    //   if (!this.initData) this.initData = true;
-    //   this.$store.dispatch("search_userinfo_by_nickname_or_phone", {
-    //     searchType: this.searchType,
-    //     searchData: this.searchData,
-    //     role_id: this.searchRole
-    //   });
-    // },
-    editDealer(item){
-      this.userInfo = Object.assign({},item);
-      this.showDealerDialog = true;
-    },
-    editUser(item) {
-      var loadingInstance = Loading.service({
-        text: "加载中，请稍后",
-        fullscreen: true
-      });
-      setTimeout(() => {
-        loadingInstance.close();
-      }, Config.base_timeout);
-      get_detail(item.user_id).then(res => {
-        loadingInstance.close();
-        if (res.data.res_code === 1) {
-          this.userData = res.data.msg;
-          if (res.data.msg.user_roles) {
-            var userRoles = res.data.msg.user_roles;
-            this.initingRole = true;
-            this.userData.user_roles = [];
-            this.preRoleList = [];
-            for (var i = 0; i < userRoles.length; i++) {
-              if (userRoles[i] !== 0) {
-                this.userData.user_roles.push(userRoles[i]);
-                this.preRoleList.push(userRoles[i]);
-              }
-            }
-            let vm = this;
-            Vue.nextTick(function() {
-              vm.initingRole = false;
-            });
-          }
-          this.dialogVisible = true;
-        }
-      });
-    },
-    submit() {
-      this.dialogVisible = false;
-    },
-    roleChangeHandler(val) {
-      var i, j;
-      var isIn;
-      var role_id;
-      if (this.initingRole) return;
-      if (val.length > this.preRoleList.length) {
-        for (i = 0; i < val.length; i++) {
-          isIn = false;
-          for (j = 0; j < this.preRoleList.length; j++) {
-            if (this.preRoleList[j] === val[i]) {
-              isIn = true;
-              break;
-            }
-          }
-          if (!isIn) {
-            role_id = val[i];
-            break;
-          }
-        }
-      } else {
-        for (i = 0; i < this.preRoleList.length; i++) {
-          isIn = false;
-          for (j = 0; j < val.length; j++) {
-            if (this.preRoleList[i] === val[j]) {
-              isIn = true;
-              break;
-            }
-          }
-          if (!isIn) {
-            role_id = this.preRoleList[i];
-            break;
-          }
-        }
-      }
-
-      set_role(
-        this.userData.user_id,
-        role_id,
-        val.length > this.preRoleList.length ? 1 : -1
-      ).then(res => {
-        if (res.data.res_code === 1) {
-          if (val.length > this.preRoleList.length) {
-            this.preRoleList.push(role_id);
-          } else {
-            this.preRoleList.splice(this.preRoleList.indexOf(role_id), 1);
-          }
-          this.$store.dispatch("change_user_role", {
-            user_id: this.userData.user_id,
-            roles: this.preRoleList.concat([0])
-          });
-        }
-      });
-    },
-    searchStudent() {
-      this.$store.dispatch("search_user_list", {
-        type: this.searchType,
-        param: this.searchData,
-        curPage: 1,
-        pageSize: 20,
-        role_id: this.searchRole
-      });
-    },
-    clearSearch() {
-      this.searchData = "";
-      this.$store.dispatch("search_user_list", {
-        type: this.searchType,
-        param: this.searchData,
-        curPage: 1,
-        pageSize: 20,
-        role_id: this.searchRole
-      });
-    },
-    createStudent(item) {
-      this.handleSelModal(ADD_STUDENT, {
-        type: 1,
-        user_id: item.user_id,
-        nickname: item.nickname
-      });
-    },
-    getDealerStr(id) {
-      var dealerStr = "";
-      this.$store.state.dealer.dealer_list.forEach(function(element) {
-        if (element.id == id) {
-          dealerStr = element.company;
-        }
-      }, this);
-      return dealerStr;
-    },
-    getRoleStr(roles) {
-      var result = "";
-      for (var i = 0; i < roles.length; i++) {
-        for (var j = 0; j < this.roleList.length; j++) {
-          if (roles[i] === this.roleList[j].role_id) {
-            if (result !== "")
-              result = result + "," + this.roleList[j].role_name;
-            else result = result + this.roleList[j].role_name;
-            break;
-          }
-        }
-      }
-      return result;
-    },
-    searchRoleChangeHandler() {
-      this.$store.dispatch("get_user_list", {
-        curPage: 1,
-        pageSize: 20,
-        role_id: this.searchRole
-      });
-    }
-  },
-  mounted() {
-    var vm = this;
-    if (
-      !this.$store.state.project.project_list ||
-      this.$store.state.project.project_list == "token错误" ||
-      this.$store.state.project.project_list.length === 0
-    ) {
-      this.$store.dispatch("get_project_list", {
-        callback(v) {
-          if (vm.list.length === 0) {
-            vm.$store.dispatch("get_user_list", {
-              curPage: 1,
-              pageSize: 20,
+      },
+      changeDealer(){
+        changeDealer({
+          change_user_id:this.userInfo.user_id,
+          dealer_id:this.userInfo.from_domain
+        }).then(res =>{
+          res = res.data;
+          if(res.res_code == 1){
+            this.showDealerDialog = false;
+            alert('修改成功！');
+            this.$store.dispatch("get_user_list", {
+              curPage: this.curPage,
+              pageSize: this.pageSize,
               role_id: this.searchRole
             });
           }
-        }
-      });
-    } else {
-      this.$store.dispatch("get_user_list", {
-        curPage: 1,
-        pageSize: 20,
-        role_id: this.searchRole
-      });
-    }
+        })
+      },
+      // searchStudent() {
+      // //   this.$store.dispatch("get_user_list", {
+      // //     curPage: 1,
+      // //     pageSize: 20,
+      // //     role_id: this.searchRole
+      // //   });
 
-    this.$store.dispatch("get_role_list");
-    this.$store.dispatch("get_dealer_list");
-  },
-  computed: {
-    roleList() {
-      return this.$store.state.roles.role_list;
+      //   if (!this.initData) this.initData = true;
+      //   this.$store.dispatch("search_userinfo_by_nickname_or_phone", {
+      //     searchType: this.searchType,
+      //     searchData: this.searchData,
+      //     role_id: this.searchRole
+      //   });
+      // },
+      editDealer(item){
+        this.userInfo = Object.assign({},item);
+        this.showDealerDialog = true;
+      },
+      editUser(item) {
+        var loadingInstance = Loading.service({
+          text: "加载中，请稍后",
+          fullscreen: true
+        });
+        setTimeout(() => {
+          loadingInstance.close();
+        }, Config.base_timeout);
+        get_detail(item.user_id).then(res => {
+          loadingInstance.close();
+          if (res.data.res_code === 1) {
+            this.userData = res.data.msg;
+            if (res.data.msg.user_roles) {
+              var userRoles = res.data.msg.user_roles;
+              this.initingRole = true;
+              this.userData.user_roles = [];
+              this.preRoleList = [];
+              for (var i = 0; i < userRoles.length; i++) {
+                if (userRoles[i] !== 0) {
+                  this.userData.user_roles.push(userRoles[i]);
+                  this.preRoleList.push(userRoles[i]);
+                }
+              }
+              let vm = this;
+              Vue.nextTick(function() {
+                vm.initingRole = false;
+              });
+            }
+            this.dialogVisible = true;
+          }
+        });
+      },
+      submit() {
+        this.dialogVisible = false;
+      },
+      roleChangeHandler(val) {
+        var i, j;
+        var isIn;
+        var role_id;
+        if (this.initingRole) return;
+        if (val.length > this.preRoleList.length) {
+          for (i = 0; i < val.length; i++) {
+            isIn = false;
+            for (j = 0; j < this.preRoleList.length; j++) {
+              if (this.preRoleList[j] === val[i]) {
+                isIn = true;
+                break;
+              }
+            }
+            if (!isIn) {
+              role_id = val[i];
+              break;
+            }
+          }
+        } else {
+          for (i = 0; i < this.preRoleList.length; i++) {
+            isIn = false;
+            for (j = 0; j < val.length; j++) {
+              if (this.preRoleList[i] === val[j]) {
+                isIn = true;
+                break;
+              }
+            }
+            if (!isIn) {
+              role_id = this.preRoleList[i];
+              break;
+            }
+          }
+        }
+
+        set_role(
+          this.userData.user_id,
+          role_id,
+          val.length > this.preRoleList.length ? 1 : -1
+        ).then(res => {
+          if (res.data.res_code === 1) {
+            if (val.length > this.preRoleList.length) {
+              this.preRoleList.push(role_id);
+            } else {
+              this.preRoleList.splice(this.preRoleList.indexOf(role_id), 1);
+            }
+            this.$store.dispatch("change_user_role", {
+              user_id: this.userData.user_id,
+              roles: this.preRoleList.concat([0])
+            });
+          }
+        });
+      },
+      searchStudent() {
+        console.log(1);
+        this.$store.dispatch("search_user_list", {
+          type: this.searchType,
+          param: this.searchData,
+          curPage: 1,
+          pageSize: 20,
+          role_id: this.searchRole
+        });
+      },
+      clearSearch() {
+        this.searchData = "";
+        this.$store.dispatch("search_user_list", {
+          type: this.searchType,
+          param: this.searchData,
+          curPage: 1,
+          pageSize: 20,
+          role_id: this.searchRole
+        });
+      },
+      createStudent(item) {
+        this.handleSelModal(ADD_STUDENT, {
+          type: 1,
+          user_id: item.user_id,
+          nickname: item.nickname
+        });
+      },
+      getDealerStr(id) {
+        var dealerStr = "";
+        this.$store.state.dealer.dealer_list.forEach(function(element) {
+          if (element.id == id) {
+            dealerStr = element.company;
+          }
+        }, this);
+        return dealerStr;
+      },
+      getRoleStr(roles) {
+        var result = "";
+        for (var i = 0; i < roles.length; i++) {
+          for (var j = 0; j < this.roleList.length; j++) {
+            if (roles[i] === this.roleList[j].role_id) {
+              if (result !== "")
+                result = result + "," + this.roleList[j].role_name;
+              else result = result + this.roleList[j].role_name;
+              break;
+            }
+          }
+        }
+        return result;
+      },
+      searchRoleChangeHandler() {
+        this.$store.dispatch("get_user_list", {
+          curPage: 1,
+          pageSize: 20,
+          role_id: this.searchRole
+        });
+      }
     },
-    list() {
-      let list = this.$store.state.user.user_list.map((e,i)=>{
-        let user  = Object.assign({},e);
-        return user;
-      });
-      return list;
+    mounted() {
+      var vm = this;
+      if (
+        !this.$store.state.project.project_list ||
+        this.$store.state.project.project_list == "token错误" ||
+        this.$store.state.project.project_list.length === 0
+      ) {
+        this.$store.dispatch("get_project_list", {
+          callback(v) {
+            if (vm.list.length === 0) {
+              vm.$store.dispatch("get_user_list", {
+                curPage: 1,
+                pageSize: 20,
+                role_id: this.searchRole
+              });
+            }
+          }
+        });
+      } else {
+        this.$store.dispatch("get_user_list", {
+          curPage: 1,
+          pageSize: 20,
+          role_id: this.searchRole
+        });
+      }
+
+      this.$store.dispatch("get_role_list");
+      this.$store.dispatch("get_dealer_list");
     },
-    dealer_list(){
-      return this.$store.state.dealer.dealer_list;
+    computed: {
+      roleList() {
+        return this.$store.state.roles.role_list;
+      },
+      list() {
+        let list = this.$store.state.user.user_list.map((e,i)=>{
+          let user  = Object.assign({},e);
+          user.roles = this.getRoleStr(user.roles)
+          user.from_domain = this.getDealerStr(user.from_domain)
+          return user;
+        });
+        return list;
+      },
+      dealer_list(){
+        return this.$store.state.dealer.dealer_list;
+      },
+      pageSize() {
+        return this.$store.state.user.pageSize;
+      },
+      curPage() {
+        return this.$store.state.user.curPage;
+      },
+      total() {
+        return this.$store.state.user.total;
+      },
+      isLoading() {
+        return this.$store.state.user.isLoading;
+      },
+      searchResult() {
+        return this.$store.state.user.search_result;
+      },
+      resultMsg() {
+        return this.$store.state.user.search_msg;
+      },
+      filterRoles() {
+        return this.roleList.filter(function(role) {
+          if (role.role_id != 0) return true;
+          return false;
+        });
+      }
     },
-    pageSize() {
-      return this.$store.state.user.pageSize;
-    },
-    curPage() {
-      return this.$store.state.user.curPage;
-    },
-    total() {
-      return this.$store.state.user.total;
-    },
-    isLoading() {
-      return this.$store.state.user.isLoading;
-    },
-    searchResult() {
-      return this.$store.state.user.search_result;
-    },
-    resultMsg() {
-      return this.$store.state.user.search_msg;
-    },
-    filterRoles() {
-      return this.roleList.filter(function(role) {
-        if (role.role_id != 0) return true;
-        return false;
-      });
+    components: {
+      "header-component": Header
     }
-  },
-  components: {
-    "header-component": Header
-  }
-};
+  };
 </script>

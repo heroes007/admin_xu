@@ -45,10 +45,8 @@
         },
         watch : {
             projectShowLoading(val) {
-                if (val) 
-                    this.fullscreenLoading = this.$LoadingY({message: "正在读取项目列表，请稍后...", show: true})
-                else if (this.fullscreenLoading) 
-                    this.fullscreenLoading.close()
+                if (val) this.fullscreenLoading = this.$LoadingY({message: "正在读取项目列表，请稍后...", show: true})
+                else if (this.fullscreenLoading) this.fullscreenLoading.close()
             }
         }
     }

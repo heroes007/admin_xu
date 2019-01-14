@@ -3,7 +3,7 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem label="是否注册">
                           <el-checkbox v-model="form.doRegist"></el-checkbox>
                    </FormItem>
