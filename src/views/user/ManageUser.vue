@@ -198,6 +198,15 @@
         color: #5fa137;
         font-size: 14px;
     }
+    .total-num{
+        font-size: 12px;
+        color: #5fa137;
+        margin: 0 20px 10px 20px;
+    }
+    .search-role{
+        width: 200px;
+        text-align: left;
+    }
 </style>
 
 <script>
@@ -551,7 +560,7 @@
       }
     },
     components: {
-      "header-component": Header
+      "header-component": Header,
     }
   };
 </script>

@@ -3,12 +3,12 @@
     <header-component title='招生管理' :type='0' :showAdd='true' addText='导师管理' @addClick='teacherArrangementHandler'></header-component>
     <Row>
         <Form :inline="true" :model="formInline" class="find-by-term">
-            <FormItem label="学科" label-width="40px">
+            <FormItem label="学科" :label-width="40">
                 <Select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
                     <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
                 </Select>
            </FormItem>
-            <FormItem label="面试结果" label-width="80px">
+            <FormItem label="面试结果" :label-width="80">
                 <Select v-model="formInline.interview_state" placeholder="请选择面试结果" @change='changeFilterHandler'>
                     <Option label="笔试通过" :value="3"></Option>
                     <Option label="未面试" :value="0"></Option>
@@ -16,7 +16,7 @@
                     <Option label="面试未通过" :value="2"></Option>
                 </Select>
            </FormItem>
-            <FormItem label="" label-width="80px">
+            <FormItem label="" :label-width="80">
               <Input placeholder="请输入内容" v-model="input" class="input-with-select" style="width:450px">
                 <Select v-model="select" slot="prepend" placeholder="请选择" style="width:100px">
                   <Option label="姓名" :value="1"></Option>
@@ -53,8 +53,8 @@
         </Form>
     </Row>-->
     <!--<keep-alive>-->
-    <data-list class='data-list light-header' @withdraw='withdrawHandler' @interviewTimeChange='interviewTimeChangeHandler' @sendMessage='sendMessageHandler' @showDetail='showDetailHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'
-         :comboModelList='comboDataList'></data-list>
+    <data-list class='data-list light-header' @withdraw='withdrawHandler' @interviewTimeChange='interviewTimeChangeHandler' @sendMessage='sendMessageHandler' @showDetail='showDetailHandler' :table-data='dataList'
+               :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :comboModelList='comboDataList' />
     <!--</keep-alive>-->
     <Row class='pager' type='flex' justify='end' align='middle'>
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total">

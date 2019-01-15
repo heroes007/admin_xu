@@ -3,8 +3,8 @@
         <header-component :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler" />
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler'
             @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList' :header-data='dataHeader'
-            :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :table-height='listHeight'></data-list>
-            <save-order v-if='dirty' @saveOrder='saveOrderHandler' @cancelChange='resetCurriculumOrder' />
+            :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :table-height='listHeight' />
+        <save-order v-if='dirty' @saveOrder='saveOrderHandler' @cancelChange='resetCurriculumOrder' />
     </div>
 </template>
 
@@ -318,8 +318,8 @@ import Header from '../../components/ProjectHeader'
                     }
                 }
                 }
-                
-               
+
+
             }
         }
         .save-order {

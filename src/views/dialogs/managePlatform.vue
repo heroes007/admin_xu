@@ -3,7 +3,7 @@
         :closeOnClickModal="false">
         <base-input @closedialog="handleClose" :baseInputWidth="400">
             <Row slot="body">
-                <Form :model="formInline" class="row1-test-form" label-width="50px">
+                <Form :model="formInline" class="row1-test-form" :label-width="50">
                     <FormItem label="名称">
                         <Input v-model="formInline.version"></Input>
                    </FormItem>

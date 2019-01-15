@@ -11,7 +11,7 @@
         </Row>
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
-                <FormItem label="截止日期" label-width="102px">
+                <FormItem label="截止日期" :label-width="102">
                     <el-date-picker
       v-model="deadline"
       type="date"
@@ -297,12 +297,12 @@
             }
         }
     }
-    
+
     .el-table-filter {
         height: 100vh;
         overflow-y: auto;
     }
-    
+
     .manage-offline-course-signup-view {
         .base-list-container {
             .base-list-row {

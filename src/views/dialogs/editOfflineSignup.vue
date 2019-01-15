@@ -3,7 +3,7 @@
         :closeOnClickModal="false">
         <base-input @closedialog="handleClose" :baseInputWidth="500">
             <Row slot="body">
-                <Form :model="formInline1" class="row1-test-form" label-width="80px">
+                <Form :model="formInline1" class="row1-test-form" :label-width="80">
                     <FormItem label="姓名">
                         <Input v-model="formInline1.name" placeholder="请输入姓名"></Input>
                    </FormItem>
@@ -197,7 +197,7 @@
                             }
                         }
                     }
-                    
+
                     .el-input {
                         width: 250px;
                         height: 36px;

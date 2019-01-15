@@ -1,7 +1,7 @@
 <template>
     <div class='my-assignment-view'>
         <header-component :type='4' @reRenderList="reRenderListHandler" style="margin-bottom:20px;"/>
-         <Form :inline="true" label-width="80px" style="text-align:left">
+         <Form :inline="true" :label-width="80" style="text-align:left">
              <FormItem label="学科：">
                  <Select v-model="selectSubject" placeholder="请选择" @change='getNewList'>
                     <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id">
@@ -33,7 +33,7 @@
                 </Select>
             </FormItem>
          </Form>
-        <Form :inline="true" label-width="80px" style="text-align:left">
+        <Form :inline="true" :label-width="80" style="text-align:left">
             <FormItem label="电话：">
                 <Input v-model="phone" placeholder="请输入电话"></Input>
            </FormItem>
@@ -128,11 +128,11 @@
                     prop: 'state',
                     label: '状态',
                     width: 100
-                }, 
+                },
                 {
                     prop: 'name',
                     label: '任务名称'
-                }, 
+                },
                 {
                     label: '操作',
                     width: 350,
@@ -195,7 +195,7 @@
                 'get_project_list'
             ]),
             getNewList() {
-                this.get_my_assignment_list({                    
+                this.get_my_assignment_list({
                     project_id: this.projectId,
                     task_category_id: this.selectType,
                     subject_id: this.selectSubject,

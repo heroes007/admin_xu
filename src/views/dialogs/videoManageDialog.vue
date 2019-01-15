@@ -5,7 +5,7 @@
             <!-- <span class="dscj-webfont-remove-sign"></span> -->
             <el-tabs type="border-card">
                 <el-tab-pane label="视频设置">
-                    <Form ref="form" :model="form" label-width="80px">
+                    <Form ref="form" :model="form" :label-width="80">
                         <FormItem label="小节名称">
                             <Input v-model="form.title" placeholder="请输入小节名称"></Input>
                        </FormItem>
@@ -35,7 +35,7 @@
                     </Form>
                 </el-tab-pane>
                 <el-tab-pane label="复制视频">
-                    <Form ref="form" :model="form" label-width="80px" class="has-video-form">
+                    <Form ref="form" :model="form" :label-width="80" class="has-video-form">
                         <FormItem label="所属项目">
                             <Select v-model="projectId" @change='changeProjectHandler'>
                                 <Option :label='item.name' :value='item.id' v-for='item in projectList' :key="item.id"></Option>
@@ -130,7 +130,7 @@ export default {
     },
     watch:{
         projectId(val) {
-            
+
         }
     },
     computed:{
@@ -264,7 +264,7 @@ export default {
         }
     },
     mounted(){
-        this.$store.dispatch('get_role_list'); 
+        this.$store.dispatch('get_role_list');
         this.form.curriculum_id = this.payload.curriculum_id;
         this.form.group_name = this.payload.group_name;
         this.form.group_orderby = this.payload.group_orderby;

@@ -3,7 +3,7 @@
     <header-component title='我的面试' :type='0'></header-component>
     <Row>
         <Form :inline="true" :model="formInline" class="find-by-term">
-            <FormItem label="面试状态" label-width="80px">
+            <FormItem label="面试状态" :label-width="80">
                 <Select v-model="formInline.interview_state" placeholder="请选择面试状态" @change='changeFilterHandler'>
                     <Option label="未面试" :value="0"></Option>
                     <Option label="面试通过" :value="1"></Option>

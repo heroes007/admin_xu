@@ -3,7 +3,7 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
-                <Form ref="form" :rules="rules" :model="form" label-width="121px" class="add-task-form">
+                <Form ref="form" :rules="rules" :model="form" :label-width="121" class="add-task-form">
                     <FormItem v-show="nextStep == 0" :label="typeStr('','名称')" prop="name" required>
                         <Input v-model="form.name" :placeholder="typeStr('请输入','名称')"></Input>
                    </FormItem>
@@ -74,7 +74,7 @@
                    </FormItem>
                 </Form>
             </Row>
-            <!-- <Form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
+            <!-- <Form ref="form" :rules="rules" :inline="true" :model="form" :label-width="80" class="add-homework-form">
                 <FormItem prop="name" required>
                     <Input placeholder="作业名称" v-model="form.name"></Input>
                </FormItem>
@@ -700,7 +700,7 @@ export default {
                     .vueditor {
                         line-height:100%;
                     }
-                }  
+                }
             }
         }
     }

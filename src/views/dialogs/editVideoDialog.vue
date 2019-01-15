@@ -3,7 +3,7 @@
     <base-input @closedialog="handleClose" :baseInputWidth="600">
         <Row slot="body">
             <span class="dscj-webfont-remove-sign"></span>
-            <Form ref="form" :model="form" label-width="80px">
+            <Form ref="form" :model="form" :label-width="80">
                 <FormItem label="小节名称">
                     <Input v-model="form.name" placeholder="请输入小节名称"></Input>
                </FormItem>

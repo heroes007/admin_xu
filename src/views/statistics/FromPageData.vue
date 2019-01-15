@@ -3,7 +3,7 @@
         <header-component title='页面来源统计' :type='0' :showAdd='false'></header-component>
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
-                <FormItem label="选择时间" label-width="80px">
+                <FormItem label="选择时间" :label-width="80">
                     <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围" @change='changeTimeHandler'>
                     </el-date-picker>
                </FormItem>

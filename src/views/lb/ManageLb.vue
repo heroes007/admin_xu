@@ -133,6 +133,10 @@
     /deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value{
         font-size: 14px;
     }
+    .btn-text{
+        color: #5fa137;
+        font-size: 14px;
+    }
 </style>
 
 <script>

@@ -5,7 +5,7 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem label="讲师名称">
                         <Input v-model="form.name" placeholder="请输入讲师名称"></Input>
                    </FormItem>

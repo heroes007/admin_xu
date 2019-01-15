@@ -138,7 +138,7 @@
                                 <Select v-model="form3.product_id" placeholder="请选择项目" @on-change='changeProductHandler'>
                                     <Option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                                 </Select>
-                            </Row>     
+                            </Row>
 
                             <Row class="body-top" v-if="true">
                                 <Row v-for="item in form3.dataList" :key="item.id" class="course-item">

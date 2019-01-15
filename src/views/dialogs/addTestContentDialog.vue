@@ -3,7 +3,7 @@
 <el-dialog title="添加测验" v-model="addTestContentDialog" :show-close="false" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose" :baseInputWidth="900">
         <Row slot="body">
-            <Form :inline="true" :model="formInline1" class="row1-test-form" label-width="80px">
+            <Form :inline="true" :model="formInline1" class="row1-test-form" :label-width="80">
                 <FormItem label="测验名称">
                     <Input v-model="formInline1.title" placeholder="请输入测验的名称" :disabled='isEdit'></Input>
                </FormItem>
@@ -18,7 +18,7 @@
                     <Button type="" @click="handleEditTest" class="edit-test-btn" v-if='isEdit'>编辑测验</Button>
                </FormItem>
             </Form>
-            <Form :inline="true" :model="formInline2" class="row2-test-form" label-width="80px">
+            <Form :inline="true" :model="formInline2" class="row2-test-form" :label-width="80">
                 <Row class="row2-top">
                     <Col :span="12" class="col2-left">
                         <FormItem label="题干名称">
@@ -337,7 +337,7 @@ export default {
         }
     },
     mounted(){
-        this.$store.dispatch('get_role_list');  
+        this.$store.dispatch('get_role_list');
         this.formInline1.curriculum_id = this.payload.curriculum_id;
         this.formInline1.group_name = this.payload.group_name;
         this.formInline1.group_orderby = this.payload.group_orderby;

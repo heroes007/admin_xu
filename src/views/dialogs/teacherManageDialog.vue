@@ -6,7 +6,7 @@
             <span class="dscj-webfont-remove-sign"></span>
             <el-tabs type="border-card">
                 <el-tab-pane label="讲师信息">
-                    <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                    <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                         <FormItem label="讲师名称">
                             <Input v-model="form.teacher_name" placeholder="请输入课程名称"></Input>
                        </FormItem>

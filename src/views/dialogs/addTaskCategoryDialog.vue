@@ -6,7 +6,7 @@
         <Row slot="body">
             <Row class="body-top" v-if="true">
                 <p class="title">任务和类型不一样的喔，创建类型前请先选择好</p>
-                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem class='radio-container'>
                         <el-radio-group v-model="form.type" type='flex' justify='start' align='middle' @change="handleChangeRadio">
                             <el-radio class="radio" :class="{'is-changed': isChanged == 0}" :label="0">

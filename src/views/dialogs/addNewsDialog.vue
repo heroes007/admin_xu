@@ -3,7 +3,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
-                    <Form ref="form" :model="form" label-width="121px" class="add-task-form">
+                    <Form ref="form" :model="form" :label-width="121" class="add-task-form">
                         <FormItem label="文章标题">
                             <Input v-model="form.title" placeholder="请输入文章标题"></Input>
                        </FormItem>
