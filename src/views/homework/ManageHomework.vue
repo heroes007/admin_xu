@@ -229,7 +229,7 @@
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .manage-homework-view {
         .btn-add {
             color: #5fa137;

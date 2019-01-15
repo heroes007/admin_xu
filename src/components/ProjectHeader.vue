@@ -2,8 +2,8 @@
     <div class='project-header'>
         <Row class='header-container' type='flex' justify='space-between' align='middle'>
             <div class='title'>
-                <i class='el-icon-menu'></i>
-                <Select v-model="project_id" placeholder="请选择" disabled>
+                 <Icon class="md-menu" type="md-menu" />
+                <Select v-model="project_id" placeholder="请选择"  disabled>
                     <Option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id">
                     </Option>
                 </Select>
@@ -157,7 +157,10 @@
         }
     }
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
+    /deep/ .ivu-btn > .ivu-icon{
+        line-height: normal;
+    }
     .teacher-list {
         border-radius: 4px;
         &.el-popover[x-placement^=bottom] {
@@ -201,16 +204,23 @@
             padding: 0 25px;
             .title {
                 color: #ffffff;
-
-                i {
-                    color: #ffffff;
+                 display: inline-flex;
+                 .md-menu{
+                color: #ffffff;
+                font-size: 24px;
+                margin-right: 10px;
+                line-height: 32px;
                 }
-
-                input {
-                    border: 0;
-                    border-radius: 0;
+                /deep/ .ivu-select-selection{
+                    border: none;
                     background-color: #333333;
                     color: #ffffff;
+                    font-weight: 600;
+                    div{
+                        span{
+                        font-size: 14px !important;
+                        }
+                    }
                 }
             }
             .btn-group {

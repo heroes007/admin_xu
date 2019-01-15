@@ -1,5 +1,5 @@
 <template>
-<Modal title="产品协议" :footer-hide=true v-model="editProtocol" @on-cancel="handleRemoveModal(remove)" :closeOnClickModal="false">
+<Modal title="产品协议" :footer-hide=true v-model="editProtocol" @on-cancel="handleRemoveModal(remove)">
     <base-input @closedialog="handleClose">
       <Row slot="body">
           <Form class="add-task-form">
@@ -50,7 +50,6 @@ export default {
       this.editProtocol = false;
     },
     handleQueryProtocol() {
-        
       api
         .post("api/protocol/get_product_protocol", {
           product_id: this.payload
@@ -84,10 +83,10 @@ export default {
         })
         .then(res => {
           if (res.data.res_code == 1) {
-            this.$Message.warning('保存成功');
+            this.showPop('保存成功')
             this.editProtocol = false;
           } else {
-            this.$Message.warning(res.data.msg);
+            this.showPop(res.data.msg)
           }
         })
         .catch(error => {
@@ -97,7 +96,27 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/ .ivu-modal{ width: 800px !important }
+.add-task-form{
+    width: 80% !important;
+    margin-left: 10%;
+}
+.btns{
+     display: flex;
+    justify-content: center;
+}
+.btn-orange:hover{
+    background: #FB843E;
+    color: #fff;
+}
+.btn-orange{ 
+    background: #FB843E;
+    border: 1px solid #F06B1D;
+    border-radius: 4px;
+    color: #fff;
+    width: 200px;
+    height: 36px;}
 #edit-protocol-container {
   @import "base.scss";
   input,

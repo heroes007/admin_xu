@@ -229,19 +229,43 @@
       }
     },
     methods: {
-      createStudentHandler(index, row) {
-
-        this.form.user_id = row.user_id;
-        this.form.nickname = row.nickname;
-        this.payload.showList = false;
-      },
-      searchStudent() {
-        search_user(this.searchType, this.searchData, 0, 10, 0).then((res) => {
-          if (res.data.res_code === 1) {
-            this.userList = res.data.msg.list;
+        createStudentHandler(index, row){
+            this.form.user_id = row.user_id;
+            this.form.nickname = row.nickname;
+            this.payload.showList = false;
+        },
+        searchStudent(){
+            search_user(this.searchType, this.searchData, 0, 10, 0).then((res) => {
+                    if (res.data.res_code === 1)  this.userList = res.data.msg.list;
+            });
+        },
+        saveHandler() {
+            if (this.payload.sid) {
+                this.$store.dispatch('edit_student', this.form);
+            } else {
+                var formInline = this.form;
+                this.$store.dispatch('add_student', formInline);
+                formInline.callback = () => {
+                  this.handleClose();
+                    this.showPop('保存成功！',1000);
+                }
+            }
+        },
+        handleClose() {
+            this.addStudentDialog = false;
+        },
+        handleUploadComplete(url) {
+            this.form.img_url = url;
+        },
+        handleGetOfflineTermList(){
+          this.form.is_send_offline_term = 1;
+          if(this.$store.state.offline_curriculum.offline_term_list.length == 0){
+            this.$store.dispatch('get_offline_term_list', {
+                project_id: this.$store.state.project.select_project_id,
+                last_count: 0
+            });
           }
-        });
-      },
+        },
       saveHandler() {
         if (this.payload.sid) {
             this.$store.dispatch('edit_student', this.form);
@@ -308,78 +332,71 @@
         }, Config.base_timeout);
         get_student_detail(this.payload.sid).then(res => {
 
-          if (res.data.res_code === 1) {
-            this.form = res.data.msg;
-            this.form.student_id = this.payload.sid;
-            this.form.user_id = this.payload.user_id;
-            this.form.nickname = this.payload.nickname;
-            this.form.start_school_time = res.data.msg.start_school_time;
-            this.form.finish_school_time = res.data.msg.finish_school_time;
-            this.form.leave_school_time = res.data.msg.leave_school_time;
-            this.form.state = String(res.data.msg.state);
-            this.form.type = String(res.data.msg.type);
-            this.form.tutor_user_id = res.data.msg.tutor_user_id == 0 ? '' : res.data.msg.tutor_user_id;
-            this.form.xg_user_id = res.data.msg.xg_user_id;
-            this.form.realname = res.data.msg.realname;
-            this.form.is_test_user = res.data.msg.is_test_user;
-            this.form._fn = function () {
-              vm.handleClose();
-              vm.showPop('创建成功！', 1000);
-            };
-            this.loadingInstance.close();
-          }
-        })
-
-        //            if(this.payload)
-        //            {
-        //                this.loadingInstance = Loading.service({ fullscreen:true });
-        //                get_detail(this.payload).then(res => {
-        //                    if(res.data.res_code === 1)
-        //                    {
-        //                        this.form = res.data.msg[0];
-        //                        this.form._fn = function(){
-        //                            vm.handleClose();
-        //                        };
-        //                        this.loadingInstance.close();
-        //                    }
-        //                })
-        //            }
-      }
+                if (res.data.res_code === 1) {
+                    this.form = res.data.msg;
+                    this.form.student_id = this.payload.sid;
+                    this.form.user_id = this.payload.user_id;
+                    this.form.nickname = this.payload.nickname;
+                    this.form.start_school_time = res.data.msg.start_school_time;
+                    this.form.finish_school_time = res.data.msg.finish_school_time;
+                    this.form.leave_school_time = res.data.msg.leave_school_time;
+                    this.form.state = String(res.data.msg.state);
+                    this.form.type = String(res.data.msg.type);
+                    this.form.tutor_user_id = res.data.msg.tutor_user_id == 0 ? '' : res.data.msg.tutor_user_id;
+                    this.form.xg_user_id = res.data.msg.xg_user_id;
+                    this.form.realname = res.data.msg.realname;
+                    this.form.is_test_user = res.data.msg.is_test_user;
+                    this.form._fn = function() {
+                        vm.handleClose();
+                        vm.showPop('创建成功！',1000);
+                    };
+                    this.loadingInstance.close();
+                }
+            })
+        }
     }
   }
 </script>
-<style scoped lang="scss">
-    /deep/ .ivu-select-selected-value {
-        font-size: 14px !important;
+<style lang="scss" scoped>
+/deep/ .ivu-select-selected-value {
+    font-size: 14px !important;
+}
+.student-form-item{
+    width: calc(100% - 100px)
+}
+.searchDataCol{
+padding-left: 10px;
+}
+.sub-btn {
+    background: #FB843E;
+    border-radius: 4px;
+    width: 200px;
+    height: 36px;
+    border: 0;
+}
+#add-student-container {
+    @import "base.scss";
+    input,
+    textarea {
+        resize: none;
+        outline: none;
     }
-    #add-student-container {
-        @import "base.scss";
-
-        input,
-        textarea {
-            resize: none;
-            outline: none;
+    .close-dialog-panel {
+        position: absolute;
+        top: -70px;
+        right: -13.5px;
+        z-index: 99999;
+        font-size: 30px;
+        cursor: pointer;
+        &:before {
+            // color: #fff;
+            color: #757575;
         }
-
-        .close-dialog-panel {
-            position: absolute;
-            top: -70px;
-            right: -13.5px;
-            z-index: 99999;
-            font-size: 30px;
-            cursor: pointer;
-
-            &:before {
-                // color: #fff;
-                color: #757575;
+    }
+        .search-bar {
+            .select-user {
+                margin-right: 10px;
             }
         }
-    }
-    .sub-btn {
-        background: #FB843E;
-        border-radius: 4px;
-        width: 200px;
-        height: 36px;
-        border: 0;
-    }
+}
 </style>

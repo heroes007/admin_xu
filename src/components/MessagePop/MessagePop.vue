@@ -33,7 +33,7 @@
             if(!this.option.duration)
                 this.option.duration = 1000;
             setTimeout(function(){
-                                            vm.showPop = false;
+               vm.showPop = false;
                 vm.handleRemoveModal(vm.remove);
             },this.option.duration)
         }

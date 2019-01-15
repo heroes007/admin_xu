@@ -1,19 +1,17 @@
 <template>
-    <el-dialog title="产品列表" :show-close="false" v-model="selectProductionDialog" @close="handleRemoveModal(remove)" size="auto"
-        :closeOnClickModal="false">
+    <Modal  title="产品协议" :width="800" :footer-hide=true v-model="selectProductionDialog" @on-cancel="handleRemoveModal(remove)">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
-
                     <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='dataList' :header-data='dataHeader'
                         :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
                 </Row>
-                <Row>
+               <Row class="elRow">
                     <Button type="primary" class="ok-btn" @click="addHandler">保存</Button>
                 </Row>
             </Row>
         </base-input>
-        </el-dialog>
+    </Modal>
 </template>
 <!-- task_id = 19 -->
 <script>
@@ -61,10 +59,7 @@
             }
         },
         mounted() {
-            this.loadingInstance = Loading.service({
-                text:'加载中，请稍后',
-                fullscreen: true
-            });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
             setTimeout(() => {
                 this.loadingInstance.close();
             }, Config.base_timeout);
@@ -83,7 +78,7 @@
                     this.dataList = res.data.msg.products;
                     this.checkSelect();
                 }
-                this.loadingInstance.close();
+              if(this.loadingInstance)  this.loadingInstance.close();
             })
             get_production_group_list({
                 page_index: 0,
@@ -189,10 +184,11 @@
                 }
 
                 if (result.length === 0) {
-                    this.$alert('请选择至少一个产品！', '提示', {
-                        confirmButtonText: '确定',
-                        callback: action => { }
-                    });
+                    this.$Modal.confirm({
+                    title: '提示',
+                    content: '请选择至少一个课程！',
+                    onOk: () => {}
+                });
                 }
                 else {
                     var vm = this;
@@ -214,7 +210,14 @@
     }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/.ivu-btn{
+     border-radius: 4px;
+        width: 200px !important;
+        height: 36px;
+        border: 0;
+        margin: 30px 0;
+}
     #select-production-container {
         @import "base.scss";
         input,
@@ -234,30 +237,8 @@
                 color: #757575;
             }
         }
-        .el-dialog {
-            width: 800px;
-            background: none;
-            .body-top {
-                padding-bottom: 10px;
-            }
-            .el-dialog__header {
-                background: #333333;
-                border-radius: 4px 4px 0 0;
-                padding: 16px;
-            }
-            .el-dialog__body {
-                padding: 0;
-                background: #fff;
-                border-radius: 0 0 4px 4px;
-            }
-            .ok-btn {
-                background: #FB843E;
-                border-radius: 4px;
-                width: 200px;
-                height: 36px;
-                border: 0;
-                margin: 30px 0;
-            }
+        .body-top {
+            padding-bottom: 10px;
         }
     }
 </style>

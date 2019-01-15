@@ -1,4 +1,4 @@
-.elRow{ display: flex; justify-content: center; align-items: center;}
+.elRow{ display: flex !important; justify-content: center; align-items: center;}
 .elRowJustifyLeft{ display: flex; justify-content: left; align-items: center; }
 body { background-color: #fff; height: 100%; }
 /deep/.ivu-icon { font-size: 14px }

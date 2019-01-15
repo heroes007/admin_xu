@@ -60,18 +60,9 @@
                 <Row class='user-data' type='flex' justify='start' align='middle' v-if='searchResult'>
                     学员类型：
                     <Select v-model="user.type" placeholder="请选择学员类型">
-                        <Option
-                                label="普通"
-                                value="1">
-                        </Option>
-                        <Option
-                                label="协议"
-                                value="2">
-                        </Option>
-                        <Option
-                                label="个人"
-                                value="3">
-                        </Option>
+                        <Option label="普通" value="1"> </Option>
+                        <Option label="协议" value="2"> </Option>
+                        <Option label="个人" value="3"> </Option>
                     </Select>
                 </Row>
                 <Row class='user-data' type='flex' justify='center' align='middle' v-if='searchResult'>

@@ -8,15 +8,21 @@
                 <slot name='controlBar'></slot>
             </div>
         </Row>
+<<<<<<< HEAD
         <el-table @on-selection-change='selectionChangeHandler' :row-class-name="rowClassName" :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+=======
+        <el-table @selection-change='selectionChangeHandler' :row-class-name="rowClassName" :highlight-current-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+>>>>>>> f81fd2f63546bfe404dc6194fb8292a8037b096e
             :data="tableData" :height="tableHeight" @expand="rowExpandHandler" @row-click='rowClickHandler'>
             <el-table-column width="60" v-for='item in badgeHeader' :key="item.id">
                 <template slot-scope="scope">
-                    <el-badge class="mark" :value="showBadgeCount(item.prop,scope.row)" />
+                <el-badge class="mark" :value="showBadgeCount(item.prop,scope.row)" />
                 </template>
             </el-table-column>
-            <el-table-column type="selection" width="55" v-for='item in selectionHeader' :key="item.id"></el-table-column>
-            <el-table-column type="index" :label="getHeaderLabel(item)" width="65" v-for='item in sortHeader' :key="item.id"></el-table-column>
+            <el-table-column type="selection" width="55" v-for='item in selectionHeader' :key="item.id">
+            </el-table-column>
+            <el-table-column type="index" :label="getHeaderLabel(item)" width="65" v-for='item in sortHeader' :key="item.id">
+            </el-table-column>
             <el-table-column :prop="item.prop" :label="getHeaderLabel(item)" :width="item.width" :min-width="item.minwidth" :show-overflow-tooltip="item.hideOverflow?false:true"
                 header-align='left' align='left' v-for='item in normalHeader' :key="item.id" :filters='item.useFilter?getFilters(item.prop):null'
                 :filter-method='item.useFilter?doColumnFilter:null'>
@@ -53,6 +59,7 @@
                         <i class='el-icon-check' v-if='scope.row[item.prop] === 1'></i>
                     </span>
                 </template>
+<<<<<<< HEAD
             </el-table-column>
             <el-table-column :label="getHeaderLabel(item)" :width="item.width" header-align='left' align='left' :show-overflow-tooltip="true" v-for='item in btnHeader'
                 :key="item.id">
@@ -81,6 +88,36 @@
             </el-table-column>
         </el-table>
         <slot name="pager"></slot>
+=======
+                </el-table-column>
+                <el-table-column :label="getHeaderLabel(item)" :width="item.width" header-align='left' align='left' :show-overflow-tooltip="true" v-for='item in btnHeader'
+                    :key="item.id">
+                    <template slot-scope="scope">
+                        <div class='handle-component' v-for='btn in item.groupBtn' :key="btn.id" v-if='btn.showFunc?btn.showFunc(scope.row):true'>
+                            <Button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]" @click="handleBtnClick(scope.$index,scope.row,btn.param)"
+                                v-if='!btn.isSwitch && !btn.useCheckBox' :disabled="btn.canDisabled?btn.disabeldFunc(scope.row):false">
+                                <i :class='btn.text' v-if='btn.isIcon'></i>
+                                <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(scope.row)?btn.disabledText:btn.text:btn.text}}</span>
+                                </Button>
+                                <el-switch :value='checkSwitchValue(scope.row,btn.switchKey)' :on-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.onText"
+                                    :off-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.offText" :disabled="checkSwitchDisabled(scope.row,btn.disabledFuc)"
+                                    on-color='#F06B1D' off-color='#757575' @change='changeSwitchValue(scope.row,btn.switchKey,btn.actionName,btn.param)'
+                                    v-if='btn.isSwitch'>
+                                    </el-switch>
+                                <el-checkbox v-model='scope.row[btn.switchKey]' @change='changeSwitchValue(scope.row,btn.switchKey,btn.actionName,btn.param)' v-if='btn.useCheckBox'>{{btn.text}}</el-checkbox>
+                        </div>
+                    </template>
+                    </el-table-column>
+                    <el-table-column type='expand' :width="item.width" header-align='left' align='left' v-for='item in listExpandHeader' :key="item.id">
+                        <template slot-scope="scope">
+                            <baseList class='child-list data-list' :table-data='scope.row.childData' :header-data='item.childHeader' :is-stripe='false'
+                                :parent-data='scope.row' :column-formatter='item.listColumnFormatter' @childBtnClick='childBtnClickHandler'>
+                                </baseList>
+                        </template>
+                    </el-table-column>
+                    </el-table>
+                    <slot name="pager"></slot>
+>>>>>>> f81fd2f63546bfe404dc6194fb8292a8037b096e
     </div>
 </template>
 <script>
@@ -190,7 +227,7 @@
                                     this.comboDataList.push([]);
                                 else
                                     this.comboDataList.unshift([]);
-                            }
+                            }    
                         }
                         else {
 
@@ -558,7 +595,7 @@
                             }
                         }
                         }
-                        &.is-disabled {
+                        &.is-disabled { 
                             background-color: #757575;
                         }
                     }

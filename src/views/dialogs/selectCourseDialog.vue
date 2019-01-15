@@ -1,18 +1,17 @@
 <template>
-<el-dialog title="课程列表" :show-close="false" v-model="selectCurriculumDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+    <Modal  title="产品协议" :width="600" :footer-hide=true v-model="selectCurriculumDialog" @on-cancel="handleRemoveModal(remove)">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
-                
-                    <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='dataList'
+               <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='dataList'
             :header-data='dataHeader'></data-list>
             </Row>
-            <Row>
+            <Row class="elRow">
                 <Button type="primary" class="ok-btn" @click="addHandler">添加</Button>
             </Row>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 <!-- task_id = 19 -->
 <script>
@@ -51,35 +50,27 @@ export default {
         }
     },
     mounted() {
-        this.loadingInstance = Loading.service({
-            text:'加载中，请稍后',
-                    fullscreen: true
-                });
+        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
        get_list(this.projectId).then(res => {
-                if(res.data.res_code === 1)
-                {
+                if(res.data.res_code === 1){
                     this.dataList = [];
                     var founded = false;
-                    for(var i=0;i<res.data.msg.length;i++)
-                    {
+                    for(var i=0;i<res.data.msg.length;i++){
                         res.data.msg[i].is_select = false;
                         founded = false;
-                        for(var j=0;j<this.payload.list.length;j++)
-                        {
-                            if(res.data.msg[i].curriculum_id === this.payload.list[j].curriculum_id)
-                            {
+                        for(var j=0;j<this.payload.list.length;j++){
+                            if(res.data.msg[i].curriculum_id === this.payload.list[j].curriculum_id){
                                 founded = true;
                                 break;
                             }
                         }
-                        if(!founded)
-                            this.dataList.push(res.data.msg[i]);
+                        if(!founded) this.dataList.push(res.data.msg[i]);
                     }
                 }
-                this.loadingInstance.close();
+               if(this.loadingInstance) this.loadingInstance.close();
             })
     },
     computed: {
@@ -124,24 +115,19 @@ export default {
         addHandler(formName) {
             var result = [];
             var datas = []
-            for(var i=0;i<this.dataList.length;i++)
-            {
-                if(this.dataList[i].is_select)
-                {
+            for(var i=0;i<this.dataList.length;i++){
+                if(this.dataList[i].is_select){
                     result.push(this.dataList[i].curriculum_id);
                     datas.push(this.dataList[i]);
                 }
             }
-            
-            if(result.length === 0)
-            {
-                this.$alert('请选择至少一个课程！', '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => { }
-                                    });
-            }
-            else
-            {
+            if(result.length === 0){
+                  this.$Modal.confirm({
+                    title: '提示',
+                    content: '请选择至少一个课程！',
+                    onOk: () => {}
+                });
+            }else{
                 var vm = this;
                 this.add_production_curriculums({id:this.payload.productionId,curriculums:result,curriculumData:datas,_fn:function(){
                      vm.handleClose();
@@ -158,7 +144,14 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/.ivu-btn{
+     border-radius: 4px;
+        width: 200px !important;
+        height: 36px;
+        border: 0;
+        margin: 30px 0;
+}
 #select-curriculum-container {
     @import "base.scss";
     input,
@@ -178,32 +171,8 @@ export default {
             color: #757575;
         }
     }
-    .el-dialog {
-        width: 600px;
-        background: none;
-
-        .body-top {
-            padding-bottom: 10px;
-        }
-
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-        .el-dialog__body {
-            padding: 0;
-            background: #fff;
-            border-radius: 0 0 4px 4px;
-        }
-         .ok-btn {
-                background: #FB843E;
-                border-radius: 4px;
-                width: 200px;
-                height: 36px;
-                border: 0;
-                margin: 30px 0;
-            }
+    .body-top {
+        padding-bottom: 10px;
     }
 }
 </style>

@@ -162,7 +162,7 @@ export default {
 }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .el-tooltip__popper {
     &.is-light {
         background: #FFFFFF;
