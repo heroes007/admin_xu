@@ -28,7 +28,7 @@
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
         <Row>
             <Col>
-             <Menu class="slider-menu" @on-open-change="openChange" @on-select="selectItem" :active-name='activeIndex' :open-names="openNames">
+             <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem" :active-name='activeIndex' :open-names="menuOpenName">
                <div v-for="it in menuList" :key="it.name">
                 <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
                     <template slot="title"><Icon :type="it.icon" />{{it.title}}</template>
@@ -61,7 +61,7 @@
             return {
                 use_router: true,
                 activeIndex: "",
-                openNames: ['6'],
+                menuOpenName: ['6'],
                 menuList: MenuList
             }
         },
@@ -114,7 +114,8 @@
                 // return true;
             },
             openChange(name) {
-                console.log(name);
+                localStorage.setItem('menuOpenName', JSON.stringify(name));
+                this.menuOpenName = name;
             },
             selectItem(index) {
                 this.$router.push({ name: index });
@@ -171,6 +172,10 @@
                 console.log(error);
             })
             this.get_unread_list();
+            if(localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
+            this.$nextTick(()=>{
+               this.$refs.SideMenu.updateOpened();
+            })
         }
     }
 </script>

@@ -150,8 +150,10 @@
         },
         watch: {
             headerData(val) {
+                console.log(val);
             },
             tableData(val) {
+                console.log(val);
                 this.dataChange = true;
                 var vm = this;
                 setTimeout(function(){
