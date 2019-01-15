@@ -3,7 +3,7 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem v-for='(item, index) in subjectList' :key='item.id' :label="item.name">
                         <Select v-model="form.arrangement[index]" placeholder="请选择学科">
                             <Option v-for="t in teacherList" :key="t.user_id" :label="t.nickname" :value="t.user_id"></Option>

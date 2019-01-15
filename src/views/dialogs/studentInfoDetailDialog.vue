@@ -5,7 +5,7 @@
                 <!-- <span class="dscj-webfont-remove-sign"></span> -->
                 <el-tabs type="border-card" @tab-click='changeTabHandler' :active-name='activeName'>
                     <el-tab-pane label="基础信息">
-                        <Form ref="form" :model="form1" label-width="80px">
+                        <Form ref="form" :model="form1" :label-width="80">
                             <FormItem label="选择项目">
                                 <Select v-model="form1.project_id" placeholder="请选择项目" disabled>
                                     <Option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></Option>
@@ -80,7 +80,7 @@
                          <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
                     该用户没有报名信息
                 </Row>
-                        <Form ref="form2" :model="form2" label-width="80px" class="add-teacher-form" v-if='form2.user_id !== 0'>
+                        <Form ref="form2" :model="form2" :label-width="80" class="add-teacher-form" v-if='form2.user_id !== 0'>
                             <FormItem label="ID">
                                 <Input v-model="form2.user_id" disabled></Input>
                            </FormItem>
@@ -124,7 +124,7 @@
                             <FormItem label="在读年级">
                                 <Input v-model="form2.school_grade" placeholder="请输入考生在读年级"></Input>
                            </FormItem>
-                            <FormItem label="期望就业城市" label-width='100px'>
+                            <FormItem label="期望就业城市" :label-width='100'>
                                 <Input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></Input>
                            </FormItem>
                             <FormItem class="btn-content" label-width='0'>
@@ -140,7 +140,7 @@
                                 <Select v-model="form3.product_id" placeholder="请选择项目" @change='changeProductHandler'>
                                     <Option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                                 </Select>
-                            </Row>     
+                            </Row>
 
                             <Row class="body-top" v-if="true">
                                 <Row v-for="item in form3.dataList" :key="item.id" class="course-item">
@@ -170,7 +170,7 @@
                         <Row class='query-header' type='flex' align='middle'>
                                 <h3>剩余报名次数：{{form6.real_count}}</h3>
                                 <el-input-number v-model="form6.remain_count" @change="changeRemainCountHandler" :min="0"></el-input-number>
-                            </Row>  
+                            </Row>
                         <Row>
                             <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form6.dataList.length === 0'>
                     该用户没有线下课
@@ -552,7 +552,7 @@
                     delete_student(student_id).then(rs => {
                         this.$alert('删除成功！', '提示', {
                             confirmButtonText: '确定',
-                            callback: action => { 
+                            callback: action => {
                                 this.studentInfoDetailDialog = false;
                             }
                         });
@@ -629,7 +629,7 @@
                         this.form1.is_test_user = res.data.msg.is_test_user;
                         this.form1._fn = function(){
                             vm.showPop('保存成功');
-                        }                  
+                        }
                         this.loadingInstance.close();
                     }
                 })

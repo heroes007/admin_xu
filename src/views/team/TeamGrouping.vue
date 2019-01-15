@@ -40,7 +40,7 @@
             </el-tab-pane>
         </el-tabs>
         <el-dialog title="分组规则" :visible.sync="dialogVisible" custom-class='team-grouping-rule-dialog'>
-            <Form label-width="100px" class="rule-form">
+            <Form :label-width="100" class="rule-form">
                 <FormItem :label="item.label" v-for='(item, index) in propList' :key='item.prop'>
                     <el-input-number v-model="item.ruleCount" :min='0' :max='5'></el-input-number>
                </FormItem>
@@ -489,7 +489,7 @@ import MyRadarChart from '../../components/RadarChart'
             }
         }
     }
-    
+
     .team-grouping-rule-dialog {
         width: 400px;
     }

@@ -3,7 +3,7 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
-                <Form ref="form" :model="form" label-width="80px" class="add-teacher-form">
+                <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem label="ID">
                          <Input v-model="form.user_id" disabled></Input>
                    </FormItem>
@@ -47,7 +47,7 @@
                      <FormItem label="在读年级">
                          <Input v-model="form.school_grade" placeholder="请输入考生在读年级"></Input>
                    </FormItem>
-                     <FormItem label="期望就业城市" label-width='100px'>
+                     <FormItem label="期望就业城市" :label-width='100'>
                          <Input v-model="form.ex_citys" placeholder="请输入考生期望就业城市"></Input>
                    </FormItem>
                     <FormItem label="验证图片">

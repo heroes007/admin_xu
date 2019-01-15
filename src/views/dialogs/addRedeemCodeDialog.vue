@@ -3,7 +3,7 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <Form ref="form" :model="form" label-width="100px" class="add-teacher-form">
+                <Form ref="form" :model="form" :label-width="100" class="add-teacher-form">
                     <FormItem label="兑换码名称">
                         <Input v-model="form.code_name" placeholder="请输入分类名称"></Input>
                    </FormItem>
@@ -187,7 +187,7 @@ export default {
                 border-radius: 0;
                 border: 1px solid #CCCCCC;
             }
-            
+
             .el-input-number {
                 width: 100%;
             }

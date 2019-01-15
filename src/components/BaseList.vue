@@ -8,7 +8,7 @@
                 <slot name='controlBar'></slot>
             </div>
         </Row>
-        <Table @on-selection-change='selectionChangeHandler' :row-class-name="rowClassName" :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+        <el-table @on-selection-change='selectionChangeHandler' :row-class-name="rowClassName" :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
             :data="tableData" :height="tableHeight" @expand="rowExpandHandler" @row-click='rowClickHandler'>
             <el-table-column width="60" v-for='item in badgeHeader' :key="item.id">
                 <template slot-scope="scope">
@@ -76,10 +76,10 @@
                 <template slot-scope="scope">
                     <baseList class='child-list data-list' :table-data='scope.row.childData' :header-data='item.childHeader' :is-stripe='false'
                         :parent-data='scope.row' :column-formatter='item.listColumnFormatter' @childBtnClick='childBtnClickHandler'>
-                        </baseList>
+                    </baseList>
                 </template>
             </el-table-column>
-        </Table>
+        </el-table>
         <slot name="pager"></slot>
     </div>
 </template>
@@ -246,7 +246,7 @@
             }
         },
         mounted() {
-            // 资料管理来回切换报异常
+          // 资料管理来回切换报异常
             if (this.comboModelData && this.comboModelData.length > 0) {
                 this.comboDataList = [];
                 for (var i = 0; i < this.comboModelData.length; i++) {

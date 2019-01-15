@@ -1,5 +1,5 @@
 <template>
-    <Modal title="创建用户" v-model="addUserDialog" @close="handleRemoveModal(remove)" size="auto"
+    <Modal title="创建用户" v-model="addUserDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
            :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
             <Row slot="body">

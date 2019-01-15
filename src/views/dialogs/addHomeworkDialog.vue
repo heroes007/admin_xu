@@ -2,7 +2,7 @@
 <el-dialog :title="payload.type == 1 ? '创建任务' : '编辑任务'" :show-close="false" v-model="addHomeworkDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
     <base-input @closedialog="handleClose">
         <Row slot="body">
-            <Form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px" class="add-homework-form">
+            <Form ref="form" :rules="rules" :inline="true" :model="form" :label-width="80" class="add-homework-form">
                 <FormItem prop="name" required>
                     <Input placeholder="任务名称" v-model="form.name"></Input>
                </FormItem>

@@ -4,7 +4,7 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="dialogIndex==1">
-                <Form ref="form" :model="form" label-width="80px" class="add-course-form" :label-position="labelPosition">
+                <Form ref="form" :model="form" :label-width="80" class="add-course-form" :label-position="labelPosition">
                     <Row>
                         <Col :span="11">
                             <FormItem label="课程名称">
@@ -65,7 +65,7 @@
                                 </Col>
                             </Row>
                             <file-uploader :filters="dataFilters" maxFileCount="1"
-                                    :maxFileSize="10000"  @uploadComplete="uploadComplete" 
+                                    :maxFileSize="10000"  @uploadComplete="uploadComplete"
                                      bucket="dscj-static-file" :dir="getDir"/>
                         </div>
                     </Row>

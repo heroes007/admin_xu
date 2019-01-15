@@ -1,6 +1,6 @@
 <template>
     <Modal :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" :footer-hide="true"
-               @close="handleRemoveModal(remove)" size="auto" :mask-closable="false" :styles="{width: '600px', fontsize: '14px'}">
+               @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :styles="{width: '600px', fontsize: '14px'}">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="payload.showList">
@@ -243,23 +243,22 @@
         });
       },
       saveHandler() {
-        // if (this.payload.sid) {
-        //     this.$store.dispatch('edit_student', this.form);
-        // } else {
-        //     var formInline = this.form;
-        //     this.$store.dispatch('add_student', formInline);
-        //     formInline.callback = () => {
-        //       this.handleClose();
-        //     //   setTimeout(()=>{
-        //     //     this.$alert('成功创建学员!', '提示', {
-        //     //         confirmButtonText: '确定',
-        //     //         callback: action => {}
-        //     //     });
-        //     //   }, 800)
-        //         this.showPop('保存成功！',1000);
-        //     }
-        // }
-        console.log(this.payload)
+        if (this.payload.sid) {
+            this.$store.dispatch('edit_student', this.form);
+        } else {
+            var formInline = this.form;
+            this.$store.dispatch('add_student', formInline);
+            formInline.callback = () => {
+              this.handleClose();
+            //   setTimeout(()=>{
+            //     this.$alert('成功创建学员!', '提示', {
+            //         confirmButtonText: '确定',
+            //         callback: action => {}
+            //     });
+            //   }, 800)
+                this.showPop('保存成功！',1000);
+            }
+        }
       },
       handleClose() {
         this.addStudentDialog = false;

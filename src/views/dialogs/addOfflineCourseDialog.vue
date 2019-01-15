@@ -4,7 +4,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
-                    <Form ref="myForm" :rules="rules" :model="form" label-width="80px" class="add-offline-course-form">
+                    <Form ref="myForm" :rules="rules" :model="form" :label-width="80" class="add-offline-course-form">
                         <FormItem label="课程名称" prop="name" required>
                             <Input v-model="form.name" placeholder="请输入课程名称"></Input>
                        </FormItem>
@@ -35,7 +35,7 @@
                             <upload-panel ref="upload_panel" :resourse="form.teacher_img_url" :upload-config="uploadConfig" @uploadcomplete="handleUploadComplete">
                                 <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
                             </upload-panel>
-                             <Input type="file" :change="getMyForm.teacher_img_url"></Input> 
+                             <Input type="file" :change="getMyForm.teacher_img_url"></Input>
                        </FormItem>-->
                         <FormItem class="btns">
                             <Button @click="handleSave('myForm',true)">完成</Button>

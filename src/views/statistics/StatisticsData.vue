@@ -3,7 +3,7 @@
         <header-component title='点击量统计' :type='0' :showAdd='false'></header-component>
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
-                <FormItem label="选择时间" label-width="80px">
+                <FormItem label="选择时间" :label-width="80">
                     <DatePicker v-model="timeRange" type="daterange" placeholder="选择日期范围" @change='changeTimeHandler'></DatePicker>
                </FormItem>
             </Form>
