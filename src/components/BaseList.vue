@@ -1,13 +1,13 @@
 <template>
     <div class='base-list-container'>
-        <Row type='flex' justify='space-between' align='middle'>
+        <el-row type='flex' justify='space-between' align='middle'>
             <div class='tab-bar'>
                 <slot name='tabBar'></slot>
             </div>
             <div class='control-bar'>
                 <slot name='controlBar'></slot>
             </div>
-        </Row>
+        </el-row>
         <el-table @selection-change='selectionChangeHandler' :row-class-name="rowClassName"
                   :highlight-current-row='canSelect' :show-header='showHeader' :stripe="isStripe"
                   :data="tableData" :height="tableHeight" @expand="rowExpandHandler" @row-click='rowClickHandler'>
@@ -39,26 +39,26 @@
                     <p v-if='!item.mixColumn && !item.isBtn && item.limit  && !item.useCombo && !item.useTimePicker'>
                         {{showLimiteValue(item.prop,scope.row,item.limit,item.actionName)}}
                         <span class='ellipsis' v-if='scope.row.needLimit && !scope.row.showAll'>...</span>
-                        <Button type='text' class='show-all' v-if='scope.row.needLimit && !scope.row.showAll'
-                                @click='showLimitText(scope.row,item.actionName)'>显示全部
-                        </Button>
-                        <Button type='text' class='fold' v-if='scope.row.needLimit && scope.row.showAll'
-                                @click='hideLimitText(scope.row,item.actionName)'>折叠
-                        </Button>
+                        <el-button type='text' class='show-all' v-if='scope.row.needLimit && !scope.row.showAll'
+                                   @click='showLimitText(scope.row,item.actionName)'>显示全部
+                        </el-button>
+                        <el-button type='text' class='fold' v-if='scope.row.needLimit && scope.row.showAll'
+                                   @click='hideLimitText(scope.row,item.actionName)'>折叠
+                        </el-button>
                     </p>
-                    <Button :class="{'prop-btn':true}" type='text'
-                            v-if="!item.mixColumn && item.isBtn && !item.useCombo && !item.useTimePicker"
-                            @click="handleBtnClick(scope.$index,scope.row,item.param)">
+                    <el-button :class="{'prop-btn':true}" type='text'
+                               v-if="!item.mixColumn && item.isBtn && !item.useCombo && !item.useTimePicker"
+                               @click="handleBtnClick(scope.$index,scope.row,item.param)">
                         {{showPropValue(item.prop,scope.row)}}
-                    </Button>
-                    <Select v-if='item.useCombo' v-model="comboDataList[scope.$index]" :multiple='!comboIsSelect'
-                            placeholder="请选择"
-                            @change='comboChangeHandler(scope.row,scope.$index,item.actionName,item.prop)'
-                            :disabled="item.disabledFunc?item.disabledFunc(scope.row):false">
-                        <Option v-for="c in columnComboData[item.comboListIndex]" :key="c.curriculum_id"
-                                :label="c[item.listLabel]" :value="c[item.listValue]">
-                        </Option>
-                    </Select>
+                    </el-button>
+                    <el-select v-if='item.useCombo' v-model="comboDataList[scope.$index]" :multiple='!comboIsSelect'
+                               placeholder="请选择"
+                               @change='comboChangeHandler(scope.row,scope.$index,item.actionName,item.prop)'
+                               :disabled="item.disabledFunc?item.disabledFunc(scope.row):false">
+                        <el-option v-for="c in columnComboData[item.comboListIndex]" :key="c.curriculum_id"
+                                   :label="c[item.listLabel]" :value="c[item.listValue]">
+                        </el-option>
+                    </el-select>
                     <el-date-picker v-if='item.useTimePicker'
                                     v-model="comboDataList[scope.$index]"
                                     type="datetime"
@@ -76,14 +76,14 @@
                 <template slot-scope="scope">
                     <div class='handle-component' v-for='btn in item.groupBtn' :key="btn.id"
                          v-if='btn.showFunc?btn.showFunc(scope.row):true'>
-                        <Button :type="btn.canDisabled?'primary':'text'"
-                                :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
-                                @click="handleBtnClick(scope.$index,scope.row,btn.param)"
-                                v-if='!btn.isSwitch && !btn.useCheckBox'
-                                :disabled="btn.canDisabled?btn.disabeldFunc(scope.row):false">
+                        <el-button :type="btn.canDisabled?'primary':'text'"
+                                   :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
+                                   @click="handleBtnClick(scope.$index,scope.row,btn.param)"
+                                   v-if='!btn.isSwitch && !btn.useCheckBox'
+                                   :disabled="btn.canDisabled?btn.disabeldFunc(scope.row):false">
                             <i :class='btn.text' v-if='btn.isIcon'></i>
                             <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(scope.row)?btn.disabledText:btn.text:btn.text}}</span>
-                        </Button>
+                        </el-button>
                         <el-switch :value='checkSwitchValue(scope.row,btn.switchKey)'
                                    :on-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.onText"
                                    :off-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.offText"
@@ -254,10 +254,7 @@
                   }
                 }
               } else {
-                this.comboDataList = [];
-                for (i = 0; i < val.length; i++) {
-                  this.comboDataList.push(val[i]);
-                }
+
               }
             }
           }

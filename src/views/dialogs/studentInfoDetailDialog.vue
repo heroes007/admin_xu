@@ -1,11 +1,13 @@
 <template>
-    <el-dialog title='学员信息' v-model="studentInfoDetailDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+    <Modal title='学员信息' v-model="studentInfoDetailDialog" :width="800" :closable="false" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :mask-closable="false">
+        <div slot="header"></div>
         <base-input :baseInputWidth="800" @closedialog="handleClose">
             <Row slot="body">
+                 <Icon class="close" @click="handleClose" type="ios-close" />
                 <!-- <span class="dscj-webfont-remove-sign"></span> -->
-                <el-tabs type="border-card" @tab-click='changeTabHandler' :active-name='activeName'>
-                    <el-tab-pane label="基础信息">
-                        <Form ref="form" :model="form1" :label-width="80">
+                <Tabs @on-click='changeTabHandler' :value='activeName'>
+                    <TabPane label="基础信息">
+                        <Form  ref="form" :model="form1" :label-width="80">
                             <FormItem label="选择项目">
                                 <Select v-model="form1.project_id" placeholder="请选择项目" disabled>
                                     <Option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></Option>
@@ -25,16 +27,13 @@
                                 </Select>
                            </FormItem>
                             <FormItem label="开课时间">
-                                <el-date-picker v-model="form1.start_school_time" type="date" placeholder="选择日期">
-                                </el-date-picker>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.start_school_time"></DatePicker>
                            </FormItem>
                             <FormItem label="毕业时间">
-                                <el-date-picker v-model="form1.finish_school_time" type="date" placeholder="选择日期">
-                                </el-date-picker>
+                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.finish_school_time"></DatePicker>
                            </FormItem>
                             <FormItem label="离校时间">
-                                <el-date-picker v-model="form1.leave_school_time" type="date" placeholder="选择日期">
-                                </el-date-picker>
+                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.leave_school_time"></DatePicker>
                            </FormItem>
                             <FormItem label="学员类型">
                                 <Select v-model="form1.type" placeholder="请选择学员类型">
@@ -70,16 +69,16 @@
                                     <Option label="测试学员" :value="1"></Option>
                                 </Select>
                            </FormItem>
-                            <FormItem class="btn-content" label-width='0'>
-                                <Button type="ghost" @click="deleteStudent(form1.student_id)">删除学员</Button>
+                            <FormItem class="btn-content" :label-width='0'>
+                                <Button  @click="deleteStudent(form1.student_id)">删除学员</Button>
                                 <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
                            </FormItem>
                         </Form>
-                    </el-tab-pane>
-                    <el-tab-pane label="报名信息">
+                    </TabPane>
+                    <TabPane label="报名信息">
                          <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
-                    该用户没有报名信息
-                </Row>
+                         该用户没有报名信息
+                        </Row>
                         <Form ref="form2" :model="form2" :label-width="80" class="add-teacher-form" v-if='form2.user_id !== 0'>
                             <FormItem label="ID">
                                 <Input v-model="form2.user_id" disabled></Input>
@@ -109,8 +108,7 @@
                                 <Input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></Input>
                            </FormItem>
                             <FormItem label="出生年月">
-                                <el-date-picker v-model="form2.birth" type="date" placeholder="选择日期">
-                                </el-date-picker>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form2.birth"></DatePicker>
                            </FormItem>
                             <FormItem label="邮箱">
                                 <Input v-model="form2.email" placeholder="请输入考生邮箱"></Input>
@@ -127,17 +125,17 @@
                             <FormItem label="期望就业城市" :label-width='100'>
                                 <Input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></Input>
                            </FormItem>
-                            <FormItem class="btn-content" label-width='0'>
+                            <FormItem class="btn-content" :label-width='0'>
                                 <Button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</Button>
                            </FormItem>
                         </Form>
-                    </el-tab-pane>
-                    <el-tab-pane label="线上课">
+                    </TabPane>
+                    <TabPane label="线上课">
                         <Row>
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
                                 <Button type='text' @click='clearVideoLog'>清除观看记录</Button>
-                                <Select v-model="form3.product_id" placeholder="请选择项目" @change='changeProductHandler'>
+                                <Select v-model="form3.product_id" placeholder="请选择项目" @on-change='changeProductHandler'>
                                     <Option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                                 </Select>
                             </Row>
@@ -165,24 +163,22 @@
                                 </Row>
                             </Row>
                         </Row>
-                    </el-tab-pane>
-                    <el-tab-pane label="线下课">
+                    </TabPane>
+                    <TabPane label="线下课">
                         <Row class='query-header' type='flex' align='middle'>
                                 <h3>剩余报名次数：{{form6.real_count}}</h3>
-                                <el-input-number v-model="form6.remain_count" @change="changeRemainCountHandler" :min="0"></el-input-number>
-                            </Row>
-                        <Row>
+                                <InputNumber v-model="form6.remain_count" @on-change="changeRemainCountHandler" :min="0"></InputNumber>
+                            </Row>  
                             <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form6.dataList.length === 0'>
-                    该用户没有线下课
-                </Row>
-                <Row v-for="item in form6.dataList" :key="item.id" class="course-item" v-if='form6.dataList.length > 0'>
-                    <Col :span="16" :offset='2'>
-                        <p class="title">{{item.name}}</p>
-                    </Col>
-                </Row>
-                        </Row>
-                    </el-tab-pane>
-                    <el-tab-pane label="任务">
+                             该用户没有线下课
+                            </Row>
+                             <Row v-for="item in form6.dataList" :key="item.id" class="course-item" v-if='form6.dataList.length > 0'>
+                            <Col :span="16" :offset='2'>
+                                <p class="title">{{item.name}}</p>
+                            </Col>
+                            </Row>
+                    </TabPane>
+                    <TabPane label="任务">
                         <Row class="body-top" v-if="true">
                             <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form4.dataList.length === 0'>
                                 该用户没有任务
@@ -199,8 +195,8 @@
                                 </Col>
                             </Row>
                         </Row>
-                    </el-tab-pane>
-                    <el-tab-pane label="作业">
+                    </TabPane>
+                    <TabPane label="作业">
                         <Row class="body-top" v-if="true">
                             <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form5.dataList.length === 0'>
                                 该用户没有作业
@@ -214,11 +210,11 @@
                                 </Col>
                             </Row>
                         </Row>
-                    </el-tab-pane>
-                </el-tabs>
+                    </TabPane>
+                </Tabs>
             </Row>
         </base-input>
-    </el-dialog>
+    </Modal>
 </template>
 
 <script>
@@ -392,18 +388,15 @@
                     })
             },
             changeRemainCountHandler(v) {
-                this.showloading();
-                if(v > this.form6.real_count)
-                {
+                // this.showloading();
+                if(v > this.form6.real_count){
                     add_offline_term_count(this.payload.user_id).then(res => {
                         if (res.data.res_code === 1) {
                             this.form6.real_count = v;
                             this.loadingInstance.close();
                         }
                     })
-                }
-                else
-                {
+                }else{
                     sub_offline_term_count(this.payload.user_id).then(res => {
                         if (res.data.res_code === 1) {
                             this.form6.real_count = v;
@@ -474,10 +467,7 @@
                 }
             },
             showloading(){
-                this.loadingInstance = Loading.service({
-                    text:'加载中，请稍后',
-                    fullscreen: true
-                });
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true});
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
@@ -529,16 +519,17 @@
             unlockTest(item) {
                 new_version_unlock_curriculum_video_test(this.payload.user_id, item.curriculum_id, this.form3.product_id).then(res => {
                     if (res.data.res_code === 1) {
-                        this.$alert('解锁测验成功!', '提示', {
-                            confirmButtonText: '确定',
-                            callback: action => { }
-                        });
-                    }
-                    else {
-                        this.$alert('解锁测验失败：' + res.data.res_code, '提示', {
-                            confirmButtonText: '确定',
-                            callback: action => { }
-                        });
+                           this.$Modal.info({
+                            title: '提示',
+                            content: '解锁测验成功',
+                            onOk: () => {}
+                         });
+                    } else {
+                        this.$Modal.info({
+                            title: '提示',
+                            content: '解锁测验失败：' + res.data.res_code,
+                            onOk: () => {}
+                         });
                     }
                 })
             },
@@ -546,26 +537,28 @@
                 this.form.img_url = url;
             },
             deleteStudent(student_id){
-                this.$confirm('此操作无法还原，是否确认删除该学员？', '提示', {
-                    type: 'warning'
-                }).then((res) => {
-                    delete_student(student_id).then(rs => {
-                        this.$alert('删除成功！', '提示', {
-                            confirmButtonText: '确定',
-                            callback: action => {
-                                this.studentInfoDetailDialog = false;
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '此操作无法还原，是否确认删除该学员？',
+                    onOk: () => {
+                        delete_student(student_id).then(rs => {
+                        this.$Modal.info({
+                            title: '提示',
+                            content: '删除成功！',
+                            onOk: () => {
+                            this.studentInfoDetailDialog = false;
                             }
                         });
-                    });
-                },(cancel) => {
-                    console.log(cancel);
+                        });
+                    }
                 });
             },
             clearVideoLog() {
-                this.$confirm('此操作无法还原，是否确认清除学员线上课观看记录？', '提示', {
-                    type: 'warning'
-                }).then(() => {
-                    new_version_clear_online_curriculum_record(this.form3.product_id, this.payload.user_id).then(res => {
+                    this.$Modal.confirm({
+                    title: '提示',
+                    content: '此操作无法还原，是否确认清除学员线上课观看记录？',
+                    onOk: () => {
+                          new_version_clear_online_curriculum_record(this.form3.product_id, this.payload.user_id).then(res => {
                         this.showloading();
                         new_version_get_student_online_curriculum({
                             user_id: this.payload.user_id,
@@ -577,12 +570,14 @@
                                 this.loadingInstance.close();
                             }
                         })
-                        this.$alert('清除成功！', '提示', {
-                            confirmButtonText: '确定',
-                            callback: action => { }
+                         this.$Modal.info({
+                            title: '提示',
+                            content: '清除成功！',
+                            onOk: () => {}
                         });
                     })
-                }).catch(() => { });
+                    }
+                })
             }
         },
         mounted() {
@@ -598,17 +593,10 @@
             this.form1.nickname = this.payload.nickname;
 
         get_list({project_id:this.payload.project_id,page_index:0,page_size:99999,state:[0,1,2]}).then(res => {
-            if(res.data.res_code === 1)
-            {
-                this.form3.productList = res.data.msg.products;
-            }
+            if(res.data.res_code === 1)  this.form3.productList = res.data.msg.products;
         })
-
-            if (this.payload.id) {
-                this.loadingInstance = Loading.service({
-                    text:'加载中，请稍后',
-                    fullscreen: true
-                });
+        if (this.payload.id) {
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
@@ -629,15 +617,45 @@
                         this.form1.is_test_user = res.data.msg.is_test_user;
                         this.form1._fn = function(){
                             vm.showPop('保存成功');
-                        }
-                        this.loadingInstance.close();
+                        }                  
+                       if(this.loadingInstance) this.loadingInstance.close();
                     }
                 })
             }
         }
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/ .ivu-tabs-bar{ height: 50px ;}
+/deep/ .ivu-tabs-nav .ivu-tabs-tab{ height: 50px; line-height: 34px; font-size: 16px}
+/deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #FC7643 }
+    .close{    
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    font-size: 31px; 
+    z-index: 3000;
+    }
+    /deep/.ivu-modal-header{
+        display: none;
+    };
+    /deep/ .ivu-modal-body{ padding: 0; }
+    /deep/  .ivu-form{
+              width: 80%;
+              margin: 20px auto;
+    }
+    /deep/ .btn-content {
+        display: flex;
+        justify-content: center;
+    }
+     .sub-btn {
+        background: #FB843E;
+        border-radius: 4px;
+        width: 200px;
+        height: 36px;
+        border: 0;
+    }
+    /deep/ .ivu-tabs-tabpane{ padding: 0px 30px; }
     #student-info-detail-container {
         @import "base.scss";
         input,
@@ -715,40 +733,7 @@
                             margin-top: 50px;
                         }
                     }
-                    .el-input {
-                        width:100%;
-                    }
-                    .el-select {
-                        width: 100%;
-                    }
-                    .el-form-item__content {
-                        line-height: 0;
-                    }
-                    input {
-                        border-radius: 0;
-                    }
-                    .el-dragger {
-                        width: 100%;
-                        background: #F6F6F6;
-                        border: 1px solid #CCCCCC;
-                        border-radius: 0;
-                        .el-dragger__text {
-                            font-size: 14px;
-                            color: #757575;
-                            letter-spacing: 0;
-                            line-height: 14px;
-                            margin-top: 20px;
-                        }
-                    }
-                    .sub-btn {
-                        background: #FB843E;
-                        border-radius: 4px;
-                        width: 200px;
-                        height: 36px;
-                        border: 0;
-                        // margin-left: 55px;
-                        margin-top: 32px;
-                    }
+
                 }
                 .query-header {
                     padding:0 30px;

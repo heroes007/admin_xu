@@ -1,6 +1,6 @@
 <template>
     <Modal :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" :footer-hide="true"
-               @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :styles="{width: '600px', fontsize: '14px'}">
+               @on-cancel="handleRemoveModal(remove)"  :mask-closable="false" :styles="{width: '600px', fontsize: '14px'}">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="payload.showList">
@@ -251,39 +251,6 @@
                 }
             }
         },
-        handleClose() {
-            this.addStudentDialog = false;
-        },
-        handleUploadComplete(url) {
-            this.form.img_url = url;
-        },
-        handleGetOfflineTermList(){
-          this.form.is_send_offline_term = 1;
-          if(this.$store.state.offline_curriculum.offline_term_list.length == 0){
-            this.$store.dispatch('get_offline_term_list', {
-                project_id: this.$store.state.project.select_project_id,
-                last_count: 0
-            });
-          }
-        },
-      saveHandler() {
-        if (this.payload.sid) {
-            this.$store.dispatch('edit_student', this.form);
-        } else {
-            var formInline = this.form;
-            this.$store.dispatch('add_student', formInline);
-            formInline.callback = () => {
-              this.handleClose();
-            //   setTimeout(()=>{
-            //     this.$alert('成功创建学员!', '提示', {
-            //         confirmButtonText: '确定',
-            //         callback: action => {}
-            //     });
-            //   }, 800)
-                this.showPop('保存成功！',1000);
-            }
-        }
-      },
       handleClose() {
         this.addStudentDialog = false;
       },
@@ -306,13 +273,10 @@
       this.$store.dispatch('get_teachers');
       this.$store.dispatch('get_student_managers');
       this.$store.dispatch('get_role');
-
       var vm = this;
       this.form._fn = function () {
         vm.handleClose();
       };
-
-
       this.form.user_id = this.payload.user_id;
       this.form.nickname = this.payload.nickname;
 
@@ -331,7 +295,6 @@
           this.loadingInstance.close();
         }, Config.base_timeout);
         get_student_detail(this.payload.sid).then(res => {
-
                 if (res.data.res_code === 1) {
                     this.form = res.data.msg;
                     this.form.student_id = this.payload.sid;
