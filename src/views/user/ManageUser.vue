@@ -118,7 +118,7 @@
         <Row class='data-container'>
             <div class='list'>
                 <Table :columns="columns1" :data="list">
-                    <template slot-scope="{ row, index }" slot="action">
+                    <template id="columnx" slot-scope="{ column, row, index }" slot="action">
                         <Button type="text" size="small" class="btn-text" @click="editDealer(row)">修改分站</Button>
                         <Button type="text" size="small" class="btn-text" @click="editUser(row)">编辑</Button>
                         <Button type="text" size="small" class="btn-text" @click="createStudent(row)">创建学员</Button>
@@ -222,6 +222,7 @@
   import { Config } from "../../config/base";
   import Vue from "vue";
 
+  let tooltips = { ellipsis: true, tooltip: true };
   export default {
     mixins: [Dialog],
     data() {
@@ -258,11 +259,13 @@
           },
           {
             title: '用户昵称',
-            key: 'nickname'
+            key: 'nickname',
+            ...tooltips
           },
           {
             title: '用户权限',
-            key: 'roles'
+            key: 'roles',
+            ...tooltips
           },
           {
             title: '手机号',
@@ -279,7 +282,7 @@
           },
           {
             title: '操作',
-            slot: 'action',
+            slot: 'action'
           },
         ],
         data1: []
@@ -489,6 +492,7 @@
       }
     },
     mounted() {
+      console.log(document.querySelector('#columnx'));
       var vm = this;
       if (
         !this.$store.state.project.project_list ||

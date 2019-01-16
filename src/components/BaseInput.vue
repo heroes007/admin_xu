@@ -2,7 +2,7 @@
 <Row class="base-input-container" :style="{ width: baseInputWidth + 'px' }">
     <Row class='body-header'>
         <slot name="header"></slot>
-        <!-- <span class="xght-webfont-close-sign close-dialog-panel" @click="closeDialog"></span> -->
+        <span class="xght-webfont-close-sign close-dialog-panel" @click="closeDialog"></span>
     </Row>
     <Row class="body-content">
         <slot name="body"></slot>
