@@ -1,10 +1,10 @@
 <template>
-<el-dialog v-model="videoManageDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+<Modal v-model="videoManageDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false">
     <base-input :baseInputWidth="600" @closedialog="handleClose">
         <Row slot="body">
             <!-- <span class="dscj-webfont-remove-sign"></span> -->
-            <el-tabs type="border-card">
-                <el-tab-pane label="视频设置">
+            <Tabs type="border-card">
+                <TabPane label="视频设置">
                     <Form ref="form" :model="form" :label-width="80">
                         <FormItem label="小节名称">
                             <Input v-model="form.title" placeholder="请输入小节名称"></Input>
@@ -33,8 +33,8 @@
                             <Button type="primary" class="sub-btn" @click="handleSubmit">发布</Button>
                        </FormItem>
                     </Form>
-                </el-tab-pane>
-                <el-tab-pane label="复制视频">
+                </TabPane>
+                <TabPane label="复制视频">
                     <Form ref="form" :model="form" :label-width="80" class="has-video-form">
                         <FormItem label="所属项目">
                             <Select v-model="projectId" @change='changeProjectHandler'>
@@ -62,11 +62,11 @@
                             <Button type="primary" class="sub-btn" @click="handleSelect">保存</Button>
                        </FormItem>
                     </Form>
-                </el-tab-pane>
-            </el-tabs>
+                </TabPane>
+            </Tabs>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>

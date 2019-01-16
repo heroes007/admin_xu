@@ -1,7 +1,7 @@
 
 
 <template>
-<el-dialog title="添加讲师" v-model="addTeacherDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
+<Modal title="添加讲师" v-model="addTeacherDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
@@ -25,7 +25,7 @@
             </Row>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>

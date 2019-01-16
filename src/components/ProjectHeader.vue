@@ -21,8 +21,8 @@
                 <Button class='btn-edit' type='text' icon="setting" v-if='type === 3 && showAdd' @click="editTaskCategory">
                     {{ isEdit ? '编辑类型': '取消编辑'}}
                 </Button>
-                <el-popover ref="teacherList" placement="bottom-end" width="500" trigger="click" popper-class='teacher-list'>
-                    <Row class='teacher-list-head'>
+                <Poptip ref="teacherList" placement="bottom-end" width="500" trigger="click" popper-class='teacher-list'>
+                    <Row slot="title" class='teacher-list-head'>
                         <div class='head'>
                             全部讲师
                         </div>
@@ -30,16 +30,16 @@
                             添加
                         </Button>
                     </Row>
-                    <div class='teacher-list-container'>
+                    <div slot="content" class='teacher-list-container'>
                         <Row v-for='r in teacherListData' :key="r.id" type='flex'>
                             <Col v-for='t in r' :key="t.id" :span='4'>
                                 <teacher-head :tid='t.id' :img-url='t.img_url' :teacher-name='t.name' />
                             </Col>
                         </Row>
                     </div>
-                </el-popover>
+                    <Button class='btn-teacher' type='text' v-if='type === 1 || type === 2'><i class='icon-xg-icon-xy'></i>讲师设置</Button>
+                </Poptip>
 
-                <Button class='btn-teacher' type='text' v-popover:teacherList v-if='type === 1 || type === 2'><i class='icon-xg-icon-xy'></i>讲师设置</Button>
             </div>
             <div class='btn-group'  v-if='type === 0'>
                 <Button class='btn-add' type='primary' icon="plus" v-if='showAdd' @click="addClickHandler">

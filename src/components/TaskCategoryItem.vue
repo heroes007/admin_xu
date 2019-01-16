@@ -53,13 +53,15 @@ export default {
     computed: {},
     methods: {
         deleteHandler() {
-            this.$confirm('是否确定删除该分类？', '提示', {
-                type: 'info'
-            }).then(() => {
-                this.$store.dispatch('delete_task_category', {
-                    task_category_id: this.cid
-                })
-            }).catch(() => {});
+          this.$Modal.confirm({
+            title: '提示',
+            content: '<p>是否确定删除该分类？</p>',
+            onOk: () => {
+              this.$store.dispatch('delete_task_category', {
+                  task_category_id: this.cid
+              })
+            },
+          });
         },
         selectItem() {
             this.$emit('select', this.cid);

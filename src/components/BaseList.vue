@@ -14,9 +14,9 @@
              <template slot-scope="{ column, row, index }" slot="badge">
                <Badge class="mark" :count="+(showBadgeCount(column.prop,row))" ></Badge>
             </template>
-            <template slot-scope="{ column, row, index }" slot="sort">
+            <!-- <template slot-scope="{ column, row, index }" slot="sort">
                 <span>{{ index+1 }}</span>
-            </template>
+            </template> -->
             <template slot-scope="{ column, row, index }" slot="normalHeader">
                     <Tooltip :transfer=true v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark" :content="doMix(column,row)">
                         <span>
@@ -44,7 +44,7 @@
                     <Button :class="{'prop-btn':true}" type='text' v-if="!column.mixColumn && column.isBtn && !column.useCombo && !column.useTimePicker" @click="handleBtnClick(index,row,column.param)">
                         {{showPropValue(column.prop,scope.row)}}
                     </Button>
-                    <Select v-if='column.useCombo' v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择" @change='comboChangeHandler(row,index,column.actionName,column.prop)' :disabled="column.disabledFunc?column.disabledFunc(row):false">
+                    <Select v-if='column.useCombo' v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择" @on-change='comboChangeHandler(row,index,column.actionName,column.prop)' :disabled="column.disabledFunc?column.disabledFunc(row):false">
                         <Option v-for="c in columnComboData[column.comboListIndex]" :key="c.curriculum_id" :label="c[column.listLabel]" :value="c[column.listValue]">
                         </Option>
                     </Select>
@@ -154,7 +154,7 @@
         },
         watch: {
             headerData(val) {
-                this.handleHeaderData()
+                // this.handleHeaderData()
             },
             tableData(val) {
                 this.dataChange = true;
@@ -175,35 +175,48 @@
                 }
                 else {
                     var foundDeferent;
-                    if(this.dataChange){
+                    if(this.dataChange)
+                    {
                         this.comboDataList = [];
-                        for (i = 0; i < val.length; i++) {
-                            this.comboDataList.push(val[i]);
-                        }
+                                for (i = 0; i < val.length; i++) {
+                                    this.comboDataList.push(val[i]);
+                                }
                     }
                     else if (val.length !== this.comboDataList.length) {
                         if (val.length > this.comboDataList.length) {
-                            if (this.comboIsSelect){
-                                if(this.comboAddDir) this.comboDataList.push(null)
-                                else this.comboDataList.unshift(null)
-                            }else{
-                                if(this.comboAddDir) this.comboDataList.push([]);
-                                else this.comboDataList.unshift([]);
+                            if (this.comboIsSelect)
+                            {
+                                if(this.comboAddDir)
+                                    this.comboDataList.push(null)
+                                else
+                                    this.comboDataList.unshift(null)
+                            }
+                            else
+                            {
+                                if(this.comboAddDir)
+                                    this.comboDataList.push([]);
+                                else
+                                    this.comboDataList.unshift([]);
                             }    
                         }
-                        else { 
-                            if(val.length === this.comboDataList.length - 1) {
+                        else {
+
+                            if(val.length === this.comboDataList.length - 1)
+                            {
                                 for (i = 0; i < this.comboDataList.length.length; i++) {
                                 if (this.comboIsSelect) {
                                     if (this.comboDataList[i] != val[i]) {
                                         this.comboDataList.splice.splice(i, 1);
                                         break;
                                     }
-                                } else {
+
+                                }
+                                else {
                                     if (this.comboDataList[i].length != val[i].length) {
                                         this.comboDataList.splice.splice(i, 1);
                                         break;
-                                    } else {
+                                    }
+                                    else {
                                         foundDeferent = false;
                                         for (j = 0; j < this.comboDataList[i].length; j++) {
                                             if (val.indexOf(this.comboDataList[i][j]) < 0) {
@@ -221,12 +234,14 @@
                                                 }
                                             }
                                         }
-                                        if (foundDeferent) break;
+                                        if (foundDeferent)
+                                            break;
                                     }
                                 }
                             }
                             }
-                            else{
+                            else
+                            {
                                 this.comboDataList = [];
                                 for (i = 0; i < val.length; i++) {
                                     this.comboDataList.push(val[i]);
@@ -262,7 +277,9 @@
                         it.tooltip = true
                     }
                     if(it.sort){
-                        it.slot = 'sort'
+                        // it.slot = 'sort'
+                        it.type = 'index'
+                        it.title = this.getHeaderLabel(it)
                         it.width = 65
                     }
                     if(it.isFree || !it.groupBtn && !it.selection && !it.sort && !it.listExpand && !it.badge){
@@ -270,8 +287,8 @@
                        it.ellipsis = true
                        it.tooltip = true
                        it.title = this.getHeaderLabel(it)
-                       it.filters = it.useFilter?this.getFilters(it.prop):null
-                       it.filterMethod= it.useFilter?this.doColumnFilter():null
+                       it.filters = it.useFilter ? this.getFilters(it.prop) : ''
+                       it.filterMethod= it.useFilter ? this.doColumnFilter() : ''
                     }
                     if(it.badge){
                         it.slot = 'badge'
@@ -303,10 +320,10 @@
                         }
                     }
                 })
-                console.log(this.headerData,this.tableData);
+                console.log(this.headerData);
             },
             getHeaderLabel(item) {
-                return item.ruleCount ? item.label + '(' + item.ruleCount + ')' : item.label;
+                return item.ruleCount?item.label + '(' + item.ruleCount + ')':item.label;
             },
             selectionChangeHandler(selection) {
                 this.$emit('selectionChange', selection);
@@ -329,16 +346,19 @@
                 return row[key];
             },
             checkSwitchDisabled(row, disFunc) {
-                if (disFunc) return disFunc(row);
+                if (disFunc)
+                    return disFunc(row);
                 return false;
             },
             changeSwitchValue(row, key, actionName, param) {
-                if(actionName) this.$store.dispatch(actionName, { id: row.id, key: key, value: !row[key] });
-                if(param) this.$emit(param,row);
+                if(actionName)
+                    this.$store.dispatch(actionName, { id: row.id, key: key, value: !row[key] });
+                if(param)
+                    this.$emit(param,row);
             },
             rowExpandHandler(row, expanded) {
                 if (expanded) {
-                    this.$emit('expand-open', row);
+                    this.$emit('expand', row);
                 }
             },
             rowClickHandler(row, event, column) {
@@ -464,7 +484,7 @@
                 return row[value.prop] === value.value;
             }
         }
-    }
+  }
 
 </script>
 <style lang='scss' scoped>
@@ -483,14 +503,17 @@
     .base-list-container {
         .tab-bar {
             display: inline-block;
+
             span {
                 padding: 10px 15px;
                 cursor: pointer;
             }
         }
+
         .control-bar {
             display: inline-block;
         }
+
         thead {
             tr {
                 th {
@@ -500,12 +523,15 @@
                 }
             }
         }
+
         &.light-header {
             thead {
                 tr {
                     height: 50px;
+
                     th {
                         background-color: #ffffff;
+
                         .cell {
                             background-color: #ffffff;
                             font-weight: 400;
@@ -517,26 +543,32 @@
                 }
             }
         }
+
         .base-list-row {
             .cell {
                 font-size: 14px;
                 color: #141111;
                 letter-spacing: 0;
+
                 .handle-component {
                     display: inline-block
                 }
                 .Button {
                     margin: 0;
+
                     span {
                         font-size: 14px;
                         color: #141111;
+
                         i {
                             color: #757575;
                         }
                     }
+
                     &:hover {
                         span {
                             color: #F06B1D;
+
                             i {
                                 color: #F06B1D;
                             }
@@ -545,44 +577,56 @@
 
                     &.Button--primary {
                         background-color: #F06B1D;
-                        border:0;
+                        border: 0;
+
                         span {
                             color: #ffffff;
+
                             i {
                                 color: #ffffff;
                             }
                         }
+
                         &:hover {
-                        span {
-                            color: #ffffff;
-                            i {
+                            span {
                                 color: #ffffff;
+
+                                i {
+                                    color: #ffffff;
+                                }
                             }
                         }
-                        }
-                        &.is-disabled { 
+
+                        &.is-disabled {
                             background-color: #757575;
                         }
                     }
                 }
+
                 .el-select {
                     width: 100%;
                 }
+
                 .handle-component {
                     margin-right: 30px;
+
                     &.prop-btn {
                         margin: 0;
                     }
+
                     .el-switch {
                         &.is-disabled {
                             .el-switch__core {
-                                background-color: #757575!important;
+                                background-color: #757575 !important;
+
                                 .el-switch__button {
                                     display: none;
                                 }
                             }
+
                             .el-switch__label {
                                 text-align: center;
+
                                 span {
                                     position: relative;
                                     top: 0;
@@ -593,22 +637,27 @@
                     }
                 }
             }
+
             .hover-show {
                 display: none;
             }
+
             &:hover {
                 .hover-show {
                     display: inline-block;
                 }
             }
+
             .show-divider {
                 border-right: 1px solid #979797;
                 padding-left: 14px;
                 margin-right: 14px;
             }
+
             .a-link {
                 color: #428bca;
             }
+
             .a-link:hover {
                 text-decoration: underline !important;
             }

@@ -1,10 +1,10 @@
 
 <template>
-<el-dialog :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :show-close="false" v-model="addCourseDialogVisible" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+<Modal :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true" v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" :styles="{width: '600px'}" :mask-closable="false">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="dialogIndex==1">
-                <Form ref="form" :model="form" :label-width="80" class="add-course-form" :label-position="labelPosition">
+                <Form ref="form" :model="form" class="add-course-form" :label-position="labelPosition">
                     <Row>
                         <Col :span="11">
                             <FormItem label="课程名称">
@@ -28,8 +28,8 @@
                         </Col>
                         <Col :span="11" :offset="2">
                             <FormItem label="开课时间">
-                                <el-date-picker v-model="selectDateRange" type="daterange" placeholder="选择日期范围">
-                                </el-date-picker>
+                                <DatePicker v-model="selectDateRange" type="daterange" placeholder="选择日期范围">
+                                </DatePicker>
                            </FormItem>
                             <FormItem label="操作权限（多选）">
                                 <Select v-model="form.curriculum_roles" multiple placeholder="请选择权限">
@@ -87,8 +87,7 @@
                     </Row>
                     <Row class="course-description">
                         <FormItem label="课程简介">
-                            <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description">
-                            </Input>
+                            <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
                        </FormItem>
                     </Row>
                     <Row>
@@ -108,12 +107,12 @@
                                     可选课程
                                 </Col>
                             </Row>
-                            <Row class="course-list" style="height: ">
-                                <el-checkbox-group v-model="unchecked_top_courses" @change="handleCheckedCitiesChange" class="course-item">
-                                    <el-checkbox v-for="(item, index) in query_replace_online_course_list" :key="item.id" :label="item">
+                            <Row class="course-list">
+                                <CheckboxGroup v-model="unchecked_top_courses" @on-change="handleCheckedCitiesChange" class="course-item">
+                                    <Checkbox v-for="(item, index) in query_replace_online_course_list" :key="item.id" :label="item">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
-                                    </el-checkbox>
-                                </el-checkbox-group>
+                                    </Checkbox>
+                                </CheckboxGroup>
                             </Row>
                         </Row>
                     </Col>
@@ -126,11 +125,11 @@
                                 </Col>
                             </Row>
                             <Row class="course-list">
-                                <el-checkbox-group v-model="checked_top_courses" @change="handleUnCheckedCitiesChange" class="course-item">
-                                    <el-checkbox v-for="(item, index) in top_course_list" :key="item.id" :label="item">
+                                <CheckboxGroup v-model="checked_top_courses" @on-change="handleUnCheckedCitiesChange" class="course-item">
+                                    <Checkbox v-for="(item, index) in top_course_list" :key="item.id" :label="item">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
-                                    </el-checkbox>
-                                </el-checkbox-group>
+                                    </Checkbox>
+                                </CheckboxGroup>
                             </Row>
                         </Row>
                     </Col>
@@ -141,10 +140,9 @@
                     <Button type="primary" class="public-btn" @click="handleSubmit">保存</Button>
                 </Row>
             </Row>
-
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>
@@ -365,6 +363,7 @@ export default {
                 '3_8': this.form.img_3_8
             };
             this.form.project_id = this.project_id;
+            console.log(this.query_online_course_list)
             this.form.orderby = this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1;
             var vm = this;
             this.form._fn = function() {
@@ -488,7 +487,25 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style scoped lang="scss">
+    /deep/ .ivu-modal-body{
+        padding: 30px 50px;
+    }
+    .btns{
+        text-align: center;
+
+        .next-btn{
+            width: 170px;
+        }
+    }
+    .upload-field{
+        border: none;
+
+        /deep/ .file-name-field{
+            margin-bottom: 10px;
+        }
+    }
+
 #add-course-container {
     @import "base.scss";
     input,
@@ -507,290 +524,6 @@ export default {
         // color: #fff;
         color: #757575;
       }
-    }
-    .el-dialog {
-        width: 700px;
-        background: none;
-
-        .body-top {
-            padding-bottom: 10px;
-        }
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-        .el-form-item {
-            text-align: left;
-            &.hide {
-                opacity: 0;
-                padding-bottom: 35px;
-            }
-        }
-        .el-dialog__body {
-            padding: 0;
-            background: #fff;
-            border-radius: 0 0 4px 4px;
-            .el-icon-upload {
-                margin-top: 30px;
-            }
-            .el-form-item__label {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-            .file-require {
-                margin-top: 45px;
-            }
-            .course-description {
-                margin-top: 45px;
-                textarea {
-                    background: #FFFFFF;
-                    border: 1px solid #E5E5E5;
-                    border-radius: 0;
-                    font-size: 14px;
-                    // color: #999999;
-                    letter-spacing: 0;
-                    line-height: 14px;
-                }
-            }
-        }
-        .add-course-form {
-            padding: 30px 50px 0;
-            margin: 0 auto;
-            .el-date-editor--datetimerange,
-            .el-select {
-                width: 100%;
-            }
-            input {
-                border-radius: 0;
-                border: 1px solid #CCCCCC;
-            }
-            .add-download-data {
-                .upload-field {
-                    border: 0;
-                }
-            }
-            .save-data {
-                color:#F06B1D;
-            }
-            @mixin el-upload-common($_top, $w) {
-                .el-upload {
-                    text-align: left;
-                    .el-icon-upload {
-                        color: #999999;
-                    }
-                    .el-upload__tip {
-                        font-size: 12px;
-                        color: #757575;
-                        letter-spacing: 0;
-                        line-height: 20px;
-                    }
-                    .el-dragger {
-                        float: left;
-                        width: 240px;
-                        height: $w;
-                        margin-right: 10px;
-                        background: #F6F6F6;
-                        border: 1px solid #CCCCCC;
-                        border-radius: 0;
-                        .el-icon-upload {
-                            margin-left: 0;
-                            margin-top: $_top;
-                        }
-                        .el-dragger__text {
-                            font-size: 14px;
-                            color: #757575;
-                            letter-spacing: 0;
-                            line-height: 14px;
-                        }
-                    }
-                }
-            }
-            .upload-form1 {
-                @include el-upload-common(20px, 135px);
-            }
-            .upload-form2 {
-                @include el-upload-common(7px, 90px);
-                .el-dragger__text {
-                    margin-top: -6px;
-                }
-            }
-            .el-form-item__content {
-                line-height: 0;
-            }
-
-        }
-        .btns {
-            text-align: center;
-            .el-form-item__content {
-                margin-left: 0 !important;
-                button {
-                    margin-left: 0;
-                    margin-top: 10px;
-                    margin-bottom: 4px;
-                    background: #FB843E;
-                    border-radius: 4px;
-                    width: 200px;
-                    height: 36px;
-                    border: 0;
-                }
-            }
-            .pre-btn {
-                position: absolute;
-                left: 20px;
-                top: 30px;
-                font-size: 14px;
-                color: #757575;
-                letter-spacing: 0;
-            }
-        }
-        .add-description-form {
-            margin: 0;
-            .text-area-container {
-                .el-form-item__content {
-                    margin-left: 0 !important;
-                    line-height: 0;
-                    textarea {
-                        width: 640px;
-                        margin-left: -28px;
-                        height: 444px;
-                        background: #F6F6F6;
-                        border: 1px solid #CCCCCC;
-                        border-radius: 2px;
-                    }
-                }
-            }
-            .next-btn {
-                background: #FB843E;
-                border-radius: 4px;
-                width: 200px;
-                height: 36px;
-                border: 0;
-            }
-        }
-        .primary-course {
-            height: 640px;
-            overflow: hidden;
-            border-bottom: 1px solid #E5E5E5;
-            .course-num {
-                margin-left: 10px;
-                margin-right: 10px;
-            }
-            .course-list-container {
-
-                p {
-                    margin: 0;
-                    text-align: left;
-                    margin-bottom: 10px;
-                    font-size: 14px;
-                    color: #141111;
-                    letter-spacing: 0;
-                    line-height: 14px;
-                }
-            }
-            .course-list {
-                height: 640px;
-                width: 100%;
-                background: #FBFBFB;
-                border-top: 1px solid #E5E5E5;
-                border-right: 1px solid #E5E5E5;
-                margin-left: 1px;
-                overflow: auto;
-                label {
-                    display: block;
-                    padding-left: 15px;
-                    &:hover {
-                        background-color: #E5E5E5;
-                    }
-                }
-                .el-checkbox {
-                    margin-left: 0;
-                }
-                .course-item {
-                    height: 30px;
-                    width: 100%;
-                    line-height: 30px;
-                    text-align: left;
-                }
-                &:first-child {
-                    border-right: 0;
-                }
-            }
-
-            .top-course {
-                width: 100%;
-                height: 36px;
-                background: #FFFFFF;
-                border-top: 1px solid #E5E5E5;
-                border-left: 1px solid #E5E5E5;
-                border-bottom: 0;
-                // border-right: 1px solid #E5E5E5;
-                line-height: 36px;
-                padding-left: 10px;
-                color: #468F19;
-                .Col-12 {
-
-                    text-align: left;
-                    // .add-btn {
-                    //     margin-right: 20px;
-                    //     font-size: 14px;
-                    //     color: #468F19;
-                    //     letter-spacing: 0;
-                    // }
-                    // .delete-btn {
-                    //     @extend .add-btn;
-                    //     color: #9F350D;
-                    // }
-                }
-                // .check-all {
-                //     text-align: left;
-                //     label {
-                //         margin-left: 15.7px;
-                //         height: 36px;
-                //         line-height: 36px;
-                //     }
-                // }
-            }
-            .un-top-course {
-                @extend .top-course;
-            }
-            .ml12 {
-                margin-left: -12px;
-            }
-            .operation-container {
-                margin-right: 4px;
-                width: 80px;
-                height: 420px;
-                position: relative;
-            }
-            .operation {
-                display: inline-block;
-                position: absolute;
-                top: 50%;
-                right: 3px;
-                margin-top: -40px;
-                span {
-                    display: inline-block;
-                    width: 30px;
-                    height: 30px;
-                    line-height: 30px;
-                    cursor: pointer;
-                    &:hover {
-                        background-color: #E5E5E5;
-                    }
-                }
-            }
-        }
-        .public-btn {
-            width: 200px;
-            height: 36px;
-            border: 0;
-            margin-top: 27px;
-            margin-bottom: 27px;
-            background: #F06B1D;
-            border-radius: 4px;
-        }
     }
 }
 </style>

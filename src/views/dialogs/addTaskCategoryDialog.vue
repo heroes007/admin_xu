@@ -1,21 +1,21 @@
 
 
 <template>
-<el-dialog title="添加分类" v-model="addTaskCategoryDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
+<Modal title="添加分类" v-model="addTaskCategoryDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
                 <p class="title">任务和类型不一样的喔，创建类型前请先选择好</p>
                 <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem class='radio-container'>
-                        <el-radio-group v-model="form.type" type='flex' justify='start' align='middle' @change="handleChangeRadio">
-                            <el-radio class="radio" :class="{'is-changed': isChanged == 0}" :label="0">
+                        <RadioGroup v-model="form.type"  justify='start' align='middle' @change="handleChangeRadio">
+                            <Radio class="radio" :class="{'is-changed': isChanged == 0}" :label="0">
                                 <span class=""></span>任务
-                            </el-radio>
-                            <el-radio class="radio" :class="{'is-changed': isChanged == 1}" :label="1">
+                            </Radio>
+                            <Radio class="radio" :class="{'is-changed': isChanged == 1}" :label="1">
                                 <span class=""></span>作业
-                            </el-radio>
-                        </el-radio-group>
+                            </Radio>
+                        </RadioGroup>
                    </FormItem>
                     <FormItem label="分类名称">
                         <Input v-model="form.name" placeholder="请输入分类名称"></Input>
@@ -27,7 +27,7 @@
             </Row>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>

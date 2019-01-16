@@ -1,7 +1,6 @@
 <template>
     <div class='manage-task'>
-        <header-component :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit"
-        />
+        <header-component :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" />
         <div class="category-list">
             <category-item v-for='item in categoryList' :key="item.id" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
                 :selected='getSelected(item.id, item.type)' @select='changeCategory(item)' />
@@ -16,7 +15,6 @@
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
             <div class='manage-online-course'>
                 <!-- <header-component @addCourse='addCourseHandler'/> -->
-
                 <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建作业</Button> -->
                 <!-- <Button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</Button> -->
                 <!-- <Button @click="handleSelModal(types.ADD_TASK, {type: 1})">创建任务</Button> -->
@@ -274,7 +272,6 @@
                         is_del_ut: 1
                     })
                 }).catch(() => { });
-
             },
             addTask() {
                 if (this.categoryList.length > 0) {
@@ -376,7 +373,7 @@
             }
         }
     }
-    
+
     .manage-task {
         .data-list {
             .base-list-row {

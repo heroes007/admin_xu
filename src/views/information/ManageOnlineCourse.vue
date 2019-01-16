@@ -9,24 +9,14 @@
 </template>
 
 <script>
-import Header from '../../components/ProjectHeader'
+    import Header from '../../components/ProjectHeader'
     import BaseList from '../../components/BaseList'
     import SaveOrder from '../../components/SaveOrder'
-    import {
-        doTimeFormat
-    } from '../../components/Util'
-    import {
-        Loading
-    } from 'element-ui';
-    import {
-        Dialog
-    } from '../dialogs/index';
-    import {
-        ADD_COURSE
-    } from '../dialogs/types'
-    import {
-        Config
-    } from '../../config/base'
+    import { doTimeFormat } from '../../components/Util'
+    import { Loading } from 'element-ui';
+    import { Dialog } from '../dialogs/index';
+    import {  ADD_COURSE } from '../dialogs/types'
+    import { Config } from '../../config/base'
     export default {
         mixins: [Dialog],
         data() {
@@ -127,6 +117,7 @@ import Header from '../../components/ProjectHeader'
                 }]
             },
             listColumnFormatterData() {
+                console.log([this.gradeList, this.subjectList, this.stateList])
                 return [this.gradeList, this.subjectList, this.stateList];
             },
             dataList() {
@@ -225,36 +216,61 @@ import Header from '../../components/ProjectHeader'
             },
             deleteCourseHandler(index) {
                 if (this.dirty) {
-                    this.$confirm('您已修改课程排序，是否放弃保存', '提示', {
-                        type: 'warning'
-                    }).then(() => {
-                        this.resetCurriculumOrder();
-                        this.showDeleteConfirm(this.dataList[index].curriculum_id);
-                    }).catch(() => { });
+                    // this.$confirm('您已修改课程排序，是否放弃保存', '提示', {
+                    //     type: 'warning'
+                    // }).then(() => {
+                    //     this.resetCurriculumOrder();
+                    //     this.showDeleteConfirm(this.dataList[index].curriculum_id);
+                    // }).catch(() => { });
+                  this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>您已修改课程排序，是否放弃保存</p>',
+                    onOk: () => {
+                      this.resetCurriculumOrder();
+                      this.showDeleteConfirm(this.dataList[index].curriculum_id);
+                    },
+                  });
                 } else {
                     this.showDeleteConfirm(this.dataList[index].curriculum_id);
                 }
             },
             showDeleteConfirm(curriculum_id) {
-                this.$confirm('是否确定删除该课程？', '提示', {
-                    type: 'info'
-                }).then(() => {
-                    this.$store.dispatch('delete_online_curriculum', {
-                        curriculum_id: curriculum_id
-                    })
-                }).catch(() => { });
+                // this.$confirm('是否确定删除该课程？', '提示', {
+                //     type: 'info'
+                // }).then(() => {
+                //     this.$store.dispatch('delete_online_curriculum', {
+                //         curriculum_id: curriculum_id
+                //     })
+                // }).catch(() => { });
+              this.$Modal.confirm({
+                title: '提示',
+                content: '<p>是否确定删除该课程？</p>',
+                onOk: () => {
+                  this.$store.dispatch('delete_online_curriculum', {
+                    curriculum_id: curriculum_id
+                  })
+                },
+              });
             },
             saveOrderHandler() {
                 this.$store.dispatch('save_online_curriculum_orderby');
             },
             addCourseHandler() {
                 if (this.dirty) {
-                    this.$confirm('您已修改课程排序，是否放弃保存', '提示', {
-                        type: 'warning'
-                    }).then(() => {
-                        this.resetCurriculumOrder();
-                        this.handleSelModal(ADD_COURSE);
-                    }).catch(() => { });
+                    // this.$confirm('您已修改课程排序，是否放弃保存', '提示', {
+                    //     type: 'warning'
+                    // }).then(() => {
+                    //     this.resetCurriculumOrder();
+                    //     this.handleSelModal(ADD_COURSE);
+                    // }).catch(() => { });
+                  this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>您已修改课程排序，是否放弃保存</p>',
+                    onOk: () => {
+                      this.resetCurriculumOrder();
+                      this.handleSelModal(ADD_COURSE);
+                    },
+                  });
                 } else {
                     this.handleSelModal(ADD_COURSE);
                 }
