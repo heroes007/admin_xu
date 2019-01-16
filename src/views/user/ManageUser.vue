@@ -118,7 +118,7 @@
         <Row class='data-container'>
             <div class='list'>
                 <Table :columns="columns1" :data="list">
-                    <template slot-scope="{ row, index }" slot="action">
+                    <template slot-scope="{ column, row, index }" slot="action">
                         <Button type="text" size="small" class="btn-text" @click="editDealer(row)">修改分站</Button>
                         <Button type="text" size="small" class="btn-text" @click="editUser(row)">编辑</Button>
                         <Button type="text" size="small" class="btn-text" @click="createStudent(row)">创建学员</Button>
@@ -275,7 +275,7 @@
           },
           {
             title: '注册时间',
-            key: 'create_time'
+            key: 'create_time',
           },
           {
             title: '操作',

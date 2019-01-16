@@ -2,9 +2,9 @@
     <div class='editor'>
         <!-- <Vueditor ref='text_editor_main'></Vueditor> -->
         <VueUEditor @ready='editorReadyHandler'></VueUEditor>
-        <el-row class='editor-btns' type='flex' justify='start' align='middle'>
+        <Row class='editor-btns' type='flex' justify='start' align='middle'>
             <btn-upload text='插入图片' type='image/gif, image/jpeg, image/png' :host='host' @uploadcomplete='uploadImgComplete'></btn-upload>
-        </el-row>
+        </Row>
     </div>
 </template>
 <script>
@@ -80,8 +80,13 @@
         }
         .edui-editor {
             width: 100% !important;
+            /*width: 647px !important;*/
             .edui-toolbar{
                 text-align: left;
+            }
+
+            .edui-editor-iframeholder{
+                width: 100% !important;
             }
         }
 

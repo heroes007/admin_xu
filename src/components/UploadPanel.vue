@@ -1,8 +1,7 @@
 <template>
     <Row class="upload-panel">
         <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
-            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" v-loading.fullscreen.lock="fullscreenLoading"
-            />
+            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" v-loading.fullscreen.lock="fullscreenLoading"/>
             <Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
         </Row>
@@ -212,7 +211,7 @@
                             this.$Message.warning('只能上传视频！');
                             this.fullscreenLoading = false;
                             return false;
-                        }    
+                        }
                 }
             },
             // 上传到oss上
@@ -256,7 +255,7 @@
                             this.is_show = false;
                             break;
                     };
- 
+
                     this.$emit('getuploadfile', {
                         name: this.file_name,
                         url: result

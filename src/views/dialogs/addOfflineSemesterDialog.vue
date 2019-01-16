@@ -1,9 +1,9 @@
 <template>
-    <el-dialog v-model="addOfflineSemesterDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+    <Modal v-model="addOfflineSemesterDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}">
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
-                <el-tabs type="border-card">
-                    <el-tab-pane :label="payload.type == 2 ? '编辑学期' : '添加学期'">
+                <Tabs type="line">
+                    <TabPane :label="payload.type == 2 ? '编辑学期' : '添加学期'">
                         <Form ref="myForm1" :rules="rules1" :model="form1" :label-width="80">
                             <FormItem label="学期名称" prop="name1" required>
                                 <Input v-model="form1.name1" placeholder="请输入学期名称"></Input>
@@ -15,23 +15,22 @@
                                 </Select>
                            </FormItem>
                             <FormItem label="开课日期" prop="stage1" required>
-                                <el-date-picker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围">
-                                </el-date-picker>
+                                <DatePicker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围"></DatePicker>
                            </FormItem>
                             <FormItem label="截止报名日期">
-                                <el-date-picker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @change='changeDeadlineHandler'>
-                                </el-date-picker>
+                                <DatePicker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @change='changeDeadlineHandler'>
+                                </DatePicker>
                            </FormItem>
                                 <FormItem label="学期描述" class="semester-description" prop="description1" required>
                                     <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description1">
                                     </Input>
                                </FormItem>
-                                <FormItem class="btn-content">
+                                <div style="text-align: center">
                                     <Button type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
-                               </FormItem>
+                               </div>
                         </Form>
-                    </el-tab-pane>
-                    <el-tab-pane label="复制学期" v-if="payload.type == 1">
+                    </TabPane>
+                    <TabPane label="复制学期" v-if="payload.type == 1">
                         <Form ref="myForm2" :rules="rules2" :model="form2" :label-width="80">
                             <FormItem label="选择学期" prop="semester" required>
                                 <Select v-model="form2.semester" placeholder="请选择学期" @change="handleSelectItem">
@@ -48,24 +47,21 @@
                                 </Select>
                            </FormItem>
                             <FormItem label="开课日期">
-                                <el-date-picker v-model="form2.stage2" type="datetimerange" placeholder="请选择时间范围">
-                                </el-date-picker>
-                           </FormItem>
-                            </el-date-picker>
+                                <DatePicker v-model="form2.stage2" type="datetimerange" placeholder="请选择时间范围"></DatePicker>
                            </FormItem>
                             <FormItem label="学期描述" class="semester-description">
                                 <Input type="textarea" :rows="8" placeholder="请输入学期描述" v-model="form2.description2">
                                 </Input>
                            </FormItem>
-                            <FormItem class="btn-content">
+                            <div style="text-align: center">
                                 <Button type="primary" class="sub-btn" @click="handleSave('myForm2')">保存</Button>
-                           </FormItem>
+                           </div>
                         </Form>
-                    </el-tab-pane>
-                </el-tabs>
+                    </TabPane>
+                </Tabs>
             </Row>
         </base-input>
-    </el-dialog>
+    </Modal>
 </template>
 
 <script>
@@ -286,6 +282,9 @@
 
 </script>
 <style lang="scss">
+    .sub-btn{
+        width: 170px;
+    }
     #add-offline-semester-container {
         @import "base.scss";
         input,
@@ -303,172 +302,6 @@
             &:before {
                 // color: #fff;
                 color: #757575;
-            }
-        }
-        .el-dialog {
-            .el-dialog__title {
-                font-weight: 500;
-            }
-            .el-dialog__header {
-                display: none;
-            }
-            .el-dialog__body {
-                padding: 0;
-                .el-date-editor {
-                    width: 100%;
-                }
-                .el-tabs--border-card {
-                    border: none;
-                    background: none;
-                }
-                .el-form-item__label {
-                    font-size: 14px;
-                    color: #141111;
-                    letter-spacing: 0;
-                    &:before {
-                        margin-right: 0;
-                    }
-                }
-                .el-tabs__header {
-                    background: #333333;
-                    border-radius: 4px 4px 0 0;
-                    height: 50px;
-                    .el-tabs__item:first-child {
-                        margin-left: 0;
-                        border-top-left-radius: 4px;
-                    }
-                    .el-tabs__item {
-                        font-size: 16px;
-                        letter-spacing: 0;
-                        color: #fff;
-                        height: 51px;
-                        line-height: 51px;
-                        padding: 0 30px;
-                    }
-                    .is-active {
-                        font-size: 16px;
-                        color: #141111;
-                        letter-spacing: 0;
-                    }
-                }
-                .el-tabs__content {
-                    border-radius: 0 0 4px 4px;
-                    background: #fff;
-                    padding: 0;
-                }
-                .el-form {
-                    width: 80%;
-                    margin: 20px auto;
-                    input {
-                        border: 1px solid #CCCCCC;
-                    }
-                    .semester-description {
-                        text-align: left;
-                        margin-bottom: 0;
-                        .el-radio-group {
-                            margin-top: 50px;
-                        }
-                        textarea {
-                            background: #FFFFFF;
-                            border: 1px solid #CCCCCC;
-                            // height: 140px;
-                            border-radius: 0;
-                            // width: 390px;
-                        }
-                    }
-                    .el-select {
-                        width: 100%;
-                    }
-                    input {
-                        border-radius: 0;
-                    }
-                    .el-dragger {
-                        width: 100%;
-                        background: #F6F6F6;
-                        border: 1px solid #CCCCCC;
-                        border-radius: 0;
-                        .el-dragger__text {
-                            font-size: 14px;
-                            color: #757575;
-                            letter-spacing: 0;
-                            line-height: 14px;
-                            margin-top: 20px;
-                        }
-                    }
-                    .sub-btn {
-                        background: #FB843E;
-                        border-radius: 4px;
-                        width: 200px;
-                        height: 36px;
-                        border: 0;
-                        margin-left: 55px;
-                        margin-top: 32px;
-                    }
-                    .el-form-item__content {
-                        line-height: 0;
-                    }
-                }
-                .has-video-form {
-                    width: 100%;
-                    margin: 0;
-                    .el-form-item:first-child {
-                        width: 80%;
-                        margin: 20px auto;
-                    }
-                    .course-list {
-                        .el-form-item__content {
-                            margin-left: 0 !important;
-                            line-height: 0;
-                        }
-                        .el-collapse-item__header__arrow {
-                            position: absolute;
-                            right: 18px;
-                            margin-top: 15px;
-                        }
-                        .el-collapse-item__header {
-                            padding-left: 20px;
-                            text-align: left;
-                            font-size: 16px;
-                            color: #141111;
-                            letter-spacing: 0;
-                            i {
-                                color: #CCCCCC;
-                                transform: rotateZ(90deg);
-                            }
-                        }
-                        .is-active {
-                            i {
-                                transform: rotateZ(-90deg);
-                            }
-                        }
-                        .course-item {
-                            margin-right: 8px;
-                            font-size: 14px;
-                            margin-left: -6px;
-                            color: #3B3B3B;
-                            letter-spacing: 0;
-                            .el-icon-star-on {
-                                margin-right: 10px;
-                                margin-left: 4px;
-                            }
-                            .el-checkbox-group {
-                                text-align: right;
-                            }
-                            .Col-18 {
-                                text-align: left;
-                            }
-                        }
-                    }
-                }
-                .btn-content {
-                    padding-bottom: 10px;
-                    .el-form-item__content {
-                        margin-left: 0 !important;
-                        button {
-                            margin-left: 0;
-                        }
-                    }
-                }
             }
         }
     }

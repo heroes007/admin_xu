@@ -6,11 +6,11 @@
                     <span><span class="dscj-webfont-document"></span>{{ fileName }}</span>
                     <Progress :style="{'visibility':showFileName ? 'visible':'hidden'}" :percent="percentage_improve" class="percentage"></Progress>
                 </div>
-                <form>
+                <Form>
                     <Button v-bind:disabled="isDisabled" type="primary" class="upload-btn" @click="handleStartUploadFile">点击上传</Button>
                     <input v-bind:disabled="isDisabled" type="file" ref="input" class="upload-input" name="file" v-on:change="handleUploadChange"
                         v-bind:accept="filtersString">
-                </form>
+                </Form>
             </div>
         </div>
         <Row type='flex' justify='end' align='middle'>
