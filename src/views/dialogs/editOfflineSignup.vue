@@ -33,7 +33,7 @@
                         </Select>
                    </FormItem>
                     <FormItem label="出发时间">
-                        <DatePicker v-model="formInline1.estimate_set_out_time" type="date" placeholder="选择日期">
+                        <DatePicker v-model="formInline1.estimate_set_out_time" type="date" placeholder="选择日期" :transfer="true">
                         </DatePicker>
                    </FormItem>
                     <FormItem class="btn-content">

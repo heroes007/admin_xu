@@ -9,11 +9,11 @@
                             <Input v-model="form.name" placeholder="请输入课程名称"></Input>
                        </FormItem>
                         <FormItem label="开课时间" prop="start_time" required>
-                            <DatePicker v-model="form.start_time" type="datetime" placeholder="选择时间">
+                            <DatePicker v-model="form.start_time" type="datetime" placeholder="选择时间" :transfer="true">
                             </DatePicker>
                        </FormItem>
                         <FormItem label="结课时间" prop="end_time" required>
-                            <DatePicker v-model="form.end_time" type="datetime" placeholder="选择时间">
+                            <DatePicker v-model="form.end_time" type="datetime" placeholder="选择时间" :transfer="true">
                             </DatePicker>
                        </FormItem>
                         <FormItem label="课程讲师" prop="teacher_id" required>

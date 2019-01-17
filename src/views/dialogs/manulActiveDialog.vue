@@ -184,16 +184,16 @@ let tooltips = { ellipsis: true, tooltip: true }
           send_task(this.payload.row.id, this.$store.state.project.select_project_id, list).then(res => {
             // console.log(res);
             if (res.data.res_code == 1) {
-              this.$alert('任务包发送成功!', '提示', {
-                confirmButtonText: '确定',
-                callback: action => {
-                }
-              });
+               this.$Modal.info({
+                    title: '提示',
+                    content: '任务包发送成功!',
+                    onOk: () => {}
+                });
               this.handleQueryList();
             }
           })
         } else {
-          alert('请选择要发送任务的学生!')
+           this.$Message.warning('请选择要发送任务的学生!');
         }
       },
       searchStudent() {

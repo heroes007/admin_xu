@@ -7,7 +7,7 @@
         </Row>
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
     </vue-cropper> -->
-        <Row class="img" v-if="type=='image'&&!is_show">
+        <Row class="img bbbbbbbbbb" v-if="type=='image'&&!is_show">
             <img :src="resourse_url?resourse_url:resultUrl" alt="" />
             <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
         </Row>
@@ -317,16 +317,20 @@
             margin-top: 10px;
         }
         .img {
-            width: 440px;
-            height: 200px;
-            border: 1px solid #CCCCCC;
-            display: table-cell;
-            text-align: center;
-            vertical-align: middle;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 1px solid #d3d3d3;
             background: #fff;
             img {
                 width: 100%;
+                height: 100%;
+            }
+            input{
+                width: 100%;
+                height: 100% !important;
             }
         }
         .video {

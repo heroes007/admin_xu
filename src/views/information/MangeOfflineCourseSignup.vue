@@ -18,7 +18,8 @@
                             placeholder="选择日期"
                             :time-picker-options="pickerOptions"
                             ref='date_picker'
-                            @on-change='changeDeadlineHandler'>
+                            @on-change='changeDeadlineHandler'
+                            :transfer="true">
                     </DatePicker>
                 </FormItem>
                 <FormItem>

@@ -66,15 +66,15 @@
                             </Select>
                         </FormItem>
                         <FormItem label="开课时间" v-if="payload.type == 2">
-                            <DatePicker v-model="form.start_school_time" type="date" placeholder="选择日期">
+                            <DatePicker v-model="form.start_school_time" type="date" placeholder="选择日期" :transfer="true">
                             </DatePicker>
                         </FormItem>
                         <FormItem label="毕业时间" v-if="payload.type == 2">
-                            <DatePicker v-model="form.finish_school_time" type="date" placeholder="选择日期">
+                            <DatePicker v-model="form.finish_school_time" type="date" placeholder="选择日期" :transfer="true">
                             </DatePicker>
                         </FormItem>
                         <FormItem label="离校时间" v-if="payload.type == 2">
-                            <DatePicker v-model="form.leave_school_time" type="date" placeholder="选择日期">
+                            <DatePicker v-model="form.leave_school_time" type="date" placeholder="选择日期" :transfer="true">
                             </DatePicker>
                         </FormItem>
                         <FormItem label="学员类型" v-if="payload.type == 2">

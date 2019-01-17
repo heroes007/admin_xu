@@ -57,6 +57,9 @@ body { background-color: #fff; height: 100%; }
 .ivu-modal-close .ivu-icon-ios-close,.ivu-modal-close .ivu-icon-ios-close:hover{
     color: #fff !important
 }
+.ivu-input-number{
+    width: 100% !important;
+}
 .ivu-date-picker{
   width: 100% !important
 }
