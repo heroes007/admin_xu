@@ -16,7 +16,7 @@
                     <FormItem>
                         <Row>
                             <Col :span="10">
-                                <Select class="select-user" v-model="searchType" placeholder="">
+                                <Select class="select-user" v-model="searchType" placeholder="" style="width: 100px">
                                     <Option label="昵称" value="nickname"></Option>
                                     <Option label="手机号" value="phone"></Option>
                                     <Option label="用户ID" value="user_id"></Option>
@@ -358,6 +358,11 @@
       // },
       editDealer(item){
         this.userInfo = Object.assign({},item);
+        this.dealer_list.map((item) => {
+          if(this.userInfo.from_domain == item.company){
+            this.userInfo.from_domain = item.id
+          }
+        })
         this.showDealerDialog = true;
       },
       editUser(item) {

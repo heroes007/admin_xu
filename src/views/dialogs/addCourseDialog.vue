@@ -1,4 +1,3 @@
-
 <template>
 <Modal :transfer=false :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true" v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" :styles="{width: '600px'}" :mask-closable="false">
     <base-input @closedialog="handleClose">
