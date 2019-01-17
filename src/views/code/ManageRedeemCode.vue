@@ -195,15 +195,12 @@ export default {
     watch: {
         isLoading(val) {
             if (val) {
-                this.loadingInstance = Loading.service({
-                    text:'加载中，请稍后',
-                    fullscreen: true
-                });
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
             } else {
-                this.loadingInstance.close();
+               if(this.loadingInstance) this.loadingInstance.close();
             }
         }
     },
@@ -213,10 +210,7 @@ export default {
             'get_production_list'
         ]),
         exportHandler(index, row) {
-            this.loadingInstance = Loading.service({
-                text:'加载中，请稍后',
-                    fullscreen: true
-                });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
@@ -240,7 +234,7 @@ export default {
                     var filedNames = ['兑换码','状态','用户ID','昵称','姓名','电话','使用时间'];
                     exportCsv(data,fileds,filedNames,row.code_name);
                 }
-                this.loadingInstance.close();
+               if(this.loadingInstance) this.loadingInstance.close();
             })
         },
         getCodeStateStr(state){
@@ -261,10 +255,7 @@ export default {
                                         callback: action => { }
                                     });
             }
-            this.loadingInstance = Loading.service({
-                text:'加载中，请稍后',
-                    fullscreen: true
-                });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
@@ -274,7 +265,7 @@ export default {
                     this.searchResult = res.data.msg;
                     this.showPopper = true;
                 }
-                this.loadingInstance.close();
+               if(this.loadingInstance) this.loadingInstance.close();
             })
         },
         getRowClassName(row,index) {

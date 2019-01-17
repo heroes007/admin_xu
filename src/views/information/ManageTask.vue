@@ -193,17 +193,14 @@
         },
         watch: {
             isLoading(val) {
-                if (val) {
-                    this.loadingInstance = Loading.service({
-                        text:'加载中，请稍后',
-                        fullscreen: true
-                    });
+              if (val) {
+                   this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                     setTimeout(() => {
-                        this.loadingInstance.close();
+                        this.loadingInstance.close()
                     }, Config.base_timeout);
-                } else {
-                    this.loadingInstance.close();
-                    this.dirty = false;
+                }else{
+                    if(this.loadingInstance) this.loadingInstance.close() 
+                    this.dirty = false
                 }
             },
             categoryList(val) {

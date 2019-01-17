@@ -4,7 +4,7 @@
         <Row slot="body">
             <Row class='search-bar' type='flex' justify='center' align='middle'>
             <Input placeholder="请输入用户名" v-model="searchData">
-                <Select  v-model="searchType" slot="prepend" placeholder="请选择">
+                <Select v-model="searchType" slot="prepend" placeholder="请选择">
                     <Option label="ID" value="id"></Option>
                     <Option label="昵称" value="nickname"></Option>
                     <Option label="手机号" value="phone"></Option>

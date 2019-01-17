@@ -69,10 +69,7 @@ export default {
     },
     methods: {
         getData(){
-this.loadingInstance = Loading.service({
-    text:'加载中，请稍后',
-                    fullscreen: true
-                });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
@@ -82,7 +79,7 @@ this.loadingInstance = Loading.service({
                     this.dataList = res.data.msg.codes;
                     this.used_count = res.data.msg.used_count;
                     this.total_count = res.data.msg.total_count;
-                    this.loadingInstance.close();
+                    if(this.loadingInstance) this.loadingInstance.close();
                 }
             })
         },

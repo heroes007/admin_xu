@@ -99,14 +99,7 @@
         },
         watch: {
             isLoading(val) {
-                if (val) {
-                    this.loadingInstance = Loading.service({
-                        text:'加载中，请稍后',
-                        fullscreen: true
-                    });
-                } else {
-                    this.loadingInstance.close();
-                }
+              this.$config.IsLoading(val);
             },
         },
         components: {

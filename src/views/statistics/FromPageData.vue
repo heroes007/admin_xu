@@ -103,10 +103,7 @@ export default {
             })
         },
         showLoading() {
-            this.loadingInstance = Loading.service({
-                text: '加载中，请稍后',
-                fullscreen: true
-            });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
             setTimeout(() => {
                 this.loadingInstance && this.loadingInstance.close();
             }, Config.base_timeout);

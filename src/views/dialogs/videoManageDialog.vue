@@ -126,7 +126,8 @@ export default {
                 dir:'mspx',
                 type:2
             },
-            selectedVideo:null
+            selectedVideo:null,
+            loading: null
         }
     },
     watch:{
@@ -159,9 +160,9 @@ export default {
             }
         },
         changeProjectHandler(val){
-            var loading = Loading.service({ text:'加载中，请稍后',fullscreen:true });
+            this.loading = this.$LoadingY({message: "加载中，请稍后",show: true})
             setTimeout(() => {
-                loading.close();
+                this.loading.close();
             }, Config.base_timeout);
             // console.log(val)
             get_list(val).then(res => {
@@ -171,9 +172,8 @@ export default {
                     {
                         res.data.msg[i].chapterList = [];
                     }
-
                     this.curriculumList = res.data.msg;
-                    loading.close();
+                   if(this.loading) this.loading.close();
                 }
             })
         },
@@ -194,9 +194,9 @@ export default {
             }
             if(item.chapterList.length === 0)
             {
-                var loading = Loading.service({ text:'加载中，请稍后',fullscreen:true });
+                 this.loading = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
-                loading.close();
+                this.loading.close();
             }, Config.base_timeout);
                 get_catalog(item.curriculum_id).then(res => {
                     if(res.data.res_code === 1)
@@ -214,7 +214,7 @@ export default {
                             item.chapterList = item.chapterList.concat(catalogList[i].classList);
                         }
 
-                        loading.close();
+                       if(this.loading) this.loading.close();
                     }
                 })
             }

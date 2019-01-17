@@ -99,10 +99,7 @@ export default {
         };
 
         if (this.payload.cid) {
-            this.loadingInstance = Loading.service({
-                text:'加载中，请稍后',
-                fullscreen: true
-            });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
             setTimeout(() => {
                 this.loadingInstance.close();
             }, Config.base_timeout);
@@ -114,27 +111,12 @@ export default {
                         vm.handleClose();
                         vm.showPop('创建成功！',1000);
                     };
-                    this.loadingInstance.close();
+                   if(this.loadingInstance) this.loadingInstance.close();
                 }
             })
         } else {
             this.form.orderby = this.payload.orderby;
         }
-
-        //            if(this.payload)
-        //            {
-        //                this.loadingInstance = Loading.service({ fullscreen:true });
-        //                get_detail(this.payload).then(res => {
-        //                    if(res.data.res_code === 1)
-        //                    {
-        //                        this.form = res.data.msg[0];
-        //                        this.form._fn = function(){
-        //                            vm.handleClose();
-        //                        };
-        //                        this.loadingInstance.close();
-        //                    }
-        //                })
-        //            }
     }
 }
 </script>

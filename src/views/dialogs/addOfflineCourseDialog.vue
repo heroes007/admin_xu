@@ -1,5 +1,5 @@
 <template>
-    <Modal :title="payload.type == 1 ? '添加课程' : '编辑课程'" :footer-hide="true" v-model="addOfflineCourseDialog" @on-cancel="handleRemoveModal(remove)"
+    <Modal :title="payload.type == 1 ? '添加课程' : '编辑课程'" width="600px" :footer-hide="true" v-model="addOfflineCourseDialog" @on-cancel="handleRemoveModal(remove)"
         size="auto" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
@@ -279,7 +279,8 @@
     }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+    /deep/ .ivu-modal-body { width: 80%; margin-left: 10% }
     #add-offline-course-container {
         @import "base.scss";
         .close-dialog-panel {

@@ -124,18 +124,7 @@
     },
     watch: {
       isLoading(val) {
-        if (val) {
-          this.loadingInstance = Loading.service({
-            text: '加载中，请稍后',
-            fullscreen: true
-          });
-          setTimeout(() => {
-            this.loadingInstance && this.loadingInstance.close();
-          }, Config.base_timeout);
-        } else {
-          this.loadingInstance && this.loadingInstance.close();
-          this.dirty = false;
-        }
+       this.$config.IsLoading(val);
       }
     },
     computed: {

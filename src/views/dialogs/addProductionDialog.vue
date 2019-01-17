@@ -167,10 +167,7 @@ export default {
             })
         }
         if(this.payload){
-            this.loadingInstance = Loading.service({
-                text:'加载中，请稍后',
-                    fullscreen: true
-                });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
@@ -193,7 +190,7 @@ export default {
                     if(this.form.video_url)
                         this.form.displayVideo = true;
                     this.checkCurriculum();
-                    this.loadingInstance.close();
+                  if(this.loadingInstance)  this.loadingInstance.close();
                 }
             })
         }

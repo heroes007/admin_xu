@@ -144,16 +144,13 @@
                 //                console.log(val);
             },
             isLoading(val) {
-                if (val) {
-                    this.loadingInstance = Loading.service({
-                        text:'加载中，请稍后',
-                        fullscreen: true
-                    });
+               if (val) {
+                    this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                     setTimeout(() => {
                         this.loadingInstance.close();
                     }, Config.base_timeout);
                 } else {
-                    this.loadingInstance.close();
+                    if(this.loadingInstance) this.loadingInstance.close();
                     this.dirty = false;
                 }
             },
@@ -170,10 +167,7 @@
                         loadingInstance && loadingInstance.close();
                     }, Config.base_timeout)
                 } else {
-                    loadingInstance = Loading.service({
-                        text:'加载中，请稍后',
-                        fullscreen: true
-                    });
+                    loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 }
             }
         },
@@ -278,13 +272,10 @@
             initData() {
                 var vm = this;
                 if (this.$store.state.project.project_list.length === 0) {
-                    var loadingInstance = Loading.service({
-                        text:'加载中，请稍后',
-                        fullscreen: true
-                    });
+                    var loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                     this.$store.dispatch('get_project_list', {
                         callback(v) {
-                            loadingInstance.close();
+                           loadingInstance && loadingInstance.close();
                             if (vm.dataList.length === 0) {
                                 vm.$store.dispatch('get_online_curriculum_list', {
                                     project_id: v

@@ -187,6 +187,7 @@
                 },
                 isEdit: false,
                 noSelect: true,
+                loadingInstance: null,
                 columns1:[
                   {
                     title: '广告名称',
@@ -258,12 +259,12 @@
                 this.isEdit = false;
             },
             editLb(item) {
-                var loadingInstance = Loading.service({text:'加载中，请稍后',fullscreen:true});
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
-                    loadingInstance.close();
+                    this.loadingInstance.close();
                 }, Config.base_timeout);
                 get_detail(item.ad_id).then((res) => {
-                    loadingInstance.close();
+                    if(this.loadingInstance) this.loadingInstance.close();
                     if(res.data.res_code === 1)
                     {
 

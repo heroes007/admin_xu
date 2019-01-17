@@ -1,7 +1,7 @@
 
 
 <template>
-<Modal :transfer=false title="添加讲师" v-model="addTeacherDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
+<Modal :transfer=false title="添加讲师" width="600px" v-model="addTeacherDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
@@ -99,7 +99,7 @@ export default {
         };
         if(this.payload)
         {
-            this.loadingInstance = Loading.service({ text:'加载中，请稍后',fullscreen:true });
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
             setTimeout(() => {
             this.loadingInstance.close();
         }, Config.base_timeout);
@@ -111,14 +111,18 @@ export default {
                         vm.handleClose();
                         vm.showPop('保存成功！',1000);
                     };
-                    this.loadingInstance.close();
+                   if(this.loadingInstance) this.loadingInstance.close();
                 }
             })
         }
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+/deep/.ivu-modal-body{
+    width: 80%;
+    margin-left: 10%;
+}
 #add-teacher-container {
 @import "base.scss";
     input,
@@ -137,115 +141,6 @@ export default {
         // color: #fff;
         color: #757575;
       }
-    }
-    .el-dialog {
-        width: 600px;
-        background: none;
-
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-
-        .el-dialog__body {
-            margin-bottom: -20px;
-            background-color: #fff;
-            border-radius: 0 0 4px 4px;
-            padding-bottom: 10px;
-            .el-form-item__label {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-        }
-        .add-teacher-form {
-            width: 80%;
-            margin: 0 auto;
-            .el-select {
-                width: 100%;
-            }
-            input {
-                border-radius: 0;
-                border: 1px solid #CCCCCC;
-            }
-            @mixin el-upload-common($w) {
-                .el-upload {
-                    text-align: left;
-                    width: 100%;
-                    .el-icon-upload {
-                        color: #999999;
-                    }
-                    .el-upload__tip {
-                        font-size: 12px;
-                        color: #757575;
-                        letter-spacing: 0;
-                        line-height: 20px;
-                        text-align: left;
-                        margin-top: 0;
-                    }
-                    .el-dragger {
-                        // float: left;
-                        // width: 240px;
-                        border-radius: 0;
-                        background-color: #F6F6F6;
-                        border: 1px solid #CCCCCC;
-                        width: 100%;
-                        height: $w;
-                        .el-icon-upload {
-                            margin-left: 0;
-                            // margin-top: $_top;
-                        }
-                        .el-dragger__text {
-                            font-size: 14px;
-                            color: #757575;
-                            letter-spacing: 0;
-                            line-height: 14px;
-                            margin-top: 20px;
-                        }
-                    }
-                }
-            }
-            .upload-form1 {
-                @include el-upload-common(200px);
-            }
-            .btn-content {
-
-              margin-top: 50px;
-                .el-form-item__content {
-                    margin-left: 0 !important;
-                    line-height: 0;
-                    button {
-                        margin-left: 0;
-                        background: #FB843E;
-                        border-radius: 4px;
-                        width: 200px;
-                        height: 36px;
-                        border: 0;
-                    }
-                }
-            }
-            .el-form-item__content {
-                // margin-left: 0 !important;
-                line-height: 0;
-                .el-textarea {
-                    .el-textarea__inner {
-                        background: #FFFFFF;
-                        border: 1px solid #CCCCCC;
-                        height: 140px;
-                        border-radius: 0;
-                        // width: 390px;
-                    }
-                }
-            }
-            .sub-btn {
-                background: #FB843E;
-                border-radius: 4px;
-                width: 200px;
-                height: 36px;
-                border: 0;
-            }
-        }
     }
 }
 </style>
