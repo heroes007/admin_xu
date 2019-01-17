@@ -110,7 +110,7 @@
                 this.handleSelModal(QUERY_STUDENT_TASK, row)
             },
             editHandler(index, row) {
-                this.handleSelModal(EDIT_OFFLINE_SIGNUP, row)
+                // this.handleSelModal(EDIT_OFFLINE_SIGNUP, row)
             },
             backClickHandler() {
                 this.$router.replace({ name: 'offline-course' });

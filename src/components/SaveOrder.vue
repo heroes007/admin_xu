@@ -36,7 +36,7 @@
         }
         .btn-save {
             border-color: #F06B1D;
-            color: #F06B1D;
+            color: #fff;
         }
 
         .save {

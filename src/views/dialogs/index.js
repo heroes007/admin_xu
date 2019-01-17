@@ -316,7 +316,6 @@ function initVue({
     element.id = `${el_name}-container`;
     element.innerHTML = `<${el_name}-dialog :remove='removeNodeName' :payload='childPayload'></${el_name}-dialog>`;
     document.getElementById('app').appendChild(element);
-
     Vue.component(`${el_name}-dialog`, component);
     new Vue({
         data: {

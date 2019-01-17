@@ -58,7 +58,7 @@ const actions = {
 
     },
     change_news_valid({ commit }, param) {
-        commit(types.NEWS_SHOW_LOADING, param);
+        // commit(types.NEWS_SHOW_LOADING, param);
         var data = {news_id:param.id,state:param.value?1:0}
         update_news(data).then(res => {
             if (res.data.res_code === 1) {
@@ -107,7 +107,7 @@ const mutations = {
                 break;
             }
         }
-        state.isLoading = false;
+       if(state.isLoading) state.isLoading = false;
     },
     [types.NEWS_DELETED](state, param) {
         for (var i = 0; i < state.news_list.length; i++) {

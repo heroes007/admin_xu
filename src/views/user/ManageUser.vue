@@ -135,6 +135,7 @@
 </template>
 
 <style scoped lang="scss" scoped>
+    /deep/ .ivu-table th { height: 50px; }
     /deep/ .ivu-breadcrumb{
         text-align: left;
         margin-left: 20px;
@@ -282,7 +283,8 @@
           },
           {
             title: '操作',
-            slot: 'action'
+            slot: 'action',
+            width: 260
           },
         ],
         data1: []

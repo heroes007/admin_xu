@@ -216,7 +216,7 @@ const actions = {
             })
         },
         change_offline_term_valid({commit}, params) {
-            commit(types.OFFLINE_TERM_LIST_LOADING);
+            // commit(types.OFFLINE_TERM_LIST_LOADING);
         update_offline_term(params.id,{state:params.value}).then(res => {
             if(res.data.res_code === 1)
             {
@@ -244,7 +244,7 @@ const mutations = {
                 break;
             }
         }
-        state.showLoading = false;
+       if(state.showLoading) state.showLoading = false;
     },
     [types.OFFLINE_TERM_LIST_LOADING](state) {
         state.msg = '加载中...';

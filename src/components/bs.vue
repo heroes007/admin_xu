@@ -1,91 +1,92 @@
 <template>
     <div class='base-list-container'>
-        <Row type='flex' justify='space-between' align='middle'>
+        <el-row type='flex' justify='space-between' align='middle'>
             <div class='tab-bar'>
                 <slot name='tabBar'></slot>
             </div>
             <div class='control-bar'>
                 <slot name='controlBar'></slot>
             </div>
-        </Row>
-        <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName" 
-        :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
-         :columns="headerData"  :data="tableData" :height="tableHeight" @on-expand="rowExpandHandler" @on-row-click='rowClickHandler'>
-             <template slot-scope="{ column, row, index }" slot="badge">
-               <Badge class="mark" :count="+(showBadgeCount(column.prop,row))" ></Badge>
-            </template>
-            <!-- <template slot-scope="{ column, row, index }" slot="sort">
-                <span>{{ index+1 }}</span>
-            </template> -->
-            <template slot-scope="{ column, row, index }" slot="normalHeader">
-                    <Tooltip :transfer=true v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark" :content="doMix(column,row)">
-                        <span>
-                            {{doMix(column,row)}}
-                        </span>
-                    </Tooltip>
-                    <span v-if="!column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark">
-                            {{doMix(column,row)}}
+        </el-row>
+        <el-table @selection-change='selectionChangeHandler' :row-class-name="rowClassName" :highlight-current-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+            :data="tableData" :height="tableHeight" @expand="rowExpandHandler" @row-click='rowClickHandler'>
+            <el-table-column width="60" v-for='item in badgeHeader' :key="item.id">
+                <template slot-scope="scope">
+                <el-badge class="mark" :value="showBadgeCount(item.prop,scope.row)" />
+                </template>
+            </el-table-column>
+            <el-table-column type="selection" width="55" v-for='item in selectionHeader' :key="item.id">
+            </el-table-column>
+            <el-table-column type="index" :label="getHeaderLabel(item)" width="65" v-for='item in sortHeader' :key="item.id">
+            </el-table-column>
+            <el-table-column :prop="item.prop" :label="getHeaderLabel(item)" :width="item.width" :min-width="item.minwidth" :show-overflow-tooltip="item.hideOverflow?false:true"
+                header-align='left' align='left' v-for='item in normalHeader' :key="item.id" :filters='item.useFilter?getFilters(item.prop):null'
+                :filter-method='item.useFilter?doColumnFilter:null'>
+                <template slot-scope="scope">
+                    <span v-if="item.mixColumn && !item.isBtn && !item.limit && !item.useCombo && !item.useTimePicker &&!item.useMark">
+                        {{doMix(item,scope.row)}}
                     </span>
-                    <Tooltip v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark" 
-                    :content="showPropValue(column.prop,row)"> 
-                       <span>{{showPropValue(column.prop,row)}}</span>
-                    </Tooltip>
-                    <span v-if="!column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark">
-                         {{showPropValue(column.prop,row)}}
+                    <span v-if="!item.mixColumn && !item.isBtn && !item.limit && !item.useCombo && !item.isLink &&!item.useTimePicker &&!item.useMark">
+                         {{showPropValue(item.prop,scope.row)}}
                     </span>
-                    <a target="_blank" class="a-link" :href="showPropValue(column.prop,row)" v-if="!column.mixColumn && !column.isBtn && !column.limit && column.isLink && !column.useCombo && !column.useTimePicker &&!column.useMark">
-                        {{showPropValue(column.prop,row)}}
+                    <a target="_blank" class="a-link" :href="showPropValue(item.prop,scope.row)" v-if="!item.mixColumn && !item.isBtn && !item.limit && item.isLink && !item.useCombo && !item.useTimePicker &&!item.useMark">
+                        {{showPropValue(item.prop,scope.row)}}
                     </a>
-                    <p v-if='!column.mixColumn && !column.isBtn && column.limit  && !column.useCombo && !column.useTimePicker'>
-                        {{showLimiteValue(column.prop,row,column.limit,column.actionName)}}
-                        <span class='ellipsis' v-if='row.needLimit && !row.showAll'>...</span>
-                        <Button type='text' class='show-all' v-if='row.needLimit && !row.showAll' @click='showLimitText(row,column.actionName)'>显示全部</Button>
-                        <Button type='text' class='fold' v-if='row.needLimit && row.showAll' @click='hideLimitText(row,column.actionName)'>折叠</Button>
+                    <p v-if='!item.mixColumn && !item.isBtn && item.limit  && !item.useCombo && !item.useTimePicker'>
+                        {{showLimiteValue(item.prop,scope.row,item.limit,item.actionName)}}
+                        <span class='ellipsis' v-if='scope.row.needLimit && !scope.row.showAll'>...</span>
+                        <el-button type='text' class='show-all' v-if='scope.row.needLimit && !scope.row.showAll' @click='showLimitText(scope.row,item.actionName)'>显示全部</el-button>
+                        <el-button type='text' class='fold' v-if='scope.row.needLimit && scope.row.showAll' @click='hideLimitText(scope.row,item.actionName)'>折叠</el-button>
                     </p>
-                    <Button :class="{'prop-btn':true}" type='text' v-if="!column.mixColumn && column.isBtn && !column.useCombo && !column.useTimePicker" @click="handleBtnClick(index,row,column.param)">
-                        {{showPropValue(column.prop,row)}}
-                    </Button>
-                    <Select v-if='column.useCombo&&columnComboData&&comboDataList' v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择" @on-change='comboChangeHandler(row,index,column.actionName,column.prop)' :disabled="column.disabledFunc?column.disabledFunc(row):false">
-                        <Option v-for="c in columnComboData[column.comboListIndex]" :key="c.curriculum_id" :label="c[column.listLabel]" :value="c[column.listValue]">
-                        </Option>
-                    </Select>
-                    <DatePicker v-if='column.useTimePicker&&comboDataList'
-                        v-model="comboDataList[index]"
+                    <el-button :class="{'prop-btn':true}" type='text' v-if="!item.mixColumn && item.isBtn && !item.useCombo && !item.useTimePicker" @click="handleBtnClick(scope.$index,scope.row,item.param)">
+                        {{showPropValue(item.prop,scope.row)}}
+                    </el-button>
+                    <el-select v-if='item.useCombo' v-model="comboDataList[scope.$index]" :multiple='!comboIsSelect' placeholder="请选择" @change='comboChangeHandler(scope.row,scope.$index,item.actionName,item.prop)' :disabled="item.disabledFunc?item.disabledFunc(scope.row):false">
+                        <el-option v-for="c in columnComboData[item.comboListIndex]" :key="c.curriculum_id" :label="c[item.listLabel]" :value="c[item.listValue]">
+                        </el-option>
+                    </el-select>
+                    <el-date-picker v-if='item.useTimePicker'
+                        v-model="comboDataList[scope.$index]"
                         type="datetime"
                         placeholder="选择日期时间"
-                        @on-change='changeTimeSelect(row,index,column.actionName,column.prop,column.param)'>
-                    </DatePicker>
-                    <span v-if='column.useMark'>
-                        <i class='el-icon-check' v-if='row[column.prop] === 1'></i>
+                        @change='changeTimeSelect(scope.row,scope.$index,item.actionName,item.prop,item.param)'>
+                    </el-date-picker>
+                    <span v-if='item.useMark'>
+                        <i class='el-icon-check' v-if='scope.row[item.prop] === 1'></i>
                     </span>
-            </template>
-            <template slot-scope="{ column, row, index }" slot="operation">
-                <div style="display:flex">
-                <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id" 
-                v-if='btn.showFunc?btn.showFunc(row):true'>
-                <Button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]" 
-                @click="handleBtnClick(index,row,btn.param)"
-                v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text' :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
-                <i :class='btn.text' v-if='btn.isIcon'></i>
-                <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(row)?btn.disabledText:btn.text:btn.text}}</span>
-                </Button>
-                <Switch :value='row[btn.switchKey]'
-                    :disabled="checkSwitchDisabled(row,btn.disabledFuc)"
-                    @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
-                    v-if='btn.isSwitch'>
-                    <span slot="open">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.onText}}</span>
-                    <span slot="close">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.offText}}</span>
-                </Switch>
-                 <!-- <Checkbox :value='row[btn.switchKey]'
-                  @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)' v-if='btn.useCheckBox&&btn.text' :label="isbaseType(btn.text)"></Checkbox> -->
-                 </div></div>
-            </template>
-       </Table>
-       <slot name="pager"></slot>
+                </template>
+                </el-table-column>
+                <el-table-column :label="getHeaderLabel(item)" :width="item.width" header-align='left' align='left' :show-overflow-tooltip="true" v-for='item in btnHeader'
+                    :key="item.id">
+                    <template slot-scope="scope">
+                        <div class='handle-component' v-for='btn in item.groupBtn' :key="btn.id" v-if='btn.showFunc?btn.showFunc(scope.row):true'>
+                            <el-button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]" @click="handleBtnClick(scope.$index,scope.row,btn.param)"
+                                v-if='!btn.isSwitch && !btn.useCheckBox' :disabled="btn.canDisabled?btn.disabeldFunc(scope.row):false">
+                                <i :class='btn.text' v-if='btn.isIcon'></i>
+                                <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(scope.row)?btn.disabledText:btn.text:btn.text}}</span>
+                                </el-button>
+                                <el-switch :value='checkSwitchValue(scope.row,btn.switchKey)' :on-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.onText"
+                                    :off-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.offText" :disabled="checkSwitchDisabled(scope.row,btn.disabledFuc)"
+                                    on-color='#F06B1D' off-color='#757575' @change='changeSwitchValue(scope.row,btn.switchKey,btn.actionName,btn.param)'
+                                    v-if='btn.isSwitch'>
+                                    </el-switch>
+                                <el-checkbox v-model='scope.row[btn.switchKey]' @change='changeSwitchValue(scope.row,btn.switchKey,btn.actionName,btn.param)' v-if='btn.useCheckBox'>{{btn.text}}</el-checkbox>
+                        </div>
+                    </template>
+                    </el-table-column>
+                    <el-table-column type='expand' :width="item.width" header-align='left' align='left' v-for='item in listExpandHeader' :key="item.id">
+                        <template slot-scope="scope">
+                            <baseList class='child-list data-list' :table-data='scope.row.childData' :header-data='item.childHeader' :is-stripe='false'
+                                :parent-data='scope.row' :column-formatter='item.listColumnFormatter' @childBtnClick='childBtnClickHandler'>
+                                </baseList>
+                        </template>
+                    </el-table-column>
+                    </el-table>
+                    <slot name="pager"></slot>
     </div>
 </template>
 <script>
-    import baseList from './baseList.vue'
+    import BaseList from './BaseList'
     export default {
         name: 'baseList',
         data() {
@@ -95,11 +96,13 @@
             }
         },
         props: {
-            tableData: { //表格数据
+            //表格数据
+            tableData: {
                 type: Array,
                 required: true
             },
-            headerData: { //header数据
+            //header数据
+            headerData: {
                 type: Array,
                 required: true
             },
@@ -145,12 +148,8 @@
                 default:1
             }
         },
-        created(){
-            this.handleHeaderData()
-        },
         watch: {
             headerData(val) {
-                this.handleHeaderData()
             },
             tableData(val) {
                 this.dataChange = true;
@@ -159,7 +158,7 @@
                     vm.dataChange = false;
                 },500);
             },
-            comboModelList(val) {
+            comboModelData(val) {
                 var i, j;
                 if (!this.comboDataList) {
                     this.comboDataList = [];
@@ -250,88 +249,14 @@
         },
         mounted() {
             // 资料管理来回切换报异常
-            if (this.comboModelList && this.comboModelList.length > 0) {
+            if (this.comboModelData && this.comboModelData.length > 0) {
                 this.comboDataList = [];
-                for (var i = 0; i < this.comboModelList.length; i++) {
-                    this.comboDataList.push(this.comboModelList[i]);
+                for (var i = 0; i < this.comboModelData.length; i++) {
+                    this.comboDataList.push(this.comboModelData[i]);
                 }
             }
         },
         methods: {
-            isbaseType(d){
-                if(d instanceof Array&&d instanceof Object) return d
-                else  return ''
-            },
-            tableRowClassName(){
-                return this.rowClassName
-            },
-            handleHeaderData(){
-                this.headerData.map((it) => {
-                    it.title = it.label
-                    it.align = 'center'
-                    if(it.prop) it.key = it.prop || ''
-                    if(it.minwidth) it.minWidth = it.minwidth
-                    if(!it.isFree&&it.groupBtn){
-                        it.slot = 'operation'
-                        it.title = this.getHeaderLabel(it)
-                        it.ellipsis = true
-                        it.tooltip = true
-                    }
-                    if(it.sort){
-                        // it.slot = 'sort'
-                        it.type = 'index'
-                        it.title = this.getHeaderLabel(it)
-                        it.width = 65
-                    }
-                    if(it.isFree || !it.groupBtn && !it.selection && !it.sort && !it.listExpand && !it.badge){
-                       it.slot = 'normalHeader'
-                       it.ellipsis = true
-                       it.tooltip = true
-                       it.title = this.getHeaderLabel(it)
-                       if(it.useFilter){
-                           let d = this.getFilters(it.prop);
-                           d.map((t) => {
-                               t.label = t.text
-                               t.value = t.value.value
-                           })
-                           it.filters = d
-                           it.filterMethod = (value, row) => {
-                            return row[it.key] === value;
-                          }
-                       }
-                    }
-                    if(it.badge){
-                        it.slot = 'badge'
-                        it.title = this.getHeaderLabel(it)
-                    }
-                    if(it.selection){
-                        it.type = 'selection'
-                        it.width = 60
-                        it.align = 'center'
-                    }
-                    if(it.listExpand){
-                        it.slot = 'listExpand'
-                        it.type = 'expand'
-                        it.width = 50
-                        it.childHeader.map((t) => {
-                                 t.title = t.label
-                                 t.key = t.prop
-                        })
-                        it.render = (h, params) => {
-                            return h(baseList, {
-                                props: {
-                                    tableData: params.row.childData,
-                                    headerData: it.childHeader,
-                                    isStripe: false,
-                                    parentData: params.row,
-                                    columnFormatter: it.listColumnFormatter
-                                }
-                            })
-                        }
-                    }
-                })
-                console.log(this.headerData,this.tableData);
-            },
             getHeaderLabel(item) {
                 return item.ruleCount?item.label + '(' + item.ruleCount + ')':item.label;
             },
@@ -340,7 +265,9 @@
             },
             changeTimeSelect(row, index, actionName, key, param){
                 this.$store.dispatch(actionName, { id: row.id, key: key, value: this.comboDataList[index] });
-                if(!this.dataChange) this.$emit(param, row);
+
+                if(!this.dataChange)
+                    this.$emit(param, row);
             },
             showBadgeCount(propname, row)
             {
@@ -361,8 +288,10 @@
                 return false;
             },
             changeSwitchValue(row, key, actionName, param) {
-                if(actionName) this.$store.dispatch(actionName, { id: row.id, key: key, value: !row[key] });
-                if(param) this.$emit(param,row);
+                if(actionName)
+                    this.$store.dispatch(actionName, { id: row.id, key: key, value: !row[key] });
+                if(param)
+                    this.$emit(param,row);
             },
             rowExpandHandler(row, expanded) {
                 if (expanded) {
@@ -376,8 +305,12 @@
                 this.$emit('childBtnClick', param, index, parentData);
             },
             handleBtnClick(index, row, param) {
-                if (this.parentData)  this.$emit('childBtnClick', param, index, this.parentData);
-                else this.$emit(param, index, row);
+
+                if (this.parentData) {
+                    this.$emit('childBtnClick', param, index, this.parentData);
+                }
+                else
+                    this.$emit(param, index, row);
             },
             formatter(row, propname) {
 
@@ -388,6 +321,7 @@
                     if (headerData.useFormatter) {
                         for (var i = 0; i < this.columnFormatter.length; i++) {
                             if (this.columnFormatter[i].columnName == headerData.mixprop) {
+
                                 for (var j = 0; j < this.columnFormatterData[this.columnFormatter[i].dataIndex].length; j++) {
                                     if (value instanceof Array) {
                                         var str = [], list = this.columnFormatterData[this.columnFormatter[i].dataIndex];
@@ -435,7 +369,7 @@
                                                 }
                                             })
                                         })
-                                       if(str.length>0) return str.toString();
+                                        return str.toString();
                                     } else {
                                         if (this.columnFormatterData[this.columnFormatter[i].dataIndex][j][this.columnFormatter[i].dataProp] == row[propname]) {
                                             return this.columnFormatterData[this.columnFormatter[i].dataIndex][j][this.columnFormatter[i].dataValue];
@@ -446,7 +380,6 @@
                         }
                     }
                 }
-                if(row[propname] instanceof Array &&row[propname].length==0) return ''
                 return row[propname];
             },
             showLimiteValue(propname, row, limit, actionName) {
@@ -455,8 +388,12 @@
                     this.$store.dispatch(actionName + 'need_limit', { id: row.id, needLimit: true });
                     this.$store.dispatch(actionName + 'show_all', { id: row.id, showAll: false })
                 }
-                if (row.showAll || !row.needLimit) return v;
-                else  return v.substring(0, limit);
+                if (row.showAll || !row.needLimit) {
+                    return v;
+                }
+                else {
+                    return v.substring(0, limit);
+                }
             },
             showLimitText(row, actionName) {
                 this.$store.dispatch(actionName + 'show_all', { id: row.id, showAll: true })
@@ -488,42 +425,72 @@
                     }
                 }
                 return null;
-                console.log(result)
             },
             doColumnFilter(value, row) {
                 return row[value.prop] === value.value;
             }
+        },
+        computed: {
+            normalHeader() {
+                return this.headerData.filter(function (item) {
+                    if(item.isFree){
+                        return true;
+                    }
+                    return !item.groupBtn && !item.selection && !item.sort && !item.listExpand && !item.badge;
+                })
+            },
+            btnHeader() {
+                return this.headerData.filter(function (item) {
+                    if(item.isFree){
+                        return false;
+                    }
+
+                    if (item.groupBtn) {
+                        return true;
+                    }
+
+                    return false;
+                })
+            },
+            selectionHeader() {
+                return this.headerData.filter(function (item) {
+                    return item.selection;
+                })
+            },
+            sortHeader() {
+                return this.headerData.filter(function (item) {
+                    return item.sort;
+                })
+            },
+            listExpandHeader() {
+                return this.headerData.filter(function (item) {
+                    return item.listExpand;
+                })
+            },
+            badgeHeader() {
+                return this.headerData.filter(function (item) {
+                    return item.badge;
+                })
+            },
+            comboModelData() {
+                return this.comboModelList;
+            }
         }
-  }
+    }
 
 </script>
-<style lang='scss' scoped>
-    /deep/ .ivu-btn-text:focus, /deep/ .ivu-btn:focus{
-        box-shadow: none !important;
-        outline: none
-    }
-    /deep/ .ivu-table-cell-ellipsis>div{ display: inline-block;width: 100%;}
-    /deep/ .ivu-table-cell-ellipsis>div>.ivu-tooltip,/deep/ .ivu-table-cell-ellipsis>div>.ivu-tooltip>.ivu-tooltip-rel{ width: 100% }
-    /deep/ .ivu-table-cell-ellipsis>div>.ivu-tooltip>.ivu-tooltip-rel{ overflow: hidden; white-space: nowrap; text-overflow: ellipsis }
-    /deep/ th, td>.ivu-table-cell>div>span{
-        font-size: 14px !important
-    }
-    /deep/ .ivu-table th { height: 50px; }
-    /deep/ .ivu-tooltip-rel { font-size: 14px !important }
+<style lang='scss'>
     .base-list-container {
         .tab-bar {
             display: inline-block;
-
             span {
                 padding: 10px 15px;
                 cursor: pointer;
             }
         }
-
         .control-bar {
             display: inline-block;
         }
-
         thead {
             tr {
                 th {
@@ -533,15 +500,12 @@
                 }
             }
         }
-
         &.light-header {
             thead {
                 tr {
                     height: 50px;
-
                     th {
                         background-color: #ffffff;
-
                         .cell {
                             background-color: #ffffff;
                             font-weight: 400;
@@ -553,90 +517,72 @@
                 }
             }
         }
-
         .base-list-row {
             .cell {
                 font-size: 14px;
                 color: #141111;
                 letter-spacing: 0;
-
                 .handle-component {
                     display: inline-block
                 }
-                .Button {
+                .el-button {
                     margin: 0;
-
                     span {
                         font-size: 14px;
                         color: #141111;
-
                         i {
                             color: #757575;
                         }
                     }
-
                     &:hover {
                         span {
                             color: #F06B1D;
-
                             i {
                                 color: #F06B1D;
                             }
                         }
                     }
 
-                    &.Button--primary {
+                    &.el-button--primary {
                         background-color: #F06B1D;
-                        border: 0;
-
+                        border:0;
                         span {
                             color: #ffffff;
-
                             i {
                                 color: #ffffff;
                             }
                         }
-
                         &:hover {
-                            span {
+                        span {
+                            color: #ffffff;
+                            i {
                                 color: #ffffff;
-
-                                i {
-                                    color: #ffffff;
-                                }
                             }
                         }
-
-                        &.is-disabled {
+                        }
+                        &.is-disabled { 
                             background-color: #757575;
                         }
                     }
                 }
-
                 .el-select {
                     width: 100%;
                 }
-
                 .handle-component {
                     margin-right: 30px;
-
                     &.prop-btn {
                         margin: 0;
                     }
-
                     .el-switch {
                         &.is-disabled {
                             .el-switch__core {
-                                background-color: #757575 !important;
-
+                                background-color: #757575!important;
                                 .el-switch__button {
                                     display: none;
                                 }
                             }
-
                             .el-switch__label {
                                 text-align: center;
-
                                 span {
                                     position: relative;
                                     top: 0;
@@ -647,27 +593,22 @@
                     }
                 }
             }
-
             .hover-show {
                 display: none;
             }
-
             &:hover {
                 .hover-show {
                     display: inline-block;
                 }
             }
-
             .show-divider {
                 border-right: 1px solid #979797;
                 padding-left: 14px;
                 margin-right: 14px;
             }
-
             .a-link {
                 color: #428bca;
             }
-
             .a-link:hover {
                 text-decoration: underline !important;
             }
