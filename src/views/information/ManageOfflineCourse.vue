@@ -106,7 +106,7 @@ export default {
                 width: 150
             }, {
                 label: '操作',
-                width: 550,
+                width: 650,
                 groupBtn: [{
                     text: '编辑学期',
                     param: 'edit'
@@ -133,7 +133,7 @@ export default {
                     text: 'el-icon-delete',
                     param: 'delete',
                     // hoverShow: true,
-                    isIcon: true
+                    isIcon: true,
                 }]
             }, {
                 listExpand: true,
@@ -275,18 +275,21 @@ export default {
         deleteOfflineSemester(index, row) {
             var vm = this;
             if (row.can_delete == 0) {
-                this.$confirm('无法删除该学期!', '提示', {
-                    type: 'info'
-                }).catch(() => {});
+              this.$Modal.info({
+                title: '提示',
+                content: '<p>无法删除该学期!</p>'
+              });
             } else {
-                this.$confirm('您删除该学期?', '提示', {
-                    type: 'info'
-                }).then(() => {
-                    vm.delete_offline_term({
-                        index,
-                        row
-                    });
-                }).catch(() => {});
+              this.$Modal.confirm({
+                title: '提示',
+                content: '<p>您删除该学期?</p>',
+                onOk: () => {
+                  vm.delete_offline_term({
+                    index,
+                    row
+                  });
+                },
+              });
             }
         },
         addOfflineCourse(index, row) {
@@ -301,14 +304,16 @@ export default {
         childBtnClickHandler(param, index, row) {
             var vm = this;
             if (param == 'deleteCourse') {
-                this.$confirm('确定要删除该课程吗!', '提示', {
-                    type: 'info'
-                }).then(() => {
+              this.$Modal.confirm({
+                title: '提示',
+                content: '<p>确定要删除该课程吗!</p>',
+                onOk: () => {
                   vm.delete_offline_curriculum({
-                      index,
-                      row
+                    index,
+                    row
                   });
-                }).catch(() => {});
+                },
+              });
             } else {
                 this.get_offline_curriculum_detail({
                     index,

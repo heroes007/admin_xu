@@ -16,7 +16,7 @@
                     <FormItem>
                         <Row>
                             <Col :span="10">
-                                <Select class="select-user" v-model="searchType" placeholder="">
+                                <Select class="select-user" v-model="searchType" placeholder="" style="width: 100px">
                                     <Option label="昵称" value="nickname"></Option>
                                     <Option label="手机号" value="phone"></Option>
                                     <Option label="用户ID" value="user_id"></Option>
@@ -242,7 +242,7 @@
           from_invitation_code_id: ""
         },
         userInfo:{
-          from_domain:0,
+          from_domain:"",
         },
         preRoleList: [],
         searchData: "",
@@ -320,7 +320,7 @@
           res = res.data;
           if(res.res_code == 1){
             this.showDealerDialog = false;
-            alert('修改成功！');
+            this.$Message.success('修改成功！');
             this.$store.dispatch("get_user_list", {
               curPage: this.curPage,
               pageSize: this.pageSize,
@@ -345,6 +345,11 @@
       // },
       editDealer(item){
         this.userInfo = Object.assign({},item);
+        this.dealer_list.map((item) => {
+          if(this.userInfo.from_domain == item.company){
+            this.userInfo.from_domain = item.id
+          }
+        })
         this.showDealerDialog = true;
       },
       editUser(item) {

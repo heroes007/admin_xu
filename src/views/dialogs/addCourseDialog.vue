@@ -1,4 +1,3 @@
-
 <template>
 <Modal :transfer=false :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true" v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" :styles="{width: '600px'}" :mask-closable="false">
     <base-input @closedialog="handleClose">
@@ -127,7 +126,7 @@
                             <Row class="course-list">
                                 <CheckboxGroup v-model="checked_top_courses" @on-change="handleUnCheckedCitiesChange" class="course-item">
                                     <Checkbox v-for="(item, index) in top_course_list" :key="item.id" :label="item">
-                                        <span class="course-num">{{item._index}}</span>{{item.title}}
+                                        <span class="course-num">{{item._index}}</span>{{item}}
                                     </Checkbox>
                                 </CheckboxGroup>
                             </Row>
@@ -391,6 +390,7 @@ export default {
             console.log(file);
         },
         handleCheckedCitiesChange(value) {
+          console.log(value)
             this.top_course_list = value;
             this.checked_top_courses = value;
         },
@@ -468,8 +468,7 @@ export default {
                 }
             });
             }
-
-            // this.top_course_list = _.difference(this.top_course_list, this.checked_top_courses);
+          // this.top_course_list = _.difference(this.top_course_list, this.checked_top_courses);
             // //取消已制定状态
             // this.checked_top_courses = [];
             // //取消未指定选定状态

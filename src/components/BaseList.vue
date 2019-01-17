@@ -8,7 +8,7 @@
                 <slot name='controlBar'></slot>
             </div>
         </Row>
-        <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName" 
+        <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName"
         :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
          :columns="headerData"  :data="tableData" :height="tableHeight" @on-expand="rowExpandHandler" @on-row-click='rowClickHandler'>
              <template slot-scope="{ column, row, index }" slot="badge">
@@ -26,8 +26,8 @@
                     <span v-if="!column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark">
                             {{doMix(column,row)}}
                     </span>
-                    <Tooltip v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark" 
-                    :content="showPropValue(column.prop,row)"> 
+                    <Tooltip v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark"
+                    :content="showPropValue(column.prop,row)">
                        <span>{{showPropValue(column.prop,row)}}</span>
                     </Tooltip>
                     <span v-if="!column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark">
@@ -61,9 +61,9 @@
             </template>
             <template slot-scope="{ column, row, index }" slot="operation">
                 <div style="display:flex">
-                <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id" 
+                <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id"
                 v-if='btn.showFunc?btn.showFunc(row):true'>
-                <Button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]" 
+                <Button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
                 @click="handleBtnClick(index,row,btn.param)"
                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text' :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
                 <i :class='btn.text' v-if='btn.isIcon'></i>
@@ -85,7 +85,7 @@
     </div>
 </template>
 <script>
-    import baseList from './baseList.vue'
+    import baseList from './BaseList.vue'
     export default {
         name: 'baseList',
         data() {
@@ -193,7 +193,7 @@
                                     this.comboDataList.push([]);
                                 else
                                     this.comboDataList.unshift([]);
-                            }    
+                            }
                         }
                         else {
 
