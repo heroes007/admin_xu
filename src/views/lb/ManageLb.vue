@@ -7,7 +7,7 @@
                 <BreadcrumbItem>查看广告</BreadcrumbItem>
             </Breadcrumb>
             <Button class='btn-add' type='text' @click='addLb()'>添加广告图</Button>
-            <Modal v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="50%">
+            <Modal :transfer=false v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="50%">
                 <div slot="header" class="modal-header">
                     <div>广告信息</div>
                 </div>

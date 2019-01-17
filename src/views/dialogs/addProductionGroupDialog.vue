@@ -1,5 +1,5 @@
 <template>
-<Modal :title="!payload? '创建专题' : '编辑专题'" :footer-hide=true v-model="addProductionGroupDialog" @on-cancel="handleRemoveModal(remove)" >
+<Modal :transfer=false :title="!payload? '创建专题' : '编辑专题'" :footer-hide=true v-model="addProductionGroupDialog" @on-cancel="handleRemoveModal(remove)" >
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
@@ -140,7 +140,7 @@ export default {
     background: #FB843E !important;
     color: #fff;
 }
-.btn-orange{ 
+.btn-orange{
     margin-left: 20%;
     background: #FB843E;
     border: 1px solid #F06B1D;

@@ -1,5 +1,5 @@
 <template>
-<Modal :title="payload.selectedType == 0 ? payload.type == 1 ? '创建任务' : '编辑任务' : payload.type == 1 ? '创建作业' : '编辑作业'" :footer-hide="true"
+<Modal :transfer=false :title="payload.selectedType == 0 ? payload.type == 1 ? '创建任务' : '编辑任务' : payload.type == 1 ? '创建作业' : '编辑作业'" :footer-hide="true"
        v-model="addTaskDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :styles="{width: '800px'}">
     <base-input @closedialog="handleClose">
         <Row slot="body">
@@ -62,7 +62,7 @@
                             <Row class="file-item" v-for="(item,index) in form.upload_files" :key="item.id">
                                 <span class="filename">{{item.name}}</span>
                                 <span class="el-icon-delete" @click="handleDeleteUploadItem(index)"></span>
-                                <span class="datetime">{{ item. datetime | zonetime }}</span>
+                                <span class="datetime">{{ item.datetime | zonetime }}</span>
                             </Row>
                         </Row>
                    </FormItem>

@@ -56,7 +56,7 @@ const routes = [
   },
   {
     path:'/home',
-    name:'home',
+    // name:'home',
     component:Home,
     children:[
       {
@@ -71,7 +71,7 @@ const routes = [
   },
   {
     path:'/dashboard',
-    name:'dashboard',
+    // name:'dashboard',
     component:DashBoard,
     children:[
       {

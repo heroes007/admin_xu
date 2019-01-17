@@ -65,7 +65,7 @@
             }
         },
         mounted() {
-            console.log(this.payload.version);
+            // console.log(this.payload.version);
             this.formInline.version = this.payload.version;
             this.formInline.platform_type = this.payload.platform_type;
             this.formInline.download_url = this.payload.download_url;

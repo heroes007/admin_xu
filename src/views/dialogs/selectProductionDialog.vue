@@ -1,5 +1,5 @@
 <template>
-    <Modal  title="产品协议" :width="800" :footer-hide=true v-model="selectProductionDialog" @on-cancel="handleRemoveModal(remove)">
+    <Modal :transfer=false title="产品协议" :width="800" :footer-hide=true v-model="selectProductionDialog" @on-cancel="handleRemoveModal(remove)">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">

@@ -35,7 +35,7 @@
                     </FormItem>
                 </Form>
             </Row>
-            <Modal v-model="showDealerDialog"
+            <Modal :transfer=false v-model="showDealerDialog"
                    :styles="{width: '440px'}"
                    size="small"
                    :footer-hide="true"
@@ -56,7 +56,7 @@
                     <Button type="primary" style="width:100px;" @click='changeDealer'>保存</Button>
                 </Row>
             </Modal>
-            <Modal v-model="dialogVisible" size="small"
+            <Modal :transfer=false v-model="dialogVisible" size="small"
                    class='add-student-view'
                    :footer-hide="true"
                     :styles="{width: '900px'}">

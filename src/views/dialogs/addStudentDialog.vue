@@ -1,5 +1,5 @@
 <template>
-    <Modal :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" :footer-hide="true"
+    <Modal :transfer=false :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" :footer-hide="true"
                @on-cancel="handleRemoveModal(remove)"  :mask-closable="false" :styles="{width: '600px', fontsize: '14px'}">
         <base-input @closedialog="handleClose">
             <Row slot="body">

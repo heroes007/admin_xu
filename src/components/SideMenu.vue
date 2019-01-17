@@ -13,11 +13,11 @@
                     <Icon class="icon-setting" type="md-settings" />
                     <div class='hover-glow'></div>
                 </Button>
-            <div slot="content">
-                <Button type='text' class='quit' @click='logout'>
-                    退出登录
-                </Button>
-            </div>
+                <div slot="content">
+                    <Button type='text' class='quit' @click='logout'>
+                        退出登录
+                    </Button>
+                </div>
             </Poptip>
         </Row>
         <Row class='user-name'>
@@ -198,7 +198,7 @@
          background-color: #333 !important;
     }
     /deep/.ivu-poptip-body{
-        padding: 0 
+        padding: 0
     }
     /deep/.ivu-poptip-popper{
         top: 60px !important

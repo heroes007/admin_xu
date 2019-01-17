@@ -1,5 +1,5 @@
 <template>
-    <Modal  title="产品协议" :width="600" :footer-hide=true v-model="selectCurriculumDialog" @on-cancel="handleRemoveModal(remove)">
+    <Modal :transfer=false title="产品协议" :width="600" :footer-hide=true v-model="selectCurriculumDialog" @on-cancel="handleRemoveModal(remove)">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
@@ -79,10 +79,10 @@ export default {
         }),
         dataHeader() {
              return [
-                 { 
-                    label: '排序', 
-                    width: 90, 
-                    sort: true 
+                 {
+                    label: '排序',
+                    width: 90,
+                    sort: true
                 }, {
                     prop: 'teacher_name',
                     label: '讲师',
