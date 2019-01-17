@@ -1,5 +1,5 @@
 <template>
-    <Modal title='学员信息' v-model="studentInfoDetailDialog" :width="800" :closable="false" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :mask-closable="false">
+    <Modal :transfer=false title='学员信息' v-model="studentInfoDetailDialog" :width="800" :closable="false" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :mask-closable="false">
         <div slot="header"></div>
         <base-input :baseInputWidth="800" @closedialog="handleClose">
             <Row slot="body">
@@ -168,7 +168,7 @@
                         <Row class='query-header' type='flex' align='middle'>
                                 <h3>剩余报名次数：{{form6.real_count}}</h3>
                                 <InputNumber v-model="form6.remain_count" @on-change="changeRemainCountHandler" :min="0"></InputNumber>
-                            </Row>  
+                            </Row>
                             <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form6.dataList.length === 0'>
                              该用户没有线下课
                             </Row>
@@ -617,7 +617,7 @@
                         this.form1.is_test_user = res.data.msg.is_test_user;
                         this.form1._fn = function(){
                             vm.showPop('保存成功');
-                        }                  
+                        }
                        if(this.loadingInstance) this.loadingInstance.close();
                     }
                 })
@@ -629,11 +629,11 @@
 /deep/ .ivu-tabs-bar{ height: 50px ;}
 /deep/ .ivu-tabs-nav .ivu-tabs-tab{ height: 50px; line-height: 34px; font-size: 16px}
 /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #FC7643 }
-    .close{    
+    .close{
     position: absolute;
     right: 7px;
     top: 7px;
-    font-size: 31px; 
+    font-size: 31px;
     z-index: 3000;
     }
     /deep/.ivu-modal-header{

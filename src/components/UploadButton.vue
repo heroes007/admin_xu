@@ -49,7 +49,7 @@
                 this.$refs.input.click();
             },
             handleUploadChange(event) {
-                console.log(event)
+                // console.log(event)
                 var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
                 this.fileName = filename;
                 this.handleGetassignKey(event.target.files[0]);

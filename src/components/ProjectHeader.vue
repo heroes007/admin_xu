@@ -39,7 +39,6 @@
                     </div>
                     <Button class='btn-teacher' type='text' v-if='type === 1 || type === 2'><i class='icon-xg-icon-xy'></i>讲师设置</Button>
                 </Poptip>
-
             </div>
             <div class='btn-group'  v-if='type === 0'>
                 <Button class='btn-add' type='primary' icon="plus" v-if='showAdd' @click="addClickHandler">

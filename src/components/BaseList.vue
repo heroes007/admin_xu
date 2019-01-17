@@ -8,8 +8,8 @@
                 <slot name='controlBar'></slot>
             </div>
         </Row>
-        <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName" 
-        :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+        <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName"
+         :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
          :columns="headerData"  :data="tableData" :height="tableHeight" @on-expand="rowExpandHandler" @on-row-click='rowClickHandler'>
              <template slot-scope="{ column, row, index }" slot="badge">
                <Badge class="mark" :count="+(showBadgeCount(column.prop,row))" ></Badge>
@@ -48,7 +48,7 @@
                         <Option v-for="c in columnComboData[column.comboListIndex]" :key="c.curriculum_id" :label="c[column.listLabel]" :value="c[column.listValue]">
                         </Option>
                     </Select>
-                    <DatePicker v-if='column.useTimePicker'
+                    <DatePicker v-if='column.useTimePicker&&comboDataList'
                         v-model="comboDataList[index]"
                         type="datetime"
                         placeholder="选择日期时间"
@@ -60,9 +60,9 @@
             </template>
             <template slot-scope="{ column, row, index }" slot="operation">
                 <div style="display:flex">
-                <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id" 
+                <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id"
                 v-if='btn.showFunc?btn.showFunc(row):true'>
-                <Button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]" 
+                <Button :type="btn.canDisabled?'primary':'text'" :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
                 @click="handleBtnClick(index,row,btn.param)"
                 v-if='!btn.isSwitch && !btn.useCheckBox' :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
                 <i :class='btn.text' v-if='btn.isIcon'></i>
@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-    import baseList from './baseList.vue'
+    import baseList from './BaseList.vue'
     export default {
         name: 'baseList',
         data() {
@@ -197,7 +197,7 @@
                                     this.comboDataList.push([]);
                                 else
                                     this.comboDataList.unshift([]);
-                            }    
+                            }
                         }
                         else {
 
@@ -254,6 +254,7 @@
         },
         mounted() {
             // 资料管理来回切换报异常
+          console.log(this.comboModelData)
             if (this.comboModelData && this.comboModelData.length > 0) {
                 this.comboDataList = [];
                 for (var i = 0; i < this.comboModelData.length; i++) {
@@ -266,7 +267,7 @@
                 return this.rowClassName
             },
             handleHeaderData(){
-                this.headerData.map((it) => {
+              this.headerData.map((it) => {
                     it.title = it.label
                     if(it.prop) it.key = it.prop || ''
                     if(it.minwidth) it.minWidth = it.minwidth
@@ -288,7 +289,7 @@
                        it.tooltip = true
                        it.title = this.getHeaderLabel(it)
                        it.filters = it.useFilter ? this.getFilters(it.prop) : ''
-                       it.filterMethod= it.useFilter ? this.doColumnFilter() : ''
+                       // it.filterMethod= it.useFilter ? this.doColumnFilter() : ''
                     }
                     if(it.badge){
                         it.slot = 'badge'

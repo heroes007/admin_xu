@@ -1,9 +1,9 @@
 <template>
-<Modal v-model="videoManageDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false">
-    <base-input :baseInputWidth="600" @closedialog="handleClose">
+<Modal :transfer=false v-model="videoManageDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true" :styles="{width: '600px'}">
+    <base-input :baseInputWidth="560" @closedialog="handleClose">
         <Row slot="body">
             <!-- <span class="dscj-webfont-remove-sign"></span> -->
-            <Tabs type="border-card">
+            <Tabs type="line">
                 <TabPane label="视频设置">
                     <Form ref="form" :model="form" :label-width="80">
                         <FormItem label="小节名称">
@@ -37,14 +37,15 @@
                 <TabPane label="复制视频">
                     <Form ref="form" :model="form" :label-width="80" class="has-video-form">
                         <FormItem label="所属项目">
-                            <Select v-model="projectId" @change='changeProjectHandler'>
+                            <Select v-model="projectId" @on-change='changeProjectHandler'>
                                 <Option :label='item.name' :value='item.id' v-for='item in projectList' :key="item.id"></Option>
                             </Select>
                        </FormItem>
                         <FormItem class="course-list">
-                            <el-collapse @change='toggleCurriculum' :accordion='true'>
-                                <el-collapse-item :title="item.title" :name="index" v-for='(item,index) in curriculumList' :key="item.id">
-                                    <Row class="course-item" v-for='catalog in item.chapterList' :key="catalog.id">
+                            <Collapse @on-change='toggleCurriculum' :accordion='true'>
+                                <Panel :name="index" v-for='(item,index) in curriculumList' :key="item.id">
+                                    {{item.title}}
+                                    <Row slot="content" class="course-item" v-for='catalog in item.chapterList' :key="catalog.id">
                                         <Col :span="3">
                                             第{{catalog.chapterIndex + 1}}章
                                         </Col>
@@ -52,12 +53,12 @@
                                             <span class="el-icon-star-on"></span><span>{{item.orderIndex}}</span> {{catalog.video_title?catalog.video_title:''}}{{catalog.video_test_title?catalog.video_test_title:''}}
                                         </Col>
                                         <Col :span="3">
-                                            <el-checkbox class="radio" v-model="catalog.isSelected" @change='changeVideoSelect(catalog)'></el-checkbox>
+                                            <Checkbox class="radio" v-model="catalog.isSelected" @on-change='changeVideoSelect(catalog)'></Checkbox>
                                         </Col>
                                     </Row>
-                                </el-collapse-item>
-                            </el-collapse>
-                       </FormItem>
+                                </Panel>
+                            </Collapse>
+                        </FormItem>
                         <FormItem class="btns">
                             <Button type="primary" class="sub-btn" @click="handleSelect">保存</Button>
                        </FormItem>
@@ -162,7 +163,7 @@ export default {
             setTimeout(() => {
                 loading.close();
             }, Config.base_timeout);
-            console.log(val)
+            // console.log(val)
             get_list(val).then(res => {
                 if(res.data.res_code === 1)
                 {
@@ -225,30 +226,32 @@ export default {
 
             if(this.form.video_roles.length === 0)
             {
-                this.$alert('请选择观看权限', '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => { }
-                                    });
+              this.$Modal.info({
+                title: '提示',
+                content: '<p>请选择观看权限</p>'
+              });
                 return;
             }
 
             if(this.payload.video_id)
             {
                 this.$store.dispatch('edit_online_curriculum_video',this.form);
+                this.handleRemoveModal(this.remove)
             }
             else
             {
                 this.$store.dispatch('add_online_curriculum_video',this.form);
+                this.handleRemoveModal(this.remove)
             }
         },
         handleSelect() {
 
             if(!this.selectedVideo)
             {
-                this.$alert('请选择一个已有视频', '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => { }
-                                    });
+              this.$Modal.info({
+                title: '提示',
+                content: '<p>请选择一个已有视频</p>'
+              });
                 return;
             }
             this.form.title = this.selectedVideo.video_title;

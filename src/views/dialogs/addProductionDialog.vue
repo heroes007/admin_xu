@@ -1,5 +1,5 @@
 <template>
-<Modal :title="!payload? '创建产品' : '编辑产品'" :footer-hide=true
+<Modal :transfer=false :title="!payload? '创建产品' : '编辑产品'" :footer-hide=true
  v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
     <base-input @closedialog="handleClose">
         <Row slot="body">
@@ -44,7 +44,7 @@
                     <Switch  v-model="form.redirectType" size="large">
                             <span slot="open">自定义</span>
                             <span slot="close">默认</span>
-                    </Switch>  
+                    </Switch>
                         </Row>
                   </FormItem>
                     <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
@@ -60,7 +60,7 @@
                         <Switch  v-model="form.displayVideo" size="large">
                               <span slot="open">使用</span>
                               <span slot="close">不使用</span>
-                        </Switch>  
+                        </Switch>
                         </Row>
                     </FormItem>
                     <FormItem label="展示视频" v-if="nextStep == 0 && form.displayVideo">
@@ -301,7 +301,7 @@ export default {
             this.fromLabelWidth = 0;
             this.formItemLabelWidth = 80
             if(this.projectType === 1){
-                if(this.nextStep === 0)  this.nextStep = 1;  
+                if(this.nextStep === 0)  this.nextStep = 1;
                 else this.nextStep = 2;
             }else this.nextStep = 2;
         },
@@ -348,7 +348,7 @@ export default {
     background: #FB843E;
     color: #fff;
 }
-.btn-orange{ 
+.btn-orange{
     margin-left: 20%;
     background: #FB843E;
     border: 1px solid #F06B1D;

@@ -125,7 +125,6 @@ export default {
       "get_production_list"
     ]),
     withdrawHandler(index, row) {
-      console.log(11111);
       this.$confirm("是否确认打回改报名信息？", "提示", {
         type: "info"
       })

@@ -1,17 +1,17 @@
 <template>
-    <el-dialog title="编辑回执" v-model="editOfflineSignupDialog" :show-close="false" @close="handleRemoveModal(remove)" size="auto"
-        :closeOnClickModal="false">
-        <base-input @closedialog="handleClose" :baseInputWidth="500">
-            <Row slot="body">
-                <Form :model="formInline1" class="row1-test-form" :label-width="80">
+    <Modal title="编辑回执" v-model="editOfflineSignupDialog" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :styles="{width: '600px'}"
+        :mask-closable="false">
+        <base-input @closedialog="handleClose" :baseInputWidth="600">
+            <div slot="body">
+                <Form :model="formInline1" class="row1-test-form" :label-width="180">
                     <FormItem label="姓名">
                         <Input v-model="formInline1.name" placeholder="请输入姓名"></Input>
                    </FormItem>
                     <FormItem label="性别">
-                        <el-radio-group v-model="formInline1.sex" :disabled="disabled">
-                            <el-radio :label="0">女</el-radio>
-                            <el-radio :label="1">男</el-radio>
-                        </el-radio-group>
+                        <RadioGroup v-model="formInline1.sex" :disabled="false">
+                            <Radio :label="0">女</Radio>
+                            <Radio :label="1">男</Radio>
+                        </RadioGroup>
                    </FormItem>
                     <FormItem label="身份证号">
                         <Input v-model="formInline1.idcard" placeholder="请输入身份证号"></Input>
@@ -33,16 +33,16 @@
                         </Select>
                    </FormItem>
                     <FormItem label="出发时间">
-                        <el-date-picker v-model="formInline1.estimate_set_out_time" type="date" placeholder="选择日期">
-                        </el-date-picker>
+                        <DatePicker v-model="formInline1.estimate_set_out_time" type="date" placeholder="选择日期">
+                        </DatePicker>
                    </FormItem>
                     <FormItem class="btn-content">
                         <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
                    </FormItem>
                 </Form>
-            </Row>
+            </div>
         </base-input>
-        </el-dialog>
+        </Modal>
 </template>
 
 <script>
@@ -153,84 +153,13 @@
     }
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
     #edit-offline-signup-container {
         @import "base.scss";
         input,
         textarea {
             resize: none;
             outline: none;
-        }
-        .el-dialog {
-            .el-dialog__header {
-                background: #333333;
-                border-radius: 4px 4px 0 0;
-                padding: 16px;
-            }
-            .el-dialog__body {
-                padding: 0;
-                background: #fff;
-                border-radius: 0 0 4px 4px;
-                .row1-test-form {
-                    // height: 97px;
-                    width: 80%;
-                    margin: 0 auto;
-                    border-bottom: 1px solid #E5E5E5;
-                    background: #fff;
-                    margin-top: 31px;
-                    padding-bottom: 18px;
-                    label {
-                        font-size: 14px;
-                        color: #141111;
-                        letter-spacing: 0;
-                    }
-
-                    .el-form-item__content {
-                        text-align: left;
-                        padding-left: 20px;
-
-                        .el-select {
-                            width: 30%;
-
-                            .el-input {
-                                width: 100%;
-                            }
-                        }
-                    }
-
-                    .el-input {
-                        width: 250px;
-                        height: 36px;
-                        input {
-                            border-radius: none;
-                        }
-                    }
-                    .el-input__inner {
-                        border-radius: 0;
-                    }
-                    .save-test {
-                        .el-form-item__content {
-                            margin-left: 30px !important;
-                        }
-                    }
-                    .btn-content {
-                        margin-top: 50px;
-                        .el-form-item__content {
-                            margin-left: 0 !important;
-                            line-height: 0;
-                            text-align: center;
-                            button {
-                                margin-left: 0;
-                                background: #FB843E;
-                                border-radius: 4px;
-                                width: 200px;
-                                height: 36px;
-                                border: 0;
-                            }
-                        }
-                    }
-                }
-            }
         }
         .close-dialog-panel {
             position: absolute;
@@ -244,5 +173,10 @@
                 color: #757575;
             }
         }
+    }
+    .row1-test-form{
+        display: flex;
+        flex-direction: column;
+        align-items: start;
     }
 </style>

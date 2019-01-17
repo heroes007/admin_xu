@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="addOfflineSemesterDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}">
+    <Modal :transfer=false v-model="addOfflineSemesterDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}">
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
                 <Tabs type="line">
@@ -200,7 +200,7 @@
                             }
                         })
                     } else {
-                        console.log('error submit!!');
+                        // console.log('error submit!!');
                         return false;
                     }
                 });
@@ -239,7 +239,7 @@
                                 }
                             })
                         } else {
-                            console.log('error submit!!');
+                            // console.log('error submit!!');
                             return false;
                         }
                     });

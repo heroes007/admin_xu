@@ -1,7 +1,7 @@
 
 
 <template>
-<Modal title="添加讲师" v-model="addTeacherDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
+<Modal :transfer=false title="添加讲师" v-model="addTeacherDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">

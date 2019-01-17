@@ -117,7 +117,7 @@
                 }]
             },
             listColumnFormatterData() {
-                console.log([this.gradeList, this.subjectList, this.stateList])
+                // console.log([this.gradeList, this.subjectList, this.stateList])
                 return [this.gradeList, this.subjectList, this.stateList];
             },
             dataList() {

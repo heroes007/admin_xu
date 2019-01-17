@@ -1,5 +1,5 @@
 <template>
-<Modal title="产品协议" :footer-hide=true v-model="editProtocol" @on-cancel="handleRemoveModal(remove)">
+<Modal :transfer=false title="产品协议" :footer-hide=true v-model="editProtocol" @on-cancel="handleRemoveModal(remove)">
     <base-input @closedialog="handleClose">
       <Row slot="body">
           <Form class="add-task-form">
@@ -110,7 +110,7 @@ export default {
     background: #FB843E;
     color: #fff;
 }
-.btn-orange{ 
+.btn-orange{
     background: #FB843E;
     border: 1px solid #F06B1D;
     border-radius: 4px;

@@ -1,6 +1,6 @@
 
 <template>
-<Modal :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true" v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" :styles="{width: '600px'}" :mask-closable="false">
+<Modal :transfer=false :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true" v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" :styles="{width: '600px'}" :mask-closable="false">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="dialogIndex==1">
@@ -363,7 +363,7 @@ export default {
                 '3_8': this.form.img_3_8
             };
             this.form.project_id = this.project_id;
-            console.log(this.query_online_course_list)
+            // console.log(this.query_online_course_list)
             this.form.orderby = this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1;
             var vm = this;
             this.form._fn = function() {

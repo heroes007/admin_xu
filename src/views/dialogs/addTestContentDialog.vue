@@ -1,6 +1,6 @@
 
 <template>
-<el-dialog title="添加测验" v-model="addTestContentDialog" :show-close="false" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false">
+<Modal :transfer=false title="添加测验" v-model="addTestContentDialog" :footer-hide="true" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :styles="{width: '920px'}">
     <base-input @closedialog="handleClose" :baseInputWidth="900">
         <Row slot="body">
             <Form :inline="true" :model="formInline1" class="row1-test-form" :label-width="80">
@@ -15,7 +15,7 @@
                </FormItem>
                 <FormItem class="save-test">
                     <Button type="primary" @click="handleSaveTest" class="save-test-btn" v-if='!isEdit'>保存测验</Button>
-                    <Button type="" @click="handleEditTest" class="edit-test-btn" v-if='isEdit'>编辑测验</Button>
+                    <Button @click="handleEditTest" class="edit-test-btn" v-if='isEdit'>编辑测验</Button>
                </FormItem>
             </Form>
             <Form :inline="true" :model="formInline2" class="row2-test-form" :label-width="80">
@@ -24,7 +24,7 @@
                         <FormItem label="题干名称">
                             <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body">
                             </Input>
-                       </FormItem>
+                        </FormItem>
                         <FormItem label="选项数量">
                             <Select v-model="formInline2.select_count" placeholder="选项数量">
                                 <Option label="2" value="2"></Option>
@@ -35,24 +35,22 @@
                             </Select>
                        </FormItem>
                         <FormItem label="排列序号">
-                            <el-input-number v-model="formInline2.orderby" :min="1" ></el-input-number>
+                            <InputNumber v-model="formInline2.orderby" :min="1" ></InputNumber>
                        </FormItem>
                     </Col>
                     <Col :span="12" class="col2-right">
                         <FormItem v-for='item in answerList' :key="item.id">
-                            <Col :span="4">
-                                <el-checkbox-group v-model="item.answer">
-                                    <el-checkbox :label="item.name"></el-checkbox>
-                                </el-checkbox-group>
+                            <Col :span="6">
+                                    <Checkbox v-model="item.answer">{{item.name}}</Checkbox>
                             </Col>
-                            <Col :span="20">
+                            <Col :span="18">
                                 <Input placeholder="请输入内容" v-model="item.desc">
                                 </Input>
                             </Col>
                        </FormItem>
                         <!-- <span style="clear: left"></span> -->
                         <FormItem class="save-test-item">
-                            <Button type="" @click="cancelSaveHandler" class="cancel-test-item-btn">取消</Button>
+                            <Button @click="cancelSaveHandler" class="cancel-test-item-btn">取消</Button>
                             <Button type="primary" @click="saveTestDetailHandler" class="save-test-item-btn">保存题干</Button>
                        </FormItem>
                     </Col>
@@ -69,7 +67,7 @@
             </Form>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>
@@ -378,189 +376,6 @@ export default {
         resize: none;
         outline: none;
     }
-    .el-dialog {
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-        .el-dialog__body {
-            padding: 0;
-            background: #fff;
-            border-radius: 0 0 4px 4px;
-
-            .row1-test-form {
-                // height: 97px;
-                border-bottom: 1px solid #E5E5E5;
-                background: #fff;
-                margin-top: 31px;
-                padding-bottom: 18px;
-                label {
-                    font-size: 14px;
-                    color: #141111;
-                    letter-spacing: 0;
-                }
-                .el-input {
-                    width: 250px;
-                    height: 36px;
-                    input {
-                        border-radius: none;
-                    }
-                }
-                .el-input__inner {
-                    border-radius: 0;
-                }
-                .save-test{
-                  .el-form-item__content{
-                    margin-left: 30px !important;
-                  }
-                }
-                .save-test-btn {
-                    background: #FB843E;
-                    border: 1px solid #F06B1D;
-                    border-radius: 4px;
-                    width: 80px;
-                    height: 26px;
-                    line-height: 0;
-                    padding-left: 10px;
-                }
-                .edit-test-btn {
-                    border: 1px solid #CCCCCC;
-                    border-radius: 4px;
-                    width: 80px;
-                    height: 26px;
-                    line-height: 0;
-                    padding-left: 10px;
-                }
-            }
-            .row2-test-form {
-                .row2-top {
-                    background: #FBFBFB;
-                    height: 345px;
-                    // border-bottom: 1px solid #E5E5E5;
-                    padding-top: 40px;
-                }
-                .quetion-list {
-                    overflow: hidden;
-                    width: 100%;
-                    thead {
-                        > tr > th:first-child {
-                            text-align: right;
-
-                        }
-
-                        th {
-                            background-color: #fff;
-                            .cell {
-                                font-size: 14px;
-                                color: #757575;
-                                letter-spacing: 0;
-                                background: #fff;
-                            }
-                        }
-                    }
-                    tbody {
-                        > tr > td:first-child {
-                            text-align: right;
-                        }
-                        td {
-                            text-align: left;
-                            .cell {
-                                font-size: 14px;
-                                color: #141111;
-                                letter-spacing: 0;
-                                line-height: 20px;
-                            }
-                            .el-button--text {
-                                span {
-                                    font-size: 14px;
-                                    color: #757575;
-                                    letter-spacing: 0;
-                                }
-                            }
-                        }
-                        tr {
-                            height: 40px;
-                            border-bottom: 1px solid #E5E5E5;
-                        }
-                    }
-                }
-                .col2-left {
-                    label {
-                        font-size: 14px;
-                        color: #141111;
-                        letter-spacing: 0;
-                    }
-                    .el-input__inner,
-                    .el-textarea__inner,
-                    .el-input-number{
-                        background: #FFFFFF;
-                        border: 1px solid #E5E5E5;
-                        width: 300px;
-                        border-radius: 0;
-                    }
-                }
-                .col2-right {
-
-                  .el-form-item{
-                    margin-bottom: 25px;
-                  }
-                    .el-form-item__content {
-                        margin-left: -100px !important;
-                    }
-                    .el-input__inner {
-                        background: #FFFFFF;
-                        border: 1px solid #E5E5E5;
-                        width: 356px;
-                        height: 36px;
-                        border-radius: 0;
-                    }
-                    .save-test-item{
-                      position: absolute;
-                    }
-                    .save-test-item-btn {
-                        background: #FB843E;
-                        border: 1px solid #F06B1D;
-                        border-radius: 4px;
-                        width: 80px;
-                        height: 26px;
-                        line-height: 0;
-                        padding-left: 10px;
-                        position: absolute;
-                        bottom: -90px;
-                        right: -20px;
-                    }
-                    .cancel-test-item-btn {
-                        border: 1px solid #CCCCCC;
-                        border-radius: 4px;
-                        width: 80px;
-                        height: 26px;
-                        line-height: 0;
-                        padding-left: 10px;
-                        position: absolute;
-                        bottom: -90px;
-                        right: 70px;
-                    }
-                }
-            }
-        }
-        .data-list {
-            thead {
-                tr {
-                    height: 60px;
-                }
-            }
-            .base-list-row {
-                height: 60px;
-                .el-button {
-                    margin-left: 0;
-                    &:last-child {
-                    margin-left: 0;
-                }
-                }
-            }
-        }
-    }
     .close-dialog-panel {
         position: absolute;
         top: -40px;
@@ -574,4 +389,23 @@ export default {
         }
     }
 }
+    .row1-test-form{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .row2-test-form{
+        background-color: #FBFBFB;
+        padding-top: 40px;
+
+
+        .col2-left{
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .col2-right{
+
+        }
+    }
 </style>

@@ -260,21 +260,27 @@
             },
             deleteHandler(index, row) {
                 if (this.dirty) {
-                    this.$confirm('您已修改小节排序，是否放弃保存', '提示', {
-                        type: 'warning'
-                    }).then(() => {
-                        this.resetOrder();
-                        this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
-                    }).catch(() => { });
+                  this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>您已修改小节排序，是否放弃保存</p>',
+                    onOk: () => {
+                      this.resetOrder();
+                      this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
+                    },
+                  });
                 }
                 else {
                     this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
                 }
             },
             showDeleteConfirm(curriculum_id, catalog_id) {
-                this.$confirm('是否确定删除该小节？', '提示', { type: 'info' }).then(() => {
-                    this.$store.dispatch('delete_online_curriculum_catalog', { curriculum_id: curriculum_id, catalog_id: catalog_id })
-                }).catch(() => { });
+              this.$Modal.confirm({
+                title: '提示',
+                content: '<p>是否确定删除该小节？</p>',
+                onOk: () => {
+                  this.$store.dispatch('delete_online_curriculum_catalog', { curriculum_id: curriculum_id, catalog_id: catalog_id })
+                },
+              });
             },
             toggleListShow(index) {
                 this.showListState[index] = 1 - this.showListState[index];
@@ -331,9 +337,13 @@
                         })
                     }
                     else {
-                        this.$alert('请先添加章节名称。', '提示', {
-                            confirmButtonText: '确定'
-                        })
+                        // this.$alert('请先添加章节名称。', '提示', {
+                        //     confirmButtonText: '确定'
+                        // })
+                      this.$Modal.info({
+                        title: '提示',
+                        content: '<p>请先添加章节名称</p>'
+                      });
                     }
                 }
                 else {

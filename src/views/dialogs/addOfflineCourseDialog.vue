@@ -1,6 +1,6 @@
 <template>
-    <el-dialog :title="payload.type == 1 ? '添加课程' : '编辑课程'" :show-close="false" v-model="addOfflineCourseDialog" @close="handleRemoveModal(remove)"
-        size="auto" :closeOnClickModal="false">
+    <Modal :title="payload.type == 1 ? '添加课程' : '编辑课程'" :footer-hide="true" v-model="addOfflineCourseDialog" @on-cancel="handleRemoveModal(remove)"
+        size="auto" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
@@ -9,12 +9,12 @@
                             <Input v-model="form.name" placeholder="请输入课程名称"></Input>
                        </FormItem>
                         <FormItem label="开课时间" prop="start_time" required>
-                            <el-date-picker v-model="form.start_time" type="datetime" placeholder="选择时间">
-                            </el-date-picker>
+                            <DatePicker v-model="form.start_time" type="datetime" placeholder="选择时间">
+                            </DatePicker>
                        </FormItem>
                         <FormItem label="结课时间" prop="end_time" required>
-                            <el-date-picker v-model="form.end_time" type="datetime" placeholder="选择时间">
-                            </el-date-picker>
+                            <DatePicker v-model="form.end_time" type="datetime" placeholder="选择时间">
+                            </DatePicker>
                        </FormItem>
                         <FormItem label="课程讲师" prop="teacher_id" required>
                             <Select v-model="form.teacher_id" placeholder="请选择讲师">
@@ -45,7 +45,7 @@
                 </Row>
             </Row>
         </base-input>
-        </el-dialog>
+        </Modal>
 </template>
 
 <script>
