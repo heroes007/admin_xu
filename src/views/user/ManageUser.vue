@@ -35,7 +35,7 @@
                     </FormItem>
                 </Form>
             </Row>
-            <Modal :transfer=false v-model="showDealerDialog"
+            <Modal v-model="showDealerDialog"
                    :styles="{width: '440px'}"
                    size="small"
                    :footer-hide="true"
@@ -43,7 +43,7 @@
                 <div slot="header" class="modal-title">修改分站</div>
                 <Row class='modal-user' type='flex' justify='center' align='middle'>
                     用户分站：
-                    <Select v-model="userInfo.from_domain" placeholder="请选择" style="width:300px;">
+                    <Select v-model="userInfo.from_domain"  style="width:300px;">
                         <Option
                                 v-for="(dealer_item,index) in dealer_list"
                                 :key="index"
@@ -56,7 +56,7 @@
                     <Button type="primary" style="width:100px;" @click='changeDealer'>保存</Button>
                 </Row>
             </Modal>
-            <Modal :transfer=false v-model="dialogVisible" size="small"
+            <Modal :width="840" :transfer=false v-model="dialogVisible" size="small"
                    class='add-student-view'
                    :footer-hide="true"
                     :styles="{width: '900px'}">
@@ -85,7 +85,7 @@
                             电话：<span>{{userData.phone}}</span>
                         </Row>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
-                            用户头像：<img :src='userData.head_img_url'>
+                            用户头像：<img v-if="userData.head_img_url" :src='userData.head_img_url'>
                         </Row>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户描述：<span>{{userData.description}}</span>
@@ -135,6 +135,18 @@
 </template>
 
 <style scoped lang="scss" scoped>
+    .modal-btn-save{
+      width: 140px;
+      height: 36px;
+      background-color: #7ab854;
+      color: #ffffff;
+    }
+     /deep/.ivu-btn:active, /deep/.ivu-btn.active{
+      background-color: #7ab854 !important;
+      color: #ffffff !important;
+      border: none !important
+    }
+    /deep/.ivu-btn:focus{ box-shadow: none }
     /deep/ .ivu-table th { height: 50px; }
     /deep/ .ivu-breadcrumb{
         text-align: left;
@@ -242,7 +254,7 @@
           from_invitation_code_id: ""
         },
         userInfo:{
-          from_domain:0,
+          from_domain: '',
         },
         preRoleList: [],
         searchData: "",
@@ -287,7 +299,8 @@
             width: 260
           },
         ],
-        data1: []
+        data1: [],
+        loadingInstance: null
       };
     },
     methods: {
@@ -320,7 +333,7 @@
           res = res.data;
           if(res.res_code == 1){
             this.showDealerDialog = false;
-            alert('修改成功！');
+            this.$Message.success('修改成功！');
             this.$store.dispatch("get_user_list", {
               curPage: this.curPage,
               pageSize: this.pageSize,
@@ -348,15 +361,12 @@
         this.showDealerDialog = true;
       },
       editUser(item) {
-        var loadingInstance = Loading.service({
-          text: "加载中，请稍后",
-          fullscreen: true
-        });
+        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true});
         setTimeout(() => {
-          loadingInstance.close();
+          this.loadingInstance.close();
         }, Config.base_timeout);
         get_detail(item.user_id).then(res => {
-          loadingInstance.close();
+          if(this.loadingInstance) this.loadingInstance.close();
           if (res.data.res_code === 1) {
             this.userData = res.data.msg;
             if (res.data.msg.user_roles) {

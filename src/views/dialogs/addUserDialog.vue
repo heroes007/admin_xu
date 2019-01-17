@@ -1,5 +1,5 @@
 <template>
-    <Modal :transfer=false title="创建用户" v-model="addUserDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
+    <Modal :transfer=false title="创建用户" :width="600" v-model="addUserDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
            :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
             <Row slot="body">
@@ -58,21 +58,12 @@
       createHandler() {
         create_test_user(this.form.doRegist ? 1 : 0).then(res => {
           if (res.data.res_code === 1) {
-            if (this.form.doRegist) {
-              this.$alert('用户名：' + res.data.msg.username + '密码：' + res.data.msg.password, '创建成功', {
-                confirmButtonText: '确定',
-                customClass: 'add-user-dialog-alert',
-                callback: action => {
-                }
-              });
-            } else {
-              this.$alert('用户名：' + res.data.msg.username + '验证码（请在30分钟内使用注册）：' + res.data.msg.sms_code, '创建成功', {
-                confirmButtonText: '确定',
-                customClass: 'add-user-dialog-alert',
-                callback: action => {
-                }
-              });
-            }
+            let text = this.form.doRegist ? ( '密码：'+ res.data.msg.password ) : '验证码（请在30分钟内使用注册）：' + + res.data.msg.sms_code
+            let msg = '用户名：' + res.data.msg.username + text
+            this.$Modal.info({
+                  title: '创建成功',
+                  content: msg
+            });
           }
         })
       }

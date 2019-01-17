@@ -1,6 +1,6 @@
 <template>
-    <Modal :transfer=false :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" :footer-hide="true"
-               @on-cancel="handleRemoveModal(remove)"  :mask-closable="false" :styles="{width: '600px', fontsize: '14px'}">
+    <Modal :width="600" :transfer=false :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" :footer-hide="true"
+               @on-cancel="handleRemoveModal(remove)"  :mask-closable="false" :styles="{ fontsize: '14px'}">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="payload.showList">
@@ -23,7 +23,7 @@
                             <FormItem>
                                 <Button class="sub-btn" type="primary" @click="searchStudent">查询</Button>
                             </FormItem>
-                            <data-list @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
+                            <data-list class="edirTable" @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
                         </Form>
                     </Row>
                 </Row>
@@ -287,10 +287,7 @@
       })
 
       if (this.payload.sid) {
-        this.loadingInstance = Loading.service({
-          text: '加载中，请稍后',
-          fullscreen: true
-        });
+        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true});
         setTimeout(() => {
           this.loadingInstance.close();
         }, Config.base_timeout);
@@ -313,7 +310,7 @@
                         vm.handleClose();
                         vm.showPop('创建成功！',1000);
                     };
-                    this.loadingInstance.close();
+                   if(this.loadingInstance) this.loadingInstance.close();
                 }
             })
         }
@@ -324,8 +321,9 @@
 /deep/ .ivu-select-selected-value {
     font-size: 14px !important;
 }
-.student-form-item{
-    width: calc(100% - 100px)
+.edirTable{
+   width: calc(100% - 100px);
+   margin-left: 49px;
 }
 .searchDataCol{
 padding-left: 10px;

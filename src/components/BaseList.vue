@@ -85,7 +85,7 @@
     </div>
 </template>
 <script>
-    import baseList from './baseList.vue'
+    import baseList from './BaseList.vue'
     export default {
         name: 'baseList',
         data() {

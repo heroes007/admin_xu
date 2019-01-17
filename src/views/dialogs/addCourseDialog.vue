@@ -109,7 +109,7 @@
                             </Row>
                             <Row class="course-list">
                                 <CheckboxGroup v-model="unchecked_top_courses" @on-change="handleCheckedCitiesChange" class="course-item">
-                                    <Checkbox v-for="(item, index) in query_replace_online_course_list" :key="item.id" :label="item">
+                                    <Checkbox  v-for="(item, index) in query_replace_online_course_list" :key="item.id" :label="item._index">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
                                     </Checkbox>
                                 </CheckboxGroup>
@@ -126,7 +126,7 @@
                             </Row>
                             <Row class="course-list">
                                 <CheckboxGroup v-model="checked_top_courses" @on-change="handleUnCheckedCitiesChange" class="course-item">
-                                    <Checkbox v-for="(item, index) in top_course_list" :key="item.id" :label="item">
+                                    <Checkbox  v-for="(item, index) in top_course_list" :key="item.id" :label="item._index">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
                                     </Checkbox>
                                 </CheckboxGroup>
@@ -343,21 +343,6 @@ export default {
                 this.get_online_curriculum_list(this.project_id);
         },
         handleSubmit() {
-            //            var vm = this;
-            //            this.add_offline_curriculum({
-            //              offline_term_id: this.payload,
-            //              title: this.form.name,
-            //              type: '',
-            //              start_time: moment(this.form.date[0]).format('YYYY-MM-DD'),
-            //              end_time: moment(this.form.date[1]).format('YYYY-MM-DD'),
-            //              teacher_name: this.form.teacher_name,
-            //              teacher_img_url: '',
-            //              teacher_description: '',
-            //              description: this.form.desc,
-            //              _fn(){
-            //                vm.handleClose();
-            //              }
-            //            })
             this.form.img_url_arr = {
                 'default': this.form.img_default,
                 '3_8': this.form.img_3_8
@@ -370,10 +355,10 @@ export default {
                 vm.handleClose();
                 vm.showPop('保存成功！',1000);
             };
-            if (this.checked_top_courses.length > 0) {
+            if (this.top_course_list.length > 0 && this.checked_top_courses.length>0) {
                 var preList = [];
-                for (var i = 0; i < this.checked_top_courses.length; i++) {
-                    preList.push(this.checked_top_courses[i].curriculum_id);
+                for (var i = 0; i < this.top_course_list.length; i++) {
+                    preList.push(this.top_course_list[i].curriculum_id);
                 }
                 this.form.pre_curriculum_ids = preList;
             }
@@ -390,17 +375,27 @@ export default {
         handlePreview(file) {
             console.log(file);
         },
+        CheckedMap(d){
+            let d2 = []
+            this.query_replace_online_course_list.map((it) => {
+            d.map((t) => {
+                if(it._index == t) d2.push(it)
+               })
+            })
+            return d2
+        },
         handleCheckedCitiesChange(value) {
-            this.top_course_list = value;
-            this.checked_top_courses = value;
+            this.top_course_list = this.CheckedMap(value)
+            this.checked_top_courses = value
+            // this.$forceUpdate()
         },
         handleUnCheckedCitiesChange(value) {
             // this.top_course_list = value;
-            this.top_course_list = value;
+            this.top_course_list = this.CheckedMap(value)
             //取消已制定状态
             // this.unchecked_top_courses = _.difference(this.query_replace_online_course_list, value);
             //取消未指定选定状态
-            this.unchecked_top_courses = value;
+            this.unchecked_top_courses = value
             //取消全选状态
             // this.checkAll = [];
         },
@@ -426,7 +421,7 @@ export default {
                     &&!this.loadingInstance
                     &&!this.form.title)
             {
-                this.loadingInstance = Loading.service({ text:'加载中，请稍后',fullscreen:true });
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
@@ -448,7 +443,7 @@ export default {
                     this.form.orderby = res.data.msg.curriculum[0].orderby;
                     this.form.curriculum_roles = res.data.msg.curriculum_role;
                     this.form.pre_curriculum_ids = res.data.msg.pre_curriculum;
-                    this.loadingInstance.close();
+                    if(this.loadingInstance) this.loadingInstance.close();
                     this.top_course_list = [];
                     this.checked_top_courses = [];
                     this.unchecked_top_courses = [];
@@ -459,8 +454,8 @@ export default {
                             if(this.query_replace_online_course_list[j].curriculum_id === this.form.pre_curriculum_ids[i])
                             {
                                 this.top_course_list.push(this.query_replace_online_course_list[j]);
-                                this.unchecked_top_courses.push(this.query_replace_online_course_list[j]);
-                                this.checked_top_courses.push(this.query_replace_online_course_list[j]);
+                                this.unchecked_top_courses.push(this.query_replace_online_course_list[j]._index);
+                                this.checked_top_courses.push(this.query_replace_online_course_list[j]._index);
                             }
                         }
 
@@ -468,7 +463,6 @@ export default {
                 }
             });
             }
-
             // this.top_course_list = _.difference(this.top_course_list, this.checked_top_courses);
             // //取消已制定状态
             // this.checked_top_courses = [];

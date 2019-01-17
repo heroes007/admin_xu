@@ -11,18 +11,12 @@
         <p class='name'>{{teacherName}}</p>
     </div>
 </template>
-
 <script>
     import defaultHeader from '../assets/img/side-menu/default-header.jpg'
     import { Dialog } from '../views/dialogs'
     import { ADD_TEACHER } from '../views/dialogs/types'
     export default{
         mixins: [Dialog],
-        data(){
-            return{
-
-            }
-        },
         props:{
             imgUrl:{
                 type:String,
@@ -51,9 +45,13 @@
         },
         methods:{
             deleteHandler(){
-                this.$confirm('是否确定删除该讲师？','提示',{type:'info'}).then(()=> {
-                    this.$store.dispatch('delete_teacher',{id:this.tid})
-                }).catch(() => {});
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '是否确定删除该讲师？',
+                    onOk: () => {
+                         this.$store.dispatch('delete_teacher',{id:this.tid})
+                    }
+                });
             },
             editTeacher(){
               this.handleSelModal(ADD_TEACHER, this.tid)
