@@ -51,6 +51,7 @@
                     <DatePicker v-if='item.useTimePicker'
                         v-model="comboDataList[scope.$index]"
                         type="datetime"
+                        :transfer="true"
                         placeholder="选择日期时间"
                         @on-change='changeTimeSelect(scope.row,scope.$index,item.actionName,item.prop,item.param)'>
                     </DatePicker>
@@ -71,7 +72,7 @@
                                 </Button>
                                 <el-switch :value='row[btn.switchKey]' :on-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.onText"
                                     :off-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.offText" :disabled="checkSwitchDisabled(scope.row,btn.disabledFuc)"
-                                    on-color='#F06B1D' off-color='#757575' 
+                                    on-color='#F06B1D' off-color='#757575'
                                     @change='changeSwitchValue(scope.row,btn.switchKey,btn.actionName,btn.param)'
                                     v-if='btn.isSwitch'>
                                     </el-switch>
@@ -81,9 +82,9 @@
                     </el-table-column>
                     <el-table-column type='expand' :width="item.width" header-align='left' align='left' v-for='item in listExpandHeader' :key="item.id">
                         <template slot-scope="scope">
-                            <baseList class='child-list data-list' 
+                            <baseList class='child-list data-list'
                             :table-data='scope.row.childData'
-                             :header-data='item.childHeader' 
+                             :header-data='item.childHeader'
                              :is-stripe='false'
                                 :parent-data='scope.row' :column-formatter='item.listColumnFormatter' @childBtnClick='childBtnClickHandler'>
                                 </baseList>
@@ -239,7 +240,7 @@
                                     this.comboDataList.push([]);
                                 else
                                     this.comboDataList.unshift([]);
-                            }    
+                            }
                         }
                         else {
 
@@ -550,7 +551,7 @@
                             }
                         }
                         }
-                        &.is-disabled { 
+                        &.is-disabled {
                             background-color: #757575;
                         }
                     }

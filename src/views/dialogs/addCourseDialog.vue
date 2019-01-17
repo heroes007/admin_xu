@@ -27,7 +27,7 @@
                         </Col>
                         <Col :span="11" :offset="2">
                             <FormItem label="开课时间">
-                                <DatePicker v-model="selectDateRange" type="daterange" placeholder="选择日期范围">
+                                <DatePicker v-model="selectDateRange" type="daterange" placeholder="选择日期范围" :transfer="true">
                                 </DatePicker>
                            </FormItem>
                             <FormItem label="操作权限（多选）">

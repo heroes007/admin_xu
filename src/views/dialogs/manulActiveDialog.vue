@@ -1,6 +1,6 @@
 <template>
-    <el-dialog title="手动激活" :show-close="false" v-model="manulActiveDialog" @close="handleRemoveModal(remove)"
-               size="auto" :closeOnClickModal="false">
+    <Modal title="手动激活" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)"
+               size="auto" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class='search-bar' type='flex' justify='center' align='middle'>
@@ -54,18 +54,17 @@
                 </el-table>
                 <Row>
                     <Col :span="21">
-                        <el-pagination
-                                @size-change="handleSizeChange"
-                                @current-change="handleCurrentChange"
-                                :current-page="curPage"
-                                :page-size="pageSize"
-                                layout="prev, pager"
+                        <Page
+                                @on-page-size-change="handleSizeChange"
+                                @on-change="handleCurrentChange"
+                                :current="curPage"
+                                :page-size-opts="pageSize"
                                 small
                                 :total="totalNum">
-                        </el-pagination>
+                        </Page>
                     </Col>
                     <Col :span="3">
-                        <el-checkbox class="check-all" v-model="checked" @change="handleSelectedAll">全选</el-checkbox>
+                        <Checkbox class="check-all" v-model="checked" @on-change="handleSelectedAll">全选</Checkbox>
                     </Col>
                 </Row>
                 <Row class="btns">
@@ -73,7 +72,7 @@
                 </Row>
             </Row>
         </base-input>
-    </el-dialog>
+    </Modal>
 </template>
 
 <script>

@@ -55,5 +55,8 @@ body { background-color: #fff; height: 100%; }
     background-color: #333 !important;
 }
 .ivu-modal-close .ivu-icon-ios-close,.ivu-modal-close .ivu-icon-ios-close:hover{
-    color: #fff !important
+    color: #fff
+}
+.ivu-input-number{
+    width: 100% !important;
 }

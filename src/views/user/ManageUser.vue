@@ -53,7 +53,7 @@
                     </Select>
                 </Row>
                 <Row style="margin-top:50px;" type='flex' justify='center' align='middle'>
-                    <Button type="primary" style="width:100px;" @click='changeDealer'>保存</Button>
+                    <Button type="primary" class="modal-btn-save" @click='changeDealer'>保存</Button>
                 </Row>
             </Modal>
             <Modal :width="840" :transfer=false v-model="dialogVisible" size="small"
@@ -106,7 +106,7 @@
                             使用的邀请码：<span>{{userData.from_invitation_code_id}}</span>
                         </Row>
                         <Row class='user-data' type='flex' justify='center' align='middle'>
-                            <Button class="modal-btn-save" @click='submit'>保存</Button>
+                            <Button class="modal-btn-save" type="primary" @click='submit'>保存</Button>
                         </Row>
                     </div>
                 </Row>
@@ -138,8 +138,6 @@
     .modal-btn-save{
       width: 140px;
       height: 36px;
-      background-color: #7ab854;
-      color: #ffffff;
     }
      /deep/.ivu-btn:active, /deep/.ivu-btn.active{
       background-color: #7ab854 !important;

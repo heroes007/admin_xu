@@ -8,7 +8,9 @@
             </div>
             <img :src='headImg'/>
         </div>
-        <p class='name'>{{teacherName}}</p>
+        <Tooltip style="width: 100%" :content="teacherName" theme="light" :delay="300" placement="top">
+            <p class='name'>{{teacherName}}</p>
+        </Tooltip>
     </div>
 </template>
 <script>
@@ -118,6 +120,9 @@
             font-size: 14px;
             color: #141111;
             letter-spacing: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 </style>

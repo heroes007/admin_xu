@@ -27,13 +27,13 @@
                                 </Select>
                            </FormItem>
                             <FormItem label="开课时间">
-                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.start_school_time"></DatePicker>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.start_school_time" :transfer="true"></DatePicker>
                            </FormItem>
                             <FormItem label="毕业时间">
-                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.finish_school_time"></DatePicker>
+                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.finish_school_time" :transfer="true"></DatePicker>
                            </FormItem>
                             <FormItem label="离校时间">
-                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.leave_school_time"></DatePicker>
+                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.leave_school_time" :transfer="true"></DatePicker>
                            </FormItem>
                             <FormItem label="学员类型">
                                 <Select v-model="form1.type" placeholder="请选择学员类型">
@@ -108,7 +108,7 @@
                                 <Input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></Input>
                            </FormItem>
                             <FormItem label="出生年月">
-                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form2.birth"></DatePicker>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form2.birth" :transfer="true"></DatePicker>
                            </FormItem>
                             <FormItem label="邮箱">
                                 <Input v-model="form2.email" placeholder="请输入考生邮箱"></Input>

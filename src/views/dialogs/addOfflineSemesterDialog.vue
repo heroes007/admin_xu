@@ -1,5 +1,5 @@
-<template>
-    <Modal :transfer=false v-model="addOfflineSemesterDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}">
+    <template>
+    <Modal :transfer=false v-model="addOfflineSemesterDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" :closable="true">
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
                 <Tabs type="line">
@@ -15,10 +15,10 @@
                                 </Select>
                            </FormItem>
                             <FormItem label="开课日期" prop="stage1" required>
-                                <DatePicker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围"></DatePicker>
+                                <DatePicker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
                            </FormItem>
                             <FormItem label="截止报名日期">
-                                <DatePicker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @change='changeDeadlineHandler'>
+                                <DatePicker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @change='changeDeadlineHandler' :transfer="true">
                                 </DatePicker>
                            </FormItem>
                                 <FormItem label="学期描述" class="semester-description" prop="description1" required>
@@ -47,7 +47,7 @@
                                 </Select>
                            </FormItem>
                             <FormItem label="开课日期">
-                                <DatePicker v-model="form2.stage2" type="datetimerange" placeholder="请选择时间范围"></DatePicker>
+                                <DatePicker v-model="form2.stage2" type="datetimerange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
                            </FormItem>
                             <FormItem label="学期描述" class="semester-description">
                                 <Input type="textarea" :rows="8" placeholder="请输入学期描述" v-model="form2.description2">
@@ -270,10 +270,14 @@
         changeDeadlineHandler() {
                 if (this.form1.stage1 && this.form1.stage1.length > 0) {
                     if (new Date(this.form1.stage1[0]).getTime() - this.form1.signupDeadline.getTime() < (14 * 24 * 60 * 60 * 1000)) {
-                        this.$alert('截止日期距开课日期小于14天！', '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => { }
-                                    });
+                        // this.$alert('截止日期距开课日期小于14天！', '提示', {
+                        //                 confirmButtonText: '确定',
+                        //                 callback: action => { }
+                        //             });
+                      this.$Modal.warning({
+                        title: '提示',
+                        content: '截止日期距开课日期小于14天！'
+                      });
                     }
                 }
             }
@@ -281,7 +285,7 @@
     }
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
     .sub-btn{
         width: 170px;
     }
@@ -304,5 +308,11 @@
                 color: #757575;
             }
         }
+    }
+    .ivu-modal-close .ivu-icon-ios-close,.ivu-modal-close .ivu-icon-ios-close:hover{
+        color: #999 !important;
+    }
+    /deep/ .ivu-form-item-content{
+        text-align: left;
     }
 </style>

@@ -252,7 +252,6 @@
                 }
             },
             editHandler(index, row) {
-                console.log()
                 this.handleSelModal(ADD_TASK, {
                     separage: this.selectedCategory,
                     type: 2,
@@ -263,15 +262,17 @@
             },
             deleteHandler(index, row) {
                 var vm = this;
-                this.$confirm('您确定要删除该任务吗?', '提示', {
-                    type: 'info'
-                }).then(() => {
-                    this.delete_task({
-                        task_category_id: this.selectCategory,
-                        task_id: row.id,
-                        is_del_ut: 1
-                    })
-                }).catch(() => { });
+              this.$Modal.confirm({
+                title: '提示',
+                content: '<p>您确定要删除该任务吗?</p>',
+                onOk: () => {
+                  this.delete_task({
+                    task_category_id: this.selectCategory,
+                    task_id: row.id,
+                    is_del_ut: 1
+                  })
+                },
+              });
             },
             addTask() {
                 if (this.categoryList.length > 0) {
@@ -281,9 +282,10 @@
                         selectedType: this.selectedType
                     })
                 } else {
-                    this.$confirm('请先添加分类！', '提示', {
-                        type: 'info'
-                    }).catch(() => { });
+                  this.$Modal.info({
+                    title: '提示',
+                    content: '<p>请先添加分类！</p>'
+                  });
                 }
             },
             deleteCourseHandler(index, row) {
