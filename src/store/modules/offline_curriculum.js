@@ -266,7 +266,7 @@ const mutations = {
                 break;
             }
         }
-        state.showLoading = false;
+       if(state.showLoading) state.showLoading = false;
     },
     [types.OFFLINE_CURRICULUM_ADDING](state, msg) {
         state.msg = '请稍等...'

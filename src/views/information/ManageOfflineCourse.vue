@@ -329,9 +329,9 @@ export default {
         },
         rowExpandHandler(row) {
             if (row.childData.length === 0)
-                this.$store.dispatch('get_offline_curriculum_list', {
+                 this.$store.dispatch('get_offline_curriculum_list', {
                     offline_term_id: row.id
-                })
+            })
         },
         manageSignupHandler(index, row) {
             this.$router.push({

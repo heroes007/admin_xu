@@ -1,19 +1,19 @@
 
 
 <template>
-<Modal :transfer=false title="添加分类" v-model="addTaskCategoryDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
+<Modal :transfer=false title="添加分类" width="600px" v-model="addTaskCategoryDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
                 <p class="title">任务和类型不一样的喔，创建类型前请先选择好</p>
                 <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                     <FormItem class='radio-container'>
-                        <RadioGroup v-model="form.type"  justify='start' align='middle' @change="handleChangeRadio">
-                            <Radio class="radio" :class="{'is-changed': isChanged == 0}" :label="0">
-                                <span class=""></span>任务
+                        <RadioGroup v-model="form.type"  justify='start' align='middle' @on-change="handleChangeRadio">
+                            <Radio class="radio" :label="0">
+                                <Button :class="{'is-changed': isChanged == 0}" class="radioBtn">任务</Button>
                             </Radio>
-                            <Radio class="radio" :class="{'is-changed': isChanged == 1}" :label="1">
-                                <span class=""></span>作业
+                            <Radio class="radio" :label="1">
+                                <Button :class="{'is-changed': isChanged == 1}" class="radioBtn">作业</Button>
                             </Radio>
                         </RadioGroup>
                    </FormItem>
@@ -120,214 +120,29 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-#add-task-category-container {
-    @import "base.scss";
-    input,
-    textarea {
-        resize: none;
-        outline: none;
-    }
-    .close-dialog-panel {
-        position: absolute;
-        top: -70px;
-        right: -13.5px;
-        z-index: 99999;
-        font-size: 30px;
-        cursor: pointer;
-        &:before {
-            // color: #fff;
-            color: #757575;
-        }
-    }
-    .el-dialog {
-        width: 600px;
-        background: none;
-        .title {
-            font-size: 14px;
-            color: #757575;
-            letter-spacing: 1px;
-            line-height: 20px;
-            margin-top: 0;
-        }
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-
-        .el-dialog__body {
-            margin-bottom: -20px;
-            background-color: #fff;
-            border-radius: 0 0 4px 4px;
-            padding-bottom: 10px;
-            .el-form-item__label {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-        }
-        .add-teacher-form {
-            width: 80%;
-            margin: 0 auto;
-            .el-select {
-                width: 100%;
-            }
-            input {
-                border-radius: 0;
-                border: 1px solid #CCCCCC;
-            }
-            .radio-container {
-                height: 36px;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                .el-form-item__content {
-                    margin-left: 0 !important;
-                    .el-radio {
-                        margin-left: 40px;
-                        margin-right: 40px;
-                    }
-                    // -------- 修改了单选框样式 ------------
-                    .is-changed{
-                      .el-radio__label{
-                        border: 1px solid #5FA137;
-                        color: #5FA137;
-
-
-                      }
-                      .el-radio__inner{
-                        border-color: #5FA137;
-                        background-color: #5FA137;
-                      }
-                    }
-                    .el-radio__label {
-                        border: 1px solid #979797;
-                        border-radius: 4px;
-                        width: 80px;
-                        height: 32px;
-                        display: inline-block;
-                        line-height: 30px;
-                        margin-left: 6px;
-                        color: #979797;
-                    }
-                    .el-radio__inner {
-                        display: inline-block;
-                        position: relative;
-                        border: 1px solid #bfcbd9;
-                        border-radius: 4px;
-                        box-sizing: border-box;
-                        width: 18px;
-                        height: 18px;
-                        background-color: #fff;
-                        z-index: 1;
-                        transition: border-color 0.25s cubic-bezier(.71,-.46,.29,1.46),background-color 0.25s cubic-bezier(.71,-.46,.29,1.46);
-                        // background-color: #20a0ff;
-                        border-color: #979797;
-                        background-color: transparent;
-                        &::after {
-                            box-sizing: content-box;
-                            content: "";
-                            border: 2px solid #fff;
-                            border-left: 0;
-                            border-top: 0;
-                            height: 8px;
-                            left: 5px;
-                            position: absolute;
-                            top: 1px;
-                            transform: rotate(45deg) scaleY(0);
-                            width: 4px;
-                            transition: transform 0.15s cubic-bezier(.71,-.46,.88,.6) 0.05s;
-                            transform-origin: center;
-                            border-radius: 0;
-                            background-color: transparent;
-                        }
-                    }
-                    .is-checked{
-
-                      .el-radio__inner::after{
-                        transform: rotate(45deg) scaleY(1);
-                      }
-                    }
-                    // -------- 修改了单选框样式 ------------
-                }
-            }
-            @mixin el-upload-common($w) {
-                .el-upload {
-                    text-align: left;
-                    width: 100%;
-                    .el-icon-upload {
-                        color: #999999;
-                    }
-                    .el-upload__tip {
-                        font-size: 12px;
-                        color: #757575;
-                        letter-spacing: 0;
-                        line-height: 20px;
-                        text-align: left;
-                        margin-top: 0;
-                    }
-                    .el-dragger {
-                        // float: left;
-                        // width: 240px;
-                        border-radius: 0;
-                        background-color: #F6F6F6;
-                        border: 1px solid #CCCCCC;
-                        width: 100%;
-                        height: $w;
-                        .el-icon-upload {
-                            margin-left: 0;
-                            // margin-top: $_top;
-                        }
-                        .el-dragger__text {
-                            font-size: 14px;
-                            color: #757575;
-                            letter-spacing: 0;
-                            line-height: 14px;
-                            margin-top: 20px;
-                        }
-                    }
-                }
-            }
-            .upload-form1 {
-                @include el-upload-common(200px);
-            }
-            .btn-content {
-
-                margin-top: 50px;
-                .el-form-item__content {
-                    margin-left: 0 !important;
-                    line-height: 0;
-                    button {
-                        margin-left: 0;
-                        background: #FB843E;
-                        border-radius: 4px;
-                        width: 200px;
-                        height: 36px;
-                        border: 0;
-                    }
-                }
-            }
-            .el-form-item__content {
-                // margin-left: 0 !important;
-                line-height: 0;
-                .el-textarea {
-                    .el-textarea__inner {
-                        background: #FFFFFF;
-                        border: 1px solid #CCCCCC;
-                        height: 140px;
-                        border-radius: 0;
-                        // width: 390px;
-                    }
-                }
-            }
-            .sub-btn {
-                background: #FB843E;
-                border-radius: 4px;
-                width: 200px;
-                height: 36px;
-                border: 0;
-            }
-        }
-    }
+<style lang="scss" scoped>
+.radioBtn{
+    background-color: #fff;
+    color: #979797;
+    width: 90px;
+    height: 36px;
+    margin-right: 40px;
+    border: 1px solid #979797;
+}
+.is-changed{ border: 1px solid #FB843E;  color: #FB843E;}
+/deep/ .ivu-modal-body{ width: 80%;margin-left: 10%; }
+.title {
+    font-size: 14px;
+    color: #757575;
+    letter-spacing: 1px;
+    line-height: 20px;
+    margin: 24px;
+}
+.sub-btn {
+    background: #FB843E;
+    border-radius: 4px;
+    width: 200px;
+    height: 36px;
+    border: 0;
 }
 </style>

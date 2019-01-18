@@ -333,6 +333,13 @@
                   isStripe: false,
                   parentData: params.row,
                   columnFormatter: it.listColumnFormatter
+                },
+                on: {
+                  childBtnClick: (param, index, parentData) => {
+                    this.$nextTick(() => {
+                      this.childBtnClickHandler(param, index, parentData)
+                    })
+                  }
                 }
               })
             }
@@ -372,8 +379,11 @@
       },
       rowExpandHandler(row, expanded) {
         if (expanded) {
-          this.$emit('expand', row);
+          this.$emit('expandOpen', row);
         }
+        this.tableData.map((it) => {
+          if(it.id == row.id) it._expanded = expanded
+        })
       },
       rowClickHandler(row, event, column) {
         this.$emit('rowClick', row);

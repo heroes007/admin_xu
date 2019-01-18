@@ -262,7 +262,11 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  /deep/.ivu-modal-body{ 
+      width: 80%;
+      margin-left: 10%;
+   }
 #add-homework-container {
     @import "base.scss";
     input,

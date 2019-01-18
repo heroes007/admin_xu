@@ -47,7 +47,7 @@ export default {
             multipleSelection: [],
             searchType:'phone',
             searchData:'',
-            curPage:0,
+            curPage:1,
             checked:false,
             courseColumns: [ 
                     {
@@ -229,5 +229,5 @@ export default {
 .course-page,.table{
     margin-top: 20px;
 }
-
+/deep/.ivu-modal-body{ padding: 16px 0px 0px 0px; }
 </style>

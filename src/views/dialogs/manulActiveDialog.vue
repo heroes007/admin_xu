@@ -1,5 +1,5 @@
 <template>
-    <Modal title="手动激活" width="800px" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)"
+    <Modal title="手动激活" width="700px" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)"
                size="auto" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
@@ -257,8 +257,7 @@ let tooltips = { ellipsis: true, tooltip: true }
 
 <style lang="scss" scoped>
 /deep/ .ivu-modal-body{
-    width: 80%;
-    margin-left: 10%;
+    padding: 16px 0 0 0;
 }
 /deep/th, /deep/.ivu-table-cell>span{
     font-size: 14px !important

@@ -22,13 +22,13 @@
                         </Select>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" class="approval" label="批阅形式" prop="result_type" required>
-                        <RadioGroup v-model="form.result_type" :disabled="disabled">
+                        <RadioGroup v-model="form.result_type" class="float_left" :disabled="disabled">
                             <Radio :label="1">常规批阅</Radio>
                             <Radio :label="2">内置打分批阅</Radio>
                         </RadioGroup>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" :disabled="disabled" class="approval" v-if="payload.selectedType == 0" label="激活方式">
-                        <RadioGroup v-model="form.activity_type" :disabled="disabled" @change="handleChangeType">
+                        <RadioGroup v-model="form.activity_type" class="float_left" :disabled="disabled" @change="handleChangeType">
                             <Radio :label="1">手动激活</Radio>
                             <Radio :label="2">定时激活</Radio>
                             <!--<el-radio :label="3">前置课激活</el-radio>-->
@@ -51,7 +51,7 @@
                         <text-editor ref='require_editor' :content='form.task_require'/>
                    </FormItem>
                     <FormItem class="check-upload" v-show="nextStep == 1">
-                        <Checkbox v-model="form.limit_count" :disabled="disabled" name="type">{{typeStr('要求学员上传','附件')}}</Checkbox>
+                        <Checkbox class="float_left" v-model="form.limit_count" :disabled="disabled" name="type">{{typeStr('要求学员上传','附件')}}</Checkbox>
                    </FormItem>
                     <FormItem v-show="nextStep == 1" label="上传附件" class="upload-form1">
                         <upload-panel ref="upload_panel" :upload-config="uploadConfig" @getuploadfile="handleGetUrl">
@@ -73,64 +73,6 @@
                    </div>
                 </Form>
             </Row>
-            <!-- <Form ref="form" :rules="rules" :inline="true" :model="form" :label-width="80" class="add-homework-form">
-                <FormItem prop="name" required>
-                    <Input placeholder="作业名称" v-model="form.name"></Input>
-               </FormItem>
-                <FormItem prop="subject_id" required>
-                    <Select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2'>
-                        <Option v-for="item in subjectList" :label="item.name" :value="item.id"></Option>
-                    </Select>
-               </FormItem>
-                <FormItem prop="grade_id" required>
-                    <Select v-model="form.grade_id" placeholder="请选择学段" :disabled='payload.type == 2'>
-                        <Option v-for="item in gradeList" :label="item.name" :value="item.id"></Option>
-                    </Select>
-               </FormItem>
-                <FormItem label="批阅形式" prop="result_type" required>
-                    <el-radio-group v-model="form.result_type">
-                        <el-radio :label="1">常规批阅</el-radio>
-                        <el-radio :label="2">内置打分批阅</el-radio>
-                    </el-radio-group>
-               </FormItem>
-                <FormItem label="激活方式">
-                    <el-radio-group v-model="form.activity_type" :disabled="disabled" @change="handleChangeType">
-                        <el-radio :label="1">手动激活</el-radio>
-                        <el-radio :label="2">定时激活</el-radio>
-                        <el-radio :label="3">前置课激活</el-radio>
-                    </el-radio-group>
-               </FormItem>
-                <FormItem v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : ''" prop="activity_param" required>
-                    <Input v-if="form.activity_type == 2" v-model="form.activity_param" placeholder="请输入天数"></Input>
-                    <Select v-if="form.activity_type == 3" v-model="form.activity_param" multiple placeholder="请选择">
-                        <Option v-for="item in preCurriculum" :label="item.title" :value="item.id"></Option>
-                    </Select>
-               </FormItem>
-                <FormItem prop="task_require" required>
-                    <Input type="textarea" v-model="form.task_require"></Input>
-               </FormItem>
-                <FormItem>
-                    <el-checkbox-group v-model="form.max_file_count">
-                        <el-checkbox label="要求学员上传作业附件" name="type" value=""></el-checkbox>
-                    </el-checkbox-group>
-               </FormItem>
-                <FormItem>
-                    <Row>
-                        <Col>
-                            <upload-button :bucket="upload.bucket" :dir="upload.dir" :host="upload.host" @uploadcomplete="handleGetUrl"></upload-button>
-                        </Col>
-                        <Col>
-                            <Row v-for="(item,index) in form.upload_files">
-                                <span>{{item.name}}</span>
-                                <span @click="handleDeleteUploadItem(index)">删除</span>
-                            </Row>
-                        </Col>
-                    </Row>
-               </FormItem>
-                <FormItem>
-                    <Button @click="handleSubmit('form')">提交</Button>
-               </FormItem>
-            </Form> -->
         </Row>
     </base-input>
 </Modal>
@@ -336,10 +278,6 @@ export default {
             this.nextStep = 0;
         },
         handleChangeType1(v){
-        //   if(this.form.subject_id && this.form.grade_id){
-        //     this.getPreCurriculumList();
-        //     this.disabled1 = false;
-        //   }
          this.getPreCurriculumList();
             this.disabled1 = false;
         },
@@ -444,10 +382,15 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  /deep/.ivu-modal-body{ 
+      width: 80%;
+      margin-left: 10%;
+   }
     .btn-orange{
         width: 170px;
     }
+    .float_left{ float: left !important; }
 #add-task-container {
     @import "base.scss";
     input,

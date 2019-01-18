@@ -63,3 +63,6 @@ body { background-color: #fff; height: 100%; }
 .ivu-date-picker{
   width: 100% !important
 }
+.ivu-modal-content{
+  border-radius: 0 !important
+}
