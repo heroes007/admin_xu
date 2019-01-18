@@ -205,7 +205,6 @@ export default {
                 width: 100%;
             }
             .btn-content {
-
                 margin-top: 50px;
             }
             .el-form-item__content {

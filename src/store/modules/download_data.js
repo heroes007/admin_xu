@@ -36,15 +36,13 @@ const actions = {
         })
     },
     change_course_download_data_pre_curriculum({ commit }, params) {
-        if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length)
-        {
-            return;
-        }
+        // if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length){
+        //     return;
+        // }
         commit(types.DOWNLOAD_SHOW_LOADING);
         commit(types.SET_DOWNLOAD_CHANGE_PRE_GUARD,params.value);
         set_data_center_pre_curriculums(params.id,params.value).then(res => {
-            if(res.data.res_code === 1)
-            {
+            if(res.data.res_code === 1){
                 commit(types.DOWNLOAD_CHANGE_PRE_CURRICULUM,params);
             }
         })

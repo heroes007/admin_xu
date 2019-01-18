@@ -129,21 +129,23 @@ export const MenuList =  [
             name: 'manage-lb',
             title: '广告图管理'
         },
-        {
-            name: 'manage-app',
-            title: '平台更新'
-        },
-        {
-            name: 'manage-news',
-            title: '点师动态'
-        },{
-            name: 'statistics-data',
-            title: '点击量统计'
-        },
-        {
-            name: 'from-page-data',
-            title: '页面来源统计'
-        }]
+        // {
+        //     name: 'manage-app',
+        //     title: '平台更新'
+        // },
+        // {
+        //     name: 'manage-news',
+        //     title: '点师动态'
+        // },
+        // {
+        //     name: 'statistics-data',
+        //     title: '点击量统计'
+        // },
+        // {
+        //     name: 'from-page-data',
+        //     title: '页面来源统计'
+        // }
+        ]
     },
     {
         name: '2',
@@ -157,22 +159,25 @@ export const MenuList =  [
         {
             name: 'manage-recruit',
             title: '招生管理'
-        },{
-            name: 'redeem-code',
-            title: '兑换码管理'
         },
-        {
-            name: 'notification-chat',
-            title: '我的通知',
-            badge: true
-        }]
+        // {
+        //     name: 'redeem-code',
+        //     title: '兑换码管理'
+        // },
+        // {
+        //     name: 'notification-chat',
+        //     title: '我的通知',
+        //     badge: true
+        // }
+        ]
     },
     {
         name: '3',
         title: '我是导师',
         icon: 'md-folder',
         check: 'teacher',
-        list:[{
+        list:[
+        {
             name: 'manage-my-assignment',
             title: '我的指导'
         },
@@ -206,10 +211,11 @@ export const MenuList =  [
             name: 'public-download-data',
             title: '推荐资料'
         },
-        {
-            name: 'from-page-data',
-            title: '页面来源统计'
-        }]
+        // {
+        //     name: 'from-page-data',
+        //     title: '页面来源统计'
+        // }
+    ]
     },
     // {
     //     name: '5',

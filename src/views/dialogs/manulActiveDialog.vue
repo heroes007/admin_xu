@@ -1,6 +1,6 @@
 <template>
     <Modal title="手动激活" width="700px" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)"
-               size="auto" :mask-closable="false">
+               :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class='search-bar' type='flex' justify='center' align='middle'>
@@ -23,7 +23,6 @@
                                 @on-change="handleCurrentChange"
                                 :current="curPage"
                                 :page-size="pageSize"
-                                small
                               size="small"   :total="totalNum">
                         </Page>
                 </Row>

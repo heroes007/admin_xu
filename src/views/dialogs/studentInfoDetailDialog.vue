@@ -6,7 +6,7 @@
                  <Icon class="close" @click="handleClose" type="ios-close" />
                 <!-- <span class="dscj-webfont-remove-sign"></span> -->
                 <Tabs @on-click='changeTabHandler' :value='activeName'>
-                    <TabPane label="基础信息">
+                    <TabPane label="基础信息" name="name1">
                         <Form  ref="form" :model="form1" :label-width="80">
                             <FormItem label="选择项目">
                                 <Select v-model="form1.project_id" placeholder="请选择项目" disabled>
@@ -75,7 +75,7 @@
                            </FormItem>
                         </Form>
                     </TabPane>
-                    <TabPane label="报名信息">
+                    <TabPane label="报名信息" name="name2">
                          <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
                          该用户没有报名信息
                         </Row>
@@ -130,7 +130,7 @@
                            </FormItem>
                         </Form>
                     </TabPane>
-                    <TabPane label="线上课">
+                    <TabPane label="线上课" name="name3">
                         <Row>
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
@@ -164,7 +164,7 @@
                             </Row>
                         </Row>
                     </TabPane>
-                    <TabPane label="线下课">
+                    <TabPane label="线下课" name="name4">
                         <Row class='query-header' type='flex' align='middle'>
                                 <h3>剩余报名次数：{{form6.real_count}}</h3>
                                 <InputNumber v-model="form6.remain_count" @on-change="changeRemainCountHandler" :min="0"></InputNumber>
@@ -178,7 +178,7 @@
                             </Col>
                             </Row>
                     </TabPane>
-                    <TabPane label="任务">
+                    <TabPane label="任务" name="name5">
                         <Row class="body-top" v-if="true">
                             <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form4.dataList.length === 0'>
                                 该用户没有任务
@@ -196,7 +196,7 @@
                             </Row>
                         </Row>
                     </TabPane>
-                    <TabPane label="作业">
+                    <TabPane label="作业" name="name6">
                         <Row class="body-top" v-if="true">
                             <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form5.dataList.length === 0'>
                                 该用户没有作业
@@ -279,7 +279,7 @@
         data() {
             return {
                 studentInfoDetailDialog: true,
-                activeName: '0',
+                activeName: 'name1',
                 form1: {
                     project_id: this.$store.state.project.select_project_id,
                     grade_id: 0,

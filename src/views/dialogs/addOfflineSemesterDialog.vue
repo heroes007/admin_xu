@@ -4,7 +4,7 @@
             <Row slot="body" class="top-nav">
                 <Tabs type="line">
                     <TabPane :label="payload.type == 2 ? '编辑学期' : '添加学期'">
-                        <Form ref="myForm1" :rules="rules1" :model="form1" :label-width="80">
+                        <Form ref="myForm1" :rules="rules1" :model="form1" :label-width="120">
                             <FormItem label="学期名称" prop="name1" required>
                                 <Input v-model="form1.name1" placeholder="请输入学期名称"></Input>
                            </FormItem>
@@ -31,7 +31,7 @@
                         </Form>
                     </TabPane>
                     <TabPane label="复制学期" v-if="payload.type == 1">
-                        <Form ref="myForm2" :rules="rules2" :model="form2" :label-width="80">
+                        <Form ref="myForm2" :rules="rules2" :model="form2" :label-width="120">
                             <FormItem label="选择学期" prop="semester" required>
                                 <Select v-model="form2.semester" placeholder="请选择学期" @change="handleSelectItem">
                                     <Option v-for="(item,index) in offline_term_list1" :key="item.id" :label="item.name" :value="index"></Option>
