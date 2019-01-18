@@ -330,7 +330,7 @@
             }
             input{
                 width: 100%;
-                height: 100% !important;
+                height: 74% !important;
             }
         }
         .video {

@@ -26,8 +26,8 @@
                         <div class='head'>
                             全部讲师
                         </div>
-                        <Button type='text' icon='plus' @click='addTeacherHandler'>
-                            添加
+                        <Button class="teacher-list-head-btn" type='text' icon='plus' @click='addTeacherHandler'>
+                            <Icon type="md-add" />添加
                         </Button>
                     </Row>
                     <div slot="content" class='teacher-list-container'>
@@ -151,6 +151,17 @@
 <style lang='scss' scoped>
     /deep/ .ivu-btn > .ivu-icon{
         line-height: normal;
+    }
+    .teacher-list-head{
+        display: flex;
+        text-align: center;
+        justify-content: center;
+    }
+    .teacher-list-head-btn{
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
     }
     .teacher-list {
         border-radius: 4px;

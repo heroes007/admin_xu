@@ -289,6 +289,9 @@
     .sub-btn{
         width: 170px;
     }
+    /deep/ .ivu-modal-close .ivu-icon-ios-close,/deep/ .ivu-modal-close .ivu-icon-ios-close:hover{
+        color: #999 !important;
+    }
     #add-offline-semester-container {
         @import "base.scss";
         input,

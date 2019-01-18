@@ -318,6 +318,10 @@
   }
 </script>
 <style lang="scss" scoped>
+    /deep/ .ivu-modal-body{
+        width: 80%;
+        margin: 0 auto;
+    }
 /deep/ .ivu-select-selected-value {
     font-size: 14px !important;
 }

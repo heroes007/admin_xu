@@ -37,10 +37,10 @@
                             </upload-panel>
                              <Input type="file" :change="getMyForm.teacher_img_url"></Input>
                        </FormItem>-->
-                        <FormItem class="btns">
-                            <Button @click="handleSave('myForm',true)">完成</Button>
+                        <div class="btns">
+                            <Button @click="handleSave('myForm',true)" class="btns-true">完成</Button>
                             <Button type="primary" class="finish-btn" @click="handleReset('myForm')" v-if='payload.type == 1'>继续添加</Button>
-                       </FormItem>
+                       </div>
                     </Form>
                 </Row>
             </Row>
@@ -280,6 +280,18 @@
 
 </script>
 <style lang="scss" scoped>
+    .btns{
+        text-align: center;
+        margin: 10px 0;
+    }
+    .btns-true{
+        background-color: #fff;
+        width: 100px;
+        margin-right: 10px;
+    }
+    .finish-btn{
+        width: 170px;
+    }
     /deep/ .ivu-modal-body { width: 80%; margin-left: 10% }
     #add-offline-course-container {
         @import "base.scss";
@@ -299,124 +311,6 @@
         textarea {
             resize: none;
             outline: none;
-        }
-        .el-dialog {
-            width: 600px;
-            background: none;
-            .body-top {
-                padding-bottom: 15px;
-            }
-            .el-dialog__header {
-                background: #333333;
-                border-radius: 4px 4px 0 0;
-                padding: 16px;
-            }
-            .el-dialog__body {
-                padding-bottom: 0;
-                margin-bottom: -20px;
-                background-color: #fff;
-                border-radius: 0 0 4px 4px;
-                .el-form-item__label {
-                    font-size: 14px;
-                    color: #141111;
-                    letter-spacing: 0;
-                    &:before {
-                        margin-right: 0;
-                    }
-                }
-            }
-            .add-offline-course-form {
-                width: 90%;
-                margin: 0 auto;
-                .el-date-editor--datetimerange,
-                .el-select,
-                .el-date-editor.el-input {
-                    width: 100%;
-                }
-                input {
-                    border-radius: 0;
-                    border: 1px solid #CCCCCC;
-                }
-                @mixin el-upload-common($w) {
-                    .el-upload {
-                        text-align: left;
-                        width: 100%;
-                        .el-icon-upload {
-                            color: #999999;
-                        }
-                        .el-upload__tip {
-                            font-size: 12px;
-                            color: #757575;
-                            letter-spacing: 0;
-                            line-height: 20px;
-                            text-align: left;
-                            margin-top: 0;
-                        }
-                        .el-dragger {
-                            // float: left;
-                            // width: 240px;
-                            border-radius: 0;
-                            background-color: #F6F6F6;
-                            border: 1px solid #CCCCCC;
-                            width: 100%;
-                            height: $w;
-                            .el-icon-upload {
-                                margin-left: 0;
-                                // margin-top: $_top;
-                            }
-                            .el-dragger__text {
-                                font-size: 14px;
-                                color: #757575;
-                                letter-spacing: 0;
-                                line-height: 14px;
-                                margin-top: 20px;
-                            }
-                        }
-                    }
-                }
-                .upload-form1 {
-                    @include el-upload-common(200px);
-                }
-                .btns {
-                    .el-form-item__content {
-                        margin-left: 0 !important;
-                        margin-top: 10px !important;
-                        line-height: 0;
-                        .finish-btn {
-                            margin-left: 0;
-                            margin-top: 20px;
-                            background: #FB843E;
-                            border-radius: 4px;
-                            width: 160px;
-                            height: 36px;
-                            border: 0;
-                            &:last-child {
-                                margin-left: 8px;
-                            }
-                        }
-                        button {
-                            width: 100px;
-                            height: 36px;
-                            background: #FFFFFF;
-                            border: 1px solid #999999;
-                            border-radius: 4px;
-                        }
-                    }
-                }
-                .el-form-item__content {
-                    // margin-left: 0 !important;
-                    line-height: 0;
-                    .el-textarea {
-                        .el-textarea__inner {
-                            background: #FFFFFF;
-                            border: 1px solid #CCCCCC;
-                            // height: 140px;
-                            border-radius: 0;
-                            // width: 390px;
-                        }
-                    }
-                }
-            }
         }
     }
 </style>
