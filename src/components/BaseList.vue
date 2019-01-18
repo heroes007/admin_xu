@@ -342,6 +342,7 @@
             }
           }
         })
+        console.log(this.tableData,111111)
       },
       getHeaderLabel(item) {
         return item.ruleCount ? item.label + '(' + item.ruleCount + ')' : item.label;

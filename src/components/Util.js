@@ -105,8 +105,8 @@ export function exportCsv(data,fields,fileNames,fileName) {
         document.body.removeChild(link); // Required for FF
 
     } catch (err) {
-        // Errors are thrown for bad options, or if the data is empty and no fields are provided. 
-        // Be sure to provide fields if it is possible that your data array will be empty. 
+        // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+        // Be sure to provide fields if it is possible that your data array will be empty.
         console.error(err);
     }
 }
@@ -232,26 +232,26 @@ export const MenuList =  [
     //     }]
     // },
 
-    // 已完成
-    {
-        name: '6',
-        title: '产品管理',
-        icon: 'md-folder',
-        check: 'admin',
-        list:[
-            {
-            check: true,
-            name: ['manage-production','manage-production-curriculum'],
-            title: '产品信息'
-        },
-        {
-            name: 'manage-production-group',
-            title: '产品组合'
-        }]
-    },
-    {
-        name: 'manage-project',
-        title: '项目管理',
-        icon: 'md-folder'
-    }
+  // 已完成
+  {
+    name: '6',
+    title: '产品管理',
+    icon: 'md-folder',
+    check: 'admin',
+    list:[
+      {
+        check: true,
+        name: ['manage-production','manage-production-curriculum'],
+        title: '产品信息'
+      },
+      {
+        name: 'manage-production-group',
+        title: '产品组合'
+      }]
+  },
+  {
+    name: 'manage-project',
+    title: '项目管理',
+    icon: 'md-folder'
+  }
 ]

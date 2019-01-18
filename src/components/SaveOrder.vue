@@ -30,9 +30,9 @@
 </script>
 <style lang='scss'>
     .save-order {
-        
+
         .btn-cancel {
-            border-color: #1e1e1e;
+            /*border-color: #1e1e1e;*/
         }
         .btn-save {
             border-color: #F06B1D;

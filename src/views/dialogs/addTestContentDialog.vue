@@ -255,6 +255,25 @@ export default {
                     }
                 })
             }).catch(() => {});
+          this.$Modal.confirm({
+            title: '提示',
+            content: '<p>是否确定删除该题目？</p>',
+            onOk: () => {
+              delete_test_detail(row.id).then(res => {
+                if(res.data.res_code === 1)
+                {
+                  this.dataList.splice(index,1);
+                  // this.$alert('删除成功。', '提示', {
+                  //   confirmButtonText: '确定'})
+                  this.$Modal.info({
+                    title: '提示',
+                    content: '删除成功。'
+                  });
+                  this.clearDetail();
+                }
+              })
+            },
+          });
         },
         cancelSaveHandler(){
             this.clearDetail();
@@ -262,15 +281,24 @@ export default {
         saveTestDetailHandler(){
             if(this.formInline1.video_test_id === 0)
             {
-                this.$alert('请先保存测验，再添加题干。', '提示', {
-                    confirmButtonText: '确定'})
+              this.$Modal.info({
+                title: '提示',
+                content: '请先保存测验，再添加题干。'
+              });
             }
             else if(this.formInline1.video_test_roles.length === 0)
             {
-                this.$alert('请选择测验权限', '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => { }
-                                    });
+                // this.$alert('请选择测验权限', '提示', {
+                //                         confirmButtonText: '确定',
+                //                         callback: action => { }
+                //                     });
+              this.$Modal.info({
+                title:  '提示',
+                content: '请选择测验权限',
+                onOk: () => {
+                  action => { }
+                },
+              });
             }
             else
             {
@@ -302,8 +330,12 @@ export default {
                                     break;
                                 }
                             }
-                            this.$alert('保存成功。', '提示', {
-                                confirmButtonText: '确定'})
+                            // this.$alert('保存成功。', '提示', {
+                            //     confirmButtonText: '确定'})
+                          this.$Modal.info({
+                            title: '提示',
+                            content: '保存成功。'
+                          });
                         }
                     })
                 }
@@ -318,8 +350,10 @@ export default {
                                 result:this.formInline2.result,
                                 select_count:this.formInline2.select_count,
                                 video_test_id:this.formInline1.video_test_id})
-                            this.$alert('添加成功。', '提示', {
-                                confirmButtonText: '确定'})
+                          this.$Modal.info({
+                            title: '提示',
+                            content: '添加成功。'
+                          });
                         }
                     })
                 }
