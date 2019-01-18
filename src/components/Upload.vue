@@ -253,6 +253,7 @@
     }
 
     .upload-btn {
+        margin-bottom: 10px !important;
         margin-left: 12px;
         background: #F06B1D;
         border-radius: 4px;

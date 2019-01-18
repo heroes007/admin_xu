@@ -755,7 +755,7 @@ export default {
         border-bottom: 1px solid #ebebec;
         padding: 0 20px;
         span {
-          color: #7ab854;
+          color: #657180 !important;
           margin-right: 15px;
         }
       }

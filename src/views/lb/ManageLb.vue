@@ -137,6 +137,9 @@
         color: #5fa137;
         font-size: 14px;
     }
+    /deep/ .ivu-input-number{
+        width: calc(100% - 70px) !important;
+    }
 </style>
 
 <script>

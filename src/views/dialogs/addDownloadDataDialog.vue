@@ -1,5 +1,5 @@
 <template>
-<el-dialog :title="payload === 0?'添加公共资料':'课程资料上传'" v-model="addDownloadDataDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
+<Modal :title="payload === 0?'添加公共资料':'课程资料上传'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
@@ -19,7 +19,7 @@
                            </FormItem>
                     <FormItem :label-width='0'>
                         <file-uploader :filters="dataFilters" maxFileCount="1"
-                                    :maxFileSize="30000"  @uploadComplete="uploadComplete" 
+                                    :maxFileSize="30000"  @uploadComplete="uploadComplete"
                                     bucket="dscj-static-file" :dir='getDir()'/>
                    </FormItem>
                     <FormItem class="btn-content" label-width='0'>
@@ -29,7 +29,7 @@
             </Row>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>
@@ -104,7 +104,7 @@ export default {
             if(this.payload === 0)
             {
                 return 'datacenter/public/' + doTimeFormat(new Date().toString());
-            } 
+            }
             return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
          },
         uploadComplete(id,result) {
@@ -141,106 +141,30 @@ export default {
 }
 </script>
 <style lang="scss">
-#add-download-data-container {
-    @import "base.scss";
-    input,
-    textarea {
-        resize: none;
-        outline: none;
-    }
-    .close-dialog-panel {
-        position: absolute;
-        top: -70px;
-        right: -13.5px;
-        z-index: 99999;
-        font-size: 30px;
-        cursor: pointer;
-        &:before {
-            // color: #fff;
-            color: #757575;
+    #add-download-data-container {
+        @import "base.scss";
+        input,
+        textarea {
+            resize: none;
+            outline: none;
         }
-    }
-    .el-dialog {
-        width: 500px;
-        background: none;
-        .title {
-            font-size: 14px;
-            color: #757575;
-            letter-spacing: 1px;
-            line-height: 20px;
-            margin-top: 0;
-        }
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-
-        .el-dialog__body {
-            margin-bottom: -20px;
-            background-color: #fff;
-            border-radius: 0 0 4px 4px;
-            padding-bottom: 10px;
-            .el-form-item__label {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-        }
-        .add-teacher-form {
-            width: 90%;
-            margin: 0 auto;
-            .el-select {
-                width: 100%;
-            }
-            input {
-                border-radius: 0;
-                border: 1px solid #CCCCCC;
-            }
-            
-            .el-input-number {
-                width: 100%;
-            }
-            .el-date-editor--daterange {
-                width: 100%;
-            }
-            .btn-content {
-
-                margin-top: 50px;
-            }
-            .el-form-item__content {
-                // margin-left: 0 !important;
-                line-height: 0;
-                .el-textarea {
-                    .el-textarea__inner {
-                        background: #FFFFFF;
-                        border: 1px solid #CCCCCC;
-                        height: 140px;
-                        border-radius: 0;
-                        // width: 390px;
-                    }
-                }
-                .upload-field {
-                    padding:16px 0;
-                    border: 0;
-                }
-            }
-            .sub-btn {
-                background: #FB843E;
-                border-radius: 4px;
-                width: 200px;
-                height: 36px;
-                border: 0;
-            }
-            .cancel-btn {
-                background: #FFFFFF;
-border: 1px solid #999999;
-border-radius: 4px;
-width: 100px;
-height: 36px;
-color:#000000;
+        .close-dialog-panel {
+            position: absolute;
+            top: -70px;
+            right: -13.5px;
+            z-index: 99999;
+            font-size: 30px;
+            cursor: pointer;
+            &:before {
+                // color: #fff;
+                color: #757575;
             }
         }
     }
-}
+    .btn-content{
+        text-align: center;
+    }
+    .sub-btn{
+        width: 170px;
+    }
 </style>

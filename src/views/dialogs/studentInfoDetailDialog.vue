@@ -279,7 +279,7 @@
         data() {
             return {
                 studentInfoDetailDialog: true,
-                activeName: '0',
+                activeName: 0,
                 form1: {
                     project_id: this.$store.state.project.select_project_id,
                     grade_id: 0,
