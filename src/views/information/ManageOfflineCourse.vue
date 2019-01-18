@@ -2,7 +2,7 @@
 <div class='manage-offline-course'>
     <header-component :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler" />
     <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester'
-        @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler"
+        @expand='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler"
         @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
     <save-order v-if='dirty' @saveOrder='saveOrderHandler' />
 </div>
@@ -328,10 +328,11 @@ export default {
             }
         },
         rowExpandHandler(row) {
-            if (row.childData.length === 0)
-                this.$store.dispatch('get_offline_curriculum_list', {
-                    offline_term_id: row.id
-                })
+          if (row.childData.length === 0){
+            this.$store.dispatch('get_offline_curriculum_list', {
+              offline_term_id: row.id
+            })
+          }
         },
         manageSignupHandler(index, row) {
             this.$router.push({

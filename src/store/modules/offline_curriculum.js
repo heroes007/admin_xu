@@ -58,12 +58,13 @@ const actions = {
                 }
             });
         },
-
         get_offline_curriculum_list({
             commit
         }, param) {
+            console.log({commit}, param)
             commit(types.OFFLINE_CURRICULUM_LIST_LOADING, param)
             get_offline_curriculum_list(param.offline_term_id).then(res => {
+                console.log(res,123123)
                 if (res.data.res_code === 1) {
                     commit(types.OFFLINE_CURRICULUM_LIST_LOADED, {
                         result: res.data.msg,

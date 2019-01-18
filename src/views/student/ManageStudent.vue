@@ -222,7 +222,7 @@ export default {
                     render: h => {
                         return h('div', [
                             h('p', '显示按钮'),
-                            h('br'), h('br'), 
+                            h('br'), h('br'),
                             h('Button', '保存')
                         ])
                     }
@@ -362,7 +362,7 @@ export default {
                 width: 130
             }, {
                 prop: 'times',
-                label: '学期',  
+                label: '学期',
                 width: 80
             }, {
                 label: '操作',

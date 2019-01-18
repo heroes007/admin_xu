@@ -1,7 +1,7 @@
 <template>
     <Modal title="编辑回执" v-model="editOfflineSignupDialog" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :styles="{width: '600px'}"
         :mask-closable="false">
-        <base-input @closedialog="handleClose" :baseInputWidth="600">
+        <base-input @closedialog="handleClose">
             <div slot="body">
                 <Form :model="formInline1" class="row1-test-form" :label-width="180">
                     <FormItem label="姓名">
@@ -154,6 +154,15 @@
 
 </script>
 <style scoped lang="scss">
+    .sub-btn{
+        width: 170px;
+    }
+    /deep/ .ivu-form-item-content{
+        width: 100%;
+    }
+    /deep/ .ivu-form-item{
+        width: 340px;
+    }
     #edit-offline-signup-container {
         @import "base.scss";
         input,

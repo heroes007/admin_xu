@@ -18,9 +18,9 @@
                             <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
                         </upload-panel>
                    </FormItem>
-                    <FormItem class="btn-content">
+                    <div class="btn-content">
                         <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
-                   </FormItem>
+                   </div>
                 </Form>
             </Row>
         </Row>
@@ -122,6 +122,10 @@ export default {
 /deep/.ivu-modal-body{
     width: 80%;
     margin-left: 10%;
+}
+.sub-btn{
+    width: 170px;
+    margin-bottom: 10px;
 }
 #add-teacher-container {
 @import "base.scss";

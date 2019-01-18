@@ -1,5 +1,5 @@
 <template>
-<Modal :transfer=false :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true" v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" :styles="{width: '600px'}" :mask-closable="false">
+<Modal :transfer=false :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true" v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="800" :mask-closable="false">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="dialogIndex==1">
@@ -108,7 +108,7 @@
                             </Row>
                             <Row class="course-list">
                                 <CheckboxGroup v-model="unchecked_top_courses" @on-change="handleCheckedCitiesChange" class="course-item">
-                                    <Checkbox  v-for="(item, index) in query_replace_online_course_list" :key="item.id" :label="item._index">
+                                    <Checkbox class="course-option"  v-for="(item, index) in query_replace_online_course_list" :key="item.id" :label="item._index">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
                                     </Checkbox>
                                 </CheckboxGroup>
@@ -125,7 +125,7 @@
                             </Row>
                             <Row class="course-list">
                                 <CheckboxGroup v-model="checked_top_courses" @on-change="handleUnCheckedCitiesChange" class="course-item">
-                                    <Checkbox  v-for="(item, index) in top_course_list" :key="item.id" :label="item._index">
+                                    <Checkbox  class="course-option" v-for="(item, index) in top_course_list" :key="item.id" :label="item._index">
                                         <span class="course-num">{{item._index}}</span>{{item.title}}
                                     </Checkbox>
                                 </CheckboxGroup>
@@ -519,4 +519,31 @@ export default {
       }
     }
 }
+    .course-list{
+        height: 640px;
+        overflow-y: auto;
+        text-align: left;
+    }
+    .course-item{
+        display: flex;
+        flex-direction: column;
+    }
+    .course-option{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 14px;
+        line-height: 28px;
+    }
+    .btns{
+        margin-top: 30px;
+        position: relative;
+    }
+    .pre-btn{
+        position: absolute;
+        left: 0;
+    }
+    .public-btn{
+        width: 170px;
+    }
 </style>

@@ -56,10 +56,9 @@
                     <Button type="primary" class="modal-btn-save" @click='changeDealer'>保存</Button>
                 </Row>
             </Modal>
-            <Modal :width="840" :transfer=false v-model="dialogVisible" size="small"
+            <Modal :width="800" :transfer=false v-model="dialogVisible" size="small"
                    class='add-student-view'
-                   :footer-hide="true"
-                    :styles="{width: '900px'}">
+                   :footer-hide="true">
                 <div slot="header" class="modal-title">
                     用户信息
                 </div>
@@ -134,7 +133,7 @@
     </div>
 </template>
 
-<style scoped lang="scss" scoped>
+<style lang="scss" scoped>
     .modal-btn-save{
       width: 140px;
       height: 36px;
@@ -196,11 +195,9 @@
     .modal-title{
         padding: 20px;
         text-align: center;
-        background-color: #546573;
         color: #fff;
         font-size: 16px;
         font-weight: 700;
-        border-radius: 6px 6px 0 0;
     }
     .modal-user{
         font-size: 14px;
@@ -217,6 +214,10 @@
     .search-role{
         width: 200px;
         text-align: left;
+    }
+    /deep/.ivu-modal-body{
+        width: 80%;
+        margin: 0 auto;
     }
 </style>
 
