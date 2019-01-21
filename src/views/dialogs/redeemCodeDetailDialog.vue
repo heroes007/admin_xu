@@ -31,9 +31,6 @@ import {
     get_list_by_group
 } from '../../api/modules/tools_redeem_code'
 import {
-    Loading
-} from 'element-ui'
-import {
     Config
 } from '../../config/base'
 

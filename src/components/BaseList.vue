@@ -18,7 +18,7 @@
             <template slot-scope="{ column, row, index }" slot="normalHeader">
                 <Tooltip :transfer=true
                          v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark && (doMix(column,row) || doMix(column,row) === 0)"
-                         :content="doMix(column,row)">
+                         :content="doMix(column,row)" max-width="auto">
                         <span>
                             {{doMix(column,row)}}
                         </span>
@@ -28,7 +28,7 @@
                     </span>
                 <Tooltip
                         v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark && (showPropValue(column.prop,row) || showPropValue(column.prop,row) === 0)"
-                        :content="showPropValue(column.prop,row)">
+                        :content="showPropValue(column.prop,row)" max-width="auto">
                     <span>{{showPropValue(column.prop,row)}}</span>
                 </Tooltip>
                 <span v-if="!column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark">
@@ -342,7 +342,6 @@
             }
           }
         })
-        console.log(this.tableData,111111)
       },
       getHeaderLabel(item) {
         return item.ruleCount ? item.label + '(' + item.ruleCount + ')' : item.label;
@@ -358,10 +357,10 @@
         return row[propname];
       },
       comboChangeHandler(row, index, actionName, key) {
-        if(this.states){
-           this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
-        }else{
-           this.states = 1;
+        if (this.states) {
+          this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+        } else {
+          this.states = 1;
         }
       },
       getComboModel(prop, row) {
@@ -384,7 +383,7 @@
           this.$emit('expandOpen', row);
         }
         this.tableData.map((it) => {
-          if(it.id == row.id) it._expanded = expanded
+          if (it.id == row.id) it._expanded = expanded
         })
       },
       rowClickHandler(row, event, column) {

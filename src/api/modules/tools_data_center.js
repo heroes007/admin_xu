@@ -24,7 +24,7 @@ export function add_data_center(param) {
 
 export function set_data_center_pre_curriculums(data_center_id,curriculum_ids) {
     if(data_center_id&&curriculum_ids){
-        return api.post('api/tools_data_center/set_data_center_pre_curriculums',{data_center_id:data_center_id,curriculum_ids:curriculum_ids});
+            return api.post('api/tools_data_center/set_data_center_pre_curriculums',{data_center_id:data_center_id,curriculum_ids:curriculum_ids});
     }
 }
 
