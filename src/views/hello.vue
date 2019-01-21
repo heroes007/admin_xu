@@ -34,7 +34,6 @@
       this.$store.dispatch('get_message');
      // this.getContent();
     },
-
     components: {cTitle}
   }
 
