@@ -7,18 +7,24 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const devMode = process.env.NODE_ENV !== 'production'
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 var webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
   module: {
     rules: [{
+      test: /\.js$/,
+      loaders: ['babel-loader'],
+      exclude: /(node_modules|bower_components)/,
+  },{
       test: /\.vue$/,
       use: [{
         loader: 'vue-loader',
         options: {
           loaders: {
-            css: [MiniCssExtractPlugin.loader,"css-loader", "vue-style-loader"],
-            scss: [MiniCssExtractPlugin.loader,"css-loader", "vue-style-loader", "sass-loader"])
+            css: [MiniCssExtractPlugin.loader,"css-loader"],
+            scss: [MiniCssExtractPlugin.loader,"sass-loader"]
           }
         }
       },
@@ -54,11 +60,14 @@ var webpackConfig = merge(baseWebpackConfig, {
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: config.build.productionSourceMap,
+        sourceMap: true,
       }),
-      new OptimizeCSSPlugin({
-        // 可自己配置，建议第一次升级先不配置
-      }),
+      new OptimizeCssAssetsPlugin({
+        // assetNameRegExp: [/\.optimize\.css$/g,/\.optimize\.scss$/g],
+        // cssProcessor: require('cssnano'),
+        // cssProcessorOptions: { safe: true, discardComments: { removeAll: true } },
+        // canPrint: true
+      })
     ],
     splitChunks: {
       // 可自己配置，建议第一次升级先不配置
@@ -75,9 +84,10 @@ var webpackConfig = merge(baseWebpackConfig, {
     // extract css into its own file
     // new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
     new MiniCssExtractPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash:12].css'),
+      filename: config.base.assetsPath +'css/[name].[contenthash:12].css',
       allChunks: true,
     }),
+    // new UglifyJsPlugin(),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
@@ -107,16 +117,16 @@ var webpackConfig = merge(baseWebpackConfig, {
       //minChunks: Infinity
 
     }),*/
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module, count) {
-        return module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   minChunks: function (module, count) {
+    //     return module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
+    //   }
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'manifest',
+    //   chunks: ['vendor']
+    // }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     /*new webpack.optimize.CommonsChunkPlugin({

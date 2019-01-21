@@ -53,7 +53,7 @@
                             分享链接：
                             <Input placeholder='请输入内容' v-model='lbData.share_url'></Input>
                         </Row>
-                        <Row class='user-data' type='flex' justify='start' align='middle'>
+                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             排序序号：
                             <InputNumber v-model="lbData.orderby"></InputNumber>
                         </Row>
@@ -84,8 +84,9 @@
                     @on-page-size-change="handleSizeChange"
                     @on-change="handleCurrentChange"
                     :current="curPage"
-                    :page-size-opts="[1,10, 20, 50, 100]"
+                    :page-size-opts="[10, 20, 50, 100]"
                     :page-size="pageSize"
+                    show-sizer
                     :total="total">
             </Page>
         </Row>
@@ -94,6 +95,9 @@
 </template>
 
 <style scoped lang="scss">
+    /deep/ .ivu-input-number{
+        width: calc(100% - 70px) !important;
+    }
     .ivu-input-wrapper{
         width: calc(100% - 70px) !important;
     }
@@ -150,8 +154,6 @@
     import { get_sign } from '../../api/modules/ali_oss'
     import { get_detail, update_lb, add_lb } from '../../api/modules/tools_lb'
     import { Loading } from 'element-ui';
-
-
     export default{
         data(){
             return {
@@ -280,89 +282,29 @@
                     }
                 });
             },
+            hanleIsEditRes(res){
+                 if(res.res_code === 1){
+                    this.$store.dispatch('get_lb_list', {curPage: this.curPage, pageSize: this.pageSize});
+                    this.dialogVisible = false;
+                    this.$Message.success('保存广告成功！');
+                }else this.$Message.warning('保存广告失败：' + res.msg);
+            },
             submit(){
                 this.lbData.img_url = this.lbData.img_url ? JSON.stringify(this.lbData.img_url) : '';
                 this.lbData.share_img_url = this.lbData.share_img_url ? JSON.stringify(this.lbData.share_img_url) : '';
-                if(this.isEdit)
-                {
+                if(this.isEdit){
                     update_lb(this.lbData).then((res) => {
-                        if(res.data.res_code === 1)
-                        {
-                            this.$store.dispatch('get_lb_list', {curPage: this.curPage, pageSize: this.pageSize});
-                            this.dialogVisible = false;
-                            alert('保存广告成功！');
-                        }
-                        else
-                        {
-                            alert('保存广告失败：' + res.data.msg);
-                        }
+                       if(res.data) this.hanleIsEditRes(res.data)
                     })
-                }
-                else
-                {
+                }else{
                     add_lb(this.lbData).then((res) => {
-                    if(res.data.res_code === 1)
-                    {
-                        this.$store.dispatch('get_lb_list', {curPage: this.curPage, pageSize: this.pageSize});
-                        this.dialogVisible = false;
-                        alert('保存广告成功！');
-                    }
-                    else
-                    {
-                        alert('保存广告失败：' + res.data.msg);
-                    }
-                })
+                     if(res.data) this.hanleIsEditRes(res.data)
+                    })
                 }
             }
         },
         mounted() {
-            if (this.list.length === 0) {
-                this.$store.dispatch('get_lb_list', {curPage: 1, pageSize: 10})
-            }
-
-
-//             var getFlagArrs = function (m, n) {
-//     if(!n || n < 1) {
-//         return [];
-//     }
-
-//     var resultArrs = [],
-//         flagArr = [],
-//         isEnd = false,
-//         i, j, leftCnt;
-
-//     for (i = 0; i < m; i++) {
-//         flagArr[i] = i < n ? 1 : 0;
-//     }
-
-//     resultArrs.push(flagArr.concat());
-
-//     while (!isEnd) {
-//         leftCnt = 0;
-//         for (i = 0; i < m - 1; i++) {
-//             if (flagArr[i] == 1 && flagArr[i+1] == 0) {
-//                 for(j = 0; j < i; j++) {
-//                     flagArr[j] = j < leftCnt ? 1 : 0;
-//                 }
-//                 flagArr[i] = 0;
-//                 flagArr[i+1] = 1;
-//                 var aTmp = flagArr.concat();
-//                 resultArrs.push(aTmp);
-//                 if(aTmp.slice(-n).join("").indexOf('0') == -1) {
-//                     isEnd = true;
-//                 }
-//                 break;
-//             }
-//             flagArr[i] == 1 && leftCnt++;
-//         }
-//     }
-//     return resultArrs;
-// }
-
-// console.log(getFlagArrs(12,5));
-
-// var data = [{name:'翟',data:(1 | 2 )},{name:'杜锐'}]
-
+            if (this.list.length === 0)  this.$store.dispatch('get_lb_list', {curPage: 1, pageSize: 10})
         },
         computed: {
             list(){

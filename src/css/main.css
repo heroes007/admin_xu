@@ -66,3 +66,10 @@ body { background-color: #fff; height: 100%; }
 .ivu-modal-content{
   border-radius: 0 !important
 }
+.sub-btn {
+  background: #FB843E;
+  border-radius: 4px;
+  width: 200px;
+  height: 36px;
+  border: 0;
+}

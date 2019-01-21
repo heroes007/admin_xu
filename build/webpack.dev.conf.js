@@ -21,6 +21,11 @@ module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   module: {
     rules: [{
+        test: /\.js$/,
+        use: ['babel-loader'],
+        exclude: /(node_modules|bower_components)/,
+      },
+      {
         test: /\.vue$/,
         use: [{
               loader: 'vue-loader',

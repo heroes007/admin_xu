@@ -4,12 +4,12 @@
     <Row>
         <Form :inline="true" :model="formInline" class="find-by-term">
             <FormItem label="学科" :label-width="40">
-                <Select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
+                <Select multiple v-model="formInline.subject_id" placeholder="请选择学科" @on-change='changeFilterHandler'>
                     <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
                 </Select>
            </FormItem>
             <FormItem label="面试结果" :label-width="80">
-                <Select v-model="formInline.interview_state" placeholder="请选择面试结果" @change='changeFilterHandler'>
+                <Select v-model="formInline.interview_state" placeholder="请选择面试结果" @on-change='changeFilterHandler'>
                     <Option label="笔试通过" :value="3"></Option>
                     <Option label="未面试" :value="0"></Option>
                     <Option label="面试通过" :value="1"></Option>
@@ -27,38 +27,12 @@
            </FormItem>
         </Form>
     </Row>
-    <!--<Row>
-        <Form :inline='true' :model='formInline' class='find-by-term'>
-            <FormItem>
-                <Row>
-                    <Col :span="10">
-                        <Select class="select-user" v-model="formInline.classify" placeholder="">
-                            <Option label="手机号" value="phone"></Option>
-                            <Option label="昵称" value="username"></Option>
-                            <Option label="真实姓名" value="realname"></Option>
-                            <Option label="用户ID" value="user_id"></Option>
-                        </Select>
-                    </Col>
-                    <Col :span="14">
-                        <Input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></Input>
-                    </Col>
-                </Row>
-           </FormItem>
-            <FormItem>
-                <Button type="primary" @click="onSubmit">查询</Button>
-           </FormItem>
-            <FormItem>
-                <Button type="primary" @click="onClear">清除</Button>
-           </FormItem>
-        </Form>
-    </Row>-->
-    <!--<keep-alive>-->
     <data-list class='data-list light-header' @withdraw='withdrawHandler' @interviewTimeChange='interviewTimeChangeHandler' @sendMessage='sendMessageHandler' @showDetail='showDetailHandler' :table-data='dataList'
                :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :comboModelList='comboDataList' />
-    <!--</keep-alive>-->
     <Row class='pager' type='flex' justify='end' align='middle'>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total">
-        </el-pagination>
+        <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" 
+        :current="curPage" :page-size="pageSize"  :total="total">
+        </Page>
     </Row>
 </div>
 </template>
@@ -67,7 +41,6 @@
 
 <script>
 import Header from "../../components/Header";
-import SubjectFilter from "../../components/SubjectFilter";
 import BaseList from "../../components/BaseList";
 import BackToTop from "../../components/BackToTop";
 import { MPop } from "../../components/MessagePop";
@@ -76,10 +49,7 @@ import { set_user_student_mrzx } from "../../api/modules/student";
 import { send_interview_msg } from "../../api/modules/exam";
 import { Loading } from "element-ui";
 import { Dialog } from "../dialogs";
-import {
-  RECRUIT_DETAIL,
-  INTERVIEW_TEACHER_ARRANGEMENT
-} from "../dialogs/types";
+import { RECRUIT_DETAIL,  INTERVIEW_TEACHER_ARRANGEMENT } from "../dialogs/types";
 import { Config } from "../../config/base";
 import { mapState, mapActions } from "vuex";
 import { doDateFormat, doTimeFormat } from "../../components/Util";
@@ -125,32 +95,30 @@ export default {
       "get_production_list"
     ]),
     withdrawHandler(index, row) {
-      this.$confirm("是否确认打回改报名信息？", "提示", {
-        type: "info"
-      })
-        .then(() => {
+    this.$Modal.confirm({
+          title:'提示',
+          content: "是否确认打回改报名信息？",
+          onOk: () => {
           var vm = this;
-          this.drop_student_signup({
-            id: row.id,
-            _fn: function() {
-              vm.showPop("打回成功！", 1000);
-            }
-          });
-        })
-        .catch(() => {});
+            this.drop_student_signup({
+              id: row.id,
+              _fn: function() {
+                vm.showPop("打回成功！", 1000);
+              }
+            });
+        },
+        onCancel: () => {}
+      });
     },
     teacherArrangementHandler() {
       this.handleSelModal(INTERVIEW_TEACHER_ARRANGEMENT);
     },
     interviewTimeChangeHandler() {
-      this.$alert(
-        "注意，确认面试时间后请点击发送短信，否则新的面试时间将不会被保存。",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          callback: action => {}
-        }
-      );
+       this.$Modal.confirm({
+          title: '提示',
+          content:  "注意，确认面试时间后请点击发送短信，否则新的面试时间将不会被保存。",
+          onOk: () => {}
+      });
     },
     // 姓名筛选
     handleRealname () {
@@ -158,21 +126,18 @@ export default {
       this.get_recruit_list(formData);
     },
     sendMessageHandler(index, row) {
-      this.$confirm(
-        "注意，确认后，该面试时间会立即以短信形式发送到学员手机，确认发送？",
-        "提示",
-        {
-          type: "info"
-        }
-      )
-        .then(() => {
-          send_interview_msg(row.id, row.interview_time).then(res => {
-            if (res.data.res_code === 1) {
-              this.showPop("发送成功！", 1000);
-            }
-          });
-        })
-        .catch(() => {});
+       this.$Modal.confirm({
+            title: '提示',
+            content:"注意，确认后，该面试时间会立即以短信形式发送到学员手机，确认发送？",
+            onOk: () => {
+              send_interview_msg(row.id, row.interview_time).then(res => {
+                if (res.data.res_code === 1) {
+                  this.showPop("发送成功！", 1000);
+                }
+              });
+            },
+            onCancel: () => {}
+        });
     },
     showDetailHandler(index, row) {
       this.handleSelModal(RECRUIT_DETAIL, row.id);
@@ -521,71 +486,23 @@ export default {
   },
   components: {
     "header-component": Header,
-    "subject-filter": SubjectFilter,
     "data-list": BaseList,
     "back-to-top": BackToTop
   }
 };
 </script>
 <style lang="scss">
-.el-tooltip__popper {
-  &.is-light {
-    background: #ffffff;
-    border: 1px solid #e7e8ea;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-    .more-tip {
-      max-width: 278px;
-      line-height: 1.2;
-      font-size: 14px;
-      color: #2e3e47;
-
-      & + .popper__arrow {
-        border-top-color: #e7e8ea;
-        &:after {
-          //border-top-color:#E7E8EA;
-        }
-      }
-    }
-  }
-}
 
 .manage-recruit-view {
   .base-list-container {
     .base-list-row {
       height: 60px;
-      .cell {
-        .el-button {
-          margin-right: 2px;
-          &:last-child {
-            margin-left: 10px;
-          }
-        }
-      }
     }
   }
   .find-by-term {
     padding-top: 22px;
     text-align: left;
     margin-left: 20px;
-    .el-input__inner {
-      border-radius: 0;
-      background: #ffffff;
-      border: 1px solid #e5e5e5;
-    }
-    .el-form-item__label {
-      font-size: 14px;
-      color: #141111;
-      letter-spacing: 0;
-    }
-    .el-select {
-      width: 300px;
-      &.select-user {
-        width: 100%;
-        .el-input__inner {
-          border-right: 0;
-        }
-      }
-    }
     button {
       background: #fb843e;
       border: 1px solid #f06b1d;
@@ -602,23 +519,6 @@ export default {
   .pager {
     margin: 30px 0;
     padding-right: 40px;
-
-    .el-pagination {
-      button {
-        &.disabled {
-          background-color: #ebebec;
-          border-color: #b0b3c5;
-          color: #8b9fa9;
-        }
-      }
-      .el-pager {
-        li {
-          &.active {
-            background-color: #8b9fa9;
-          }
-        }
-      }
-    }
   }
 
   .btn-add {
@@ -644,12 +544,6 @@ export default {
 
         .Col {
           line-height: 40px;
-          .el-button {
-            a {
-              color: #5fa137;
-              font-size: 14px;
-            }
-          }
           p {
             margin: 0;
             display: -webkit-box;
@@ -663,23 +557,6 @@ export default {
       .pager {
         margin: 30px 0;
         padding-right: 40px;
-
-        .el-pagination {
-          button {
-            &.disabled {
-              background-color: #ebebec;
-              border-color: #b0b3c5;
-              color: #8b9fa9;
-            }
-          }
-          .el-pager {
-            li {
-              &.active {
-                background-color: #8b9fa9;
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -710,36 +587,6 @@ export default {
   }
   .search-bar {
     margin-top: 40px;
-    .el-input-group {
-      width: 380px;
-      .el-input__inner {
-        height: 46px;
-      }
-      .el-input-group__append {
-        background-color: #7ab854;
-
-        .el-button {
-          height: 100%;
-          width: 80px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-      }
-      .el-input-group__prepend {
-        background-color: #7ab854;
-
-        .el-select {
-          height: 100%;
-          width: 110px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-
-        i {
-          color: #ffffff;
-        }
-      }
-    }
   }
   .result {
     margin: 15px 0 76px;
@@ -763,14 +610,6 @@ export default {
         font-size: 14px;
         margin-bottom: 15px;
         padding: 0 20px;
-
-        .el-button {
-          width: 140px;
-          height: 36px;
-          background-color: #7ab854;
-          color: #ffffff;
-        }
-
         &.desc {
           width: 100%;
           .el-input {

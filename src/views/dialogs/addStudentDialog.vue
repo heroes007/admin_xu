@@ -5,8 +5,8 @@
             <Row slot="body">
                 <Row class="body-top" v-if="payload.showList">
                     <Row class='search-bar' type='flex' justify='center' align='middle'>
-                        <Form :inline='true' class='find-by-term' :label-width="0">
-                            <FormItem>
+                        <Form :inline='true' class='find-by-term edirTable' :label-width="0">
+                            <FormItem class="select-user-item">
                                 <Row>
                                     <Col :span="10">
                                         <Select class="select-user" v-model="searchType" placeholder="">
@@ -23,11 +23,11 @@
                             <FormItem>
                                 <Button class="sub-btn" type="primary" @click="searchStudent">查询</Button>
                             </FormItem>
-                            <data-list class="edirTable" @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
                         </Form>
+                         <data-list class="edirTable" @create='createStudentHandler' :table-data='userList' :header-data='dataHeader'/>
                     </Row>
                 </Row>
-                <Row class="body-top" v-if="!payload.showList">
+                <Row class="body-top-showList" v-if="!payload.showList">
                     <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                         <FormItem label="选择项目">
                             <Select v-model="form.project_id" placeholder="请选择项目" disabled>
@@ -318,26 +318,30 @@
   }
 </script>
 <style lang="scss" scoped>
-    /deep/ .ivu-modal-body{
-        width: 80%;
-        margin: 0 auto;
-    }
+/deep/.ivu-modal-body{
+    padding: 24px 0 24px 0;
+}
+.body-top-showList{
+    padding: 16px;
+}
+/deep/ .ivu-form-inline .ivu-form-item { margin-right: 0; }
+.select-user-item{
+    width: calc(100% - 75px)
+}
 /deep/ .ivu-select-selected-value {
     font-size: 14px !important;
 }
 .edirTable{
-   width: calc(100% - 100px);
-   margin-left: 49px;
-}
-.searchDataCol{
-padding-left: 10px;
+   width: 100%;
 }
 .sub-btn {
     background: #FB843E;
     border-radius: 4px;
-    width: 200px;
+    width: 60px;
     height: 36px;
     border: 0;
+    position: relative;
+    left: -2.6px;
 }
 #add-student-container {
     @import "base.scss";

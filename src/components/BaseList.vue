@@ -15,12 +15,9 @@
             <template slot-scope="{ column, row, index }" slot="badge">
                 <Badge class="mark" :count="+(showBadgeCount(column.prop,row))"></Badge>
             </template>
-            <!-- <template slot-scope="{ column, row, index }" slot="sort">
-                <span>{{ index+1 }}</span>
-            </template> -->
             <template slot-scope="{ column, row, index }" slot="normalHeader">
                 <Tooltip :transfer=true
-                         v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark"
+                         v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark && (doMix(column,row) || doMix(column,row) === 0)"
                          :content="doMix(column,row)">
                         <span>
                             {{doMix(column,row)}}
@@ -30,7 +27,7 @@
                             {{doMix(column,row)}}
                     </span>
                 <Tooltip
-                        v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark"
+                        v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark && (showPropValue(column.prop,row) || showPropValue(column.prop,row) === 0)"
                         :content="showPropValue(column.prop,row)">
                     <span>{{showPropValue(column.prop,row)}}</span>
                 </Tooltip>
@@ -111,7 +108,8 @@
     data() {
       return {
         dataChange: false,
-        comboDataList: null
+        comboDataList: null,
+        states: 0
       }
     },
     props: {
@@ -286,7 +284,6 @@
             it.tooltip = true
           }
           if (it.sort) {
-            // it.slot = 'sort'
             it.type = 'index'
             it.title = this.getHeaderLabel(it)
             it.width = 65
@@ -361,7 +358,11 @@
         return row[propname];
       },
       comboChangeHandler(row, index, actionName, key) {
-        this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+        if(this.states){
+           this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+        }else{
+           this.states = 1;
+        }
       },
       getComboModel(prop, row) {
         return row[prop];
@@ -422,7 +423,6 @@
                     }
                   }
                 }
-
               }
             }
           } else {
