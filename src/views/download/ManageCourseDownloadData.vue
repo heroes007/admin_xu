@@ -22,9 +22,6 @@
     ADD_DOWNLOAD_DATA
   } from '../dialogs/types'
   import {
-    Loading
-  } from 'element-ui'
-  import {
     doTimeFormat
   } from '../../components/Util'
   import {

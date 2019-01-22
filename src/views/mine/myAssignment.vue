@@ -52,23 +52,12 @@
 <script>
     import Header from '../../components/ProjectHeader'
     import BaseList from '../../components/BaseList'
-    import {
-        doTimeFormat
-    } from '../../components/Util'
-    import {
-        Loading
-    } from 'element-ui';
-    import {
-        Dialog
-    } from '../dialogs';
+    import { doTimeFormat } from '../../components/Util'
+    import { Loading } from 'element-ui';
+    import {  Dialog } from '../dialogs';
     import * as types from '../dialogs/types';
-    import {
-        mapActions,
-        mapState
-    } from 'vuex'
-    import {
-        Config
-    } from '../../config/base'
+    import { mapActions, mapState } from 'vuex'
+    import { Config } from '../../config/base'
     export default {
         mixins: [Dialog],
         data() {
@@ -187,10 +176,10 @@
         },
         methods: {
             ...mapActions([
-                'get_subject_list',
-                'get_grade_list',
-                'get_my_assignment_list',
-                'get_project_list'
+              'get_subject_list',
+              'get_grade_list',
+              'get_my_assignment_list',
+              'get_project_list'
             ]),
             getNewList() {
                 this.get_my_assignment_list({

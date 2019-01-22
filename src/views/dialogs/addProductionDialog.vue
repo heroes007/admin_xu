@@ -94,7 +94,6 @@ import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
 import Editor from '../../components/Editor'
 import BaseList from '../../components/BaseList'
-import { Loading } from 'element-ui'
 import { Config } from '../../config/base'
 import { RemoveModal } from './mixins'
 import { mapActions, mapState, mapGetters } from 'vuex';

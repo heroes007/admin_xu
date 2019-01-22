@@ -29,7 +29,6 @@ import {
     mapActions,
     mapState
 } from 'vuex';
-import { Loading } from 'element-ui'
 import { Config } from '../../config/base'
     import {
     MPop

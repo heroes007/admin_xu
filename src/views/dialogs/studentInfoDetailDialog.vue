@@ -256,7 +256,6 @@
 
     import defaultAvator from '../../assets/img/side-menu/default-header.jpg'
     import { doSortFormatCatalogList } from '../../components/Util'
-    import { Loading } from 'element-ui'
     import { Config } from '../../config/base'
     import {
         MPop

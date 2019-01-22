@@ -31,8 +31,6 @@
 </div>
 </template>
 
-
-
 <script>
 import Header from "../../components/Header";
 import SubjectFilter from "../../components/SubjectFilter";

@@ -18,7 +18,7 @@
             <template slot-scope="{ column, row, index }" slot="normalHeader">
                 <Tooltip :transfer=true
                          v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark && (doMix(column,row) || doMix(column,row) === 0)"
-                         :content="doMix(column,row)" max-width="auto">
+                         :content="doMix(column,row)" max-width="400" theme="light">
                         <span>
                             {{doMix(column,row)}}
                         </span>
@@ -28,7 +28,7 @@
                     </span>
                 <Tooltip
                         v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark && (showPropValue(column.prop,row) || showPropValue(column.prop,row) === 0)"
-                        :content="showPropValue(column.prop,row)" max-width="auto">
+                        :content="showPropValue(column.prop,row)" max-width="auto" theme="light">
                     <span>{{showPropValue(column.prop,row)}}</span>
                 </Tooltip>
                 <span v-if="!column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark">

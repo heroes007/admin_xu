@@ -156,7 +156,6 @@ import {
     mapActions,
     mapState
 } from 'vuex';
-import { Loading } from 'element-ui'
 import { get_detail } from '../../api/modules/tools_curriculum'
 import { cleanHtmlLabel } from '../../components/Util'
 import { Config } from '../../config/base'

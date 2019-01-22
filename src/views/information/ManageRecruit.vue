@@ -30,14 +30,12 @@
     <data-list class='data-list light-header' @withdraw='withdrawHandler' @interviewTimeChange='interviewTimeChangeHandler' @sendMessage='sendMessageHandler' @showDetail='showDetailHandler' :table-data='dataList'
                :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :comboModelList='comboDataList' />
     <Row class='pager' type='flex' justify='end' align='middle'>
-        <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" 
+        <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange"
         :current="curPage" :page-size="pageSize"  :total="total">
         </Page>
     </Row>
 </div>
 </template>
-
-
 
 <script>
 import Header from "../../components/Header";

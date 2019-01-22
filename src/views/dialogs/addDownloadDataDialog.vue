@@ -42,9 +42,7 @@ import Uploader from '../../components/Upload'
 import {
     get_category_by_id
 } from '../../api/modules/tools_task'
-import {
-    Loading
-} from 'element-ui'
+
 import {
     Config
 } from '../../config/base'

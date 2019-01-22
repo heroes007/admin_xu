@@ -16,16 +16,16 @@
                 </FormItem>
             </Form>
         </Row>
-        <data-list class='data-list light-header' 
+        <data-list class='data-list light-header'
             @editProtocol = 'editProtocol'
-            @edit='editHandler' 
-            @detail='showCourseDetailHandler' 
-            @delete='deleteHandler' 
+            @edit='editHandler'
+            @detail='showCourseDetailHandler'
+            @delete='deleteHandler'
             :table-data='dataList'
-            :header-data='dataHeader' 
-            :column-formatter='listColumnFormatter' 
-            :column-formatter-data='listColumnFormatterData' 
-            :comboIsSelect='true' 
+            :header-data='dataHeader'
+            :column-formatter='listColumnFormatter'
+            :column-formatter-data='listColumnFormatterData'
+            :comboIsSelect='true'
             :columnComboData='columnComboData'
             :comboModelList='comboDataList'>
         </data-list>
@@ -42,7 +42,6 @@ import { MPop } from "../../components/MessagePop";
 import api from "../../api/modules/config";
 import { set_user_student_mrzx } from "../../api/modules/student";
 import { send_interview_msg } from "../../api/modules/exam";
-import { Loading, Message } from "element-ui";
 import { Dialog } from "../dialogs";
 import { ADD_PRODUCTION, EDIT_PROTOCOL } from "../dialogs/types";
 import { Config } from "../../config/base";

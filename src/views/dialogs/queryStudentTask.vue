@@ -36,9 +36,6 @@ import {
     get_student_detail
 } from '../../api/modules/tools_student'
 import {
-    Loading
-} from 'element-ui'
-import {
     Config
 } from '../../config/base'
 import {
