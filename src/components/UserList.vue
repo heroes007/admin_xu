@@ -1,4 +1,4 @@
-<template>
+    <template>
     <div class='list-container'>
         <Row class='search-bar' type='flex' justify='space-between' align='middle'>
             <Col>

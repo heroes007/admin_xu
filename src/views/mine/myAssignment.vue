@@ -3,25 +3,25 @@
         <header-component :type='4' @reRenderList="reRenderListHandler" style="margin-bottom:20px;"/>
          <Form :inline="true" :label-width="80" style="text-align:left">
              <FormItem label="学科：">
-                 <Select v-model="selectSubject" placeholder="请选择" @change='getNewList'>
+                 <Select v-model="selectSubject" placeholder="请选择" @on-change='getNewList'>
                     <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id">
                     </Option>
                 </Select>
             </FormItem>
              <FormItem label="学段：">
-                 <Select v-model="selectGrade" placeholder="请选择" @change='getNewList'>
+                 <Select v-model="selectGrade" placeholder="请选择" @on-change='getNewList'>
                     <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id">
                     </Option>
                 </Select>
             </FormItem>
              <FormItem label="类型：">
-                 <Select v-model="selectType" placeholder="请选择" @change='getNewList'>
+                 <Select v-model="selectType" placeholder="请选择" @on-change='getNewList'>
                     <Option :label="item.name" :value="item.id" v-for='item in categoryList' :key="item.id">
                     </Option>
                 </Select>
             </FormItem>
              <FormItem label="状态：">
-                 <Select v-model="selectState" placeholder="请选择" @change='getNewList'>
+                 <Select v-model="selectState" placeholder="请选择" @on-change='getNewList'>
                     <Option label="已发送" :value="0">
                     </Option>
                     <Option label="未上传" :value="1">
@@ -52,23 +52,12 @@
 <script>
     import Header from '../../components/ProjectHeader'
     import BaseList from '../../components/BaseList'
-    import {
-        doTimeFormat
-    } from '../../components/Util'
-    import {
-        Loading
-    } from 'element-ui';
-    import {
-        Dialog
-    } from '../dialogs';
+    import { doTimeFormat } from '../../components/Util'
+    import { Loading } from 'element-ui';
+    import {  Dialog } from '../dialogs';
     import * as types from '../dialogs/types';
-    import {
-        mapActions,
-        mapState
-    } from 'vuex'
-    import {
-        Config
-    } from '../../config/base'
+    import { mapActions, mapState } from 'vuex'
+    import { Config } from '../../config/base'
     export default {
         mixins: [Dialog],
         data() {
@@ -131,7 +120,8 @@
                 },
                 {
                     prop: 'name',
-                    label: '任务名称'
+                    label: '任务名称',
+                    width: 100
                 },
                 {
                     label: '操作',
@@ -186,10 +176,10 @@
         },
         methods: {
             ...mapActions([
-                'get_subject_list',
-                'get_grade_list',
-                'get_my_assignment_list',
-                'get_project_list'
+              'get_subject_list',
+              'get_grade_list',
+              'get_my_assignment_list',
+              'get_project_list'
             ]),
             getNewList() {
                 this.get_my_assignment_list({
@@ -243,7 +233,7 @@
     }
 
 </script>
-<style lang='scss'>
+<style scoped lang='scss'>
     .my-assignment-view {
         .data-filters {
             margin: 30px 0;
@@ -264,5 +254,8 @@
                 }
             }
         }
+    }
+    /deep/ .ivu-select-single .ivu-select-selection .ivu-select-placeholder,/deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+        width: 200px;
     }
 </style>

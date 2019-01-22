@@ -81,7 +81,6 @@
   import BackToTop from '../../components/BackToTop'
   import api from '../../api/modules/config'
   import {set_user_student_mrzx} from '../../api/modules/student'
-  import {Loading} from 'element-ui'
   import {Dialog} from '../dialogs'
   import {doDateFormat, doTimeFormat} from "../../components/Util";
   import {

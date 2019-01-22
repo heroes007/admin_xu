@@ -48,9 +48,6 @@
         clear_online_curriculum_record
     } from '../../api/modules/tools_student'
     import {
-        Loading
-    } from 'element-ui'
-    import {
         Config
     } from '../../config/base'
     import {

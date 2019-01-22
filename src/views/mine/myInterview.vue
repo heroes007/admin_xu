@@ -4,7 +4,7 @@
     <Row>
         <Form :inline="true" :model="formInline" class="find-by-term">
             <FormItem label="面试状态" :label-width="80">
-                <Select v-model="formInline.interview_state" placeholder="请选择面试状态" @change='changeFilterHandler'>
+                <Select v-model="formInline.interview_state" placeholder="请选择面试状态" @on-change='changeFilterHandler' style="width: 300px">
                     <Option label="未面试" :value="0"></Option>
                     <Option label="面试通过" :value="1"></Option>
                     <Option label="面试未通过" :value="2"></Option>
@@ -25,13 +25,11 @@
     <data-list class='data-list light-header' @finishInterview='finishInterviewHandler' @showComment='showCommentHandler' @showDetail='showDetailHandler' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
     <!--</keep-alive>-->
     <Row class='pager' type='flex' justify='end' align='middle'>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total">
-        </el-pagination>
+        <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size="pageSize" :total="total">
+        </Page>
     </Row>
 </div>
 </template>
-
-
 
 <script>
 import Header from "../../components/Header";
@@ -84,13 +82,13 @@ export default {
       "change_interview_state"
     ]),
     finishInterviewHandler(index, row) {
-      this.$confirm("确认面试已完成？点击后不可修改", "提示", {
-        type: "warning"
-      })
-        .then(() => {
+      this.$Modal.confirm({
+        title: '提示',
+        content: '<p>确认面试已完成？点击后不可修改</p>',
+        onOk: () => {
           this.change_interview_state({ id: row.id, interview_state: 1 });
-        })
-        .catch(() => {});
+        },
+      });
     },
     showCommentHandler(index, row) {
       this.handleSelModal(ADD_INTERVIEW_COMMENT, row);
@@ -411,27 +409,11 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.el-tooltip__popper {
-  &.is-light {
-    background: #ffffff;
-    border: 1px solid #e7e8ea;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-    .more-tip {
-      max-width: 278px;
-      line-height: 1.2;
-      font-size: 14px;
-      color: #2e3e47;
+<style scoped lang="scss">
 
-      & + .popper__arrow {
-        border-top-color: #e7e8ea;
-        &:after {
-          //border-top-color:#E7E8EA;
-        }
-      }
+    /deep/ .ivu-select-single .ivu-select-selection .ivu-select-placeholder,/deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+        /*width: 200px;*/
     }
-  }
-}
 
 .manage-my-interview-view {
   .base-list-container {
