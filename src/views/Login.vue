@@ -119,26 +119,6 @@
                 }
             }
             margin-bottom: 14px;
-            &.submit {
-                .el-button {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 0;
-                    border: 0;
-                    background-color: #FB843E;
-                    &.isLogining {
-                        color: #ffffff;
-                    }
-                    color: #ffffff;
-                    font-size: 16px;
-                    .elRow {
-                        margin-bottom: 0;
-                        span {
-                            margin-right: 5px;
-                        }
-                    }
-                }
-            }
             .el-input {
                 width: 278px;
                 height: 48px;

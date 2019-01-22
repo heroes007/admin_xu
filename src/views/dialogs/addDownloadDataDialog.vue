@@ -1,5 +1,5 @@
 <template>
-<Modal :title="payload === 0?'添加公共资料':'课程资料上传'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
+<Modal :title="payload === 0?'添加公共资料':'课程资料上传'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)"  :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
@@ -22,7 +22,7 @@
                                     :maxFileSize="30000"  @uploadComplete="uploadComplete"
                                     bucket="dscj-static-file" :dir='getDir()'/>
                    </FormItem>
-                    <FormItem class="btn-content" label-width='0'>
+                    <FormItem class="btn-content" :label-width='0'>
                         <Button type="primary" class="sub-btn" @click="saveHandler">完成</Button>
                    </FormItem>
                 </Form>
@@ -31,33 +31,16 @@
     </base-input>
 </Modal>
 </template>
-
 <script>
 import BaseInput from '../../components/BaseInput'
-import {
-    RemoveModal
-} from './mixins'
+import { RemoveModal } from './mixins'
 import UploadPanel from '../../components/UploadPanel'
 import Uploader from '../../components/Upload'
-import {
-    get_category_by_id
-} from '../../api/modules/tools_task'
-import {
-    Loading
-} from 'element-ui'
-import {
-    Config
-} from '../../config/base'
-import {
-    doTimeFormat
-} from '../../components/Util'
-import {
-    mapState,
-    mapActions
-} from 'vuex'
-import {
-    MPop
-} from '../../components/MessagePop'
+import { get_category_by_id } from '../../api/modules/tools_task'
+import { Config } from '../../config/base'
+import { doTimeFormat } from '../../components/Util'
+import { mapState, mapActions } from 'vuex'
+import { MPop } from '../../components/MessagePop'
 export default {
     mixins: [RemoveModal,MPop],
     props: {
@@ -72,7 +55,7 @@ export default {
     },
     computed:{
          ...mapState({
-                projectId:state => state.project.select_project_id,
+            projectId:state => state.project.select_project_id,
             query_grade_list: state => state.grade.grade_list,
             query_subject_list: state => state.subject.subject_list,
             }),
@@ -96,29 +79,17 @@ export default {
         }
     },
     methods: {
-        ...mapActions([
-            'add_course_download_data',
-            'add_public_download_data'
-        ]),
+        ...mapActions([ 'add_course_download_data', 'add_public_download_data' ]),
         getDir() {
-            if(this.payload === 0)
-            {
-                return 'datacenter/public/' + doTimeFormat(new Date().toString());
-            }
+            if(this.payload === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
             return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
          },
         uploadComplete(id,result) {
             this.form.download_url = result.url;
         },
         saveHandler() {
-           if(this.payload === 0)
-           {
-               this.add_public_download_data(this.form);
-           }
-           else
-           {
-               this.add_course_download_data(this.form);
-           }
+           if(this.payload === 0) this.add_public_download_data(this.form);
+           else this.add_course_download_data(this.form);
         },
         handleClose() {
             this.addDownloadDataDialog = false;
@@ -132,8 +103,7 @@ export default {
         };
         this.form.project_id = this.projectId;
         this.form.type = this.payload;
-        if(this.form.type === 0)
-        {
+        if(this.form.type === 0){
             this.form.grade_id = 0;
             this.form.subject_id = 0;
         }

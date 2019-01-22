@@ -22,9 +22,7 @@
                                     <Option label="用户ID" value="user_id"></Option>
                                 </Select>
                             </Col>
-                            <Col :span="14">
-                                <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
-                            </Col>
+                            <Col :span="14"><Input v-model="searchData" placeholder="请输入搜索内容"></Input></Col>
                         </Row>
                     </FormItem>
                     <FormItem>
@@ -35,11 +33,7 @@
                     </FormItem>
                 </Form>
             </Row>
-            <Modal v-model="showDealerDialog"
-                   :styles="{width: '440px'}"
-                   size="small"
-                   :footer-hide="true"
-                   class='add-student-view'>
+            <Modal v-model="showDealerDialog" width="440px" :footer-hide="true" class='add-student-view'>
                 <div slot="header" class="modal-title">修改分站</div>
                 <Row class='modal-user' type='flex' justify='center' align='middle'>
                     用户分站：
@@ -59,14 +53,12 @@
             <Modal :width="800" :transfer=false v-model="dialogVisible" size="small"
                    class='add-student-view'
                    :footer-hide="true">
-                <div slot="header" class="modal-title">
-                    用户信息
-                </div>
+                <div slot="header" class="modal-title"> 用户信息 </div>
                 <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form' v-if='!isLoading'>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户权限：
-                            <Select v-model="userData.user_roles" multiple placeholder="请选择用户权限" style="width:300px;" @change='roleChangeHandler'>
+                            <Select v-model="userData.user_roles" multiple placeholder="请选择用户权限" style="width:300px;" @on-change='roleChangeHandler'>
                                 <Option v-for='item in filterRoles' :key="item.id" :label="item.role_name" :value="item.role_id">
                                 </Option>
                             </Select>
@@ -125,105 +117,13 @@
                 </Table>
                 <Row class='pager' type='flex' justify='end' align='middle'>
                     <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size-opts="[20, 50, 100]"
-                                   :page-size="pageSize" :total="total">
+                                show-sizer :page-size="pageSize" :total="total">
                     </Page>
                 </Row>
             </div>
         </Row>
     </div>
 </template>
-
-<style lang="scss" scoped>
-    .modal-btn-save{
-      width: 140px;
-      height: 36px;
-    }
-     /deep/.ivu-btn:active, /deep/.ivu-btn.active{
-      background-color: #FB843E !important;
-      color: #ffffff !important;
-      border: none !important
-    }
-    /deep/.ivu-btn:focus{ box-shadow: none }
-    /deep/ .ivu-table th { height: 50px; }
-    /deep/ .ivu-breadcrumb{
-        text-align: left;
-        margin-left: 20px;
-    }
-    /deep/ .ivu-select-selected-value{
-        font-size: 14px !important;
-        padding: 3px 25px 3px 10px;
-        line-height: 28px !important;
-    }
-    /deep/ .ivu-select-item{
-        font-size: 14px !important;
-        padding: 8px 10px;
-        color: #48576a;
-        line-height: 1.5;
-    }
-    /deep/ .ivu-modal-header{
-        padding: 0;
-    }
-    /deep/ .ivu-icon-ios-close{
-        color: #bfcbd9 !important;
-
-        &:hover{
-            color: #4098ff !important;
-        }
-    }
-    /deep/ .ivu-modal-body{
-        padding: 30px 20px;
-    }
-    /deep/ .ivu-table-cell{
-        font-size: 16px;
-        color: #657180;
-        text-align: center;
-    }
-    /deep/ .ivu-table th{
-        text-align: center;
-    }
-    /deep/ .ivu-select-placeholder{
-        color: #8391a5 !important;
-        font-size: 14px !important;
-    }
-    /deep/ .ivu-select-multiple .ivu-select-item-selected{
-        color: #20a0ff;
-    }
-    /deep/ .ivu-select-multiple .ivu-select-item-selected:after{
-        color: #20a0ff;
-
-    }
-    .modal-title{
-        padding: 20px;
-        text-align: center;
-        color: #fff;
-        font-size: 16px;
-        font-weight: 700;
-    }
-    .modal-user{
-        font-size: 14px;
-    }
-    .btn-text{
-        color: #FB843E;
-        font-size: 14px;
-    }
-    .total-num{
-        font-size: 12px;
-        color: #FB843E;
-        margin: 0 20px 10px 20px;
-    }
-    .search-role{
-        width: 200px;
-        text-align: left;
-    }
-    /deep/.ivu-modal-body{
-        width: 80%;
-        margin: 0 auto;
-    }
-    .add-student-view .result .data-form .user-info span{
-        color: #FC7643 !important;
-    }
-</style>
-
 <script>
   import Header from "../../components/Header";
   import SubjectFilter from "../../components/SubjectFilter.vue";
@@ -240,6 +140,7 @@
   let tooltips = { ellipsis: true, tooltip: true };
   export default {
     mixins: [Dialog],
+    components: { "header-component": Header },
     data() {
       return {
         userData: {
@@ -255,9 +156,7 @@
           gold_count: 0,
           from_invitation_code_id: ""
         },
-        userInfo:{
-          from_domain: '',
-        },
+        userInfo:{ from_domain: ''},
         preRoleList: [],
         searchData: "",
         searchType: "phone",
@@ -267,40 +166,32 @@
         showDealerDialog:false,
         noSelect: true,
         initingRole: false,
-        columns1: [
-          {
+        columns1: [{
             title: '用户ID',
             key: 'user_id',
-          },
-          {
+          },{
             title: '用户昵称',
             key: 'nickname',
             ...tooltips
-          },
-          {
+          },{
             title: '用户权限',
             key: 'roles',
             ...tooltips
-          },
-          {
+          },{
             title: '手机号',
             key: 'phone'
-          },
-          {
+          },{
             title: '分站',
             key: 'from_domain',
             width: 260
-          },
-          {
+          },{
             title: '注册时间',
             key: 'create_time',
-          },
-          {
+          },{
             title: '操作',
             slot: 'action',
             width: 260
-          },
-        ],
+          }],
         data1: [],
         loadingInstance: null
       };
@@ -344,20 +235,6 @@
           }
         })
       },
-      // searchStudent() {
-      // //   this.$store.dispatch("get_user_list", {
-      // //     curPage: 1,
-      // //     pageSize: 20,
-      // //     role_id: this.searchRole
-      // //   });
-
-      //   if (!this.initData) this.initData = true;
-      //   this.$store.dispatch("search_userinfo_by_nickname_or_phone", {
-      //     searchType: this.searchType,
-      //     searchData: this.searchData,
-      //     role_id: this.searchRole
-      //   });
-      // },
       editDealer(item){
         this.userInfo = Object.assign({},item);
         this.dealer_list.map((item) => {
@@ -433,7 +310,6 @@
             }
           }
         }
-
         set_role(
           this.userData.user_id,
           role_id,
@@ -581,9 +457,96 @@
           return false;
         });
       }
-    },
-    components: {
-      "header-component": Header,
     }
   };
 </script>
+<style lang="scss" scoped>
+    .modal-btn-save{
+      width: 140px;
+      height: 36px;
+    }
+     /deep/.ivu-btn:active, /deep/.ivu-btn.active{
+      background-color: #FB843E !important;
+      color: #ffffff !important;
+      border: none !important
+    }
+    /deep/.ivu-btn:focus{ box-shadow: none }
+    /deep/ .ivu-table th { height: 50px; }
+    /deep/ .ivu-breadcrumb{
+        text-align: left;
+        margin-left: 20px;
+    }
+    /deep/ .ivu-select-selected-value{
+        font-size: 14px !important;
+        padding: 3px 25px 3px 10px;
+        line-height: 28px !important;
+    }
+    /deep/ .ivu-select-item{
+        font-size: 14px !important;
+        padding: 8px 10px;
+        color: #48576a;
+        line-height: 1.5;
+    }
+    /deep/ .ivu-modal-header{
+        padding: 0;
+    }
+    /deep/ .ivu-icon-ios-close{
+        color: #bfcbd9 !important;
+
+        &:hover{
+            color: #4098ff !important;
+        }
+    }
+    /deep/ .ivu-modal-body{
+        padding: 30px 20px;
+    }
+    /deep/ .ivu-table-cell{
+        font-size: 16px;
+        color: #657180;
+        text-align: center;
+    }
+    /deep/ .ivu-table th{
+        text-align: center;
+    }
+    /deep/ .ivu-select-placeholder{
+        color: #8391a5 !important;
+        font-size: 14px !important;
+    }
+    /deep/ .ivu-select-multiple .ivu-select-item-selected{
+        color: #20a0ff;
+    }
+    /deep/ .ivu-select-multiple .ivu-select-item-selected:after{
+        color: #20a0ff;
+
+    }
+    .modal-title{
+        padding: 20px;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .modal-user{
+        font-size: 14px;
+    }
+    .btn-text{
+        color: #FB843E;
+        font-size: 14px;
+    }
+    .total-num{
+        font-size: 12px;
+        color: #FB843E;
+        margin: 0 20px 10px 20px;
+    }
+    .search-role{
+        width: 200px;
+        text-align: left;
+    }
+    /deep/.ivu-modal-body{
+        width: 80%;
+        margin: 0 auto;
+    }
+    .add-student-view .result .data-form .user-info span{
+        color: #FC7643 !important;
+    }
+</style>

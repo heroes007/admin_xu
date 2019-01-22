@@ -13,7 +13,6 @@
     import BaseList from '../../components/BaseList'
     import SaveOrder from '../../components/SaveOrder'
     import { doTimeFormat } from '../../components/Util'
-    import { Loading } from 'element-ui';
     import { Dialog } from '../dialogs/index';
     import {  ADD_COURSE } from '../dialogs/types'
     import { Config } from '../../config/base'

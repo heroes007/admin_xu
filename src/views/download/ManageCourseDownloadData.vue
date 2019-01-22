@@ -22,9 +22,6 @@
     ADD_DOWNLOAD_DATA
   } from '../dialogs/types'
   import {
-    Loading
-  } from 'element-ui'
-  import {
     doTimeFormat
   } from '../../components/Util'
   import {
@@ -103,6 +100,7 @@
             comboListIndex: 0,
             listLabel: 'title',
             listValue: 'curriculum_id',
+            // actionName: ''
             actionName: 'change_course_download_data_pre_curriculum'
           },
           {

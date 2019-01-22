@@ -6,18 +6,13 @@
                 <Button class='btn-add' type='primary' @click='createNotificationHandler()'>创建通知</Button>
                 <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
                     @send='sendHandler' @delete='deleteHandler' @edit='editHandler' />
-
             </el-tab-pane>
             <el-tab-pane class='message-content' label="私信" name="chat">
                 <Row class='message-content-container' type='flex' align='top'>
                     <Col :span='10'>
                         <Row class='group_header' type='flex'>
-                            <Col class='active'>
-                                全部学员
-                            </Col>
-                            <Col>
-                                小组学员
-                            </Col>
+                            <Col class='active'>全部学员</Col>
+                            <Col>小组学员</Col>
                         </Row>
                         <data-list class='student-list' :can-select='true' :is-stripe='false' @rowClick='rowClickHandler' :table-data='studentList'
                             :header-data='studentHeader' :show-header='false' :column-formatter='studentlistColumnFormatter'
@@ -39,7 +34,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <Input type="textarea" :autosize='false' placeholder="请输入内容" v-model="messageContent">
                         </Input>
                         <Button class='btn-submit' type='primary' @click='sendMsg'>发送</Button>
@@ -47,7 +41,6 @@
                 </Row>
             </el-tab-pane>
         </el-tabs>
-
     </div>
 </template>
 

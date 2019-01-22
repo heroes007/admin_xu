@@ -19,16 +19,9 @@
     </div>
 </template>
 <script>
-    import {
-        get_sign_4_datacenter
-    } from '../api/modules/ali_oss'
+    import { get_sign_4_datacenter } from '../api/modules/ali_oss'
     import axios from 'axios';
-    import {
-        Config
-    } from '../config/base'
-    import {
-        MessageBox
-    } from 'element-ui';
+    import { Config } from '../config/base'
     export default {
         props: {
             filters: {
@@ -89,16 +82,18 @@
             handleUploadChange() {
                 this.fileSize = event.target.files[0].size / 1024;
                 if (this.fileSize > parseInt(this.maxFileSize)) {
-                    MessageBox.alert('文件过大', '提示', {
-                        confirmButtonText: '确定',
-                        callback: action => {}
+                    this.$Modal.info({
+                        title: '提示',
+                        content: '文件过大',
+                        onOk: () => {}
                     });
                     return;
                 }
                 if (this.currentFileCount >= this.maxFileCount) {
-                    MessageBox.alert('上传文件数量过多', '提示', {
-                        confirmButtonText: '确定',
-                        callback: action => {}
+                    this.$Modal.info({
+                        title: '提示',
+                        content: '上传文件数量过多',
+                        onOk: () => {}
                     });
                     return;
                 }
@@ -264,6 +259,7 @@
         color: #FFFFFF;
         letter-spacing: 1px;
         border: none;
+        padding: 0 !important;
     }
 
     .upload-btn:hover {

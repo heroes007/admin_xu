@@ -9,13 +9,13 @@
                 </Select>
             </div>
             <div class='btn-group' v-if='type !== 0'>
-                <Button class='btn-add' type='primary' icon="plus" v-if='type === 1 && showAdd' @click="addCourseHandler">
+                <Button class='btn-add' type='primary' icon="md-add" v-if='type === 1 && showAdd' @click="addCourseHandler">
                     添加课程
                 </Button>
-                <Button class='btn-add' type='primary' icon="plus" v-if='type === 2 && showAdd' @click="addOfflineSemester">
+                <Button class='btn-add' type='primary' icon="md-add" v-if='type === 2 && showAdd' @click="addOfflineSemester">
                     添加学期
                 </Button>
-                <Button class='btn-add' type='primary' icon="plus" v-if='type === 3 && showAdd' @click="addTaskCategory">
+                <Button class='btn-add' type='primary' icon="md-add" v-if='type === 3 && showAdd' @click="addTaskCategory">
                     添加分类
                 </Button>
                 <Button class='btn-edit' type='text' icon="setting" v-if='type === 3 && showAdd' @click="editTaskCategory">
@@ -26,8 +26,8 @@
                         <div class='head'>
                             全部讲师
                         </div>
-                        <Button class="teacher-list-head-btn" type='text' icon='plus' @click='addTeacherHandler'>
-                            <Icon type="md-add" />添加
+                        <Button class="teacher-list-head-btn" type='text' icon='md-add' @click='addTeacherHandler'>
+                           添加
                         </Button>
                     </Row>
                     <div slot="content" class='teacher-list-container'>
@@ -37,11 +37,11 @@
                             </Col>
                         </Row>
                     </div>
-                    <Button class='btn-teacher' type='text' v-if='type === 1 || type === 2'><i class='icon-xg-icon-xy'></i>讲师设置</Button>
+                    <Button class='btn-teacher' type='text' v-if='type === 1 || type === 2'>讲师设置</Button>
                 </Poptip>
             </div>
             <div class='btn-group'  v-if='type === 0'>
-                <Button class='btn-add' type='primary' icon="plus" v-if='showAdd' @click="addClickHandler">
+                <Button class='btn-add' type='primary' icon="md-add" v-if='showAdd' @click="addClickHandler">
                     {{addText}}
                 </Button>
             </div>
@@ -50,19 +50,10 @@
 </template>
 
 <script>
-    import {
-        doGroupSlice
-    } from './Util'
+    import { doGroupSlice } from './Util'
     import TeacherItem from './TeacherItem'
-    import {
-        Dialog
-    } from '../views/dialogs'
-    import {
-        ADD_TEACHER
-    } from '../views/dialogs/types'
-    import {
-        Loading
-    } from 'element-ui'
+    import { Dialog } from '../views/dialogs'
+    import { ADD_TEACHER } from '../views/dialogs/types'
     export default {
         mixins: [Dialog],
         data() {
@@ -142,9 +133,7 @@
             'teacher-head': TeacherItem
         },
         mounted() {
-            if (this.teachers.length === 0) {
-                this.$store.dispatch('get_teacher_list');
-            }
+            if (this.teachers.length === 0) this.$store.dispatch('get_teacher_list');
         }
     }
 </script>
@@ -233,8 +222,8 @@
 
                 .btn-add {
                     background-color: #F06B1D;
-
                     border-color: #F06B1D;
+                    padding: 6px 15px;
                 }
                 .btn-edit {
                     color: #fff;

@@ -56,8 +56,8 @@
                 <Select v-if='column.useCombo&&columnComboData&&comboDataList' v-model="comboDataList[index]"
                         :multiple='!comboIsSelect' placeholder="请选择"
                         @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
-                        :disabled="column.disabledFunc?column.disabledFunc(row):false">
-                    <Option v-for="c in columnComboData[column.comboListIndex]" :key="c.curriculum_id"
+                       @on-open-change="selectOpen" :disabled="column.disabledFunc?column.disabledFunc(row):false">
+                    <Option v-for="(c,k) in columnComboData[column.comboListIndex]" :key="k"
                             :label="c[column.listLabel]" :value="c[column.listValue]">
                     </Option>
                 </Select>
@@ -102,14 +102,15 @@
 </template>
 <script>
   import baseList from './BaseList.vue'
-
+  import api from '../api/modules/config.js'
   export default {
     name: 'baseList',
     data() {
       return {
         dataChange: false,
         comboDataList: null,
-        states: 0
+        states: 1,
+        selectOpenNum: null
       }
     },
     props: {
@@ -255,6 +256,7 @@
       }
     },
     mounted() {
+       this.states = 0;
       // 资料管理来回切换报异常
       if (this.comboModelList && this.comboModelList.length > 0) {
         this.comboDataList = [];
@@ -342,7 +344,7 @@
             }
           }
         })
-        console.log(this.tableData,111111)
+        console.log(this.tableData,this.headerData)
       },
       getHeaderLabel(item) {
         return item.ruleCount ? item.label + '(' + item.ruleCount + ')' : item.label;
@@ -357,12 +359,24 @@
       showBadgeCount(propname, row) {
         return row[propname];
       },
+      selectOpen(val){
+        this.selectOpenNum = val;
+      },
       comboChangeHandler(row, index, actionName, key) {
-        if(this.states){
-           this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
-        }else{
-           this.states = 1;
-        }
+        console.log(this.states,actionName,this.selectOpenNum);
+         if(actionName){
+           if(actionName === "change_course_download_data_pre_curriculum"){
+             api.post('api/tools_data_center/set_data_center_pre_curriculums',{data_center_id:row.id,curriculum_ids:this.comboDataList[index]}).then((res) => {
+              //  if(res.data.res_code === 1){
+              //   let params = {id: row.id, key: key, value: this.comboDataList[index]}
+              //   this.$store.commit('DOWNLOAD_CHANGE_PRE_CURRICULUM',params);
+              //  }
+             })
+           }else{
+             this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+           }
+         }
+         this.states = 1
       },
       getComboModel(prop, row) {
         return row[prop];

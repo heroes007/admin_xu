@@ -20,14 +20,8 @@
             },
             handleScroll() {
                 var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-                if(scrollTop == 0)
-                {
-                    this.isShown = false;
-                }
-                else
-                {
-                    this.isShown = true;
-                }
+                if(scrollTop == 0)   this.isShown = false;
+                else  this.isShown = true;
             }
         },
         mounted() {
