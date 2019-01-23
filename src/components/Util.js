@@ -210,48 +210,29 @@ export const MenuList =  [
         },{
             name: 'public-download-data',
             title: '推荐资料'
-        },
-        // {
-        //     name: 'from-page-data',
-        //     title: '页面来源统计'
-        // }
-    ]
+        }]
     },
-    // {
-    //     name: '5',
-    //     title: '资料管理',
-    //     icon: 'md-folder',
-    //     check: 'manager',
-    //     list:[{
-    //         name: 'course-download-data',
-    //         title: '课程资料'
-    //     },
-    //     {
-    //         name: 'public-download-data',
-    //         title: '推荐资料'
-    //     }]
-    // },
 
-  // 已完成
-  {
-    name: '6',
-    title: '产品管理',
-    icon: 'md-folder',
-    check: 'admin',
-    list:[
-      {
-        check: true,
-        name: ['manage-production','manage-production-curriculum'],
-        title: '产品信息'
-      },
-      {
-        name: 'manage-production-group',
-        title: '产品组合'
-      }]
-  },
-  {
-    name: 'manage-project',
-    title: '项目管理',
-    icon: 'md-folder'
-  }
+    // 已完成
+    {
+        name: '6',
+        title: '产品管理',
+        icon: 'md-folder',
+        check: 'admin',
+        list:[
+        {
+            check: true,
+            name: ['manage-production','manage-production-curriculum'],
+            title: '产品信息'
+        },
+        {
+            name: 'manage-production-group',
+            title: '产品组合'
+        }]
+    },
+    {
+        name: 'manage-project',
+        title: '项目管理',
+        icon: 'md-folder'
+    }
 ]

@@ -132,7 +132,6 @@
   import { ADD_STUDENT, ADD_USER } from "../dialogs/types";
   import { Config } from "../../config/base";
   import Vue from "vue";
-
   let tooltips = { ellipsis: true, tooltip: true };
   export default {
     mixins: [Dialog],

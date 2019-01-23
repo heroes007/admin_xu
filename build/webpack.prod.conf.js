@@ -6,41 +6,49 @@ var baseWebpackConfig = require('./webpack.base.conf')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const devMode = process.env.NODE_ENV !== 'production'
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
+function pathResolve(relPath) {
+  return path.resolve(__dirname, relPath);
+}
 var webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
   module: {
-    rules: [{
-      test: /\.js$/,
-      loaders: ['babel-loader'],
-      exclude: /(node_modules|bower_components)/,
-  },{
-      test: /\.vue$/,
-      use: [{
-        loader: 'vue-loader',
-        options: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+            {
+                loader: 'babel-loader',
+                options: {
+                    presets: ["@babel/preset-env"]
+                }
+            }
+        ],
+        // include: [pathResolve('src'),pathResolve('node_modules/vue-ueditor')],
+        exclude: /(node_modules|bower_components)/       
+    },
+    {
+    test: /\.vue$/,
+    use: [{
+      loader: 'vue-loader',
+      options: {
           loaders: {
-            css: [MiniCssExtractPlugin.loader,"css-loader"],
-            scss: [MiniCssExtractPlugin.loader,"sass-loader"]
+            scss: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
           }
         }
       },
       {
-          loader: 'iview-loader',
-          options: {
-              prefix: false
-          }
+        loader: 'iview-loader',
+        options: {
+            prefix: false
+        }
       }]
-    },{
-      test: /\.css$/,
-      use: [MiniCssExtractPlugin.loader,"css-loader", "style-loader"]
-    }, {
-      test: /\.scss$/,
-      use: [MiniCssExtractPlugin.loader,"css-loader", "style-loader", "sass-loader"]
-    },],
+     },
+     {
+      test: /\.(sc|c)ss$/,
+      use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+     }],
     noParse: /videojs-contrib-hls/
   },
   resolve: {
@@ -69,24 +77,33 @@ var webpackConfig = merge(baseWebpackConfig, {
         // canPrint: true
       })
     ],
-    splitChunks: {
-      // 可自己配置，建议第一次升级先不配置
+    splitChunks:{
+      // chunks: 'async',
+      // minChunks: 1,
+      // name: false,
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.(scss|css)$/,
+          enforce: true
+        }
+      }
     }
   },
   //devtool: "#source-map",
   plugins: [
     new VueLoaderPlugin(),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    // new webpack.DefinePlugin({
-    //   'process.env.NODE_ENV': JSON.stringify('production')
-    // }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
     // new webpack.optimize.UglifyJsPlugin(),
     // extract css into its own file
     // new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
     new MiniCssExtractPlugin({
-      filename: config.base.assetsPath +'css/[name].[contenthash:12].css',
-      allChunks: true,
-    }),
+      filename: '[name].[hash].css',
+      // chunkFilename: '[id].[hash].css',
+    }),   
     // new UglifyJsPlugin(),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -105,17 +122,11 @@ var webpackConfig = merge(baseWebpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'*/
-    }),
-    // new HtmlWebpackPlugin({
-    //   filename: 'index_1.html',
-    //   template: 'index.html',
-    //   inject: true,
-    // }),
+    })
     // split vendor js into its own file
     /*new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor','manifest']
       //minChunks: Infinity
-
     }),*/
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: 'vendor',

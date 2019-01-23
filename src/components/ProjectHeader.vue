@@ -45,15 +45,14 @@
         </Row>
     </div>
 </template>
-
 <script>
     import { doGroupSlice } from './Util'
     import TeacherItem from './TeacherItem'
     import { Dialog } from '../views/dialogs'
     import { ADD_TEACHER } from '../views/dialogs/types'
-
     export default {
         mixins: [Dialog],
+        components: { 'teacher-head': TeacherItem },
         data() {
             return {
                 loadingInstance: null,
@@ -126,9 +125,6 @@
             isLoading(val) {
                 this.$config.IsLoading(val);
             }
-        },
-        components: {
-            'teacher-head': TeacherItem
         },
         mounted() {
             if (this.teachers.length === 0) this.$store.dispatch('get_teacher_list');
