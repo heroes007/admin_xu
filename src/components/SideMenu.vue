@@ -60,8 +60,8 @@
         data() {
             return {
                 use_router: true,
-                activeIndex: "",
-                menuOpenName: ['6'],
+                activeIndex: "manage-project",
+                menuOpenName: ['manage-project'],
                 menuList: MenuList
             }
         },
