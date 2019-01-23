@@ -458,7 +458,6 @@
 </script>
 
 <style lang="scss" scoped>
-    /deep/ .ivu-row-flex-middle { align-items: normal; }
     .modal-btn-save{
       width: 140px;
       height: 36px;

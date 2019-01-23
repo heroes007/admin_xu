@@ -18,13 +18,11 @@
                             <Input placeholder='请输入内容' v-model='lbData.name'></Input>
                         </Row>
                         <Row class='user-data update-img' type='flex' justify='start' align='middle'>
-                            广告图片：
-                            <img style="width: 120px;" v-if="lbData.img_url.url" :src='lbData.img_url.url'>
+                            广告图片： <img style="width: 120px;" v-if="lbData.img_url.url" :src='lbData.img_url.url'>
                             <btn-upload text='上传图片' type='image/gif, image/jpeg, image/png' bucket='dscj-app' dir='lb' @uploadcomplete='uploadImgComplete'></btn-upload>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
-                            跳转地址：
-                            <Input placeholder='请输入内容' v-model='lbData.redirect_url'></Input>
+                            跳转地址： <Input placeholder='请输入内容' v-model='lbData.redirect_url'></Input>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             显示位置：
@@ -33,25 +31,20 @@
                             </Select>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
-                            分享标题：
-                            <Input placeholder='请输入内容' v-model='lbData.share_title'></Input>
+                            分享标题： <Input placeholder='请输入内容' v-model='lbData.share_title'></Input>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
-                            分享描述：
-                            <Input placeholder='请输入内容' v-model='lbData.share_desc'></Input>
+                            分享描述： <Input placeholder='请输入内容' v-model='lbData.share_desc'></Input>
                         </Row>
                         <Row class='user-data update-img' type='flex' justify='start' align='middle'>
-                            分享图片：
-                            <img v-if="lbData.share_img_url.url" :src='lbData.share_img_url.url'>
+                            分享图片：<img v-if="lbData.share_img_url.url" :src='lbData.share_img_url.url'>
                             <btn-upload text='上传图片' type='image/gif, image/jpeg, image/png' bucket='dscj-app' dir='lb' @uploadcomplete='uploadShareImgComplete'></btn-upload>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
-                            分享链接：
-                            <Input placeholder='请输入内容' v-model='lbData.share_url'></Input>
+                            分享链接：<Input placeholder='请输入内容' v-model='lbData.share_url'></Input>
                         </Row>
                          <Row class='user-data' type='flex' justify='start' align='middle'>
-                            排序序号：
-                            <InputNumber v-model="lbData.orderby"></InputNumber>
+                            排序序号：<InputNumber v-model="lbData.orderby"></InputNumber>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             上线状态：
@@ -72,26 +65,19 @@
             </template>
         </Table>
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page @on-page-size-change="handleSizeChange"
-                  @on-change="handleCurrentChange"
-                  :current="curPage"
-                  :page-size-opts="[10, 20, 50, 100]"
-                  :page-size="pageSize"
-                  show-sizer
-                  :total="total">
+            <Page @on-page-size-change="handleSizeChange"  @on-change="handleCurrentChange" :current="curPage"
+                :page-size-opts="[10, 20, 50, 100]" :page-size="pageSize" show-sizer :total="total">
             </Page>
         </Row>
-
     </div>
 </template>
-
 <script>
     import Header from '../../components/Header'
     import UploadBtn from '../../components/UploadButton'
     import {Config} from '../../config/base'
     import { get_detail, update_lb, add_lb } from '../../api/modules/tools_lb'
-
     export default{
+        components: { 'header-component': Header, 'btn-upload': UploadBtn },
         data(){
             return {
                 positionList:[
@@ -158,14 +144,10 @@
                 this.lbData.img_url = url;
             },
             handleSizeChange(val) {
-                if (val !== this.pageSize) {
-                    this.$store.dispatch('get_lb_list', {curPage: this.curPage, pageSize: val});
-                }
+                if (val !== this.pageSize) this.$store.dispatch('get_lb_list', {curPage: this.curPage, pageSize: val});
             },
             handleCurrentChange(val) {
-                if (val && val !== this.curPage) {
-                    this.$store.dispatch('get_lb_list', {curPage: val, pageSize: this.pageSize});
-                }
+                if (val && val !== this.curPage) this.$store.dispatch('get_lb_list', {curPage: val, pageSize: this.pageSize});
             },
             searchStudent(){
                 if(!this.initData) this.initData = true;
@@ -199,8 +181,7 @@
                 }, Config.base_timeout);
                 get_detail(item.ad_id).then((res) => {
                     if(this.loadingInstance) this.loadingInstance.close();
-                    if(res.data.res_code === 1)
-                    {
+                    if(res.data.res_code === 1){
                         this.lbData = res.data.msg[0];
                         this.lbData.img_url = res.data.msg[0].img_url ? JSON.parse(res.data.msg[0].img_url) : '';
                         this.lbData.share_img_url = res.data.msg[0].share_img_url ? JSON.parse(res.data.msg[0].share_img_url) : '';
@@ -263,10 +244,6 @@
             resultMsg(){
                 return this.$store.state.lb.search_msg;
             }
-        },
-        components: {
-            'header-component': Header,
-            'btn-upload':UploadBtn
         }
     }
 </script>

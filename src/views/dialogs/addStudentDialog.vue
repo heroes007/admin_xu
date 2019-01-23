@@ -55,6 +55,7 @@
                         <FormItem v-if="false || payload.type == 1" class="send-offline-course">
                             <Checkbox v-model="isSend" @on-change="handleGetOfflineTermList">是否发送线下课</Checkbox>
                         </FormItem>
+                        <div style="clear:both"></div>
                         <FormItem :label-width="110" label="请选择线下课" v-if="isSend">
                             <Select v-model="form.offline_term_id" placeholder="请选择学科">
                                 <Option v-for="item in dataList" :key="item.id" :label="item.name" :value="item.id"></Option>
@@ -300,6 +301,7 @@
   }
 </script>
 <style lang="scss" scoped>
+.send-offline-course{ float: left; }
 /deep/.ivu-modal-body{
     padding: 24px 0 24px 0;
 }

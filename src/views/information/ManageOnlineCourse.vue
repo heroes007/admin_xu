@@ -140,7 +140,7 @@
         },
         watch: {
             listColumnFormatterData(val) {
-                //                console.log(val);
+                // console.log(val);
             },
             isLoading(val) {
                if (val) {
@@ -245,9 +245,7 @@
                       this.handleSelModal(ADD_COURSE);
                     },
                   });
-                } else {
-                    this.handleSelModal(ADD_COURSE);
-                }
+                } else this.handleSelModal(ADD_COURSE);
             },
             initData() {
                 var vm = this;

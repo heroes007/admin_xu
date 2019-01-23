@@ -37,9 +37,7 @@
       remove: { type: String },
       payload: {}
     },
-    components: {
-      'base-input': BaseInput
-    },
+    components: { 'base-input': BaseInput },
     data() {
       return {
         addUserDialog: true,

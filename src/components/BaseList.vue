@@ -373,7 +373,8 @@
                         if (_item.role_id == item)  str.push(_item.role_name);
                       })
                     })
-                    return str.toString();
+                   if(str.length>0) return str.toString();
+                   else return ''
                   } else {
                     if (this.columnFormatterData[this.columnFormatter[i].dataIndex][j][this.columnFormatter[i].dataProp] == value) {
                       return this.columnFormatterData[this.columnFormatter[i].dataIndex][j][this.columnFormatter[i].dataValue];
