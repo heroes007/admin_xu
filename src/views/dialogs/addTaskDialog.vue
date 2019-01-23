@@ -180,7 +180,7 @@ export default {
                     required: false,
                     message: '请上传附件',
                     trigger: 'change'
-                }]
+                }],
             },
             isInited: false
         }

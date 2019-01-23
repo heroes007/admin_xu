@@ -61,8 +61,8 @@
             <span>当前学员 {{total}} 人</span>
         </Row>
         <data-list class='data-list light-header' @showDetail='showDetailHandler' @queryHomework='queryHomeworkHandler'
-        @queryTask='queryTaskHandler' @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler'
-        :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
+                   @queryTask='queryTaskHandler' @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler'
+                   :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
         <back-to-top/>
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page :current="curPage" @on-page-size-change="handleSizeChange" :page-size='pageSize' @on-change="handleCurrentChange" :total="total"/>
@@ -80,6 +80,7 @@
   import { doDateFormat, doTimeFormat } from "../../components/Util";
   import { ADD_STUDENT, QUERY_STUDENT_COURSE, QUERY_STUDENT_OFFLINE_COURSE, QUERY_STUDENT_TASK, STUDENT_INFO_DETAIL } from '../dialogs/types'
   import {Config} from '../../config/base'
+
   export default {
     mixins: [Dialog],
     components: { 'header-component': Header, 'subject-filter': SubjectFilter, 'data-list': BaseList, 'back-to-top': BackToTop
