@@ -9,6 +9,7 @@ var webpack = require('webpack')
 var webpackConfig = require('./webpack.prod.conf')
 
 var spinner = ora('正在生产环境打包...')
+
 spinner.start()
 
 var assetsPath = path.join(config.base.path, config.base.assetsPath)

@@ -26,10 +26,10 @@
                         </Row>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" @click="searchStudent">查询</Button>
+                        <Button style="width: 100px;" type="primary" @click="searchStudent">查询</Button>
                     </FormItem>
                     <FormItem>
-                        <Button type="primary" @click="clearSearch">清除</Button>
+                        <Button style="width: 100px;" type="primary" @click="clearSearch">清除</Button>
                     </FormItem>
                 </Form>
             </Row>
@@ -457,8 +457,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
-    /deep/ .ivu-row-flex-middle { align-items: normal; }
+<style scoped lang="scss">
     .modal-btn-save{
       width: 140px;
       height: 36px;
@@ -539,6 +538,7 @@
     .search-role{
         width: 200px;
         text-align: left;
+        margin-right: 40px;
     }
     /deep/.ivu-modal-body{
         width: 80%;
@@ -549,5 +549,8 @@
     }
     .select-user{
         width: 100px;
+    }
+    .search-bar{
+        align-items: normal;
     }
 </style>
