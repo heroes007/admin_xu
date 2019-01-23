@@ -16,7 +16,7 @@
                     <FormItem>
                         <Row>
                             <Col :span="10">
-                                <Select class="select-user" v-model="searchType" placeholder="" style="width: 100px">
+                                <Select class="select-user" v-model="searchType" >
                                     <Option label="昵称" value="nickname"></Option>
                                     <Option label="手机号" value="phone"></Option>
                                     <Option label="用户ID" value="user_id"></Option>
@@ -33,11 +33,11 @@
                     </FormItem>
                 </Form>
             </Row>
-            <Modal v-model="showDealerDialog" width="440px" :footer-hide="true" class='add-student-view'>
+            <Modal v-model="showDealerDialog" width="450px" :footer-hide="true" class='add-student-view'>
                 <div slot="header" class="modal-title">修改分站</div>
                 <Row class='modal-user' type='flex' justify='center' align='middle'>
                     用户分站：
-                    <Select v-model="userInfo.from_domain"  style="width:300px;">
+                    <Select v-model="userInfo.from_domain"  style="width:240px;">
                         <Option
                                 v-for="(dealer_item,index) in dealer_list"
                                 :key="index"
@@ -51,16 +51,14 @@
                 </Row>
             </Modal>
             <Modal :width="800" :transfer=false v-model="dialogVisible" size="small"
-                   class='add-student-view'
-                   :footer-hide="true">
+                   class='add-student-view' :footer-hide="true">
                 <div slot="header" class="modal-title"> 用户信息 </div>
                 <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form' v-if='!isLoading'>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户权限：
                             <Select v-model="userData.user_roles" multiple placeholder="请选择用户权限" style="width:300px;" @on-change='roleChangeHandler'>
-                                <Option v-for='item in filterRoles' :key="item.id" :label="item.role_name" :value="item.role_id">
-                                </Option>
+                                <Option v-for='item in filterRoles' :key="item.id" :label="item.role_name" :value="item.role_id"></Option>
                             </Select>
                         </Row>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
@@ -129,7 +127,6 @@
   import SubjectFilter from "../../components/SubjectFilter.vue";
   import api from "../../api/modules/config";
   import { set_user_student_mrzx } from "../../api/modules/student";
-  import { Loading } from "element-ui";
   import { get_detail,changeDealer } from "../../api/modules/tools_user";
   import { get_list, set_role } from "../../api/modules/tools_role";
   import { Dialog } from "../dialogs";
@@ -460,6 +457,7 @@
     }
   };
 </script>
+
 <style lang="scss" scoped>
     .modal-btn-save{
       width: 140px;
@@ -548,5 +546,8 @@
     }
     .add-student-view .result .data-form .user-info span{
         color: #FC7643 !important;
+    }
+    .select-user{
+        width: 100px;
     }
 </style>

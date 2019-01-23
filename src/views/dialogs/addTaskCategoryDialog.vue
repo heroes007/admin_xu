@@ -1,5 +1,3 @@
-
-
 <template>
 <Modal :transfer=false title="添加分类" width="600px" v-model="addTaskCategoryDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
@@ -10,10 +8,10 @@
                     <FormItem class='radio-container'>
                         <RadioGroup v-model="form.type"  justify='start' align='middle' @on-change="handleChangeRadio">
                             <Radio class="radio" :label="0">
-                                <Button :class="{'is-changed': isChanged == 0}" class="radioBtn">任务</Button>
+                                <span :style="isChanged ? '':'border-color: #FB843E; color: #FB843E'" class="radioBtn">任务</span>
                             </Radio>
                             <Radio class="radio" :label="1">
-                                <Button :class="{'is-changed': isChanged == 1}" class="radioBtn">作业</Button>
+                                <span :style="isChanged ? 'border-color: #FB843E; color: #FB843E':''" class="radioBtn">作业</span>
                             </Radio>
                         </RadioGroup>
                    </FormItem>
@@ -32,22 +30,11 @@
 
 <script>
 import BaseInput from '../../components/BaseInput'
-import {
-    RemoveModal
-} from './mixins'
+import { RemoveModal } from './mixins'
 import UploadPanel from '../../components/UploadPanel'
-import {
-    get_category_by_id
-} from '../../api/modules/tools_task'
-import {
-    Loading
-} from 'element-ui'
-import {
-    Config
-} from '../../config/base'
-    import {
-    MPop
-} from '../../components/MessagePop'
+import { get_category_by_id } from '../../api/modules/tools_task'
+import { Config } from '../../config/base'
+import { MPop } from '../../components/MessagePop'
 export default {
     mixins: [RemoveModal,MPop],
     props: {
@@ -121,28 +108,36 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.radioBtn{
-    background-color: #fff;
-    color: #979797;
-    width: 90px;
-    height: 36px;
-    margin-right: 40px;
-    border: 1px solid #979797;
-}
-.is-changed{ border: 1px solid #FB843E;  color: #FB843E;}
-/deep/ .ivu-modal-body{ width: 80%;margin-left: 10%; }
-.title {
-    font-size: 14px;
-    color: #757575;
-    letter-spacing: 1px;
-    line-height: 20px;
-    margin: 24px;
-}
-.sub-btn {
-    background: #FB843E;
-    border-radius: 4px;
-    width: 200px;
-    height: 36px;
-    border: 0;
-}
+    .radioBtn{
+        display: inline-block;
+        background-color: #fff;
+        color: #979797;
+        width: 90px;
+        height: 36px;
+        margin-right: 40px;
+        border: 1px solid #979797;
+        border-radius: 4px;
+    }
+    .is-changed{
+        border: 1px solid #FB843E;
+        color: #FB843E;
+    }
+    /deep/ .ivu-modal-body{
+        width: 80%;
+        margin-left: 10%;
+    }
+    .title {
+        font-size: 14px;
+        color: #757575;
+        letter-spacing: 1px;
+        line-height: 20px;
+        margin: 24px;
+    }
+    .sub-btn {
+        background: #FB843E;
+        border-radius: 4px;
+        width: 200px;
+        height: 36px;
+        border: 0;
+    }
 </style>

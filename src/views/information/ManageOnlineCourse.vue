@@ -14,7 +14,7 @@
     import SaveOrder from '../../components/SaveOrder'
     import { doTimeFormat } from '../../components/Util'
     import { Dialog } from '../dialogs/index';
-    import {  ADD_COURSE } from '../dialogs/types'
+    import { ADD_COURSE } from '../dialogs/types'
     import { Config } from '../../config/base'
     export default {
         mixins: [Dialog],
@@ -209,12 +209,6 @@
             },
             deleteCourseHandler(index) {
                 if (this.dirty) {
-                    // this.$confirm('您已修改课程排序，是否放弃保存', '提示', {
-                    //     type: 'warning'
-                    // }).then(() => {
-                    //     this.resetCurriculumOrder();
-                    //     this.showDeleteConfirm(this.dataList[index].curriculum_id);
-                    // }).catch(() => { });
                   this.$Modal.confirm({
                     title: '提示',
                     content: '<p>您已修改课程排序，是否放弃保存</p>',
@@ -228,13 +222,6 @@
                 }
             },
             showDeleteConfirm(curriculum_id) {
-                // this.$confirm('是否确定删除该课程？', '提示', {
-                //     type: 'info'
-                // }).then(() => {
-                //     this.$store.dispatch('delete_online_curriculum', {
-                //         curriculum_id: curriculum_id
-                //     })
-                // }).catch(() => { });
               this.$Modal.confirm({
                 title: '提示',
                 content: '<p>是否确定删除该课程？</p>',
@@ -250,12 +237,6 @@
             },
             addCourseHandler() {
                 if (this.dirty) {
-                    // this.$confirm('您已修改课程排序，是否放弃保存', '提示', {
-                    //     type: 'warning'
-                    // }).then(() => {
-                    //     this.resetCurriculumOrder();
-                    //     this.handleSelModal(ADD_COURSE);
-                    // }).catch(() => { });
                   this.$Modal.confirm({
                     title: '提示',
                     content: '<p>您已修改课程排序，是否放弃保存</p>',

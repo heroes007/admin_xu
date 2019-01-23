@@ -1,26 +1,27 @@
 <template>
-    <el-dialog title="面试评价" :show-close="false" v-model="addInterviewCommentDialog" @close="handleRemoveModal(remove)"
-        size="auto" :closeOnClickModal="false">
+    <modal title="面试评价" :footer-hide="true" v-model="addInterviewCommentDialog" @on-cancel="handleRemoveModal(remove)"
+        :mask-closable="false" width="900">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
                     <div class='data-container'>
                         <div class='readover-content'>
-                            <Input type="textarea" placeholder="请输入评价内容" v-model="data.interview_comment">
-                            </Input>
+                            <Input type="textarea" placeholder="请输入评价内容" v-model="data.interview_comment" class="input-textarea"></Input>
                         </div>
                         <Row class='result' type='flex' justify='start'>
-                            <el-radio class="radio" v-model="data.interview_result" :label="1">通过</el-radio>
-                            <el-radio class="radio" v-model="data.interview_result" :label="0">未通过</el-radio>
+                            <RadioGroup v-model="data.interview_result">
+                                <Radio class="radio" :label="1">通过</Radio>
+                                <Radio class="radio" :label="0">未通过</Radio>
+                            </RadioGroup>
                         </Row>
                         <Row class='btn-submit' type='flex' justify='center'>
-                            <Button type='primary' @click='doSubmit'>确定</Button>
+                            <Button type='primary' @click='doSubmit' style="width: 170px;">确定</Button>
                         </Row>
                     </div>
                 </Row>
             </Row>
         </base-input>
-        </el-dialog>
+        </modal>
 </template>
 <script>
     import BaseInput from '../../components/BaseInput'
@@ -90,7 +91,7 @@
     }
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .task-assignment-pop {
     img {
         width: 100%;
@@ -115,75 +116,18 @@
                 color: #757575;
             }
         }
-        .el-dialog {
-            width: 900px;
-            background: none;
-            .body-top {
-                padding-bottom: 10px;
-            }
-            .el-dialog__header {
-                background: #333333;
-                border-radius: 4px 4px 0 0;
-                padding: 16px;
-            }
-            .el-dialog__body {
-                padding: 0;
-                background: #fff;
-                border-radius: 0 0 4px 4px;
-            }
-            .data-container {
-                width: 80%;
-                margin: 40px auto;
-                .file-item {
-                    margin-bottom: 15px;
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
-                    .title {
-                        font-size: 16px;
-                        color: #171515;
-                        letter-spacing: 0;
-                        i {
-                            font-size: 20px;
-                            margin-right: 8px;
-                        }
-                    }
-                    .link {
-                        a {
-                            font-size: 16px;
-                            color: #697784;
-                            letter-spacing: 0;
-                        }
-                        .preview {
-                            border-right: 1px solid #697784;
-                            padding-right: 15px;
-                            margin-right: 15px;
-                            cursor: pointer;
-                        }
-                    }
-                }
-                .result {
-                    padding: 10px 0;
-                }
-                .readover-content {
-                    textarea {
-                        min-height: 420px !important;
-                        background-color: #FBFBFB;
-                        border: 1px solid #E5E5E5;
-                    }
-                }
-                .btn-submit {
-                    margin-top: 40px;
-                    .el-button {
-                        background-color: #FB843E;
-                        border: 1px solid #F06B1D;
-                        border-radius: 4px;
-                        color: #ffffff;
-                        width: 200px;
-                        height: 36px;
-                    }
-                }
-            }
-        }
+    }
+    .input-textarea{
+        padding: 20px;
+    }
+    .result{
+        padding: 0 20px;
+    }
+    .btn-submit{
+        margin: 20px 0;
+    }
+    /deep/ textarea.ivu-input{
+        height: 420px;
+        resize: none;
     }
 </style>

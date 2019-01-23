@@ -18,7 +18,7 @@
             <template slot-scope="{ column, row, index }" slot="normalHeader">
                 <Tooltip :transfer=true
                          v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark && (doMix(column,row) || doMix(column,row) === 0)"
-                         :content="doMix(column,row)" max-width="400" theme="light">
+                         :content="doMix(column,row)" max-width="auto" theme="light">
                         <span>
                             {{doMix(column,row)}}
                         </span>
@@ -362,7 +362,6 @@
         this.selectOpenNum = val;
       },
       comboChangeHandler(row, index, actionName, key) {
-        // console.log(this.states,actionName,this.selectOpenNum);
          if(actionName){
            if(actionName === "change_course_download_data_pre_curriculum"){
              api.post('api/tools_data_center/set_data_center_pre_curriculums',{data_center_id:row.id,curriculum_ids:this.comboDataList[index]}).then((res) => {
