@@ -1,5 +1,5 @@
 <template>
-    <Modal title="编辑回执" v-model="editOfflineSignupDialog" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :styles="{width: '600px'}"
+    <Modal :transfer=false title="编辑回执" v-model="editOfflineSignupDialog" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :styles="{width: '600px'}"
         :mask-closable="false">
         <base-input @closedialog="handleClose">
             <div slot="body">
@@ -23,7 +23,7 @@
                         <Input v-model="formInline1.email" placeholder="请输入邮箱地址"></Input>
                    </FormItem>
                     <FormItem label="选择城市">
-                        <Select v-model="formInline1.estimate_set_out_province_id" placeholder="请选择" @change="handleSelectedProvince">
+                        <Select v-model="formInline1.estimate_set_out_province_id" placeholder="请选择" @on-change="handleSelectedProvince">
                             <Option v-for="(item, index) in privinceList" :key="item.id" :label="item.name" :value="item.id">
                             </Option>
                         </Select>

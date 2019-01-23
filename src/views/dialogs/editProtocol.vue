@@ -1,5 +1,5 @@
 <template>
-<Modal :transfer=false title="产品协议" :footer-hide=true v-model="editProtocol" @on-cancel="handleRemoveModal(remove)">
+<Modal :transfer=false title="产品协议" :mask-closable="false" :footer-hide=true v-model="editProtocol" @on-cancel="handleRemoveModal(remove)">
     <base-input @closedialog="handleClose">
       <Row slot="body">
           <Form class="add-task-form">

@@ -209,17 +209,6 @@
     /deep/ .ivu-btn:focus{
         box-shadow: none
     }
-    .el-popover {
-        min-width: 105px;
-        padding: 0;
-        .quit {
-            width: 105px;
-            font-size: 14px;
-            color: #1f2d3d;
-            padding-left: 10px;
-            text-align: left;
-        }
-    }
     .side-menu {
         padding: 27px 0;
         .logo {
@@ -240,7 +229,6 @@
             }
           }
         }
-        .setting-popover {}
         .setting,.setting:hover {
             position: absolute;
             top: 0px;

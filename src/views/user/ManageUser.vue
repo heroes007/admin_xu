@@ -33,31 +33,23 @@
                     </FormItem>
                 </Form>
             </Row>
-            <Modal v-model="showDealerDialog" width="440px" :footer-hide="true" class='add-student-view'>
+            <Modal :mask-closable="false" v-model="showDealerDialog" width="440px" :footer-hide="true" class='add-student-view'>
                 <div slot="header" class="modal-title">修改分站</div>
                 <Row class='modal-user' type='flex' justify='center' align='middle'>
                     用户分站：
                     <Select v-model="userInfo.from_domain"  style="width:300px;">
-                        <Option
-                                v-for="(dealer_item,index) in dealer_list"
-                                :key="index"
-                                :label="dealer_item.company"
-                                :value="dealer_item.id">
-                        </Option>
+                        <Option v-for="(dealer_item,index) in dealer_list" :key="index" :label="dealer_item.company" :value="dealer_item.id"></Option>
                     </Select>
                 </Row>
                 <Row style="margin-top:50px;" type='flex' justify='center' align='middle'>
                     <Button type="primary" class="modal-btn-save" @click='changeDealer'>保存</Button>
                 </Row>
             </Modal>
-            <Modal :width="800" :transfer=false v-model="dialogVisible" size="small"
-                   class='add-student-view'
-                   :footer-hide="true">
+            <Modal :mask-closable="false" :width="800" :transfer=false v-model="dialogVisible" size="small" class='add-student-view' :footer-hide="true">
                 <div slot="header" class="modal-title"> 用户信息 </div>
                 <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form' v-if='!isLoading'>
-                        <Row class='user-info' type='flex' justify='start' align='middle'>
-                            用户权限：
+                        <Row class='user-info' type='flex' justify='start' align='middle'> 用户权限：
                             <Select v-model="userData.user_roles" multiple placeholder="请选择用户权限" style="width:300px;" @on-change='roleChangeHandler'>
                                 <Option v-for='item in filterRoles' :key="item.id" :label="item.role_name" :value="item.role_id">
                                 </Option>
@@ -116,8 +108,8 @@
                     </template>
                 </Table>
                 <Row class='pager' type='flex' justify='end' align='middle'>
-                    <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size-opts="[20, 50, 100]"
-                                show-sizer :page-size="pageSize" :total="total">
+                    <Page  @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size-opts="[20, 50, 100]"
+                        show-sizer :page-size="pageSize" :total="total">
                     </Page>
                 </Row>
             </div>
@@ -135,8 +127,6 @@
   import { Dialog } from "../dialogs";
   import { ADD_STUDENT, ADD_USER } from "../dialogs/types";
   import { Config } from "../../config/base";
-  import Vue from "vue";
-
   let tooltips = { ellipsis: true, tooltip: true };
   export default {
     mixins: [Dialog],
@@ -264,10 +254,9 @@
                   this.preRoleList.push(userRoles[i]);
                 }
               }
-              let vm = this;
-              Vue.nextTick(function() {
-                vm.initingRole = false;
-              });
+              this.$nextTick(() => {
+                this.initingRole = false;
+              })
             }
             this.dialogVisible = true;
           }
@@ -316,11 +305,8 @@
           val.length > this.preRoleList.length ? 1 : -1
         ).then(res => {
           if (res.data.res_code === 1) {
-            if (val.length > this.preRoleList.length) {
-              this.preRoleList.push(role_id);
-            } else {
-              this.preRoleList.splice(this.preRoleList.indexOf(role_id), 1);
-            }
+            if (val.length > this.preRoleList.length) this.preRoleList.push(role_id);
+            else this.preRoleList.splice(this.preRoleList.indexOf(role_id), 1);
             this.$store.dispatch("change_user_role", {
               user_id: this.userData.user_id,
               roles: this.preRoleList.concat([0])
@@ -329,7 +315,6 @@
         });
       },
       searchStudent() {
-        console.log(1);
         this.$store.dispatch("search_user_list", {
           type: this.searchType,
           param: this.searchData,
@@ -412,7 +397,6 @@
           role_id: this.searchRole
         });
       }
-
       this.$store.dispatch("get_role_list");
       this.$store.dispatch("get_dealer_list");
     },

@@ -1,5 +1,5 @@
 <template>
-<Modal title="发送线下课" :transfer=false :width=700 :show-close="false" v-model="sendOfflineCourse" @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
+<Modal :transfer=false title="发送线下课" :width=700 :show-close="false" v-model="sendOfflineCourse" @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class='search-bar' type='flex' justify='center' align='middle'>
@@ -25,7 +25,6 @@
       </base-input>
   </Modal>
 </template>
-
 <script>
 import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
@@ -194,7 +193,6 @@ export default {
     }
 }
 </script>
-
 <style lang="scss" scoped>
 /deep/th, /deep/.ivu-table-cell>span{
     font-size: 14px !important

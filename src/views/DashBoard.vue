@@ -1,19 +1,13 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col class='menu-bar'>
-                <side-menu/>
-            </Col>
+            <Col class='menu-bar'> <side-menu/> </Col>
             <Col class='sub-view'>
-                <keep-alive>
-                    <router-view v-if="$route.meta.keepAlive"></router-view>
-                </keep-alive>
-                <router-view v-if="!$route.meta.keepAlive"></router-view>
+                <keep-alive> <router-view /> </keep-alive>
             </Col>
         </Row>
     </div>
 </template>
-
 <script>
     import SideMenu from '../components/SideMenu'
     export default{
@@ -29,22 +23,16 @@
     }
     .dashboard-view {
         box-sizing:border-box;
-        /*border-radius:10px;*/
         width:100%;
-        //height:100%;
-        //min-height:100%;
         background-color:#ffffff;
         .col-container {
-            //height:100%;
             flex-wrap: nowrap !important;
             .menu-bar {
                 max-width:200px;
                 min-width:200px;
-                //height:100%;
                 min-height:800px;
                 background-color: #333333;
                 box-shadow: 2px 0 10px 0 rgba(51,51,51,0.06);
-
             }
             .sub-view {
                 background-color: #ffffff;
@@ -52,8 +40,6 @@
                 position: relative;
                 min-height: 100vh;
                 width: calc(100% - 200px)
-                /*background-color:#f9f9f9;*/
-                /*border-radius:0 20px 20px 0;*/
             }
         }
     }

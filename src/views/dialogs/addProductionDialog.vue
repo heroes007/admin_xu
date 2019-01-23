@@ -29,7 +29,7 @@
                     <Select v-model="form.examine_type" placeholder="请选择考试类型">
                         <Option v-for="item in examineTypeList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
-                </FormItem>
+                    </FormItem>
                     <FormItem v-show="nextStep == 0" label="产品名称">
                         <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                     </FormItem>
@@ -39,16 +39,15 @@
                     <FormItem v-show="nextStep == 0" label="真实售价">
                         <Input placeholder="售价必须小于等于定价" v-model="form.show_price"></Input>
                     </FormItem>
-                <FormItem v-show="nextStep == 0" label="跳转配置">
-                    <Row class='row-container' type='flex' justify='start' align='middle'>
-                    <Switch  v-model="form.redirectType" size="large">
-                            <span slot="open">自定义</span>
-                            <span slot="close">默认</span>
-                    </Switch>
+                    <FormItem v-show="nextStep == 0" label="跳转配置">
+                        <Row class='row-container' type='flex' justify='start' align='middle'>
+                        <Switch  v-model="form.redirectType" size="large">
+                            <span slot="open">自定义</span><span slot="close">默认</span>
+                        </Switch>
                         </Row>
-                  </FormItem>
+                    </FormItem>
                     <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
-                    <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
+                       <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
                     </FormItem>
                     <FormItem label="展示图片" v-if="nextStep == 0">
                         <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
@@ -58,19 +57,17 @@
                     <FormItem v-show="nextStep == 0" label="产品视频">
                         <Row class='row-container' type='flex' justify='start' align='middle'>
                         <Switch  v-model="form.displayVideo" size="large">
-                              <span slot="open">使用</span>
-                              <span slot="close">不使用</span>
+                            <span slot="open">使用</span><span slot="close">不使用</span>
                         </Switch>
                         </Row>
                     </FormItem>
                     <FormItem label="展示视频" v-if="nextStep == 0 && form.displayVideo">
                         <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
-                        <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
-                    </upload-panel>
+                             <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
+                        </upload-panel>
                     </FormItem>
                     <FormItem v-show="nextStep == 0" label="产品简介">
-                        <Input type="textarea" :rows="6" placeholder="请输入产品简介" v-model="form.short_description">
-                        </Input>
+                        <Input type="textarea" :rows="6" placeholder="请输入产品简介" v-model="form.short_description"></Input>
                     </FormItem>
                     <FormItem v-show="nextStep == 2" label="编辑产品课程图文详情:" :label-width='160'>
                     </FormItem>
@@ -88,7 +85,6 @@
     </base-input>
 </Modal>
 </template>
-<!-- task_id = 19 -->
 <script>
 import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
@@ -205,9 +201,7 @@ export default {
             projectId:state => state.project.select_project_id,
             examineTypeList:state => state.production.examineTypeList
         }),
-        ...mapGetters({
-            projectType: 'select_project_type'
-        }),
+        ...mapGetters({ projectType: 'select_project_type' }),
         selectSubject() {
             return this.form.subject_id;
         },
@@ -239,10 +233,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([
-            'add_production',
-            'update_production'
-        ]),
+        ...mapActions([ 'add_production', 'update_production' ]),
         checkCurriculum() {
             if(this.curriculumList.length > 0 && this.form.curriculum_id){
                 for(var i=0;i<this.curriculumList.length;i++){
@@ -296,36 +287,28 @@ export default {
         handleNextStep(formName) {
             this.fromLabelWidth = 0;
             this.formItemLabelWidth = 80
-            if(this.projectType === 1){
-                if(this.nextStep === 0)  this.nextStep = 1;
-                else this.nextStep = 2;
-            }else this.nextStep = 2;
+            this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
         },
         handlePreStep() {
             this.fromLabelWidth = 121
             this.formItemLabelWidth = 121
-            if(this.projectType === 1){
-                if(this.nextStep === 2)  this.nextStep = 1;
-                else his.nextStep = 0;
-            }
-            else this.nextStep = 0;
+            this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
         handleSubmit() {
             var arrObj = {
-                default:this.form.img_url,
-                video:this.form.video_url
+                default: this.form.img_url,
+                video: this.form.video_url
             }
             var description= this.$refs.description_editor.editor.getContent();
             this.form.description = description;
-            this.form.img_url_arr =JSON.stringify(arrObj);
+            this.form.img_url_arr = JSON.stringify(arrObj);
              this.form.price = Math.round(parseFloat(this.form.show_price) * 100);
              this.form.original_price = Math.round(parseFloat(this.form.show_original_price) * 100);
              if(this.form.price > this.form.original_price){
-                this.$alert('真实售价不能高于定价！', '提示', {
-                   confirmButtonText: '确定',
-                   callback: action => { }
-                   });
-                   return;
+                this.$Modal.info({
+                    title: '提示',
+                    content: '真实售价不能高于定价！'
+                });
              }
             if(this.payload) this.update_production(this.form);
             else this.add_production(this.form);
@@ -334,6 +317,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+/deep/.ivu-switch-large { width: 75px }
+/deep/ .ivu-switch-large.ivu-switch-checked:after{ left: 55px; }
 /deep/ .ivu-modal{ width: 800px !important }
 .add-task-form{
     width: 80% !important;

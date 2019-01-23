@@ -5,7 +5,7 @@
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="文章状态" :label-width="80">
-                    <Select v-model="formInline.state" placeholder="请选择文章状态" @change='changeFilterHandler'>
+                    <Select v-model="formInline.state" placeholder="请选择文章状态" @on-change='changeFilterHandler'>
                         <Option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
                 </FormItem>

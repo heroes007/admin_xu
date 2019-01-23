@@ -32,7 +32,7 @@
                            </FormItem>
                             <FormItem label="操作权限（多选）">
                                 <Select v-model="form.curriculum_roles" multiple placeholder="请选择权限">
-                                    <Option v-for="item in query_teacher_roles" :key="item.id" :label="item.role_name" :value="item.role_id">
+                                    <Option v-for="item in query_teacher_roles" :key="item.role_id" :label="item.role_name" :value="item.role_id">
                                     </Option>
                                 </Select>
                            </FormItem>
@@ -191,7 +191,7 @@ export default {
                 img_url_arr: null,
                 description: '',
                 orderby: 0,
-                curriculum_roles: [0],
+                curriculum_roles: [],
                 pre_curriculum_ids: [],
                 data_center_id:0,
             },
@@ -439,7 +439,8 @@ export default {
                     this.form.img_3_8 = imgList['3_8'];
                     this.form.description = cleanHtmlLabel(res.data.msg.curriculum[0].description);
                     this.form.orderby = res.data.msg.curriculum[0].orderby;
-                    this.form.curriculum_roles = res.data.msg.curriculum_role;
+                    this.form.curriculum_roles = res.data.msg.curriculum_role ? res.data.msg.curriculum_role : [];
+                    console.log(res.data.msg.curriculum_role);
                     this.form.pre_curriculum_ids = res.data.msg.pre_curriculum;
                     if(this.loadingInstance) this.loadingInstance.close();
                     this.top_course_list = [];

@@ -18,7 +18,7 @@
                                 <DatePicker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
                            </FormItem>
                             <FormItem label="截止报名日期">
-                                <DatePicker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @change='changeDeadlineHandler' :transfer="true">
+                                <DatePicker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true">
                                 </DatePicker>
                            </FormItem>
                                 <FormItem label="学期描述" class="semester-description" prop="description1" required>
@@ -33,7 +33,7 @@
                     <TabPane label="复制学期" v-if="payload.type == 1">
                         <Form ref="myForm2" :rules="rules2" :model="form2" :label-width="120">
                             <FormItem label="选择学期" prop="semester" required>
-                                <Select v-model="form2.semester" placeholder="请选择学期" @change="handleSelectItem">
+                                <Select v-model="form2.semester" placeholder="请选择学期" @on-change="handleSelectItem">
                                     <Option v-for="(item,index) in offline_term_list1" :key="item.id" :label="item.name" :value="index"></Option>
                                 </Select>
                            </FormItem>

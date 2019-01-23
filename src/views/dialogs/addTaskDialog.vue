@@ -12,12 +12,12 @@
                         <InputNumber placeholder="持续时间（天）" v-model="form.duration" :min='0'></InputNumber>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" label="选择学科" prop="subject_id" required>
-                        <Select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2' @change="handleChangeType1">
+                        <Select v-model="form.subject_id" placeholder="请选择学科" :disabled='payload.type == 2' @on-change="handleChangeType1">
                             <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
                         </Select>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" label="选择学段" prop="grade_id" required>
-                        <Select v-model="form.grade_id" placeholder="请选择学段" :disabled="disabled" @change="handleChangeType1">
+                        <Select v-model="form.grade_id" placeholder="请选择学段" :disabled="disabled" @on-change="handleChangeType1">
                             <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
                         </Select>
                    </FormItem>
@@ -28,7 +28,7 @@
                         </RadioGroup>
                    </FormItem>
                     <FormItem v-show="nextStep == 0" :disabled="disabled" class="approval" v-if="payload.selectedType == 0" label="激活方式">
-                        <RadioGroup v-model="form.activity_type" class="float_left" :disabled="disabled" @change="handleChangeType">
+                        <RadioGroup v-model="form.activity_type" class="float_left" :disabled="disabled" @on-change="handleChangeType">
                             <Radio :label="1">手动激活</Radio>
                             <Radio :label="2">定时激活</Radio>
                             <!--<el-radio :label="3">前置课激活</el-radio>-->

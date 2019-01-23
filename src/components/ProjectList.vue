@@ -6,7 +6,6 @@
           <Card class='project-item' v-for='(item, index) in projectList' :key="item.id">
               <div @click='changeSelectProject(item.id)'>
                   <h3>{{item.name}}<span>{{index | Numfilter}}</span></h3>
-                  <p><!--<i class="xght-webfont-tag"></i>--></p>
               </div>
           </Card>
       </div>
@@ -19,10 +18,7 @@ import { Config } from "../config/base";
 import { doTimeFormat } from "../components/Util";
 export default {
   computed: {
-    ...mapState({
-      projectList: state => state.project.project_list,
-      isLoading: state => state.project.isLoading
-    })
+    ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
   },
   filters: {
     Numfilter(v) {
@@ -31,11 +27,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      "get_project_list",
-      "change_selected_project_id",
-      "clear_store"
-    ]),
+    ...mapActions([ "get_project_list", "change_selected_project_id", "clear_store" ]),
     changeSelectProject(id) {
       var oldId = this.$localStorage.get("lastSelectedProject");
       this.change_selected_project_id(id);
@@ -43,9 +35,7 @@ export default {
         this.$localStorage.set("lastSelectedProject", id);
         this.clear_store();
       }
-      this.$router.replace({
-        path: "/dashboard"
-      });
+      this.$router.replace({ path: "/dashboard" });
     },
     getCreateTime(time) {
       return doTimeFormat(time);

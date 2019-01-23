@@ -30,7 +30,8 @@
 <script>
     import EllipsisAni from '../components/EllipsisAni';
     import api from '../api/modules/config';
-    import { login_pwd, user_info } from '../api/modules/auth'
+    import { login_pwd, user_info } from '../api/modules/auth';
+    import { Base64 } from 'js-base64';
     export default {
         components: {  EllipsisAni  },
         data() {
@@ -48,10 +49,6 @@
                 login_pwd(this.name, this.password, 1).then((res) => {
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
-                        // this.$store.dispatch('get_role');
-                        // this.$store.dispatch('get_user_info', { callback(){
-                        //   vm.$router.replace({path: 'dashboard'});
-                        // }});
                         user_info().then((res) => {
                             if (res.data.res_code === 1) {
                                 let roleArr = res.data.msg.role_arr
@@ -61,17 +58,25 @@
                                 }else vm.$Message.warning('权限错误，请重新登录');
                             }
                         })
-                        this.remember ? this.$localStorage.set('login_user', this.name) : this.$localStorage.remove('login_user');
+                        this.remember ? this.$localStorage.set('login_user', Base64.encode('天涯'+JSON.stringify({name:this.name,pass:this.password}))) : this.$localStorage.remove('login_user');
                         this.$localStorage.set('token', res.data.token);
                     } else {
                         vm.$Message.warning(res.data.msg);
                         this.isLogining = false;
                     }
                 });
+            },
+            setUser({name,pass}){
+              this.name = name
+              this.password = pass
             }
         },
         mounted() {
-            this.$localStorage.get('login_user') ? this.name = this.$localStorage.get('login_user') : this.name = '';
+            if(this.$localStorage.get('login_user')){
+              let user = Base64.decode(this.$localStorage.get('login_user'))
+              let u = JSON.parse(user.slice(2))
+              this.setUser(u)
+            }else this.setUser({name:'',pass:''})
         }
     }
 

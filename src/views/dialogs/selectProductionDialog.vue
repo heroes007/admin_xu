@@ -1,5 +1,5 @@
 <template>
-    <Modal :transfer=false title="产品协议" :width="800" :footer-hide=true v-model="selectProductionDialog" @on-cancel="handleRemoveModal(remove)">
+    <Modal :transfer=false title="产品协议" :width="800" :mask-closable="false" :footer-hide=true v-model="selectProductionDialog" @on-cancel="handleRemoveModal(remove)">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
@@ -13,33 +13,18 @@
         </base-input>
     </Modal>
 </template>
-<!-- task_id = 19 -->
 <script>
     import BaseInput from '../../components/BaseInput'
     import UploadPanel from '../../components/UploadPanel'
     import Editor from '../../components/Editor'
     import BaseList from '../../components/BaseList'
-    import {
-        get_list
-    } from '../../api/modules/tools_product'
-    import {
-        get_production_group_list,
-        get_products
-    } from '../../api/modules/tools_special'
-    import {
-        RemoveModal
-    } from './mixins'
-    import {
-        mapActions,
-        mapState
-    } from 'vuex';
+    import { get_list } from '../../api/modules/tools_product'
+    import { get_production_group_list, get_products } from '../../api/modules/tools_special'
+    import { RemoveModal } from './mixins'
+    import { mapActions, mapState } from 'vuex';
     import { Config } from '../../config/base'
-    import {
-        reunitPrice
-    }   from '../../components/Util'
-    import {
-        MPop
-    } from '../../components/MessagePop'
+    import { reunitPrice }   from '../../components/Util'
+    import { MPop } from '../../components/MessagePop'
     export default {
         mixins: [RemoveModal, MPop],
         props: {
@@ -48,6 +33,7 @@
             },
             payload: {}
         },
+        components: { 'base-input': BaseInput, 'upload-panel': UploadPanel, 'text-editor': Editor, 'data-list': BaseList },
         data() {
             return {
                 selectProductionDialog: true,
@@ -84,9 +70,7 @@
                 page_size: 999,
                 state: [0, 1]
             }).then(res => {
-                if (res.data.res_code === 1) {
-                    this.productionGroupList = res.data.msg.specials;
-                }
+                if (res.data.res_code === 1)  this.productionGroupList = res.data.msg.specials;
             })
             get_products(this.payload).then(res => {
                 if (res.data.res_code === 1) {
@@ -96,18 +80,16 @@
             })
         },
         computed: {
-            ...mapState({
-                projectId: state => state.project.select_project_id
-            }),
+            ...mapState({ projectId: state => state.project.select_project_id }),
             dataHeader() {
-                return [
-                    {
+                return [{
                         label: '产品编码',
                         prop: 'code',
                         width: 150,
                     }, {
                         prop: 'title',
-                        label: '产品名称'
+                        label: '产品名称',
+                         width: 150,
                     }, {
                         prop: 'price',
                         label: '定价',
@@ -132,29 +114,23 @@
                     }]
             } ,
             listColumnFormatter() {
-                return [
-                    {
+                return [{
                         columnName:'price',
                         doFormat:reunitPrice
-                    },
-                    {
+                    },{
                         columnName:'original_price',
                         doFormat:reunitPrice
-                    },
-                    {
+                    },{
                         columnName: 'belong_specials',
                         dataIndex: 0
-                    }
-                ]
+                    }]
             },
             listColumnFormatterData() {
                 return [this.productionGroupList];
             }
         },
         methods: {
-            ...mapActions([
-                'add_production_group_products'
-            ]),
+            ...mapActions([ 'add_production_group_products' ]),
             checkSelect() {
                     for (var i = 0; i < this.dataList.length; i++) {
                         for (var j = 0; j < this.selectList.length; j++) {
@@ -164,10 +140,11 @@
                             }
                         }
                     }
-
             },
-            changeRowSelectHandler(index, row) {
-
+            changeRowSelectHandler(row) {
+               this.dataList.map((it) => {
+                 if(it.protocol_id === row.protocol_id)  it.is_select = row.is_select
+               })
             },
             handleClose() {
                 this.selectProductionDialog = false;
@@ -181,13 +158,12 @@
                         datas.push(this.dataList[i]);
                     }
                 }
-
                 if (result.length === 0) {
                     this.$Modal.confirm({
-                    title: '提示',
-                    content: '请选择至少一个课程！',
-                    onOk: () => {}
-                });
+                        title: '提示',
+                        content: '请选择至少一个课程！',
+                        onOk: () => {}
+                    });
                 }
                 else {
                     var vm = this;
@@ -199,17 +175,12 @@
                     })
                 }
             }
-        },
-        components: {
-            'base-input': BaseInput,
-            'upload-panel': UploadPanel,
-            'text-editor': Editor,
-            'data-list': BaseList,
-        },
+        }
     }
 
 </script>
 <style lang="scss" scoped>
+/deep/ .ivu-modal-body { padding: 0; }
 /deep/.ivu-btn{
      border-radius: 4px;
         width: 200px !important;
@@ -217,27 +188,27 @@
         border: 0;
         margin: 30px 0;
 }
-    #select-production-container {
-        @import "base.scss";
-        input,
-        textarea {
-            resize: none;
-            outline: none;
-        }
-        .close-dialog-panel {
-            position: absolute;
-            top: -40px;
-            right: 13.5px;
-            z-index: 99999;
-            font-size: 30px;
-            cursor: pointer;
-            &:before {
-                // color: #fff;
-                color: #757575;
-            }
-        }
-        .body-top {
-            padding-bottom: 10px;
+#select-production-container {
+    @import "base.scss";
+    input,
+    textarea {
+        resize: none;
+        outline: none;
+    }
+    .close-dialog-panel {
+        position: absolute;
+        top: -40px;
+        right: 13.5px;
+        z-index: 99999;
+        font-size: 30px;
+        cursor: pointer;
+        &:before {
+            // color: #fff;
+            color: #757575;
         }
     }
+    .body-top {
+        padding-bottom: 10px;
+    }
+}
 </style>

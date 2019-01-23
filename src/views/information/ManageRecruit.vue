@@ -36,7 +36,6 @@
     </Row>
 </div>
 </template>
-
 <script>
 import Header from "../../components/Header";
 import BaseList from "../../components/BaseList";
@@ -51,9 +50,9 @@ import { RECRUIT_DETAIL,  INTERVIEW_TEACHER_ARRANGEMENT } from "../dialogs/types
 import { Config } from "../../config/base";
 import { mapState, mapActions } from "vuex";
 import { doDateFormat, doTimeFormat } from "../../components/Util";
-
 export default {
   mixins: [Dialog, MPop],
+  components: { "header-component": Header, "data-list": BaseList, "back-to-top": BackToTop },
   data() {
     return {
       user: {
@@ -81,17 +80,19 @@ export default {
       pageSize: 20
     };
   },
-
+  watch: {
+    isLoading(val){
+      // if (val) {
+      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+      //     setTimeout(() => {
+      //         this.loadingInstance.close()
+      //     }, Config.base_timeout);
+      // }else if(this.loadingInstance) this.loadingInstance.close()
+    }
+  },
   methods: {
-    ...mapActions([
-      "get_recruit_list",
-      "get_subject_list",
-      "get_grade_list",
-      "get_dealer_list",
-      "get_teachers",
-      "drop_student_signup",
-      "get_production_list"
-    ]),
+    ...mapActions([ "get_recruit_list", "get_subject_list", "get_grade_list", "get_dealer_list",
+    "get_teachers", "drop_student_signup", "get_production_list" ]),
     withdrawHandler(index, row) {
     this.$Modal.confirm({
           title:'提示',
@@ -104,8 +105,7 @@ export default {
                 vm.showPop("打回成功！", 1000);
               }
             });
-        },
-        onCancel: () => {}
+        }
       });
     },
     teacherArrangementHandler() {
@@ -129,12 +129,9 @@ export default {
             content:"注意，确认后，该面试时间会立即以短信形式发送到学员手机，确认发送？",
             onOk: () => {
               send_interview_msg(row.id, row.interview_time).then(res => {
-                if (res.data.res_code === 1) {
-                  this.showPop("发送成功！", 1000);
-                }
+                if (res.data.res_code === 1)  this.showPop("发送成功！", 1000);
               });
-            },
-            onCancel: () => {}
+            }
         });
     },
     showDetailHandler(index, row) {
@@ -146,19 +143,9 @@ export default {
     },
     getData() {
       var states, results, written_hg,realname, phone;
-
-      if (this.formInline.interview_state === 0) {
-        states = 0;
-        results = 0;
-      } else {
-        if (this.formInline.interview_state === 1) {
-          states = 1;
-          results = 1;
-        } else {
-          states = 1;
-          results = 0;
-        }
-      }
+      let _state = this.formInline.interview_state;
+      states = _state === 0 ? 0 : 1;
+      results = _state === 1 ? 1 : 0;
       if (this.select == 1) {
         realname = this.input;
       } else if (this.select == 2) {
@@ -170,15 +157,11 @@ export default {
         states = null;
         results = null;
       }
-
       var formData = {
         curPage: 1,
         pageSize: this.pageSize,
         project_id: this.$store.state.project.select_project_id,
-        subject_id:
-          this.formInline.subject_id.length === 0
-            ? null
-            : this.formInline.subject_id,
+        subject_id: this.formInline.subject_id.length === 0 ? null : this.formInline.subject_id,
         interview_state: states,
         interview_result: results,
         written_hg,
@@ -203,42 +186,21 @@ export default {
       }
     },
     onSubmit() {
-      //   var formData = {
-      //       is_test_user:this.formInline.is_test_user,
-      //       project_id: this.$store.state.project.select_project_id
-      //     // grade_id: this.formInline.grade_id,
-      //     // subject_id: this.formInline.subject_id,
-      //     // project_id: this.$store.state.project.select_project_id
-
-      //   }
-      //   formData[this.formInline.classify] = this.formInline.classifyValue;
       var formData = this.getData();
       this.$store.dispatch("get_student_list", formData);
     },
     onClear() {
       this.formInline.classifyValue = "";
       this.formInline.is_test_user = 0;
-      // var formData = {
-      //     project_id: this.$store.state.project.select_project_id,
-      //     is_test_user:this.formInline.is_test_user
-      // // grade_id: this.formInline.grade_id,
-      // // subject_id: this.formInline.subject_id,
-      // // project_id: this.$store.state.project.select_project_id
-
-      // }
-      // formData[this.formInline.classify] = this.formInline.classifyValue;
       var formData = this.getData();
       this.$store.dispatch("get_student_list", formData);
     },
     handleCurrentChange(val) {
-      // console.log(val,this.curPage)
-      // if (val && val !== this.curPage) {
       this.curPage = val;
       var data = this.getData();
       data.curPage = val;
       data.pageSize = this.pageSize;
       this.get_recruit_list(data);
-      // }
     }
   },
   mounted() {
@@ -248,16 +210,7 @@ export default {
     var data = this.getData();
     this.get_recruit_list(data);
     this.get_teachers();
-    this.get_production_list({
-      project_id: this.projectId,
-      page_index: 0,
-      page_size: 999
-    });
-  },
-  watch: {
-    isLoading(val) {
-      this.$config.IsLoading(val);
-    }
+    this.get_production_list({ project_id: this.projectId, page_index: 0, page_size: 999 });
   },
   computed: {
     ...mapState({
@@ -344,6 +297,10 @@ export default {
           width: 150,
           mixColumn: true,
           mixFunc: function(data) {
+            let text ="通过(" + data.score + "/" + data.total_score + ")"
+            let score = (n) => {
+              return data.score >= n ? text : '不' + text
+            }
             if (data.school_grade.indexOf("研") === 0) {
               return "免笔试";
             } else if (!data.total_score && !data.score) {
@@ -351,36 +308,10 @@ export default {
             } else if (data.score === data.total_score) {
               return "满分(" + data.score + "/" + data.total_score + ")";
             }
-            if (data.subject_id === 1) {
-              if (data.score >= 60) {
-                return "通过(" + data.score + "/" + data.total_score + ")";
-              } else {
-                return "不通过(" + data.score + "/" + data.total_score + ")";
-              }
-            } else if (data.subject_id === 2) {
-              if (data.score >= 70) {
-                return "通过(" + data.score + "/" + data.total_score + ")";
-              } else {
-                return "不通过(" + data.score + "/" + data.total_score + ")";
-              }
-            } else if (data.subject_id === 3) {
-              if (data.score >= 70) {
-                return "通过(" + data.score + "/" + data.total_score + ")";
-              } else {
-                return "不通过(" + data.score + "/" + data.total_score + ")";
-              }
-            } else if (data.subject_id === 4) {
-              if (data.score >= 60) {
-                return "通过(" + data.score + "/" + data.total_score + ")";
-              } else {
-                return "不通过(" + data.score + "/" + data.total_score + ")";
-              }
-            } else if (data.subject_id === 5) {
-              if (data.score >= 60) {
-                return "通过(" + data.score + "/" + data.total_score + ")";
-              } else {
-                return "不通过(" + data.score + "/" + data.total_score + ")";
-              }
+            if (data.subject_id === 1 || data.subject_id === 4 || data.subject_id === 5) {
+              return score(60)
+            } else if (data.subject_id === 2 || data.subject_id === 3) {
+              return score(70)
             }
           }
         },
@@ -470,27 +401,15 @@ export default {
       ];
     },
     listColumnFormatterData() {
-      return [
-        this.gradeList,
-        this.subjectList,
-        this.teacherList,
-        this.productList,
-        this.dealerList
-      ];
+      return [this.gradeList, this.subjectList, this.teacherList, this.productList, this.dealerList ];
     },
     listHeight() {
       return window.innerHeight - 60 - 20 - 97;
     }
-  },
-  components: {
-    "header-component": Header,
-    "data-list": BaseList,
-    "back-to-top": BackToTop
   }
 };
 </script>
 <style lang="scss">
-
 .manage-recruit-view {
   .base-list-container {
     .base-list-row {
@@ -501,6 +420,8 @@ export default {
     padding-top: 22px;
     text-align: left;
     margin-left: 20px;
+    .ivu-select{ width: 200px }
+    .ivu-select-selection{ border-radius: 0; }
     button {
       background: #fb843e;
       border: 1px solid #f06b1d;
@@ -518,7 +439,6 @@ export default {
     margin: 30px 0;
     padding-right: 40px;
   }
-
   .btn-add {
     color: #5fa137;
   }
@@ -535,11 +455,9 @@ export default {
       .data-item {
         height: 40px;
         border-top: 1px solid #cecece;
-
         &.bg-gray {
           background-color: #fbfbfb;
         }
-
         .Col {
           line-height: 40px;
           p {
@@ -563,7 +481,6 @@ export default {
     right: 20px;
   }
 }
-
 //添加框
 .add-student-view {
   .img {

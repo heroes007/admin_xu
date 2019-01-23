@@ -36,9 +36,7 @@ const actions = {
         })
     },
     change_course_download_data_pre_curriculum({ commit }, params) {
-        // if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length){
-        //     return;
-        // }
+        if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length){ return }
         commit(types.DOWNLOAD_SHOW_LOADING);
         commit(types.SET_DOWNLOAD_CHANGE_PRE_GUARD,params.value);
         set_data_center_pre_curriculums(params.id,params.value).then(res => {
@@ -109,14 +107,14 @@ const mutations = {
         state.isLoading = false;
     },
     [types.DOWNLOAD_CHANGE_PRE_CURRICULUM](state, params) {
-        for(var i=0;i<state.course_download_data_list.length;i++)
-        {
-            if(state.course_download_data_list[i].id === params.id)
-            {
-                state.course_download_data_list[i][params.key] = params.value.concat();
-                break;
-            }
-        }
+        // for(var i=0;i<state.course_download_data_list.length;i++)
+        // {
+        //     if(state.course_download_data_list[i].id === params.id)
+        //     {
+        //         state.course_download_data_list[i][params.key] = params.value.concat();
+        //         break;
+        //     }
+        // }
         state.pre_curriculum_change_guard = null;
         state.isLoading = false;
     },

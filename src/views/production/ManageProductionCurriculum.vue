@@ -2,27 +2,19 @@
     <div class='manage-production-curriculum'>
         <header-component :show-add='false' :type='0'/>
         <Row class='course-name' type='flex' justify='space-between' align='middle'>
-            <div>
-                <h2>产品：{{currentProduction.title}}</h2>
-            </div>
-            <div>
-                <Button type='text' @click='backClickHandler'>返回</Button>
-            </div>
+            <h2>产品：{{currentProduction.title}}</h2>
+            <Button type='text' @click='backClickHandler'>返回</Button>
             <Button class='btn-add' type='primary' @click='addProductionCurriculum()' v-if="activeName == 'online'">添加</Button>
         </Row>
-        <Tabs value="activeName">
+        <Tabs v-model="activeName">
             <TabPane class='online-content' label="线上课" name="online">
-                <data-list class='data-list' :table-data='currentProduction.online_curriculum_list' :header-data='onlineHeader' :columnComboData='columnComboData'
-                    :comboModelList='comboDataList' @delete='deleteHandler' />
-
+                <data-list class='data-list' :table-data='currentProduction.online_curriculum_list' :header-data='onlineHeader'
+                 :columnComboData='columnComboData' :comboModelList='comboDataList' @delete='deleteHandler' />
             </TabPane>
-            <TabPane class='offline-content' label="线下课" name="offline">
-
-            </TabPane>
+            <TabPane class='offline-content' label="线下课" name="offline"></TabPane>
         </Tabs>
     </div>
 </template>
-
 <script>
     import Header from '../../components/ProjectHeader'
     import BaseList from '../../components/BaseList'
@@ -33,15 +25,11 @@
     import { Loading, MessageBox } from 'element-ui';
     import { Config } from '../../config/base'
     import { doSortFormatCatalogList } from '../../components/Util'
-        import {
-    MPop
-} from '../../components/MessagePop'
-    import {
-        mapState,
-        mapActions
-    } from 'vuex'
+    import { MPop } from '../../components/MessagePop'
+    import { mapState, mapActions } from 'vuex'
     export default {
         mixins: [Dialog,MPop],
+        components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder },
         data() {
             return {
                 activeName: 'online'
@@ -67,9 +55,7 @@
                         actionName: 'change_production_curriculum_pre_curriculum',
                         minwidth:500
                     },
-                    {
-                        label: '操作', width: 100, groupBtn: [{ text: '删除', param: 'delete' }]
-                    }
+                    { label: '操作', width: 100, groupBtn: [{ text: '删除', param: 'delete' }] }
                 ]
             },
             productionId() {
@@ -77,14 +63,9 @@
             },
             currentProduction() {
                 for (var i = 0; i < this.productionList.length; i++) {
-                    if (this.productionList[i].id == this.productionId) {
-                        return this.productionList[i];
-                    }
+                    if (this.productionList[i].id == this.productionId)  return this.productionList[i];
                 }
-                return {
-                    title: '',
-                    online_curriculum_list: []
-                };
+                return { title: '', online_curriculum_list: [] };
             },
             comboDataList() {
                 var r = [];
@@ -104,16 +85,16 @@
         },
         watch: {
             isLoading(val) {
-                this.$config.IsLoading(val);
+                if (val) {
+                   this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+                    setTimeout(() => {
+                        this.loadingInstance.close()
+                    }, Config.base_timeout);
+                }else if(this.loadingInstance) this.loadingInstance.close()
             }
         },
         methods: {
-            ...mapActions([
-                'get_production_curriculums',
-                'get_production_list',
-                'delete_production_curriculums',
-                'set_cur_production'
-            ]),
+            ...mapActions([ 'get_production_curriculums', 'get_production_list', 'delete_production_curriculums', 'set_cur_production' ]),
             backClickHandler() {
                 this.$router.replace({ name: 'manage-production' });
             },
@@ -122,20 +103,20 @@
             },
             deleteHandler(index, row) {
                 var vm = this;
-                this.$confirm('是否确认删除该课程？', '提示', {
-                    type: 'info'
-                }).then(() => {
-                    this.delete_production_curriculums({
-                        id:this.productionId,
-                        curriculum_id: row.curriculum_id, _fn: function () {
-                            vm.showPop('删除成功！');
-                        }
-                    })
-                }).catch(() => { });
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '是否确认删除该课程？',
+                    onOk: () => {
+                       this.delete_production_curriculums({
+                            id:this.productionId,
+                            curriculum_id: row.curriculum_id, _fn: function () {
+                                vm.showPop('删除成功！');
+                            }
+                        })
+                    }
+                });
             },
-            handleClick() {
-
-            }
+            handleClick() {}
         },
         mounted() {
             var vm = this;
@@ -146,41 +127,40 @@
                     page_index: 0,
                     page_size: 999,
                     callback: function () {
-                        if (vm.currentProduction.online_curriculum_list.length === 0) {
-                            vm.get_production_curriculums(vm.productionId);
-                        }
+                       if (vm.currentProduction.online_curriculum_list.length === 0) vm.get_production_curriculums(vm.productionId);
                     }
                 });
             }
-            else if (this.currentProduction.online_curriculum_list.length === 0) {
-                this.get_production_curriculums(this.productionId);
-            }
-
-        },
-        components: {
-            'header-component': Header,
-            'data-list': BaseList,
-            'save-order': SaveOrder
+            else if (this.currentProduction.online_curriculum_list.length === 0)  this.get_production_curriculums(this.productionId);
         }
     }
 
 </script>
 <style lang='scss' scoped>
-    .btn-add {
-            position: absolute;
-            z-index: 999;
-            background-color: #F06B1D;
-            color:#ffffff;
-            border: 0;
-            padding: 0;
-            border-radius: 2px;
-            width: 120px;
-            height: 26px;
-            padding: 0 !important;
-            line-height: 24px; 
-            top: 120px;
-            right: 50px;
-        }
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #F06B1D }
+    /deep/.ivu-tabs-tab{
+        text-align: center;
+        line-height: 40px;
+        height: 40px;
+        margin-bottom: 0;
+        font-size: 18px;
+        color: #141111;
+    }
+    .btn-add,.btn-add:hover {
+        position: absolute;
+        z-index: 999;
+        background-color: #F06B1D;
+        color:#ffffff;
+        border: 0;
+        padding: 0;
+        border-radius: 2px;
+        width: 120px;
+        height: 26px;
+        padding: 0 !important;
+        line-height: 24px; 
+        top: 140px;
+        right: 50px;
+    }
     .manage-production-curriculum {
         .course-name {
             height: 60px;
@@ -193,33 +173,6 @@
                 font-weight: 400;
             }
         }
-        .el-tabs {
-            .el-tabs__header {
-                text-align: center;
-                line-height: 60px;
-                height: 60px;
-                margin-bottom: 0;
-                .el-tabs__active-bar {
-                    background-color: #F06B1D;
-                    border-radius: 8px;
-                    position: relative;
-                    margin: 0 auto;
-                    top: 58px;
-                    left: -52px;
-                }
-                .el-tabs__item {
-                    float: none;
-                    display: inline-block;
-                    font-size: 18px;
-                    color: #141111;
-                    letter-spacing: 5px;
-                }
-            }
-            .el-tabs__content {}
-            .online-content {
-                
-            }
-        }
         .data-list {
             .base-list-row {
                 .handle-component {
@@ -227,9 +180,6 @@
                     +.handle-component {
                         margin-right: 2px;
                     }
-                    // &:last-child {
-                    //     margin-left: 50px;
-                    // }
                 }
             }
         }
@@ -283,14 +233,6 @@
                     .warning {
                         font-size: 14px;
                         color: #F06B1D;
-                    }
-                    .el-button {
-                        font-size: 14px;
-                        color: #3B3B3B;
-                        letter-spacing: 0;
-                        &:hover {
-                            color: #F06B1D;
-                        }
                     }
                     .line {
                         width: 1px;

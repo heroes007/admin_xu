@@ -4,7 +4,6 @@
         <base-input :baseInputWidth="800" @closedialog="handleClose">
             <Row slot="body">
                  <Icon class="close" @click="handleClose" type="ios-close" />
-                <!-- <span class="dscj-webfont-remove-sign"></span> -->
                 <Tabs @on-click='changeTabHandler' :value='activeName'>
                     <TabPane label="基础信息" name="name1">
                         <Form  ref="form" :model="form1" :label-width="80">
@@ -139,7 +138,6 @@
                                     <Option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                                 </Select>
                             </Row>
-
                             <Row class="body-top" v-if="true">
                                 <Row v-for="item in form3.dataList" :key="item.id" class="course-item">
                                     <Col :span="4">
@@ -216,65 +214,33 @@
         </base-input>
     </Modal>
 </template>
-
 <script>
     import BaseInput from '../../components/BaseInput'
     import UploadButton from '../../components/UploadButton'
-    import {
-        RemoveModal
-    } from './mixins'
-    import {
-        mapState,
-        mapActions
-    } from 'vuex'
+    import { RemoveModal } from './mixins'
+    import { mapState, mapActions } from 'vuex'
     import UploadPanel from '../../components/UploadPanel'
     import { get_student_detail,delete_student } from '../../api/modules/tools_student'
     import { get_list } from '../../api/modules/tools_product'
     import { get_catalog } from '../../api/modules/tools_curriculum_catalog'
-    import {
-        get_student_online_curriculum,
-        new_version_get_student_online_curriculum,
-        new_version_clear_online_curriculum_record
-    } from '../../api/modules/tools_student'
-    import {
-    get_student_offline_curriculum_list,
-    add_offline_term_count,
-    sub_offline_term_count
-} from '../../api/modules/tools_offline_curriculum'
-    import {
-        get_student_task_list,
-        get_student_work_list
-    } from '../../api/modules/tools_task'
-    import {
-        get_signup_info_by_userid,
-        update_signup_info
-    } from '../../api/modules/exam'
-        import {
-        unlock_curriculum_video_test,
-        new_version_unlock_curriculum_video_test
-    } from '../../api/modules/tools_curriculum'
-
+    import { get_student_online_curriculum, new_version_get_student_online_curriculum, new_version_clear_online_curriculum_record } from '../../api/modules/tools_student'
+    import { get_student_offline_curriculum_list, add_offline_term_count, sub_offline_term_count } from '../../api/modules/tools_offline_curriculum'
+    import { get_student_task_list, get_student_work_list } from '../../api/modules/tools_task'
+    import { get_signup_info_by_userid, update_signup_info } from '../../api/modules/exam'
+    import { unlock_curriculum_video_test, new_version_unlock_curriculum_video_test } from '../../api/modules/tools_curriculum'
     import defaultAvator from '../../assets/img/side-menu/default-header.jpg'
     import { doSortFormatCatalogList } from '../../components/Util'
     import { Config } from '../../config/base'
-    import {
-        MPop
-    } from '../../components/MessagePop'
+    import { MPop } from '../../components/MessagePop'
     export default {
         mixins: [RemoveModal, MPop],
         props: {
             remove: {
                 type: String
             },
-            payload: {
-
-            }
+            payload: {}
         },
-        components: {
-            'base-input': BaseInput,
-            'upload-button': UploadButton,
-            'upload-panel': UploadPanel
-        },
+        components: { 'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel },
         data() {
             return {
                 studentInfoDetailDialog: true,
@@ -342,7 +308,6 @@
             totalProgress() {
                 var finishCount = 0;
                 var totalCount = 0;
-
                 if(!this.form3.product_id)
                     return 0;
                 for (var i = 0; i < this.form3.dataList.length; i++) {
@@ -354,25 +319,14 @@
                     finishCount += this.form3.dataList[i].see_audio_ids ? JSON.parse(this.form3.dataList[i].see_audio_ids).length : 0;
                     finishCount += this.form3.dataList[i].complete_video_test_ids ? JSON.parse(this.form3.dataList[i].complete_video_test_ids).length : 0;
                 }
-
                 finishCount = finishCount * 100;
-
                 if(totalCount === 0)
                     return 0;
-
                 return Math.floor(finishCount / totalCount);
             }
         },
         methods: {
-            ...mapActions([
-                'edit_student',
-                'get_grade_list',
-                'get_subject_list',
-                'get_teachers',
-                'get_student_managers',
-                'get_role'
-
-            ]),
+            ...mapActions([ 'edit_student', 'get_grade_list', 'get_subject_list', 'get_teachers', 'get_student_managers', 'get_role' ]),
             changeProductHandler(){
                 this.showloading();
                 new_version_get_student_online_curriculum({
@@ -406,10 +360,8 @@
             },
             changeTabHandler(tab, event) {
                 if (tab.index === '1' && this.form2.user_id === 0) {
-
                     this.showloading();
                     get_signup_info_by_userid(this.payload.user_id).then(res => {
-
                         if (res.data.res_code === 1) {
                             this.form2 = res.data.msg;
                             this.form2.user_id = this.payload.user_id;
@@ -487,14 +439,9 @@
                 this.studentInfoDetailDialog = false;
             },
             headerImage(v) {
-                if (v) {
-                    return v
-                } else {
-                    return defaultAvator
-                }
+                return v ? v : defaultAvator
             },
             handleResultProgress(total, tested, learned1, learned2, learned3, learned4, learned5) {
-                // console.log(total, tested, learned);
                 var a1 = learned1 ? JSON.parse(learned1).length : 0;
                 var a2 = learned2 ? JSON.parse(learned2).length : 0;
                 var a3 = learned3 ? JSON.parse(learned3).length : 0;
@@ -517,19 +464,12 @@
             },
             unlockTest(item) {
                 new_version_unlock_curriculum_video_test(this.payload.user_id, item.curriculum_id, this.form3.product_id).then(res => {
-                    if (res.data.res_code === 1) {
-                           this.$Modal.info({
-                            title: '提示',
-                            content: '解锁测验成功',
-                            onOk: () => {}
-                         });
-                    } else {
-                        this.$Modal.info({
-                            title: '提示',
-                            content: '解锁测验失败：' + res.data.res_code,
-                            onOk: () => {}
-                         });
-                    }
+                    let code = res.data.res_code
+                    let text = code === 1 ? '成功' : '失败：' + code
+                    this.$Modal.info({
+                        title: '提示',
+                        content: '解锁测验' + text
+                     });
                 })
             },
             handleUploadComplete(url) {
@@ -541,13 +481,13 @@
                     content: '此操作无法还原，是否确认删除该学员？',
                     onOk: () => {
                         delete_student(student_id).then(rs => {
-                        this.$Modal.info({
-                            title: '提示',
-                            content: '删除成功！',
-                            onOk: () => {
-                            this.studentInfoDetailDialog = false;
-                            }
-                        });
+                            this.$Modal.info({
+                                title: '提示',
+                                content: '删除成功！',
+                                onOk: () => {
+                                this.studentInfoDetailDialog = false;
+                                }
+                            });
                         });
                     }
                 });
@@ -585,12 +525,9 @@
             this.get_teachers();
             this.get_student_managers();
             this.get_role();
-
             var vm = this;
-
             this.form1.user_id = this.payload.user_id;
             this.form1.nickname = this.payload.nickname;
-
         get_list({project_id:this.payload.project_id,page_index:0,page_size:99999,state:[0,1,2]}).then(res => {
             if(res.data.res_code === 1)  this.form3.productList = res.data.msg.products;
         })
@@ -732,7 +669,6 @@
                             margin-top: 50px;
                         }
                     }
-
                 }
                 .query-header {
                     padding:0 30px;

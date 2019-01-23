@@ -35,7 +35,7 @@ const actions = {
     change_production_group_vailid({
             commit
         }, param) {
-        commit(types.PRODUCTION_GROUP_SHOW_LOADING);
+        // commit(types.PRODUCTION_GROUP_SHOW_LOADING);
         switch_special(param.id, param.value?1:0).then(res => {
             if (res.data.res_code === 1) {
                 commit(types.PRODUCTION_GROUP_VALID_UPDATED, param)
@@ -113,7 +113,7 @@ const mutations = {
                 break;
             }
         }
-        state.isLoading = false;
+       if(state.isLoading) state.isLoading = false;
     },
     [types.PRODUCTION_GROUP_ADDED](state, param) {
         state.production_group_list.push({id:param.result,special_id:param.result,name:param.data.name,state:0,is_valid:false,product_count:0})

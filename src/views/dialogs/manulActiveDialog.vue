@@ -1,5 +1,5 @@
 <template>
-    <Modal title="手动激活" width="700px" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)"
+    <Modal :transfer=false title="手动激活" width="700px" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)"
                :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">

@@ -1,10 +1,9 @@
 <template>
-    <Modal :transfer=false title="产品协议" :width="600" :footer-hide=true v-model="selectCurriculumDialog" @on-cancel="handleRemoveModal(remove)">
+    <Modal :transfer=false title="课程列表" :width="600" :mask-closable="false" :footer-hide=true v-model="selectCurriculumDialog" @on-cancel="handleRemoveModal(remove)">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
-               <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='dataList'
-            :header-data='dataHeader'></data-list>
+               <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='dataList' :header-data='dataHeader'></data-list>
             </Row>
             <Row class="elRow">
                 <Button type="primary" class="ok-btn" @click="addHandler">添加</Button>
@@ -13,28 +12,19 @@
     </base-input>
 </Modal>
 </template>
-<!-- task_id = 19 -->
 <script>
 import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
 import Editor from '../../components/Editor'
 import BaseList from '../../components/BaseList'
-import {
-   get_list
-} from '../../api/modules/tools_curriculum'
-import {
-    RemoveModal
-} from './mixins'
-import {
-    mapActions,
-    mapState
-} from 'vuex';
+import { get_list } from '../../api/modules/tools_curriculum'
+import { RemoveModal } from './mixins'
+import { mapActions, mapState } from 'vuex';
 import { Config } from '../../config/base'
-    import {
-    MPop
-} from '../../components/MessagePop'
+import { MPop } from '../../components/MessagePop'
 export default {
     mixins: [RemoveModal,MPop],
+    components: { 'base-input': BaseInput, 'upload-panel': UploadPanel, 'text-editor':Editor, 'data-list': BaseList },
     props: {
         remove: {
             type: String
@@ -48,48 +38,21 @@ export default {
             loadingInstance:null
         }
     },
-    mounted() {
-        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-                setTimeout(() => {
-                    this.loadingInstance.close();
-                }, Config.base_timeout);
-       get_list(this.projectId).then(res => {
-                if(res.data.res_code === 1){
-                    this.dataList = [];
-                    var founded = false;
-                    for(var i=0;i<res.data.msg.length;i++){
-                        res.data.msg[i].is_select = false;
-                        founded = false;
-                        for(var j=0;j<this.payload.list.length;j++){
-                            if(res.data.msg[i].curriculum_id === this.payload.list[j].curriculum_id){
-                                founded = true;
-                                break;
-                            }
-                        }
-                        if(!founded) this.dataList.push(res.data.msg[i]);
-                    }
-                }
-               if(this.loadingInstance) this.loadingInstance.close();
-            })
-    },
     computed: {
-        ...mapState({
-            projectId:state => state.project.select_project_id
-        }),
+        ...mapState({ projectId:state => state.project.select_project_id }),
         dataHeader() {
-             return [
-                 {
+             return [{
                     label: '排序',
                     width: 90,
                     sort: true
-                }, {
+                },{
                     prop: 'teacher_name',
                     label: '讲师',
                     width: 150
-                }, {
+                },{
                     prop: 'title',
                     label: '课程名称',
-                },  {
+                },{
                     label: '操作',
                     width: 120,
                     groupBtn: [{
@@ -102,11 +65,11 @@ export default {
         }
     },
     methods: {
-        ...mapActions([
-            'add_production_curriculums'
-        ]),
-        changeRowSelectHandler(index,row) {
-
+        ...mapActions([ 'add_production_curriculums' ]),
+        changeRowSelectHandler(row) {
+            this.dataList.map((it) => {
+                if(it.curriculum_id === row.curriculum_id)  it.is_select = row.is_select
+            })
         },
         handleClose() {
             this.selectCurriculumDialog = false;
@@ -114,6 +77,7 @@ export default {
         addHandler(formName) {
             var result = [];
             var datas = []
+             console.log(this.dataList);
             for(var i=0;i<this.dataList.length;i++){
                 if(this.dataList[i].is_select){
                     result.push(this.dataList[i].curriculum_id);
@@ -133,14 +97,35 @@ export default {
                     vm.showPop('添加成功！');
                 }})
             }
+        },
+        getTableDate(){
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+            setTimeout(() => {
+                this.loadingInstance.close();
+            }, Config.base_timeout);
+            get_list(this.projectId).then(res => {
+                if(res.data.res_code === 1){
+                    this.dataList = [];
+                    var founded = false;
+                    for(var i=0;i<res.data.msg.length;i++){
+                        res.data.msg[i].is_select = false;
+                        founded = false;
+                        for(var j=0;j<this.payload.list.length;j++){
+                            if(res.data.msg[i].curriculum_id === this.payload.list[j].curriculum_id){
+                                founded = true;
+                                break;
+                            }
+                        }
+                        if(!founded) this.dataList.push(res.data.msg[i]);
+                    }
+                }
+                if(this.loadingInstance) this.loadingInstance.close();
+            })
         }
     },
-    components: {
-        'base-input': BaseInput,
-        'upload-panel': UploadPanel,
-        'text-editor':Editor,
-        'data-list': BaseList,
-    },
+    mounted() {
+       this.getTableDate()
+    }
 }
 </script>
 <style lang="scss" scoped>

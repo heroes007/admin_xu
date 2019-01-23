@@ -1,24 +1,13 @@
 <template>
-    <Modal
-        title="导师安排"
-        v-model="interviewTeacherArrangementDialog"
-        @on-cancel="handleRemoveModal(remove)"
-        width="600px"
-        :footer-hide="true">
+    <Modal :transfer=false :mask-closable="false" title="导师安排" v-model="interviewTeacherArrangementDialog"
+        @on-cancel="handleRemoveModal(remove)" width="600px" :footer-hide="true">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="true">
                     <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
-                        <FormItem
-                            v-for='(item, index) in subjectList'
-                            :key='item.id'
-                            :label="item.name">
+                        <FormItem v-for='(item, index) in subjectList' :key='item.id' :label="item.name">
                             <Select v-model="form.arrangement[index]" placeholder="请选择学科">
-                                <Option
-                                    v-for="t in teacherList"
-                                    :key="t.user_id"
-                                    :label="t.nickname"
-                                    :value="t.user_id"></Option>
+                                <Option v-for="t in teacherList" :key="t.user_id" :label="t.nickname" :value="t.user_id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem class="btn-content">
@@ -30,7 +19,6 @@
         </base-input>
     </Modal>
 </template>
-
 <script>
     import BaseInput from '../../components/BaseInput'
     import UploadButton from '../../components/UploadButton'
@@ -42,20 +30,14 @@
     import {mapActions, mapState} from 'vuex'
     import {MPop} from '../../components/MessagePop'
     export default {
-        mixins : [
-            RemoveModal, MPop
-        ],
+        mixins : [ RemoveModal, MPop ],
         props : {
             remove: {
                 type: String
             },
             payload: {}
         },
-        components : {
-            'base-input': BaseInput,
-            'upload-button': UploadButton,
-            'upload-panel': UploadPanel
-        },
+        components : { 'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel },
         data() {
             return {
                 interviewTeacherArrangementDialog: true,
@@ -107,19 +89,13 @@
                         found = false;
                         for (var j = 0; j < res.data.msg.length; j++) {
                             if (res.data.msg[j].subject_id === this.subjectList[i].id) {
-                                this
-                                    .form
-                                    .arrangement
-                                    .push(res.data.msg[j].interview_user_id);
+                                this.form.arrangement.push(res.data.msg[j].interview_user_id);
                                 found = true;
                                 break;
                             }
                         }
                         if (!found) {
-                            this
-                                .form
-                                .arrangement
-                                .push(null);
+                            this.form.arrangement.push(null);
                         }
                     }
                 }
