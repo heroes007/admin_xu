@@ -78,7 +78,6 @@
     import { doTimeFormat } from '../../components/Util'
     import { Dialog } from '../dialogs'
     import { VIDEO_MANAGE, ADD_QUESTION } from '../dialogs/types'
-    import { Loading, MessageBox } from 'element-ui';
     import { Config } from '../../config/base'
     import { doSortFormatCatalogList } from '../../components/Util'
     export default {
@@ -196,26 +195,6 @@
                 }
 
                 this.setChapterShowState();
-
-
-                //                if(!this.saveState)
-                //                {
-                //                    for(var i=0;i<list.length;i++)
-                //                    {
-                //                        if(this.showListState.length > i)
-                //                        {
-                //
-                //                        }
-                //                        else
-                //                        {
-                //                            this.$set(this.showListState,i,0);
-                //                        }
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    this.saveState = false;
-                //                }
             },
             curriculumList(val) {
                 if (!this.isInited)
@@ -328,9 +307,6 @@
                         })
                     }
                     else {
-                        // this.$alert('请先添加章节名称。', '提示', {
-                        //     confirmButtonText: '确定'
-                        // })
                       this.$Modal.info({
                         title: '提示',
                         content: '<p>请先添加章节名称</p>'
@@ -358,9 +334,10 @@
                         })
                     }
                     else {
-                        this.$alert('请先添加章节名称。', '提示', {
-                            confirmButtonText: '确定'
-                        })
+                      this.$Modal.info({
+                        title: '提示',
+                        content: '<p>请先添加章节名称</p>'
+                      });
                     }
                 }
                 else {
@@ -390,7 +367,7 @@
     }
 
 </script>
-<style lang='scss'>
+<style scoped lang='scss'>
     .manage-online-course-chapter {
         .course-name {
             height: 60px;
@@ -401,11 +378,6 @@
                 color: #141111;
                 letter-spacing: 0;
                 font-weight: 400;
-            }
-            .el-button {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
             }
         }
         .data-list {

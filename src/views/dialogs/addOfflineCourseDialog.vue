@@ -50,28 +50,17 @@
 <script>
     import BaseInput from '../../components/BaseInput'
     import UploadButton from '../../components/UploadButton'
-    import {
-        RemoveModal
-    } from './mixins'
+    import { RemoveModal } from './mixins'
     import UploadPanel from '../../components/UploadPanel'
-    import {
-        mapActions,
-        mapState
-    } from 'vuex';
-    import _ from 'lodash'
+    import { mapActions, mapState } from 'vuex';
     import dateFormat from '../../config/timeFormat'
-    import {
-    MPop
-} from '../../components/MessagePop'
+    import { MPop } from '../../components/MessagePop'
+
     export default {
         mixins: [RemoveModal,MPop],
         props: {
-            remove: {
-                type: String
-            },
-            payload: {
-
-            }
+            remove: { type: String },
+            payload: {}
         },
         components: {
             'base-input': BaseInput,
@@ -82,7 +71,6 @@
             if (this.$store.state.teacher.teacher_list.length == 0) {
                 this.get_teacher_list();
             }
-
             if (this.payload.type == 2) {
                 // this.rules.teacher_description[0].required = true;
                 // this.rules.teacher_img_url[0].required = true;
@@ -219,13 +207,13 @@
                                 // teacher_description: this.form.teacher_description,
                                 description: '',
                                 callback() {
-                                    if (closeAfterSave)
-                                    {
+                                    if (closeAfterSave) {
                                         vm.handleClose();
                                         vm.showPop('添加成功！',1000);
                                     }
-                                    else
-                                        this.$refs[formName].resetFields();
+                                    else{
+                                      vm.$refs[formName].resetFields();
+                                    }
                                 }
                             })
                             return true;
@@ -251,13 +239,13 @@
                                 description: this.form.teacher_description,
                                 index: this.payload.index,
                                 callback() {
-                                    if (closeAfterSave)
-                                    {
+                                    if (closeAfterSave) {
                                         vm.handleClose();
                                         vm.showPop('修改成功！',1000);
                                     }
-                                    else
-                                        vm.$refs[formName].resetFields();
+                                    else{
+                                      vm.$refs[formName].resetFields();
+                                    }
                                 }
                             });
                             return true;
@@ -291,7 +279,10 @@
     .finish-btn{
         width: 170px;
     }
-    /deep/ .ivu-modal-body { width: 80%; margin-left: 10% }
+    /deep/ .ivu-modal-body {
+        width: 80%;
+        margin-left: 10%
+    }
     #add-offline-course-container {
         @import "base.scss";
         .close-dialog-panel {

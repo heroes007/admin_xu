@@ -1,9 +1,5 @@
 <template>
     <div class='save-order'>
-        <!--<div class='save' @click='clickHandler'>
-            <p>...</p>
-            <p>保存顺序</p>
-        </div>-->
         <Row>
             <Button class='btn-cancel' type='primary' :plain='true' @click='cancelHandler'>取消</Button>
             <Button class='btn-save' type='primary' :plain='true' @click='saveHandler'>保存</Button>
@@ -30,15 +26,10 @@
 </script>
 <style lang='scss'>
     .save-order {
-
-        .btn-cancel {
-            /*border-color: #1e1e1e;*/
-        }
         .btn-save {
             border-color: #F06B1D;
             color: #fff;
         }
-
         .save {
             position: fixed;
             top:40%;

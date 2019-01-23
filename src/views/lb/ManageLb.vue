@@ -7,7 +7,7 @@
                 <BreadcrumbItem>查看广告</BreadcrumbItem>
             </Breadcrumb>
             <Button class='btn-add' type='text' @click='addLb()'>添加广告图</Button>
-            <Modal :transfer=false v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="50%">
+            <Modal :transfer=false v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="800">
                 <div slot="header" class="modal-header">
                     <div>广告信息</div>
                 </div>
@@ -29,11 +29,7 @@
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             显示位置：
                             <Select v-model="lbData.position" placeholder="请选择学科">
-                                <Option
-                                        v-for="item in positionList" :key="item.id"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </Option>
+                                <Option v-for="item in positionList" :key="item.id" :label="item.label" :value="item.value"></Option>
                             </Select>
                         </Row>
                         <Row class='user-data' type='flex' justify='start' align='middle'>
@@ -60,11 +56,7 @@
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             上线状态：
                             <Select v-model="lbData.state" placeholder="请选择学科">
-                                <Option
-                                        v-for="item in stateList" :key="item.id"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </Option>
+                                <Option v-for="item in stateList" :key="item.id" :label="item.label" :value="item.value"></Option>
                             </Select>
                         </Row>
                         <Row class='user-data' type='flex' justify='center' align='middle'>
@@ -80,80 +72,25 @@
             </template>
         </Table>
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page
-                    @on-page-size-change="handleSizeChange"
-                    @on-change="handleCurrentChange"
-                    :current="curPage"
-                    :page-size-opts="[10, 20, 50, 100]"
-                    :page-size="pageSize"
-                    show-sizer
-                    :total="total">
+            <Page @on-page-size-change="handleSizeChange"
+                  @on-change="handleCurrentChange"
+                  :current="curPage"
+                  :page-size-opts="[10, 20, 50, 100]"
+                  :page-size="pageSize"
+                  show-sizer
+                  :total="total">
             </Page>
         </Row>
 
     </div>
 </template>
 
-<style scoped lang="scss">
-    /deep/ .ivu-input-number{
-        width: calc(100% - 70px) !important;
-    }
-    .ivu-input-wrapper{
-        width: calc(100% - 70px) !important;
-    }
-    .ivu-select{
-        width: calc(100% - 70px) !important;
-    }
-    .ivu-modal-header{
-        background-color: #546573;
-        border-radius: 6px 6px 0 0;
-        padding: 20px !important;
-
-    }
-    .modal-header{
-        font-size: 16px;
-        font-weight: 700;
-        text-align: center;
-        color: #fff;
-    }
-    .ivu-icon-ios-close{
-        color: #bfcbd9 !important;
-
-        &:hover{
-            color: #4098ff !important;
-        }
-    }
-    .ivu-btn-primary{
-        width: 140px;
-    }
-    /deep/ .ivu-table-cell{
-        font-size: 16px;
-        color: #657180;
-        text-align: center;
-    }
-    /deep/ .ivu-table th{
-        text-align: center;
-    }
-    /deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value{
-        font-size: 14px;
-    }
-    .btn-text{
-        color: #5fa137;
-        font-size: 14px;
-    }
-    /deep/ .ivu-input-number{
-        width: calc(100% - 70px) !important;
-    }
-</style>
-
 <script>
     import Header from '../../components/Header'
     import UploadBtn from '../../components/UploadButton'
-    import api from '../../api/modules/config'
     import {Config} from '../../config/base'
-    import { get_sign } from '../../api/modules/ali_oss'
     import { get_detail, update_lb, add_lb } from '../../api/modules/tools_lb'
-    import { Loading } from 'element-ui';
+
     export default{
         data(){
             return {
@@ -224,7 +161,6 @@
                 if (val !== this.pageSize) {
                     this.$store.dispatch('get_lb_list', {curPage: this.curPage, pageSize: val});
                 }
-
             },
             handleCurrentChange(val) {
                 if (val && val !== this.curPage) {
@@ -232,15 +168,8 @@
                 }
             },
             searchStudent(){
-                if(!this.initData)
-                    this.initData = true;
+                if(!this.initData) this.initData = true;
                 this.$store.dispatch('search_userinfo_by_nickname_or_phone',{searchType:this.searchType,searchData:this.searchData});
-            },
-            handleBeforeUpload(file) {
-                get_sign(file.type,new Date(),'dscj-app','questions',file.name,'put').then((res) => {
-                    console.log(res)
-                })
-                return false;
             },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
@@ -272,7 +201,6 @@
                     if(this.loadingInstance) this.loadingInstance.close();
                     if(res.data.res_code === 1)
                     {
-
                         this.lbData = res.data.msg[0];
                         this.lbData.img_url = res.data.msg[0].img_url ? JSON.parse(res.data.msg[0].img_url) : '';
                         this.lbData.share_img_url = res.data.msg[0].share_img_url ? JSON.parse(res.data.msg[0].share_img_url) : '';
@@ -342,3 +270,66 @@
         }
     }
 </script>
+
+<style scoped lang="scss">
+    .ivu-input-wrapper{
+        width: calc(100% - 70px) !important;
+    }
+    .ivu-select{
+        width: calc(100% - 70px) !important;
+    }
+    .ivu-modal-header{
+        background-color: #546573;
+        border-radius: 6px 6px 0 0;
+        padding: 20px !important;
+
+    }
+    .modal-header{
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        color: #fff;
+    }
+    .ivu-icon-ios-close{
+        color: #bfcbd9 !important;
+
+        &:hover{
+            color: #4098ff !important;
+        }
+    }
+    .ivu-btn-primary{
+        width: 140px;
+    }
+    .add-student-view{
+        width: 50%;
+    }
+    .btn-add{
+        position: absolute;
+        right: 40px;
+        color: #FB843E;
+    }
+    .result{
+        margin: 32px 0 !important;
+    }
+    /deep/ .ivu-input-number{
+        width: calc(100% - 70px) !important;
+    }
+    /deep/ .ivu-table-cell{
+        font-size: 16px;
+        color: #657180;
+        text-align: center;
+    }
+    /deep/ .ivu-table th{
+        text-align: center;
+    }
+    /deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+        font-size: 14px;
+    }
+    .btn-text{
+        color: #FB843E;
+        font-size: 14px;
+    }
+    /deep/ .ivu-input-number{
+        width: calc(100% - 70px) !important;
+    }
+</style>

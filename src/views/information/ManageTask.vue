@@ -3,7 +3,7 @@
         <header-component :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" />
         <div class="category-list">
             <category-item v-for='item in categoryList' :key="item.id" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
-                :selected='getSelected(item.id, item.type)' @select='changeCategory(item)' />
+                :selected='getSelected(item.id, item.type)' @select='changeCategory(item)'/>
         </div>
         <div class="create-panel">
             <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建</Button> -->
@@ -13,13 +13,13 @@
         </div>
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler' class='data-list light-header' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
-            <div class='manage-online-course'>
-                <!-- <header-component @addCourse='addCourseHandler'/> -->
-                <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建作业</Button> -->
-                <!-- <Button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</Button> -->
-                <!-- <Button @click="handleSelModal(types.ADD_TASK, {type: 1})">创建任务</Button> -->
-                <!-- <Button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</Button> -->
-            </div>
+        <div class='manage-online-course'>
+            <!-- <header-component @addCourse='addCourseHandler'/> -->
+            <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建作业</Button> -->
+            <!-- <Button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</Button> -->
+            <!-- <Button @click="handleSelModal(types.ADD_TASK, {type: 1})">创建任务</Button> -->
+            <!-- <Button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</Button> -->
+        </div>
     </div>
 </template>
 
@@ -27,27 +27,11 @@
     import Header from '../../components/ProjectHeader'
     import TaskCategoryItem from '../../components/TaskCategoryItem.vue'
     import BaseList from '../../components/BaseList'
-    import {
-        Dialog
-    } from '../dialogs'
-    import {
-        ADD_TASK_CATEGORY,
-        ADD_TASK,
-        NOTIFICATION,
-        MANUL_ACTIVE
-    } from '../dialogs/types'
-    import {
-        Loading
-    } from 'element-ui'
-    import {
-        doTimeFormat
-    } from '../../components/Util'
-    import {
-        mapActions
-    } from 'vuex'
-    import {
-        Config
-    } from '../../config/base'
+    import { Dialog } from '../dialogs'
+    import { ADD_TASK_CATEGORY, ADD_TASK, NOTIFICATION, MANUL_ACTIVE } from '../dialogs/types'
+    import { doTimeFormat } from '../../components/Util'
+    import { mapActions } from 'vuex'
+    import { Config } from '../../config/base'
     export default {
         mixins: [Dialog],
         data() {
@@ -199,7 +183,7 @@
                         this.loadingInstance.close()
                     }, Config.base_timeout);
                 }else{
-                    if(this.loadingInstance) this.loadingInstance.close() 
+                    if(this.loadingInstance) this.loadingInstance.close()
                     this.dirty = false
                 }
             },
@@ -347,7 +331,7 @@
     }
 
 </script>
-<style lang='scss'>
+<style scoped lang='scss'>
     .manage-task {
         .category-list {
             padding-top: 20px;
@@ -369,24 +353,6 @@
                 border: none;
                 outline: none;
                 line-height: 20px;
-            }
-        }
-    }
-
-    .manage-task {
-        .data-list {
-            .base-list-row {
-                .handle-component {
-                    margin-right: 30px;
-                    +.handle-component {
-                        +.handle-component {
-                            margin-right: 2px;
-                        }
-                    }
-                    &:last-child {
-                        margin-left: 50px;
-                    }
-                }
             }
         }
     }

@@ -10,23 +10,11 @@
 <script>
   import BaseList from '../../components/BaseList'
   import Header from '../../components/ProjectHeader'
-  import {
-    mapActions,
-    mapState,
-    mapGetters
-  } from 'vuex'
-  import {
-    Dialog
-  } from '../dialogs'
-  import {
-    ADD_DOWNLOAD_DATA
-  } from '../dialogs/types'
-  import {
-    doTimeFormat
-  } from '../../components/Util'
-  import {
-    Config
-  } from '../../config/base'
+  import { mapActions, mapState, mapGetters } from 'vuex'
+  import { Dialog } from '../dialogs'
+  import { ADD_DOWNLOAD_DATA } from '../dialogs/types'
+  import { doTimeFormat } from '../../components/Util'
+  import { Config } from '../../config/base'
 
   export default {
     mixins: [Dialog],
@@ -145,11 +133,12 @@
         this.handleSelModal(ADD_DOWNLOAD_DATA, 1);
       },
       deleteHandler(index, row) {
-        this.$confirm('是否确定删除该资料？', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.delete_download_data(row.id);
-        }).catch(() => {
+        this.$Modal.confirm({
+          title: '提示',
+          content: '<p>是否确定删除该资料？</p>',
+          onOk: () => {
+            this.delete_download_data(row.id);
+          },
         });
       }
     },

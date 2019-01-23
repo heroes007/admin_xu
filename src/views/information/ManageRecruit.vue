@@ -409,7 +409,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .manage-recruit-view {
   .base-list-container {
     .base-list-row {

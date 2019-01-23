@@ -43,8 +43,7 @@
                 </FormItem>
             </Form>
         </Row>
-        <data-list class='data-list light-header' :table-data='dataList' :header-data='dataHeader'
-                   :column-formatter='listColumnFormatter'
+        <data-list class='data-list light-header' :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
                    :column-formatter-data='listColumnFormatterData' @edit='editHandler'></data-list>
     </div>
 </template>
@@ -54,25 +53,11 @@
   import BaseList from '../../components/BaseList'
   import BackToTop from '../../components/BackToTop'
   import api from '../../api/modules/config'
-  import {
-    mapActions,
-    mapState
-  } from 'vuex'
-  import {
-    Loading
-  } from 'element-ui'
-  import {
-    Dialog
-  } from '../dialogs'
-  import {
-    EDIT_OFFLINE_SIGNUP
-  } from '../dialogs/types'
-  import {
-    doTimeFormat
-  } from '../../components/Util'
-  import {
-    Config
-  } from '../../config/base'
+  import { mapActions, mapState } from 'vuex'
+  import { Dialog } from '../dialogs'
+  import { EDIT_OFFLINE_SIGNUP } from '../dialogs/types'
+  import { doTimeFormat } from '../../components/Util'
+  import { Config } from '../../config/base'
 
   export default {
     mixins: [Dialog],
@@ -90,7 +75,6 @@
         },
       }
     },
-
     methods: {
       ...mapActions([
         'edit_offline_term',
@@ -116,8 +100,7 @@
       backClickHandler() {
         this.$router.replace({name: 'offline-course'});
       },
-      changeDeadlineHandler() {
-      }
+      changeDeadlineHandler() {}
     },
     mounted() {
       this.get_city_list();
@@ -266,35 +249,7 @@
   }
 
 </script>
-<style lang="scss">
-    .el-tooltip__popper {
-        &.is-light {
-            background: #FFFFFF;
-            border: 1px solid #E7E8EA;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-
-            .more-tip {
-                max-width: 278px;
-                line-height: 1.2;
-                font-size: 14px;
-                color: #2e3e47;
-
-                & + .popper__arrow {
-                    border-top-color: #E7E8EA;
-
-                    &:after {
-                        //border-top-color:#E7E8EA;
-                    }
-                }
-            }
-        }
-    }
-
-    .el-table-filter {
-        height: 100vh;
-        overflow-y: auto;
-    }
-
+<style scoped lang="scss">
     .manage-offline-course-signup-view {
         .base-list-container {
             .base-list-row {
@@ -309,32 +264,10 @@
                 }
             }
         }
-
         .find-by-term {
             padding-top: 22px;
             text-align: left;
             margin-left: 20px;
-
-            .select-user {
-                .el-input__inner {
-                    border-right: 0;
-                }
-            }
-
-            .el-input__inner {
-                border-radius: 0;
-                background: #FFFFFF;
-                border: 1px solid #E5E5E5;
-            }
-
-            .el-form-item__label {
-                font-size: 16px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-
-            .el-form-item__content {
-            }
 
             button {
                 background: #FB843E;
@@ -350,22 +283,7 @@
                 width: 43px;
                 padding: 0;
             }
-
-            .el-date-editor {
-                // display: none;
-                &.el-input {
-                    // width: 20px;
-                    .el-input__inner {
-                        // display: none;
-                    }
-
-                    i {
-                        display: none;
-                    }
-                }
-            }
         }
-
         .header {
             height: 60px;
             background-color: #333333;
@@ -385,11 +303,6 @@
                     border-right: 1px solid rgba(255, 255, 255, 0.5);
                     padding-right: 20px;
                     margin-right: 20px;
-                }
-
-                .el-button {
-                    color: #ffffff;
-                    font-size: 16px;
                 }
             }
         }

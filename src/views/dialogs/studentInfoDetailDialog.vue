@@ -1,39 +1,46 @@
 <template>
-    <Modal :transfer=false title='学员信息' v-model="studentInfoDetailDialog" :width="800" :closable="false" :footer-hide="true" @on-cancel="handleRemoveModal(remove)"  :mask-closable="false">
+    <Modal :transfer=false title='学员信息' v-model="studentInfoDetailDialog" :width="800" :closable="false"
+           :footer-hide="true" @on-cancel="handleRemoveModal(remove)" :mask-closable="false">
         <div slot="header"></div>
         <base-input :baseInputWidth="800" @closedialog="handleClose">
             <Row slot="body">
                  <Icon class="close" @click="handleClose" type="ios-close" />
                 <Tabs @on-click='changeTabHandler' :value='activeName'>
                     <TabPane label="基础信息" name="name1">
-                        <Form  ref="form" :model="form1" :label-width="80">
+                        <Form ref="form" :model="form1" :label-width="80">
                             <FormItem label="选择项目">
                                 <Select v-model="form1.project_id" placeholder="请选择项目" disabled>
-                                    <Option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    <Option v-for="item in projectList" :key="item.id" :label="item.name"
+                                            :value="item.id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="真实姓名">
                                 <Input v-model="form1.realname" placeholder="请输入学员真实姓名"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="选择学段">
                                 <Select v-model="form1.grade_id" placeholder="请选择学段">
-                                    <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    <Option v-for="item in gradeList" :key="item.id" :label="item.name"
+                                            :value="item.id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="选择学科">
                                 <Select v-model="form1.subject_id" placeholder="请选择学科">
-                                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    <Option v-for="item in subjectList" :key="item.id" :label="item.name"
+                                            :value="item.id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="开课时间">
-                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.start_school_time" :transfer="true"></DatePicker>
-                           </FormItem>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px"
+                                            v-model="form1.start_school_time" :transfer="true"></DatePicker>
+                            </FormItem>
                             <FormItem label="毕业时间">
-                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.finish_school_time" :transfer="true"></DatePicker>
-                           </FormItem>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px"
+                                            v-model="form1.finish_school_time" :transfer="true"></DatePicker>
+                            </FormItem>
                             <FormItem label="离校时间">
-                                 <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form1.leave_school_time" :transfer="true"></DatePicker>
-                           </FormItem>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px"
+                                            v-model="form1.leave_school_time" :transfer="true"></DatePicker>
+                            </FormItem>
                             <FormItem label="学员类型">
                                 <Select v-model="form1.type" placeholder="请选择学员类型">
                                     <Option label="普通" value="1"></Option>
@@ -42,17 +49,19 @@
                                     <Option label="个人不返钱" value="4"></Option>
                                     <Option label="内部账号" value="-1"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="选择导师">
                                 <Select v-model="form1.tutor_user_id" placeholder="请选择导师">
-                                    <Option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.user_id"></Option>
+                                    <Option v-for="item in teachers" :key="item.id" :label="item.nickname"
+                                            :value="item.user_id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="选择学管">
                                 <Select v-model="form1.xg_user_id" placeholder="请选择学管">
-                                    <Option v-for="item in studentManagers" :key="item.id" :label="item.nickname" :value="item.user_id"></Option>
+                                    <Option v-for="item in studentManagers" :key="item.id" :label="item.nickname"
+                                            :value="item.user_id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="状态">
                                 <Select v-model="form1.state" placeholder="请选择学员状态">
                                     <Option label="正常" value="1"></Option>
@@ -61,72 +70,77 @@
                                     <Option label="延缓" value="4"></Option>
                                     <Option label="删除" value="-1"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="特殊类型">
                                 <Select v-model="form1.is_test_user" placeholder="请选择学员特殊类型">
                                     <Option label="正式学员" :value="0"></Option>
                                     <Option label="测试学员" :value="1"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem class="btn-content" :label-width='0'>
-                                <Button  @click="deleteStudent(form1.student_id)">删除学员</Button>
+                                <Button @click="deleteStudent(form1.student_id)">删除学员</Button>
                                 <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
-                           </FormItem>
+                            </FormItem>
                         </Form>
                     </TabPane>
                     <TabPane label="报名信息" name="name2">
-                         <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
-                         该用户没有报名信息
+                        <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
+                            该用户没有报名信息
                         </Row>
-                        <Form ref="form2" :model="form2" :label-width="80" class="add-teacher-form" v-if='form2.user_id !== 0'>
+                        <Form ref="form2" :model="form2" :label-width="80" class="add-teacher-form"
+                              v-if='form2.user_id !== 0'>
                             <FormItem label="ID">
                                 <Input v-model="form2.user_id" disabled></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="姓名">
                                 <Input v-model="form2.realname" placeholder="请输入考生真实姓名"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="电话">
                                 <Input v-model="form2.phone" placeholder="请输入考生电话"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="选择学段">
                                 <Select v-model="form2.grade_id" placeholder="请选择学段">
-                                    <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    <Option v-for="item in gradeList" :key="item.id" :label="item.name"
+                                            :value="item.id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="选择学科">
                                 <Select v-model="form2.subject_id" placeholder="请选择学科">
-                                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    <Option v-for="item in subjectList" :key="item.id" :label="item.name"
+                                            :value="item.id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="面试结果" v-if='form2.interview_state === 1'>
                                 <Select v-model="form2.interview_result" placeholder="请选择学段">
-                                    <Option v-for="item in interviewResultList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    <Option v-for="item in interviewResultList" :key="item.id" :label="item.name"
+                                            :value="item.id"></Option>
                                 </Select>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="笔试成绩">
                                 <Input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="出生年月">
-                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form2.birth" :transfer="true"></DatePicker>
-                           </FormItem>
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px"
+                                            v-model="form2.birth" :transfer="true"></DatePicker>
+                            </FormItem>
                             <FormItem label="邮箱">
                                 <Input v-model="form2.email" placeholder="请输入考生邮箱"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="所在院校">
                                 <Input v-model="form2.school" placeholder="请输入考生所在院校"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="所学专业">
                                 <Input v-model="form2.school_subject" placeholder="请输入考生所学专业"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="在读年级">
                                 <Input v-model="form2.school_grade" placeholder="请输入考生在读年级"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem label="期望就业城市" :label-width='100'>
                                 <Input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></Input>
-                           </FormItem>
+                            </FormItem>
                             <FormItem class="btn-content" :label-width='0'>
                                 <Button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</Button>
-                           </FormItem>
+                            </FormItem>
                         </Form>
                     </TabPane>
                     <TabPane label="线上课" name="name3">
@@ -134,8 +148,10 @@
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
                                 <Button type='text' @click='clearVideoLog'>清除观看记录</Button>
-                                <Select v-model="form3.product_id" placeholder="请选择项目" @on-change='changeProductHandler'>
-                                    <Option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></Option>
+                                <Select v-model="form3.product_id" placeholder="请选择项目"
+                                        @on-change='changeProductHandler'>
+                                    <Option v-for="item in form3.productList" :key="item.id" :label="item.title"
+                                            :value="item.id"></Option>
                                 </Select>
                             </Row>
                             <Row class="body-top" v-if="true">
@@ -164,24 +180,29 @@
                     </TabPane>
                     <TabPane label="线下课" name="name4">
                         <Row class='query-header' type='flex' align='middle'>
-                                <h3>剩余报名次数：{{form6.real_count}}</h3>
-                                <InputNumber v-model="form6.remain_count" @on-change="changeRemainCountHandler" :min="0"></InputNumber>
-                            </Row>
-                            <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form6.dataList.length === 0'>
-                             该用户没有线下课
-                            </Row>
-                             <Row v-for="item in form6.dataList" :key="item.id" class="course-item" v-if='form6.dataList.length > 0'>
+                            <h3>剩余报名次数：{{form6.real_count}}</h3>
+                            <InputNumber v-model="form6.remain_count" @on-change="changeRemainCountHandler"
+                                         :min="0"></InputNumber>
+                        </Row>
+                        <Row class='empty-msg' type='flex' justify='center' align='middle'
+                             v-if='form6.dataList.length === 0'>
+                            该用户没有线下课
+                        </Row>
+                        <Row v-for="item in form6.dataList" :key="item.id" class="course-item"
+                             v-if='form6.dataList.length > 0'>
                             <Col :span="16" :offset='2'>
                                 <p class="title">{{item.name}}</p>
                             </Col>
-                            </Row>
+                        </Row>
                     </TabPane>
                     <TabPane label="任务" name="name5">
                         <Row class="body-top" v-if="true">
-                            <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form4.dataList.length === 0'>
+                            <Row class='empty-msg' type='flex' justify='center' align='middle'
+                                 v-if='form4.dataList.length === 0'>
                                 该用户没有任务
                             </Row>
-                            <Row v-for="item in form4.dataList" :key="item.id" class="course-item" v-if='form4.dataList.length > 0'>
+                            <Row v-for="item in form4.dataList" :key="item.id" class="course-item"
+                                 v-if='form4.dataList.length > 0'>
                                 <Col :span="16">
                                     <p class="title">{{item.name}}</p>
                                 </Col>
@@ -196,10 +217,12 @@
                     </TabPane>
                     <TabPane label="作业" name="name6">
                         <Row class="body-top" v-if="true">
-                            <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form5.dataList.length === 0'>
+                            <Row class='empty-msg' type='flex' justify='center' align='middle'
+                                 v-if='form5.dataList.length === 0'>
                                 该用户没有作业
                             </Row>
-                            <Row v-for="item in form5.dataList" :key="item.id" class="course-item" v-if='form5.dataList.length > 0'>
+                            <Row v-for="item in form5.dataList" :key="item.id" class="course-item"
+                                 v-if='form5.dataList.length > 0'>
                                 <Col :span="16">
                                     <p class="title">{{item.name}}</p>
                                 </Col>
@@ -320,8 +343,7 @@
                     finishCount += this.form3.dataList[i].complete_video_test_ids ? JSON.parse(this.form3.dataList[i].complete_video_test_ids).length : 0;
                 }
                 finishCount = finishCount * 100;
-                if(totalCount === 0)
-                    return 0;
+                if(totalCount === 0) return 0;
                 return Math.floor(finishCount / totalCount);
             }
         },
@@ -451,9 +473,7 @@
                 var b = tested ? JSON.parse(tested).length : 0;
                 var c = total ? total : 0;
                 var _total = a + b;
-                if (_total > total) {
-                    _total = total;
-                }
+                if (_total > total)  _total = total;
                 var d = (_total / c) * 100 + '%';
                 var e = _total + '/' + c;
                 return {
@@ -518,73 +538,92 @@
                     }
                 })
             }
-        },
-        mounted() {
-            this.get_grade_list();
-            this.get_subject_list();
-            this.get_teachers();
-            this.get_student_managers();
-            this.get_role();
-            var vm = this;
-            this.form1.user_id = this.payload.user_id;
-            this.form1.nickname = this.payload.nickname;
-        get_list({project_id:this.payload.project_id,page_index:0,page_size:99999,state:[0,1,2]}).then(res => {
-            if(res.data.res_code === 1)  this.form3.productList = res.data.msg.products;
+    },
+    mounted() {
+        this.get_grade_list();
+        this.get_subject_list();
+        this.get_teachers();
+        this.get_student_managers();
+        this.get_role();
+        var vm = this;
+        this.form1.user_id = this.payload.user_id;
+        this.form1.nickname = this.payload.nickname;
+        get_list({project_id: this.payload.project_id, page_index: 0, page_size: 99999, state: [0, 1, 2]}).then(res => {
+            if (res.data.res_code === 1) this.form3.productList = res.data.msg.products;
         })
         if (this.payload.id) {
-                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-                setTimeout(() => {
-                    this.loadingInstance.close();
-                }, Config.base_timeout);
-                get_student_detail(this.payload.id).then(res => {
-                    if (res.data.res_code === 1) {
-                        this.form1 = res.data.msg;
-                        this.form1.student_id = this.payload.id;
-                        this.form1.user_id = this.payload.user_id;
-                        this.form1.nickname = this.payload.nickname;
-                        this.form1.start_school_time = res.data.msg.start_school_time;
-                        this.form1.finish_school_time = res.data.msg.finish_school_time;
-                        this.form1.leave_school_time = res.data.msg.leave_school_time;
-                        this.form1.state = String(res.data.msg.state);
-                        this.form1.type = String(res.data.msg.type);
-                        this.form1.tutor_user_id = res.data.msg.tutor_user_id == 0 ? '' : res.data.msg.tutor_user_id;
-                        this.form1.xg_user_id = res.data.msg.xg_user_id;
-                        this.form1.realname = res.data.msg.realname;
-                        this.form1.is_test_user = res.data.msg.is_test_user;
-                        this.form1._fn = function(){
-                            vm.showPop('保存成功');
-                        }
-                       if(this.loadingInstance) this.loadingInstance.close();
-                    }
-                })
+            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
+            setTimeout(() => {
+            this.loadingInstance.close();
+            }, Config.base_timeout);
+            get_student_detail(this.payload.id).then(res => {
+            if (res.data.res_code === 1) {
+                this.form1 = res.data.msg;
+                this.form1.student_id = this.payload.id;
+                this.form1.user_id = this.payload.user_id;
+                this.form1.nickname = this.payload.nickname;
+                this.form1.start_school_time = res.data.msg.start_school_time;
+                this.form1.finish_school_time = res.data.msg.finish_school_time;
+                this.form1.leave_school_time = res.data.msg.leave_school_time;
+                this.form1.state = String(res.data.msg.state);
+                this.form1.type = String(res.data.msg.type);
+                this.form1.tutor_user_id = res.data.msg.tutor_user_id == 0 ? '' : res.data.msg.tutor_user_id;
+                this.form1.xg_user_id = res.data.msg.xg_user_id;
+                this.form1.realname = res.data.msg.realname;
+                this.form1.is_test_user = res.data.msg.is_test_user;
+                this.form1._fn = function () {
+                vm.showPop('保存成功');
+                }
+                if (this.loadingInstance) this.loadingInstance.close();
             }
+            })
         }
     }
+  }
 </script>
 <style lang="scss" scoped>
-/deep/ .ivu-tabs-bar{ height: 50px ;}
-/deep/ .ivu-tabs-nav .ivu-tabs-tab{ height: 50px; line-height: 34px; font-size: 16px}
-/deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #FC7643 }
-    .close{
-    position: absolute;
-    right: 7px;
-    top: 7px;
-    font-size: 31px;
-    z-index: 3000;
+    /deep/ .ivu-tabs-bar {
+        height: 50px;
     }
-    /deep/.ivu-modal-header{
+
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab {
+        height: 50px;
+        line-height: 34px;
+        font-size: 16px
+    }
+
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
+        color: #FC7643
+    }
+
+    .close {
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        font-size: 31px;
+        z-index: 3000;
+    }
+
+    /deep/ .ivu-modal-header {
         display: none;
-    };
-    /deep/ .ivu-modal-body{ padding: 0; }
-    /deep/  .ivu-form{
-              width: 80%;
-              margin: 20px auto;
     }
+
+    ;
+    /deep/ .ivu-modal-body {
+        padding: 0;
+    }
+
+    /deep/ .ivu-form {
+        width: 80%;
+        margin: 20px auto;
+    }
+
     /deep/ .btn-content {
         display: flex;
         justify-content: center;
     }
-     .sub-btn {
+
+    .sub-btn {
         background: #FB843E;
         border-radius: 4px;
         width: 200px;
@@ -839,4 +878,5 @@
             }
         }
     }
+
 </style>

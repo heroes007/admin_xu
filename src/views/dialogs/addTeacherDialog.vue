@@ -1,54 +1,44 @@
-
-
 <template>
-<Modal :transfer=false title="添加讲师" width="600px" v-model="addTeacherDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
-    <base-input @closedialog="handleClose">
-        <Row slot="body">
-            <Row class="body-top" v-if="true">
-                <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
-                    <FormItem label="讲师名称">
-                        <Input v-model="form.name" placeholder="请输入讲师名称"></Input>
-                   </FormItem>
-                    <FormItem label="讲师描述">
-                        <Input type="textarea"  :autosize="{ minRows: 6, maxRows: 6}" placeholder="请对讲师进行描述" v-model="form.description">
-                        </Input>
-                   </FormItem>
-                    <FormItem label="讲师照片" class="upload-form1">
-                        <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleUploadComplete">
-                            <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
-                        </upload-panel>
-                   </FormItem>
-                    <div class="btn-content">
-                        <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
-                   </div>
-                </Form>
+    <Modal :transfer=false title="添加讲师" width="600px" v-model="addTeacherDialog" @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" :footer-hide="true">
+        <base-input @closedialog="handleClose">
+            <Row slot="body">
+                <Row class="body-top" v-if="true">
+                    <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
+                        <FormItem label="讲师名称">
+                            <Input v-model="form.name" placeholder="请输入讲师名称"></Input>
+                       </FormItem>
+                        <FormItem label="讲师描述">
+                            <Input type="textarea" style="resize: none" :autosize="{ minRows: 6, maxRows: 6}" placeholder="请对讲师进行描述" v-model="form.description"></Input>
+                       </FormItem>
+                        <FormItem label="讲师照片" class="upload-form1">
+                            <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleUploadComplete">
+                                <span slot="file-require">只能上传 jpg/png 文件，且不超过1000kb</span>
+                            </upload-panel>
+                       </FormItem>
+                        <div class="btn-content">
+                            <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                       </div>
+                    </Form>
+                </Row>
             </Row>
-        </Row>
-    </base-input>
-</Modal>
+        </base-input>
+    </Modal>
 </template>
 
 <script>
 import BaseInput from '../../components/BaseInput'
 import UploadButton from '../../components/UploadButton'
-import {
-    RemoveModal
-} from './mixins'
 import UploadPanel from '../../components/UploadPanel'
+import { RemoveModal } from './mixins'
 import { get_detail } from '../../api/modules/tools_teacher'
-import { Loading } from 'element-ui'
 import { Config } from '../../config/base'
-    import {
-    MPop
-} from '../../components/MessagePop'
+import { MPop } from '../../components/MessagePop'
+
 export default {
     mixins: [RemoveModal,MPop],
     props: {
-        remove: {
-            type: String
-        },
-        payload: {
-        }
+        remove: { type: String },
+        payload: { }
     },
     components: {
         'base-input': BaseInput,
@@ -142,7 +132,6 @@ export default {
       font-size: 30px;
       cursor: pointer;
       &:before{
-        // color: #fff;
         color: #757575;
       }
     }

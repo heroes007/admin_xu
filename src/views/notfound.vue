@@ -1,7 +1,8 @@
 <template>
   <div>
     <c-title :text="title" :hide="true"></c-title>
-    <p>{{ message }}</p>
+    <!--<p>{{ message }}</p>-->
+    <h1>{{MESSAGE}}</h1>
   </div>
 </template>
 
@@ -12,7 +13,8 @@
   export default {
     data () {
       return {
-        title: 'ERROR!'
+        title: 'ERROR!',
+        MESSAGE:  '404 Not Found！'
       }
     },
     computed: mapState([

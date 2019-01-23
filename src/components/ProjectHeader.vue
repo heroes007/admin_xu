@@ -2,10 +2,9 @@
     <div class='project-header'>
         <Row class='header-container' type='flex' justify='space-between' align='middle'>
             <div class='title'>
-                 <Icon class="md-menu" type="md-menu" />
-                <Select v-model="project_id" placeholder="请选择"  disabled>
-                    <Option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id">
-                    </Option>
+                <Icon class="md-menu" type="md-menu" />
+                <Select v-model="project_id" placeholder="请选择" disabled>
+                    <Option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id"></Option>
                 </Select>
             </div>
             <div class='btn-group' v-if='type !== 0'>
@@ -23,9 +22,7 @@
                 </Button>
                 <Poptip ref="teacherList" placement="bottom-end" width="500" trigger="click" popper-class='teacher-list'>
                     <Row slot="title" class='teacher-list-head'>
-                        <div class='head'>
-                            全部讲师
-                        </div>
+                        <div class='head'>全部讲师</div>
                         <Button class="teacher-list-head-btn" type='text' icon='md-add' @click='addTeacherHandler'>
                            添加
                         </Button>
@@ -54,6 +51,7 @@
     import TeacherItem from './TeacherItem'
     import { Dialog } from '../views/dialogs'
     import { ADD_TEACHER } from '../views/dialogs/types'
+
     export default {
         mixins: [Dialog],
         data() {
@@ -173,14 +171,6 @@
                 letter-spacing: 0;
                 text-align: center;
             }
-            .el-button {
-                position: absolute;
-                font-size: 14px;
-                top: 12px;
-                right: 11px;
-                color: #F06B1D;
-                letter-spacing: 0;
-            }
         }
         .teacher-list-container {
             padding: 30px 0;
@@ -215,11 +205,6 @@
                 }
             }
             .btn-group {
-                .el-button {
-                    margin-right: 30px;
-                    font-size: 14px;
-                }
-
                 .btn-add {
                     background-color: #F06B1D;
                     border-color: #F06B1D;

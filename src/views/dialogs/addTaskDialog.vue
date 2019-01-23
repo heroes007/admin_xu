@@ -383,32 +383,34 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  /deep/.ivu-modal-body{ 
+    /deep/.ivu-modal-body{
       width: 80%;
       margin-left: 10%;
-   }
+    }
     .btn-orange{
         width: 170px;
     }
-    .float_left{ float: left !important; }
-#add-task-container {
-    @import "base.scss";
-    input,
-    textarea {
-        resize: none;
-        outline: none;
+    .float_left{
+        float: left !important;
     }
-    .close-dialog-panel {
-        position: absolute;
-        top: -40px;
-        right: 13.5px;
-        z-index: 99999;
-        font-size: 30px;
-        cursor: pointer;
-        &:before {
-            // color: #fff;
-            color: #757575;
+    #add-task-container {
+        @import "base.scss";
+        input,
+        textarea {
+            resize: none;
+            outline: none;
+        }
+        .close-dialog-panel {
+            position: absolute;
+            top: -40px;
+            right: 13.5px;
+            z-index: 99999;
+            font-size: 30px;
+            cursor: pointer;
+            &:before {
+                // color: #fff;
+                color: #757575;
+            }
         }
     }
-}
 </style>
