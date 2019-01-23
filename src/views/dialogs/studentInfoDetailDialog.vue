@@ -371,7 +371,6 @@
         'get_teachers',
         'get_student_managers',
         'get_role'
-
       ]),
       changeProductHandler() {
         this.showloading();

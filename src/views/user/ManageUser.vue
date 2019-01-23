@@ -50,8 +50,7 @@
                     <Button type="primary" class="modal-btn-save" @click='changeDealer'>保存</Button>
                 </Row>
             </Modal>
-            <Modal :width="800" :transfer=false v-model="dialogVisible" size="small"
-                   class='add-student-view' :footer-hide="true">
+            <Modal :width="800" :transfer=false v-model="dialogVisible" size="small"  class='add-student-view' :footer-hide="true">
                 <div slot="header" class="modal-title"> 用户信息 </div>
                 <Row class='result' type='flex' justify='center' align='middle'>
                     <div class='data-form' v-if='!isLoading'>
