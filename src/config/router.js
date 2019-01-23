@@ -54,21 +54,21 @@ const routes = [
     name:'project',
     component:Project
   },
-  {
-    path:'/home',
-    // name:'home',
-    component:Home,
-    children:[
-      {
-        path:'',
-        redirect:'/home/hello'
-      },
-      {
-        path:'hello',
-        component:Hello
-      }
-    ]
-  },
+  // {
+  //   path:'/home',
+  //   name:'home',
+  //   component:Home,
+  //   children:[
+  //     {
+  //       path:'',
+  //       redirect:'/home/hello'
+  //     },
+  //     {
+  //       path:'hello',
+  //       component:Hello
+  //     }
+  //   ]
+  // },
   {
     path:'/dashboard',
     // name:'dashboard',

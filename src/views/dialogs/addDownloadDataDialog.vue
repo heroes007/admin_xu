@@ -1,5 +1,5 @@
 <template>
-<Modal :title="payload === 0?'添加公共资料':'课程资料上传'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)"  :footer-hide="true">
+<Modal :transfer=false :title="payload === 0?'添加公共资料':'课程资料上传'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false"  :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">

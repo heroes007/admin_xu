@@ -1,42 +1,40 @@
 <template>
     <div class='manage-student-view'>
-        <header-component title='查看学员' @reRenderList="reRenderList" :showAdd='true' addText='创建学员'
-                          @addClick='addStudentHandler'></header-component>
+        <header-component title='查看学员' @reRenderList="reRenderList" :showAdd='true' addText='创建学员' @addClick='addStudentHandler' />
         <Row>
             <Form :inline="true" :model="formInline" :label-width="40" class="find-by-term">
                 <FormItem label="类型">
-                    <Select v-model="formInline.is_test_user" placeholder="请选择类型" @change='changeFilterHandler'>
+                    <Select v-model="formInline.is_test_user" placeholder="请选择类型" @on-change='changeFilterHandler'>
                         <Option label="全部" :value="-1"></Option>
                         <Option label="正式" :value="0"></Option>
                         <Option label="测试" :value="1"></Option>
                     </Select>
                 </FormItem>
                 <FormItem label="学段">
-                    <Select multiple v-model="formInline.grade_id" placeholder="请选择学段" @change='changeFilterHandler'>
+                    <Select multiple v-model="formInline.grade_id" placeholder="请选择学段" @on-change='changeFilterHandler'>
                         <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
                 </FormItem>
                 <FormItem label="学科">
-                    <Select multiple v-model="formInline.subject_id" placeholder="请选择学科" @change='changeFilterHandler'>
+                    <Select multiple v-model="formInline.subject_id" placeholder="请选择学科" @on-change='changeFilterHandler'>
                         <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
                 </FormItem>
                 <FormItem label="状态">
-                    <Select multiple v-model="formInline.state_id" placeholder="请选择学员状态" @change='changeFilterHandler'>
+                    <Select multiple v-model="formInline.state_id" placeholder="请选择学员状态" @on-change='changeFilterHandler'>
                         <Option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
                 </FormItem>
                 <FormItem label="产品">
-                    <Select v-model="formInline.product_id" placeholder="请选择产品" @change='changeFilterHandler'>
-                        <Option v-for="item in productList" :key="item.id" :label="item.title"
-                                :value="item.id"></Option>
+                    <Select v-model="formInline.product_id" placeholder="请选择产品" @on-change='changeFilterHandler'>
+                        <Option v-for="item in productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                     </Select>
                 </FormItem>
             </Form>
         </Row>
         <Row>
             <Form :inline='true' :model='formInline' class='find-by-term'>
-                <FormItem>
+                <FormItem class="from-item-input">
                     <Row>
                         <Col :span="10">
                             <Select class="select-user" v-model="formInline.classify" placeholder="">
@@ -47,7 +45,7 @@
                             </Select>
                         </Col>
                         <Col :span="14">
-                            <Input v-model="formInline.classifyValue" placeholder="请输入搜索内容"></Input>
+                            <Input size='large' v-model="formInline.classifyValue" placeholder="请输入搜索内容"></Input>
                         </Col>
                     </Row>
                 </FormItem>
@@ -63,14 +61,11 @@
             <span>当前学员 {{total}} 人</span>
         </Row>
         <data-list class='data-list light-header' @showDetail='showDetailHandler' @queryHomework='queryHomeworkHandler'
-                   @queryTask='queryTaskHandler'
-                   @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler' :table-data='dataList'
-                   :header-data='dataHeader'
-                   :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
+        @queryTask='queryTaskHandler' @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler'
+        :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
         <back-to-top/>
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page class="case-main-pages" :current="curPage" @on-page-size-change="handleSizeChange"
-                  :page-size='pageSize' @on-change="handleCurrentChange" :total="total"/>
+            <Page :current="curPage" @on-page-size-change="handleSizeChange" :page-size='pageSize' @on-change="handleCurrentChange" :total="total"/>
         </Row>
     </div>
 </template>
@@ -80,25 +75,14 @@
   import BaseList from '../../components/BaseList'
   import BackToTop from '../../components/BackToTop'
   import api from '../../api/modules/config'
-  import {set_user_student_mrzx} from '../../api/modules/student'
-  import {Dialog} from '../dialogs'
-  import {doDateFormat, doTimeFormat} from "../../components/Util";
-  import {
-    ADD_STUDENT,
-    QUERY_STUDENT_COURSE,
-    QUERY_STUDENT_OFFLINE_COURSE,
-    QUERY_STUDENT_TASK,
-    STUDENT_INFO_DETAIL
-  } from '../dialogs/types'
+  import { set_user_student_mrzx } from '../../api/modules/student'
+  import { Dialog } from '../dialogs'
+  import { doDateFormat, doTimeFormat } from "../../components/Util";
+  import { ADD_STUDENT, QUERY_STUDENT_COURSE, QUERY_STUDENT_OFFLINE_COURSE, QUERY_STUDENT_TASK, STUDENT_INFO_DETAIL } from '../dialogs/types'
   import {Config} from '../../config/base'
-
   export default {
     mixins: [Dialog],
-    components: {
-      'header-component': Header,
-      'subject-filter': SubjectFilter,
-      'data-list': BaseList,
-      'back-to-top': BackToTop
+    components: { 'header-component': Header, 'subject-filter': SubjectFilter, 'data-list': BaseList, 'back-to-top': BackToTop
     },
     data() {
       return {
@@ -127,27 +111,9 @@
         initData: false,
         dialogVisible: false,
         isChange: false,
-        isSelected: false,
-        listData: [{
-          id: 1,
-          name: '啊啊啊',
-          realname: '翟云志',
-          enrolltime: '2016-10-27T02:51:43.000Z',
-          subject: '语文',
-          phone: '13146278838',
-          date_column: ['enrolltime']
-        }, {
-          id: 2,
-          name: '啊啊啊',
-          realname: '翟云志',
-          enrolltime: '2016-07-29T10:54:28.000Z',
-          subject: '语文',
-          phone: '13146278838',
-          date_column: ['enrolltime']
-        }]
+        isSelected: false
       }
     },
-
     methods: {
       showDetailHandler(index, row) {
         this.handleSelModal(STUDENT_INFO_DETAIL, row)
@@ -242,9 +208,6 @@
         })
       },
       deleteData(index) {
-      },
-      change() {
-        this.listData.unshift(this.listData.pop());
       },
       editHandler(index, row) {
         this.handleSelModal(ADD_STUDENT, {
@@ -383,24 +346,6 @@
           groupBtn: [{
             text: '查看详情',
             param: 'showDetail'
-            //     text: '编辑',
-            //     param: 'edit'
-            // },{
-            //     text: '查看线上课',
-            //     param: 'query',
-            //     hoverShow: true
-            // },{
-            //     text: '查看线下课',
-            //     param: 'queryOffline',
-            //     hoverShow: true
-            // }, {
-            //     text: '查看任务',
-            //     param: 'queryTask',
-            //     hoverShow: true
-            // },{
-            //     text: '查看作业',
-            //     param: 'queryHomework',
-            //     hoverShow: true
           }]
         }]
       },
@@ -459,72 +404,21 @@
     }
   }
 </script>
-<style lang="scss">
-    .el-tooltip__popper {
-        &.is-light {
-            background: #FFFFFF;
-            border: 1px solid #E7E8EA;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-
-            .more-tip {
-                max-width: 278px;
-                line-height: 1.2;
-                font-size: 14px;
-                color: #2e3e47;
-
-                & + .popper__arrow {
-                    border-top-color: #E7E8EA;
-
-                    &:after {
-                        //border-top-color:#E7E8EA;
-                    }
-                }
-            }
-        }
-    }
-
+<style lang="scss" scoped>
     .manage-student-view {
-        .base-list-container {
-            .base-list-row {
-                .cell {
-                    .Button {
-                        margin-right: 2px;
-
-                        &:last-child {
-                            margin-left: 10px;
-                        }
-                    }
-                }
-            }
-        }
-
         .find-by-term {
             padding-top: 22px;
             text-align: left;
             margin-left: 20px;
-
-            .el-input__inner {
-                border-radius: 0;
-                background: #FFFFFF;
-                border: 1px solid #E5E5E5;
+            .from-item-input{
+                width: 380px
             }
-
-            .el-form-item__label {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-
-            .el-select {
-                width: 300px;
-
-                &.select-user {
-                    width: 100%;
-
-                    .el-input__inner {
-                        border-right: 0;
-                    }
+            .ivu-select {
+                width: 200px;
+                .ivu-select-selection{
+                    border-radius: 0;
                 }
+                &.select-user{ width: 100% }
             }
 
             button {

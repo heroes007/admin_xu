@@ -1,11 +1,11 @@
 <template>
-<Modal :transfer=false :title="!payload? '创建专题' : '编辑专题'" :footer-hide=true v-model="addProductionGroupDialog" @on-cancel="handleRemoveModal(remove)" >
+<Modal :transfer=false :title="!payload? '创建专题' : '编辑专题'" :mask-closable="false" :footer-hide=true v-model="addProductionGroupDialog" @on-cancel="handleRemoveModal(remove)" >
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
                 <Form ref="form" :model="form" :label-width="121" class="add-task-form">
                     <FormItem label="专题名称">
-                    <Input v-model="form.name" placeholder="请输入专题名称"></Input>
+                       <Input v-model="form.name" placeholder="请输入专题名称"></Input>
                    </FormItem>
                     <FormItem label="专题展示">
                         <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler">
@@ -13,8 +13,7 @@
                         </upload-panel>
                     </FormItem>
                     <FormItem label="专题简介">
-                        <Input type="textarea" :rows="6" placeholder="请输入专题简介" v-model="form.short_description">
-                        </Input>
+                        <Input type="textarea" :rows="6" placeholder="请输入专题简介" v-model="form.short_description"></Input>
                    </FormItem>
                     <FormItem label="编辑产品课程图文详情:" :label-width='160'>
                    </FormItem>
@@ -30,7 +29,6 @@
     </base-input>
 </Modal>
 </template>
-<!-- task_id = 19 -->
 <script>
 import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
@@ -44,11 +42,7 @@ import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
 export default {
     mixins: [RemoveModal,MPop],
-    components: {
-        'base-input': BaseInput,
-        'upload-panel': UploadPanel,
-        'text-editor':Editor
-    },
+    components: { 'base-input': BaseInput, 'upload-panel': UploadPanel, 'text-editor':Editor },
     props: {
         remove: {
             type: String
@@ -80,8 +74,7 @@ export default {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
                 get_detail(this.payload.id).then(res => {
-                    if(res.data.res_code === 1)
-                    {
+                    if(res.data.res_code === 1){
                         this.form.name = res.data.msg.name;
                         this.form.short_description = res.data.msg.short_description;
                         this.form.description = res.data.msg.description;
@@ -106,10 +99,7 @@ export default {
         }),
     },
     methods: {
-        ...mapActions([
-            'add_production_group',
-            'update_production_group'
-        ]),
+        ...mapActions([ 'add_production_group', 'update_production_group' ]),
         uploadCompleteHandler(url){
             this.form.img_url = url;
         },
@@ -118,9 +108,7 @@ export default {
             this.addProductionGroupDialog = false;
         },
         handleSubmit(formName) {
-            var arrObj = {
-                default:this.form.img_url
-            }
+            var arrObj = { default:this.form.img_url }
             var description= this.$refs.description_editor.editor.getContent();
             this.form.description = description;
             this.form.img_url_arr =JSON.stringify(arrObj);

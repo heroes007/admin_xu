@@ -1,5 +1,5 @@
 <template>
-<Modal title="报名详情" width="700px" :footer-hide="true"  v-model="recruitDetailDialog" @on-cancel="handleRemoveModal(remove)" >
+<Modal :transfer=false title="报名详情" width="700px" :footer-hide="true" :mask-closable="false" v-model="recruitDetailDialog" @on-cancel="handleRemoveModal(remove)" >
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">

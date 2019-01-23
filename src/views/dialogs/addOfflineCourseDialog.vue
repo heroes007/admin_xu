@@ -1,6 +1,5 @@
 <template>
-    <Modal :title="payload.type == 1 ? '添加课程' : '编辑课程'" width="600px" :footer-hide="true" v-model="addOfflineCourseDialog" @on-cancel="handleRemoveModal(remove)"
-        size="auto" :mask-closable="false">
+    <Modal :transfer=false :title="payload.type == 1 ? '添加课程' : '编辑课程'" width="600px" :footer-hide="true" v-model="addOfflineCourseDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">

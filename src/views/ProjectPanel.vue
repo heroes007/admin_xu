@@ -13,7 +13,6 @@
     import { mapState,  mapActions } from 'vuex'
     import {  Config } from '../config/base'
     import { doTimeFormat } from '../components/Util'
-    import Header from '../components/Header'
     import SideMenu from '../components/SideMenuForProject'
     import ProjectList from '../components/ProjectList'
     export default {
@@ -36,15 +35,10 @@
             }
         },
         methods: {
-            ...mapActions([
-                'get_project_list',
-                'change_selected_project_id'
-            ]),
+            ...mapActions([ 'get_project_list', 'change_selected_project_id' ]),
             changeSelectProject(id) {
                 this.change_selected_project_id(id);
-                this.$router.replace({
-                    path: 'dashboard'
-                });
+                this.$router.replace({ path: 'dashboard' });
             },
             getCreateTime(time) {
                 return doTimeFormat(time);

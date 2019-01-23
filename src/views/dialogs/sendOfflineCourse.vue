@@ -27,7 +27,6 @@
         </base-input>
     </Modal>
 </template>
-
 <script>
 
   import BaseInput from '../../components/BaseInput'
@@ -199,7 +198,6 @@
     }
   }
 </script>
-
 <style lang="scss" scoped>
     /deep/ th, /deep/ .ivu-table-cell > span {
         font-size: 14px !important

@@ -4,11 +4,7 @@
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="专题名称" :label-width="80">
-                    <Row>
-                        <Col>
-                            <Input v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
-                        </Col>
-                    </Row>
+                   <Input class="form-item-input" v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
                </FormItem>
                 <FormItem>
                     <Button type="primary" @click="search">查询</Button>
@@ -21,7 +17,7 @@
         <data-list class='data-list light-header' @edit='editHandler' @detail='showCourseDetailHandler' @delete='deleteHandler' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
             <Row class='pager' type='flex' justify='end' align='middle'>
-                <Page class="case-main-pages" :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
+                <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
             </Row>
     </div>
 </template>
@@ -52,11 +48,7 @@
             }
         },
         methods: {
-            ...mapActions([
-                'get_production_group_list',
-                'change_production_group_vailid',
-                'delete_production_group'
-            ]),
+            ...mapActions([ 'get_production_group_list', 'change_production_group_vailid', 'delete_production_group' ]),
             addProductionGroupHandler() {
                 this.handleSelModal(ADD_PRODUCTION_GROUP);
             },
@@ -72,13 +64,12 @@
                     title: '提示',
                     content: '是否确认删除该专题?',
                     onOk: () => {
-                    this.delete_production_group({
-                        id: row.id, _fn: function () {
-                            vm.showPop('删除成功！');
-                        }
-                    })
-                    },
-                    onCancel: () => {}
+                        this.delete_production_group({
+                            id: row.id, _fn: function () {
+                                vm.showPop('删除成功！');
+                            }
+                        })
+                    }
                 });
             },
             clearSearch() {
@@ -141,7 +132,6 @@
                             offText: '停用',
                             disableText: '失效',
                             actionName: 'change_production_group_vailid'
-
                         }, {
                             text: '编辑',
                             param: 'edit'
@@ -165,27 +155,12 @@
     }
 
 </script>
-<style lang="scss">
-    .el-tooltip__popper {
-        &.is-light {
-            background: #FFFFFF;
-            border: 1px solid #E7E8EA;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
-            .more-tip {
-                max-width: 278px;
-                line-height: 1.2;
-                font-size: 14px;
-                color: #2e3e47;
-                & + .popper__arrow {
-                    border-top-color: #E7E8EA;
-                    &:after {
-                        //border-top-color:#E7E8EA;
-                    }
-                }
-            }
-        }
+<style lang="scss" scoped>
+    .form-item-input{ width: 200px }
+    .pager {
+        margin: 30px 0;
+        padding-right: 40px;
     }
-    
     .manage-production-group-view {
         .base-list-container {
             .base-list-row {
@@ -204,51 +179,12 @@
             padding-top: 22px;
             text-align: left;
             margin-left: 20px;
-            .el-input__inner {
-                border-radius: 0;
-                background: #FFFFFF;
-                border: 1px solid #E5E5E5;
-            }
-            .el-form-item__label {
-                font-size: 14px;
-                color: #141111;
-                letter-spacing: 0;
-            }
-            .el-select {
-                width: 300px;
-                &.select-user {
-                    width: 100%;
-                    .el-input__inner {
-                        border-right: 0;
-                    }
-                }
-            }
             button {
                 background: #FB843E;
                 border: 1px solid #F06B1D;
                 border-radius: 4px;
                 width: 100px;
                 height: 36px;
-            }
-        }
-        .pager {
-            margin: 30px 0;
-            padding-right: 40px;
-            .el-pagination {
-                button {
-                    &.disabled {
-                        background-color: #ebebec;
-                        border-color: #b0b3c5;
-                        color: #8b9fa9;
-                    }
-                }
-                .el-pager {
-                    li {
-                        &.active {
-                            background-color: #8b9fa9;
-                        }
-                    }
-                }
             }
         }
         .btn-add {
@@ -272,12 +208,6 @@
                     }
                     .Col {
                         line-height: 40px;
-                        .el-button {
-                            a {
-                                color: #5fa137;
-                                font-size: 14px;
-                            }
-                        }
                         p {
                             margin: 0;
                             display: -webkit-box;
@@ -288,30 +218,9 @@
                         }
                     }
                 }
-                .pager {
-                    margin: 30px 0;
-                    padding-right: 40px;
-                    .el-pagination {
-                        button {
-                            &.disabled {
-                                background-color: #ebebec;
-                                border-color: #b0b3c5;
-                                color: #8b9fa9;
-                            }
-                        }
-                        .el-pager {
-                            li {
-                                &.active {
-                                    background-color: #8b9fa9;
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
-    
     //添加框
     .add-student-view {
         .img {
@@ -333,33 +242,6 @@
         }
         .search-bar {
             margin-top: 40px;
-            .el-input-group {
-                width: 380px;
-                .el-input__inner {
-                    height: 46px;
-                }
-                .el-input-group__append {
-                    background-color: #7ab854;
-                    .el-button {
-                        height: 100%;
-                        width: 80px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-                }
-                .el-input-group__prepend {
-                    background-color: #7ab854;
-                    .el-select {
-                        height: 100%;
-                        width: 110px;
-                        color: #ffffff;
-                        font-size: 16px;
-                    }
-                    i {
-                        color: #ffffff;
-                    }
-                }
-            }
         }
         .result {
             margin: 15px 0 76px;
@@ -383,17 +265,8 @@
                     font-size: 14px;
                     margin-bottom: 15px;
                     padding: 0 20px;
-                    .el-button {
-                        width: 140px;
-                        height: 36px;
-                        background-color: #7ab854;
-                        color: #ffffff;
-                    }
                     &.desc {
                         width: 100%;
-                        .el-input {
-                            width: 330px;
-                        }
                     }
                 }
             }

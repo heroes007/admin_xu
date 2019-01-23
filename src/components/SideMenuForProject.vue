@@ -1,4 +1,3 @@
-/** * Created by lesonli on 2016/11/16. */
 <template>
     <div class='side-menu-for-project'>
         <div class='logo elRow' type='flex' justify='center' align='middle'>
@@ -28,9 +27,7 @@
             }
         },
         methods: {
-            openChange(name) {
-                //console.log(name);
-            },
+            openChange(name) {},
             selectItem(index) {
                 this.$router.push({ name: index });
             },
@@ -44,24 +41,6 @@
                         this.$router.push({ path: '/login' });
                     }
                 });
-            },
-            getRoleStr() {
-                var result = '';
-                if (this.userInfo && this.roleList) {
-                    for (var i = 0; i < this.userInfo.role_arr.length; i++) {
-                        for (var j = 0; j < this.roleList.length; j++) {
-                            if (this.userInfo.role_arr[i] === this.roleList[j].role_id) {
-                                if (this.userInfo.role_arr[i] == 0) {
-                                    continue;
-                                }
-                                if (result !== '') result = result + ',' + this.roleList[j].role_name;
-                                else result = result + this.roleList[j].role_name;
-                                break;
-                            }
-                        }
-                    }
-                }
-                return result;
             }
         },
         watch: {
@@ -74,9 +53,6 @@
             if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
         },
         computed: {
-            roleList() {
-                return this.$store.state.roles.role_list;
-            },
             userInfo() {
                 return this.$store.state.auth.userInfo;
             },
@@ -84,9 +60,6 @@
                 if (!this.userInfo)  return defaultHeader;
                 if (this.userInfo.head_img_url) return this.userInfo.head_img_url;
                 else return defaultHeader;
-            },
-            routeName() {
-                return this.$route.name;
             }
         }
     }
@@ -127,7 +100,6 @@
                 border-radius: 50%;
             }
         }
-        .setting-popover {}
         .setting {
             position: absolute;
             top: 74px;

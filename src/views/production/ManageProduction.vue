@@ -4,9 +4,7 @@
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="产品名称" :label-width="80">
-                    <Row><Col>
-                            <Input v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
-                    </Col></Row>
+                   <Input v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
                 </FormItem>
                 <FormItem>
                     <Button type="primary" @click="search">查询</Button>
@@ -16,22 +14,15 @@
                 </FormItem>
             </Form>
         </Row>
-        <data-list class='data-list light-header'
-            @editProtocol = 'editProtocol'
-            @edit='editHandler'
-            @detail='showCourseDetailHandler'
-            @delete='deleteHandler'
-            :table-data='dataList'
-            :header-data='dataHeader'
-            :column-formatter='listColumnFormatter'
+        <data-list class='data-list light-header' @editProtocol = 'editProtocol' @edit='editHandler'
+            @detail='showCourseDetailHandler' @delete='deleteHandler'
+            :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
             :column-formatter-data='listColumnFormatterData'
-            :comboIsSelect='true'
-            :columnComboData='columnComboData'
-            :comboModelList='comboDataList'>
+            :comboIsSelect='true' :columnComboData='columnComboData' :comboModelList='comboDataList'>
         </data-list>
-            <Row class='pager' type='flex' justify='end' align='middle'>
-                <Page class="case-main-pages" :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
-            </Row>
+        <Row class='pager' type='flex' justify='end' align='middle'>
+            <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
+        </Row>
     </div>
 </template>
 <script>
@@ -74,9 +65,7 @@ export default {
     showCourseDetailHandler(index, row) {
       this.$router.push({
         name: "manage-production-curriculum",
-        params: {
-          id: row.id
-        }
+        params: { id: row.id }
       });
     },
     deleteHandler(index, row) {
@@ -90,8 +79,7 @@ export default {
              vm.showPop('删除成功！');
             }
            });
-          },
-          onCancel: () => {}
+          }
       });
     },
     clearSearch() {
@@ -128,7 +116,12 @@ export default {
   },
   watch: {
     isLoading(val) {
-       this.$config.IsLoading(val);
+      if (val) {
+          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+          setTimeout(() => {
+              this.loadingInstance.close()
+          }, Config.base_timeout);
+      }else if(this.loadingInstance) this.loadingInstance.close()
     }
   },
   computed: {
@@ -137,8 +130,7 @@ export default {
       dataList: state => state.production.production_list,
       total: state => state.production.total,
       projectId: state => state.project.select_project_id,
-      productionGroupList: state =>
-        state.production_group.production_group_list,
+      productionGroupList: state => state.production_group.production_group_list,
       stateList: state => state.production.stateList
     }),
     ...mapGetters({
@@ -158,20 +150,16 @@ export default {
       return tableHeadData(this.projectType)
     },
     listColumnFormatter() {
-      return [
-        {
+      return [{
           columnName: "price",
           doFormat: reunitPrice
-        },
-        {
+        },{
           columnName: "original_price",
           doFormat: reunitPrice
-        },
-        {
+        },{
           columnName: "belong_specials",
           dataIndex: 0
-        }
-      ];
+        }];
     },
     listColumnFormatterData() {
       return [this.productionGroupList];
@@ -179,19 +167,11 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .manage-production-view {
   .base-list-container {
     .base-list-row {
       height: 60px;
-      .cell {
-        .el-button {
-          margin-right: 2px;
-          &:last-child {
-            margin-left: 10px;
-          }
-        }
-      }
     }
   }
   .find-by-term {
@@ -199,16 +179,7 @@ export default {
     text-align: left;
     margin-left: 20px;
     /deep/.ivu-input{
-      width: 160px;
-    }
-    .el-select {
-      width: 300px;
-      &.select-user {
-        width: 100%;
-        .el-input__inner {
-          border-right: 0;
-        }
-      }
+      width: 200px;
     }
     button {
       background: #fb843e;
@@ -217,9 +188,6 @@ export default {
       width: 100px;
       height: 36px;
     }
-  }
-  .btn-add {
-    color: #5fa137;
   }
   .data-container {
     background-color: #ffffff;
@@ -239,12 +207,6 @@ export default {
         }
         .Col {
           line-height: 40px;
-          .el-button {
-            a {
-              color: #5fa137;
-              font-size: 14px;
-            }
-          }
           p {
             margin: 0;
             display: -webkit-box;
@@ -258,110 +220,6 @@ export default {
       .pager {
         margin: 30px 0;
         padding-right: 40px;
-        .el-pagination {
-          button {
-            &.disabled {
-              background-color: #ebebec;
-              border-color: #b0b3c5;
-              color: #8b9fa9;
-            }
-          }
-          .el-pager {
-            li {
-              &.active {
-                background-color: #8b9fa9;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-//添加框
-.add-student-view {
-  .img {
-    margin-top: 100px;
-    img {
-      width: 150px;
-      height: 150px;
-    }
-  }
-  .title {
-    margin-top: 25px;
-    h1 {
-      font-size: 28px;
-      color: #2e3e47;
-      font-weight: 200;
-      font-family: MicrosoftYaHei;
-      margin: 0;
-    }
-  }
-  .search-bar {
-    margin-top: 40px;
-    .el-input-group {
-      width: 380px;
-      .el-input__inner {
-        height: 46px;
-      }
-      .el-input-group__append {
-        background-color: #7ab854;
-        .el-button {
-          height: 100%;
-          width: 80px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-      }
-      .el-input-group__prepend {
-        background-color: #7ab854;
-        .el-select {
-          height: 100%;
-          width: 110px;
-          color: #ffffff;
-          font-size: 16px;
-        }
-        i {
-          color: #ffffff;
-        }
-      }
-    }
-  }
-  .result {
-    margin: 15px 0 76px;
-    .data-form {
-      width: 550px;
-      background-color: #ffffff;
-      border: 1px solid #ebebec;
-      border-radius: 6px;
-      padding: 20px 0;
-      .user-info {
-        font-size: 14px;
-        margin-bottom: 24px;
-        border-bottom: 1px solid #ebebec;
-        padding: 0 20px;
-        span {
-          color: #7ab854;
-          margin-right: 15px;
-        }
-      }
-      .user-data {
-        font-size: 14px;
-        margin-bottom: 15px;
-        padding: 0 20px;
-        .el-button {
-          width: 140px;
-          height: 36px;
-          background-color: #7ab854;
-          color: #ffffff;
-        }
-        &.desc {
-          width: 100%;
-          .el-input {
-            width: 330px;
-          }
-        }
       }
     }
   }

@@ -118,15 +118,13 @@ const actions = {
         })
     },
     change_production_curriculum_pre_curriculum({ commit }, params) {
-        if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length)
-        {
+        if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length){
             return;
         }
         commit(types.PRODUCTION_SHOW_LOADING);
         commit(types.PRODUCTION_CHANGE_PRE_GUARD,params.value);
         set_pre_curriculums(state.cur_production_id,params.id,params.value).then(res => {
-            if(res.data.res_code === 1)
-            {
+            if(res.data.res_code === 1){
                 commit(types.PRODUCTION_CHANGE_PRE_CURRICULUM,params);
             }
         })
@@ -231,19 +229,19 @@ const mutations = {
         state.pre_curriculum_change_guard = param;
     },
     [types.PRODUCTION_CHANGE_PRE_CURRICULUM](state, params) {
-        for(var i = 0; i < state.production_list.length; i++)
-        {
-            if (state.production_list[i].id === state.cur_production_id) {
-                for(var j=0;j<state.production_list[i].online_curriculum_list.length;j++)
-                {
-                    if(state.production_list[i].online_curriculum_list[j].curriculum_id === params.id)
-                    {
-                        state.production_list[i].online_curriculum_list[j][params.key] = params.value.concat();
-                    }
-                    break;
-                }
-            }
-        }
+        // for(var i = 0; i < state.production_list.length; i++)
+        // {
+        //     if (state.production_list[i].id === state.cur_production_id) {
+        //         for(var j=0;j<state.production_list[i].online_curriculum_list.length;j++)
+        //         {
+        //             if(state.production_list[i].online_curriculum_list[j].curriculum_id === params.id)
+        //             {
+        //                 state.production_list[i].online_curriculum_list[j][params.key] = params.value.concat();
+        //             }
+        //             break;
+        //         }
+        //     }
+        // }
         state.pre_curriculum_change_guard = null;
         state.isLoading = false;
     },

@@ -4,7 +4,7 @@
         <Col :span="6" class="project-list" v-if="!noSelect">
             <div class='title'>
                 <Icon class="md-menu" type="md-menu" />
-                <Select v-model="project_id" placeholder="请选择" @change="handleCheckProjectId" disabled>
+                <Select v-model="project_id" placeholder="请选择" @on-change="handleCheckProjectId" disabled>
                     <Option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id">
                     </Option>
                 </Select>

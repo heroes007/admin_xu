@@ -1,6 +1,6 @@
 <template>
     <Modal :width="600" :transfer=false :title="payload.type == 1 ? '创建学员' : '编辑学员'" v-model="addStudentDialog" :footer-hide="true"
-               @on-cancel="handleRemoveModal(remove)"  :mask-closable="false" :styles="{ fontsize: '14px'}">
+             :mask-closable="false"  @on-cancel="handleRemoveModal(remove)"   :styles="{ fontsize: '14px'}">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="payload.showList">
@@ -31,14 +31,12 @@
                     <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                         <FormItem label="选择项目">
                             <Select v-model="form.project_id" placeholder="请选择项目" disabled>
-                                <Option v-for="item in projectList" :key="item.id" :label="item.name"
-                                        :value="item.id"></Option>
+                                <Option v-for="item in projectList" :key="item.id" :label="item.name" :value="item.id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem label="选择产品">
                             <Select multiple v-model="form.product_id" placeholder="请选择项目">
-                                <Option v-for="item in productList" :key="item.id" :label="item.title"
-                                        :value="item.id"></Option>
+                                <Option v-for="item in productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem label="真实姓名">
@@ -46,14 +44,12 @@
                         </FormItem>
                         <FormItem label="选择学段">
                             <Select v-model="form.grade_id" placeholder="请选择学段">
-                                <Option v-for="item in gradeList" :key="item.id" :label="item.name"
-                                        :value="item.id"></Option>
+                                <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem label="选择学科">
                             <Select v-model="form.subject_id" placeholder="请选择学科">
-                                <Option v-for="item in subjectList" :key="item.id" :label="item.name"
-                                        :value="item.id"></Option>
+                                <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem v-if="false || payload.type == 1" class="send-offline-course">
@@ -61,8 +57,7 @@
                         </FormItem>
                         <FormItem :label-width="110" label="请选择线下课" v-if="isSend">
                             <Select v-model="form.offline_term_id" placeholder="请选择学科">
-                                <Option v-for="item in dataList" :key="item.id" :label="item.name"
-                                        :value="item.id"></Option>
+                                <Option v-for="item in dataList" :key="item.id" :label="item.name" :value="item.id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem label="开课时间" v-if="payload.type == 2">
@@ -88,14 +83,12 @@
                         </FormItem>
                         <FormItem label="选择导师" v-if="payload.type == 2">
                             <Select v-model="form.tutor_user_id" placeholder="请选择导师">
-                                <Option v-for="item in teachers" :key="item.id" :label="item.nickname"
-                                        :value="item.user_id"></Option>
+                                <Option v-for="item in teachers" :key="item.id" :label="item.nickname" :value="item.user_id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem label="选择学管" v-if="payload.type == 2">
                             <Select v-model="form.xg_user_id" placeholder="请选择学管">
-                                <Option v-for="item in studentManagers" :key="item.id" :label="item.nickname"
-                                        :value="item.user_id"></Option>
+                                <Option v-for="item in studentManagers" :key="item.id" :label="item.nickname" :value="item.user_id"></Option>
                             </Select>
                         </FormItem>
                         <FormItem label="状态" v-if="payload.type == 2">
@@ -114,7 +107,7 @@
                             </Select>
                         </FormItem>
                         <div style="text-align: center">
-                            <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
+                            <Button type="primary" class="sub-btn2" @click="saveHandler">保存</Button>
                         </div>
                     </Form>
                 </Row>
@@ -126,15 +119,15 @@
 <script>
   import BaseInput from '../../components/BaseInput'
   import BaseList from '../../components/BaseList'
-  import {RemoveModal} from './mixins'
+  import { RemoveModal } from './mixins'
   import UploadPanel from '../../components/UploadPanel'
-  import {get_student_detail} from '../../api/modules/tools_student'
-  import {get_list} from '../../api/modules/tools_product'
-  import {search_user} from '../../api/modules/tools_user'
-  import {Loading} from 'element-ui'
-  import {Config} from '../../config/base'
-  import {MPop} from '../../components/MessagePop'
-  import {mapState} from 'vuex'
+  import { get_student_detail } from '../../api/modules/tools_student'
+  import { get_list } from '../../api/modules/tools_product'
+  import { search_user } from '../../api/modules/tools_user'
+  import { Loading } from 'element-ui'
+  import { Config } from '../../config/base'
+  import { MPop } from '../../components/MessagePop'
+  import { mapState } from 'vuex'
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -144,10 +137,7 @@
       },
       payload: {}
     },
-    components: {
-      'base-input': BaseInput,
-      'data-list': BaseList
-    },
+    components: { 'base-input': BaseInput, 'data-list': BaseList },
     data() {
       return {
         addStudentDialog: true,
@@ -240,9 +230,8 @@
             });
         },
         saveHandler() {
-            if (this.payload.sid) {
-                this.$store.dispatch('edit_student', this.form);
-            } else {
+            if (this.payload.sid) this.$store.dispatch('edit_student', this.form)
+            else {
                 var formInline = this.form;
                 this.$store.dispatch('add_student', formInline);
                 formInline.callback = () => {
@@ -261,8 +250,7 @@
         this.form.is_send_offline_term = 1;
         if (this.$store.state.offline_curriculum.offline_term_list.length == 0) {
           this.$store.dispatch('get_offline_term_list', {
-            project_id: this.$store.state.project.select_project_id,
-            last_count: 0
+            project_id: this.$store.state.project.select_project_id, last_count: 0
           });
         }
       }
@@ -274,18 +262,12 @@
       this.$store.dispatch('get_student_managers');
       this.$store.dispatch('get_role');
       var vm = this;
-      this.form._fn = function () {
-        vm.handleClose();
-      };
+      this.form._fn = function () { vm.handleClose(); };
       this.form.user_id = this.payload.user_id;
       this.form.nickname = this.payload.nickname;
-
       get_list({project_id: this.projectId, page_index: 0, page_size: 99999}).then(res => {
-        if (res.data.res_code === 1) {
-          this.productList = res.data.msg.products;
-        }
+        if (res.data.res_code === 1) this.productList = res.data.msg.products;
       })
-
       if (this.payload.sid) {
         this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true});
         setTimeout(() => {
@@ -322,7 +304,8 @@
     padding: 24px 0 24px 0;
 }
 .body-top-showList{
-    padding: 16px;
+    width: 80%;
+    margin-left: 10%;
 }
 /deep/ .ivu-form-inline .ivu-form-item { margin-right: 0; }
 .select-user-item{
@@ -334,15 +317,16 @@
 .edirTable{
    width: 100%;
 }
-.sub-btn {
+.sub-btn,.sub-btn2{
     background: #FB843E;
     border-radius: 4px;
-    width: 60px;
     height: 36px;
     border: 0;
     position: relative;
     left: -2.6px;
 }
+.sub-btn { width: 60px }
+.sub-btn2{ width: 200px }
 #add-student-container {
     @import "base.scss";
     input,
@@ -362,10 +346,10 @@
             color: #757575;
         }
     }
-        .search-bar {
-            .select-user {
-                margin-right: 10px;
-            }
+    .search-bar {
+        .select-user {
+            margin-right: 10px;
         }
+    }
 }
 </style>
