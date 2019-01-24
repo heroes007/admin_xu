@@ -10,7 +10,7 @@ module.exports = {
         port:3701
     },
     prod:{
-        // publicPath:''
-      publicPath:'//file.laoshi123.com/dskj_dscj_xg/'
+        publicPath:''
+    //   publicPath:'//file.laoshi123.com/dskj_dscj_xg/'
     }
 }

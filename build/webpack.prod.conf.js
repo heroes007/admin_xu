@@ -6,11 +6,11 @@ var baseWebpackConfig = require('./webpack.base.conf')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-function pathResolve(relPath) {
-  return path.resolve(__dirname, relPath);
-}
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// function pathResolve(relPath) {
+//   return path.resolve(__dirname, relPath);
+// }
 var webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
   module: {
@@ -21,11 +21,11 @@ var webpackConfig = merge(baseWebpackConfig, {
             {
                 loader: 'babel-loader',
                 options: {
-                    presets: ["@babel/preset-env"]
+                    presets: [["@babel/preset-env",{"targets": { "esmodules": true,"node": true }}]]
                 }
             }
         ],
-        // include: [pathResolve('src'),pathResolve('node_modules/vue-ueditor')],
+        // include: [pathResolve('node_modules/vue-ueditor')],
         exclude: /(node_modules|bower_components)/       
     },
     {
@@ -63,28 +63,42 @@ var webpackConfig = merge(baseWebpackConfig, {
     filename: config.base.assetsPath + '/js/[name].[chunkhash].js',
     chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
+  performance: {
+    hints: false
+  },
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
+        test: /\.js(\?.*)?$/i,
+        include: /\/includes/,
+        exclude: /\/excludes/,
         cache: true,
         parallel: true,
         sourceMap: true,
+        uglifyOptions: {
+          warnings: false,
+          mangle: true, // Note `mangle.properties` is `false` by default.
+          toplevel: false,
+          ie8: false,
+          keep_fnames: false
+        }
       }),
       new OptimizeCssAssetsPlugin({
-        // assetNameRegExp: [/\.optimize\.css$/g,/\.optimize\.scss$/g],
-        // cssProcessor: require('cssnano'),
-        // cssProcessorOptions: { safe: true, discardComments: { removeAll: true } },
-        // canPrint: true
+        assetNameRegExp: /\.optimize\.(sc|c)ss$/g,
+        cssProcessor: require('cssnano'),
+        cssProcessorOptions: { safe: true, discardComments: { removeAll: true } },
+        canPrint: true
       })
     ],
     splitChunks:{
-      // chunks: 'async',
-      // minChunks: 1,
-      // name: false,
+      chunks: 'async',
+      minChunks: 1,
+      name: false,
       cacheGroups: {
         styles: {
           name: 'styles',
           test: /\.(scss|css)$/,
+          chunks: 'all',
           enforce: true
         }
       }
@@ -102,9 +116,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     // new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
-      // chunkFilename: '[id].[hash].css',
+      chunkFilename: '[id].[hash].css',
     }),   
-    // new UglifyJsPlugin(),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin

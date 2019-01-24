@@ -35,7 +35,7 @@ export default {
         this.$localStorage.set("lastSelectedProject", id);
         this.clear_store();
       }
-      this.$router.replace({ path: "/dashboard/manage-project" });
+      this.$router.replace({ path: "/dashboard" });
     },
     getCreateTime(time) {
       return doTimeFormat(time);
