@@ -304,19 +304,11 @@ function initVue({
     payload,
     component
 }) {
-    // element = (function(){
-    //   var ele;
-    //   return function(){
-    //     if(!ele){
-    //
-    //     }
-    //   }
-    // })()
     var element = document.createElement('div');
     element.id = `${el_name}-container`;
     element.innerHTML = `<${el_name}-dialog :remove='removeNodeName' :payload='childPayload'></${el_name}-dialog>`;
-    document.getElementById('app').appendChild(element);
     Vue.component(`${el_name}-dialog`, component);
+    document.getElementById('app').appendChild(element);
     new Vue({
         data: {
             removeNodeName: element.id,

@@ -383,15 +383,18 @@
                 }
               }
             }
-          } else return value;
+          } else return this.isEmptyArray(value)
         }
+      },
+      isEmptyArray(arr){
+        return arr instanceof Array ? '' : arr
       },
       showPropValue(propname, row) {
         if (this.columnFormatter) {
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {
               if (this.columnFormatter[i].doFormat) {
-                return this.columnFormatter[i].doFormat(row[propname]);
+               if(this.columnFormatter[i].doFormat(row[propname]).length > 0)  return this.columnFormatter[i].doFormat(row[propname]);
               } else {
                 for (var j = 0; j < this.columnFormatterData[this.columnFormatter[i].dataIndex].length; j++) {
                   if (row[propname] instanceof Array) {
@@ -413,8 +416,7 @@
             }
           }
         }
-        if (row[propname] instanceof Array && row[propname].length == 0) return ''
-        return row[propname];
+        return this.isEmptyArray(row[propname])
       },
       showLimiteValue(propname, row, limit, actionName) {
         var v = this.showPropValue(propname, row);

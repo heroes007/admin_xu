@@ -146,7 +146,6 @@
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'
   import { MPop } from '../../components/MessagePop'
-
   export default {
     mixins: [RemoveModal, MPop],
     props: {
@@ -244,7 +243,7 @@
       },
       query_replace_online_course_list() {
         this.query_online_course_list.map((item, index) => {
-          item._index = index < 10 ? '0' + (index + 1) : '' + index
+          item._index = index < 9 ? '0' + (index + 1) : '' + ( index + 1 )
         });
         return this.query_online_course_list
       },

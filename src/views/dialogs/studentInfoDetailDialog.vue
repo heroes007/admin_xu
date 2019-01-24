@@ -134,7 +134,7 @@
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
                                 <Button type='text' @click='clearVideoLog'>清除观看记录</Button>
-                                <Select v-model="form3.product_id" placeholder="请选择项目" @on-change='changeProductHandler'>
+                                <Select class="on_Select_item" v-model="form3.product_id" placeholder="请选择项目" @on-change='changeProductHandler'>
                                     <Option v-for="item in form3.productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                                 </Select>
                             </Row>
@@ -153,7 +153,7 @@
                                     </Col>
                                     <Col :span="4">
                                         <!--<span>{{item.unlock ? '已解锁'  : '未解锁'}}</span>-->
-                                        <i :class="{'xght-webfont-lock':!item.unlock,'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i>
+                                       <i class="mdLock" :class="{'xght-webfont-lock':!item.unlock,'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i>
                                     </Col>
                                     <Col :span="4">
                                         <Button type='primary' @click='unlockTest(item)'>解锁测验</Button>
@@ -186,10 +186,10 @@
                                     <p class="title">{{item.name}}</p>
                                 </Col>
                                 <Col :span="4">
-                                    <span>{{item.unlock ? '已发送'  : '未发送'}}</span>
+                                    <span class="emptyFontSize">{{item.unlock ? '已发送'  : '未发送'}}</span>
                                 </Col>
                                 <Col :span="4">
-                                    <span>{{item.state === 1 ? '未上传'  : item.state === 2 ? '未批阅' : '已通过'}}</span>
+                                    <span class="emptyFontSize">{{item.state === 1 ? '未上传'  : item.state === 2 ? '未批阅' : '已通过'}}</span>
                                 </Col>
                             </Row>
                         </Row>
@@ -359,7 +359,8 @@
         }
       },
       changeTabHandler(tab, event) {
-        if (tab.index === '1' && this.form2.user_id === 0) {
+          console.log(tab);
+        if (tab === 'name2' && this.form2.user_id === 0) {
           this.showloading();
           get_signup_info_by_userid(this.payload.user_id).then(res => {
             if (res.data.res_code === 1) {
@@ -373,7 +374,7 @@
             }
           })
         }
-        else if (tab.index === '2' && this.form3.dataList.length === 0) {
+        else if (tab === 'name3' && this.form3.dataList.length === 0) {
           this.showloading();
           // get_student_online_curriculum({
           // new_version_get_student_online_curriculum({
@@ -387,7 +388,7 @@
           //     }
           // })
         }
-        else if (tab.index === '3' && this.form6.dataList.length === 0) {
+        else if (tab === 'name4' && this.form6.dataList.length === 0) {
           this.showloading();
           get_student_offline_curriculum_list(this.payload.user_id,this.payload.project_id).then(res => {
             if (res.data.res_code == 1) {
@@ -398,7 +399,7 @@
             }
           })
         }
-        else if (tab.index === '4' && this.form4.dataList.length === 0) {
+        else if (tab === 'name5' && this.form4.dataList.length === 0) {
           this.showloading();
           get_student_task_list(this.payload.project_id, this.payload.user_id).then(res => {
             if (res.data.res_code == 1) {
@@ -407,7 +408,7 @@
             }
           })
         }
-        else if (tab.index === '5' && this.form5.dataList.length === 0) {
+        else if (tab === 'name6' && this.form5.dataList.length === 0) {
           this.showloading();
           get_student_work_list(this.payload.project_id, this.payload.user_id).then(res => {
             if (res.data.res_code == 1) {
@@ -562,9 +563,21 @@
   }
 </script>
 <style lang="scss" scoped>
+    .on_Select_item { width: 200px }
+    .avator>img { width: 40px;height: 40px; border-radius: 20px }
+    .mdLock{ font-size: 18px }
+    .course-item{ padding-top: 10px; padding-bottom: 10px; display: flex; align-items: center;}
     /deep/ .ivu-tabs-bar{ height: 50px ;}
     /deep/ .ivu-tabs-nav .ivu-tabs-tab{ height: 50px; line-height: 34px; font-size: 16px}
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #FC7643 }
+    /deep/ .ivu-input-number { width: 200px !important; margin-left: 20px; }
+    .emptyFontSize { font-size: 14px }
+    .title { 
+        text-align: left;     
+        color: #48576a;
+        font-size: 14px;
+        margin: 12px 0px;
+     }
     .close{
         position: absolute;
         right: 7px;
@@ -611,5 +624,26 @@
                 color: #757575;
             }
         }
+        .progress {
+                width: 300px;
+                height: 10px;
+                border: 1px solid #E5E5E5;
+                position: relative;
+                background: #F6F6F6;
+                span:first-child {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    display: inline-block;
+                    height: 100%;
+                    background-color: #79BC51;
+                }
+                .specific {
+                    display: inline-block;
+                    position: absolute;
+                    top: -4px;
+                    right: -50px;
+                }
+            }
     }
 </style>

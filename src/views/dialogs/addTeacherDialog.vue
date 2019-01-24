@@ -65,14 +65,8 @@ export default {
     },
     methods: {
         saveHandler() {
-            if(this.payload)
-            {
-                this.$store.dispatch('edit_teacher',this.form);
-            }
-            else
-            {
-                this.$store.dispatch('add_teacher',this.form);
-            }
+            if(this.payload) this.$store.dispatch('edit_teacher',this.form);
+            else  this.$store.dispatch('add_teacher',this.form);
         },
         handleClose() {
             this.addTeacherDialog = false;
@@ -87,15 +81,13 @@ export default {
             vm.handleClose();
             vm.showPop('保存成功！',1000);
         };
-        if(this.payload)
-        {
+        if(this.payload){
             this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
             setTimeout(() => {
             this.loadingInstance.close();
         }, Config.base_timeout);
             get_detail(this.payload).then(res => {
-                if(res.data.res_code === 1)
-                {
+                if(res.data.res_code === 1){
                     this.form = res.data.msg[0];
                     this.form._fn = function(){
                         vm.handleClose();

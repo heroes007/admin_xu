@@ -3,8 +3,8 @@
         <div class='head'>
             <div class='mask'>
                 <div class='bg'></div>
-                <i class='el-icon-view'></i>
-                <i class='el-icon-circle-cross' @click.stop="deleteHandler"></i>
+                <img class="ios-add-circle-outline" :src="addIcon" />
+                <Icon class="md-close-circle" type="md-close-circle" @click.stop="deleteHandler" />
             </div>
             <img :src='headImg'/>
         </div>
@@ -17,6 +17,7 @@
     import defaultHeader from '../assets/img/side-menu/default-header.jpg'
     import { Dialog } from '../views/dialogs'
     import { ADD_TEACHER } from '../views/dialogs/types'
+    import addIcon from 'assets/img/el-icon-zoom-in.svg'
     export default{
         mixins: [Dialog],
         props:{
@@ -33,16 +34,12 @@
                 required:true
             }
         },
+        data(){
+            return { addIcon }
+        },
         computed:{
             headImg(){
-                if(this.imgUrl)
-                {
-                    return this.imgUrl;
-                }
-                else
-                {
-                    return defaultHeader;
-                }
+                return this.imgUrl ? this.imgUrl : defaultHeader
             }
         },
         methods:{
@@ -82,24 +79,22 @@
                 position: absolute;
                 z-index: 2;
                 display: none;
+                cursor:pointer;
                 .bg {
                     width: 100%;
                     height: 100%;
                     border-radius: 50%;
                     background-color: rgba(0,0,0,0.60);;
                 }
-
-                i {
-                    cursor:pointer;
-                }
-                .el-icon-view {
+                .ios-add-circle-outline {
                     position: absolute;
                     color: #ffffff;
-                    font-size: 18px;
-                    left: 11px;
-                    top:11px;
+                    width: 20px;
+                    height: 20px;
+                    left: 10px;
+                    top:10px;
                 }
-                .el-icon-circle-cross {
+                .md-close-circle {
                     font-size: 14px;
                     color: #e93f00;
                     position: absolute;
