@@ -3,89 +3,95 @@
         <!-- <Vueditor ref='text_editor_main'></Vueditor> -->
         <VueUEditor @ready='editorReadyHandler'></VueUEditor>
         <Row class='editor-btns' type='flex' justify='start' align='middle'>
-            <btn-upload text='插入图片' type='image/gif, image/jpeg, image/png' :host='host' @uploadcomplete='uploadImgComplete'></btn-upload>
+            <btn-upload text='插入图片' type='image/gif, image/jpeg, image/png' :host='host'
+                        @uploadcomplete='uploadImgComplete'></btn-upload>
         </Row>
     </div>
 </template>
 <script>
 
-    import UploadBtn from './UploadButton.vue'
-    import { Config } from '../config/base'
-    import VueUEditor from 'vue-ueditor'
+  import UploadBtn from './UploadButton.vue'
+  import {Config} from '../config/base'
+  import VueUEditor from 'vue-ueditor'
 
-    export default{
-        data(){
-            return{
-                host:Config.ossImgHost,
-                editor:null
-            }
-        },
-        props:{
-            content:{
-                type:String
-            }
-        },
-        computed:{
-            editorContent(){
-                return this.content;
-            }
-        },
-        mounted(){
-            var vm = this;
-            if(this.editorContent && !this.editor.getContent())
-                    setTimeout(function(){
-                        vm.editor.setContent(vm.editorContent)
-                    },100);
-        },
-        methods:{
-            editorReadyHandler(editor) {
-                this.editor = editor;
-                var vm = this;
-                if(this.editorContent && !this.editor.getContent())
-                    setTimeout(function(){
-                        vm.editor.setContent(vm.editorContent)
-                    },100);
-            },
-            uploadImgComplete(result) {
+  export default {
+    data() {
+      return {
+        host: Config.ossImgHost,
+        editor: null
+      }
+    },
+    props: {
+      content: {
+        type: String
+      }
+    },
+    computed: {
+      editorContent() {
+        return this.content;
+      }
+    },
+    mounted() {
+      var vm = this;
+      if (this.editorContent && !this.editor.getContent()){
+        console.log(1);
+        setTimeout(function () {
+          vm.editor.setContent(vm.editorContent)
+        }, 100);
+      }
+    },
+    methods: {
+      editorReadyHandler(editor) {
+        this.editor = editor;
+        var vm = this;
+        if (this.editorContent && !this.editor.getContent()){
+          setTimeout(function () {
+            vm.editor.setContent(vm.editorContent)
+          }, 100);
+        }
+      },
+      uploadImgComplete(result) {
 //                var oldStr = this.$refs.main.getContent();
 //                oldStr += '<img src="' + url + '">';
 //                this.$refs.main.setContent(oldStr);
 //                console.log(this.$refs.main.getContent());
-                // this.$refs.text_editor_main.$store.dispatch('execCommand', {name: 'insertHTML', value: `<img src="${result.url}">`});
-                this.editor.execCommand('insertimage',{src:result.url})
-            }
-        },
-        watch:{
-            editorContent(val) {
-                // this.$refs.text_editor_main.setContent(val);
-                var vm = this;
-                if(this.editor && !this.editor.getContent())
-                    setTimeout(function(){
-                        vm.editor.setContent(val)
-                    },100);
-            }
-        },
-        components:{
-            'btn-upload':UploadBtn,
-            VueUEditor
+        // this.$refs.text_editor_main.$store.dispatch('execCommand', {name: 'insertHTML', value: `<img src="${result.url}">`});
+        this.editor.execCommand('insertimage', {src: result.url})
+      }
+    },
+    watch: {
+      editorContent(val) {
+        // this.$refs.text_editor_main.setContent(val);
+        var vm = this;
+        if (this.editor && !this.editor.getContent()){
+          setTimeout(function () {
+            vm.editor.setContent(val)
+          }, 100);
         }
+      }
+    },
+    components: {
+      'btn-upload': UploadBtn,
+      VueUEditor
     }
+  }
 
 </script>
 <style lang="scss">
     .editor {
         .vueditor {
-            height:250px;
-            text-align:left;
+            height: 250px;
+            text-align: left;
         }
+
         .edui-editor {
             width: 100% !important;
             /*width: 647px !important;*/
-            .edui-toolbar{
+            .edui-toolbar {
                 text-align: left;
             }
 
-            .edui-editor-iframeholder{
+            .edui-editor-iframeholder {
                 width: 100% !important;
             }
         }
