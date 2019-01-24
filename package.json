@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "rm -rf server/dist && node build/build.js",
-    "serve": "cd server;node server"
+    "server": "cd server;node server"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",

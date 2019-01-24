@@ -67,7 +67,7 @@
                             <span slot="open">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.onText}}</span>
                             <span slot="close">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.offText}}</span>
                         </Switch>
-                        <Checkbox v-model='row[btn.switchKey]' 
+                        <Checkbox v-model='row[btn.switchKey]'
                          @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)' v-if='btn.useCheckBox'>{{btn.text}}</Checkbox>
                     </div>
                 </div>
@@ -401,7 +401,7 @@
                     var str = [], list = this.columnFormatterData[this.columnFormatter[i].dataIndex];
                     row[propname].map((item, index) => {
                       list.map((_item, _index) => {
-                        if (_item.role_id == item) str.push(_item.role_name) 
+                        if (_item.role_id == item) str.push(_item.role_name)
                         else if (_item.special_id == item) str.push(_item.name)
                       })
                     })
