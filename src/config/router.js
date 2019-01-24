@@ -76,7 +76,7 @@ const routes = [
     children:[
       {
         path:'',
-        redirect:'/dashboard/manage-production'
+        redirect:'/dashboard/manage-project'
       },
       {
         name:'add-homework',

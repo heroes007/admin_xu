@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js",
+    "build": "rm -rf server/dist && node build/build.js",
     "serve": "cd server;node server"
   },
   "dependencies": {
@@ -16,8 +16,6 @@
     "@babel/runtime": "^7.2.0",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
     "chart.js": "^2.7.3",
     "element-ui": "1.4.4",
     "immutable": "^4.0.0-rc.12",
@@ -32,6 +30,7 @@
     "moment": "^2.23.0",
     "sass-loader": "^7.1.0",
     "socket.io": "^2.2.0",
+    "uglifyjs-webpack-plugin": "^2.1.1",
     "vue": "^2.5.21",
     "vue-chartjs": "^3.4.0",
     "vue-cookie": "^1.1.4",
@@ -75,7 +74,6 @@
     "shelljs": "^0.8.3",
     "style-loader": "^0.23.1",
     "stylus-loader": "^3.0.2",
-    "uglifyjs-webpack-plugin": "^2.1.1",
     "url-loader": "^1.1.2",
     "vue-loader": "^15.5.1",
     "vue-style-loader": "^4.1.2",
