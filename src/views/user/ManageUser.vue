@@ -107,7 +107,7 @@
             <div class='list'>
                 <Table :columns="columns1" :data="list">
                     <template slot-scope="{ column, row, index }" slot="action">
-                        <Button type="text" size="small" class="btn-text" @click="editDealer(row)">修改分站</Button>
+                        <!--<Button type="text" size="small" class="btn-text" @click="editDealer(row)">修改分站</Button>-->
                         <Button type="text" size="small" class="btn-text" @click="editUser(row)">编辑</Button>
                         <Button type="text" size="small" class="btn-text" @click="createStudent(row)">创建学员</Button>
                     </template>
@@ -175,11 +175,13 @@
           },{
             title: '手机号',
             key: 'phone'
-          },{
-            title: '分站',
-            key: 'from_domain',
-            width: 260
-          },{
+          },
+          // {
+          //   title: '分站',
+          //   key: 'from_domain',
+          //   width: 260
+          // },
+          {
             title: '注册时间',
             key: 'create_time',
           },{

@@ -26,7 +26,8 @@ var webpackConfig = merge(baseWebpackConfig, {
             }
         ],
         // include: [pathResolve('src'),pathResolve('node_modules/vue-ueditor')],
-        exclude: /(node_modules|bower_components)/       
+        // include: [pathResolve('src'), pathResolve('test'),pathResolve('node_modules/vue-ueditor')],
+        exclude: /(node_modules|bower_components)/
     },
     {
     test: /\.vue$/,
@@ -103,7 +104,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
       // chunkFilename: '[id].[hash].css',
-    }),   
+    }),
     // new UglifyJsPlugin(),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
