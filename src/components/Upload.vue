@@ -97,8 +97,7 @@
                     });
                     return;
                 }
-                this.fileName = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value
-                    .length);
+                this.fileName = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
                 this.showFileName = true;
                 this.handleGetassignKey(event.target.files[0]);
 
@@ -143,6 +142,7 @@
                 var date = new Date();
                 date = date.toGMTString();
                 get_sign_4_datacenter(fileItem.type, date, this.bucket, this.dir, fileItem.name, 'POST').then(res => {
+                  console.log(res)
                     if (res.data.res_code == 1) {
                         this.ossFileName = res.data.msg.filename;
                         const formData = new FormData();

@@ -61,7 +61,7 @@
                                         <Input v-model="newData.name" placeholder="请输入课程名称"></Input>
                                     </Col>
                                 </Row>
-                                <file-uploader :filters="dataFilters" maxFileCount="1" :maxFileSize="10000" @uploadComplete="uploadComplete" bucket="dscj-static-file" :dir="getDir"/>
+                                <file-uploader :filters="dataFilters" maxFileCount="1" :maxFileSize="10000" @uploadComplete="uploadComplete" bucket="dscj-static-file" :dir="getDir()"/>
                             </div>
                         </Row>
                         <Row>

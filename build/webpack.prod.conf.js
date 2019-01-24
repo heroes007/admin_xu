@@ -18,37 +18,37 @@ var webpackConfig = merge(baseWebpackConfig, {
       {
         test: /\.js$/,
         use: [
-            {
-                loader: 'babel-loader',
-                options: {
-                    presets: [["@babel/preset-env",{"targets": { "esmodules": true,"node": true }}]]
-                }
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [["@babel/preset-env",{"targets": { "esmodules": true,"node": true }}]]
             }
+          }
         ],
         // include: [pathResolve('node_modules/vue-ueditor')],
-        exclude: /(node_modules|bower_components)/       
-    },
-    {
-    test: /\.vue$/,
-    use: [{
-      loader: 'vue-loader',
-      options: {
-          loaders: {
-            scss: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-          }
-        }
+        exclude: /(node_modules|bower_components)/
       },
       {
-        loader: 'iview-loader',
-        options: {
-            prefix: false
-        }
-      }]
-     },
-     {
-      test: /\.(sc|c)ss$/,
-      use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-     }],
+        test: /\.vue$/,
+        use: [{
+          loader: 'vue-loader',
+          options: {
+            loaders: {
+              scss: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+            }
+          }
+        },
+          {
+            loader: 'iview-loader',
+            options: {
+              prefix: false
+            }
+          }]
+      },
+      {
+        test: /\.(sc|c)ss$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+      }],
     noParse: /videojs-contrib-hls/
   },
   resolve: {
@@ -117,7 +117,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
       chunkFilename: '[id].[hash].css',
-    }),   
+    }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
