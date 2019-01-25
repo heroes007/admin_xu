@@ -106,7 +106,6 @@ export default {
     }
   },
   mounted() {
-    console.log(process);
     this.getData();
     this.get_production_group_list({
       page_index: 0,

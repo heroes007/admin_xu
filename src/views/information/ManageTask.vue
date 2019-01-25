@@ -34,6 +34,7 @@
     import { Config } from '../../config/base'
     export default {
         mixins: [Dialog],
+        components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem },
         data() {
             return {
                 data: [{
@@ -323,11 +324,6 @@
 
             this.$store.dispatch('get_grade_list');
             this.$store.dispatch('get_subject_list');
-        },
-        components: {
-            'header-component': Header,
-            'data-list': BaseList,
-            'category-item': TaskCategoryItem
         }
     }
 
