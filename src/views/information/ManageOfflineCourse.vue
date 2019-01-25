@@ -89,7 +89,7 @@
             param: 'add',
             // hoverShow: true
           }, {
-            text: 'ios-trash-outline',
+            text: 'el-icon-delete',
             param: 'delete',
             // hoverShow: true,
             isIcon: true,
@@ -125,7 +125,7 @@
               text: '编辑课程',
               param: 'editCourse'
             }, {
-              text: 'ios-trash-outline',
+              text: 'el-icon-delete',
               param: 'deleteCourse',
               hoverShow: true,
               isIcon: true
@@ -216,10 +216,7 @@
       deleteOfflineSemester(index, row) {
         var vm = this;
         if (row.can_delete == 0) {
-          this.$Modal.info({
-            title: '提示',
-            content: '<p>无法删除该学期!</p>'
-          });
+          this.$Modal.info({ title: '提示', content: '<p>无法删除该学期!</p>' });
         } else {
           this.$Modal.confirm({
             title: '提示',
@@ -248,26 +245,16 @@
             index,
             row,
             callback() {
-              vm.handleSelModal(types.ADD_OFFLINE_COURSE, {
-                type: 2,
-                row,
-                index,
-                data: vm.offline_curriculum_detail1
-              });
+              vm.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row, index, data: vm.offline_curriculum_detail1 });
             }
           });
         }
       },
       rowExpandHandler(row) {
-        this.$store.dispatch('get_offline_curriculum_list', {
-          offline_term_id: row.id
-        })
+        this.$store.dispatch('get_offline_curriculum_list', { offline_term_id: row.id })
       },
       manageSignupHandler(index, row) {
-        this.$router.push({
-          name: 'offline-course-manage-signup',
-          params: { id: row.id }
-        })
+        this.$router.push({ name: 'offline-course-manage-signup', params: { id: row.id } })
       }
     },
     mounted() {
@@ -276,19 +263,14 @@
         this.$store.dispatch('get_project_list', {
           callback(v) {
             if (vm.dataList.length === 0) {
-              vm.$store.dispatch('get_offline_term_list', {
-                project_id: v,
-                last_count: 0
-              });
+              vm.$store.dispatch('get_offline_term_list', { project_id: v, last_count: 0 });
               // vm.$store.dispatch('save_static_offline_project_id', v);
             }
           }
         });
+        return;
       } else {
-        this.$store.dispatch('get_offline_term_list', {
-          project_id: this.$store.state.project.select_project_id,
-          last_count: 0
-        });
+        this.$store.dispatch('get_offline_term_list', { project_id: this.$store.state.project.select_project_id, last_count: 0 });
       }
       // debugger;
       // if (this.$store.state.project.offline_project_id != this.$store.state.project.select_project_id) {

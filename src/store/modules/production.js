@@ -30,7 +30,7 @@ const actions = {
             commit
         }, param) {
             commit(types.PRODUCTION_SHOW_LOADING);
-            
+
             get_list(param).then(res => {
                 if (res.data.res_code === 1) {
                     commit(types.PRODUCTION_LIST_LOADED, res.data.msg)

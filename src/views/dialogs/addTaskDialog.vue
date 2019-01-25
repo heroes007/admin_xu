@@ -170,6 +170,11 @@ export default {
                 //     message: '请输入讲师描述',
                 //     trigger: 'change'
                 // }],
+                activity_param:[{
+                  message: '',
+                  trigger: '',
+                  type: ''
+                }],
                 task_require: [{
                     required: false,
                     message: '请填写描述信息',

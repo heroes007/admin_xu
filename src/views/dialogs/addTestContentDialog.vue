@@ -152,9 +152,7 @@
         }
       },
       newVideoTestId(val) {
-        if (this.formInline1.video_test_id === 0) {
-          this.formInline1.video_test_id = val;
-        }
+        if (this.formInline1.video_test_id === 0)  this.formInline1.video_test_id = val;
       }
     },
     computed: {
@@ -201,15 +199,10 @@
       handleClose() {
         this.addTestContentDialog = false;
       },
-      handleSubmit() {
-
-      },
+      handleSubmit() { },
       handleSaveTest() {
-        if (this.payload.video_test_id) {
-          this.$store.dispatch('edit_online_curriculum_test', this.formInline1)
-        } else {
-          this.$store.dispatch('add_online_curriculum_test', this.formInline1)
-        }
+        if (this.payload.video_test_id) this.$store.dispatch('edit_online_curriculum_test', this.formInline1)
+        else this.$store.dispatch('add_online_curriculum_test', this.formInline1)
         this.isEdit = true;
       },
       handleEditTest() {
