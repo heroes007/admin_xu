@@ -146,6 +146,7 @@
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'
   import { MPop } from '../../components/MessagePop'
+
   export default {
     mixins: [RemoveModal, MPop],
     props: {
@@ -306,8 +307,7 @@
       },
       handleNextStep(idx) {
         this.dialogIndex = idx
-        if (this.query_online_course_list.length === 0)
-          this.get_online_curriculum_list(this.project_id);
+        if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
         this.form.img_url_arr = {
@@ -328,17 +328,14 @@
           }
           this.form.pre_curriculum_ids = preList;
         }
-        if (!this.payload)
-          this.add_online_curriculum(this.form);
-        else {
-          this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
-        }
+        if (!this.payload) this.add_online_curriculum(this.form);
+        else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        // console.log(file, fileList);
       },
       handlePreview(file) {
-        console.log(file);
+        // console.log(file);
       },
       CheckedMap(d) {
         let d2 = []

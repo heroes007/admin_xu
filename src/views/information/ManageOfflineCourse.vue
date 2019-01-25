@@ -1,9 +1,14 @@
 <template>
     <div class='manage-offline-course'>
-        <header-component :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>
-        <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
-                   @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
-                   :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
+        <header-component :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler'
+                          @reRenderList="reRenderListHandler"/>
+        <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler'
+                   @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
+                   @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler'
+                   @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler"
+                   @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
+                   :header-data='dataHeader' :column-formatter='listColumnFormatter'
+                   :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
         <save-order v-if='dirty' @saveOrder='saveOrderHandler'/>
     </div>
 </template>
@@ -13,44 +18,15 @@
   import BaseList from '../../components/BaseList'
   import SaveOrder from '../../components/SaveOrder'
   import {doTimeFormat, doDateFormat, doOfflineCurriculumTypeFormat} from '../../components/Util'
-  import { Dialog } from '../dialogs';
+  import {Dialog} from '../dialogs';
   import * as types from '../dialogs/types';
-  import { mapActions, mapState } from 'vuex'
-  import { Config } from '../../config/base'
+  import {mapActions, mapState} from 'vuex'
+  import {Config} from '../../config/base'
 
   export default {
     mixins: [Dialog],
     data() {
       return {
-        data: [{
-          time: 'Fs100',
-          title: '老师也要学点管理学',
-          createtime: '2016-10-27T02:51:43.000Z',
-          total: 10,
-          openTime: '2016-10-27T02:51:43.000Z',
-          endTime: '2016-10-27T02:51:43.000Z',
-          childData: [{
-            title: '攻心是销售流程准备阶段',
-            type: '讲座',
-            openTime: '2016-10-27T02:51:43.000Z',
-            endTime: '2016-10-27T02:51:43.000Z',
-            teacher: '李恩强'
-          }, {
-            title: '攻心是销售流程准备阶段',
-            type: '讲座',
-            openTime: '2016-10-27T02:51:43.000Z',
-            endTime: '2016-10-27T02:51:43.000Z',
-            teacher: '李恩强'
-          }]
-        }, {
-          time: 'Fs99',
-          title: '好老师，懂孩子',
-          createtime: '2016-10-27T02:51:43.000Z',
-          total: 5,
-          openTime: '2016-10-27T02:51:43.000Z',
-          endTime: '2016-10-27T02:51:43.000Z',
-          childData: []
-        }],
         gradeList: [{
           id: 1,
           name: '小学'

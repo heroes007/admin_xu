@@ -133,6 +133,7 @@
   import { Config } from "../../config/base";
   import Vue from "vue";
   let tooltips = { ellipsis: true, tooltip: true };
+
   export default {
     mixins: [Dialog],
     components: { "header-component": Header },
@@ -174,7 +175,7 @@
             ...tooltips
           },{
             title: '手机号',
-            key: 'phone'
+            key: 'phone',
           },
           // {
           //   title: '分站',

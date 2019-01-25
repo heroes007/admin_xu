@@ -76,6 +76,7 @@
     import UploadBtn from '../../components/UploadButton'
     import {Config} from '../../config/base'
     import { get_detail, update_lb, add_lb } from '../../api/modules/tools_lb'
+
     export default{
         components: { 'header-component': Header, 'btn-upload': UploadBtn },
         data(){
@@ -217,7 +218,6 @@
         },
         computed: {
             list(){
-              console.log(this.$store.state.lb.lb_list);
               let list = this.$store.state.lb.lb_list.map((e,i) => {
                 let user = Object.assign({},e);
                 if(e.state) user.state = '上线中'
