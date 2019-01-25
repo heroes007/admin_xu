@@ -4,7 +4,7 @@
         <div class='mask'>
             <div class='bg'></div>
             <!-- <i class='el-icon-view' @click.stop="editHandler"></i> -->
-            <i v-if="showClose" class='el-icon-circle-cross' @click.stop="deleteHandler"></i>
+            <Icon v-if="showClose" class='md-close-circle' @click.stop="deleteHandler" type="md-close-circle" />
             <i v-show="type == 1" :class="{'work_icon': !selected, 'work_icon1': selected }"></i>
             <i v-show="type == 0" :class="{'task_icon2': !selected, 'task_icon': selected}"></i>
         </div>
@@ -15,19 +15,10 @@
 
 <script>
 import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-import {
-    Dialog
-} from '../views/dialogs'
-import {
-    ADD_TASK_CATEGORY
-} from '../views/dialogs/types'
+import { Dialog } from '../views/dialogs'
+import { ADD_TASK_CATEGORY } from '../views/dialogs/types'
 export default {
     mixins: [Dialog],
-    data() {
-        return {
-
-        }
-    },
     props: {
         name: {
             type: String,
@@ -50,7 +41,6 @@ export default {
             default: false
         }
     },
-    computed: {},
     methods: {
         deleteHandler() {
           this.$Modal.confirm({
@@ -125,7 +115,7 @@ export default {
         position: absolute;
         width: 100%;
         .mask {
-            .el-icon-circle-cross {
+            .md-close-circle {
                 position: absolute;
                 right: 15px;
                 top: -10px;

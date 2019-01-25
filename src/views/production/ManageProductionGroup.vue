@@ -16,9 +16,9 @@
         </Row>
         <data-list class='data-list light-header' @edit='editHandler' @detail='showCourseDetailHandler' @delete='deleteHandler' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
-            <Row class='pager' type='flex' justify='end' align='middle'>
-                <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
-            </Row>
+        <Row class='pager' type='flex' justify='end' align='middle'>
+            <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total" />
+        </Row>
     </div>
 </template>
 <script>
