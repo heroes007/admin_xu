@@ -38,7 +38,7 @@
         computed: {
             ...mapState({
                 isLoading: state => state.production.isLoading,
-                productionList: state => state.production.production_list,
+                productionList: state => state.production.production_list || [],
                 projectId: state => state.project.select_project_id
             }),
             onlineHeader() {

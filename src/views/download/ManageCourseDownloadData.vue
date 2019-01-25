@@ -18,6 +18,7 @@
 
   export default {
     mixins: [Dialog],
+    components: { 'header-component': Header, 'data-list': BaseList },
     data() {
       return {
         searchData: '',
@@ -103,7 +104,7 @@
               actionName: 'change_public_download_data_valid'
 
             }, {
-              text: 'el-icon-delete',
+              text: 'ios-trash-outline',
               param: 'delete',
               isIcon: true
             }]
@@ -124,11 +125,7 @@
       }
     },
     methods: {
-      ...mapActions([
-        'get_online_curriculum_list',
-        'get_curriculum_donwload_data_list',
-        'delete_download_data'
-      ]),
+      ...mapActions([ 'get_online_curriculum_list', 'get_curriculum_donwload_data_list', 'delete_download_data' ]),
       addClickHandler() {
         this.handleSelModal(ADD_DOWNLOAD_DATA, 1);
       },
@@ -145,10 +142,6 @@
     mounted() {
       this.get_online_curriculum_list({project_id: this.projectId});
       this.get_curriculum_donwload_data_list({project_id: this.projectId});
-    },
-    components: {
-      'header-component': Header,
-      'data-list': BaseList
     }
   }
 </script>

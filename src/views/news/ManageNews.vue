@@ -160,7 +160,7 @@
             text: '编辑',
             param: 'edit'
           }, {
-            text: 'el-icon-delete',
+            text: 'ios-trash-outline',
             param: 'delete',
             isIcon: true
           }]

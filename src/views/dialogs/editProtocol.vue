@@ -329,7 +329,7 @@ export default {
             white-space: nowrap;
             display: inline-block;
           }
-          .el-icon-delete {
+          .ios-trash-outline {
             position: absolute;
             right: -20px;
             top: 10px;

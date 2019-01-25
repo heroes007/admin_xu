@@ -41,269 +41,127 @@ import store from '../../store';
 export var Dialog = {
     methods: {
         handleSelModal(el_name, payload) {
+            let inits = (com) => {
+                return  initVue({
+                    el_name,
+                    payload,
+                    component: com
+                })
+            }
             switch (el_name) {
                 case 'add-course':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addCourseDialog
-                    });
+                    inits(addCourseDialog);
                     break;
                 case 'add-offline-course':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addOfflineCourseDialog
-                    });
+                    inits(addOfflineCourseDialog);
                     break;
                 case 'add-offline-semester':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addOfflineSemesterDialog
-                    });
+                    inits(addOfflineSemesterDialog);
                     break;
                 case 'add-teacher':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addTeacherDialog
-                    });
+                    inits(addTeacherDialog);
                     break;
                 case 'add-question':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addQuestionDialog
-                    });
+                    inits(addQuestionDialog);
                     break;
                 case 'teacher-manage':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: teacherManageDialog
-                    });
+                    inits(teacherManageDialog);
                     break;
                 case 'video-manage':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: videoManageDialog
-                    });
+                    inits(videoManageDialog);
                     break;
                 case 'edit-video':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: editVideoDialog
-                    });
+                    inits(editVideoDialog);
                     break;
                 case 'notification':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: notificationDialog
-                    });
+                    inits(notificationDialog);
                     break;
                 case 'add-task-category':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addTaskCategoryDialog
-                    });
+                    inits(addTaskCategoryDialog);
                     break;
                 case 'add-homework':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addHomeworkDialog
-                    });
+                    inits(addHomeworkDialog);
                     break;
                 case 'add-task':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addTaskDialog
-                    });
+                    inits(addTaskDialog);
                     break;
                 case 'manul-active':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: manulActiveDialog
-                    });
+                    inits(manulActiveDialog);
                     break;
                 case 'add-student':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addStudentDialog
-                    });
+                    inits(addStudentDialog);
                     break;
                 case 'query-student-course':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: queryStudentCourse
-                    })
+                    inits(queryStudentCourse);
                     break;
                 case 'query-student-offline-course':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: queryStudentOfflineCourse
-                    })
+                    inits(queryStudentOfflineCourse);
                     break;
                 case 'query-student-task':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: queryStudentTask
-                    })
+                    inits(queryStudentTask);
                     break;
                 case 'send-offline-course':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: sendOfflineCourse
-                    })
+                    inits(sendOfflineCourse);
                     break;
                 case 'add-task-assignment':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: addTaskAssignment
-                    })
+                    inits(addTaskAssignment);
                     break;
                 case 'edit-offline-signup':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: editOfflineSignup
-                    })
+                    inits(editOfflineSignup);
                     break;
                 case 'add-notification':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: addNotification
-                    })
+                    inits(addNotification);
                     break;
                 case 'add-remeed-code':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: addRemeedCode
-                    })
+                    inits(addRemeedCode);
                     break;
                 case 'remeed-code-detail':
-                    initVue({
-                      el_name,
-                      payload,
-                      component: remeedCodeDetail
-                    })
+                    inits(remeedCodeDetail);
                     break;
                 case 'manage-platform':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: managePlatform
-                    })
+                    inits(managePlatform);
                     break;
                 case 'add-download-data':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addDownloadDataDialog
-                    })
+                    inits(addDownloadDataDialog);
                     break;
                 case 'add-user':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addUserDialog
-                    })
+                    inits(addUserDialog);
                     break;
                 case 'recruit-detail':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: recruitDetailDialog
-                    })
+                    inits(recruitDetailDialog);
                     break;
                 case 'interview-teacher-arrangement':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: interviewTeacherArrangementDialog
-                    })
+                    inits(interviewTeacherArrangementDialog);
                     break;
                 case 'add-interview-comment':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addInterviewCommentDialog
-                    })
+                    inits(addInterviewCommentDialog);
                     break;
                 case 'student-info-detail':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: studentInfoDetailDialog
-                    })
+                    inits(studentInfoDetailDialog);
                     break;
                 case 'add-production':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addProductionDialog
-                    })
+                    inits(addProductionDialog);
                     break;
                 case 'add-production-group':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addProductionGroupDialog
-                    })
+                    inits(addProductionGroupDialog);
                     break;
                 case 'select-curriculum':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: selectCourseDialog
-                    })
+                    inits(selectCourseDialog);
                     break;
                 case 'select-production':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: selectProductionDialog
-                    })
+                    inits(selectProductionDialog);
                     break;
                 case 'add-news':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: addNewsDialog
-                    })
+                    inits(addNewsDialog);
                     break;
                 case 'edit-protocol':
-                    initVue({
-                        el_name,
-                        payload,
-                        component: editProtocol
-                    });
+                    inits(editProtocol);
                     break;
             }
         }
     }
 }
-
-function initVue({
-    el_name,
-    payload,
-    component
-}) {
+function initVue({ el_name, payload, component}) {
     var element = document.createElement('div');
     element.id = `${el_name}-container`;
     element.innerHTML = `<${el_name}-dialog :remove='removeNodeName' :payload='childPayload'></${el_name}-dialog>`;

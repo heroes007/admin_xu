@@ -6,14 +6,8 @@
         </Row>
     </div>
 </template>
-
 <script>
     export default{
-        data(){
-            return{
-
-            }
-        },
         methods:{
             saveHandler(){
                 this.$emit('saveOrder');
@@ -40,7 +34,6 @@
             width: 70px;
             height: 70px;
             cursor: pointer;
-
             p {
                 font-size: 12px;
                 color: #FFFFFF;

@@ -14,6 +14,9 @@ export default (v) => {
         {
           prop: "code",
           label: "编码",
+          // sortable: true,
+          // sortType: 'asc',
+          // sortMethod: (a,b,type) => {  return type === 'asc' ? a - b : b - a },
           width: 150
         },
         {
@@ -50,14 +53,14 @@ export default (v) => {
           label: "操作",
           width: 320,
           groupBtn: [
-            {
+            // {
               // isSwitch: true,
               // switchKey: 'is_valid',
               // onText: '启用',
               // offText: '停用',
               // disableText: '失效',
               // actionName: 'change_production_vailid'
-            },
+            // },
             {
               text: "编辑",
               param: "edit"
@@ -67,7 +70,7 @@ export default (v) => {
               param: "detail"
             },
             {
-              text: "el-icon-delete",
+              text: "ios-trash-outline",
               param: "delete",
               isIcon: true
             }

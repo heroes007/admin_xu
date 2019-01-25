@@ -88,7 +88,7 @@
               actionName: 'change_public_download_data_valid'
 
             }, {
-              text: 'el-icon-delete',
+              text: 'ios-trash-outline',
               param: 'delete',
               isIcon: true
             }]

@@ -17,15 +17,15 @@ const state = {
     newVideoTestId:0,
     stateList:[{id:1,name:'上线中'},{id:0,name:'未上线'},{id:-1,name:'已下线'}]
 }
-
+let project_id = null
 // getters
 // actions
 const actions = {
     get_online_curriculum_list ({ commit }, param) {
+        project_id = param.project_id
         commit(types.ONLINE_CURRICULUM_LIST_LOADING);
         get_list(param.project_id).then(function (res) {
-            if(res.data.res_code === 1)
-            {
+            if(res.data.res_code === 1){
                 commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.msg);
             }
         });
@@ -92,9 +92,13 @@ const actions = {
     add_online_curriculum( {commit}, params) {
         commit(types.ONLINE_CURRICULUM_ADDING);
         add_curriculum(params).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.ONLINE_CURRICULUM_ADDED,{data:params,result:res.data.msg});
+            if(res.data.res_code === 1){
+                // commit(types.ONLINE_CURRICULUM_ADDED,{data:params,result:res.data.msg});
+                get_list(project_id).then(function (res) {
+                    if(res.data.res_code === 1){
+                        commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.msg);
+                    }
+                });
                 params._fn();
             }
         })
@@ -379,18 +383,23 @@ const mutations = {
         state.showMainLoading = true;
     },
     [types.ONLINE_CURRICULUM_EDITED] (state, params) {
-        state.showMainLoading = false;
-        for(var i=0;i<state.online_curriculum_list.length;i++)
-        {
-            if(state.online_curriculum_list[i].curriculum_id === params.curriculum_id)
-            {
-                state.online_curriculum_list[i].grade_id = params.data.grade_id;
-                state.online_curriculum_list[i].subject_id = params.data.subject_id;
-                state.online_curriculum_list[i].title = params.data.title;
-                state.online_curriculum_list[i].state = params.data.state;
-                break;
+        // state.showMainLoading = false;
+        get_list(state.project_id).then(function (res) {
+            if(res.data.res_code === 1){
+                commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.msg);
             }
-        }
+        });
+        // for(var i=0;i<state.online_curriculum_list.length;i++)
+        // {
+        //     if(state.online_curriculum_list[i].curriculum_id === params.curriculum_id)
+        //     {
+        //         state.online_curriculum_list[i].grade_id = params.data.grade_id;
+        //         state.online_curriculum_list[i].subject_id = params.data.subject_id;
+        //         state.online_curriculum_list[i].title = params.data.title;
+        //         state.online_curriculum_list[i].state = params.data.state;
+        //         break;
+        //     }
+        // }
     },
     [types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING] (state) {
         state.showChapterLoading = true;

@@ -16,7 +16,7 @@ npm run dev
 npm run build
 ```
 # 启动网站
-cd server && npm run server
+npm run server
 
 
 

@@ -73,7 +73,7 @@
                             电话：<span>{{userData.phone}}</span>
                         </Row>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
-                            用户头像：<img v-if="userData.head_img_url" :src='userData.head_img_url'>
+                            用户头像：<img class="user-info-img" v-if="userData.head_img_url" :src='userData.head_img_url'>
                         </Row>
                         <Row class='user-info' type='flex' justify='start' align='middle'>
                             用户描述：<span>{{userData.description}}</span>
@@ -114,7 +114,7 @@
                 </Table>
                 <Row class='pager' type='flex' justify='end' align='middle'>
                     <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size-opts="[20, 50, 100]"
-                                show-sizer :page-size="pageSize" :total="total">
+                        show-sizer :page-size="pageSize" :total="total">
                     </Page>
                 </Row>
             </div>
@@ -273,40 +273,27 @@
       submit() {
         this.dialogVisible = false;
       },
-      roleChangeHandler(val) {
-        var i, j;
-        var isIn;
-        var role_id;
-        if (this.initingRole) return;
-        if (val.length > this.preRoleList.length) {
-          for (i = 0; i < val.length; i++) {
+      calculationRoleId(v,p){
+        let i, j, isIn, id;
+         for (i = 0; i < v.length; i++) {
             isIn = false;
-            for (j = 0; j < this.preRoleList.length; j++) {
-              if (this.preRoleList[j] === val[i]) {
+            for (j = 0; j < p.length; j++) {
+              if (p[j] === v[i]) {
                 isIn = true;
                 break;
               }
             }
             if (!isIn) {
-              role_id = val[i];
+              id = v[i];
               break;
             }
-          }
-        } else {
-          for (i = 0; i < this.preRoleList.length; i++) {
-            isIn = false;
-            for (j = 0; j < val.length; j++) {
-              if (this.preRoleList[i] === val[j]) {
-                isIn = true;
-                break;
-              }
-            }
-            if (!isIn) {
-              role_id = this.preRoleList[i];
-              break;
-            }
-          }
         }
+        return id
+      },
+      roleChangeHandler(val) {
+        let role_id;
+        if (this.initingRole) return;
+        role_id = val.length > this.preRoleList.length ? this.calculationRoleId(val,this.preRoleList) : this.calculationRoleId(this.preRoleList,val)
         set_role(
           this.userData.user_id,
           role_id,
@@ -326,7 +313,6 @@
         });
       },
       searchStudent() {
-        console.log(1);
         this.$store.dispatch("search_user_list", {
           type: this.searchType,
           param: this.searchData,
@@ -459,6 +445,7 @@
 </script>
 
 <style lang="scss" scoped>
+    .user-info-img{ width: 80px;height: 80px; }
     .modal-btn-save{
       width: 140px;
       height: 36px;

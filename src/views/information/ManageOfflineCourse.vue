@@ -17,40 +17,11 @@
   import * as types from '../dialogs/types';
   import { mapActions, mapState } from 'vuex'
   import { Config } from '../../config/base'
-
   export default {
     mixins: [Dialog],
+    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder },
     data() {
       return {
-        data: [{
-          time: 'Fs100',
-          title: '老师也要学点管理学',
-          createtime: '2016-10-27T02:51:43.000Z',
-          total: 10,
-          openTime: '2016-10-27T02:51:43.000Z',
-          endTime: '2016-10-27T02:51:43.000Z',
-          childData: [{
-            title: '攻心是销售流程准备阶段',
-            type: '讲座',
-            openTime: '2016-10-27T02:51:43.000Z',
-            endTime: '2016-10-27T02:51:43.000Z',
-            teacher: '李恩强'
-          }, {
-            title: '攻心是销售流程准备阶段',
-            type: '讲座',
-            openTime: '2016-10-27T02:51:43.000Z',
-            endTime: '2016-10-27T02:51:43.000Z',
-            teacher: '李恩强'
-          }]
-        }, {
-          time: 'Fs99',
-          title: '好老师，懂孩子',
-          createtime: '2016-10-27T02:51:43.000Z',
-          total: 5,
-          openTime: '2016-10-27T02:51:43.000Z',
-          endTime: '2016-10-27T02:51:43.000Z',
-          childData: []
-        }],
         gradeList: [{
           id: 1,
           name: '小学'
@@ -118,7 +89,7 @@
             param: 'add',
             // hoverShow: true
           }, {
-            text: 'el-icon-delete',
+            text: 'ios-trash-outline',
             param: 'delete',
             // hoverShow: true,
             isIcon: true,
@@ -154,7 +125,7 @@
               text: '编辑课程',
               param: 'editCourse'
             }, {
-              text: 'el-icon-delete',
+              text: 'ios-trash-outline',
               param: 'deleteCourse',
               hoverShow: true,
               isIcon: true
@@ -206,12 +177,7 @@
       }
     },
     methods: {
-      ...mapActions([
-        'delete_offline_curriculum',
-        'delete_offline_term',
-        'get_offline_curriculum_detail',
-        'get_grade_list'
-      ]),
+      ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail', 'get_grade_list' ]),
       sendOfflineCourseHandler(index, row) {
         this.handleSelModal(types.SEND_OFFLINE_COURSE, {row: row});
       },
@@ -220,33 +186,23 @@
       },
       reRenderListHandler(v) {
         if (this.$store.state.project.project_list.length > 0) {
-          this.$store.dispatch('get_offline_term_list', {
-            project_id: v,
-            last_count: 0
-          });
+          this.$store.dispatch('get_offline_term_list', { project_id: v, last_count: 0 });
         }
       },
       editChapterHandler(index) {
         this.$router.push({
           name: 'online-course-chapter',
-          params: {
-            id: '1'
-          }
+          params: { id: '1' }
         })
       },
       editCourseHandler(param, index, row) {
 
       },
       editOfflineSemester(index, row) {
-        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, {
-          type: 2,
-          row
-        })
+        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 2, row })
       },
       addOfflineSemesterHandler() {
-        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, {
-          type: 1
-        })
+        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 1 })
       },
       moveUpHandler(index) {
         this.dirty = true;
@@ -269,19 +225,13 @@
             title: '提示',
             content: '<p>您删除该学期?</p>',
             onOk: () => {
-              vm.delete_offline_term({
-                index,
-                row
-              });
+              vm.delete_offline_term({ index, row });
             },
           });
         }
       },
       addOfflineCourse(index, row) {
-        this.handleSelModal(types.ADD_OFFLINE_COURSE, {
-          type: 1,
-          row
-        })
+        this.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 1, row })
       },
       childBtnClickHandler(param, index, row) {
         var vm = this;
@@ -290,10 +240,7 @@
             title: '提示',
             content: '<p>确定要删除该课程吗!</p>',
             onOk: () => {
-              vm.delete_offline_curriculum({
-                index,
-                row
-              });
+              vm.delete_offline_curriculum({ index, row });
             },
           });
         } else {
@@ -319,9 +266,7 @@
       manageSignupHandler(index, row) {
         this.$router.push({
           name: 'offline-course-manage-signup',
-          params: {
-            id: row.id
-          }
+          params: { id: row.id }
         })
       }
     },
@@ -339,7 +284,6 @@
             }
           }
         });
-        // return;
       } else {
         this.$store.dispatch('get_offline_term_list', {
           project_id: this.$store.state.project.select_project_id,
@@ -359,12 +303,6 @@
       if (this.$store.state.subject.subject_list.length == 0) {
         this.$store.dispatch('get_subject_list');
       }
-
-    },
-    components: {
-      'header-component': Header,
-      'data-list': BaseList,
-      'save-order': SaveOrder
     }
   }
 </script>

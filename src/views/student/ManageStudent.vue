@@ -71,11 +71,10 @@
 </template>
 <script>
   import Header from '../../components/Header'
-  import SubjectFilter from '../../components/SubjectFilter'
   import BaseList from '../../components/BaseList'
   import BackToTop from '../../components/BackToTop'
   import api from '../../api/modules/config'
-  import { set_user_student_mrzx } from '../../api/modules/student'
+  // import { set_user_student_mrzx } from '../../api/modules/student'
   import { Dialog } from '../dialogs'
   import { doDateFormat, doTimeFormat } from "../../components/Util";
   import { ADD_STUDENT, QUERY_STUDENT_COURSE, QUERY_STUDENT_OFFLINE_COURSE, QUERY_STUDENT_TASK, STUDENT_INFO_DETAIL } from '../dialogs/types'
@@ -83,7 +82,7 @@
 
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'subject-filter': SubjectFilter, 'data-list': BaseList, 'back-to-top': BackToTop
+    components: { 'header-component': Header, 'data-list': BaseList, 'back-to-top': BackToTop
     },
     data() {
       return {
@@ -180,19 +179,19 @@
           this.$store.dispatch('get_student_list', data);
         }
       },
-      setStudent() {
-        this.user.user_id = this.searchResult.user_id;
-        set_user_student_mrzx(this.user).then((res) => {
-          if (res.data.res_code === 1) {
-            this.showPop('保存成功！')
-            this.$store.dispatch('get_student_list', {
-              curPage: 1,
-              pageSize: 100000,
-              is_test_user: 0
-            });
-          } else this.showPop('保存失败，' + res.data.msg);
-        });
-      },
+      // setStudent() {
+      //   this.user.user_id = this.searchResult.user_id;
+      //   set_user_student_mrzx(this.user).then((res) => {
+      //     if (res.data.res_code === 1) {
+      //       this.showPop('保存成功！')
+      //       this.$store.dispatch('get_student_list', {
+      //         curPage: 1,
+      //         pageSize: 100000,
+      //         is_test_user: 0
+      //       });
+      //     } else this.showPop('保存失败，' + res.data.msg);
+      //   });
+      // },
       editData(index) {
         this.$Notice.open({
           title: '提示',

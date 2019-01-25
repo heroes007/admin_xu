@@ -61,7 +61,7 @@
                         <Row class="upload-file-list">
                             <Row class="file-item" v-for="(item,index) in form.upload_files" :key="item.id">
                                 <span class="filename">{{item.name}}</span>
-                                <span class="el-icon-delete" @click="handleDeleteUploadItem(index)"></span>
+                                <Icon class="ios-trash-outline" type="ios-trash-outline" @click="handleDeleteUploadItem(index)"></Icon>
                                 <span class="datetime">{{ item.datetime | zonetime }}</span>
                             </Row>
                         </Row>

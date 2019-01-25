@@ -140,7 +140,7 @@
                             text: '查看产品',
                             param: 'detail'
                         }, {
-                            text: 'el-icon-delete',
+                            text: 'ios-trash-outline',
                             param: 'delete',
                             isIcon: true
                         }]

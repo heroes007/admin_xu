@@ -82,6 +82,7 @@
     import { doSortFormatCatalogList } from '../../components/Util'
     export default {
         mixins: [Dialog],
+        components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder },
         data() {
             return {
                 data: [
@@ -101,7 +102,7 @@
         },
         computed: {
             roleList() {
-                return this.$store.state.roles.role_list;
+                return this.$store.state.roles.role_list || [];
             },
             dataHeader() {
                 return [
@@ -134,7 +135,7 @@
                         label: '操作', width: 350, groupBtn: [{ text: '编辑', param: 'edit' },
                         { text: 'el-icon-caret-top', param: 'moveUp', hoverShow: true, isIcon: true },
                         { text: 'el-icon-caret-bottom', param: 'moveDown', hoverShow: true, isIcon: true },
-                        { text: 'el-icon-delete', param: 'delete', hoverShow: true, isIcon: true }]
+                        { text: 'ios-trash-outline', param: 'delete', hoverShow: true, isIcon: true }]
                     }
                 ]
             },
@@ -154,28 +155,31 @@
                 return this.$store.state.online_curriculum.showChapterLoading;
             },
             curriculumName() {
-                var curriculumList = this.$store.state.online_curriculum.online_curriculum_list;
-                var curriculumId = this.$route.params.id;
-
-                for (var i = 0; i < curriculumList.length; i++) {
-                    if (curriculumList[i].curriculum_id == curriculumId) {
-                        return curriculumList[i].title;
+                var curriculumList = this.$store.state.online_curriculum.online_curriculum_list || [];
+                if(Array.isArray(curriculumList)&&curriculumList.length>0){
+                    var curriculumId = this.$route.params.id;
+                    for (var i = 0; i < curriculumList.length; i++) {
+                        if (curriculumList[i].curriculum_id == curriculumId) {
+                            return curriculumList[i].title;
+                        }
                     }
                 }
-                return '';
+                return [];
             },
             chapterList() {
-                var curriculumList = this.$store.state.online_curriculum.online_curriculum_list;
-                var curriculumId = this.$route.params.id;
-                for (var i = 0; i < curriculumList.length; i++) {
-                    if (curriculumList[i].curriculum_id == curriculumId) {
-                        return doSortFormatCatalogList(curriculumList[i].chapterList);
+                var curriculumList = this.$store.state.online_curriculum.online_curriculum_list || [];
+               if(Array.isArray(curriculumList)&&curriculumList.length>0){
+                   var curriculumId = this.$route.params.id;
+                    for (var i = 0; i < curriculumList.length; i++) {
+                        if (curriculumList[i].curriculum_id == curriculumId) {
+                            return doSortFormatCatalogList(curriculumList[i].chapterList);
+                        }
                     }
                 }
                 return [];
             },
             curriculumList() {
-                return this.$store.state.online_curriculum.online_curriculum_list;
+                return this.$store.state.online_curriculum.online_curriculum_list || [];
             }
         },
         watch: {
@@ -183,18 +187,18 @@
                this.$config.IsLoading(val);
             },
             chapterList(list) {
-
-                if (list.length === 0) {
-                    this.newChapterData.showAddChapter = true;
-                    this.newChapterData.group_orderby = 1;
+                if(Array.isArray(list)){
+                    if (list.length === 0) {
+                        this.newChapterData.showAddChapter = true;
+                        this.newChapterData.group_orderby = 1;
+                    }
+                    else {
+                        this.newChapterData.showAddChapter = false;
+                        this.newChapterData.group_orderby = list[list.length - 1].group_orderby + 1;
+                        this.newChapterData.group_name = '';
+                    }
+                    this.setChapterShowState();
                 }
-                else {
-                    this.newChapterData.showAddChapter = false;
-                    this.newChapterData.group_orderby = list[list.length - 1].group_orderby + 1;
-                    this.newChapterData.group_name = '';
-                }
-
-                this.setChapterShowState();
             },
             curriculumList(val) {
                 if (!this.isInited)
@@ -273,11 +277,11 @@
             initChapter() {
                 this.newChapterData.showAddChapter = false;
                 this.dirty = false;
-                if (this.chapterList.length === 0) {
-                    this.$store.dispatch('get_online_curriculum_chapter_list', { curriculum_id: this.$route.params.id })
-                }
-                else {
-                    this.setChapterShowState();
+                if(Array.isArray(this.chapterList)){
+                    if (this.chapterList.length === 0) {
+                        this.$store.dispatch('get_online_curriculum_chapter_list', { curriculum_id: this.$route.params.id })
+                    }
+                    else this.setChapterShowState();
                 }
                 this.isInited = true;
             },
@@ -351,18 +355,7 @@
             }
         },
         mounted() {
-            if (this.$store.state.online_curriculum.online_curriculum_list.length === 0) {
-                this.$store.dispatch('get_online_curriculum_list', { project_id: this.$store.state.project.select_project_id });
-            }
-            else {
-                this.initChapter();
-            }
-            this.$store.dispatch('get_role_list');
-        },
-        components: {
-            'header-component': Header,
-            'data-list': BaseList,
-            'save-order': SaveOrder
+
         }
     }
 

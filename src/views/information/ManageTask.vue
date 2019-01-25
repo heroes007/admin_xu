@@ -5,20 +5,10 @@
             <category-item v-for='item in categoryList' :key="item.id" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
                 :selected='getSelected(item.id, item.type)' @select='changeCategory(item)'/>
         </div>
-        <div class="create-panel">
-            <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建</Button> -->
-            <!-- <Button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</Button> -->
-            <Button @click="addTask()">创建</Button>
-            <!-- <Button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</Button> -->
-        </div>
+        <div class="create-panel"><Button @click="addTask()">创建</Button></div>
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler' class='data-list light-header' :table-data='dataList'
             :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
         <div class='manage-online-course'>
-            <!-- <header-component @addCourse='addCourseHandler'/> -->
-            <!-- <Button @click="handleSelModal(types.ADD_HOMEWORK, {type: 1})">创建作业</Button> -->
-            <!-- <Button @click="handleSelModal(types.MANUL_ACTIVE)">手动激活</Button> -->
-            <!-- <Button @click="handleSelModal(types.ADD_TASK, {type: 1})">创建任务</Button> -->
-            <!-- <Button @click="handleSelModal(types.ADD_TASK,{type: 2})">编辑任务</Button> -->
         </div>
     </div>
 </template>
@@ -32,24 +22,12 @@
     import { doTimeFormat } from '../../components/Util'
     import { mapActions } from 'vuex'
     import { Config } from '../../config/base'
+    import { taskHeadData } from './consts'
     export default {
         mixins: [Dialog],
         components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem },
         data() {
             return {
-                data: [{
-                    id: '01',
-                    title: '老师也要学点管理学',
-                    createtime: '2016-10-27T02:51:43.000Z',
-                    grade: 1,
-                    subject: 1
-                }, {
-                    id: '02',
-                    title: '好老师，懂孩子',
-                    createtime: '2016-10-27T02:51:43.000Z',
-                    grade: 1,
-                    subject: 1
-                }],
                 dirty: false,
                 loadingInstance: null,
                 selectCategory: -1,
@@ -66,72 +44,8 @@
                 return this.$store.state.task.task_category_list;
             },
             dataHeader() {
-                if (!this.selectedCategory || this.selectedCategory.type === 0) {
-                    return [{
-                        prop: 'name',
-                        label: '名称',
-                        minWidth: 80
-                    }, {
-                        prop: 'create_time',
-                        label: '创建时间',
-                        width: 120
-                    }, {
-                        prop: 'grade_id',
-                        label: '学段',
-                        width: 80
-                    }, {
-                        prop: 'subject_id',
-                        label: '学科',
-                        width: 80
-                    }, {
-                        prop: 'activity_type',
-                        label: '激活方式',
-                        width: 100,
-                        isBtn: true,
-                        param: 'doActive'
-                    }, {
-                        label: '操作',
-                        width: 250,
-                        groupBtn: [{
-                            text: '编辑',
-                            param: 'edit'
-                        }, {
-                            text: 'el-icon-delete',
-                            param: 'delete',
-                            hoverShow: true,
-                            isIcon: true
-                        }]
-                    }]
-                } else {
-                    return [{
-                        prop: 'name',
-                        label: '名称'
-                    }, {
-                        prop: 'create_time',
-                        label: '创建时间',
-                        width: 120
-                    }, {
-                        prop: 'grade_id',
-                        label: '学段',
-                        width: 80
-                    }, {
-                        prop: 'subject_id',
-                        label: '学科',
-                        width: 80
-                    }, {
-                        label: '操作',
-                        width: 250,
-                        groupBtn: [{
-                            text: '编辑',
-                            param: 'edit'
-                        }, {
-                            text: 'el-icon-delete',
-                            param: 'delete',
-                            hoverShow: true,
-                            isIcon: true
-                        }]
-                    }]
-                }
+                let v = this.selectedCategory || this.selectedCategory && this.selectedCategory.type
+                return taskHeadData(v)
             },
             listColumnFormatter() {
                 return [{
@@ -158,8 +72,7 @@
                 return [this.gradeList, this.subjectList, this.$store.state.task.activityTypeList];
             },
             dataList() {
-                if (!this.selectedCategory)
-                    return [];
+                if (!this.selectedCategory) return [];
                 return this.selectedCategory.task_list;
             },
             selectedCategory() {
@@ -190,58 +103,37 @@
                 }
             },
             categoryList(val) {
-                if (val.length !== 0) {
-                    this.checkInit();
-                }
+                if (val.length !== 0) this.checkInit();
             }
         },
         methods: {
-            ...mapActions([
-                'delete_task'
-            ]),
+            ...mapActions([ 'delete_task' ]),
             addTaskCategory() {
-                this.handleSelModal(ADD_TASK_CATEGORY, {
-                    orderby: this.categoryList.length + 1
-                });
+                this.handleSelModal(ADD_TASK_CATEGORY, { orderby: this.categoryList.length + 1 });
             },
             manageEdit(v) {
                 this.showClose = v;
             },
             reRenderListHandler(v) {
                 if (this.$store.state.project.project_list.length > 0) {
-                    this.$store.dispatch('get_task_category_list', {
-                        project_id: v
-                    })
-                    // if (this.categoryList.length > 0) {
-                    this.$store.dispatch('get_task_list', {
-                        task_category_id: this.selectCategory
-                    });
-                    // }
+                    this.$store.dispatch('get_task_category_list', { project_id: v })
+                    this.$store.dispatch('get_task_list', { task_category_id: this.selectCategory });
                 }
             },
             getSelected(id, type) {
-                if (this.selectCategory === id)
-                    return true;
+                if (this.selectCategory === id) return true;
                 return false;
             },
             checkInit() {
                 if (!this.isInited) {
                     this.selectCategory = this.categoryList[0].id;
                     this.selectedType = this.categoryList[0].type;
-                    this.$store.dispatch('get_task_list', {
-                        task_category_id: this.selectCategory
-                    });
+                    this.$store.dispatch('get_task_list', { task_category_id: this.selectCategory });
                     this.isInited = true;
                 }
             },
             editHandler(index, row) {
-                this.handleSelModal(ADD_TASK, {
-                    separage: this.selectedCategory,
-                    type: 2,
-                    index: index,
-                    row: row,
-                    selectedType: this.selectedType
-                });
+                this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
             },
             deleteHandler(index, row) {
                 var vm = this;
@@ -265,21 +157,12 @@
                         selectedType: this.selectedType
                     })
                 } else {
-                  this.$Modal.info({
-                    title: '提示',
-                    content: '<p>请先添加分类！</p>'
-                  });
+                  this.$Modal.info({ itle: '提示', content: '<p>请先添加分类！</p>' });
                 }
             },
-            deleteCourseHandler(index, row) {
-
-            },
+            deleteCourseHandler(index, row) {},
             doActiveHandler(index, row) {
-                if (row.activity_type == 1) {
-                    this.handleSelModal(MANUL_ACTIVE, {
-                        row: row
-                    })
-                }
+                if (row.activity_type == 1) this.handleSelModal(MANUL_ACTIVE, { row })
             },
             changeCategory(item) {
                 if (this.selectCategory !== item.id) {
@@ -288,9 +171,7 @@
                     for (var i = 0; i < this.categoryList.length; i++) {
                         if (this.categoryList[i].id === this.selectCategory) {
                             if (this.categoryList[i].task_list.length === 0) {
-                                this.$store.dispatch('get_task_list', {
-                                    task_category_id: this.selectCategory
-                                });
+                                this.$store.dispatch('get_task_list', { task_category_id: this.selectCategory });
                             }
                             break;
                         }
@@ -303,9 +184,7 @@
             if (this.$store.state.project.project_list.length === 0) {
                 this.$store.dispatch('get_project_list', {
                     callback(v) {
-                        vm.$store.dispatch('get_task_category_list', {
-                            project_id: v
-                        })
+                        vm.$store.dispatch('get_task_category_list', { project_id: v })
                     }
                 });
             } else {
@@ -313,15 +192,11 @@
                     project_id: this.$store.state.project.select_project_id
                 })
             }
-
             if (this.categoryList.length === 0) {
                 // this.$store.dispatch('get_task_category_list', {
                 //     project_id: this.$store.state.project.select_project_id
                 // })
-            } else {
-                this.checkInit();
-            }
-
+            } else this.checkInit();
             this.$store.dispatch('get_grade_list');
             this.$store.dispatch('get_subject_list');
         }

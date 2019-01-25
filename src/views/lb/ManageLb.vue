@@ -249,6 +249,7 @@
 </script>
 
 <style scoped lang="scss">
+    .update-img>img { width: 120px !important}
     .ivu-input-wrapper{
         width: calc(100% - 70px) !important;
     }

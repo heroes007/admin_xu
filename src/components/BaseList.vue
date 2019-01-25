@@ -76,7 +76,7 @@
                                 @click="handleBtnClick(index,row,btn.param)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
                                 :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
-                            <i :class='btn.text' v-if='btn.isIcon'></i>
+                            <Icon :type='btn.text' v-if='btn.isIcon' />
                             <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(row)?btn.disabledText:btn.text:btn.text}}</span>
                         </Button>
                         <Switch :value='row[btn.switchKey]' :disabled="checkSwitchDisabled(row,btn.disabledFuc)"
@@ -329,7 +329,6 @@
             }
           }
         })
-        console.log(this.headerData)
       },
       getHeaderLabel(item) {
         return item.ruleCount ? item.label + '(' + item.ruleCount + ')' : item.label;
@@ -358,7 +357,6 @@
         return false;
       },
       changeSwitchValue(row, key, actionName, param) {
-        console.log(row, key, actionName, param);
         if (actionName) this.$store.dispatch(actionName, {id: row.id, key: key, value: !row[key]});
         if (param) this.$emit(param, row);
       },
@@ -488,6 +486,7 @@
   }
 </script>
 <style lang='scss' scoped>
+    /deep/ .ivu-icon-ios-trash-outline { font-size: 18px }
     /deep/ .ivu-switch-checked:after {
         left: 36px;
     }
@@ -653,13 +652,11 @@
             .hover-show {
                 display: none;
             }
-
             &:hover {
                 .hover-show {
                     display: inline-block;
                 }
             }
-
             .show-divider {
                 border-right: 1px solid #979797;
                 padding-left: 14px;

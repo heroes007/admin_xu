@@ -20,19 +20,6 @@
         mixins: [Dialog],
         data() {
             return {
-                data: [{
-                    id: '01',
-                    title: '老师也要学点管理学',
-                    createtime: '2016-10-27T02:51:43.000Z',
-                    grade: 1,
-                    subject: 1
-                }, {
-                    id: '02',
-                    title: '好老师，懂孩子',
-                    createtime: '2016-10-27T02:51:43.000Z',
-                    grade: 1,
-                    subject: 1
-                }],
                 dirty: false,
                 loadingInstance: null
             }
@@ -88,7 +75,7 @@
                         hoverShow: true,
                         isIcon: true
                     }, {
-                        text: 'el-icon-delete',
+                        text: 'ios-trash-outline',
                         param: 'deleteCourse',
                         hoverShow: true,
                         isIcon: true
