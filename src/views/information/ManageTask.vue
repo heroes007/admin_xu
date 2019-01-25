@@ -69,7 +69,8 @@
                 if (!this.selectedCategory || this.selectedCategory.type === 0) {
                     return [{
                         prop: 'name',
-                        label: '名称'
+                        label: '名称',
+                        minWidth: 80
                     }, {
                         prop: 'create_time',
                         label: '创建时间',

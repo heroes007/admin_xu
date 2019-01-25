@@ -72,7 +72,8 @@
       dataHeader() {
         return [{
           prop: 'name',
-          label: '学期名称'
+          label: '学期名称',
+          minWidth: 100
         }, {
           prop: '',
           label: '开课日期范围',

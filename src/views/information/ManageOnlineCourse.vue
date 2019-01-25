@@ -49,7 +49,8 @@
                     width: 100
                 }, {
                     prop: 'title',
-                    label: '课程名称'
+                    label: '课程名称',
+                    minWidth: 200
                 }, {
                     prop: 'state',
                     label: '状态',

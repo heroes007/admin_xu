@@ -68,7 +68,6 @@
                         color:#cecece;
                     }
                 }
-
                 input {
                     border:0;
                     outline:0;
