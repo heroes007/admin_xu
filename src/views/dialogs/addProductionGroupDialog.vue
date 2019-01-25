@@ -83,7 +83,6 @@
             var arrObj = JSON.parse(res.data.msg.img_url_arr);
             this.form.img_url = arrObj.default;
             this.loadingInstance.close();
-            console.log(res.data.msg.description)
           }
         })
       }
@@ -115,8 +114,12 @@
         var description = this.$refs.description_editor.editor.getContent();
         this.form.description = description;
         this.form.img_url_arr = JSON.stringify(arrObj);
-        if (this.payload) this.update_production_group(this.form);
-        else this.add_production_group(this.form);
+        if(description) {
+          if (this.payload) this.update_production_group(this.form);
+          else this.add_production_group(this.form);
+        }else{
+          this.$Message.info('内容不能为空');
+        }
       }
     }
   }

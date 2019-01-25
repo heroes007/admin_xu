@@ -18,7 +18,7 @@
     data() {
       return {
         host: Config.ossImgHost,
-        editor: null
+        editor: null,
       }
     },
     props: {
@@ -34,9 +34,8 @@
     mounted() {
       var vm = this;
       if (this.editorContent && !this.editor.getContent()){
-        console.log(1);
         setTimeout(function () {
-          vm.editor.setContent(vm.editorContent)
+          this.editor.setContent(vm.editorContent)
         }, 100);
       }
     },

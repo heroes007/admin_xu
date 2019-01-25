@@ -36,7 +36,7 @@
     import { doDateFormat,doTimeFormat } from '../../components/Util'
     export default {
         mixins: [Dialog, MPop],
-        components: { 
+        components: {
             'header-component': Header, 'data-list': BaseList,
         },
         data() {
@@ -117,7 +117,8 @@
                         sort:true
                     }, {
                         prop: 'name',
-                        label: '专题名称'
+                        label: '专题名称',
+                        minWidth: 100
                     }, {
                         prop: 'product_count',
                         label: '产品数量',

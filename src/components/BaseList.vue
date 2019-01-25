@@ -1,8 +1,12 @@
 <template>
     <div class='base-list-container'>
         <Row type='flex' justify='space-between' align='middle'>
-            <div class='tab-bar'><slot name='tabBar'></slot></div>
-            <div class='control-bar'><slot name='controlBar'></slot></div>
+            <div class='tab-bar'>
+                <slot name='tabBar'></slot>
+            </div>
+            <div class='control-bar'>
+                <slot name='controlBar'></slot>
+            </div>
         </Row>
         <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName"
                :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
@@ -13,17 +17,17 @@
             </template>
             <template slot-scope="{ column, row, index }" slot="normalHeader">
                 <Tooltip :transfer=true
-                    v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark && (doMix(column,row) || doMix(column,row) === 0)"
-                    :content="doMix(column,row)" max-width="400" theme="light">
-                  <span>{{doMix(column,row)}}</span>
+                         v-if="column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark && (doMix(column,row) || doMix(column,row) === 0)"
+                         :content="doMix(column,row)" max-width="400" theme="light">
+                    <span>{{doMix(column,row)}}</span>
                 </Tooltip>
                 <span v-if="!column.tooltip && column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.useTimePicker &&!column.useMark">
                    {{doMix(column,row)}}
                  </span>
-                <Tooltip  :transfer=true
-                    v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark && (showPropValue(column.prop,row) || showPropValue(column.prop,row) === 0)"
-                    :content="showPropValue(column.prop,row)" max-width="auto" theme="light">
-                  <span>{{showPropValue(column.prop,row)}}</span>
+                <Tooltip :transfer=true
+                         v-if="column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark && (showPropValue(column.prop,row) || showPropValue(column.prop,row) === 0)"
+                         :content="showPropValue(column.prop,row)" max-width="auto" theme="light">
+                    <span>{{showPropValue(column.prop,row)}}</span>
                 </Tooltip>
                 <span v-if="!column.tooltip && !column.mixColumn && !column.isBtn && !column.limit && !column.useCombo && !column.isLink &&!column.useTimePicker &&!column.useMark">
                     {{showPropValue(column.prop,row)}}
@@ -35,26 +39,38 @@
                 <p v-if='!column.mixColumn && !column.isBtn && column.limit  && !column.useCombo && !column.useTimePicker'>
                     {{showLimiteValue(column.prop,row,column.limit,column.actionName)}}
                     <span class='ellipsis' v-if='row.needLimit && !row.showAll'>...</span>
-                    <Button type='text' class='show-all' v-if='row.needLimit && !row.showAll' @click='showLimitText(row,column.actionName)'>显示全部</Button>
-                    <Button type='text' class='fold' v-if='row.needLimit && row.showAll' @click='hideLimitText(row,column.actionName)'>折叠</Button>
+                    <Button type='text' class='show-all' v-if='row.needLimit && !row.showAll'
+                            @click='showLimitText(row,column.actionName)'>显示全部
+                    </Button>
+                    <Button type='text' class='fold' v-if='row.needLimit && row.showAll'
+                            @click='hideLimitText(row,column.actionName)'>折叠
+                    </Button>
                 </p>
-                <Button :class="{'prop-btn':true}" type='text' v-if="!column.mixColumn && column.isBtn && !column.useCombo && !column.useTimePicker" @click="handleBtnClick(index,row,column.param)">
+                <Button :class="{'prop-btn':true}" type='text'
+                        v-if="!column.mixColumn && column.isBtn && !column.useCombo && !column.useTimePicker"
+                        @click="handleBtnClick(index,row,column.param)">
                     {{showPropValue(column.prop,row)}}
                 </Button>
-                <Select :transfer='true' v-if='column.useCombo&&columnComboData&&comboDataList' v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择"
-                    @on-change='comboChangeHandler(row,index,column.actionName,column.prop)' :disabled="column.disabledFunc?column.disabledFunc(row):false">
-                    <Option v-for="(c,k) in columnComboData[column.comboListIndex]" :key="k" :label="c[column.listLabel]" :value="c[column.listValue]"></Option>
+                <Select :transfer='true' v-if='column.useCombo&&columnComboData&&comboDataList'
+                        v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择"
+                        @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
+                        :disabled="column.disabledFunc?column.disabledFunc(row):false">
+                    <Option v-for="(c,k) in columnComboData[column.comboListIndex]" :key="k"
+                            :label="c[column.listLabel]" :value="c[column.listValue]"></Option>
                 </Select>
-                <DatePicker v-if='column.useTimePicker&&comboDataList' v-model="comboDataList[index]" type="datetime" placeholder="选择日期时间"
-                    @on-change='changeTimeSelect(row,index,column.actionName,column.prop,column.param)' :transfer="true">
+                <DatePicker v-if='column.useTimePicker&&comboDataList' v-model="comboDataList[index]" type="datetime"
+                            placeholder="选择日期时间"
+                            @on-change='changeTimeSelect(row,index,column.actionName,column.prop,column.param)'
+                            :transfer="true">
                 </DatePicker>
                 <span v-if='column.useMark'>
-                  <Icon type="md-checkmark" v-if='row[column.prop] === 1' />
+                  <Icon type="md-checkmark" v-if='row[column.prop] === 1'/>
                 </span>
             </template>
             <template slot-scope="{ column, row, index }" slot="operation">
                 <div style="display:flex">
-                    <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id" v-if='btn.showFunc?btn.showFunc(row):true'>
+                    <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id"
+                         v-if='btn.showFunc?btn.showFunc(row):true'>
                         <Button :type="btn.canDisabled?'primary':'text'"
                                 :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
                                 @click="handleBtnClick(index,row,btn.param)"
@@ -63,12 +79,16 @@
                             <i :class='btn.text' v-if='btn.isIcon'></i>
                             <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(row)?btn.disabledText:btn.text:btn.text}}</span>
                         </Button>
-                        <Switch :value='row[btn.switchKey]' :disabled="checkSwitchDisabled(row,btn.disabledFuc)" @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)' v-if='btn.isSwitch'>
+                        <Switch :value='row[btn.switchKey]' :disabled="checkSwitchDisabled(row,btn.disabledFuc)"
+                                @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
+                                v-if='btn.isSwitch'>
                             <span slot="open">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.onText}}</span>
                             <span slot="close">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.offText}}</span>
                         </Switch>
                         <Checkbox v-model='row[btn.switchKey]'
-                         @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)' v-if='btn.useCheckBox'>{{btn.text}}</Checkbox>
+                                  @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
+                                  v-if='btn.useCheckBox'>{{btn.text}}
+                        </Checkbox>
                     </div>
                 </div>
             </template>
@@ -79,6 +99,7 @@
 <script>
   import baseList from './BaseList.vue'
   import api from '../api/modules/config.js'
+
   export default {
     name: 'baseList',
     data() {
@@ -171,7 +192,7 @@
           } else if (val.length !== this.comboDataList.length) {
             if (val.length > this.comboDataList.length) {
               let item = this.comboIsSelect ? null : [];
-              if(this.comboAddDir) this.comboDataList.push(item);
+              if (this.comboAddDir) this.comboDataList.push(item);
               else this.comboDataList.unshift(item);
             } else {
               if (val.length === this.comboDataList.length - 1) {
@@ -205,7 +226,7 @@
                       }
                       if (foundDeferent)
                         break;
-                      }
+                    }
                   }
                 }
               } else {
@@ -253,7 +274,7 @@
             it.title = this.getHeaderLabel(it)
             it.width = 65
           }
-          if(it.useCombo && it.key === 'pre_curriculum') it.width = 300
+          if (it.useCombo && it.key === 'pre_curriculum') it.width = 300
           if (it.isFree || !it.groupBtn && !it.selection && !it.sort && !it.listExpand && !it.badge) {
             it.slot = 'normalHeader'
             it.ellipsis = true
@@ -324,7 +345,7 @@
         return row[propname];
       },
       comboChangeHandler(row, index, actionName, key) {
-         if(actionName)  this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+        if (actionName) this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
       },
       getComboModel(prop, row) {
         return row[prop];
@@ -370,11 +391,11 @@
                     var str = [], list = this.columnFormatterData[this.columnFormatter[i].dataIndex];
                     value.map((item, index) => {
                       list.map((_item, _index) => {
-                        if (_item.role_id == item)  str.push(_item.role_name);
+                        if (_item.role_id == item) str.push(_item.role_name);
                       })
                     })
-                   if(str.length>0) return str.toString();
-                   else return ''
+                    if (str.length > 0) return str.toString();
+                    else return ''
                   } else {
                     if (this.columnFormatterData[this.columnFormatter[i].dataIndex][j][this.columnFormatter[i].dataProp] == value) {
                       return this.columnFormatterData[this.columnFormatter[i].dataIndex][j][this.columnFormatter[i].dataValue];
@@ -386,7 +407,7 @@
           } else return this.isEmptyArray(value)
         }
       },
-      isEmptyArray(arr){
+      isEmptyArray(arr) {
         return arr instanceof Array ? '' : arr
       },
       showPropValue(propname, row) {
@@ -394,7 +415,7 @@
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {
               if (this.columnFormatter[i].doFormat) {
-               if(this.columnFormatter[i].doFormat(row[propname]).length > 0)  return this.columnFormatter[i].doFormat(row[propname]);
+                if (this.columnFormatter[i].doFormat(row[propname]).length > 0) return this.columnFormatter[i].doFormat(row[propname]);
               } else {
                 for (var j = 0; j < this.columnFormatterData[this.columnFormatter[i].dataIndex].length; j++) {
                   if (row[propname] instanceof Array) {
@@ -467,46 +488,69 @@
   }
 </script>
 <style lang='scss' scoped>
-    /deep/ .ivu-switch-checked:after{ left: 36px; }
-    /deep/ .ivu-select-selection>div{ overflow: hidden; }
-    /deep/ .ivu-switch{ margin-top: 7px; width: 60px }
-    /deep/ .ivu-table-header>table,/deep/.ivu-table-body>table{ min-width: 100%; }
+    /deep/ .ivu-switch-checked:after {
+        left: 36px;
+    }
+
+    /deep/ .ivu-select-selection > div {
+        overflow: hidden;
+    }
+
+    /deep/ .ivu-switch {
+        margin-top: 7px;
+        width: 60px
+    }
+
+    /deep/ .ivu-table-header > table, /deep/ .ivu-table-body > table {
+        min-width: 100%;
+    }
+
     /deep/ .ivu-btn-text:focus, /deep/ .ivu-btn:focus {
         box-shadow: none !important;
         outline: none
     }
+
     /deep/ .ivu-table-cell-ellipsis > div {
         display: inline-block;
         width: 100%;
     }
+
     /deep/ .ivu-table-cell-ellipsis > div > .ivu-tooltip, /deep/ .ivu-table-cell-ellipsis > div > .ivu-tooltip > .ivu-tooltip-rel {
         width: 100%
     }
+
     /deep/ .ivu-table-cell-ellipsis > div > .ivu-tooltip > .ivu-tooltip-rel {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis
     }
+
     /deep/ th, td > .ivu-table-cell > div > span {
         font-size: 14px !important
     }
+
     /deep/ .ivu-table th {
         height: 50px;
     }
+
     /deep/ .ivu-tooltip-rel {
         font-size: 14px !important
     }
+
     .base-list-container {
         .tab-bar {
             display: inline-block;
+
             span {
                 padding: 10px 15px;
                 cursor: pointer;
             }
         }
+
         .control-bar {
             display: inline-block;
         }
+
         thead {
             tr {
                 th {
@@ -516,12 +560,15 @@
                 }
             }
         }
+
         &.light-header {
             thead {
                 tr {
                     height: 50px;
+
                     th {
                         background-color: #ffffff;
+
                         .cell {
                             background-color: #ffffff;
                             font-weight: 400;
@@ -533,76 +580,96 @@
                 }
             }
         }
+
         .base-list-row {
             .cell {
                 font-size: 14px;
                 color: #141111;
                 letter-spacing: 0;
+
                 .handle-component {
                     display: inline-block
                 }
+
                 .Button {
                     margin: 0;
+
                     span {
                         font-size: 14px;
                         color: #141111;
+
                         i {
                             color: #757575;
                         }
                     }
+
                     &:hover {
                         span {
                             color: #F06B1D;
+
                             i {
                                 color: #F06B1D;
                             }
                         }
                     }
+
                     &.Button--primary {
                         background-color: #F06B1D;
                         border: 0;
+
                         span {
                             color: #ffffff;
+
                             i {
                                 color: #ffffff;
                             }
                         }
+
                         &:hover {
                             span {
                                 color: #ffffff;
+
                                 i {
                                     color: #ffffff;
                                 }
                             }
                         }
+
                         &.is-disabled {
                             background-color: #757575;
                         }
                     }
                 }
+
                 .handle-component {
                     margin-right: 30px;
+
                     &.prop-btn {
                         margin: 0;
                     }
                 }
             }
+
             .hover-show {
                 display: none;
             }
+
             &:hover {
                 .hover-show {
                     display: inline-block;
                 }
             }
+
             .show-divider {
                 border-right: 1px solid #979797;
                 padding-left: 14px;
                 margin-right: 14px;
             }
+
             .a-link {
                 color: #428bca;
             }
+
             .a-link:hover {
                 text-decoration: underline !important;
             }
