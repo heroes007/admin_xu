@@ -39,6 +39,7 @@ import { Config } from "../../config/base";
 import { mapState, mapActions, mapGetters } from "vuex";
 import { doDateFormat, doTimeFormat, reunitPrice } from "../../components/Util";
 import tableHeadData from './consts'
+
 export default {
   mixins: [Dialog, MPop],
   components: { "header-component": Header, "data-list": BaseList },

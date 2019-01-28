@@ -16,6 +16,7 @@
 import { mapState, mapActions } from "vuex";
 import { Config } from "../config/base";
 import { doTimeFormat } from "../components/Util";
+
 export default {
   computed: {
     ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
@@ -55,7 +56,7 @@ export default {
 <style lang="scss">
 .project-panel {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background: #f9f9f9;
   h1 {
     margin-top: 0;

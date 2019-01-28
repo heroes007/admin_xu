@@ -20,8 +20,11 @@ import { RemoveModal } from "./mixins";
 import api from "../../api/modules/config";
 import Editor from "../../components/Editor";
 import BaseInput from "../../components/BaseInput";
+import { MPop } from '../../components/MessagePop'
+
+
 export default {
-  mixins: [RemoveModal],
+  mixins: [RemoveModal, MPop],
   components: {
     "base-input": BaseInput,
     // "upload-panel": UploadPanel,
@@ -75,8 +78,7 @@ export default {
                this.$Message.warning('请填写协议~');
                 return false;
             }
-      api
-        .post("api/protocol/update_protocol", {
+      api.post("api/protocol/update_protocol", {
           protocol_id: this.current_protocol_id,
           name: "",
           content: content
