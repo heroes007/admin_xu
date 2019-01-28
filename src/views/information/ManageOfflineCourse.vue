@@ -254,7 +254,7 @@
         this.$store.dispatch('get_offline_curriculum_list', { offline_term_id: row.id })
       },
       manageSignupHandler(index, row) {
-        this.$router.push({ name: 'offline-course-manage-signup', params: { id: row.id } })
+        this.$router.replace({ name: 'offline-course-manage-signup', params: { id: row.id } })
       }
     },
     mounted() {

@@ -76,7 +76,7 @@
                                 @click="handleBtnClick(index,row,btn.param)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
                                 :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
-                            <Icon :type='btn.text' v-if='btn.isIcon' />
+                            <Icon :type='btn.text' v-if='btn.isIcon'/>
                             <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(row)?btn.disabledText:btn.text:btn.text}}</span>
                         </Button>
                         <Switch :value='row[btn.switchKey]' :disabled="checkSwitchDisabled(row,btn.disabledFuc)"
@@ -157,7 +157,7 @@
       comboAddDir: {
         type: Number,
         default: 1
-      }
+      },
     },
     created() {
       this.handleHeaderData()
@@ -486,7 +486,10 @@
   }
 </script>
 <style lang='scss' scoped>
-    /deep/ .ivu-icon-ios-trash-outline { font-size: 18px }
+    /deep/ .ivu-icon-ios-trash-outline {
+        font-size: 18px
+    }
+
     /deep/ .ivu-switch-checked:after {
         left: 36px;
     }
@@ -652,11 +655,13 @@
             .hover-show {
                 display: none;
             }
+
             &:hover {
                 .hover-show {
                     display: inline-block;
                 }
             }
+
             .show-divider {
                 border-right: 1px solid #979797;
                 padding-left: 14px;
