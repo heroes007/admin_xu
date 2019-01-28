@@ -2,12 +2,8 @@
     <div class='manage-online-course-chapter'>
         <header-component :show-add='false'/>
         <Row class='course-name' type='flex' justify='space-between' align='middle'>
-            <div>
-                <h2>课程：{{curriculumName}}</h2>
-            </div>
-            <div>
-                <Button type='text' @click='backClickHandler'>返回</Button>
-            </div>
+            <div><h2>课程：{{curriculumName}}</h2></div>
+            <div><Button type='text' @click='backClickHandler'>返回</Button></div>
         </Row>
         <div class='chapter-container'>
             <div class='scroll-wrap'>
@@ -15,13 +11,10 @@
                     <div class='chapter-item' v-for='(item,index) in chapterList'>
                         <div @click="toggleListShow(index)">
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
+                                <div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>
                                 <div>
-                                    <span>第{{index + 1}}章</span>
-                                    <h3>{{item.group_name}}</h3>
-                                </div>
-                                <div>
-                                    <i class='el-icon-arrow-down' v-if='showListState[index] == 0'></i>
-                                    <i class='el-icon-arrow-up' v-else-if='showListState[index] == 1'></i>
+                                    <Icon v-if='showListState[index] == 0' type="ios-arrow-down" />
+                                    <Icon  v-else-if='showListState[index] == 1' type="ios-arrow-up" />
                                 </div>
                             </Row>
                         </div>
@@ -51,9 +44,7 @@
                                 <span>第{{chapterList.length + 1}}章</span>
                                 <input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>
                             </div>
-                            <div>
-                                <i class='el-icon-arrow-up'></i>
-                            </div>
+                            <div><Icon type="ios-arrow-up" /></div>
                         </Row>
                         <Row class='chapter-btns' type='flex' justify='space-between' align='middle'>
                             <div>
@@ -87,6 +78,7 @@
 
   export default {
     mixins: [Dialog],
+    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder },
     data() {
       return {
         dirty: false,
@@ -132,9 +124,9 @@
           {prop: 'create_time', label: '创建时间', width: 200},
           {
             label: '操作', width: 350, groupBtn: [{text: '编辑', param: 'edit'},
-              {text: 'el-icon-caret-top', param: 'moveUp', hoverShow: true, isIcon: true},
-              {text: 'el-icon-caret-bottom', param: 'moveDown', hoverShow: true, isIcon: true},
-              {text: 'el-icon-delete', param: 'delete', hoverShow: true, isIcon: true}]
+              {text: 'md-arrow-dropup', param: 'moveUp', hoverShow: true, isIcon: true},
+              {text: 'md-arrow-dropdown', param: 'moveDown', hoverShow: true, isIcon: true},
+              {text: 'ios-trash-outline', param: 'delete', hoverShow: true, isIcon: true}]
           }
         ]
       },
@@ -204,40 +196,33 @@
       }
     },
     methods: {
+      openModal(modal,row,type){
+          let item = type == 1 ? { video_id: row.video_id } : { video_test_id: row.video_test_id }
+          this.handleSelModal(modal, {
+            curriculum_id: row.curriculum_id,
+            group_name: row.group_name,
+            group_orderby: row.group_orderby,
+            ...item
+          });
+      },
       editHandler(index, row) {
-        if (row.type === 0) {
-          this.handleSelModal(VIDEO_MANAGE, {
-            curriculum_id: row.curriculum_id,
-            group_name: row.group_name,
-            group_orderby: row.group_orderby,
-            video_id: row.video_id
-          });
-        } else if (row.type === 1) {
-          this.handleSelModal(ADD_QUESTION, {
-            curriculum_id: row.curriculum_id,
-            group_name: row.group_name,
-            group_orderby: row.group_orderby,
-            video_test_id: row.video_test_id
-          });
-        }
+        if (row.type === 0)  this.openModal(VIDEO_MANAGE,row,1)
+        else if (row.type === 1)  this.openModal(ADD_QUESTION,row,2)
+      },
+      moveHandler(row,type){
+        this.dirty = true;
+        this.$store.dispatch('change_online_curriculum_chapter_orderby', {
+          curriculum_id: this.$route.params.id,
+          dir: type,
+          catalog_id: row.catalog_id,
+          group_orderby: row.group_orderby
+        });
       },
       moveUpHandler(index, row) {
-        this.dirty = true;
-        this.$store.dispatch('change_online_curriculum_chapter_orderby', {
-          curriculum_id: this.$route.params.id,
-          dir: 0,
-          catalog_id: row.catalog_id,
-          group_orderby: row.group_orderby
-        });
+        this.moveHandler(row,0)
       },
       moveDownHandler(index, row) {
-        this.dirty = true;
-        this.$store.dispatch('change_online_curriculum_chapter_orderby', {
-          curriculum_id: this.$route.params.id,
-          dir: 1,
-          catalog_id: row.catalog_id,
-          group_orderby: row.group_orderby
-        });
+        this.moveHandler(row,1)
       },
       deleteHandler(index, row) {
         if (this.dirty) {
@@ -249,9 +234,7 @@
               this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
             },
           });
-        } else {
-          this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
-        }
+        } else this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
       },
       showDeleteConfirm(curriculum_id, catalog_id) {
         this.$Modal.confirm({
@@ -279,18 +262,14 @@
         this.dirty = false;
       },
       backClickHandler() {
-        if (this.dirty)
-          this.resetOrder();
+        if (this.dirty) this.resetOrder();
         this.$router.replace({name: 'online-course'});
       },
       initChapter() {
         this.newChapterData.showAddChapter = false;
         this.dirty = false;
-        if (this.chapterList.length === 0) {
-          this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_id: this.$route.params.id})
-        } else {
-          this.setChapterShowState();
-        }
+        if (this.chapterList.length === 0)  this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_id: this.$route.params.id})
+        else this.setChapterShowState();
         this.isInited = true;
       },
       setChapterShowState() {
@@ -303,8 +282,7 @@
         }
         if (this.showListState[this.chapterList.length - 1] == undefined) {
           for (i = 0; i < this.chapterList.length; i++) {
-            if (this.showListState[i] == undefined)
-              this.$set(this.showListState, i, 1);
+            if (this.showListState[i] == undefined) this.$set(this.showListState, i, 1);
           }
         }
       },
@@ -317,12 +295,7 @@
               group_orderby: this.newChapterData.group_orderby,
               orderby: 1
             })
-          } else {
-            this.$Modal.info({
-              title: '提示',
-              content: '<p>请先添加章节名称</p>'
-            });
-          }
+          } else  this.$Modal.info({ title: '提示', content: '<p>请先添加章节名称</p>' });
         } else {
           this.handleSelModal(VIDEO_MANAGE, {
             curriculum_id: item.curriculum_id,
@@ -331,7 +304,6 @@
             orderby: item.classList[item.classList.length - 1].orderby + 1
           });
         }
-
       },
       addTest(item) {
         if (!item) {
@@ -342,12 +314,7 @@
               group_orderby: this.newChapterData.group_orderby,
               orderby: 1
             })
-          } else {
-            this.$Modal.info({
-              title: '提示',
-              content: '<p>请先添加章节名称</p>'
-            });
-          }
+          } else  this.$Modal.info({ title: '提示', content: '<p>请先添加章节名称</p>' });
         } else {
           this.handleSelModal(ADD_QUESTION, {
             curriculum_id: item.curriculum_id,
@@ -365,16 +332,12 @@
     },
     mounted() {
       this.getLists()
-    },
-    components: {
-      'header-component': Header,
-      'data-list': BaseList,
-      'save-order': SaveOrder
     }
   }
 
 </script>
 <style scoped lang='scss'>
+    /deep/ .ivu-icon  { font-size: 24px}
     .manage-online-course-chapter {
         .course-name {
             height: 60px;

@@ -55,7 +55,7 @@
                                                 第{{catalog.chapterIndex + 1}}章
                                             </Col>
                                             <Col :span="18">
-                                                <span class="el-icon-star-on"></span><span>{{item.orderIndex}}</span>
+                                                <Icon type="md-star" /><span>{{item.orderIndex}}</span>
                                                 {{catalog.video_title?catalog.video_title:''}}{{catalog.video_test_title?catalog.video_test_title:''}}
                                             </Col>
                                             <Col :span="3">

@@ -89,7 +89,7 @@
             param: 'add',
             // hoverShow: true
           }, {
-            text: 'el-icon-delete',
+            text: 'ios-trash-outline',
             param: 'delete',
             // hoverShow: true,
             isIcon: true,
@@ -125,7 +125,7 @@
               text: '编辑课程',
               param: 'editCourse'
             }, {
-              text: 'el-icon-delete',
+              text: 'ios-trash-outline',
               param: 'deleteCourse',
               hoverShow: true,
               isIcon: true
@@ -177,7 +177,7 @@
       }
     },
     methods: {
-      ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail', 'get_grade_list' ]),
+      ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail', 'get_grade_list', 'get_city_list' ]),
       sendOfflineCourseHandler(index, row) {
         this.handleSelModal(types.SEND_OFFLINE_COURSE, {row: row});
       },
@@ -190,14 +190,9 @@
         }
       },
       editChapterHandler(index) {
-        this.$router.push({
-          name: 'online-course-chapter',
-          params: { id: '1' }
-        })
+        this.$router.push({ name: 'online-course-chapter', params: { id: '1' } })
       },
-      editCourseHandler(param, index, row) {
-
-      },
+      editCourseHandler(param, index, row) {},
       editOfflineSemester(index, row) {
         this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 2, row })
       },
@@ -210,9 +205,7 @@
       moveDownHandler(index) {
         this.dirty = true;
       },
-      deleteCourseHandler(index, data) {
-
-      },
+      deleteCourseHandler(index, data) {},
       deleteOfflineSemester(index, row) {
         var vm = this;
         if (row.can_delete == 0) {
@@ -241,9 +234,7 @@
             },
           });
         } else {
-          this.get_offline_curriculum_detail({
-            index,
-            row,
+          this.get_offline_curriculum_detail({ index, row,
             callback() {
               vm.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row, index, data: vm.offline_curriculum_detail1 });
             }
@@ -254,10 +245,11 @@
         this.$store.dispatch('get_offline_curriculum_list', { offline_term_id: row.id })
       },
       manageSignupHandler(index, row) {
-        this.$router.push({ name: 'offline-course-manage-signup', params: { id: row.id } })
+        this.$router.replace({ name: 'offline-course-manage-signup', params: { id: row.id } })
       }
     },
     mounted() {
+      this.get_city_list()
       var vm = this;
       if (this.$store.state.project.project_list.length === 0) {
         this.$store.dispatch('get_project_list', {

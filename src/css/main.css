@@ -28,6 +28,9 @@ body { background-color: #fff; height: 100%; }
   .ivu-page>.ivu-page-disabled>a>.ivu-icon-ios-arrow-back,.ivu-page>.ivu-page-disabled>a>.ivu-icon-ios-arrow-forward{
     color: #fff !important;
   }
+  .ivu-page.mini .ivu-page-item,.ivu-page-item{
+    border: 1px solid #d7dde4 !important
+  }
   .ivu-page>.ivu-page-item-active{
     background: #FC7643 !important;
     border: none;

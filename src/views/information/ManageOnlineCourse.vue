@@ -65,12 +65,12 @@
                         param: 'editCourse',
                         hoverShow: true
                     }, {
-                        text: 'el-icon-caret-top',
+                        text: 'md-arrow-dropup',
                         param: 'moveUp',
                         hoverShow: true,
                         isIcon: true
                     }, {
-                        text: 'el-icon-caret-bottom',
+                        text: 'md-arrow-dropdown',
                         param: 'moveDown',
                         hoverShow: true,
                         isIcon: true

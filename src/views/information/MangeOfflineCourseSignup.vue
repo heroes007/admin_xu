@@ -61,6 +61,10 @@
 
   export default {
     mixins: [Dialog],
+    components: {
+      'data-list': BaseList,
+      'back-to-top': BackToTop
+    },
     data() {
       return {
         loadingInstance: null,
@@ -72,14 +76,13 @@
           classify: 'phone',
           classifyValue: '',
           signupDeadline: null
-        },
+        }
       }
     },
     methods: {
       ...mapActions([
         'edit_offline_term',
-        'get_offline_course_receipt_list',
-        'get_city_list'
+        'get_offline_course_receipt_list'
       ]),
       onSubmit() {
         var formData = {
@@ -103,7 +106,6 @@
       changeDeadlineHandler() {}
     },
     mounted() {
-      this.get_city_list();
       this.get_offline_course_receipt_list({offline_term_id: this.$route.params.id})
     },
     watch: {
@@ -147,6 +149,7 @@
           }, {
             prop: 'estimate_set_out_province_id',
             label: '预计出发省',
+            mangeOfflineCourseSignup: true,
             width: 140,
             useFilter: true
           }, {
@@ -189,7 +192,7 @@
         }]
       },
       listColumnFormatterData() {
-        return [this.sexList, this.privinceList, this.cityList];
+       return [this.sexList, this.privinceList, this.cityList];
       },
       privinceList() {
         var provinceList = [];
@@ -241,10 +244,6 @@
         }
         return {}
       }
-    },
-    components: {
-      'data-list': BaseList,
-      'back-to-top': BackToTop
     }
   }
 

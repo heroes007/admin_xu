@@ -24,7 +24,6 @@ const actions = {
                 }
             });
         }
-
     }
 }
 // mutations

@@ -76,7 +76,7 @@
                                 @click="handleBtnClick(index,row,btn.param)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
                                 :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
-                            <Icon :type='btn.text' v-if='btn.isIcon' />
+                            <Icon  class="btn-icon" :type='btn.text' v-if='btn.isIcon' />
                             <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(row)?btn.disabledText:btn.text:btn.text}}</span>
                         </Button>
                         <Switch :value='row[btn.switchKey]' :disabled="checkSwitchDisabled(row,btn.disabledFuc)"
@@ -99,7 +99,6 @@
 <script>
   import baseList from './BaseList.vue'
   import api from '../api/modules/config.js'
-
   export default {
     name: 'baseList',
     data() {
@@ -124,9 +123,7 @@
       columnFormatter: {
         type: Array
       },
-      columnFormatterData: {
-        type: Array
-      },
+      columnFormatterData: { type: Array },
       columnComboData: {
         type: Array
       },
@@ -329,6 +326,7 @@
             }
           }
         })
+        console.log(this.headerData);
       },
       getHeaderLabel(item) {
         return item.ruleCount ? item.label + '(' + item.ruleCount + ')' : item.label;
@@ -456,6 +454,7 @@
         return row.childData;
       },
       getFilters(propname) {
+        console.log(this.columnFormatterData,this.columnFormatter); 
         if (this.columnFormatter) {
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {
@@ -486,7 +485,8 @@
   }
 </script>
 <style lang='scss' scoped>
-    /deep/ .ivu-icon-ios-trash-outline { font-size: 18px }
+    /deep/ .btn-icon { font-size: 24px }
+    // /deep/ .ivu-icon-ios-trash-outline { font-size: 18px }
     /deep/ .ivu-switch-checked:after {
         left: 36px;
     }
