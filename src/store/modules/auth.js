@@ -1,6 +1,3 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { user_info } from '../../api/modules/auth'
@@ -11,7 +8,7 @@ const state = {
     sex_list:[{id:0,name:'女'},{id:1,name:'男'}]
 }
 
-// getters
+
 // actions
 const actions = {
     get_user_info({ commit }, payload) {

@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import { get_list } from '../../api/modules/dealer'
 
@@ -9,7 +7,7 @@ const state = {
     is_loading_list: false
 }
 
-// getters
+
 // actions
 const actions = {
     get_dealer_list({ commit }) {

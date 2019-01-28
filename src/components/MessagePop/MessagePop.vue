@@ -51,7 +51,6 @@
         margin: 0;
         z-index:9999;
         background-color: rgba(0,0,0,0.7);
-
         text-align: center;
         .message-pop {
             margin-top:40vh;
@@ -63,16 +62,28 @@
             border-radius: 4px;
             line-height: 90px;
             h2 {
-font-size: 20px;
-color: #F06B1D;
-letter-spacing: 0;
-margin: 0;
+            font-size: 20px;
+            color: #F06B1D;
+            letter-spacing: 0;
+            margin: 0;
             }
               transition: opacity .2s ease-in
         }
     }
 .message-pop-fade-enter, .message-pop-fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0;
-  transform: translateY(-2px);
+  transition: bounce-out 1s ease-in;
+}
+.message-pop-fade-active, .message-pop-fade-active {
+  transition: bounce-in 1s ease-in;
+}
+@keyframes bounce-in {
+  0% { opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1;}
+}
+@keyframes bounce-out {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0;}
 }
 </style>

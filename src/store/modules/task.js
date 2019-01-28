@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import {
@@ -36,7 +34,7 @@ const state = {
 
 }
 var catch_cid = ''
-// getters
+
 // actions
 const actions = {
         get_task_category_list({

@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_role } from '../../api/modules/roles'
@@ -12,7 +10,7 @@ const state = {
     is_loading_list: false
 }
 
-// getters
+
 // actions
 const actions = {
     get_role({ commit }) {

@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_list, add_news, update_news } from '../../api/modules/tools_news'
@@ -13,7 +11,7 @@ const state = {
     state_list: [{ id: -1, name: '全部' }, { id: 0, name: '停用' }, { id: 1, name: '启用' }]
 }
 
-// getters
+
 // actions
 const actions = {
     get_news_list({ commit }, param) {

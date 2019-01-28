@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_list, set_curriculum_orderby, add_curriculum, delete_curriculum, update_curriculum } from '../../api/modules/tools_curriculum'
@@ -18,7 +16,7 @@ const state = {
     stateList:[{id:1,name:'上线中'},{id:0,name:'未上线'},{id:-1,name:'已下线'}]
 }
 let project_id = null
-// getters
+
 // actions
 const actions = {
     get_online_curriculum_list ({ commit }, param) {

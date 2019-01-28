@@ -1,26 +1,19 @@
 <template>
     <Row class="project">
-        <Col :span="4" class="project-left">
-            <side-menu></side-menu>
-        </Col>
-        <Col :span="20" class="project-right">
-            <project-list/>
-        </Col>
+        <Col :span="4" class="project-left"><side-menu /></Col>
+        <Col :span="20" class="project-right"><project-list/></Col>
     </Row>
 </template>
-
 <script>
     import { mapState,  mapActions } from 'vuex'
-    import {  Config } from '../config/base'
+    import { Config } from '../config/base'
     import { doTimeFormat } from '../components/Util'
     import SideMenu from '../components/SideMenuForProject'
     import ProjectList from '../components/ProjectList'
     export default {
         components: { 'side-menu': SideMenu, 'project-list':ProjectList },
         data() {
-            return {
-                loadingInstance: null
-            }
+            return { loadingInstance: null }
         },
         computed: {
             ...mapState({

@@ -7,6 +7,7 @@
               <div @click='changeSelectProject(item.id)'>
                   <h3>{{item.name}}<span>{{index | Numfilter}}</span></h3>
               </div>
+              <Divider />
           </Card>
       </div>
     </div>

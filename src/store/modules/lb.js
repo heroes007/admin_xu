@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_list } from '../../api/modules/tools_lb'
@@ -13,7 +11,7 @@ const state = {
     isLoading:false
 }
 
-// getters
+
 // actions
 const actions = {
     get_lb_list ({ commit },param) {

@@ -2,22 +2,20 @@
     <div class='manage-public-download-data'>
         <header-component :type='0' :showAdd='true' addText='添加公共资料' @addClick='addClickHandler'/>
         <data-list class='data-list light-header' @delete='deleteHandler' :isStripe='false' :table-data='dataList'
-                   :header-data='dataHeader'
-                   :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
+          :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
     </div>
 </template>
-
 <script>
   import BaseList from '../../components/BaseList'
   import Header from '../../components/ProjectHeader'
-  import {mapActions, mapState, mapGetters} from 'vuex'
-  import {Dialog} from '../dialogs'
-  import {ADD_DOWNLOAD_DATA} from '../dialogs/types'
-  import {doTimeFormat} from '../../components/Util'
-  import {Config} from '../../config/base'
-
+  import { mapActions, mapState, mapGetters } from 'vuex'
+  import { Dialog } from '../dialogs'
+  import { ADD_DOWNLOAD_DATA } from '../dialogs/types'
+  import { doTimeFormat } from '../../components/Util'
+  import { Config } from '../../config/base'
   export default {
     mixins: [Dialog],
+    components: { 'header-component': Header, 'data-list': BaseList },
     data() {
       return {
         searchData: '',
@@ -107,12 +105,7 @@
       }
     },
     methods: {
-      ...mapActions([
-        'get_subject_list',
-        'get_grade_list',
-        'get_public_donwload_data_list',
-        'delete_download_data'
-      ]),
+      ...mapActions([ 'get_subject_list', 'get_grade_list', 'get_public_donwload_data_list', 'delete_download_data' ]),
       addClickHandler() {
         this.handleSelModal(ADD_DOWNLOAD_DATA, 0);
       },
@@ -123,8 +116,7 @@
           onOk: () => {
             this.delete_download_data(row.id)
           },
-          onCancel: () => {
-          }
+          onCancel: () => {}
         });
       }
     },
@@ -132,10 +124,6 @@
       this.get_subject_list();
       this.get_grade_list();
       this.get_public_donwload_data_list({project_id: this.projectId});
-    },
-    components: {
-      'header-component': Header,
-      'data-list': BaseList
     }
   }
 </script>

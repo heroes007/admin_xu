@@ -77,9 +77,7 @@
             },
             selectedCategory() {
                 for (var i = 0; i < this.categoryList.length; i++) {
-                    if (this.categoryList[i].id === this.selectCategory) {
-                        return this.categoryList[i];
-                    }
+                    if (this.categoryList[i].id === this.selectCategory)  return this.categoryList[i];
                 }
                 return undefined;
             },
@@ -141,11 +139,7 @@
                 title: '提示',
                 content: '<p>您确定要删除该任务吗?</p>',
                 onOk: () => {
-                  this.delete_task({
-                    task_category_id: this.selectCategory,
-                    task_id: row.id,
-                    is_del_ut: 1
-                  })
+                  this.delete_task({ task_category_id: this.selectCategory, task_id: row.id, is_del_ut: 1 })
                 },
               });
             },
@@ -204,6 +198,8 @@
 
 </script>
 <style scoped lang='scss'>
+    .category-list { display: flex;flex-wrap: wrap }
+    .task-category-item{ margin-bottom: 10px; }
     .manage-task {
         .category-list {
             padding-top: 20px;

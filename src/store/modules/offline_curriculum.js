@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import {
@@ -44,7 +42,7 @@ const state = {
     receipt_total:0
 }
 var cached = {};
-// getters
+
 // actions
 const actions = {
         get_offline_term_list({

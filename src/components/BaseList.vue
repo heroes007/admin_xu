@@ -53,7 +53,7 @@
                 </Button>
                 <Select :transfer='true' v-if='column.useCombo&&columnComboData&&comboDataList'
                         v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择"
-                        @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
+                     @on-open-change="selectOpenChange"   @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
                         :disabled="column.disabledFunc?column.disabledFunc(row):false">
                     <Option v-for="(c,k) in columnComboData[column.comboListIndex]" :key="k"
                             :label="c[column.listLabel]" :value="c[column.listValue]"></Option>
@@ -85,10 +85,8 @@
                             <span slot="open">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.onText}}</span>
                             <span slot="close">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.offText}}</span>
                         </Switch>
-                        <Checkbox v-model='row[btn.switchKey]'
-                                  @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
-                                  v-if='btn.useCheckBox'>{{btn.text}}
-                        </Checkbox>
+                        <Checkbox v-model='row[btn.switchKey]' @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
+                            v-if='btn.useCheckBox'>{{btn.text}}</Checkbox>
                     </div>
                 </div>
             </template>
@@ -98,13 +96,13 @@
 </template>
 <script>
   import baseList from './BaseList.vue'
-  import api from '../api/modules/config.js'
   export default {
     name: 'baseList',
     data() {
       return {
         dataChange: false,
-        comboDataList: null
+        comboDataList: null,
+        selectOpenState: false
       }
     },
     props: {
@@ -341,8 +339,11 @@
       showBadgeCount(propname, row) {
         return row[propname];
       },
+      selectOpenChange(val){
+        this.selectOpenState = val
+      },
       comboChangeHandler(row, index, actionName, key) {
-        if (actionName) this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+        if (actionName && this.selectOpenState) this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
       },
       getComboModel(prop, row) {
         return row[prop];

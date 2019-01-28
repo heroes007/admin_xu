@@ -4,17 +4,15 @@ import App from './App';
 import store from './store';
 import router from './config/index';
 import './css';
-//本地存储
 import VueLocalStorage from 'vue-localstorage'
+import iView from 'iview';
 
 import ElementUI from 'element-ui'
 
-import iView from 'iview';
-
-
 Vue.use(ElementUI)
-Vue.use(VueLocalStorage)
+
 Vue.use(iView);
+Vue.use(VueLocalStorage)
 
 new Vue({
   el: '#app',

@@ -3,7 +3,6 @@ import { Config } from './base'
 var loadingInstance = null;
 export default{
     IsLoading: (val) => {
-        console.log(val);
         if (val) {
             loadingInstance = $LoadingY({message: "加载中，请稍后",show: true})
             setTimeout(() => {

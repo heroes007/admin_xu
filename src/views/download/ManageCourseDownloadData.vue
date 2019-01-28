@@ -2,8 +2,7 @@
     <div class='manage-course-download-data'>
         <header-component :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/>
         <data-list class='data-list light-header' @delete='deleteHandler' :isStripe='false' :table-data='dataList'
-                   :header-data='dataHeader' :columnComboData='columnComboData'
-                   :comboModelList='comboDataList'></data-list>
+          :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'></data-list>
     </div>
 </template>
 
@@ -15,7 +14,6 @@
   import { ADD_DOWNLOAD_DATA } from '../dialogs/types'
   import { doTimeFormat } from '../../components/Util'
   import { Config } from '../../config/base'
-
   export default {
     mixins: [Dialog],
     components: { 'header-component': Header, 'data-list': BaseList },
@@ -89,7 +87,6 @@
             comboListIndex: 0,
             listLabel: 'title',
             listValue: 'curriculum_id',
-            // actionName: ''
             actionName: 'change_course_download_data_pre_curriculum'
           },
           {
@@ -102,7 +99,6 @@
               offText: '停用',
               disableText: '失效',
               actionName: 'change_public_download_data_valid'
-
             }, {
               text: 'ios-trash-outline',
               param: 'delete',
@@ -150,7 +146,6 @@
         .data-list {
             .base-list-row {
                 height: 65px;
-
                 &.invalid-row {
                     background-color: #FBFBFB;
                 }

@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import {
@@ -22,7 +20,7 @@ const state = {
     ],
     total: 100
 }
-// getters
+
 // actions
 const actions = {
     get_recruit_list({ commit }, param) {

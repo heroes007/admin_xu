@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import {
     get_list,
@@ -23,7 +21,7 @@ const state = {
     stateList:[{id:3,name:'首页推荐'},{id:0,name:'编辑中'},{id:1,name:'正常'},{id:2,name:'不可购买'}],
     examineTypeList:[{id:0,name:'笔试和面试'},{id:1,name:'只面试'},{id:2,name:'只笔试'},{id:3,name:'免笔试面试'}]
 }
-// getters
+
 // actions
 const actions = {
     get_production_list({

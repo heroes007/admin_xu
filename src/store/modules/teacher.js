@@ -11,7 +11,7 @@ const state = {
     showLoading:false
 }
 
-// getters
+
 // actions
 const actions = {
     get_teacher_list ({ commit }) {

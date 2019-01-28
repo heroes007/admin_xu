@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_city } from '../../api/modules/city'
@@ -10,7 +8,7 @@ const state = {
     is_loading_list: false
 }
 
-// getters
+
 // actions
 const actions = {
     get_city_list({ commit }) {

@@ -1,7 +1,7 @@
 # dscj-admin-xg
 
 > vue2.0 全家桶启动模板
-Vue2.0+vue-router2.0+Vuex2.0+Vue-resource+element-ui
+Vue2.0+vue-router2.0+Vuex2.0+iView
 
 ## Build Setup
 

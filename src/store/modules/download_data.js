@@ -1,6 +1,3 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_curriculum_data_center, get_public_data_center, add_data_center, delete_data_center, set_data_center_pre_curriculums, change_data_center_enable } from '../../api/modules/tools_data_center'
@@ -12,8 +9,6 @@ const state = {
     pre_curriculum_change_guard:null
 }
 
-// getters
-// actions
 const actions = {
     get_public_donwload_data_list({ commit }, params)
     {
@@ -46,12 +41,9 @@ const actions = {
         })
     },
     change_public_download_data_valid({ commit }, params) {
-        commit(types.DOWNLOAD_SHOW_LOADING);
+        // commit(types.DOWNLOAD_SHOW_LOADING);
         change_data_center_enable(params.id,params.value?1:0).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.DOWNLOAD_DATA_VALID_UPDATED, params)
-            }
+            if(res.data.res_code === 1) commit(types.DOWNLOAD_DATA_VALID_UPDATED, params)
         })
     },
     add_course_download_data({ commit }, params) {
@@ -122,24 +114,21 @@ const mutations = {
         var found = false;
         var i;
         for (i = 0; i < state.course_download_data_list.length; i++) {
-            if(state.course_download_data_list[i].id === params.id)
-            {
+            if(state.course_download_data_list[i].id === params.id){
                 state.course_download_data_list[i][params.key] = params.value;
                 found = true;
                 break;
             }
         }
-        if(!found)
-        {
+        if(!found){
             for (i = 0; i < state.public_download_data_list.length; i++) {
-            if(state.public_download_data_list[i].id === params.id)
-            {
-                state.public_download_data_list[i][params.key] = params.value;
-                break;
+                if(state.public_download_data_list[i].id === params.id){
+                    state.public_download_data_list[i][params.key] = params.value;
+                    break;
+                }
             }
         }
-        }
-        state.isLoading = false;
+        // if(state.isLoading) state.isLoading = false;
     },
     [types.COURSE_DOWNLOAD_DATA_ADDED](state, param) {
        state.course_download_data_list.push({
