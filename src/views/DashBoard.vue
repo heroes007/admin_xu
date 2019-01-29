@@ -36,7 +36,7 @@
             }
             .sub-view {
                 background-color: #ffffff;
-                /*padding-bottom: 50px;*/
+                padding-bottom: 50px;
                 position: relative;
                 min-height: 100vh;
                 width: calc(100% - 200px)

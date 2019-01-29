@@ -14,8 +14,7 @@
                    class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter'
                    :column-formatter-data='listColumnFormatterData'></data-list>
-        <div class='manage-online-course'>
-        </div>
+        <div class='manage-online-course'></div>
     </div>
 </template>
 
@@ -83,8 +82,10 @@
         return this.selectedCategory.task_list;
       },
       selectedCategory() {
+        console.log(this.categoryList,'0000000000')
         for (var i = 0; i < this.categoryList.length; i++) {
           if (this.categoryList[i].id === this.selectCategory) {
+            console.log(this.categoryList[i],'123123')
             return this.categoryList[i];
           }
         }

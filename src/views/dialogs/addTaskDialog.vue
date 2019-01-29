@@ -30,7 +30,7 @@
                     <FormItem v-show="nextStep == 0" :disabled="disabled" class="approval" v-if="payload.selectedType == 0" label="激活方式">
                         <RadioGroup v-model="form.activity_type" class="float_left" :disabled="disabled" @on-change="handleChangeType">
                             <Radio :label="1">手动激活</Radio>
-                            <Radio :label="2">定时激活</Radio>
+                            <!--<Radio :label="2">定时激活</Radio>-->
                             <!--<el-radio :label="3">前置课激活</el-radio>-->
                         </RadioGroup>
                    </FormItem>
