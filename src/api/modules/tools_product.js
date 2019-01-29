@@ -6,7 +6,7 @@ export function get_list(param){
         page_index:param.page_index,
         page_size:param.page_size,
         title:param.title,
-        state:[0,1,2],
+        state:[0,1,2,3],
         type:param.type
         });
 }

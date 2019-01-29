@@ -25,11 +25,11 @@
                     <FormItem v-show="nextStep == 0" label="编码">
                         <Input v-model="form.code" placeholder="请输入产品编码"></Input>
                     </FormItem>
-                    <FormItem label='考试类型' :label-width="formItemLabelWidth">
+                    <!-- <FormItem label='考试类型' :label-width="formItemLabelWidth">
                     <Select v-model="form.examine_type" placeholder="请选择考试类型">
                         <Option v-for="item in examineTypeList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
-                    </FormItem>
+                    </FormItem> -->
                     <FormItem v-show="nextStep == 0" label="产品名称">
                         <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                     </FormItem>
@@ -127,7 +127,7 @@ export default {
                 video_url:'',
                 show_price:'',
                 show_original_price:'',
-                examine_type:0,
+                examine_type:3,
                 _fn:null
             },
             nextStep: 0,

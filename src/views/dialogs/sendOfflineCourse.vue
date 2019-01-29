@@ -156,11 +156,9 @@
         if (list.length > 0) {
           send_student_offline_curriculum({offline_term_id: this.payload.row.id, user_id: list}).then(res => {
             if (res.data.res_code == 1) {
-              this.$Modal.confirm({
+              this.$Modal.info({
                 title: '提示',
                 content: '线下课发送成功!',
-                onOk: () => {
-                }
               });
               this.handleQueryList();
             }

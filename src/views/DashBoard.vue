@@ -39,6 +39,7 @@
                 position: relative;
                 min-height: 100vh;
                 width: calc(100% - 200px);
+                padding-bottom: 50px;
             }
         }
     }

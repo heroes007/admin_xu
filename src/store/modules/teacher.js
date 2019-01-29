@@ -27,7 +27,7 @@ const actions = {
         }
     },
     add_teacher({ commit },params) {
-        commit(types.TEACHER_ADDING);
+        // commit(types.TEACHER_ADDING);
         add_teacher(params).then(function(res) {
             if(res.data.res_code === 1)
             {
@@ -70,10 +70,8 @@ const mutations = {
         state.showLoading = true;
     },
     [types.TEACHER_ADDED] (state, params) {
-
         state.teacher_list.push({id:params.result,name:params.data.name,img_url:params.data.img_url})
-
-        state.showLoading = false;
+        // state.showLoading = false;
     },
     [types.TEACHER_SHOW_LOADING] (state) {
         state.showLoading = true;

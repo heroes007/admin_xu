@@ -152,7 +152,7 @@
       comboAddDir: {
         type: Number,
         default: 1
-      }
+      },
     },
     created() {
       this.handleHeaderData()
@@ -455,7 +455,7 @@
         return row.childData;
       },
       getFilters(propname) {
-        console.log(this.columnFormatterData,this.columnFormatter); 
+        console.log(this.columnFormatterData,this.columnFormatter);
         if (this.columnFormatter) {
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {
@@ -486,8 +486,10 @@
   }
 </script>
 <style lang='scss' scoped>
+    /deep/ .ivu-icon-ios-trash-outline {
+        font-size: 18px
+    }
     /deep/ .btn-icon { font-size: 24px }
-    // /deep/ .ivu-icon-ios-trash-outline { font-size: 18px }
     /deep/ .ivu-switch-checked:after {
         left: 36px;
     }
@@ -653,11 +655,13 @@
             .hover-show {
                 display: none;
             }
+
             &:hover {
                 .hover-show {
                     display: inline-block;
                 }
             }
+
             .show-divider {
                 border-right: 1px solid #979797;
                 padding-left: 14px;

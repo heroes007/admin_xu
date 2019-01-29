@@ -39,6 +39,7 @@ import { Config } from "../../config/base";
 import { mapState, mapActions, mapGetters } from "vuex";
 import { doDateFormat, doTimeFormat, reunitPrice } from "../../components/Util";
 import tableHeadData from './consts'
+
 export default {
   mixins: [Dialog, MPop],
   components: { "header-component": Header, "data-list": BaseList },
@@ -69,6 +70,7 @@ export default {
       });
     },
     deleteHandler(index, row) {
+      let vm = this;
       this.$Modal.confirm({
           title: '提示',
           content: '是否确认删除该产品?',
@@ -99,7 +101,7 @@ export default {
       var data = {
         project_id: this.projectId,
         page_index: this.curPage - 1,
-        page_size: 999,
+        page_size: 20,
         title: this.formInline.searchData
       };
       this.get_production_list(data);
@@ -109,8 +111,8 @@ export default {
     this.getData();
     this.get_production_group_list({
       page_index: 0,
-      page_size: 999,
-      state: [0, 1]
+      page_size: 20,
+      state: [0, 1, 2, 3]
     });
   },
   watch: {

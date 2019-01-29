@@ -173,7 +173,7 @@
       listColumnFormatter() {
         return [{
           columnName: 'estimate_set_out_time',
-          doFormat: doTimeFormat
+              doFormat: doTimeFormat
         }, {
           columnName: 'sex',
           dataIndex: 0,
@@ -203,10 +203,12 @@
         }
         return provinceList;
       },
+      listColumnFormatterData() {
+        return [this.sexList, this.privinceList, this.cityList];
+      },
       termData() {
         for (var i = 0; i < this.$store.state.offline_curriculum.offline_term_list.length; i++) {
           if (this.$store.state.offline_curriculum.offline_term_list[i].id == this.$route.params.id) {
-
             return this.$store.state.offline_curriculum.offline_term_list[i];
           }
         }
