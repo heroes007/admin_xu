@@ -3,6 +3,7 @@ import * as types from '../types'
 import {
     get_project_list
 } from '../../api/modules/tools_project'
+import Vue from 'vue';
 
 
 const state = {
@@ -78,6 +79,7 @@ const mutations = {
         state.project_list = payload.data;
         if (payload.callback) payload.callback(state.select_project_id);
         state.isLoading = false;
+        Vue.localStorage.set('lastSelectedProject', payload.data[0].id)
     },
     [types.CHANGE_SELECTED_PROEJCT_ID](state, payload) {
         state.select_project_id = payload;

@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
             }else{
                 store.dispatch('get_project_list', {
                   callback() {
-                      next({ path:'project' });
+                      next({ path:'dashboard' });
                   }
                 });
              }

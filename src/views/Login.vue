@@ -32,6 +32,7 @@
     import api from '../api/modules/config';
     import { login_pwd, user_info } from '../api/modules/auth';
     import { Base64 } from 'js-base64';
+    import { mapState, mapActions } from 'vuex';
     export default {
         components: {  EllipsisAni  },
         data() {
@@ -42,7 +43,16 @@
                 isLogining: false
             }
         },
+        computed: {
+            ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
+        },
+        watch: {
+            isLoading(val) {
+            this.$config.IsLoading(val);
+            }
+        },
         methods: {
+             ...mapActions([ "get_project_list", "change_selected_project_id", "clear_store" ]),
             doLogin() {
                 this.isLogining = true;
                 let vm = this;
@@ -54,7 +64,8 @@
                                 let roleArr = res.data.msg.role_arr
                                if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {
                                     vm.$store.dispatch('set_user_info', res.data.msg);
-                                    vm.$router.replace({ path: 'project' });
+                                    this.get_project_list();
+                                    vm.$router.replace({ path: 'dashboard' });
                                 }else vm.$Message.warning('权限错误，请重新登录');
                             }
                         })

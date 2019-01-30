@@ -76,7 +76,7 @@ const routes = [
     children:[
       {
         path:'',
-        redirect:'/dashboard/manage-project'
+        redirect:'/dashboard/manage-production'
       },
       {
         name:'add-homework',
@@ -173,11 +173,11 @@ const routes = [
         path: 'manage-app',
         component: ManageApp
       },
-      {
-        name: 'manage-project',
-        path: 'manage-project',
-        component: ProjectList
-      },
+      // {
+      //   name: 'manage-project',
+      //   path: 'manage-project',
+      //   component: ProjectList
+      // },
       {
         name: 'manage-recruit',
         path: 'manage-recruit',

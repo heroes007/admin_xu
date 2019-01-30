@@ -74,7 +74,7 @@
                             </FormItem>
                         </Form>
                     </TabPane>
-                    <TabPane label="报名信息" name="name2">
+                    <!-- <TabPane label="报名信息" name="name2">
                         <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
                             该用户没有报名信息
                         </Row>
@@ -128,7 +128,7 @@
                                 <Button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</Button>
                             </FormItem>
                         </Form>
-                    </TabPane>
+                    </TabPane> -->
                     <TabPane label="线上课" name="name3">
                         <Row>
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
@@ -153,10 +153,14 @@
                                     </Col>
                                     <Col :span="4">
                                         <!--<span>{{item.unlock ? '已解锁'  : '未解锁'}}</span>-->
-                                       <i class="mdLock" :class="{'xght-webfont-lock':!item.unlock,'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i>
+                                       <!-- <i class="mdLock" :class="{'xght-webfont-lock':!item.unlock,
+                                       'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,
+                                       'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i> -->
+                                       <!-- <Icon class="mdLock" :type="item.verification ? 'ios-unlock-outline' : 'ios-lock-outline'" /> -->
+                                       <img class="lockImg" :src="item.type ? Lock : UnLock" />
                                     </Col>
                                     <Col :span="4">
-                                        <Button type='primary' @click='unlockTest(item)'>解锁测验</Button>
+                                        <Button type='primary' :disabled="!(item.type)" @click='unlockTest(item)'>解锁测验</Button>
                                     </Col>
                                 </Row>
                             </Row>
@@ -215,6 +219,8 @@
     </Modal>
 </template>
 <script>
+  import Lock from '../../assets/img/lock.svg'
+  import UnLock from '../../assets/img/unlock.svg'
   import BaseInput from '../../components/BaseInput'
   import UploadButton from '../../components/UploadButton'
   import { RemoveModal } from './mixins'
@@ -245,6 +251,7 @@
       return {
         studentInfoDetailDialog: true,
         activeName: 'name1',
+        UnLock,Lock,
         form1: {
           project_id: this.$store.state.project.select_project_id,
           grade_id: 0,
@@ -336,9 +343,17 @@
         }).then(res => {
           if (res.data.res_code == 1) {
             this.form3.dataList = res.data.msg;
+            // this.form3.dataList.map((item) => {
+            //     item.verification = !item.unlock && item.type ? false : true
+            // })
+            console.log(this.form3.dataList);
             this.loadingInstance.close();
+            this.gettingLessons()
           }
         })
+      },
+      gettingLessons(){
+
       },
       changeRemainCountHandler(v) {
         // this.showloading();
@@ -359,7 +374,6 @@
         }
       },
       changeTabHandler(tab, event) {
-          console.log(tab);
         if (tab === 'name2' && this.form2.user_id === 0) {
           this.showloading();
           get_signup_info_by_userid(this.payload.user_id).then(res => {
@@ -375,7 +389,6 @@
           })
         }
         else if (tab === 'name3' && this.form3.dataList.length === 0) {
-          this.showloading();
           // get_student_online_curriculum({
           // new_version_get_student_online_curriculum({
           //     product_id:this.form3.product_id,
@@ -457,6 +470,11 @@
         }
         var d = (_total / c) * 100 + '%';
         var e = _total + '/' + c;
+        console.log({
+          progress: d,
+          specific: e,
+          allFinish: _total === c
+        });
         return {
           progress: d,
           specific: e,
@@ -471,6 +489,7 @@
             title: '提示',
             content: '解锁测验' + text
           });
+          if(code === 1) this.changeProductHandler()
         })
       },
       handleUploadComplete(url) {
@@ -563,9 +582,10 @@
   }
 </script>
 <style lang="scss" scoped>
+    .lockImg { width: 24px;height: 24px; }
     .on_Select_item { width: 200px }
     .avator>img { width: 40px;height: 40px; border-radius: 20px }
-    .mdLock{ font-size: 18px }
+    .mdLock{ font-size: 24px }
     .course-item{ padding-top: 10px; padding-bottom: 10px; display: flex; align-items: center;}
     /deep/ .ivu-tabs-bar{ height: 50px ;}
     /deep/ .ivu-tabs-nav .ivu-tabs-tab{ height: 50px; line-height: 34px; font-size: 16px}

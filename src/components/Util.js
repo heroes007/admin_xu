@@ -116,11 +116,11 @@ export function reunitPrice(val) {
 }
 
 export const MenuList =  [
-    {
-        name: 'manage-project',
-        title: '项目管理',
-        icon: 'md-folder'
-    },
+    // {
+    //     name: 'manage-project',
+    //     title: '项目管理',
+    //     icon: 'md-folder'
+    // },
     {
         name: '1',
         title: '超级管理员',
@@ -160,7 +160,7 @@ export const MenuList =  [
         list:[{
             name: 'manage-student',
             title: '查看学员'
-        }
+        },
         // {
         //     name: 'manage-recruit',
         //     title: '招生管理'
@@ -169,28 +169,29 @@ export const MenuList =  [
         //     name: 'redeem-code',
         //     title: '兑换码管理'
         // },
-        // {
-        //     name: 'notification-chat',
-        //     title: '我的通知',
-        //     badge: true
-        // }
+        {
+            name: 'notification-chat',
+            title: '我的通知',
+            badge: true
+        }
         ]
     },
-    // {
-    //     name: '3',
-    //     title: '我是导师',
-    //     icon: 'md-folder',
-    //     check: 'teacher',
-    //     list:[
-    //     {
-    //         name: 'manage-my-assignment',
-    //         title: '我的指导'
-    //     },
-    //     {
-    //         name: 'manage-my-interview',
-    //         title: '我的面试'
-    //     }]
-    // },
+    {
+        name: '3',
+        title: '我是导师',
+        icon: 'md-folder',
+        check: 'teacher',
+        list:[
+        {
+            name: 'manage-my-assignment',
+            title: '我的指导'
+        },
+        // {
+        //     name: 'manage-my-interview',
+        //     title: '我的面试'
+        // }
+    ]
+    },
     {
         name: '4',
         title: '创建管理',

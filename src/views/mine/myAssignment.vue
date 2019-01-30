@@ -27,33 +27,27 @@
             </FormItem>
         </Form>
         <Form :inline="true" :label-width="80" style="text-align:left">
-            <FormItem label="电话：">
-                <Input v-model="phone" placeholder="请输入电话"></Input>
-            </FormItem>
-            <FormItem label="姓名：">
-                <Input v-model="realname" placeholder="请输入姓名"></Input>
-            </FormItem>
-            <FormItem>
-                <Button type="primary" @click="getNewList" style="width: 100px">查询</Button>
-            </FormItem>
+            <FormItem label="电话："><Input v-model="phone" placeholder="请输入电话"></Input></FormItem>
+            <FormItem label="姓名："><Input v-model="realname" placeholder="请输入姓名"></Input></FormItem>
+            <FormItem><Button type="primary" @click="getNewList" style="width: 100px">查询</Button></FormItem>
         </Form>
-        <data-list @assign='assignHandler' class='data-list light-header' :table-data='dataList'
-                   :header-data='dataHeader' :column-formatter='listColumnFormatter'
-                   :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
+        <data-list @assign='assignHandler' class='data-list light-header' :table-data='dataList' :header-data='dataHeader'
+         :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
     </div>
 </template>
 
 <script>
   import Header from '../../components/ProjectHeader'
   import BaseList from '../../components/BaseList'
-  import {doTimeFormat} from '../../components/Util'
-  import {Dialog} from '../dialogs';
+  import { doTimeFormat } from '../../components/Util'
+  import { Dialog } from '../dialogs';
   import * as types from '../dialogs/types';
-  import {mapActions, mapState} from 'vuex'
-  import {Config} from '../../config/base'
+  import { mapActions, mapState } from 'vuex'
+  import { Config } from '../../config/base'
 
   export default {
     mixins: [Dialog],
+    components: { 'header-component': Header, 'data-list': BaseList },
     data() {
       return {
         loadingInstance: null,
@@ -169,12 +163,7 @@
       }
     },
     methods: {
-      ...mapActions([
-        'get_subject_list',
-        'get_grade_list',
-        'get_my_assignment_list',
-        'get_project_list'
-      ]),
+      ...mapActions([ 'get_subject_list', 'get_grade_list', 'get_my_assignment_list', 'get_project_list' ]),
       getNewList() {
         this.get_my_assignment_list({
           project_id: this.projectId,
@@ -187,14 +176,10 @@
         });
       },
       reRenderListHandler(v) {
-        if (this.$store.state.project.project_list.length > 0) {
-          this.getNewList();
-        }
+        if (this.$store.state.project.project_list.length > 0)  this.getNewList();
       },
       assignHandler(index, row) {
-        this.handleSelModal(types.ADD_TASK_ASSIGNMENT, {
-          row: row
-        })
+        this.handleSelModal(types.ADD_TASK_ASSIGNMENT, { row })
       }
     },
     mounted() {
@@ -203,29 +188,17 @@
         this.$store.dispatch('get_project_list', {
           callback(v) {
             vm.getNewList();
-            vm.$store.dispatch('get_task_category_list', {
-              project_id: v
-            })
+            vm.$store.dispatch('get_task_category_list', { project_id: v })
           }
         });
-        // return;
       } else {
         this.getNewList();
-        vm.$store.dispatch('get_task_category_list', {
-          project_id: this.projectId
-        })
+        vm.$store.dispatch('get_task_category_list', { project_id: this.projectId })
       }
-
       this.get_subject_list();
       this.get_grade_list();
-
-    },
-    components: {
-      'header-component': Header,
-      'data-list': BaseList
     }
   }
-
 </script>
 <style scoped lang='scss'>
     /deep/ .ivu-select-single .ivu-select-selection .ivu-select-placeholder, /deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value {
