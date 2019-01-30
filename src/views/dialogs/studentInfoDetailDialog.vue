@@ -168,10 +168,10 @@
                                        'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,
                                        'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i> -->
                                        <!-- <Icon class="mdLock" :type="item.verification ? 'ios-unlock-outline' : 'ios-lock-outline'" /> -->
-                                       <img class="lockImg" :src="item.type ? Lock : UnLock" />
+                                       <img class="lockImg" :src="item.type && item.lock_test? Lock : UnLock" />
                                     </Col>
                                     <Col :span="4">
-                                        <Button type='primary' :disabled="!(item.type)" @click='unlockTest(item)'>解锁测验</Button>
+                                        <Button type='primary' :disabled="!(item.type && item.lock_test)" @click='unlockTest(item)'>解锁测验</Button>
                                     </Col>
                                 </Row>
                             </Row>
@@ -241,12 +241,12 @@
   import UnLock from '../../assets/img/unlock.svg'
   import BaseInput from '../../components/BaseInput'
   import UploadButton from '../../components/UploadButton'
-  import {RemoveModal} from './mixins'
-  import {mapState, mapActions} from 'vuex'
+  import { RemoveModal } from './mixins'
+  import { mapState, mapActions } from 'vuex'
   import UploadPanel from '../../components/UploadPanel'
-  import {get_student_detail, delete_student} from '../../api/modules/tools_student'
-  import {get_list} from '../../api/modules/tools_product'
-  import {get_catalog} from '../../api/modules/tools_curriculum_catalog'
+  import { get_student_detail, delete_student } from '../../api/modules/tools_student'
+  import { get_list } from '../../api/modules/tools_product'
+  import { get_catalog} from '../../api/modules/tools_curriculum_catalog'
   import {
     get_student_online_curriculum,
     new_version_get_student_online_curriculum,
@@ -257,16 +257,16 @@
     add_offline_term_count,
     sub_offline_term_count
   } from '../../api/modules/tools_offline_curriculum'
-  import {get_student_task_list, get_student_work_list} from '../../api/modules/tools_task'
-  import {get_signup_info_by_userid, update_signup_info} from '../../api/modules/exam'
+  import { get_student_task_list, get_student_work_list } from '../../api/modules/tools_task'
+  import { get_signup_info_by_userid, update_signup_info } from '../../api/modules/exam'
   import {
     unlock_curriculum_video_test,
     new_version_unlock_curriculum_video_test
   } from '../../api/modules/tools_curriculum'
   import defaultAvator from '../../assets/img/side-menu/default-header.jpg'
-  import {doSortFormatCatalogList} from '../../components/Util'
-  import {Config} from '../../config/base'
-  import {MPop} from '../../components/MessagePop'
+  import { doSortFormatCatalogList } from '../../components/Util'
+  import { Config } from '../../config/base'
+  import { MPop } from '../../components/MessagePop'
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -276,7 +276,7 @@
       },
       payload: {}
     },
-    components: {'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel},
+    components: { 'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel },
     data() {
       return {
         studentInfoDetailDialog: true,
@@ -373,20 +373,14 @@
         }).then(res => {
           if (res.data.res_code == 1) {
             this.form3.dataList = res.data.msg;
-            // this.form3.dataList.map((item) => {
-            //     item.verification = !item.unlock && item.type ? false : true
-            // })
-            console.log(this.form3.dataList);
             this.loadingInstance.close();
             this.gettingLessons()
           }
         })
       },
-      gettingLessons(){
-
-      },
+      gettingLessons(){},
       changeRemainCountHandler(v) {
-        // this.showloading();
+        this.showloading();
         if (v > this.form6.real_count) {
           add_offline_term_count(this.payload.user_id).then(res => {
             if (res.data.res_code === 1) {
@@ -479,11 +473,6 @@
         }
         var d = (_total / c) * 100 + '%';
         var e = _total + '/' + c;
-        console.log({
-          progress: d,
-          specific: e,
-          allFinish: _total === c
-        });
         return {
           progress: d,
           specific: e,
@@ -538,12 +527,7 @@
                   this.loadingInstance.close();
                 }
               })
-              this.$Modal.info({
-                title: '提示',
-                content: '清除成功！',
-                onOk: () => {
-                }
-              });
+              this.$Modal.info({ title: '提示', content: '清除成功！' });
             })
           }
         })
@@ -608,7 +592,6 @@
         font-size: 14px;
         margin: 12px 0px;
     }
-
     .close {
         position: absolute;
         right: 7px;
@@ -616,12 +599,9 @@
         font-size: 31px;
         z-index: 3000;
     }
-
     /deep/ .ivu-modal-header {
         display: none;
     }
-
-    ;
     /deep/ .ivu-modal-body {
         padding: 0;
     }
@@ -630,12 +610,10 @@
         width: 80%;
         margin: 20px auto;
     }
-
     /deep/ .btn-content {
         display: flex;
         justify-content: center;
     }
-
     .sub-btn {
         background: #FB843E;
         border-radius: 4px;
@@ -643,20 +621,16 @@
         height: 36px;
         border: 0;
     }
-
     /deep/ .ivu-tabs-tabpane {
         padding: 0px 30px;
     }
-
     #student-info-detail-container {
         @import "base.scss";
-
         input,
         textarea {
             resize: none;
             outline: none;
         }
-
         .close-dialog-panel {
             position: absolute;
             top: 10px;
@@ -664,20 +638,17 @@
             z-index: 99999;
             font-size: 30px;
             cursor: pointer;
-
             &:before {
                 // color: #fff;
                 color: #757575;
             }
         }
-
         .progress {
             width: 300px;
             height: 10px;
             border: 1px solid #E5E5E5;
             position: relative;
             background: #F6F6F6;
-
             span:first-child {
                 position: absolute;
                 left: 0;
@@ -686,7 +657,6 @@
                 height: 100%;
                 background-color: #79BC51;
             }
-
             .specific {
                 display: inline-block;
                 position: absolute;
