@@ -53,9 +53,9 @@
                 </Button>
                 <Select :transfer='true' v-if='column.useCombo&&columnComboData&&comboDataList'
                         v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择"
-                        @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
+                     @on-open-change="selectOpenChange(row,column.comboListIndex)"  @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
                         :disabled="column.disabledFunc?column.disabledFunc(row):false">
-                    <Option v-for="(c,k) in columnComboData[column.comboListIndex]" :key="k"
+                    <Option v-for="(c,k) in selectList[column.comboListIndex]" :key="k"
                             :label="c[column.listLabel]" :value="c[column.listValue]"></Option>
                 </Select>
                 <DatePicker v-if='column.useTimePicker&&comboDataList' v-model="comboDataList[index]" type="datetime"
@@ -102,7 +102,7 @@
       return {
         dataChange: false,
         comboDataList: null,
-        selectOpenState: false
+        selectList: this.columnComboData
       }
     },
     props: {
@@ -244,6 +244,11 @@
         }
       }
     },
+    computed:{
+      //  selectList(){
+      //    return JSON.parse(JSON.stringify(this.columnComboData))
+      //  }
+    },
     methods: {
       isbaseType(d) {
         if (d instanceof Array && d instanceof Object) return d
@@ -339,8 +344,21 @@
       showBadgeCount(propname, row) {
         return row[propname];
       },
+      selectOpenChange(row,index){
+           this.selectList = this.$config.copy(this.columnComboData,[])
+           let list = this.selectList[index]
+           if(row && row.title &&  list && list.length > 0){
+              list.map((it,k) => {
+               if(it.title === row.title){
+                 list.splice(k,1) 
+               }
+              })
+           }
+      },
       comboChangeHandler(row, index, actionName, key) {
-        if (actionName) this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+        if (actionName) {
+          this.$store.dispatch(actionName, {id: row.id, key: key, value: this.comboDataList[index]})
+        }
       },
       getComboModel(prop, row) {
         return row[prop];

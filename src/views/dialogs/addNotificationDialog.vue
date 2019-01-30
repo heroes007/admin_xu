@@ -1,5 +1,5 @@
 <template>
-    <Modal :title="this.payload?'编辑通知':'创建通知'" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false">
+    <Modal :title="this.payload?'编辑通知':'创建通知'" width="600px" :footer-hide="true" v-model="manulActiveDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Input type="textarea" :autosize='false' placeholder="请输入内容" v-model="notificationContent"></Input>
@@ -77,6 +77,7 @@
 </script>
 
 <style scoped lang="scss">
+    /deep/ .ivu-modal-body{ padding: 20px; }
     #add-notification-container {
         @import "base.scss";
         .close-dialog-panel {
@@ -87,7 +88,6 @@
             font-size: 30px;
             cursor: pointer;
             &:before {
-                // color: #fff;
                 color: #757575;
             }
         }
@@ -103,9 +103,10 @@
         width: 560px;
         height: 220px;
         border-radius: 4px;
+        padding: 15px;
     }
     .notification-btn{
-        margin: 10px;
+        margin: 20px;
         float: right;
         width: 150px;
     }

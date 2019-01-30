@@ -279,34 +279,6 @@
   }
 
 </script>
-<style lang='scss'>
-    .manage-online-course {
-        .data-list {
-            .base-list-row {
-                .cell {
-                    .handle-component {
-                        margin-right: 20px;
+<style scoped lang='scss'>
 
-                        + .handle-component {
-                            + .handle-component {
-                                margin-right: 2px;
-                            }
-                        }
-
-                        &:last-child {
-                            margin-left: 30px;
-                        }
-                    }
-                }
-
-
-            }
-        }
-
-        .save-order {
-            position: absolute;
-            right: 30px;
-            top: 68px;
-        }
-    }
 </style>

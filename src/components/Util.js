@@ -114,11 +114,11 @@ export function reunitPrice(val) {
 }
 
 export const MenuList = [
-  {
-    name: 'manage-project',
-    title: '项目管理',
-    icon: 'md-folder'
-  },
+  // {
+  //   name: 'manage-project',
+  //   title: '项目管理',
+  //   icon: 'md-folder'
+  // },
   {
     name: '1',
     title: '超级管理员',
@@ -235,3 +235,4 @@ export const MenuList = [
       }]
   }
 ]
+

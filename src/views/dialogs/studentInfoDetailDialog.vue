@@ -83,61 +83,61 @@
                             </FormItem>
                         </Form>
                     </TabPane>
-                    <!--<TabPane label="报名信息" name="name2">-->
-                    <!--<Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>-->
-                    <!--该用户没有报名信息-->
-                    <!--</Row>-->
-                    <!--<Form ref="form2" :model="form2" :label-width="80" class="add-teacher-form" v-if='form2.user_id !== 0'>-->
-                    <!--<FormItem label="ID">-->
-                    <!--<Input v-model="form2.user_id" disabled></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="姓名">-->
-                    <!--<Input v-model="form2.realname" placeholder="请输入考生真实姓名"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="电话">-->
-                    <!--<Input v-model="form2.phone" placeholder="请输入考生电话"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="选择学段">-->
-                    <!--<Select v-model="form2.grade_id" placeholder="请选择学段">-->
-                    <!--<Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>-->
-                    <!--</Select>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="选择学科">-->
-                    <!--<Select v-model="form2.subject_id" placeholder="请选择学科">-->
-                    <!--<Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>-->
-                    <!--</Select>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="面试结果" v-if='form2.interview_state === 1'>-->
-                    <!--<Select v-model="form2.interview_result" placeholder="请选择学段">-->
-                    <!--<Option v-for="item in interviewResultList" :key="item.id" :label="item.name" :value="item.id"></Option>-->
-                    <!--</Select>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="笔试成绩">-->
-                    <!--<Input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="出生年月">-->
-                    <!--<DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form2.birth" :transfer="true"></DatePicker>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="邮箱">-->
-                    <!--<Input v-model="form2.email" placeholder="请输入考生邮箱"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="所在院校">-->
-                    <!--<Input v-model="form2.school" placeholder="请输入考生所在院校"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="所学专业">-->
-                    <!--<Input v-model="form2.school_subject" placeholder="请输入考生所学专业"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="在读年级">-->
-                    <!--<Input v-model="form2.school_grade" placeholder="请输入考生在读年级"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem label="期望就业城市" :label-width='100'>-->
-                    <!--<Input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></Input>-->
-                    <!--</FormItem>-->
-                    <!--<FormItem class="btn-content" :label-width='0'>-->
-                    <!--<Button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</Button>-->
-                    <!--</FormItem>-->
-                    <!--</Form>-->
-                    <!--</TabPane>-->
+                    <!-- <TabPane label="报名信息" name="name2">
+                        <Row class='empty-msg' type='flex' justify='center' align='middle' v-if='form2.user_id === 0'>
+                            该用户没有报名信息
+                        </Row>
+                        <Form ref="form2" :model="form2" :label-width="80" class="add-teacher-form" v-if='form2.user_id !== 0'>
+                            <FormItem label="ID">
+                                <Input v-model="form2.user_id" disabled></Input>
+                            </FormItem>
+                            <FormItem label="姓名">
+                                <Input v-model="form2.realname" placeholder="请输入考生真实姓名"></Input>
+                            </FormItem>
+                            <FormItem label="电话">
+                                <Input v-model="form2.phone" placeholder="请输入考生电话"></Input>
+                            </FormItem>
+                            <FormItem label="选择学段">
+                                <Select v-model="form2.grade_id" placeholder="请选择学段">
+                                    <Option v-for="item in gradeList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
+                            </FormItem>
+                            <FormItem label="选择学科">
+                                <Select v-model="form2.subject_id" placeholder="请选择学科">
+                                    <Option v-for="item in subjectList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
+                            </FormItem>
+                            <FormItem label="面试结果" v-if='form2.interview_state === 1'>
+                                <Select v-model="form2.interview_result" placeholder="请选择学段">
+                                    <Option v-for="item in interviewResultList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                </Select>
+                            </FormItem>
+                            <FormItem label="笔试成绩">
+                                <Input v-model="form2.written_result" placeholder="请输入考生笔试成绩"></Input>
+                            </FormItem>
+                            <FormItem label="出生年月">
+                                <DatePicker type="daterange" placeholder="选择日期" style="width: 200px" v-model="form2.birth" :transfer="true"></DatePicker>
+                            </FormItem>
+                            <FormItem label="邮箱">
+                                <Input v-model="form2.email" placeholder="请输入考生邮箱"></Input>
+                            </FormItem>
+                            <FormItem label="所在院校">
+                                <Input v-model="form2.school" placeholder="请输入考生所在院校"></Input>
+                            </FormItem>
+                            <FormItem label="所学专业">
+                                <Input v-model="form2.school_subject" placeholder="请输入考生所学专业"></Input>
+                            </FormItem>
+                            <FormItem label="在读年级">
+                                <Input v-model="form2.school_grade" placeholder="请输入考生在读年级"></Input>
+                            </FormItem>
+                            <FormItem label="期望就业城市" :label-width='100'>
+                                <Input v-model="form2.ex_citys" placeholder="请输入考生期望就业城市"></Input>
+                            </FormItem>
+                            <FormItem class="btn-content" :label-width='0'>
+                                <Button type="primary" class="sub-btn" @click="saveHandler2" :v-if='false'>保存</Button>
+                            </FormItem>
+                        </Form>
+                    </TabPane> -->
                     <TabPane label="线上课" name="name3">
                         <Row>
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
@@ -164,13 +164,14 @@
                                     </Col>
                                     <Col :span="4">
                                         <!--<span>{{item.unlock ? '已解锁'  : '未解锁'}}</span>-->
-                                        <i class="mdLock"
-                                           :class="{'xght-webfont-lock':!item.unlock,
-                                          'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids, item.see_pdf_ids,item.see_img_ids,item.see_html_ids, item.see_audio_ids).allFinish && item.unlock,
-                                          'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i>
+                                       <!-- <i class="mdLock" :class="{'xght-webfont-lock':!item.unlock,
+                                       'xght-webfont-play-sign':!handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish && item.unlock,
+                                       'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i> -->
+                                       <!-- <Icon class="mdLock" :type="item.verification ? 'ios-unlock-outline' : 'ios-lock-outline'" /> -->
+                                       <img class="lockImg" :src="item.type && item.lock_test? Lock : UnLock" />
                                     </Col>
                                     <Col :span="4">
-                                        <Button type='primary' :disabled="!item.type" @click='unlockTest(item)'>解锁测验</Button>
+                                        <Button type='primary' :disabled="!(item.type && item.lock_test)" @click='unlockTest(item)'>解锁测验</Button>
                                     </Col>
                                 </Row>
                             </Row>
@@ -236,14 +237,16 @@
     </Modal>
 </template>
 <script>
+  import Lock from '../../assets/img/lock.svg'
+  import UnLock from '../../assets/img/unlock.svg'
   import BaseInput from '../../components/BaseInput'
   import UploadButton from '../../components/UploadButton'
-  import {RemoveModal} from './mixins'
-  import {mapState, mapActions} from 'vuex'
+  import { RemoveModal } from './mixins'
+  import { mapState, mapActions } from 'vuex'
   import UploadPanel from '../../components/UploadPanel'
-  import {get_student_detail, delete_student} from '../../api/modules/tools_student'
-  import {get_list} from '../../api/modules/tools_product'
-  import {get_catalog} from '../../api/modules/tools_curriculum_catalog'
+  import { get_student_detail, delete_student } from '../../api/modules/tools_student'
+  import { get_list } from '../../api/modules/tools_product'
+  import { get_catalog} from '../../api/modules/tools_curriculum_catalog'
   import {
     get_student_online_curriculum,
     new_version_get_student_online_curriculum,
@@ -254,16 +257,16 @@
     add_offline_term_count,
     sub_offline_term_count
   } from '../../api/modules/tools_offline_curriculum'
-  import {get_student_task_list, get_student_work_list} from '../../api/modules/tools_task'
-  import {get_signup_info_by_userid, update_signup_info} from '../../api/modules/exam'
+  import { get_student_task_list, get_student_work_list } from '../../api/modules/tools_task'
+  import { get_signup_info_by_userid, update_signup_info } from '../../api/modules/exam'
   import {
     unlock_curriculum_video_test,
     new_version_unlock_curriculum_video_test
   } from '../../api/modules/tools_curriculum'
   import defaultAvator from '../../assets/img/side-menu/default-header.jpg'
-  import {doSortFormatCatalogList} from '../../components/Util'
-  import {Config} from '../../config/base'
-  import {MPop} from '../../components/MessagePop'
+  import { doSortFormatCatalogList } from '../../components/Util'
+  import { Config } from '../../config/base'
+  import { MPop } from '../../components/MessagePop'
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -273,11 +276,12 @@
       },
       payload: {}
     },
-    components: {'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel},
+    components: { 'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel },
     data() {
       return {
         studentInfoDetailDialog: true,
         activeName: 'name1',
+        UnLock,Lock,
         form1: {
           project_id: this.$store.state.project.select_project_id,
           grade_id: 0,
@@ -371,11 +375,13 @@
             console.log(res.data,'111111111')
             this.form3.dataList = res.data.msg;
             this.loadingInstance.close();
+            this.gettingLessons()
           }
         })
       },
+      gettingLessons(){},
       changeRemainCountHandler(v) {
-        // this.showloading();
+        this.showloading();
         if (v > this.form6.real_count) {
           add_offline_term_count(this.payload.user_id).then(res => {
             if (res.data.res_code === 1) {
@@ -393,9 +399,8 @@
         }
       },
       changeTabHandler(tab, event) {
-        console.log(tab);
+        this.showloading();
         if (tab === 'name2' && this.form2.user_id === 0) {
-          this.showloading();
           get_signup_info_by_userid(this.payload.user_id).then(res => {
             if (res.data.res_code === 1) {
               this.form2 = res.data.msg;
@@ -405,21 +410,7 @@
               this.loadingInstance.close();
             }
           })
-        } else if (tab === 'name3' && this.form3.dataList.length === 0) {
-          this.showloading();
-          // get_student_online_curriculum({
-          // new_version_get_student_online_curriculum({
-          //     product_id:this.form3.product_id,
-          //     user_id: this.payload.user_id,
-          //     project_id: this.payload.project_id
-          // }).then(res => {
-          //     if (res.data.res_code == 1) {
-          //         this.form3.dataList = res.data.msg;
-          //         this.loadingInstance.close();
-          //     }
-          // })
         } else if (tab === 'name4' && this.form6.dataList.length === 0) {
-          this.showloading();
           get_student_offline_curriculum_list(this.payload.user_id, this.payload.project_id).then(res => {
             if (res.data.res_code == 1) {
               this.form6.dataList = res.data.msg.offline_terms;
@@ -429,7 +420,6 @@
             }
           })
         } else if (tab === 'name5' && this.form4.dataList.length === 0) {
-          this.showloading();
           get_student_task_list(this.payload.project_id, this.payload.user_id).then(res => {
             if (res.data.res_code == 1) {
               this.form4.dataList = res.data.msg;
@@ -437,7 +427,6 @@
             }
           })
         } else if (tab === 'name6' && this.form5.dataList.length === 0) {
-          this.showloading();
           get_student_work_list(this.payload.project_id, this.payload.user_id).then(res => {
             if (res.data.res_code == 1) {
               this.form5.dataList = res.data.msg;
@@ -499,6 +488,7 @@
             title: '提示',
             content: '解锁测验' + text
           });
+          if(code === 1) this.changeProductHandler()
         })
       },
       handleUploadComplete(url) {
@@ -538,12 +528,7 @@
                   this.loadingInstance.close();
                 }
               })
-              this.$Modal.info({
-                title: '提示',
-                content: '清除成功！',
-                onOk: () => {
-                }
-              });
+              this.$Modal.info({ title: '提示', content: '清除成功！' });
             })
           }
         })
@@ -592,57 +577,22 @@
   }
 </script>
 <style lang="scss" scoped>
-    .on_Select_item {
-        width: 200px
-    }
-
-    .avator > img {
-        width: 40px;
-        height: 40px;
-        border-radius: 20px
-    }
-
-    .mdLock {
-        font-size: 18px
-    }
-
-    .course-item {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        display: flex;
-        align-items: center;
-    }
-
-    /deep/ .ivu-tabs-bar {
-        height: 50px;
-    }
-
-    /deep/ .ivu-tabs-nav .ivu-tabs-tab {
-        height: 50px;
-        line-height: 34px;
-        font-size: 16px
-    }
-
-    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
-        color: #FC7643
-    }
-
-    /deep/ .ivu-input-number {
-        width: 200px !important;
-        margin-left: 20px;
-    }
-
-    .emptyFontSize {
-        font-size: 14px
-    }
-
+    .lockImg { width: 24px;height: 24px; }
+    .on_Select_item { width: 200px }
+    .avator>img { width: 40px;height: 40px; border-radius: 20px }
+    .mdLock{ font-size: 24px }
+    .course-item{ padding-top: 10px; padding-bottom: 10px; display: flex; align-items: center;}
+    /deep/ .ivu-tabs-bar{ height: 50px ;}
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab{ height: 50px; line-height: 34px; font-size: 16px}
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #FC7643 }
+    /deep/ .ivu-input-number { width: 200px !important; margin-left: 20px; }
+    .emptyFontSize { font-size: 14px }
     .title {
         text-align: left;
         color: #48576a;
         font-size: 14px;
         margin: 12px 0px;
     }
-
     .close {
         position: absolute;
         right: 7px;
@@ -650,12 +600,9 @@
         font-size: 31px;
         z-index: 3000;
     }
-
     /deep/ .ivu-modal-header {
         display: none;
     }
-
-    ;
     /deep/ .ivu-modal-body {
         padding: 0;
     }
@@ -664,12 +611,10 @@
         width: 80%;
         margin: 20px auto;
     }
-
     /deep/ .btn-content {
         display: flex;
         justify-content: center;
     }
-
     .sub-btn {
         background: #FB843E;
         border-radius: 4px;
@@ -677,20 +622,16 @@
         height: 36px;
         border: 0;
     }
-
     /deep/ .ivu-tabs-tabpane {
         padding: 0px 30px;
     }
-
     #student-info-detail-container {
         @import "base.scss";
-
         input,
         textarea {
             resize: none;
             outline: none;
         }
-
         .close-dialog-panel {
             position: absolute;
             top: 10px;
@@ -698,20 +639,17 @@
             z-index: 99999;
             font-size: 30px;
             cursor: pointer;
-
             &:before {
                 // color: #fff;
                 color: #757575;
             }
         }
-
         .progress {
             width: 300px;
             height: 10px;
             border: 1px solid #E5E5E5;
             position: relative;
             background: #F6F6F6;
-
             span:first-child {
                 position: absolute;
                 left: 0;
@@ -720,7 +658,6 @@
                 height: 100%;
                 background-color: #79BC51;
             }
-
             .specific {
                 display: inline-block;
                 position: absolute;
