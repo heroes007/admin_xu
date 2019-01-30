@@ -170,8 +170,7 @@
                                           'xght-webfont-ok-sign':handleResultProgress(item.content_count, item.complete_video_test_ids, item.see_video_ids,item.see_pdf_ids,item.see_img_ids,item.see_html_ids,item.see_audio_ids).allFinish}"></i>
                                     </Col>
                                     <Col :span="4">
-                                        <Button type='primary' :disabled="!item.unlock" @click='unlockTest(item)'>解锁测验
-                                        </Button>
+                                        <Button type='primary' :disabled="!item.type" @click='unlockTest(item)'>解锁测验</Button>
                                     </Col>
                                 </Row>
                             </Row>
@@ -369,6 +368,7 @@
           project_id: this.payload.project_id
         }).then(res => {
           if (res.data.res_code == 1) {
+            console.log(res.data,'111111111')
             this.form3.dataList = res.data.msg;
             this.loadingInstance.close();
           }
