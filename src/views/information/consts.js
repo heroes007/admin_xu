@@ -36,6 +36,6 @@ let d = [{
     }]
 }]
 export const taskHeadData = (type) => {
-    let d2 = d.splice(3,0,item)
+    if(d[3] !== item) var d2 = d.splice(3,0,item)
     return type ? d : d2
 }

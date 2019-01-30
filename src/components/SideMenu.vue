@@ -60,8 +60,8 @@
         data() {
             return {
                 use_router: true,
-                activeIndex: "manage-project",
-                menuOpenName: ['manage-project'],
+                activeIndex: "manage-production",
+                menuOpenName: ['6','2'],
                 menuList: MenuList
             }
         },
@@ -114,6 +114,7 @@
                 // return true;
             },
             openChange(name) {
+                console.log(name,'name');
                 localStorage.setItem('menuOpenName', JSON.stringify(name));
                 this.menuOpenName = name;
             },

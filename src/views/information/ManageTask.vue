@@ -5,11 +5,14 @@
             <category-item v-for='item in categoryList' :key="item.id" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
                 :selected='getSelected(item.id, item.type)' @select='changeCategory(item)'/>
         </div>
-        <div class="create-panel"><Button @click="addTask()">创建</Button></div>
-        <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler' class='data-list light-header' :table-data='dataList'
-            :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
-        <div class='manage-online-course'>
+        <div class="create-panel">
+            <Button @click="addTask()">创建</Button>
         </div>
+        <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler'
+                   class='data-list light-header' :table-data='dataList'
+                   :header-data='dataHeader' :column-formatter='listColumnFormatter'
+                   :column-formatter-data='listColumnFormatterData'></data-list>
+        <div class='manage-online-course'></div>
     </div>
 </template>
 

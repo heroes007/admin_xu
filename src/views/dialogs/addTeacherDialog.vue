@@ -93,7 +93,7 @@ export default {
                         vm.handleClose();
                         vm.showPop('保存成功！',1000);
                     };
-                   if(this.loadingInstance) this.loadingInstance.close();
+                       if(this.loadingInstance) this.loadingInstance.close();
                 }
             })
         }

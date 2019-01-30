@@ -87,7 +87,8 @@
                         </Row>
                         <Row>
                             <FormItem class="btns">
-                                <Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>
+                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
+                                <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
                             </FormItem>
                         </Row>
                     </Form>
