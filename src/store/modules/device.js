@@ -1,13 +1,11 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 
 const state = {
     device_type:'web'
 }
 
-// getters
+
 // actions
 const actions = {
     set_device_type({ commit }, param) {

@@ -85,10 +85,8 @@
                             <span slot="open">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.onText}}</span>
                             <span slot="close">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.offText}}</span>
                         </Switch>
-                        <Checkbox v-model='row[btn.switchKey]'
-                                  @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
-                                  v-if='btn.useCheckBox'>{{btn.text}}
-                        </Checkbox>
+                        <Checkbox v-model='row[btn.switchKey]' @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
+                            v-if='btn.useCheckBox'>{{btn.text}}</Checkbox>
                     </div>
                 </div>
             </template>
@@ -98,13 +96,13 @@
 </template>
 <script>
   import baseList from './BaseList.vue'
-  import api from '../api/modules/config.js'
   export default {
     name: 'baseList',
     data() {
       return {
         dataChange: false,
-        comboDataList: null
+        comboDataList: null,
+        selectOpenState: false
       }
     },
     props: {

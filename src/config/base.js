@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 export const Config = {
     //apiHost: 'http://api.web.laoshi123.com/',
     apiHost:'http://192.168.1.21:4000/',

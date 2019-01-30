@@ -11,7 +11,7 @@
                 <data-list class='data-list' :table-data='currentProduction.online_curriculum_list' :header-data='onlineHeader'
                  :columnComboData='columnComboData' :comboModelList='comboDataList' @delete='deleteHandler' />
             </TabPane>
-            <TabPane class='offline-content' label="线下课" name="offline"></TabPane>
+            <TabPane class='offline-content' disabled label="线下课" name="offline"></TabPane>
         </Tabs>
     </div>
 </template>
@@ -62,20 +62,27 @@
                 return parseInt(this.$route.params.id);
             },
             currentProduction() {
+                let tit = null
                 for (var i = 0; i < this.productionList.length; i++) {
-                    if (this.productionList[i].id == this.productionId)  return this.productionList[i];
+                    if (this.productionList[i].id == this.productionId){
+                        tit = this.productionList[i];
+                        console.log(tit,'tit')
+                    }
                 }
-                return { title: '', online_curriculum_list: [] };
+                if(tit)  return tit.hasOwnProperty('online_curriculum_list') ? tit : {...tit,online_curriculum_list: []}
+                else  return {title: '',online_curriculum_list: []}
             },
             comboDataList() {
                 var r = [];
-                var v = []
-                for (var i = 0; i < this.currentProduction.online_curriculum_list.length; i++) {
-                    v = [];
-                    for (var j = 0; j < this.currentProduction.online_curriculum_list[i].pre_curriculums.length; j++) {
-                        v.push(this.currentProduction.online_curriculum_list[i].pre_curriculums[j]);
+                var v = [];
+                if(Array.isArray(this.currentProduction.online_curriculum_list) && this.currentProduction.online_curriculum_list.length>0){
+                    for (var i = 0; i < this.currentProduction.online_curriculum_list.length; i++) {
+                        v = [];
+                        for (var j = 0; j < this.currentProduction.online_curriculum_list[i].pre_curriculums.length; j++) {
+                            v.push(this.currentProduction.online_curriculum_list[i].pre_curriculums[j]);
+                        }
+                        r.push(v);
                     }
-                    r.push(v);
                 }
                 return r;
             },
@@ -91,12 +98,17 @@
                         this.loadingInstance.close()
                     }, Config.base_timeout);
                 }else if(this.loadingInstance) this.loadingInstance.close()
+            },
+            $route(val){
+                if(val.name == "manage-production-curriculum"){
+                    if ( this.currentProduction.online_curriculum_list.length === 0)  this.get_production_curriculums(this.productionId);
+                }
             }
         },
         methods: {
             ...mapActions([ 'get_production_curriculums', 'get_production_list', 'delete_production_curriculums', 'set_cur_production' ]),
             backClickHandler() {
-                this.$router.replace({ name: 'manage-production' });
+                this.$router.push({ name: 'manage-production' });
             },
             addProductionCurriculum() {
                 this.handleSelModal(SELECT_CURRICULUM,{productionId:this.productionId,list:this.currentProduction.online_curriculum_list});
@@ -131,7 +143,7 @@
                     }
                 });
             }
-            else if (this.currentProduction.online_curriculum_list.length === 0)  this.get_production_curriculums(this.productionId);
+            else if ( Array.isArray(this.currentProduction.online_curriculum_list) && this.currentProduction.online_curriculum_list.length === 0)  this.get_production_curriculums(this.productionId);
         }
     }
 

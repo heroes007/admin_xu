@@ -1,6 +1,3 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_tutor_task_list, readover } from '../../api/modules/tools_task'
@@ -11,7 +8,7 @@ const state = {
     data_list:[]
 }
 
-// getters
+
 // actions
 const actions = {
     get_my_assignment_list({ commit }, params) {

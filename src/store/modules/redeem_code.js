@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import { get_group_list, change_code_state, create_code } from '../../api/modules/tools_redeem_code'
@@ -13,7 +11,7 @@ const state = {
     ]
 }
 
-// getters
+
 // actions
 const actions = {
     clear_store({ commit }) {

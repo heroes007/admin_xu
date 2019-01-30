@@ -24,7 +24,7 @@ const state = {
     role_id:0
 }
 
-// getters
+
 // actions
 const actions = {
         get_user_list({

@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import {
     get_production_group_list,
@@ -17,7 +15,7 @@ const state = {
     totalCount:0,
     isLoading: false
 }
-// getters
+
 // actions
 const actions = {
     get_production_group_list({

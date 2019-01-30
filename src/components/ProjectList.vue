@@ -7,6 +7,7 @@
               <div @click='changeSelectProject(item.id)'>
                   <h3>{{item.name}}<span>{{index | Numfilter}}</span></h3>
               </div>
+              <Divider />
           </Card>
       </div>
     </div>
@@ -16,7 +17,6 @@
 import { mapState, mapActions } from "vuex";
 import { Config } from "../config/base";
 import { doTimeFormat } from "../components/Util";
-
 export default {
   computed: {
     ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
@@ -56,7 +56,7 @@ export default {
 <style lang="scss">
 .project-panel {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #f9f9f9;
   h1 {
     margin-top: 0;

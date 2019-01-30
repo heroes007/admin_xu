@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import api from '../../api/modules/config'
 import {
@@ -41,7 +39,7 @@ const state = {
     }]
 }
 var catch_page_list_data = {}
-    // getters
+    
     // actions
 const actions = {
     clear_store({ commit }) {

@@ -1,7 +1,7 @@
 # dscj-admin-xg
 
 > vue2.0 全家桶启动模板
-Vue2.0+vue-router2.0+Vuex2.0+Vue-resource+element-ui
+Vue2.0+vue-router2.0+Vuex2.0+iView
 
 ## Build Setup
 
@@ -48,9 +48,9 @@ npm run server
 >* #### 创建学员
 >* #### 查看学员  -- 查看详情 -- 线上课 -- 解锁测验
 
+
 ### 待解决bug
-#### 1.产品信息 -- 状态state为3时，没有数据；点击查看，若没有线上课，报错（length of undefined）；分页
-#### 2.学员管理 -- 添加线上课添加解锁课程
-#### 3.线上课 -- 添加讲师 loading持续存在
-#### 4.任务包
-#### 5.我的审核
+<!-- #### 1.产品信息 -- 状态state为3时，没有数据；点击查看，若没有线上课，报错（length of undefined）；分页 -->
+#### 2.学员管理 -- 添加线上课添加解锁课程  
+<!-- #### 3.线上课 -- 添加讲师 loading持续存在 -->
+<!-- #### 4.任务包 -->

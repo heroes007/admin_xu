@@ -1,6 +1,4 @@
-/**
- * Created by lesonli on 2016/11/17.
- */
+
 import * as types from '../types'
 import {
     get_project_list
@@ -15,7 +13,7 @@ const state = {
     task_project_id: '',
     isLoading: false
 }
-// getters
+
 // actions
 
 const getters = {
