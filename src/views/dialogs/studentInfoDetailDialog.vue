@@ -372,6 +372,7 @@
           project_id: this.payload.project_id
         }).then(res => {
           if (res.data.res_code == 1) {
+            console.log(res.data,'111111111')
             this.form3.dataList = res.data.msg;
             this.loadingInstance.close();
             this.gettingLessons()
@@ -586,8 +587,8 @@
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #FC7643 }
     /deep/ .ivu-input-number { width: 200px !important; margin-left: 20px; }
     .emptyFontSize { font-size: 14px }
-    .title { 
-        text-align: left;     
+    .title {
+        text-align: left;
         color: #48576a;
         font-size: 14px;
         margin: 12px 0px;

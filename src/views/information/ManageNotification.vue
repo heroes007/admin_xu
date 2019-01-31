@@ -329,4 +329,8 @@
             }
         }
     }
+    /deep/ .ivu-table-cell div{
+        /*justify-content: space-around;*/
+        justify-content: center;
+    }
 </style>
