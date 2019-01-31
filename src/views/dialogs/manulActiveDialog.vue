@@ -4,7 +4,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class='search-bar' type='flex' justify='center' align='middle'>
-                    <Input placeholder="请输入用户名" v-model="searchData">
+                    <Input placeholder="请输入搜索内容" v-model="searchData">
                         <Select v-model="searchType" slot="prepend" placeholder="请选择">
                             <Option label="ID" value="id"></Option>
                             <Option label="昵称" value="nickname"></Option>
@@ -18,13 +18,7 @@
                    @on-selection-change="handleSelectionChange">
           </Table>
                 <Row class="course-page">
-                        <Page
-                                @on-page-size-change="handleSizeChange"
-                                @on-change="handleCurrentChange"
-                                :current="curPage"
-                                :page-size="pageSize"
-                              size="small"   :total="totalNum">
-                        </Page>
+                        <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size="pageSize" size="small"   :total="totalNum" style=""></Page>
                 </Row>
                 <Row class="btns">
                     <Button class="send-btn" @click="handleSendTask">发送</Button>
@@ -61,7 +55,7 @@ let tooltips = { ellipsis: true, tooltip: true }
         multipleSelection: [],
         // curPage: 1,
         checked: false,
-         courseColumns: [ 
+         courseColumns: [
                     {
                         title: 'ID',
                         key: 'user_id'

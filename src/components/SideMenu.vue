@@ -53,7 +53,7 @@
 <script>
     import api from '../api/modules/config'
     import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-    const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
+    // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
     import { mapActions,mapGetters } from 'vuex'
     import { MenuList } from './Util'
     export default {
@@ -154,24 +154,24 @@
         mounted() {
             this.initMenu();
             if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
-            server.on('connect', () => {
-                console.log(server.id); // 'G5p5...'
-            });
-            server.on(this.userInfo.user_id, data => {
-                    this.$Notice.open({
-                    title: '通知',
-                    desc: '你收到一条新私信，请在我的通知里查看。'
-                });
-                this.add_unread_count(data);
-            });
-            server.on('disconnect', res => {
-                console.log('disconnect')
-                server.disconnect();
-                server.close();
-            });
-            server.on('error', error => {
-                console.log(error);
-            })
+            // server.on('connect', () => {
+            //     console.log(server.id); // 'G5p5...'
+            // });
+            // server.on(this.userInfo.user_id, data => {
+            //         this.$Notice.open({
+            //         title: '通知',
+            //         desc: '你收到一条新私信，请在我的通知里查看。'
+            //     });
+            //     this.add_unread_count(data);
+            // });
+            // server.on('disconnect', res => {
+            //     console.log('disconnect')
+            //     server.disconnect();
+            //     server.close();
+            // });
+            // server.on('error', error => {
+            //     console.log(error);
+            // })
             this.get_unread_list();
             if(localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
             this.$nextTick(()=>{

@@ -46,7 +46,7 @@
     import { Config } from '../../config/base'
     import { send_by_project_id } from '../../api/modules/tools_sys_msg'
     import defaultHeader from '../../assets/img/side-menu/default-header.jpg'
-    const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
+    // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
     export default {
         mixins: [Dialog],
         components: { 'header-component': Header, 'data-list': BaseList },
@@ -174,7 +174,7 @@
             }
         },
         methods: {
-            ...mapActions([ 'get_notification_list', 'delete_notification', 'get_project_list','get_message_student_list', 
+            ...mapActions([ 'get_notification_list', 'delete_notification', 'get_project_list','get_message_student_list',
             'get_private_msg_list', 'send_private_msg', 'add_private_msg', 'get_grade_list', 'get_subject_list' ]),
             updateWrapper() {
                 var vm = this;
@@ -253,32 +253,32 @@
                 this.get_message_student_list(this.projectId);
             }
 
-            server.on('connect', () => {
-                console.log(server.id); // 'G5p5...'
-            });
-            server.on(this.userInfo.user_id, data => {
-                if(this.selectStudent)
-                {
-                   if (data.from_user_id === this.selectStudent.user_id)
-                        this.add_private_msg(data);
-                }
-            });
-
-            server.on('disconnect', res => {
-                console.log('disconnect')
-                server.disconnect();
-                server.close();
-            });
-            server.on('error', error => {
-                console.log(error);
-            })
+            // server.on('connect', () => {
+            //     console.log(server.id); // 'G5p5...'
+            // });
+            // server.on(this.userInfo.user_id, data => {
+            //     if(this.selectStudent)
+            //     {
+            //        if (data.from_user_id === this.selectStudent.user_id)
+            //             this.add_private_msg(data);
+            //     }
+            // });
+            //
+            // server.on('disconnect', res => {
+            //     console.log('disconnect')
+            //     server.disconnect();
+            //     server.close();
+            // });
+            // server.on('error', error => {
+            //     console.log(error);
+            // })
         }
     }
 
 </script>
 <style scoped lang='scss'>
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #F06B1D }
-    /deep/.ivu-tabs-tab{
+    /deep/ .ivu-tabs-tab{
         text-align: center;
         line-height: 40px;
         height: 40px;

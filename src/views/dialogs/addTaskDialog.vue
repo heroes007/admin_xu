@@ -34,17 +34,17 @@
                             <!--<el-radio :label="3">前置课激活</el-radio>-->
                         </RadioGroup>
                    </FormItem>
-                    <FormItem v-show="payload.selectedType == 1 && nextStep == 0" v-if="payload.selectedType == 1" label="前置课">
-                        <Select v-model="form.activity_param" placeholder="请选择" :disabled="disabled1">
+                    <FormItem v-show="payload.selectedType == 1 && nextStep == 0" v-if="payload.selectedType == 1" label="前置课" prop="activity_param">
+                            <Select v-model="form.activity_param" placeholder="请选择" :disabled="disabled1">
                             <Option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></Option>
                         </Select>
                    </FormItem>
-                    <FormItem :class="{'inter-data': form.activity_type == 2}" v-show="payload.selectedType == 0 && nextStep == 0" v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : form.activity_type == 3 ? '前置课': ''" prop="activity_param" required>
-                        <Input v-if="form.activity_type == 2" v-model="form.activity_param" :disabled="disabled" placeholder="请输入天数"></Input>
-                        <Select v-if="form.activity_type == 3" v-model="form.activity_param" placeholder="请选择" :disabled="disabled">
-                            <Option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></Option>
-                        </Select>
-                   </FormItem>
+                    <!--<FormItem :class="{'inter-data': form.activity_type == 2}" v-show="payload.selectedType == 0 && nextStep == 0" v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : form.activity_type == 3 ? '前置课': ''" prop="activity_param" required>-->
+                        <!--<Input v-if="form.activity_type == 2" v-model="form.activity_param" :disabled="disabled" placeholder="请输入天数"></Input>-->
+                        <!--<Select v-if="form.activity_type == 3" v-model="form.activity_param" placeholder="请选择" :disabled="disabled">-->
+                            <!--<Option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></Option>-->
+                        <!--</Select>-->
+                   <!--</FormItem>-->
                     <FormItem v-show="nextStep == 1" :label="typeStr('','内容')" prop="task_require">
                         <!--<Input type="textarea" :rows="6" :placeholder="typeStr('请填写','内容')" v-model="form.task_require">
                         </Input>-->
@@ -171,9 +171,10 @@ export default {
                 //     trigger: 'change'
                 // }],
                 activity_param:[{
-                  message: '',
-                  trigger: '',
-                  type: ''
+                  message: '请选择前置课',
+                  trigger: 'change',
+                  type: 'blur',
+                  required: true
                 }],
                 task_require: [{
                     required: false,
