@@ -47,7 +47,7 @@
                 return this.$store.state.task.task_category_list;
             },
             dataHeader() {
-                let v = this.selectedCategory || this.selectedCategory && this.selectedCategory.type
+                let v = this.selectedCategory && this.selectedCategory.type
                 return taskHeadData(v)
             },
             listColumnFormatter() {

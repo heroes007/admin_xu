@@ -46,7 +46,7 @@
     import { Config } from '../../config/base'
     import { send_by_project_id } from '../../api/modules/tools_sys_msg'
     import defaultHeader from '../../assets/img/side-menu/default-header.jpg'
-    const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
+    // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
     export default {
         mixins: [Dialog],
         components: { 'header-component': Header, 'data-list': BaseList },
@@ -253,25 +253,25 @@
                 this.get_message_student_list(this.projectId);
             }
 
-            server.on('connect', () => {
-                console.log(server.id); // 'G5p5...'
-            });
-            server.on(this.userInfo.user_id, data => {
-                if(this.selectStudent)
-                {
-                   if (data.from_user_id === this.selectStudent.user_id)
-                        this.add_private_msg(data);
-                }
-            });
+            // server.on('connect', () => {
+            //     console.log(server.id); // 'G5p5...'
+            // });
+            // server.on(this.userInfo.user_id, data => {
+            //     if(this.selectStudent)
+            //     {
+            //        if (data.from_user_id === this.selectStudent.user_id)
+            //             this.add_private_msg(data);
+            //     }
+            // });
 
-            server.on('disconnect', res => {
-                console.log('disconnect')
-                server.disconnect();
-                server.close();
-            });
-            server.on('error', error => {
-                console.log(error);
-            })
+            // server.on('disconnect', res => {
+            //     console.log('disconnect')
+            //     server.disconnect();
+            //     server.close();
+            // });
+            // server.on('error', error => {
+            //     console.log(error);
+            // })
         }
     }
 

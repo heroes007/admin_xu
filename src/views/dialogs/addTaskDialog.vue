@@ -31,20 +31,20 @@
                         <RadioGroup v-model="form.activity_type" class="float_left" :disabled="disabled" @on-change="handleChangeType">
                             <Radio :label="1">手动激活</Radio>
                             <!--<Radio :label="2">定时激活</Radio>-->
-                            <!--<el-radio :label="3">前置课激活</el-radio>-->
+                            <!--<Radio :label="3">前置课激活</el-radio>-->
                         </RadioGroup>
                    </FormItem>
-                    <FormItem v-show="payload.selectedType == 1 && nextStep == 0" v-if="payload.selectedType == 1" label="前置课">
+                    <FormItem v-show="payload.selectedType == 1 && nextStep == 0" v-if="payload.selectedType == 1" label="前置课" prop="activity_param" >
                         <Select v-model="form.activity_param" placeholder="请选择" :disabled="disabled1">
                             <Option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></Option>
                         </Select>
                    </FormItem>
-                    <FormItem :class="{'inter-data': form.activity_type == 2}" v-show="payload.selectedType == 0 && nextStep == 0" v-if="!(form.activity_type == 1)" :disabled="disabled" :label="form.activity_type == 2 ? '学员入学后:' : form.activity_type == 3 ? '前置课': ''" prop="activity_param" required>
+                    <!-- <FormItem :class="{'inter-data': form.activity_type == 2}" v-show="payload.selectedType == 0 && nextStep == 0" v-if="!(form.activity_type == 1)" :label="form.activity_type == 2 ? '学员入学后:' : form.activity_type == 3 ? '前置课': ''" prop="activity_param" :required=true>
                         <Input v-if="form.activity_type == 2" v-model="form.activity_param" :disabled="disabled" placeholder="请输入天数"></Input>
                         <Select v-if="form.activity_type == 3" v-model="form.activity_param" placeholder="请选择" :disabled="disabled">
                             <Option v-for="item in preCurriculum" :key="item.id" :label="item.title" :value="item.id"></Option>
                         </Select>
-                   </FormItem>
+                   </FormItem> -->
                     <FormItem v-show="nextStep == 1" :label="typeStr('','内容')" prop="task_require">
                         <!--<Input type="textarea" :rows="6" :placeholder="typeStr('请填写','内容')" v-model="form.task_require">
                         </Input>-->
@@ -62,7 +62,7 @@
                             <Row class="file-item" v-for="(item,index) in form.upload_files" :key="item.id">
                                 <span class="filename">{{item.name}}</span>
                                 <Icon class="ios-trash-outline" type="ios-trash-outline" @click="handleDeleteUploadItem(index)"></Icon>
-                                <span class="datetime">{{ item.datetime | zonetime }}</span>
+                                <span class="datetime">{{ item.datetime }}</span>
                             </Row>
                         </Row>
                    </FormItem>
@@ -82,23 +82,14 @@
 import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
 import Editor from '../../components/Editor'
-import {
-    RemoveModal
-} from './mixins'
-import {
-    mapActions,
-    mapState
-} from 'vuex';
-import {
-    get_task_by_id,
-    get_curriculumlist
-} from '../../api/modules/tools_task'
+import { RemoveModal } from './mixins'
+import { mapActions, mapState } from 'vuex';
+import { get_task_by_id, get_curriculumlist } from '../../api/modules/tools_task'
 import dateFormat from '../../config/dateFormat'
-    import {
-    MPop
-} from '../../components/MessagePop'
+import { MPop } from '../../components/MessagePop'
 export default {
     mixins: [RemoveModal,MPop],
+    components: { 'base-input': BaseInput, 'upload-panel': UploadPanel, 'text-editor':Editor },
     props: {
         remove: {
             type: String
@@ -171,9 +162,10 @@ export default {
                 //     trigger: 'change'
                 // }],
                 activity_param:[{
-                  message: '',
-                  trigger: '',
-                  type: ''
+                  type: 'number',
+                  message: '请选择前置课',
+                  required: true,
+                  trigger: 'change'
                 }],
                 task_require: [{
                     required: false,
@@ -212,19 +204,10 @@ export default {
                 this.form.activity_param = (res.data.msg.activity_param && JSON.parse(res.data.msg.activity_param) instanceof Array) ? JSON.parse(res.data.msg.activity_param) : parseInt(res.data.msg.activity_param);
                 // this.form.activity_param = parseInt(res.data.msg.activity_param);
                 this.form.task_require = res.data.msg.task_require;
-                if(res.data.msg.max_file_count === 3)
-                {
-                    this.form.limit_count = true;
-                }
-                else
-                {
-                    this.form.limit_count = false;
-                }
-                if (res.data.msg.upload_files) {
-                    this.form.upload_files = JSON.parse(res.data.msg.upload_files);
-                } else {
-                    this.form.upload_files = "";
-                }
+                if(res.data.msg.max_file_count === 3)  this.form.limit_count = true;
+                else  this.form.limit_count = false;
+                if (res.data.msg.upload_files)  this.form.upload_files = JSON.parse(res.data.msg.upload_files)
+                else this.form.upload_files = "";
                 this.isInited = true;
                 this.getPreCurriculumList();
             })
@@ -252,13 +235,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([
-            'get_subject_list',
-            'get_grade_list',
-            'get_online_curriculum_list',
-            'add_task',
-            'edit_task'
-        ]),
+        ...mapActions([ 'get_subject_list', 'get_grade_list', 'get_online_curriculum_list', 'add_task', 'edit_task' ]),
         handleClose() {
             this.form.task_require = '';
             this.addTaskDialog = false;
@@ -272,11 +249,9 @@ export default {
         },
         handleNextStep(formName) {
             this.$refs[formName].validate(val => {
-              if(val){
-                this.nextStep = 1;
-              } else {
-                return false;
-              }
+              console.log(val,'val')
+              if(val)this.nextStep = 1;
+              else  return false;
             })
         },
         handlePreStep() {
@@ -304,14 +279,8 @@ export default {
         },
         handleSubmit(formName) {
             var vm = this;
-            if(this.form.limit_count)
-            {
-                this.form.max_file_count = 3;
-            }
-            else
-            {
-                this.form.max_file_count = 0;
-            }
+            if(this.form.limit_count) this.form.max_file_count = 3;
+            else this.form.max_file_count = 0;
             var task_require = this.$refs.require_editor.editor.getContent();
             if (this.payload.type == 1) {
                 this.$refs[formName].validate(val => {
@@ -368,23 +337,15 @@ export default {
                     subject_id: this.form.subject_id,
                     grade_id: this.form.grade_id
                 }).then(res => {
-                    if (res.data.res_code === 1) {
-                        this.preCurriculum = res.data.msg;
-                    }
+                    if (res.data.res_code === 1) this.preCurriculum = res.data.msg;
                 })
             }
         },
         typeStr(a,b) {
-            if(this.payload.selectedType == 0)
-                return a + '任务' + b;
+            if(this.payload.selectedType == 0) return a + '任务' + b;
             return a + '作业' + b;
         }
-    },
-    components: {
-        'base-input': BaseInput,
-        'upload-panel': UploadPanel,
-        'text-editor':Editor
-    },
+    }
 }
 </script>
 <style lang="scss" scoped>
