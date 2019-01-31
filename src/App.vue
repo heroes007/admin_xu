@@ -28,12 +28,9 @@
             api.interceptors.response
                 .use(function (response) {
                     if (response.data.res_code < 0) {
-                        if (response.data.res_code >= -999 && response.data.res_code <= -995) {
-                            vm.$router.push({path: '/login'});
-                        } else if (response.data.res_code == -6)  vm.$router.push({path: '/login'});
-                        else {
-                          vm.$Message.warning(response.data.msg);
-                        }
+                        let code = response.data.res_code;
+                        if ((code >= -999 && code <= -995) || (code == -6))  vm.$router.push({path: '/login'});
+                        else vm.$Message.warning(response.data.msg);
                     }
                     return response;
                 }, function (error) {

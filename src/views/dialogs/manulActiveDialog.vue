@@ -14,11 +14,11 @@
                         <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
                     </Input>
                 </Row>
-                  <Table class="table" ref="table" :data="queryTaskUserList" @on-select-all="handleSelectedAll" :columns="courseColumns" style="width: 100%"
-                   @on-selection-change="handleSelectionChange">
-          </Table>
+                <Table class="table" ref="table" :data="queryTaskUserList" @on-select-all="handleSelectedAll" :columns="courseColumns" style="width: 100%"
+                   @on-selection-change="handleSelectionChange"></Table>
                 <Row class="course-page">
-                        <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size="pageSize" size="small"   :total="totalNum" style=""></Page>
+                    <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage"
+                          :page-size="pageSize" size="small"   :total="totalNum"></Page>
                 </Row>
                 <Row class="btns">
                     <Button class="send-btn" @click="handleSendTask">发送</Button>
@@ -31,16 +31,12 @@
 <script>
   import BaseInput from '../../components/BaseInput'
   import UploadPanel from '../../components/UploadPanel'
-  import {
-    RemoveModal
-  } from './mixins'
-  import {
-    get_userlist_by_tid,
-    send_task
-  } from '../../api/modules/tools_task.js'
-let tooltips = { ellipsis: true, tooltip: true }
+  import { RemoveModal } from './mixins'
+  import { get_userlist_by_tid, send_task } from '../../api/modules/tools_task.js'
+  let tooltips = { ellipsis: true, tooltip: true }
   export default {
     mixins: [RemoveModal],
+    components: { 'base-input': BaseInput, 'upload-panel': UploadPanel },
     props: {
       remove: {
         type: String
@@ -53,9 +49,8 @@ let tooltips = { ellipsis: true, tooltip: true }
         searchData: '',
         manulActiveDialog: true,
         multipleSelection: [],
-        // curPage: 1,
         checked: false,
-         courseColumns: [
+        courseColumns: [
                     {
                         title: 'ID',
                         key: 'user_id'
@@ -136,11 +131,8 @@ let tooltips = { ellipsis: true, tooltip: true }
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
-      handleCurrentChange(val) {
-        var phone = '';
-        var username = '';
-        var realname = '';
-        var id = '';
+      handleData(v){
+        let [phone, username, realname, id] = ['', '', '', ''];
         switch (this.searchType) {
           case 'phone':
             phone = this.searchData;
@@ -160,13 +152,13 @@ let tooltips = { ellipsis: true, tooltip: true }
           project_id: this.$store.state.project.select_project_id,
           grade_id: this.payload.row.grade_id,
           subject_id: this.payload.row.subject_id,
-          page_size: this.pageSize,
-          page_index: val - 1,
-          phone: phone,
-          username: username,
-          realname: realname,
-          userid: id
+          page_size: v ? this.pageSize : this.$store.state.task.page_size,
+          page_index: v ? val - 1 : 0,
+          phone, username, realname, userid: id
         })
+      },
+      handleCurrentChange(val) {
+        this.handleData(val);
       },
       handleSendTask() {
         var list = [];
@@ -175,7 +167,6 @@ let tooltips = { ellipsis: true, tooltip: true }
         });
         if (list.length > 0) {
           send_task(this.payload.row.id, this.$store.state.project.select_project_id, list).then(res => {
-            // console.log(res);
             if (res.data.res_code == 1) {
                this.$Modal.info({
                     title: '提示',
@@ -190,41 +181,13 @@ let tooltips = { ellipsis: true, tooltip: true }
         }
       },
       searchStudent() {
-        var phone = '';
-        var username = '';
-        var realname = '';
-        var id = '';
-        switch (this.searchType) {
-          case 'phone':
-            phone = this.searchData;
-            break;
-          case 'nickname':
-            username = this.searchData;
-            break;
-          case 'realname':
-            realname = this.searchData;
-            break;
-          case 'id':
-            id = this.searchData;
-            break;
-        }
-        this.$store.dispatch('get_userlist_by_tid', {
-          task_id: this.payload.row.id,
-          project_id: this.$store.state.project.select_project_id,
-          grade_id: this.payload.row.grade_id,
-          subject_id: this.payload.row.subject_id,
-          page_size: this.$store.state.task.page_size,
-          page_index: 0,
-          phone: phone,
-          username: username,
-          realname: realname,
-          userid: id
-        })
+        this.handleData();
       }
     },
     computed: {
       queryTaskUserList() {
            let _d = this.$store.state.task.task_user_list
+           console.log(_d)
            _d.map((it) => {
                it.subject_name = this.handleTableToName(this.$store.state.subject.subject_list,it.subject_id)
                it.grade_name = this.handleTableToName(this.$store.state.grade.grade_list,it.grade_id)
@@ -240,11 +203,7 @@ let tooltips = { ellipsis: true, tooltip: true }
       totalNum() {
         return this.$store.state.task.total_num
       }
-    },
-    components: {
-      'base-input': BaseInput,
-      'upload-panel': UploadPanel
-    },
+    }
   }
 </script>
 
