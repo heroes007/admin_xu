@@ -333,10 +333,14 @@
         });
       },
       createStudent(item) {
+        console.log(item)
         this.handleSelModal(ADD_STUDENT, {
           type: 1,
           user_id: item.user_id,
-          nickname: item.nickname
+          nickname: item.nickname,
+          roles: item.roles,
+          phone: item.phone,
+          create_time: item.create_time
         });
       },
       getDealerStr(id) {
@@ -371,7 +375,6 @@
       }
     },
     mounted() {
-      console.log(document.querySelector('#columnx'));
       var vm = this;
       if (
         !this.$store.state.project.project_list ||

@@ -5,9 +5,9 @@ import {
 } from '../../api/modules/tools_project'
 import Vue from 'vue';
 
-
+let id = localStorage.getItem('lastSelectedProject') ? +localStorage.getItem('lastSelectedProject') : 1
 const state = {
-    select_project_id: 0,
+    select_project_id: id,
     project_list: [],
     offline_project_id: '',
     online_project_id: '',

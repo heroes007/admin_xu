@@ -4,8 +4,9 @@
 import api from './config'
 
 export function get_list(project_id,title) {
+    let id = project_id ? project_id:  +localStorage.getItem('lastSelectedProject')
     return api.post('api/tools_curriculum/get_list',{
-        project_id:project_id,
+        project_id: id,
         title:title});
 }
 
@@ -28,7 +29,6 @@ export function add_curriculum(data) {
 }
 
 export function update_curriculum(curriculum_id,data) {
-    console.log(data);
     return api.post('api/tools_curriculum/update_curriculum',{
         curriculum_id:curriculum_id,
         title:data.title,

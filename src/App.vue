@@ -6,17 +6,10 @@
 
 <script>
     import api from './api/modules/config'
-    import {logout} from './api/modules/auth';
-    import {mapState} from 'vuex'
+    import { logout } from './api/modules/auth';
     export default {
-        data() {
-            return { fullscreenLoading: null}
-        },
-        computed : {
-            ...mapState({ projectShowLoading: state => state.project.isLoading })
-        },
         beforeCreate() {
-            var vm = this;
+            let vm = this;
             api.interceptors.request
                 .use(function (config) {
                     if (config.data)  config.data.token = '' || vm.$localStorage.get('token');
@@ -36,12 +29,6 @@
                 }, function (error) {
                     return Promise.reject(error);
                 });
-        },
-        watch : {
-            projectShowLoading(val) {
-                if (val) this.fullscreenLoading = this.$LoadingY({message: "正在读取项目列表，请稍后...", show: true})
-                else if (this.fullscreenLoading) this.fullscreenLoading.close()
-            }
         }
     }
 </script>

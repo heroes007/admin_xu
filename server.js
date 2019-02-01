@@ -9,7 +9,6 @@ const app = express();
 app.use(express.static('dist'));
 //开启单页路由跳转
 app.get('*',function (req, res) {
-    //console.log('input');
     console.log(path.dirname(require.main.filename));
     res.sendFile(path.dirname(require.main.filename) + '/dist/index.html');
     //res.status(404);

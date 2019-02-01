@@ -470,7 +470,6 @@
         return row.childData;
       },
       getFilters(propname) {
-        console.log(this.columnFormatterData,this.columnFormatter);
         if (this.columnFormatter) {
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {

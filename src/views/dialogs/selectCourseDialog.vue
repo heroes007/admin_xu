@@ -80,7 +80,6 @@
       addHandler(formName) {
         var result = [];
         var datas = []
-        console.log(this.dataList);
         for (var i = 0; i < this.dataList.length; i++) {
           if (this.dataList[i].is_select) {
             result.push(this.dataList[i].curriculum_id);

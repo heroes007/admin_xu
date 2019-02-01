@@ -101,15 +101,22 @@ const actions = {
             }
         })
     },
-    edit_online_curriculum( {commit}, params){
+    edit_online_curriculum( {dispatch, commit}, params){
         commit(types.ONLINE_CURRICULUM_EDITING);
         update_curriculum(params.curriculum_id,params.data).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.ONLINE_CURRICULUM_EDITED,params);
+            if(res.data.res_code === 1){
+                dispatch('ONLINE_CURRICULUM_EDITED', params.data)
                 params.data._fn();
             }
         })
+    },
+    ONLINE_CURRICULUM_EDITED({commit}, params){
+        get_list(params.project_id,params.title).then(function (res) {
+            if(res.data.res_code === 1){
+                commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.msg);
+            }
+        });
+       commit('ONLINE_CURRICULUM_ORDERBY_CLOSE')
     },
     delete_online_curriculum( {commit}, params) {
         commit(types.ONLINE_CURRICULUM_DELETING);
@@ -252,6 +259,9 @@ const mutations = {
     [types.ONLINE_CURRICULUM_ORDERBY_SAVING] (state) {
         state.showMainLoading = true;
     },
+    ONLINE_CURRICULUM_ORDERBY_CLOSE (state) {
+        state.showMainLoading = false;
+    },
     [types.ONLINE_CURRICULUM_ORDERBY_SAVED] (state) {
         state.showMainLoading = false;
         state.online_curriculum_old_list = state.online_curriculum_list.concat();
@@ -379,25 +389,6 @@ const mutations = {
     },
     [types.ONLINE_CURRICULUM_EDITING] (state) {
         state.showMainLoading = true;
-    },
-    [types.ONLINE_CURRICULUM_EDITED] (state, params) {
-        // state.showMainLoading = false;
-        get_list(state.project_id).then(function (res) {
-            if(res.data.res_code === 1){
-                commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.msg);
-            }
-        });
-        // for(var i=0;i<state.online_curriculum_list.length;i++)
-        // {
-        //     if(state.online_curriculum_list[i].curriculum_id === params.curriculum_id)
-        //     {
-        //         state.online_curriculum_list[i].grade_id = params.data.grade_id;
-        //         state.online_curriculum_list[i].subject_id = params.data.subject_id;
-        //         state.online_curriculum_list[i].title = params.data.title;
-        //         state.online_curriculum_list[i].state = params.data.state;
-        //         break;
-        //     }
-        // }
     },
     [types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING] (state) {
         state.showChapterLoading = true;

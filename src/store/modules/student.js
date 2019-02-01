@@ -174,16 +174,31 @@ const mutations = {
         state.search_msg = param.msg;
     },
     [types.STUDENT_ADDED](state, params) {
-        if (state.isInited) {
-            state.student_list.push({
-                user_id: params.data.user_id,
-                grade_id: params.data.grade_id,
-                subject_id: params.data.subject_id,
-                nickname: params.data.nickname,
-                state: 1,
-                times: 0
-            })
+        let id = Number.isInteger(params.result) ? params.result : ''
+        let isProductAndUserEqually = false
+        let item = {
+            user_id: params.data.user_id,
+            grade_id: params.data.grade_id,
+            subject_id: params.data.subject_id,
+            nickname: params.data.nickname,
+            realname: params.data.realname,
+            phone: params.data.phone,
+            product_id: params.data.product_id,
+            roles: params.data.roles,
+            create_time: params.data.create_time,
+            state: 1,
+            times: 0
         }
+        state.student_list.forEach((t,k) => {
+            if (state.isInited){
+                if(t.user_id === params.data.user_id && t.product_id === params.data.product_id){
+                    isProductAndUserEqually = true
+                    state.student_list.splice(k,1,{...item,id: t.id})
+                }
+            }
+        });
+       if(!isProductAndUserEqually && state.isInited) state.student_list.push({...item,id})
+        console.log(state.student_list);
         state.showLoading = false;
     },
     [types.STUDENT_EDITED](state, params) {

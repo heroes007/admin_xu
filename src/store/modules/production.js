@@ -115,7 +115,6 @@ const actions = {
         })
     },
     change_production_curriculum_pre_curriculum({ commit }, params) {
-        console.log(params)
         if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length){
             return;
         }

@@ -66,7 +66,6 @@
                 for (var i = 0; i < this.productionList.length; i++) {
                     if (this.productionList[i].id == this.productionId){
                         tit = this.productionList[i];
-                        console.log(tit,'tit')
                     }
                 }
                 if(tit)  return tit.hasOwnProperty('online_curriculum_list') ? tit : {...tit,online_curriculum_list: []}

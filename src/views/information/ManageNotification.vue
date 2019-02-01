@@ -280,7 +280,7 @@
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #F06B1D }
     /deep/.ivu-tabs-tab{
         text-align: center;
-        line-height: 40px;
+        line-height: 24px;
         height: 40px;
         margin-bottom: 0;
         font-size: 18px;

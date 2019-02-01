@@ -53,7 +53,6 @@
 //                var oldStr = this.$refs.main.getContent();
 //                oldStr += '<img src="' + url + '">';
 //                this.$refs.main.setContent(oldStr);
-//                console.log(this.$refs.main.getContent());
         // this.$refs.text_editor_main.$store.dispatch('execCommand', {name: 'insertHTML', value: `<img src="${result.url}">`});
         this.editor.execCommand('insertimage', {src: result.url})
       }

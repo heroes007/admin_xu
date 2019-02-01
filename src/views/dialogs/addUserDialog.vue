@@ -57,7 +57,7 @@
         create_test_user(this.form.doRegist ? 1 : 0).then(res => {
           if (res.data.res_code === 1) {
             let text = this.form.doRegist ? ( '密码：'+ res.data.msg.password ) : '验证码（请在30分钟内使用注册）：' + + res.data.msg.sms_code
-            let msg = '用户名：' + res.data.msg.username + text
+            let msg = '手机号：' + res.data.msg.username + text
             this.$Modal.info({
                   title: '创建成功',
                   content: msg

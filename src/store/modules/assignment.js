@@ -4,7 +4,7 @@ import { get_tutor_task_list, readover } from '../../api/modules/tools_task'
 
 const state = {
     state_list: [{id:1,name:'未上传'},{id:2,name:'未批阅'},{id:3,name:'已批阅'},{id:4,name:'未通过'},{id:-1,name:'屏蔽'}],
-    isLoading:false,
+    isLoading: false,
     data_list:[]
 }
 
@@ -49,6 +49,7 @@ const mutations = {
                 break;
             }
         }
+        state.isLoading = false;
     }
 }
 

@@ -35,7 +35,7 @@
                             </Select>
                         </FormItem>
                         <FormItem label="选择产品">
-                            <Select multiple v-model="form.product_id" placeholder="请选择项目">
+                            <Select v-model="form.product_id" placeholder="请选择项目">
                                 <Option v-for="item in productList" :key="item.id" :label="item.title" :value="item.id"></Option>
                             </Select>
                         </FormItem>
@@ -144,7 +144,7 @@
         addStudentDialog: true,
         form: {
           project_id: this.$store.state.project.select_project_id,
-          product_id: [],
+          product_id: 0,
           grade_id: 0,
           subject_id: 0,
           user_id: '',
@@ -157,7 +157,10 @@
           is_send_offline_term: '',
           offline_term_id: '',
           realname: '',
-          is_test_user: 0
+          is_test_user: 0,
+          phone: 0,
+          roles: 0,
+          create_time: null
         },
         searchType: 'phone',
         searchData: '',
@@ -266,6 +269,9 @@
       this.form._fn = function () { vm.handleClose(); };
       this.form.user_id = this.payload.user_id;
       this.form.nickname = this.payload.nickname;
+      this.form.phone = this.payload.phone;
+      this.form.roles = this.payload.roles;
+      this.form.create_time = this.payload.create_time;
       get_list({project_id: this.projectId, page_index: 0, page_size: 99999}).then(res => {
         if (res.data.res_code === 1) this.productList = res.data.msg.products;
       })

@@ -1,3 +1,4 @@
+import copys from '../../config/config';
 let item = {
     prop: 'activity_type',
     label: '激活方式',
@@ -36,7 +37,8 @@ let d = [{
     }]
 }]
 export const taskHeadData = (type) => {
-    let d2 = []
-    if(d[3] !== item) d2 = d.splice(3,0,item); 
-    return type ? d : d2
+    let d2 = copys.copy(d,[]);
+    let d3 = copys.copy(d,[]);
+    if(d2[3] !== item) d3.splice(3,0,item); 
+    return type ? d2 : d3
 }

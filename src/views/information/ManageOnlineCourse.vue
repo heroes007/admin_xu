@@ -108,7 +108,6 @@
         }]
       },
       listColumnFormatterData() {
-        // console.log([this.gradeList, this.subjectList, this.stateList])
         return [this.gradeList, this.subjectList, this.stateList];
       },
       dataList() {
@@ -146,7 +145,6 @@
         }
       },
       projectId(v) {
-        console.log('project_change');
         this.$store.dispatch('get_online_curriculum_list', {
           project_id: v
         });
@@ -264,7 +262,6 @@
             this.$store.dispatch('get_grade_list');
             this.$store.dispatch('get_subject_list');
           });
-
         }
       }
     },
