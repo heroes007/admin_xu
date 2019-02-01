@@ -78,7 +78,7 @@
                                 </Select>
                             </FormItem>
                             <FormItem class="btn-content" :label-width='0'>
-                                <Button @click="deleteStudent(form1.student_id)">删除学员</Button>
+                                <!--<Button @click="deleteStudent(form1.student_id)">删除学员</Button>-->
                                 <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
                             </FormItem>
                         </Form>
@@ -624,6 +624,10 @@
     }
     /deep/ .ivu-tabs-tabpane {
         padding: 0px 30px;
+    }
+    .empty-msg{
+        margin: 20px;
+        font-size: 14px;
     }
     #student-info-detail-container {
         @import "base.scss";
