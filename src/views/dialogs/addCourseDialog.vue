@@ -316,7 +316,7 @@
           '3_8': this.form.img_3_8
         };
         this.form.project_id = this.project_id;
-        this.form.orderby = this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1;
+        this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
         var vm = this;
         this.form._fn = function () {
           vm.handleClose();
