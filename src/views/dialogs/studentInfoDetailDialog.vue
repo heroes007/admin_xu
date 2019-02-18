@@ -78,7 +78,7 @@
                                 </Select>
                             </FormItem>
                             <FormItem class="btn-content" :label-width='0'>
-                                <Button @click="deleteStudent(form1.student_id)">删除学员</Button>
+                                <!--<Button @click="deleteStudent(form1.student_id)">删除学员</Button>-->
                                 <Button type="primary" class="sub-btn" @click="saveHandler">保存</Button>
                             </FormItem>
                         </Form>
@@ -143,11 +143,12 @@
                             <Row class='query-header' type='flex' justify="space-between" align='middle'>
                                 <h3>已完成：{{totalProgress}}%</h3>
                                 <Button type='text' @click='clearVideoLog'>清除观看记录</Button>
-                                <Select class="on_Select_item" v-model="form3.product_id" placeholder="请选择项目"
-                                        @on-change='changeProductHandler'>
-                                    <Option v-for="item in form3.productList" :key="item.id" :label="item.title"
-                                            :value="item.id"></Option>
-                                </Select>
+                                <!--<Select class="on_Select_item" v-model="form3.product_id" placeholder="请选择项目"-->
+                                        <!--@on-change='changeProductHandler'>-->
+                                    <!--<Option v-for="item in form3.productList" :key="item.id" :label="item.title"-->
+                                            <!--:value="item.id"></Option>-->
+                                <!--</Select>-->
+                                <div v-if="form3.productList.length">{{form3.productList[payload.product_id - 1].title}}</div>
                             </Row>
                             <Row class="body-top" v-if="true">
                                 <Row v-for="item in form3.dataList" :key="item.id" class="course-item">
@@ -230,6 +231,9 @@
                                 </Col>
                             </Row>
                         </Row>
+                    </TabPane>
+                    <TabPane label="荣誉证书" name="name7">
+                        <div>这是荣誉证书颁发页面</div>
                     </TabPane>
                 </Tabs>
             </Row>
@@ -365,15 +369,15 @@
     methods: {
       ...mapActions(['edit_student', 'get_grade_list', 'get_subject_list', 'get_teachers', 'get_student_managers', 'get_role']),
       changeProductHandler() {
-        this.showloading();
+        // this.showloading();
         new_version_get_student_online_curriculum({
-          product_id: this.form3.product_id,
+          product_id: this.payload.product_id,
           user_id: this.payload.user_id,
           project_id: this.payload.project_id
         }).then(res => {
           if (res.data.res_code == 1) {
-            this.form3.dataList = res.data.msg;
             this.loadingInstance.close();
+            this.form3.dataList = res.data.msg;
             this.gettingLessons()
           }
         })
@@ -515,12 +519,12 @@
           title: '提示',
           content: '此操作无法还原，是否确认清除学员线上课观看记录？',
           onOk: () => {
-            new_version_clear_online_curriculum_record(this.form3.product_id, this.payload.user_id).then(res => {
+            new_version_clear_online_curriculum_record(this.payload.product_id, this.payload.user_id).then(res => {
               this.showloading();
               new_version_get_student_online_curriculum({
                 user_id: this.payload.user_id,
                 project_id: this.payload.project_id,
-                product_id: this.form3.product_id
+                product_id: this.payload.product_id
               }).then(res => {
                 if (res.data.res_code == 1) {
                   this.form3.dataList = res.data.msg;
@@ -534,6 +538,7 @@
       }
     },
     mounted() {
+      this.changeProductHandler()
       this.get_grade_list();
       this.get_subject_list();
       this.get_teachers();
@@ -543,7 +548,9 @@
       this.form1.user_id = this.payload.user_id;
       this.form1.nickname = this.payload.nickname;
       get_list({project_id: this.payload.project_id, page_index: 0, page_size: 99999, state: [0, 1, 2]}).then(res => {
-        if (res.data.res_code === 1) this.form3.productList = res.data.msg.products;
+        if (res.data.res_code === 1) {
+          this.form3.productList = res.data.msg.products;
+        }
       })
       if (this.payload.id) {
         this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
@@ -623,6 +630,10 @@
     }
     /deep/ .ivu-tabs-tabpane {
         padding: 0px 30px;
+    }
+    .empty-msg{
+        margin: 20px;
+        font-size: 14px;
     }
     #student-info-detail-container {
         @import "base.scss";

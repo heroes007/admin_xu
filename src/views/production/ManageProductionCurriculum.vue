@@ -152,10 +152,8 @@
     /deep/.ivu-tabs-tab{
         text-align: center;
         line-height: 40px;
-        height: 40px;
         margin-bottom: 0;
         font-size: 18px;
-        color: #141111;
     }
     .btn-add,.btn-add:hover {
         position: absolute;

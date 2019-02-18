@@ -75,3 +75,5 @@ body { background-color: #fff; height: 100%; }
 }
 .total-num{ margin-left: 20px;margin-bottom: 10px; color: #FB843E; font-size: 12px}
 .ivu-select{ text-align: left !important; }
+.ivu-select-multiple .ivu-select-item-selected { color: #FB843E !important; }
+.ivu-select-multiple .ivu-select-item-selected:after { color: #FB843E !important; }

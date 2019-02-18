@@ -294,6 +294,7 @@
       roleChangeHandler(val) {
         let role_id;
         if (this.initingRole) return;
+        console.log(val, this.preRoleList,'11111')
         role_id = val.length > this.preRoleList.length ? this.calculationRoleId(val,this.preRoleList) : this.calculationRoleId(this.preRoleList,val)
         set_role(
           this.userData.user_id,
@@ -333,14 +334,10 @@
         });
       },
       createStudent(item) {
-        console.log(item)
         this.handleSelModal(ADD_STUDENT, {
           type: 1,
           user_id: item.user_id,
-          nickname: item.nickname,
-          roles: item.roles,
-          phone: item.phone,
-          create_time: item.create_time
+          nickname: item.nickname
         });
       },
       getDealerStr(id) {
@@ -375,6 +372,7 @@
       }
     },
     mounted() {
+      console.log(document.querySelector('#columnx'));
       var vm = this;
       if (
         !this.$store.state.project.project_list ||
@@ -538,6 +536,19 @@
     }
     .add-student-view .result .data-form .user-info span{
         color: #FC7643 !important;
+    }
+    .add-student-view .result .data-form {
+      width: 550px;
+      background-color: #ffffff;
+      border: 1px solid #EBEBEC;
+      border-radius: 6px;
+      padding: 20px 0;
+    }
+    .add-student-view .result .data-form .user-info {
+      font-size: 14px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #EBEBEC;
+      padding: 0 20px;
     }
     .select-user{
         width: 100px;

@@ -25,7 +25,7 @@
                         <div class='head'>全部讲师</div>
                         <Button class="teacher-list-head-btn" type='text' icon='md-add' @click='addTeacherHandler'>
                            添加
-                        </Button>
+                        </Button> 
                     </Row>
                     <div slot="content" class='teacher-list-container'>
                         <Row v-for='r in teacherListData' :key="r.id" type='flex'>

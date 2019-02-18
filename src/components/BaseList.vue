@@ -71,7 +71,7 @@
                 <div style="display:flex">
                     <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id"
                          v-if='btn.showFunc?btn.showFunc(row):true'>
-                        <Button :type="btn.canDisabled?'primary':'text'"
+                        <Button :type="btn.canDisabled?'text':'text'"
                                 :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
                                 @click="handleBtnClick(index,row,btn.param)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
@@ -350,7 +350,7 @@
            if(row && row.title &&  list && list.length > 0){
               list.map((it,k) => {
                if(it.title === row.title){
-                 list.splice(k,1) 
+                 list.splice(k,1)
                }
               })
            }
@@ -388,7 +388,10 @@
       },
       handleBtnClick(index, row, param) {
         if (this.parentData) this.$emit('childBtnClick', param, index, this.parentData);
-        else this.$emit(param, index, row);
+        else {
+          this.$emit(param, index, row);
+          console.log(index, row, param, '123123123')
+        }
       },
       formatter(row, propname) {
       },

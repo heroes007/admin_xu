@@ -5,7 +5,7 @@
             <TabPane class='notification-content' label="通知" name="notification">
                 <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter' @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
             </TabPane>
-            <TabPane class='message-content' label="私信" name="chat" disabled="">
+            <TabPane class='message-content' label="私信" name="chat" disabled>
                 <Row class='message-content-container' type='flex' align='top'>
                     <Col :span='10'>
                         <Row class='group_header' type='flex'>
@@ -174,7 +174,7 @@
             }
         },
         methods: {
-            ...mapActions([ 'get_notification_list', 'delete_notification', 'get_project_list','get_message_student_list', 
+            ...mapActions([ 'get_notification_list', 'delete_notification', 'get_project_list','get_message_student_list',
             'get_private_msg_list', 'send_private_msg', 'add_private_msg', 'get_grade_list', 'get_subject_list' ]),
             updateWrapper() {
                 var vm = this;
@@ -263,7 +263,6 @@
             //             this.add_private_msg(data);
             //     }
             // });
-
             // server.on('disconnect', res => {
             //     console.log('disconnect')
             //     server.disconnect();
@@ -278,13 +277,11 @@
 </script>
 <style scoped lang='scss'>
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #F06B1D }
-    /deep/.ivu-tabs-tab{
+    /deep/ .ivu-tabs-tab {
         text-align: center;
-        line-height: 24px;
-        height: 40px;
+        line-height: 40px;
         margin-bottom: 0;
         font-size: 18px;
-        color: #141111;
     }
     .manage-notification {
         .data-list {

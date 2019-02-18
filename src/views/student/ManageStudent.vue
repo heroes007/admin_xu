@@ -60,7 +60,7 @@
         <Row class='total-num' type='flex' justfy='start' align='middle'>
             <span>当前学员 {{total}} 人</span>
         </Row>
-        <data-list class='data-list light-header' @showDetail='showDetailHandler' @queryHomework='queryHomeworkHandler'
+        <data-list class='data-list light-header' @showDetail='showDetailHandler' @queryHomework='queryHomeworkHandler' @deleteStudent='deleteStudentHandle'
                    @queryTask='queryTaskHandler' @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler'
                    :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
         <back-to-top/>
@@ -76,6 +76,7 @@
   import api from '../../api/modules/config'
   // import { set_user_student_mrzx } from '../../api/modules/student'
   import { Dialog } from '../dialogs'
+  import {  delete_student } from '../../api/modules/tools_student'
   import { doDateFormat, doTimeFormat } from "../../components/Util";
   import { ADD_STUDENT, QUERY_STUDENT_COURSE, QUERY_STUDENT_OFFLINE_COURSE, QUERY_STUDENT_TASK, STUDENT_INFO_DETAIL } from '../dialogs/types'
   import {Config} from '../../config/base'
@@ -117,6 +118,21 @@
     methods: {
       showDetailHandler(index, row) {
         this.handleSelModal(STUDENT_INFO_DETAIL, row)
+      },
+      deleteStudentHandle(index, row){
+        this.$Modal.confirm({
+          title: '提示',
+          content: '此操作无法还原，是否确认删除该学员？',
+          onOk: () => {
+            this.$store.dispatch('delete_store', row)
+            delete_student(row.id).then(rs => {
+              this.$Modal.info({
+                title: '提示',
+                content: '删除成功！',
+              });
+            });
+          }
+        });
       },
       addStudentHandler() {
         this.handleSelModal(ADD_STUDENT, {showList: true})
@@ -342,10 +358,13 @@
           width: 80
         }, {
           label: '操作',
-          width: 120,
+          width: 200,
           groupBtn: [{
             text: '查看详情',
             param: 'showDetail'
+          },{
+            text: '删除',
+            param: 'deleteStudent'
           }]
         }]
       },
