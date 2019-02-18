@@ -15,6 +15,10 @@ export function get_detail(product_id){
   return api.post('/api/tools_product/get_detail',{product_id:product_id});
 }
 
+export function get_certificate() {
+  return api.post('api/honour/get_honour_certificates')
+}
+
 export function add_product(param){
   return api.post('/api/tools_product/add_product',{
         project_id:param.project_id,

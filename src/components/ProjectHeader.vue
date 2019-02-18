@@ -96,7 +96,10 @@
                     this.isEdit = true;
                     this.$emit('manageEdit', false)
                 }
-            }
+            },
+          addCertificate(){
+            console.log(123);
+          }
         },
         computed: {
             project_id: {

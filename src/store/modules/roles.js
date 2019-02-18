@@ -27,7 +27,6 @@ const actions = {
                 }
             });
         }
-
     },
     get_role_list({ commit }) {
         if (!state.is_loading_list && state.role_list.length === 0) {

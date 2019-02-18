@@ -15,6 +15,7 @@
         </Col>
         <Col :span="6" v-if='showAdd'>
              <Button class='btn-add' type='primary' icon="md-add" v-if='showAdd' @click="addClickHandler"> {{addText}} </Button>
+            <Button v-if="type === 1" class='btn-teacher' type='text' @click="addCertificate">证书设置</Button>
         </Col>
     </Row>
 </div>
@@ -39,6 +40,10 @@ export default {
         },
         addText:{
             type:String
+        },
+        type:{
+            type: Number,
+            default: 0
         }
     },
     computed: {
@@ -58,6 +63,9 @@ export default {
     methods: {
         addClickHandler() {
            this.$emit('addClick');
+        },
+        addCertificate(){
+          this.$emit('addCert')
         },
         handleCheckProjectId(v) {
           if(this.isSelected){
@@ -113,6 +121,13 @@ export default {
             border-color: #F06B1D;
             font-weight: 600;
         }
+    }
+}
+.btn-teacher {
+    color: #ffffff;
+
+    i {
+        margin-right: 5px;
     }
 }
 </style>

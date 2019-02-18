@@ -39,11 +39,9 @@
                     <FormItem v-show="nextStep == 0" label="真实售价">
                         <Input placeholder="售价必须小于等于定价" v-model="form.show_price"></Input>
                     </FormItem>
-                    <FormItem v-show="nextStep == 0" label="荣誉证书">
-                        <Select v-model="form.certificate">
-                            <Option value="证书1" label="这是一张证书"></Option>
-                            <Option value="证书2" label="这是一张证书"></Option>
-                            <Option value="证书3" label="这是一张证书"></Option>
+                    <FormItem v-show="nextStep == 0" label="荣誉证书" >
+                        <Select v-model="form.certificate" multiple @on-change="certificateChange">
+                            <Option v-for="(item, index) in certificate" :key="item.id" :value="item.id" :label="item.name"></Option>
                         </Select>
                     </FormItem>
                     <FormItem v-show="nextStep == 0" label="跳转配置">
@@ -158,6 +156,7 @@ export default {
         }
     },
     mounted() {
+        this.get_certificate_list()
         if(this.projectType === 1){
             get_list(this.projectId).then(res => {
                 if(res.data.res_code === 1){
@@ -207,7 +206,8 @@ export default {
     computed: {
         ...mapState({
             projectId:state => state.project.select_project_id,
-            examineTypeList:state => state.production.examineTypeList
+            examineTypeList:state => state.production.examineTypeList,
+            certificate:state => state.production.certificate_list
         }),
         ...mapGetters({ projectType: 'select_project_type' }),
         selectSubject() {
@@ -241,7 +241,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([ 'add_production', 'update_production' ]),
+        ...mapActions([ 'add_production', 'update_production', 'get_certificate_list' ]),
         checkCurriculum() {
             if(this.curriculumList.length > 0 && this.form.curriculum_id){
                 for(var i=0;i<this.curriculumList.length;i++){
@@ -320,7 +320,11 @@ export default {
              }
             if(this.payload) this.update_production(this.form);
             else this.add_production(this.form);
-        }
+        },
+      certificateChange(val){
+          console.log(val)
+        console.log(this.certificate,'123')
+      }
     },
 }
 </script>

@@ -8,11 +8,13 @@ import {
     get_curriculums,
     add_curriculums,
     set_pre_curriculums,
-    delete_curriculum
+    delete_curriculum,
+    get_certificate
 } from '../../api/modules/tools_product'
 
 
 const state = {
+    certificate_list:[],
     production_list: [],
     total:0,
     isLoading: false,
@@ -35,6 +37,13 @@ const actions = {
                 if(param.callback)
                     param.callback();
             })
+    },
+    get_certificate_list({
+             commit
+         }) {
+      get_certificate().then(res => {
+            commit(types.PRODUCTION_CERTIGICATE, res.data);
+        })
     },
     change_production_vailid({
             commit
@@ -148,6 +157,10 @@ const mutations = {
         state.production_list = param.products;
         state.total = param.count;
         state.isLoading = false;
+    },
+    [types.PRODUCTION_CERTIGICATE](state, param) {
+        state.certificate_list = param.data
+        console.log(state.certificate_list)
     },
     [types.PRODUCTION_VALID_UPDATED](state, param) {
         for (var i = 0; i < state.production_list.length; i++) {
