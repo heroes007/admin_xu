@@ -63,7 +63,13 @@ export default (v) => {
             // },
             {
               text: "编辑",
-              param: "edit"
+              param: "edit",
+              canDisabled: "true",
+              disabeldFunc(row){
+                if(row.state == 0) return false
+                else return true
+              },
+              disabledText: "编辑"
             },
             {
               text: "查看",

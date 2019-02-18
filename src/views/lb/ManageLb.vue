@@ -199,19 +199,27 @@
                     this.$Message.success('保存广告成功！');
                 }else this.$Message.warning('保存广告失败：' + res.msg);
             },
-            submit(){
-                this.lbData.img_url = this.lbData.img_url ? JSON.stringify(this.lbData.img_url) : '';
-                this.lbData.share_img_url = this.lbData.share_img_url ? JSON.stringify(this.lbData.share_img_url) : '';
-                if(this.isEdit){
-                    update_lb(this.lbData).then((res) => {
-                       if(res.data) this.hanleIsEditRes(res.data)
-                    })
-                }else{
-                    add_lb(this.lbData).then((res) => {
-                     if(res.data) this.hanleIsEditRes(res.data)
-                    })
+          submit(){
+            this.lbData.img_url = this.lbData.img_url ? JSON.stringify(this.lbData.img_url) : '';
+            this.lbData.share_img_url = this.lbData.share_img_url ? JSON.stringify(this.lbData.share_img_url) : '';
+            if(this.isEdit){
+              update_lb(this.lbData).then((res) => {
+                if(res.data) {
+                  this.hanleIsEditRes(res.data)
+                  this.lbData.img_url = this.lbData.img_url ? JSON.parse(this.lbData.img_url) : '';
+                  this.lbData.share_img_url = this.lbData.share_img_url ? JSON.parse(this.lbData.share_img_url) : '';
                 }
+              })
+            }else{
+              add_lb(this.lbData).then((res) => {
+                if(res.data) {
+                  this.hanleIsEditRes(res.data)
+                  this.lbData.img_url = this.lbData.img_url ? JSON.parse(this.lbData.img_url) : '';
+                  this.lbData.share_img_url = this.lbData.share_img_url ? JSON.parse(this.lbData.share_img_url) : '';
+                }
+              })
             }
+          }
         },
         mounted() {
             if (this.list.length === 0)  this.$store.dispatch('get_lb_list', {curPage: 1, pageSize: 10})

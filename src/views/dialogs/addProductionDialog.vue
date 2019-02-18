@@ -39,6 +39,13 @@
                     <FormItem v-show="nextStep == 0" label="真实售价">
                         <Input placeholder="售价必须小于等于定价" v-model="form.show_price"></Input>
                     </FormItem>
+                    <FormItem v-show="nextStep == 0" label="荣誉证书">
+                        <Select v-model="form.certificate">
+                            <Option value="证书1" label="这是一张证书"></Option>
+                            <Option value="证书2" label="这是一张证书"></Option>
+                            <Option value="证书3" label="这是一张证书"></Option>
+                        </Select>
+                    </FormItem>
                     <FormItem v-show="nextStep == 0" label="跳转配置">
                         <Row class='row-container' type='flex' justify='start' align='middle'>
                         <Switch  v-model="form.redirectType" size="large">
@@ -128,7 +135,8 @@ export default {
                 show_price:'',
                 show_original_price:'',
                 examine_type:3,
-                _fn:null
+                _fn:null,
+                certificate:''
             },
             nextStep: 0,
             isInited: false,
