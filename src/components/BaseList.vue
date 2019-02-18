@@ -390,7 +390,6 @@
         if (this.parentData) this.$emit('childBtnClick', param, index, this.parentData);
         else {
           this.$emit(param, index, row);
-          console.log(index, row, param, '123123123')
         }
       },
       formatter(row, propname) {

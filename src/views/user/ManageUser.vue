@@ -294,7 +294,6 @@
       roleChangeHandler(val) {
         let role_id;
         if (this.initingRole) return;
-        console.log(val, this.preRoleList,'11111')
         role_id = val.length > this.preRoleList.length ? this.calculationRoleId(val,this.preRoleList) : this.calculationRoleId(this.preRoleList,val)
         set_role(
           this.userData.user_id,
