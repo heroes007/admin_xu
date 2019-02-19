@@ -8,8 +8,7 @@ export function get_list(offline_term_id,phone,name) {
 }
 
 export function update_receipt(otr_id,data) {
-    return api.post('api/offline_term_receipt/update_receipt',
-    {
+    return api.post('api/offline_term_receipt/update_receipt',{
         otr_id:otr_id,
         name:data.name,
         sex:data.sex,

@@ -8,25 +8,16 @@ export var MPop = {
         showPop(text, duration) {
             var el_name = "message-pop";
             var payload = {text:text,duration:duration};
-            initVue({
-                        el_name,
-                        payload,
-                        component: MessagePop
-                    });
+            initVue({ el_name, payload, component: MessagePop });
         }
      }
 }
 
-function initVue({
-    el_name,
-    payload,
-    component
-}) {
+function initVue({ el_name, payload, component }) {
     var element = document.createElement('div');
     element.id = `${el_name}-container`;
     element.innerHTML = `<${el_name} :remove='removeNodeName' :option='option'></${el_name}>`;
     document.getElementById('app').appendChild(element);
-
     Vue.component(`${el_name}`, component);
     new Vue({
         data: {

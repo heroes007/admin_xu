@@ -115,7 +115,6 @@
                 }
             },
             handleResultProgress(total, tested, learned) {
-                // console.log(total, tested, learned);
                 var a = learned ? JSON.parse(learned).length : 0;
                 var b = tested ? JSON.parse(tested).length : 0;
                 var c = total ? total : 0;

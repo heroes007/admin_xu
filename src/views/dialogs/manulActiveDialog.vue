@@ -128,9 +128,7 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
+      handleSizeChange(val) {},
       handleData(v){
         let [phone, username, realname, id] = ['', '', '', ''];
         switch (this.searchType) {

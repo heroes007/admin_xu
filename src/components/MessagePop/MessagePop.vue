@@ -9,8 +9,7 @@
 </template>
 
 <script>
-  import {RemoveModal} from '../../views/dialogs/mixins'
-
+  import { RemoveModal } from '../../views/dialogs/mixins'
   export default {
     mixins: [RemoveModal],
     data() {

@@ -6,7 +6,7 @@
                 <Row class="body-top" v-if="true">
                     <Form ref="form" :model="form" :label-width="80" class="add-teacher-form">
                         <FormItem label="是否注册" style="text-align: center">
-                            <el-checkbox v-model="form.doRegist"></el-checkbox>
+                            <Checkbox v-model="form.doRegist"></Checkbox>
                         </FormItem>
                         <div class="btn-content">
                             <Button type="primary" style="width: 200px;" @click="createHandler">创建</Button>

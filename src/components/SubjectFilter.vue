@@ -22,20 +22,14 @@
         },
         computed:{
             subjectName() {
-                if(this.$store.state.subject.subject_list.length > 0)
-                {
+                if(this.$store.state.subject.subject_list.length > 0){
                     for(var i=0;i<this.$store.state.subject.subject_list.length;i++){
-                        if(this.$store.state.subject.subject_list[i].id === this.sid)
-                        {
+                        if(this.$store.state.subject.subject_list[i].id === this.sid){
                             return this.$store.state.subject.subject_list[i].name;
                         }
                     }
                     return '未找到';
-                }
-                else
-                {
-                    return this.$store.state.subject.msg;
-                }
+                }else return this.$store.state.subject.msg;
             }
         },
         mounted(){

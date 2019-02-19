@@ -134,11 +134,12 @@
     import api from '../api/modules/config'
     import SubjectFilter from '../components/SubjectFilter.vue'
     export default{
+        components: { 'subject-filter': SubjectFilter },
         data(){
             return{
-                m_search_data:'',
-                users:[],
-                checkAll:false
+                m_search_data: '',
+                users: [],
+                checkAll: false
             }
         },
         props:['searchRange'],
@@ -147,8 +148,7 @@
                 this.doSearch();
             },
             checkAll(val) {
-                for(var i=0;i<this.users.length;i++)
-                {
+                for(var i=0;i<this.users.length;i++){
                     this.users[i].checked = val;
                 }
                 this.selectChange();
@@ -157,14 +157,12 @@
         methods:{
             doSearch() {
                 api.post('api/user_student_mrzx/get_user_student_list_by_start_time',
-                                                                   {start_time:this.searchRange[0],
-                                                                   end_time:this.searchRange[1],
-                                                                   realname:this.m_search_data}).then((res) => {
-                    if(res.data.res_code === 1)
-                    {
+                    {start_time:this.searchRange[0],
+                    end_time:this.searchRange[1],
+                    realname:this.m_search_data}).then((res) => {
+                    if(res.data.res_code === 1){
                         this.users = res.data.msg;
-                        for(var i=0;i<this.users.length;i++)
-                        {
+                        for(var i=0;i<this.users.length;i++){
                             this.$set(this.users[i],'checked',true)
                         }
                         this.checkAll = true;
@@ -174,19 +172,13 @@
             },
             selectChange(){
                 var selectUsers = [];
-                for(var i=0;i<this.users.length;i++)
-                {
-                    if(this.users[i].checked)
-                    {
+                for(var i=0;i<this.users.length;i++){
+                    if(this.users[i].checked){
                         selectUsers.push(this.users[i].user_id);
                     }
                 }
-
                 this.$emit('listChange',selectUsers);
             }
-        },
-        components: {
-            'subject-filter':SubjectFilter
         }
     }
 </script>

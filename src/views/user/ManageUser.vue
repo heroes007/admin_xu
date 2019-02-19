@@ -371,7 +371,6 @@
       }
     },
     mounted() {
-      console.log(document.querySelector('#columnx'));
       var vm = this;
       if (
         !this.$store.state.project.project_list ||

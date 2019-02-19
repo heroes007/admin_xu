@@ -1,13 +1,13 @@
 <template>
     <Row class="upload-panel">
         <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
-            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" v-loading.fullscreen.lock="fullscreenLoading"/>
+            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
             <Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
         </Row>
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
     </vue-cropper> -->
-        <Row class="img bbbbbbbbbb" v-if="type=='image'&&!is_show">
+        <Row class="img" v-if="type=='image'&&!is_show">
             <img :src="resourse_url?resourse_url:resultUrl" alt="" />
             <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
         </Row>
@@ -80,11 +80,8 @@
                 is_show: true,
                 type: '',
                 resourse_url: '',
-                fullscreenLoading: false
+                fullscreenLoading: null
             }
-        },
-        mounted() {
-            // console.log(this.resourse)
         },
         computed: {
             resultUrl() {
@@ -93,7 +90,6 @@
                     this.type = 'image';
                     this.is_show = false;
                 }
-                // console.log(this.resourse)
                 if (/\.(mp4|wav|mov)/.test(this.resourse)) {
                     this.type = 'video';
                     this.is_show = false;
@@ -114,7 +110,7 @@
 
             //通过插件显示图片
             handleChangeMedia(e) {
-                this.fullscreenLoading = true;
+                 this.fullscreenLoading = this.$LoadingY({message: "",show: true})
                 // const file = e.target.files[0];
                 // if(this.isCropper){
                 //   this.is_show = false;
@@ -182,7 +178,7 @@
                             return true;
                         } else {
                             this.$Message.warning('只能上传图片！');
-                            this.fullscreenLoading = false;
+                            if(this.fullscreenLoading) this.fullscreenLoading.close()
                             return false;
                         }
                     case 2:
@@ -191,7 +187,7 @@
                             return true;
                         } else {
                             this.$Message.warning('只能上传视频！');
-                            this.fullscreenLoading = false;
+                            if(this.fullscreenLoading) this.fullscreenLoading.close()
                             return false;
                         }
                     case 3:
@@ -200,7 +196,7 @@
                             return true;
                         } else {
                             this.$Message.warning('请上传apk后缀文件,请重试');
-                            this.fullscreenLoading = false;
+                            if(this.fullscreenLoading) this.fullscreenLoading.close()
                             return false;
                         }
                     case 4:
@@ -209,7 +205,7 @@
                             return true;
                         } else {
                             this.$Message.warning('只能上传视频！');
-                            this.fullscreenLoading = false;
+                            if(this.fullscreenLoading) this.fullscreenLoading.close()
                             return false;
                         }
                 }
@@ -261,7 +257,7 @@
                         url: result
                     });
                     this.$emit('uploadcomplete', result);
-                    this.fullscreenLoading = false;
+                    if(this.fullscreenLoading) this.fullscreenLoading.close()
                 });
             },
             // 从oss上获取assignKey;

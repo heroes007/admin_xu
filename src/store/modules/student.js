@@ -186,7 +186,6 @@ const mutations = {
             }
         });
        if(!isProductAndUserEqually && state.isInited) state.student_list.push({...item,id})
-        console.log(state.student_list);
         state.showLoading = false;
     },
     [types.STUDENT_EDITED](state, params) {

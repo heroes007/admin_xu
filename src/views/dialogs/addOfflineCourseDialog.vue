@@ -219,7 +219,6 @@
               })
               return true;
             } else {
-              console.log('error submit!!');
               return false;
             }
           });
@@ -250,7 +249,6 @@
               });
               return true;
             } else {
-              console.log('error submit!!');
               return false;
             }
           });

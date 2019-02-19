@@ -154,12 +154,8 @@
                 if(!this.initData) this.initData = true;
                 this.$store.dispatch('search_userinfo_by_nickname_or_phone',{searchType:this.searchType,searchData:this.searchData});
             },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
+            handleRemove(file, fileList) {},
+            handlePreview(file) {},
             addLb() {
                 this.lbData.ad_id = null;
                 this.lbData.name = '';

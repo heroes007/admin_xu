@@ -92,10 +92,6 @@ export default {
         ...mapState ({
             stateList:state => state.redeem_code.state_list
         }),
-        // total(){
-        //     console.log(this.total_count)
-        //     return this.total_count;
-        // },
         dataHeader(){
             return [
                 {

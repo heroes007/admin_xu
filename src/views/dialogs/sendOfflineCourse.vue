@@ -132,9 +132,7 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
+      handleSizeChange(val) {},
       handleCurrentChange(val) {
         this.$store.dispatch('get_students_by_offline_term', {
           offline_term_id: this.payload.row.id,

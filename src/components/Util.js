@@ -1,6 +1,3 @@
-/**
- * Created by zhaiyunzhi on 2017/2/10.
- */
 export function doGroupSlice(numPerRow, data) {
   var result = [];
   for (var i = 0; i < data.length; i += numPerRow) {
@@ -8,7 +5,6 @@ export function doGroupSlice(numPerRow, data) {
   }
   return result;
 }
-
 export function doTimeFormat(val) {
   if (val == "0000-00-00 00:00:00") {
     return "不限期";
@@ -18,7 +14,6 @@ export function doTimeFormat(val) {
   var dateStr = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
   return date.getFullYear() + '-' + monthStr + '-' + dateStr;
 }
-
 export function doDateFormat(val) {
   var date = new Date(val);
   var monthStr = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1);
@@ -27,7 +22,6 @@ export function doDateFormat(val) {
   var miniteStr = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
   return date.getFullYear() + '-' + monthStr + '-' + dateStr + ' ' + hourStr + ':' + miniteStr;
 }
-
 export function doOfflineCurriculumTypeFormat(val) {
   switch (val) {
     case 1:
@@ -36,7 +30,6 @@ export function doOfflineCurriculumTypeFormat(val) {
       return '实践';
   }
 }
-
 export function doSortFormatCatalogList(list) {
   if (list.length === 0)
     return [];
@@ -122,7 +115,7 @@ export const MenuList = [
   {
     name: '1',
     title: '超级管理员',
-    icon: 'md-folder',
+    icon: 'md-person',
     check: 'admin',
     list: [{
       name: 'manage-user',
@@ -153,7 +146,7 @@ export const MenuList = [
   {
     name: '2',
     title: '学员管理',
-    icon: 'md-folder',
+    icon: 'ios-people',
     check: 'manager',
     list: [{
       name: 'manage-student',
@@ -177,7 +170,7 @@ export const MenuList = [
   {
       name: '3',
       title: '我是导师',
-      icon: 'md-folder',
+      icon: 'ios-book',
       check: 'teacher',
       list:[
       {
@@ -193,7 +186,7 @@ export const MenuList = [
   {
     name: '4',
     title: '创建管理',
-    icon: 'md-folder',
+    icon: 'ios-keypad',
     check: 'manager',
     list: [{
       check: true,
@@ -216,12 +209,10 @@ export const MenuList = [
         title: '推荐资料'
       }]
   },
-
-  // 已完成
   {
     name: '6',
     title: '产品管理',
-    icon: 'md-folder',
+    icon: 'ios-list-box',
     check: 'admin',
     list: [
       {

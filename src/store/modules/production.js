@@ -159,7 +159,6 @@ const mutations = {
     },
     [types.PRODUCTION_CERTIGICATE](state, param) {
         state.certificate_list = param.data
-        console.log(state.certificate_list)
     },
     [types.PRODUCTION_VALID_UPDATED](state, param) {
         for (var i = 0; i < state.production_list.length; i++) {

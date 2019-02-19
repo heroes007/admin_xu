@@ -97,9 +97,7 @@
                     this.$emit('manageEdit', false)
                 }
             },
-          addCertificate(){
-            console.log(123);
-          }
+          addCertificate(){}
         },
         computed: {
             project_id: {

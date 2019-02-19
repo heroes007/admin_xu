@@ -228,7 +228,6 @@
                 }
               })
             } else {
-              // console.log('error submit!!');
               return false;
             }
           });
@@ -250,7 +249,6 @@
                 }
               })
             } else {
-              console.log('error submit!!');
               return false;
             }
           });

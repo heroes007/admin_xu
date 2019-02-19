@@ -332,12 +332,8 @@
         if (!this.payload) this.add_online_curriculum(this.form);
         else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
       },
-      handleRemove(file, fileList) {
-        // console.log(file, fileList);
-      },
-      handlePreview(file) {
-        // console.log(file);
-      },
+      handleRemove(file, fileList) {},
+      handlePreview(file) {},
       CheckedMap(d) {
         let d2 = []
         this.query_replace_online_course_list.map((it) => {

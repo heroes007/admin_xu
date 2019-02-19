@@ -349,7 +349,6 @@ export default {
         }
     },
     mounted() {
-        console.log(window.innerWidth)
         if (!this.isPhone) {
             var carousel = Math.floor(window.innerWidth * 66.66667 / 100);
             // if(carousel % 2 === 0)

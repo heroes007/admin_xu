@@ -130,9 +130,7 @@
       }
     },
     watch: {
-      listColumnFormatterData(val) {
-        // console.log(val);
-      },
+      listColumnFormatterData(val) {},
       isLoading(val) {
         if (val) {
           this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})

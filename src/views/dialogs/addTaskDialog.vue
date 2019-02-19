@@ -249,7 +249,6 @@ export default {
         },
         handleNextStep(formName) {
             this.$refs[formName].validate(val => {
-              console.log(val,'val')
               if(val)this.nextStep = 1;
               else  return false;
             })

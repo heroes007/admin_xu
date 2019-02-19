@@ -114,7 +114,6 @@
                 // return true;
             },
             openChange(name) {
-                console.log(name,'name');
                 localStorage.setItem('menuOpenName', JSON.stringify(name));
                 this.menuOpenName = name;
             },
@@ -244,7 +243,7 @@
             background-color: #fc7643;
             color: #ffffff;
             text-align: center;
-            line-height: 20px;
+            line-height: 10px;
             .icon-setting{
                 font-size: 18px;
             }

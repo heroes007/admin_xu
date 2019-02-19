@@ -321,10 +321,7 @@ export default {
             if(this.payload) this.update_production(this.form);
             else this.add_production(this.form);
         },
-      certificateChange(val){
-          console.log(val)
-        console.log(this.certificate,'123')
-      }
+      certificateChange(val){}
     },
 }
 </script>
