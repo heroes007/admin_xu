@@ -233,7 +233,29 @@
                         </Row>
                     </TabPane>
                     <TabPane label="荣誉证书" name="name7">
-                        <div>这是荣誉证书颁发页面</div>
+                        <Row>
+                            <Row class='query-header' type='flex' justify="space-between" align='middle'>
+                                <h3>已完成：{{totalProgress}}%</h3>
+                                <div v-if="form3.productList.length">{{form3.productList[payload.product_id - 1].title}}</div>
+                            </Row>
+                            <Row class="body-top" v-if="true">
+                                <Row v-for="item in form3.dataList" :key="item.id" class="course-item">
+                                    <Col :span="4">
+                                        <div class="avator"><img :src="headerImage(item.teacher_img)" alt=""></div>
+                                        <p>{{item.teacher_name}}</p>
+                                    </Col>
+                                    <Col :span="12">
+                                        <p class="title">{{item.title}}</p>
+                                    </Col>
+                                    <Col :span="4">
+                                        <img class="lockImg" :src="item.type && item.lock_test? Lock : UnLock" />
+                                    </Col>
+                                    <Col :span="4">
+                                        <Button type='primary' :disabled="!(item.type && item.lock_test)" @click='unlockTest(item)'>解锁测验</Button>
+                                    </Col>
+                                </Row>
+                            </Row>
+                        </Row>
                     </TabPane>
                 </Tabs>
             </Row>
@@ -361,8 +383,10 @@
           finishCount += this.form3.dataList[i].complete_video_test_ids ? JSON.parse(this.form3.dataList[i].complete_video_test_ids).length : 0;
         }
         finishCount = finishCount * 100;
+        console.log(totalCount,'1')
         if (totalCount === 0)
           return 0;
+        console.log(Math.floor(finishCount / totalCount),'2')
         return Math.floor(finishCount / totalCount);
       }
     },

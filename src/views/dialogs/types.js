@@ -34,3 +34,4 @@ export const ADD_PRODUCTION_GROUP = 'add-production-group';
 export const SELECT_PRODUCTION = 'select-production';
 export const ADD_NEWS = 'add-news';
 export const EDIT_PROTOCOL = 'edit-protocol';
+export const ADD_CERTIFICATE = 'add-certificate';
