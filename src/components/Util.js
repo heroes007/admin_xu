@@ -129,10 +129,10 @@ export const MenuList = [
       //     name: 'manage-app',
       //     title: '平台更新'
       // },
-      // {
-      //     name: 'manage-news',
-      //     title: '点师动态'
-      // },
+      {
+          name: 'manage-news',
+          title: '点师动态'
+      },
       // {
       //     name: 'statistics-data',
       //     title: '点击量统计'

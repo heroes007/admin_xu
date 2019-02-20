@@ -37,6 +37,7 @@ const ManagePublicDownloadData = () => import('../views/download/ManagePublicDow
 const ManageProduction = () => import('../views/production/ManageProduction');
 const ManageProductionCurriculum = () => import('../views/production/ManageProductionCurriculum');
 const ManageProductionGroup = () => import('../views/production/ManageProductionGroup');
+const ManageNews = () => import('../views/news/ManageNews')
 
 Vue.use(VueRouter);
 
@@ -200,11 +201,11 @@ const routes = [
         path: 'manage-production-group',
         component: ManageProductionGroup
       },
-      // {
-      //   name: 'manage-news',
-      //   path: 'manage-news',
-      //   component: ManageNews
-      // },
+      {
+        name: 'manage-news',
+        path: 'manage-news',
+        component: ManageNews
+      },
       // {
       //   name: 'statistics-data',
       //   path: 'statistics-data',

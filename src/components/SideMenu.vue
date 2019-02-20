@@ -2,7 +2,8 @@
 <template>
     <div class='side-menu'>
         <Row class='logo' type='flex' justify='center' align='middle'>
-            <img src='../assets/img/logo-white.png'>
+            <img class="logo-img" src='../assets/img/logo-white1.jpg'>
+            <div class="logo-title">九划医疗</div>
         </Row>
         <Row class="head-img-row" type='flex' justify='center' align='middle'>
             <div class='head-img'>
@@ -22,7 +23,7 @@
         </Row>
         <Row class='user-name'>
             <Tooltip :content="getRoleStr()" placement="right" theme="light">
-                <p><Icon class="md-alerts" type="md-alert" /><span>{{ getRoleStr() }}</span></p>
+                <p><span>{{ getRoleStr() }}</span></p>
             </Tooltip>
         </Row>
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
@@ -215,8 +216,14 @@
         padding: 27px 0;
         .logo {
             margin-bottom: 40px;
-            img {
-                width: 120px;
+
+            .logo-img{
+                width: 34px;
+            }
+            .logo-title{
+                color: #fff;
+                font-size: 18px;
+                margin-left: 4px;
             }
         }
         .head-img-row{
@@ -238,6 +245,9 @@
             width: 26px;
             height: 26px;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border-radius: 50%;
             border-color: #3DAAFF;
             background-color: #3DAAFF;
