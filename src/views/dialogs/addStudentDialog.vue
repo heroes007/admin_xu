@@ -326,7 +326,7 @@
    width: 100%;
 }
 .sub-btn,.sub-btn2{
-    background: #FB843E;
+    background: #3DAAFF;
     border-radius: 4px;
     height: 36px;
     border: 0;

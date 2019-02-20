@@ -72,7 +72,7 @@
     }
     /deep/.ivu-menu-item,.ivu-menu-item:hover{
         text-align: left;
-        color: #FC7643 !important;
+        color: #3DAAFF !important;
     }
     /deep/.ivu-menu-vertical.ivu-menu-light:after{
         content: none !important
@@ -108,8 +108,8 @@
             height: 26px;
             padding: 0;
             border-radius: 50%;
-            border-color: #fc7643;
-            background-color: #fc7643;
+            border-color: #3DAAFF;
+            background-color: #3DAAFF;
             color: #ffffff;
             text-align: center;
             line-height: 26px;
@@ -138,7 +138,7 @@
             white-space: nowrap;
             padding: 0 35px;
             i {
-                color: #F06B1D;
+                color: #3DAAFF;
                 margin-right: 10px;
             }
             p {

@@ -1,28 +1,35 @@
 <template>
     <div class='login-container'>
-        <div class='login-view'>
-            <div class='left-bar'></div>
-            <div class='logo'>
-                <img src='../assets/img/logo-white.png'>
-            </div>
-            <div class='data-input'>
-                <div class="elRow">
-                    <input  class="el-input" placeholder="输入用户名" v-model="name" />
+        <div class="login-view" :style="loginViewStyl">
+            <div class="login-left"></div>
+            <div class='login-right'>
+                <div class='logo'>
+                    <img src='../../static/img/logo_copy.png'>
                 </div>
-                <div class="elRow">
-                    <input class="el-input" type='password' placeholder="输入密码" v-model="password" />
-                </div>
-                <div class='remember elRowJustifyLeft'>
-                    <Switch v-model="remember" />
-                    <span class="rememberMeText">记住我</span>
-                </div>
-            </div>
-            <div class='submit'>
-                <Button class="Button" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
-                    <div class="elRow"><span>登录</span>
-                        <EllipsisAni v-if='isLogining' diameter="5px" pColor="#ffffff"></EllipsisAni>
+                <h1 class="login-title">九划医疗后台管理系统</h1>
+                <div class='data-input'>
+                    <div class="elRow">
+                        <img class="input-img" src='../../static/img/head.png'>
+                        <span class="input-span">|</span>
+                        <input  class="el-input" placeholder="输入用户名" v-model="name" />
                     </div>
-                </Button>
+                    <div class="elRow">
+                        <img class="input-img" src='../../static/img/lock.png'>
+                        <span class="input-span">|</span>
+                        <input class="el-input" type='password' placeholder="输入密码" v-model="password" />
+                    </div>
+                    <!-- <div class='remember elRowJustifyLeft'>
+                        <Switch v-model="remember" />
+                        <span class="rememberMeText">记住我</span>
+                    </div> -->
+                </div>
+                <div class='submit'>
+                    <Button class="Button login-btn" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
+                        <div class="elRow"><span>登录</span>
+                            <EllipsisAni v-if='isLogining' diameter="5px" pColor="#ffffff"></EllipsisAni>
+                        </div>
+                    </Button>
+                </div>
             </div>
         </div>
     </div>
@@ -40,7 +47,8 @@
                 name: '',
                 password: '',
                 remember: true,
-                isLogining: false
+                isLogining: false,
+                loginViewStyl: {}
             }
         },
         computed: {
@@ -88,86 +96,122 @@
               let u = JSON.parse(user.slice(2))
               this.setUser(u)
             }else this.setUser({name:'',pass:''})
+            let hei = document.documentElement.clientHeight * .555;
+            this.loginViewStyl = { 'width' :  (hei > 480 ? hei : 480) * 2 + 'px'}
         }
     }
 
 </script>
 <style lang="scss" scoped>
     .login-container {
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100%;
-        background: #ffffff;
+        background-image: url("../../static/img/bitmap_bg.jpg");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
     }
-    .login-view {
-        margin-top: -100px;
-        max-width: 600px;
-        position: relative;
-        background-color: #333333;
-        box-shadow: 0 0 20px 0 rgba(51, 51, 51, 0.30);
-        padding: 111px 0 170px 20px;
-        border-radius: 0 20px 20px 0;
-        .left-bar {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 20px;
+    .login-view{
+        // width: 62.5%;
+        height: 55.5%;
+        display: flex;
+        flex-wrap: nowrap;
+        min-height: 480px;
+        .login-left {
+            width: 50%;
             height: 100%;
-            background-color: #141111;
+            background-image: url("../../static/img/bitmap.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            min-height: 480px;
         }
-        img {
-            width: 136px;
-        }
-        .data-input {
-            background-color: #ffffff;
-            //width:380px;
-            padding: 20px 40px 20px 60px;
-        }
-        .elRow {
-            &.logo {
-                margin-bottom: 25px;
-                display: flex;
-                align-items: center;
-                box-sizing: border-box;
-                img {
-                    opacity: 0.5;
+        .login-right {
+            width: 50%;
+            height: 100%;
+            min-height: 480px;
+            position: relative;
+            background-color: #fff;
+            padding-left: 10%;
+            padding-right: 10%;
+            padding-top: 9%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            .logo {
+                width: 100%;
+                margin-bottom:10.8%;
+                position: relative;
+                height: 38px;
+                img { 
+                    height: 38px;
+                    width: 136px;
+                    float: left;
                 }
             }
-            margin-bottom: 14px;
-            .el-input {
-                width: 278px;
-                height: 48px;
-                border: 1px solid #b0bec5;
-                border-radius: 0 8px 8px 0;
-                background-color: #f7f9fa;
-                color: #1f2d3d;
-                &:focus {
-                    border-color: #69BA6D;
-                    background-color: #ffffff;
-                    outline: none
+            .login-title{
+                width: 100%;
+                font-family: PingFangSC-Semibold;
+                font-size: 24px;
+                color: #333333;
+                letter-spacing: 0;
+                text-align: left;
+                margin-bottom: 10.8%;
+            }
+            .data-input{
+               width: 100%;
+               .elRow {
+                    margin-bottom: 14px;
+                    border-bottom: 1px solid #EEE;
+                    .input-img{
+                        width: 18px;
+                        height: 18px;
+                        margin-right: 10px;
+                    }
+                    .input-span{
+                        margin-right: 10px;
+                        color: #EEE
+                    }
+                    .el-input {
+                        width: 100%;
+                        height: 48px;
+                        border: none;
+                        color: #1f2d3d;
+                        &:focus {
+                            border-color: #3DAAFF;
+                            background-color: #ffffff;
+                            outline: none
+                        }
+                        ::-webkit-input-placeholder {
+                            color: #99ABB4;
+                        }
+                        :-moz-placeholder {
+                            color: #99ABB4;
+                        }
+                        ::-moz-placeholder {
+                            color: #99ABB4;
+                        }
+                        :-ms-input-placeholder {
+                            color: #99ABB4;
+                        }
+                    }
                 }
-                ::-webkit-input-placeholder {
-                    color: #99ABB4;
-                }
-                :-moz-placeholder {
-                    color: #99ABB4;
-                }
-                ::-moz-placeholder {
-                    color: #99ABB4;
-                }
-                :-ms-input-placeholder {
-                    color: #99ABB4;
+                .remember {
+                    margin-bottom: 0;
+                    margin-top: 13px;
+                    font-size: 14px;
+                    color: #858585;
+                    .rememberMeText {
+                        margin-left: 12px
+                    }
                 }
             }
-        }
-        .remember {
-            margin-bottom: 0;
-            margin-top: 13px;
-            font-size: 14px;
-            color: #858585;
-            .rememberMeText {
-                margin-left: 12px
+            .submit{
+                margin-top: 10.8%;
+                width: 60%;
+                height: 50px;
             }
         }
     }
@@ -177,10 +221,10 @@
     }
     .ivu-btn,.ivu-btn:hover{
         width: 100%;
-        height: 40px;
-        border-radius: 0;
+        height: 50px;
+        border-radius: 25px;
         border: 0;
-        background-color: #FB843E;
+        background-color: #3DAAFF;
         color: #ffffff;
         font-size: 16px;
         line-height: 29px;

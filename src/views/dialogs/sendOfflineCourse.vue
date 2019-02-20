@@ -205,8 +205,8 @@
         font-size: 14px !important
     }
     /deep/ .send-btn {
-        background: #FB843E;
-        border: 1px solid #F06B1D;
+        background: #3DAAFF;
+        border: 1px solid #3DAAFF;
         border-radius: 4px;
         width: 200px;
         height: 36px;
@@ -222,8 +222,8 @@
         padding-bottom: 20px;
 
         .send-btn {
-            background: #FB843E;
-            border: 1px solid #F06B1D;
+            background: #3DAAFF;
+            border: 1px solid #3DAAFF;
             border-radius: 4px;
             width: 200px;
             height: 36px;

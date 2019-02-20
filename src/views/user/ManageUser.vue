@@ -451,7 +451,7 @@
       height: 36px;
     }
      /deep/.ivu-btn:active, /deep/.ivu-btn.active{
-      background-color: #FB843E !important;
+      background-color: #3DAAFF !important;
       color: #ffffff !important;
       border: none !important
     }
@@ -515,12 +515,12 @@
         font-size: 14px;
     }
     .btn-text{
-        color: #FB843E;
+        color: #3DAAFF;
         font-size: 14px;
     }
     .total-num{
         font-size: 12px;
-        color: #FB843E;
+        color: #3DAAFF;
         margin: 0 20px 10px 20px;
     }
     .search-role{
@@ -533,7 +533,7 @@
         margin: 0 auto;
     }
     .add-student-view .result .data-form .user-info span{
-        color: #FC7643 !important;
+        color: #3DAAFF !important;
     }
     .add-student-view .result .data-form {
       width: 550px;

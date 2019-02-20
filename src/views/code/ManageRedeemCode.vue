@@ -322,7 +322,7 @@ letter-spacing: 0;
             line-height: 54px;
             span {
 font-size: 16px;
-color: #F06B1D;
+color: #3DAAFF;
 letter-spacing: 0;
 
 &.not-use {
@@ -368,7 +368,7 @@ border-color: #cccccc;
         .el-button {
             width:120px;
             height:26px;
-            background-color: #f06b1d;
+            background-color: #3DAAFF;
             padding: 0;
             border: 0;
             border-radius: 2px;

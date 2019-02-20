@@ -109,12 +109,12 @@ export default {
     justify-content: center;
 }
 .btn-orange:hover{
-    background: #FB843E;
+    background: #3DAAFF;
     color: #fff;
 }
 .btn-orange{
-    background: #FB843E;
-    border: 1px solid #F06B1D;
+    background: #3DAAFF;
+    border: 1px solid #3DAAFF;
     border-radius: 4px;
     color: #fff;
     width: 200px;
@@ -153,7 +153,7 @@ export default {
         padding: 0 20px;
         margin-bottom: 20px;
         .el-button {
-          background: #fb843e;
+          background: #3DAAFF;
           border-radius: 4px;
           border: 0;
         }
@@ -320,7 +320,7 @@ export default {
           position: relative;
 
           &:hover {
-            color: #fb843e;
+            color: #3DAAFF;
           }
           .filename {
             width: 150px;
@@ -347,7 +347,7 @@ export default {
           .finish-btn {
             margin-left: 0;
             margin-top: 20px;
-            background: #fb843e;
+            background: #3DAAFF;
             border-radius: 4px;
             width: 160px;
             height: 36px;
@@ -371,8 +371,8 @@ export default {
         }
 
         .btn-orange {
-          background: #fb843e;
-          border: 1px solid #f06b1d;
+          background: #3DAAFF;
+          border: 1px solid #3DAAFF;
           border-radius: 4px;
           color: #fff;
           width: 200px;

@@ -208,7 +208,7 @@ export default {
                 }
 
                 .sub-btn {
-                    background: #FB843E;
+                    background: #3DAAFF;
                     border-radius: 4px;
                     width: 200px;
                     height: 36px;
@@ -339,7 +339,7 @@ export default {
                     button {
                         margin-left: 0;
                         margin-top: 40px;
-                        background: #FB843E;
+                        background: #3DAAFF;
                         border-radius: 4px;
                         width: 200px;
                         height: 36px;
@@ -362,7 +362,7 @@ export default {
                 }
             }
             .sub-btn {
-                background: #FB843E;
+                background: #3DAAFF;
                 border-radius: 4px;
                 width: 200px;
                 height: 36px;

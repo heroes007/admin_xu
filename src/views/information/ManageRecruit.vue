@@ -423,8 +423,8 @@ export default {
     .ivu-select{ width: 200px }
     .ivu-select-selection{ border-radius: 0; }
     button {
-      background: #fb843e;
-      border: 1px solid #f06b1d;
+      background: #3DAAFF;
+      border: 1px solid #3DAAFF;
       border-radius: 4px;
       width: 100px;
       height: 36px;

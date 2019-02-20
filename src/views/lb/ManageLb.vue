@@ -288,7 +288,7 @@
     .btn-add{
         position: absolute;
         right: 40px;
-        color: #FB843E;
+        color: #3DAAFF;
     }
     .result{
         margin: 32px 0 !important;
@@ -308,7 +308,7 @@
         font-size: 14px;
     }
     .btn-text{
-        color: #FB843E;
+        color: #3DAAFF;
         font-size: 14px;
     }
     /deep/ .ivu-input-number{

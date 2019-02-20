@@ -214,8 +214,8 @@
 /deep/.ivu-table th { height: 50px; }
 /deep/ .ivu-tooltip-rel>span{ font-size: 14px !important }
 /deep/ .send-btn{
-    background: #FB843E;
-    border: 1px solid #F06B1D;
+    background: #3DAAFF;
+    border: 1px solid #3DAAFF;
     border-radius: 4px;
     width: 200px;
     height: 36px;
@@ -230,8 +230,8 @@
     display: flex;
     justify-content: center;
     .send-btn {
-        background: #FB843E;
-        border: 1px solid #F06B1D;
+        background: #3DAAFF;
+        border: 1px solid #3DAAFF;
         border-radius: 4px;
         width: 200px;
         height: 36px;

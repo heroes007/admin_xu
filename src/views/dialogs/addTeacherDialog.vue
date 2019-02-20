@@ -87,7 +87,7 @@ export default {
             this.loadingInstance.close();
         }, Config.base_timeout);
             get_detail(this.payload).then(res => {
-                if(res.data.res_code === 1){
+              if(res.data.res_code === 1){
                     this.form = res.data.msg[0];
                     this.form._fn = function(){
                         vm.handleClose();

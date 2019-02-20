@@ -148,7 +148,7 @@
 
 </script>
 <style lang='scss' scoped>
-    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #F06B1D }
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #3DAAFF }
     /deep/.ivu-tabs-tab{
         text-align: center;
         line-height: 40px;
@@ -158,7 +158,7 @@
     .btn-add,.btn-add:hover {
         position: absolute;
         z-index: 999;
-        background-color: #F06B1D;
+        background-color: #3DAAFF;
         color:#ffffff;
         border: 0;
         padding: 0;
@@ -241,7 +241,7 @@
                     padding: 0 40px;
                     .warning {
                         font-size: 14px;
-                        color: #F06B1D;
+                        color: #3DAAFF;
                     }
                     .line {
                         width: 1px;

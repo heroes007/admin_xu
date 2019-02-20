@@ -93,8 +93,8 @@
 .btn-submit {
     margin-top: 40px;
     .btns {
-        background-color: #FB843E;
-        border: 1px solid #F06B1D;
+        background-color: #3DAAFF;
+        border: 1px solid #3DAAFF;
         border-radius: 4px;
         color: #ffffff;
         width: 200px;

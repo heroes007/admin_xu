@@ -239,8 +239,8 @@
             height: 26px;
             padding: 0;
             border-radius: 50%;
-            border-color: #fc7643;
-            background-color: #fc7643;
+            border-color: #3DAAFF;
+            background-color: #3DAAFF;
             color: #ffffff;
             text-align: center;
             line-height: 10px;
@@ -254,7 +254,7 @@
                 position: absolute;
                 top: -4px;
                 left: -4px;
-                background-color: rgba(252, 118, 67, 0.2);
+                background-color: rgba(61,170,255, 0.2);
                 border-radius: 50%;
                 border: 0;
                 display: none;
@@ -278,7 +278,7 @@
                 overflow: hidden;
                 -webkit-line-clamp: 1;
                 .md-alerts {
-                    color: #F06B1D;
+                    color: #3DAAFF;
                     margin-right: 10px;
                     font-size: 18px
                 }

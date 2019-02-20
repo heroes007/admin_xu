@@ -171,7 +171,7 @@ export default {
                 padding: 0 20px;
                 margin-bottom: 20px;
                 .el-button {
-                    background: #FB843E;
+                    background: #3DAAFF;
                     border-radius: 4px;
                     border: 0;
                 }
@@ -336,7 +336,7 @@ export default {
                     position: relative;
 
                     &:hover {
-                        color: #FB843E;
+                        color: #3DAAFF;
                     }
                     .filename {
                         width: 150px;
@@ -363,7 +363,7 @@ export default {
                     .finish-btn {
                         margin-left: 0;
                         margin-top: 20px;
-                        background: #FB843E;
+                        background: #3DAAFF;
                         border-radius: 4px;
                         width: 160px;
                         height: 36px;
@@ -386,8 +386,8 @@ export default {
                 }
 
                 .btn-orange {
-                    background: #FB843E;
-                    border: 1px solid #F06B1D;
+                    background: #3DAAFF;
+                    border: 1px solid #3DAAFF;
                     border-radius: 4px;
                     color: #fff;
                     width: 200px;

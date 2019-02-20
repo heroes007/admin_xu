@@ -249,7 +249,7 @@
     .upload-btn {
         margin-bottom: 10px !important;
         margin-left: 12px;
-        background: #F06B1D;
+        background: #3DAAFF;
         border-radius: 4px;
         width: 90px;
         height: 28px;
@@ -262,7 +262,7 @@
     }
 
     .upload-btn:hover {
-        background: #F06B1D;
+        background: #3DAAFF;
     }
 
     .description {

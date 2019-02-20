@@ -32,11 +32,11 @@ body { background-color: #fff; height: 100%; }
     border: 1px solid #d7dde4 !important
   }
   .ivu-page>.ivu-page-item-active{
-    background: #FC7643 !important;
+    background: #3DAAFF !important;
     border: none;
   }
   .ivu-page>li:hover{
-    background: #FC7643 !important;
+    background: #3DAAFF !important;
     border: none;
   }
   .ivu-page>li:hover a{
@@ -67,13 +67,13 @@ body { background-color: #fff; height: 100%; }
   border-radius: 0 !important
 }
 .sub-btn {
-  background: #FB843E;
+  background: #3DAAFF;
   border-radius: 4px;
   width: 200px;
   height: 36px;
   border: 0;
 }
-.total-num{ margin-left: 20px;margin-bottom: 10px; color: #FB843E; font-size: 12px}
+.total-num{ margin-left: 20px;margin-bottom: 10px; color: #3DAAFF; font-size: 12px}
 .ivu-select{ text-align: left !important; }
-.ivu-select-multiple .ivu-select-item-selected { color: #FB843E !important; }
-.ivu-select-multiple .ivu-select-item-selected:after { color: #FB843E !important; }
+.ivu-select-multiple .ivu-select-item-selected { color: #3DAAFF !important; }
+.ivu-select-multiple .ivu-select-item-selected:after { color: #3DAAFF !important; }

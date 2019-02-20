@@ -81,13 +81,13 @@ export default {
       height: 180px;
       margin: 20px;
       border: 0;
-      border-top: 5px solid #f06b1d;
+      border-top: 5px solid #3DAAFF;
       background: #ffffff;
       box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       .xght-webfont-tag {
         &:before {
-          color: #f06b1d;
+          color: #3DAAFF;
         }
       }
       h3 {
@@ -96,7 +96,7 @@ export default {
         span {
           opacity: 0.1;
           font-size: 100px;
-          color: #f06b1d;
+          color: #3DAAFF;
           letter-spacing: 0;
           position: absolute;
           right: 0;

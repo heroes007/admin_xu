@@ -395,8 +395,8 @@
             margin-left: 20px;
 
             button {
-                background: #fb843e;
-                border: 1px solid #f06b1d;
+                background: #3DAAFF;
+                border: 1px solid #3DAAFF;
                 border-radius: 4px;
                 width: 100px;
                 height: 36px;

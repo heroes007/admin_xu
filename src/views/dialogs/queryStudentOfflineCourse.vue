@@ -215,7 +215,7 @@ export default {
             }
         }
         .ok-btn {
-            background: #FB843E;
+            background: #3DAAFF;
             border-radius: 4px;
             width: 200px;
             height: 36px;

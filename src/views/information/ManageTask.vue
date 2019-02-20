@@ -215,7 +215,7 @@
             text-align: right;
             button {
                 margin-right: 30px;
-                background: #F06B1D;
+                background: #3DAAFF;
                 border-radius: 2px;
                 padding: 3px 15px;
                 font-size: 14px;

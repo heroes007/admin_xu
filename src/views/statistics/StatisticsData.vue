@@ -218,8 +218,8 @@ export default {
             }
         }
         button {
-            background: #FB843E;
-            border: 1px solid #F06B1D;
+            background: #3DAAFF;
+            border: 1px solid #3DAAFF;
             border-radius: 4px;
             width: 100px;
             height: 36px;

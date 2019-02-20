@@ -21,14 +21,14 @@
 <style lang='scss'>
     .save-order {
         .btn-save {
-            border-color: #F06B1D;
+            border-color: #3DAAFF;
             color: #fff;
         }
         .save {
             position: fixed;
             top:40%;
             right: 10px;
-            background-color: #FB843E;
+            background-color: #3DAAFF;
             box-shadow: 0 0 20px 0 rgba(251,131,62,0.50);
             border-radius: 50%;
             width: 70px;

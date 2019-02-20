@@ -153,7 +153,7 @@
                 flex-direction: row;
                 justify-content: space-between;
                 .sub-btn {
-                    background: #FB843E;
+                    background: #3DAAFF;
                     border-radius: 4px;
                     width: 120px;
                     height: 36px;

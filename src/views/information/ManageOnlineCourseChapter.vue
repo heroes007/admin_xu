@@ -424,7 +424,7 @@
 
                     .warning {
                         font-size: 14px;
-                        color: #F06B1D;
+                        color: #3DAAFF;
                     }
 
                     .el-button {
@@ -433,7 +433,7 @@
                         letter-spacing: 0;
 
                         &:hover {
-                            color: #F06B1D;
+                            color: #3DAAFF;
                         }
                     }
 

@@ -293,12 +293,12 @@
                     }
                 }
                 .el-button {
-                    background-color: #FB843E;
+                    background-color: #3DAAFF;
                     border: 0;
                 }
             }
             .ok-btn {
-                background: #FB843E;
+                background: #3DAAFF;
                 border-radius: 4px;
                 width: 200px;
                 height: 36px;

@@ -92,7 +92,7 @@
                                    :on-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.onText"
                                    :off-text="checkSwitchDisabled(scope.row,btn.disabledFuc)?btn.disableText:btn.offText"
                                    :disabled="checkSwitchDisabled(scope.row,btn.disabledFuc)"
-                                   on-color='#F06B1D' off-color='#757575'
+                                   on-color='#3DAAFF' off-color='#757575'
                                    @change='changeSwitchValue(scope.row,btn.switchKey,btn.actionName,btn.param)'
                                    v-if='btn.isSwitch'>
                         </el-switch>
@@ -550,16 +550,16 @@
 
                     &:hover {
                         span {
-                            color: #F06B1D;
+                            color: #3DAAFF;
 
                             i {
-                                color: #F06B1D;
+                                color: #3DAAFF;
                             }
                         }
                     }
 
                     &.Button--primary {
-                        background-color: #F06B1D;
+                        background-color: #3DAAFF;
                         border: 0;
 
                         span {

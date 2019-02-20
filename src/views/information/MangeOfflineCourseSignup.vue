@@ -271,8 +271,8 @@
             margin-left: 20px;
 
             button {
-                background: #FB843E;
-                border: 1px solid #F06B1D;
+                background: #3DAAFF;
+                border: 1px solid #3DAAFF;
                 border-radius: 4px;
                 width: 100px;
                 height: 36px;
@@ -280,7 +280,7 @@
 
             .btn-edit-deadline {
                 background-color: transparent;
-                color: #FB843E;
+                color: #3DAAFF;
                 width: 43px;
                 padding: 0;
             }

@@ -280,7 +280,7 @@
     }
 
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
-        color: #FC7643
+        color: #3DAAFF
     }
     /deep/ .ivu-form-item-content {
         text-align: left;

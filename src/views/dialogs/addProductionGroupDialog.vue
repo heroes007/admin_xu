@@ -135,13 +135,13 @@
     }
 
     .btn-orange:hover {
-        background: #FB843E !important;
+        background: #3DAAFF !important;
         color: #fff;
     }
 
     .btn-orange {
-        background: #FB843E;
-        border: 1px solid #F06B1D;
+        background: #3DAAFF;
+        border: 1px solid #3DAAFF;
         border-radius: 4px;
         color: #fff;
         width: 200px;

@@ -35,6 +35,7 @@ import addProductionGroupDialog from './addProductionGroupDialog.vue';
 import selectProductionDialog from './selectProductionDialog.vue';
 import addNewsDialog from './addNewsDialog.vue';
 import editProtocol from './editProtocol.vue';
+import addCertificateDialog from './addCertificateDialog.vue'
 
 import store from '../../store';
 
@@ -61,6 +62,9 @@ export var Dialog = {
                 case 'add-teacher':
                     inits(addTeacherDialog);
                     break;
+                case 'add-certificate':
+                    inits(addCertificateDialog);
+                    break
                 case 'add-question':
                     inits(addQuestionDialog);
                     break;

@@ -8,10 +8,10 @@
                     <FormItem class='radio-container'>
                         <RadioGroup v-model="form.type"  justify='start' align='middle' @on-change="handleChangeRadio">
                             <Radio class="radio" :label="0">
-                                <span :style="isChanged ? '':'border-color: #FB843E; color: #FB843E'" class="radioBtn">任务</span>
+                                <span :style="isChanged ? '':'border-color: #3DAAFF; color: #3DAAFF'" class="radioBtn">任务</span>
                             </Radio>
                             <Radio class="radio" :label="1">
-                                <span :style="isChanged ? 'border-color: #FB843E; color: #FB843E':''" class="radioBtn">作业</span>
+                                <span :style="isChanged ? 'border-color: #3DAAFF; color: #3DAAFF':''" class="radioBtn">作业</span>
                             </Radio>
                         </RadioGroup>
                    </FormItem>
@@ -119,8 +119,8 @@ export default {
         border-radius: 4px;
     }
     .is-changed{
-        border: 1px solid #FB843E;
-        color: #FB843E;
+        border: 1px solid #3DAAFF;
+        color: #3DAAFF;
     }
     /deep/ .ivu-modal-body{
         width: 80%;
@@ -134,7 +134,7 @@ export default {
         margin: 24px;
     }
     .sub-btn {
-        background: #FB843E;
+        background: #3DAAFF;
         border-radius: 4px;
         width: 200px;
         height: 36px;

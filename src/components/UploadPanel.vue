@@ -351,7 +351,7 @@
                 em {
                     margin-left: 5px;
                     font-size: 14px;
-                    color: #FB843E;
+                    color: #3DAAFF;
                     letter-spacing: 0;
                     line-height: 14px;
                 }

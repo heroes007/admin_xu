@@ -623,16 +623,16 @@
 
                     &:hover {
                         span {
-                            color: #F06B1D;
+                            color: #3DAAFF;
 
                             i {
-                                color: #F06B1D;
+                                color: #3DAAFF;
                             }
                         }
                     }
 
                     &.Button--primary {
-                        background-color: #F06B1D;
+                        background-color: #3DAAFF;
                         border: 0;
 
                         span {

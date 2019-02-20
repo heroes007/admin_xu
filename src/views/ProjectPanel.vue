@@ -88,13 +88,13 @@
                         height: 180px;
                         margin: 20px;
                         border: 0;
-                        border-top: 5px solid #F06B1D;
+                        border-top: 5px solid #3DAAFF;
                         background: #FFFFFF;
                         box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.10);
                         border-radius: 5px;
                         .xght-webfont-tag{
                             &:before{
-                                color: #F06B1D;
+                                color: #3DAAFF;
                             }
                         }
                         h3 {
@@ -103,7 +103,7 @@
                             span {
                                 opacity: 0.1;
                                 font-size: 100px;
-                                color: #F06B1D;
+                                color: #3DAAFF;
                                 letter-spacing: 0;
                                 position: absolute;
                                 right: 0;

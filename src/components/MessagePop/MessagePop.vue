@@ -62,7 +62,7 @@
 
             h2 {
             font-size: 20px;
-            color: #F06B1D;
+            color: #3DAAFF;
             letter-spacing: 0;
             margin: 0;
             }

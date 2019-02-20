@@ -40,7 +40,7 @@
                         <Input placeholder="售价必须小于等于定价" v-model="form.show_price"></Input>
                     </FormItem>
                     <FormItem v-show="nextStep == 0" label="荣誉证书" >
-                        <Select v-model="form.certificate" multiple @on-change="certificateChange">
+                        <Select v-model="form.certificate" multiple >
                             <Option v-for="(item, index) in certificate" :key="item.id" :value="item.id" :label="item.name"></Option>
                         </Select>
                     </FormItem>
@@ -99,7 +99,7 @@ import { Config } from '../../config/base'
 import { RemoveModal } from './mixins'
 import { mapActions, mapState, mapGetters } from 'vuex';
 import { get_list } from '../../api/modules/tools_curriculum'
-import { get_detail } from '../../api/modules/tools_product'
+import { get_detail, get_product_certificate } from '../../api/modules/tools_product'
 import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
 export default {
@@ -134,7 +134,7 @@ export default {
                 show_original_price:'',
                 examine_type:3,
                 _fn:null,
-                certificate:''
+                certificate:[]
             },
             nextStep: 0,
             isInited: false,
@@ -156,7 +156,16 @@ export default {
         }
     },
     mounted() {
-        this.get_certificate_list()
+        // this.get_certificate_list()
+        if(this.payload){
+          this.$nextTick(()=>{
+            get_product_certificate(this.form).then(res => {
+              res.data.data.forEach((item) => {
+                this.form.certificate.push(item.honour_id)
+              })
+            })
+          })
+        }
         if(this.projectType === 1){
             get_list(this.projectId).then(res => {
                 if(res.data.res_code === 1){
@@ -241,7 +250,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([ 'add_production', 'update_production', 'get_certificate_list' ]),
+        ...mapActions([ 'add_production', 'update_production', 'get_certificate_list', 'change_certificate_list' ]),
         checkCurriculum() {
             if(this.curriculumList.length > 0 && this.form.curriculum_id){
                 for(var i=0;i<this.curriculumList.length;i++){
@@ -318,10 +327,13 @@ export default {
                     content: '真实售价不能高于定价！'
                 });
              }
-            if(this.payload) this.update_production(this.form);
-            else this.add_production(this.form);
+            if(this.payload) {
+              this.update_production(this.form);
+            }
+            else {
+              this.add_production(this.form);
+            }
         },
-      certificateChange(val){}
     },
 }
 </script>
@@ -335,13 +347,13 @@ export default {
 }
 .btn-next{ margin-left: 20%; }
 .btn-orange:hover,.btn-next:hover{
-    background: #FB843E;
+    background: #3DAAFF;
     color: #fff;
 }
 .btn-orange{
     margin-left: 20%;
-    background: #FB843E;
-    border: 1px solid #F06B1D;
+    background: #3DAAFF;
+    border: 1px solid #3DAAFF;
     border-radius: 4px;
     color: #fff;
     width: 200px;

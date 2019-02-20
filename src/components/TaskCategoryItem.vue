@@ -127,9 +127,9 @@ export default {
 
 }
 .active {
-    border: 1px solid #F06B1D;
+    border: 1px solid #3DAAFF;
     p {
-        color: #F06B1D;
+        color: #3DAAFF;
     }
     .icon1{
       background-color: blue;

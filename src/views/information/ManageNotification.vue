@@ -276,7 +276,7 @@
 
 </script>
 <style scoped lang='scss'>
-    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #F06B1D }
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #3DAAFF }
     /deep/ .ivu-tabs-tab {
         text-align: center;
         line-height: 40px;

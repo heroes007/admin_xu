@@ -167,7 +167,7 @@ import MyRadarChart from '../../components/RadarChart'
                             data : [1,2,3,4,5],
                             backgroundColor:'rgba(240,107,29,0.40)',
                             borderColor:'rgba(240,107,29,0.50)',
-                            pointBackgroundColor:'#F06B1D',
+                            pointBackgroundColor:'#3DAAFF',
                             pointBorderColor:'transparent',
                             // radius: 5,
                             // pointRadius:5,
