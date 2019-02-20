@@ -18,3 +18,7 @@ export function update_lb(lbData){
 export function add_lb(lbData){
     return api.post('api/tools_lb/add_lb',lbData);
 }
+
+export function delete_lb(lbData) {
+  return api.post('api/tools_lb/remove_lb', lbData)
+}

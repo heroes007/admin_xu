@@ -5,7 +5,7 @@
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="文章状态" :label-width="80">
-                    <Select v-model="formInline.state" placeholder="请选择文章状态" @on-change='changeFilterHandler'>
+                    <Select v-model="formInline.state" placeholder="请选择文章状态" @on-change='changeFilterHandler' style="width: 130px;">
                         <Option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
                 </FormItem>
@@ -26,38 +26,16 @@
   import SubjectFilter from '../../components/SubjectFilter'
   import BaseList from '../../components/BaseList'
   import BackToTop from '../../components/BackToTop'
-  import {
-    MPop
-  } from '../../components/MessagePop'
+  import {MPop} from '../../components/MessagePop'
   import api from '../../api/modules/config'
-  import {
-    set_user_student_mrzx
-  } from '../../api/modules/student'
-  import {
-    send_interview_msg
-  } from '../../api/modules/exam'
-  import {
-    Loading
-  } from 'element-ui'
-  import {
-    Dialog
-  } from '../dialogs'
-  import {
-    ADD_NEWS
-  } from '../dialogs/types'
-  import {
-    Config
-  } from '../../config/base'
-  import {
-    mapState,
-    mapActions,
-    mapGetters
-  } from 'vuex'
-  import {
-    doDateFormat,
-    doTimeFormat,
-    reunitPrice
-  } from '../../components/Util'
+  import {set_user_student_mrzx} from '../../api/modules/student'
+  import {send_interview_msg} from '../../api/modules/exam'
+  import {Loading} from 'element-ui'
+  import {Dialog} from '../dialogs'
+  import {ADD_NEWS} from '../dialogs/types'
+  import {Config} from '../../config/base'
+  import {mapState, mapActions, mapGetters} from 'vuex'
+  import {doDateFormat, doTimeFormat, reunitPrice} from '../../components/Util'
 
   export default {
     mixins: [Dialog, MPop],
@@ -85,15 +63,16 @@
       },
       deleteHandler(index, row) {
         var vm = this;
-        this.$confirm('是否确认删除该产品？', '提示', {
-          type: 'info'
-        }).then(() => {
-          this.delete_news({
-            id: row.id, _fn: function () {
-              vm.showPop('删除成功！');
-            }
-          })
-        }).catch(() => {
+        this.$Modal.confirm({
+          title: '提示',
+          content: '<p>是否确认删除该产品？</p>',
+          onOk: () => {
+            this.delete_news({
+              id: row.id, _fn: function () {
+                vm.showPop('删除成功！');
+              }
+            })
+          },
         });
       },
       handleCurrentChange(val) {

@@ -26,10 +26,10 @@ export function change_certificate(param, product_id) {
   })
 }
 
-export function get_product_certificate(param) {
-  return api.post('api/honour/get_product_honours', {
-    product_id: param.product_id
-  })
+export function get_product_certificate(param, user_id) {
+  let obj = {product_id: param.product_id}
+  let obj2 = user_id ?  {user_id, ...obj} : obj
+  return api.post('api/honour/get_product_honours', obj2)
 }
 
 export function get_certificate_list() {
@@ -63,6 +63,14 @@ export function get_certificate_detail(certificate_id){
   return api.post('api/honour/get_honour_certificates',{
     id: certificate_id
   })
+}
+
+export function get_certificate_user_post(product_id, honour_id, user_id) {
+  return api.post('api/honour/issue_honour_to_user',{product_id, honour_id, user_id})
+}
+
+export function get_certificate_user(user_id) {
+  return api.post('api/honour/get_user_honours',{user_id})
 }
 
 export function add_product(param) {

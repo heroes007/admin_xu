@@ -156,7 +156,7 @@ const mutations = {
     },
     [types.TASK_CATEGORY_LIST_LOADED](state, params) {
         let first = {
-            id:1,
+            id:0,
             name:"未选择",
             orderby:0,
             task_list:[],

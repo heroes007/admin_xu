@@ -3,7 +3,8 @@
         <div class='login-view'>
             <div class='left-bar'></div>
             <div class='logo'>
-                <img src='../assets/img/logo-white.png'>
+                <img class="logo-img" src='../assets/img/logo-white1.jpg'>
+                <div class="logo-title">九划医疗</div>
             </div>
             <div class='data-input'>
                 <div class="elRow">
@@ -99,6 +100,22 @@
         justify-content: center;
         height: 100%;
         background: #ffffff;
+    }
+    .logo {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        .logo-img{
+            width: 34px;
+        }
+        .logo-title{
+            color: #fff;
+            font-size: 18px;
+            margin-left: 4px;
+        }
     }
     .login-view {
         margin-top: -100px;

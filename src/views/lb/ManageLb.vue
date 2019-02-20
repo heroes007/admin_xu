@@ -24,25 +24,25 @@
                         <Row class='user-data' type='flex' justify='start' align='middle'>
                             跳转地址： <Input placeholder='请输入内容' v-model='lbData.redirect_url'></Input>
                         </Row>
-                        <Row class='user-data' type='flex' justify='start' align='middle'>
-                            显示位置：
-                            <Select v-model="lbData.position" placeholder="请选择学科">
-                                <Option v-for="item in positionList" :key="item.id" :label="item.label" :value="item.value"></Option>
-                            </Select>
-                        </Row>
-                        <Row class='user-data' type='flex' justify='start' align='middle'>
-                            分享标题： <Input placeholder='请输入内容' v-model='lbData.share_title'></Input>
-                        </Row>
-                        <Row class='user-data' type='flex' justify='start' align='middle'>
-                            分享描述： <Input placeholder='请输入内容' v-model='lbData.share_desc'></Input>
-                        </Row>
-                        <Row class='user-data update-img' type='flex' justify='start' align='middle'>
-                            分享图片：<img v-if="lbData.share_img_url.url" :src='lbData.share_img_url.url'>
-                            <btn-upload text='上传图片' type='image/gif, image/jpeg, image/png' bucket='dscj-app' dir='lb' @uploadcomplete='uploadShareImgComplete'></btn-upload>
-                        </Row>
-                        <Row class='user-data' type='flex' justify='start' align='middle'>
-                            分享链接：<Input placeholder='请输入内容' v-model='lbData.share_url'></Input>
-                        </Row>
+                        <!--<Row class='user-data' type='flex' justify='start' align='middle'>-->
+                            <!--显示位置：-->
+                            <!--<Select v-model="lbData.position" placeholder="请选择学科">-->
+                                <!--<Option v-for="item in positionList" :key="item.id" :label="item.label" :value="item.value"></Option>-->
+                            <!--</Select>-->
+                        <!--</Row>-->
+                        <!--<Row class='user-data' type='flex' justify='start' align='middle'>-->
+                            <!--分享标题： <Input placeholder='请输入内容' v-model='lbData.share_title'></Input>-->
+                        <!--</Row>-->
+                        <!--<Row class='user-data' type='flex' justify='start' align='middle'>-->
+                            <!--分享描述： <Input placeholder='请输入内容' v-model='lbData.share_desc'></Input>-->
+                        <!--</Row>-->
+                        <!--<Row class='user-data update-img' type='flex' justify='start' align='middle'>-->
+                            <!--分享图片：<img v-if="lbData.share_img_url.url" :src='lbData.share_img_url.url'>-->
+                            <!--<btn-upload text='上传图片' type='image/gif, image/jpeg, image/png' bucket='dscj-app' dir='lb' @uploadcomplete='uploadShareImgComplete'></btn-upload>-->
+                        <!--</Row>-->
+                        <!--<Row class='user-data' type='flex' justify='start' align='middle'>-->
+                            <!--分享链接：<Input placeholder='请输入内容' v-model='lbData.share_url'></Input>-->
+                        <!--</Row>-->
                          <Row class='user-data' type='flex' justify='start' align='middle'>
                             排序序号：<InputNumber v-model="lbData.orderby"></InputNumber>
                         </Row>
@@ -62,6 +62,7 @@
         <Table :columns="columns1" :data="list">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="text" size="small" class="btn-text" @click="editLb(row)">编辑</Button>
+                <Button type="text" size="small" class="btn-text" @click="deleteLb(row)">删除</Button>
             </template>
         </Table>
         <Row class='pager' type='flex' justify='end' align='middle'>
@@ -75,7 +76,7 @@
     import Header from '../../components/Header'
     import UploadBtn from '../../components/UploadButton'
     import {Config} from '../../config/base'
-    import { get_detail, update_lb, add_lb } from '../../api/modules/tools_lb'
+    import { get_detail, update_lb, add_lb, delete_lb } from '../../api/modules/tools_lb'
 
     export default{
         components: { 'header-component': Header, 'btn-upload': UploadBtn },
@@ -97,7 +98,7 @@
                     name:'',
                     img_url:'',
                     redirect_url:'',
-                    position:'apphome',
+                    position:'web_home',
                     share_title:'',
                     share_desc:'',
                     share_img_url:'',
@@ -192,12 +193,19 @@
                     }
                 });
             },
-            hanleIsEditRes(res){
+            deleteLb(item){
+              console.log(item)
+              delete_lb({lb_id: item.ad_id}).then(res => {
+                this.hanleIsEditRes(res.data, 1)
+              })
+            },
+            hanleIsEditRes(res, n){
+              if(n) console.log(n)
                  if(res.res_code === 1){
                     this.$store.dispatch('get_lb_list', {curPage: this.curPage, pageSize: this.pageSize});
                     this.dialogVisible = false;
-                    this.$Message.success('保存广告成功！');
-                }else this.$Message.warning('保存广告失败：' + res.msg);
+                    n ? this.$Message.success('删除广告成功！') : this.$Message.success('保存广告成功！');
+                }else n ? this.$Message.success('删除广告失败！') : this.$Message.warning('保存广告失败：' + res.msg);
             },
           submit(){
             this.lbData.img_url = this.lbData.img_url ? JSON.stringify(this.lbData.img_url) : '';

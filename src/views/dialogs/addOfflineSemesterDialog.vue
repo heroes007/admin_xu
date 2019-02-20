@@ -258,18 +258,19 @@
       },
       changeDeadlineHandler() {
         if (this.form1.stage1 && this.form1.stage1.length > 0 && this.form1.signupDeadline) {
-          if (new Date(this.form1.signupDeadline.getTime() - this.form1.stage1[0]).getTime() < (14 * 24 * 60 * 60 * 1000)) {
+          if (new Date(this.form1.signupDeadline.getTime() - this.form1.stage1[0]).getTime() > (0)) {
             this.$Modal.warning({
               title: '提示',
-              content: '截止日期距开课日期小于14天！'
+              content: '截止日期需小于开课日期！'
             });
+            this.form1.signupDeadline = this.payload.row && this.payload.row.ex_time || null
           }
         }
       }
     }
   }
-
 </script>
+
 <style scoped lang="scss">
     .sub-btn {
         width: 170px;

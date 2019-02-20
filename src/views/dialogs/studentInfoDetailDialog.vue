@@ -239,19 +239,19 @@
                                 <div v-if="form3.productList.length">{{form3.productList[payload.product_id - 1].title}}</div>
                             </Row>
                             <Row class="body-top" v-if="true">
-                                <Row v-for="item in form3.dataList" :key="item.id" class="course-item">
+                                <Row v-for="item in form7.dataList" :key="item.id" class="course-item">
                                     <Col :span="4">
-                                        <div class="avator"><img :src="headerImage(item.teacher_img)" alt=""></div>
+                                        <div class="avator"><img :src="headerImage(item.img_url)" alt=""></div>
                                         <p>{{item.teacher_name}}</p>
                                     </Col>
                                     <Col :span="12">
-                                        <p class="title">{{item.title}}</p>
+                                        <p class="title">{{item.name}}</p>
                                     </Col>
                                     <Col :span="4">
-                                        <img class="lockImg" :src="item.type && item.lock_test? Lock : UnLock" />
+                                        <img class="lockImg" :src="item.state == 0 ? Lock : UnLock" />
                                     </Col>
                                     <Col :span="4">
-                                        <Button type='primary' :disabled="!(item.type && item.lock_test)" @click='unlockTest(item)'>解锁测验</Button>
+                                        <Button type='primary' :disabled="item.state == 0 && totalProgress == 100 ? false : true" @click='postCertificate(item)'>{{item.state == 0 ? "颁发证书" : "已颁发"}}</Button>
                                     </Col>
                                 </Row>
                             </Row>
@@ -285,10 +285,8 @@
   } from '../../api/modules/tools_offline_curriculum'
   import { get_student_task_list, get_student_work_list } from '../../api/modules/tools_task'
   import { get_signup_info_by_userid, update_signup_info } from '../../api/modules/exam'
-  import {
-    unlock_curriculum_video_test,
-    new_version_unlock_curriculum_video_test
-  } from '../../api/modules/tools_curriculum'
+  import {unlock_curriculum_video_test, new_version_unlock_curriculum_video_test} from '../../api/modules/tools_curriculum'
+  import {get_product_certificate, get_certificate_user_post} from '../../api/modules/tools_product'
   import defaultAvator from '../../assets/img/side-menu/default-header.jpg'
   import { doSortFormatCatalogList } from '../../components/Util'
   import { Config } from '../../config/base'
@@ -355,6 +353,9 @@
           remain_count: 0,
           real_count: 0
         },
+        form7: {
+          dataList: []
+        },
         loadingInstance: null
       }
     },
@@ -371,7 +372,7 @@
       totalProgress() {
         var finishCount = 0;
         var totalCount = 0;
-        if (!this.form3.product_id)
+        if (!this.payload.product_id)
           return 0;
         for (var i = 0; i < this.form3.dataList.length; i++) {
           totalCount += this.form3.dataList[i].content_count ? this.form3.dataList[i].content_count : 0;
@@ -383,10 +384,8 @@
           finishCount += this.form3.dataList[i].complete_video_test_ids ? JSON.parse(this.form3.dataList[i].complete_video_test_ids).length : 0;
         }
         finishCount = finishCount * 100;
-        console.log(totalCount,'1')
         if (totalCount === 0)
           return 0;
-        console.log(Math.floor(finishCount / totalCount),'2')
         return Math.floor(finishCount / totalCount);
       }
     },
@@ -399,11 +398,16 @@
           user_id: this.payload.user_id,
           project_id: this.payload.project_id
         }).then(res => {
+          console.log(res.data,'00000')
           if (res.data.res_code == 1) {
             this.loadingInstance.close();
             this.form3.dataList = res.data.msg;
             this.gettingLessons()
           }
+        })
+        get_product_certificate(this.payload, this.payload.user_id).then(res => {
+          this.form7.dataList = res.data.data
+          console.log(this.form7.dataList)
         })
       },
       gettingLessons(){},
@@ -516,6 +520,12 @@
             content: '解锁测验' + text
           });
           if(code === 1) this.changeProductHandler()
+        })
+      },
+      postCertificate(item) {
+        get_certificate_user_post(item.product_id, item.honour_id, this.payload.user_id).then(res => {
+          console.log(res.data)
+          if(res.data.res_code == 1) this.changeProductHandler()
         })
       },
       handleUploadComplete(url) {

@@ -81,7 +81,7 @@ const actions = {
       if (res.data.res_code === 1) {
         commit(types.PRODUCTION_UPDATED, param)
         if(param.certificate.length){
-          change_certificate(param.certificate, res.data.msg).then(res => {
+          change_certificate(param.certificate, param.product_id).then(res => {
             console.log(res.data)
           })
         }
