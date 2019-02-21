@@ -38,7 +38,7 @@ const ManageProduction = () => import('../views/production/ManageProduction');
 const ManageProductionCurriculum = () => import('../views/production/ManageProductionCurriculum');
 const ManageProductionGroup = () => import('../views/production/ManageProductionGroup');
 const ManageNews = () => import('../views/news/ManageNews')
-const ProjectList = () => import('../components/ProjectList')
+const ProjectList = () => import('../components/ProjectList');
 
 Vue.use(VueRouter);
 

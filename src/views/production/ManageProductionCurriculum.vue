@@ -11,7 +11,7 @@
                 <data-list class='data-list' :table-data='currentProduction.online_curriculum_list' :header-data='onlineHeader'
                  :columnComboData='columnComboData' :comboModelList='comboDataList' @delete='deleteHandler' />
             </TabPane>
-            <TabPane class='offline-content' label="线下课" name="offline"></TabPane>
+            <TabPane class='offline-content' disabled label="线下课" name="offline"></TabPane>
         </Tabs>
     </div>
 </template>

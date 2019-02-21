@@ -23,7 +23,7 @@
         </Row>
         <Row class='user-name'>
             <Tooltip :content="getRoleStr()" placement="right" theme="light">
-                <p><span>{{ getRoleStr() }}</span></p>
+                <p><span>{{ getRoleStr() }}</span></p >
             </Tooltip>
         </Row>
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
@@ -221,7 +221,11 @@
         /*padding: 0;*/
         display: flex;
         flex-direction: row;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 4451246def2b1285b7879813805c8ebe3ed6d966
         i{
             height: 14px;
         }
