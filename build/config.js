@@ -7,7 +7,7 @@ module.exports = {
     },
     dev:{
         publicPath:'/',
-        port:3701
+        port: 8001
     },
     prod:{
         publicPath:''
