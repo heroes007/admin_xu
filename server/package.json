@@ -8,7 +8,7 @@
     "server": "node server.js"
   },
   "config": {
-    "port": "4003",
+    "port": "8102",
     "env": "development"
   },
   "dependencies": {

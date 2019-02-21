@@ -1,6 +1,4 @@
 #!/bin/bash
-echo "开始清空项目"
-npm run clean
 echo "开始编译项目!"
 npm run build
 echo "开始上传静态资源到OSS!"
