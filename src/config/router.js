@@ -20,7 +20,7 @@ import VueRouter from 'vue-router';
 // import HolyWater from '../views/HolyWater';
 
 const Login = () => import('../views/Login');
-const NotFound = () => import('../views/NotFound');
+const NotFound = () => import('../views/notfound');
 const DashBoard = () => import('../views/DashBoard');
 const ManageStudent = () => import('../views/student/ManageStudent');
 const ManageUser = () => import('../views/user/ManageUser');
