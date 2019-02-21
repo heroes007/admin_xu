@@ -221,6 +221,10 @@
         /*padding: 0;*/
         display: flex;
         flex-direction: row;
+
+        i{
+            height: 14px;
+        }
     }
 
     /deep/ .ivu-menu {
