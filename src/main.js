@@ -7,7 +7,7 @@ import './css';
 import VueLocalStorage from 'vue-localstorage'
 import iView from 'iview';
 
-import ElementUI from 'element-ui'
+// import ElementUI from 'element-ui'
 
 // Vue.use(ElementUI)
 

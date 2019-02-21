@@ -11,7 +11,11 @@
                     <div class='chapter-item' v-for='(item,index) in chapterList'>
                         <div @click="toggleListShow(index)">
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
-                                <div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>
+                                <!--<div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>-->
+                                <div><span>第{{index + 1}}章</span> 
+                                <Input  v-model="item.group_name" @on-change="editorNote(item)" @on-focus="showDataState(index)" style="width: 300px" />
+                                </div>
+                                <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
                                 <div>
                                     <Icon v-if='showListState[index] == 0' type="ios-arrow-down" />
                                     <Icon  v-else-if='showListState[index] == 1' type="ios-arrow-up" />
@@ -75,7 +79,7 @@
   import { VIDEO_MANAGE, ADD_QUESTION } from '../dialogs/types'
   import { Config } from '../../config/base'
   import { doSortFormatCatalogList } from '../../components/Util'
-
+  import  updateVideoGroupName from '../../api/modules/onlineCourseChapter'
   export default {
     mixins: [Dialog],
     components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder },
@@ -89,7 +93,8 @@
           group_orderby: -1
         },
         isInited: false,
-        isChapterInited: false
+        isChapterInited: false,
+        curriculumItem: {}
       }
     },
     computed: {
@@ -196,6 +201,22 @@
       }
     },
     methods: {
+      showDataState(i){
+        // this.showListState[i] = 0
+        this.$set(this.showListState, i, 0);
+      },
+      editorNote(val){
+        let d = {
+          curriculum_id: val.curriculum_id,
+          group_orderby: val.group_orderby,
+          group_name: val.group_name
+        }
+        updateVideoGroupName(d).then((res) => {
+          // if(res.data.res_code === 1) {
+            // this.$Message.success(res.data.msg);
+          // }
+        })
+      },
       openModal(modal,row,type){
           let item = type == 1 ? { video_id: row.video_id } : { video_test_id: row.video_test_id }
           this.handleSelModal(modal, {
@@ -337,6 +358,7 @@
 
 </script>
 <style scoped lang='scss'>
+    /deep/ .ivu-input { border:none }
     /deep/ .ivu-icon  { font-size: 24px}
     .manage-online-course-chapter {
         .course-name {

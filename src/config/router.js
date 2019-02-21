@@ -38,6 +38,7 @@ const ManageProduction = () => import('../views/production/ManageProduction');
 const ManageProductionCurriculum = () => import('../views/production/ManageProductionCurriculum');
 const ManageProductionGroup = () => import('../views/production/ManageProductionGroup');
 const ManageNews = () => import('../views/news/ManageNews')
+const ProjectList = () => import('../components/ProjectList');
 
 Vue.use(VueRouter);
 
@@ -171,11 +172,11 @@ const routes = [
       //   path: 'manage-app',
       //   component: ManageApp
       // },
-      // {
-      //   name: 'manage-project',
-      //   path: 'manage-project',
-      //   component: ProjectList
-      // },
+      {
+        name: 'manage-project',
+        path: 'manage-project',
+        component: ProjectList
+      },
       // {
       //   name: 'manage-recruit',
       //   path: 'manage-recruit',

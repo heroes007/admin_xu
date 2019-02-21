@@ -30,7 +30,7 @@
         <Row>
             <Col>
              <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem" :active-name='activeIndex' :open-names="menuOpenName">
-               <div v-for="it in menuList" :key="it.name">
+               <div v-for="(it,index) in menuList" :key="index">
                 <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
                     <template slot="title"><Icon :type="it.icon" />{{it.title}}</template>
                     <div v-for="(t, index) in it.list" :key="index">
@@ -44,6 +44,11 @@
                         </MenuItem>
                     </div>
                 </Submenu>
+                <MenuItem v-else-if="it.checkItem && it.checkItem ==='product-information' && checkRole(it.checkItem)"
+                 :name="routeName == it.name[1] ? it.name[1] : it.name[0]">
+                    <Icon :type="it.icon" />{{it.title}}
+                </MenuItem>
+                <MenuItem v-else-if="it.checkItem && checkRole(it.checkItem)" :name="it.name"><Icon :type="it.icon" />{{it.title}}</MenuItem>
                 <MenuItem v-else :name="it.name"><Icon :type="it.icon" />{{it.title}}</MenuItem>
                </div>
             </Menu>
@@ -62,7 +67,7 @@
             return {
                 use_router: true,
                 activeIndex: "manage-production",
-                menuOpenName: ['6','2'],
+                menuOpenName: [],
                 menuList: MenuList
             }
         },
@@ -100,16 +105,18 @@
                 let role7 = this.checked(7);
                 let role8 = this.checked(8);
                 let role9 = this.checked(9);
-                if(name === 'admin') return role1
+                if((name === 'admin') || (name === 'product-information')) return role1
                 else if(name === 'manager'){
                     if(role1 || role7) return true
+                    else return false
+                }else if(name === 'student'){
+                    if(role1 || role7 || role8) return true
                     else return false
                 }else if(name === 'teacher'){
                     if(role1 || role8) return true
                     else return false
-                }
-                else if(name === 'trader'){
-                    if(role1 || role9) return true
+                }else if(name === 'platform'){
+                    if(role1 || role7) return true
                     else return false
                 }
                 // return true;
