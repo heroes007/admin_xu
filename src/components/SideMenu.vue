@@ -1,4 +1,3 @@
-/** * Created by lesonli on 2016/11/16. */
 <template>
     <div class='side-menu'>
         <Row class='logo' type='flex' justify='center' align='middle'>
@@ -221,11 +220,6 @@
         /*padding: 0;*/
         display: flex;
         flex-direction: row;
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 4451246def2b1285b7879813805c8ebe3ed6d966
         i{
             height: 14px;
         }
