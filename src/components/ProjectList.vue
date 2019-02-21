@@ -1,7 +1,7 @@
 <template>
     <div class='project-panel'>
-      <h1>项目管理系统</h1>
-      <p>欢迎来到点师成金后台，赶快选择一个项目进行管理吧！</p>
+      <h1>机构管理系统</h1>
+      <p>欢迎来到九划医疗管理后台，赶快选择一个机构进行管理吧！</p>
       <div class='project-list'>
           <Card class='project-item' v-for='(item, index) in projectList' :key="item.id">
               <div @click='changeSelectProject(item.id)'>

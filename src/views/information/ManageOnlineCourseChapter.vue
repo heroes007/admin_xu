@@ -11,7 +11,9 @@
                     <div class='chapter-item' v-for='(item,index) in chapterList'>
                         <div @click="toggleListShow(index)">
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
-                                <div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>
+                                <!--<div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>-->
+                                <div><span>第{{index + 1}}章</span> <input style="width: 300px;" v-model="item.group_name" ></input></div>
+                                <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
                                 <div>
                                     <Icon v-if='showListState[index] == 0' type="ios-arrow-down" />
                                     <Icon  v-else-if='showListState[index] == 1' type="ios-arrow-up" />

@@ -1,11 +1,20 @@
 import api from './config'
 
 export function get_list(param){
-  return api.post('/api/tools_news/get_list',{
-        page_index:param.page_index,
-        page_size:param.page_size,
-        state:param.state
-        });
+  var obj
+  if(param.state == -1){
+    obj = {
+      page_index:param.page_index,
+      page_size:param.page_size,
+    }
+  }else{
+    obj = {
+      page_index:param.page_index,
+      page_size:param.page_size,
+      state:param.state
+    }
+  }
+  return api.post('/api/tools_news/get_list',obj);
 }
 
 export function get_detail(news_id){
