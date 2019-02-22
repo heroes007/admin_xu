@@ -221,11 +221,6 @@
         /*padding: 0;*/
         display: flex;
         flex-direction: row;
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 4451246def2b1285b7879813805c8ebe3ed6d966
         i{
             height: 14px;
         }
