@@ -26,7 +26,7 @@
             </Tooltip>
         </Row>
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
-        <Row>
+        <Row class="menu-list">
             <Col>
                 <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
                       :active-name='activeIndex' :open-names="menuOpenName">
@@ -265,6 +265,7 @@
 
     .side-menu {
         padding: 27px 0;
+        height: calc(100% - 240px);
 
         .logo {
             margin-bottom: 40px;
@@ -359,6 +360,11 @@
             }
 
             margin-bottom: 50px;
+        }
+        .menu-list{
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto;
         }
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class='manage-student-view'>
-        <header-component title='查看用户' :noSelect="noSelect" :showAdd='true' addText='创建用户' @addClick='addUserHandler'></header-component>
+        <header-component title='用户管理' :noSelect="noSelect" :showAdd='true' addText='创建用户' @addClick='addUserHandler'></header-component>
         <Row class='sub-header'>
             <Breadcrumb separator="/">
                 <BreadcrumbItem>用户管理</BreadcrumbItem>
@@ -397,7 +397,7 @@
       }
 
       this.$store.dispatch("get_role_list");
-      this.$store.dispatch("get_dealer_list");
+      // this.$store.dispatch("get_dealer_list");
     },
     computed: {
       roleList() {

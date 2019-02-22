@@ -1,6 +1,6 @@
     <template>
     <div class='manage-student-view'>
-        <header-component title='查看广告' :noSelect="noSelect"></header-component>
+        <header-component title='广告图' :noSelect="noSelect"></header-component>
         <Row class='sub-header' type='flex' justify='space-between' align='middle'>
             <Breadcrumb separator="/">
                 <BreadcrumbItem>广告图管理</BreadcrumbItem>

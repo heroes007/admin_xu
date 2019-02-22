@@ -1,6 +1,6 @@
 <template>
     <div class='manage-course-download-data'>
-        <header-component :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/>
+        <header-component title="添加课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/>
         <data-list class='data-list light-header' @delete='deleteHandler' :isStripe='false' :table-data='dataList'
           :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'></data-list>
     </div>

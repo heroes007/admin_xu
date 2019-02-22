@@ -1,6 +1,6 @@
 <template>
     <div class='manage-production-view'>
-        <header-component title='点师动态' :type='0' :showAdd='true' addText='创建文章'
+        <header-component title='行业资讯' :type='0' :showAdd='true' addText='创建文章'
                           @addClick='addNewsHandler'></header-component>
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">

@@ -7,6 +7,7 @@
                     <Option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id"></Option>
                 </Select>
             </div>
+            <div class="st-title">{{title}}</div>
             <div class='btn-group' v-if='type !== 0'>
                 <Button class='btn-add' type='primary' icon="md-add" v-if='type === 1 && showAdd' @click="addCourseHandler">
                     添加课程
@@ -70,6 +71,9 @@
             },
             addText:{
                 type:String
+            },
+            title: {
+                type: String
             }
         },
         methods: {
@@ -172,6 +176,12 @@
         .teacher-list-container {
             padding: 30px 0;
         }
+    }
+
+    .st-title {
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
     }
 
     .project-header {

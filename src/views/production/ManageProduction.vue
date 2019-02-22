@@ -1,6 +1,6 @@
 <template>
     <div class='manage-production-view'>
-        <header-component title='产品管理' :type='1' :showAdd='true' addText='新建产品' @addClick='addProductionHandler' @addCert="addCertificate"></header-component>
+        <header-component title='产品信息' :type='1' :showAdd='true' addText='新建产品' @addClick='addProductionHandler' @addCert="addCertificate"></header-component>
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="产品名称" :label-width="80">
