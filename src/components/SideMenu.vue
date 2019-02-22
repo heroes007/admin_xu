@@ -1,4 +1,3 @@
-/** * Created by lesonli on 2016/11/16. */
 <template>
     <div class='side-menu'>
         <Row class='logo' type='flex' justify='center' align='middle'>
