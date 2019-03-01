@@ -8,7 +8,6 @@ import VueRouter from 'vue-router';
 // import ManageHomework from '../views/homework/ManageHomework';
 // import GradeHomework from '../views/homework/GradeHomework';
 // import AddStudent from '../views/student/AddStudent';
-// import ManagRedeemCode from '../views/code/ManageRedeemCode';
 // import ManageApp from '../views/information/ManageApp';
 // import ProjectList from '../components/ProjectList';
 // import ManageRecruit from '../views/information/ManageRecruit';
@@ -39,6 +38,7 @@ const ManageProductionCurriculum = () => import('../views/production/ManageProdu
 const ManageProductionGroup = () => import('../views/production/ManageProductionGroup');
 const ManageNews = () => import('../views/news/ManageNews')
 const ProjectList = () => import('../components/ProjectList');
+const ManagRedeemCode = () => import('../views/code/ManageRedeemCode');
 
 Vue.use(VueRouter);
 
@@ -152,11 +152,11 @@ const routes = [
         path:'notification-chat',
         component:ManageNotification
       },
-      // {
-      //   name:'redeem-code',
-      //   path:'redeem-code',
-      //   component:ManagRedeemCode
-      // },
+      {
+        name:'redeem-code',
+        path:'redeem-code',
+        component:ManagRedeemCode
+      },
       {
         name:'course-download-data',
         path:'course-download-data',

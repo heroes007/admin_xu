@@ -33,26 +33,26 @@
 
                     <div v-for="(it,index) in menuList" :key="index">
                         <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
-                            <template class="menu-padding" slot="title"><span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src='iconImg + it.icon + png'/>{{it.title}}</span></template>
+                            <template class="menu-padding" slot="title"><div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src='iconImg + it.icon + png'/>{{it.title}}</div></template>
                             <div v-for="(t, index) in it.list" :key="index">
                                 <div v-if="t.check">
-                                    <MenuItem  v-if="routeName == t.name[1]" :name="t.name[1]">{{t.title}}</MenuItem>
-                                    <MenuItem  v-if="routeName != t.name[1]" :name="t.name[0]">{{t.title}}</MenuItem>
+                                    <MenuItem class="sub-item-title" v-if="routeName == t.name[1]" :name="t.name[1]">{{t.title}}</MenuItem>
+                                    <MenuItem class="sub-item-title" v-if="routeName != t.name[1]" :name="t.name[0]">{{t.title}}</MenuItem>
                                 </div>
-                                <MenuItem v-else :name="t.name">
+                                <MenuItem v-else :name="t.name" class="sub-item-title">
                                     <Badge v-if="t.name === 'notification-chat'" :count="unread_count"> {{t.title}}</Badge>
                                     <span v-else>{{t.title}}</span>
                                 </MenuItem>
                             </div>
                         </Submenu>
                         <MenuItem v-else-if="it.checkItem && it.checkItem ==='product-information' && checkRole(it.checkItem)" :name="routeName == it.name[1] ? it.name[1] : it.name[0]">
-                            <span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
+                            <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
                         </MenuItem>
                         <MenuItem v-else-if="it.checkItem && checkRole(it.checkItem)" :name="it.name">
-                            <span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
+                            <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
                         </MenuItem>
                         <MenuItem v-else :name="it.name">
-                            <span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
+                            <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
                         </MenuItem>
                     </div>
                 </Menu>
@@ -64,8 +64,8 @@
   import api from '../api/modules/config'
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
   // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
-  import {mapActions, mapGetters} from 'vuex'
-  import {MenuList} from './Util'
+  import { mapActions, mapGetters } from 'vuex'
+  import { MenuList } from './Util'
 
   export default {
     data() {
@@ -80,9 +80,7 @@
       }
     },
     computed: {
-      ...mapGetters({
-        unread_count: 'unread_message_count'
-      }),
+      ...mapGetters({ unread_count: 'unread_message_count' }),
       roleList() {
         return this.$store.state.roles.role_list;
       },
@@ -104,8 +102,19 @@
       }
     },
     methods: {
-      enterImg(it) {
-        it.icon = it.icon + '_gray'
+      setProductInfoIcon(it,str){
+         let d = this.$config.copy(it)
+         d.icon = str
+         this.menuList.splice(3,1,d)
+      },
+      outImg(it) {
+        if(Array.isArray(it.name)){
+          if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
+            this.setProductInfoIcon(it,'04.product')
+          }else if(it.title === "产品信息")  this.setProductInfoIcon(it,'04.product_gray')
+        }else{
+          if(it.name !== this.activeIndex && !it.icon.includes('_gray')) it.icon = it.icon + '_gray'
+        }
       },
       overImg(it) {
         it.icon = it.icon.split('_')[0];
@@ -140,6 +149,11 @@
         this.menuOpenName = name;
       },
       selectItem(index) {
+        this.menuList.forEach((it) => {
+          if(!it.icon.includes('_gray')) it.icon = it.icon + '_gray';
+          if(it.name === index) it.icon = it.icon.split('_')[0];
+        })
+        if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
         this.name = index
         this.$router.push({name: index});
       },
@@ -173,9 +187,24 @@
           }
         }
         return result;
+      },
+      setSubmenuTitleIconMouse(){
+        let doc = document.querySelectorAll('.ivu-menu-submenu-title-icon');
+        doc.forEach((it,k) => {
+          let previousSbilingText = it.parentNode.children[0].innerText,item = null;
+          this.menuList.forEach((res) => {
+            if(res.title === previousSbilingText)  item = res
+          })
+          if(item){
+            it.addEventListener('mouseover' ,() => { this.overImg(item) })
+            it.addEventListener('mouseout' ,() => { this.outImg(item) })
+          }
+        })
       }
     },
     mounted() {
+      this.setSubmenuTitleIconMouse()
+      this.selectItem('manage-production')
       this.initMenu();
       if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
       // server.on('connect', () => {
@@ -205,19 +234,28 @@
   }
 </script>
 <style lang="scss" scoped>
+    .sub-item-title {        
+        padding-top: 14px !important;
+        padding-bottom: 14px !important; 
+      }
     .menu-item{
         display: flex;
         width: 100%;
         height: 100%;
         align-items: center;
-
+        padding: 14px 24px;
         img{
             margin-right: 6px;
         }
     }
-
+    /deep/ .ivu-menu-item{  padding: 0; }
+    /deep/ .ivu-menu-submenu-title-icon{ 
+      top: 18px ;
+      position: absolute;
+      right: 0;
+    }
     /deep/ .ivu-menu-submenu-title{
-        /*padding: 0;*/
+        padding: 0;
         display: flex;
         flex-direction: row;
         i{

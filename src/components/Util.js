@@ -126,7 +126,12 @@ export const MenuList = [
     list:[{
       name: 'manage-student',
       title: '学员管理',
-    }, {
+    }, 
+    {
+        name: 'redeem-code',
+        title: '兑换码管理'
+    },
+    {
         name: 'manage-my-assignment',
         title: '批阅任务作业',
         badge: true

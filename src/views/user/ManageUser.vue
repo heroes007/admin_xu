@@ -397,7 +397,7 @@
       }
 
       this.$store.dispatch("get_role_list");
-      this.$store.dispatch("get_dealer_list");
+      // this.$store.dispatch("get_dealer_list");
     },
     computed: {
       roleList() {

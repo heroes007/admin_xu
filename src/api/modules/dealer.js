@@ -6,6 +6,6 @@ var api = axios.create({
     timeout: 10000,
     withCredentials:true
   });
-  export function get_list() {
+export function get_list() {
     return api.post('api/dealer/getSelectionListForDSCJ',{});
 }
