@@ -82,7 +82,7 @@
                     <FormItem class="btns">
                         <Button type='text' v-show='nextStep == 2 || nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</Button>
                         <Button v-show="nextStep == 2" class="btn-orange" @click="handleSubmit('form')">提交</Button>
-                        <Button v-show="nextStep == 0 || nextStep == 1" class="btn-orange btn-next" @click="handleNextStep('form')">下一步</Button>
+                        <Button v-show="nextStep == 0 || nextStep == 1" class="btn-orange btn-next" @click="handleNextStep(form)">下一步</Button>
                     </FormItem>
                 </Form>
             </Row>
@@ -187,8 +187,8 @@ export default {
                 if(res.data.res_code === 1){
                     this.form.code = res.data.msg.code;
                     this.form.title = res.data.msg.title;
-                    this.form.show_price = (res.data.msg.price / 100).toString();
-                    this.form.show_original_price = (res.data.msg.original_price / 100).toString();
+                    this.form.show_price = (res.data.msg.price).toString();
+                    this.form.show_original_price = (res.data.msg.original_price).toString();
                     this.form.short_description = res.data.msg.short_description;
                     this.form.description = res.data.msg.description;
                     this.form.curriculum_id = res.data.msg.curriculum_id;
@@ -302,9 +302,26 @@ export default {
             this.addProductionDialog = false;
         },
         handleNextStep(formName) {
-            this.fromLabelWidth = 0;
-            this.formItemLabelWidth = 80
-            this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
+          console.log(formName)
+          // var arrObj = {
+          //   default: this.form.img_url,
+          //   video: this.form.video_url
+          // }
+          // var description= this.$refs.description_editor.editor.getContent();
+          // this.form.description = description;
+          // this.form.img_url_arr = JSON.stringify(arrObj);
+          // this.form.price = Math.round(parseFloat(this.form.show_price));
+          // this.form.original_price = Math.round(parseFloat(this.form.show_original_price));
+          // if(this.form.price > this.form.original_price){
+          //   this.$Modal.info({
+          //     title: '提示',
+          //     content: '真实售价不能高于定价！'
+          //   });
+          // }else{
+          //   this.fromLabelWidth = 0;
+          //   this.formItemLabelWidth = 80
+          //   this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
+          // }
         },
         handlePreStep() {
             this.fromLabelWidth = 121
@@ -312,27 +329,28 @@ export default {
             this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
         handleSubmit() {
-            var arrObj = {
-                default: this.form.img_url,
-                video: this.form.video_url
-            }
-            var description= this.$refs.description_editor.editor.getContent();
-            this.form.description = description;
-            this.form.img_url_arr = JSON.stringify(arrObj);
-             this.form.price = Math.round(parseFloat(this.form.show_price) * 100);
-             this.form.original_price = Math.round(parseFloat(this.form.show_original_price) * 100);
-             if(this.form.price > this.form.original_price){
-                this.$Modal.info({
-                    title: '提示',
-                    content: '真实售价不能高于定价！'
-                });
-             }
-            if(this.payload) {
-              this.update_production(this.form);
-            }
-            else {
-              this.add_production(this.form);
-            }
+            // var arrObj = {
+            //     default: this.form.img_url,
+            //     video: this.form.video_url
+            // }
+            // var description= this.$refs.description_editor.editor.getContent();
+            // this.form.description = description;
+            // this.form.img_url_arr = JSON.stringify(arrObj);
+            //  this.form.price = Math.round(parseFloat(this.form.show_price));
+            //  this.form.original_price = Math.round(parseFloat(this.form.show_original_price));
+            //  if(this.form.price > this.form.original_price){
+            //     this.$Modal.info({
+            //         title: '提示',
+            //         content: '真实售价不能高于定价！'
+            //     });
+            //  }else{
+               if(this.payload) {
+                 this.update_production(this.form);
+               }
+               else {
+                 this.add_production(this.form);
+               }
+             // }
         },
     },
 }

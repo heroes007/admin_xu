@@ -103,7 +103,7 @@ export function exportCsv(data, fields, fileNames, fileName) {
 }
 
 export function reunitPrice(val) {
-  return (val / 100).toString();
+  return (val).toString();
 }
 
 export const MenuList = [

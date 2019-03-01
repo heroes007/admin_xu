@@ -236,6 +236,9 @@
       }
     },
     mounted() {
+      this.$nextTick(()=>{
+        console.log(this.tableData,'123123')
+      })
       // 资料管理来回切换报异常
       if (this.comboModelList && this.comboModelList.length > 0) {
         this.comboDataList = [];

@@ -33,7 +33,7 @@
 
                     <div v-for="(it,index) in menuList" :key="index">
                         <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
-                            <template class="menu-padding" slot="title"><span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src='iconImg + it.icon + png'/>{{it.title}}</span></template>
+                            <template class="menu-padding" slot="title"><span class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src='iconImg + it.icon + png'/>{{it.title}}</span></template>
                             <div v-for="(t, index) in it.list" :key="index">
                                 <div v-if="t.check">
                                     <MenuItem  v-if="routeName == t.name[1]" :name="t.name[1]">{{t.title}}</MenuItem>
@@ -46,13 +46,13 @@
                             </div>
                         </Submenu>
                         <MenuItem v-else-if="it.checkItem && it.checkItem ==='product-information' && checkRole(it.checkItem)" :name="routeName == it.name[1] ? it.name[1] : it.name[0]">
-                            <span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
+                            <span class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
                         </MenuItem>
                         <MenuItem v-else-if="it.checkItem && checkRole(it.checkItem)" :name="it.name">
-                            <span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
+                            <span class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
                         </MenuItem>
                         <MenuItem v-else :name="it.name">
-                            <span class="menu-item" @mouseout="enterImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
+                            <span class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</span>
                         </MenuItem>
                     </div>
                 </Menu>
@@ -104,7 +104,7 @@
       }
     },
     methods: {
-      enterImg(it) {
+      outImg(it) {
         it.icon = it.icon + '_gray'
       },
       overImg(it) {
@@ -147,7 +147,7 @@
         this.activeIndex = this.$route.name;
       },
       logout() {
-        api.post('api/user/logout', {}).then((res) => {
+        api.post('api/user/logout', {from: 'web'}).then((res) => {
           if (res.data.res_code === 1) {
             this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
