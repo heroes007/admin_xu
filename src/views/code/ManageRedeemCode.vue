@@ -1,7 +1,7 @@
 <template>
 <div class='manage-redeem-code'>
     <div class='manage-redeem-code-search-mask' v-if='showPopper' @click='showPopper = false'></div>
-    <Poptip ref="searchpop" placement="bottom" :width="300" popper-class='manage-redeem-code-search-pop' v-model='showPopper'>
+    <Poptip ref="searchpop" placement="bottom" :offset="5" :width="300" popper-class='manage-redeem-code-search-pop' v-model='showPopper'>
         <div class='search-result' slot="content">
             <h2>{{searchResult.code_name}}</h2>
             <Row class='code' type='flex' justify='space-between'>
@@ -11,18 +11,20 @@
                     {{getCodeStateStr(searchResult.state)}}
                 </span>
             </Row>
-            <Row class='form-item' v-if='searchResult.state === -1'>
-                用户ID：{{searchResult.user_id}}
-            </Row>
-            <Row class='form-item' v-if='searchResult.state === -1'>
-                昵称：{{searchResult.nickname}}
-            </Row>
-            <Row class='form-item' v-if='searchResult.state === -1'>
-                姓名：{{searchResult.realname}}
-            </Row>
-            <Row class='form-item' v-if='searchResult.state === -1'>
-                电话：{{searchResult.phone}}
-            </Row>
+            <div v-if='searchResult.state === -1'>
+                <Row class='form-item' v-if='searchResult.user_id'>
+                    用户ID：{{searchResult.user_id}}
+                </Row>
+                <Row class='form-item' v-if='searchResult.nickname'>
+                    昵称：{{searchResult.nickname}}
+                </Row>
+                <Row class='form-item' v-if='searchResult.realname'>
+                    姓名：{{searchResult.realname}}
+                </Row>
+                <Row class='form-item' v-if='searchResult.phone'>
+                    电话：{{searchResult.phone}}
+                </Row>
+            </div>
         </div>
     </Poptip>
     <Row class='header' type='flex' justify='space-between' align='middle'>
@@ -102,7 +104,6 @@ export default {
                     var end_date = doTimeFormat(data.ex_time);
                     return open_date + '至' + end_date;
                 })
-
             },
             {
                 prop:'offline_term_count',
@@ -256,8 +257,9 @@ export default {
         margin-right: 4px;
     }
 .search-input{
-    width: 260px !important;
+    width: 300px !important;
 }
+.search-input> /deep/.ivu-input{  border-radius: 4px !important; }
 .manage-redeem-code-search-pop {
     .search-result {
         width:100%;
@@ -292,6 +294,7 @@ export default {
             }
         }
         .form-item {
+            text-align: left;
             margin-top: 16px;
             font-size: 16px;
             color: #333333;
@@ -313,7 +316,7 @@ export default {
     .header {
         height:60px;
         background-color: #333333;
-        padding: 0 40px;
+        padding: 0 40px 0 25px;
     }
     .data-list {
         .base-list-row {

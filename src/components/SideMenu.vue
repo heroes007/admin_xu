@@ -30,7 +30,6 @@
             <Col>
                 <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
                       :active-name='activeIndex' :open-names="menuOpenName">
-
                     <div v-for="(it,index) in menuList" :key="index">
                         <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
                             <template class="menu-padding" slot="title"><div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src='iconImg + it.icon + png'/>{{it.title}}</div></template>
@@ -149,6 +148,7 @@
         this.menuOpenName = name;
       },
       selectItem(index) {
+        localStorage.setItem('menuActiveIndex', index);
         this.menuList.forEach((it) => {
           if(!it.icon.includes('_gray')) it.icon = it.icon + '_gray';
           if(it.name === index) it.icon = it.icon.split('_')[0];
@@ -167,6 +167,7 @@
             this.$router.push({path: '/login'});
             this.$localStorage.remove('lastSelectedProject');
             this.$localStorage.remove('menuOpenName');
+            localStorage.removeItem('menuActiveIndex');
           }
         });
       },
@@ -204,7 +205,8 @@
     },
     mounted() {
       this.setSubmenuTitleIconMouse()
-      this.selectItem('manage-production')
+      let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'manage-production'
+      this.selectItem(menuActive)
       this.initMenu();
       if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
       // server.on('connect', () => {

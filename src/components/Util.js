@@ -6,13 +6,15 @@ export function doGroupSlice(numPerRow, data) {
   return result;
 }
 export function doTimeFormat(val) {
-  if (val == "0000-00-00 00:00:00") {
-    return "不限期";
-  }
-  var date = new Date(val);
-  var monthStr = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1);
-  var dateStr = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
-  return date.getFullYear() + '-' + monthStr + '-' + dateStr;
+  if(val){
+    if (val == "0000-00-00 00:00:00") {
+      return "不限期";
+    }
+    var date = new Date(val);
+    var monthStr = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1);
+    var dateStr = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
+    return date.getFullYear() + '-' + monthStr + '-' + dateStr;
+  }else return ""
 }
 export function doDateFormat(val) {
   var date = new Date(val);

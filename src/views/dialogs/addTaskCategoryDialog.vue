@@ -8,10 +8,10 @@
                     <FormItem class='radio-container'>
                         <RadioGroup v-model="form.type"  justify='start' align='middle' @on-change="handleChangeRadio">
                             <Radio class="radio" :label="0">
-                                <span :style="isChanged ? '':'border-color: #3DAAFF; color: #3DAAFF'" class="radioBtn">任务</span>
+                                <span :style="isChanged ? '':'border-color: #3DAAFF; color: #3DAAFF'" class="radioBtn">线上任务</span>
                             </Radio>
                             <Radio class="radio" :label="1">
-                                <span :style="isChanged ? 'border-color: #3DAAFF; color: #3DAAFF':''" class="radioBtn">作业</span>
+                                <span :style="isChanged ? 'border-color: #3DAAFF; color: #3DAAFF':''" class="radioBtn">线下作业</span>
                             </Radio>
                         </RadioGroup>
                    </FormItem>

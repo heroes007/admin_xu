@@ -29,7 +29,7 @@ export default {
     },
     mounted(){
         let doc = document.querySelector('.base-input-container').parentNode;
-        if(doc.className.includes('el-dialog__body')) this.closeIcon = true
+        if(doc&&doc.className.includes('el-dialog__body')) this.closeIcon = true
     }
 }
 </script>

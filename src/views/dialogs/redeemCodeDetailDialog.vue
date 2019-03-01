@@ -59,9 +59,11 @@ export default {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
             get_list_by_group(this.payload.id,this.curPage - 1,this.pageSize).then(res => {
-                if(res.data.res_code === 1)
-                {
+                if(res.data.res_code === 1){
                     this.dataList = res.data.msg.codes;
+                    this.dataList.map((it) => {
+                        it.use_time = it.state === 1 ? "" : it.use_time
+                    })
                     this.used_count = res.data.msg.used_count;
                     this.total_count = res.data.msg.total_count;
                     if(this.loadingInstance) this.loadingInstance.close();

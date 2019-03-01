@@ -102,7 +102,7 @@
       return {
         dataChange: false,
         comboDataList: null,
-        selectList: this.columnComboData
+        selectList: this.columnComboData 
       }
     },
     props: {
