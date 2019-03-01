@@ -1,10 +1,11 @@
 <template>
-<el-dialog :title="payload.code_name" v-model="redeemCodeDetailDialog" @close="handleRemoveModal(remove)" size="auto" :closeOnClickModal="false" :show-close="false">
+  <Modal :transfer=false :title="payload.code_name" :width="1000" v-model="redeemCodeDetailDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
+           :mask-closable="false" :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top">
-                    <data-list class='data-list' :isStripe='false' :table-data='dataList' :header-data='dataHeader'
-                    :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
+                <data-list class='data-list' :isStripe='false' :table-data='dataList' :header-data='dataHeader'
+                :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
             </Row>
             <Row class='body-footer' type='flex' justify='space-between' align='middle'>
                 <div class='number'>
@@ -12,31 +13,21 @@
                     <span>未兑换：{{total_count - used_count}}个</span>
                     <span>总数量：{{total_count}}个</span>
                 </div>
-                <el-pagination  @current-change="handleCurrentChange" :current-page="curPage" :page-size="pageSize" layout="prev, pager, next" :total="total_count">
-        </el-pagination>
+                 <Page :current="curPage"  :page-size='pageSize' @on-change="handleCurrentChange" :total="total_count"/>
             </Row>
         </Row>
     </base-input>
-</el-dialog>
+</Modal>
 </template>
 
 <script>
 import BaseInput from '../../components/BaseInput'
 import BaseList from '../../components/BaseList'
 import { doTimeFormat } from '../../components/Util'
-import {
-    RemoveModal
-} from './mixins'
-import {
-    get_list_by_group
-} from '../../api/modules/tools_redeem_code'
-import {
-    Config
-} from '../../config/base'
-
-import {
-    mapState
-} from 'vuex'
+import { RemoveModal } from './mixins'
+import { get_list_by_group } from '../../api/modules/tools_redeem_code'
+import { Config } from '../../config/base'
+import { mapState } from 'vuex'
 
 export default {
     mixins: [RemoveModal],
@@ -46,10 +37,7 @@ export default {
         },
         payload: {}
     },
-    components: {
-        'base-input': BaseInput,
-        'data-list': BaseList
-    },
+    components: { 'base-input': BaseInput, 'data-list': BaseList },
     data() {
         return {
             redeemCodeDetailDialog: true,
@@ -89,9 +77,7 @@ export default {
         },
     },
     computed:{
-        ...mapState ({
-            stateList:state => state.redeem_code.state_list
-        }),
+        ...mapState ({ stateList:state => state.redeem_code.state_list }),
         dataHeader(){
             return [
                 {
@@ -151,8 +137,8 @@ export default {
 }
 </script>
 <style lang="scss">
+/deep/.ivu-modal-body{ padding: 0; }
 #remeed-code-detail-container {
-    @import "base.scss";
     .close-dialog-panel {
         position: absolute;
         top: -40px;
@@ -165,49 +151,17 @@ export default {
             color: #757575;
         }
     }
-    .el-dialog {
-        width: 1000px;
-        background: none;
-        .title {
-            font-size: 14px;
-            color: #757575;
-            letter-spacing: 1px;
-            line-height: 20px;
-            margin-top: 0;
-        }
-        .el-dialog__header {
-            background: #333333;
-            border-radius: 4px 4px 0 0;
-            padding: 16px;
-        }
-
-        .el-dialog__body {
-            margin-bottom: -20px;
-            background-color: #fff;
-            border-radius: 0 0 4px 4px;
-            padding:0;
-            .data-list {
-        .base-list-row {
-            height: 38px;
-            td {
-                border-bottom: 0
+    .body-footer {
+        height:80px;
+        background-color: #F6F6F6;
+        padding: 0 50px;
+        .number {
+            span {
+                margin-right: 30px;
+                font-size: 16px;
+                color: #333333;
+                letter-spacing: 0;
             }
-        }
-            }
-            .body-footer {
-                height:80px;
-                background-color: #F6F6F6;
-                padding: 0 50px;
-                .number {
-                    span {
-                        margin-right: 30px;
-font-size: 16px;
-color: #333333;
-letter-spacing: 0;
-                    }
-                }
-            }
-
         }
     }
 }

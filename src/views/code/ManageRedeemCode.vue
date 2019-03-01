@@ -7,7 +7,7 @@
             <Row class='code' type='flex' justify='space-between'>
                 <span>兑换码：{{searchData}}</span>
                 <span :class="{'not-use':searchResult.state !== -1}">
-                    <i :class='iconClass'></i>
+                    <i class="ivu-icon" :class="iconClass" />
                     {{getCodeStateStr(searchResult.state)}}
                 </span>
             </Row>
@@ -27,7 +27,7 @@
     </Poptip>
     <Row class='header' type='flex' justify='space-between' align='middle'>
         <Input class="search-input" placeholder="兑换码查询" icon="search" v-model="searchData" :on-icon-click="searchHandler" v-popover:searchpop></Input>
-        <Button type='primary' icon="plus" @click='addCode'>添加兑换码</Button>
+        <Button type='primary' icon="md-add" @click='addCode'>添加兑换码</Button>
     </Row>
     <data-list class='data-list light-header' @export='exportHandler' @detail='detailHandler' :rowClassName='getRowClassName' :isStripe='false' :table-data='dataList' :header-data='dataHeader'
     :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
@@ -67,11 +67,11 @@ export default {
                 dataList: state => state.redeem_code.code_list,
                 projectId:state => state.project.select_project_id,
                 productionList:state => state.production.production_list
-            }),
+        }),
         iconClass(){
             return {
-                'el-icon-information':this.searchResult.state !== -1,
-                'el-icon-circle-check':this.searchResult.state == -1
+                'md-information-circle':this.searchResult.state !== -1,
+                'md-checkmark-circle':this.searchResult.state == -1
             }
         },
         categoryList() {
@@ -198,22 +198,22 @@ export default {
         },
         searchHandler(){
             if(!this.searchData){
-                this.$alert('请输入要搜索的兑换码！', '提示', {
-                    confirmButtonText: '确定',
-                    callback: action => { }
+                this.$Modal.info({
+                    title: '提示',
+                    content: "请输入要搜索的兑换码！"
                 });
             }
             this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 setTimeout(() => {
                     this.loadingInstance.close();
                 }, Config.base_timeout);
-            query_code(this.searchData).then(res => {
-                if(res.data.res_code === 1){
-                    this.searchResult = res.data.msg;
-                    this.showPopper = true;
-                }
-               if(this.loadingInstance) this.loadingInstance.close();
-            })
+                query_code(this.searchData).then(res => {
+                    if(res.data.res_code === 1){
+                        this.searchResult = res.data.msg;
+                        this.showPopper = true;
+                    }
+                if(this.loadingInstance) this.loadingInstance.close();
+                })
         },
         getRowClassName(row,index) {
             if(new Date(row.end_time).getTime() < new Date().getTime()) return 'base-list-row invalid-row';
