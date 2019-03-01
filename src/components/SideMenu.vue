@@ -26,7 +26,7 @@
             </Tooltip>
         </Row>
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
-        <Row>
+        <Row class="menu-list">
             <Col>
                 <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
                       :active-name='activeIndex' :open-names="menuOpenName">
@@ -161,7 +161,7 @@
         this.activeIndex = this.$route.name;
       },
       logout() {
-        api.post('api/user/logout', {}).then((res) => {
+        api.post('api/user/logout', {from: 'web'}).then((res) => {
           if (res.data.res_code === 1) {
             this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
@@ -303,6 +303,7 @@
 
     .side-menu {
         padding: 27px 0;
+        height: calc(100% - 240px);
 
         .logo {
             margin-bottom: 40px;
@@ -397,6 +398,11 @@
             }
 
             margin-bottom: 50px;
+        }
+        .menu-list{
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto;
         }
     }
 </style>

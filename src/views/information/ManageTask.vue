@@ -1,6 +1,6 @@
 <template>
     <div class='manage-task'>
-        <header-component :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" />
+        <header-component title="任务包" :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" />
         <div class="category-list">
             <category-item v-for='(item, index) in categoryList' :key="index" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
                            :selected='getSelected(item.id, item.type)' @select='changeCategory(item)'/>

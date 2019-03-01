@@ -1,6 +1,6 @@
 <template>
     <div class='manage-notification'>
-        <header-component :type="0" :showAdd="activeName == tabName ? true : false" addText="添加通知" title="我的通知" @addClick="createNotificationHandler()"/>
+        <header-component :type="0" :showAdd="activeName == tabName ? true : false" addText="添加通知" title="通知管理" @addClick="createNotificationHandler()"/>
         <Tabs v-model="activeName" @on-click="handleClick" value='notification'>
             <TabPane class='notification-content' label="通知" name="notification">
                 <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter' @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>

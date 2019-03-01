@@ -35,7 +35,7 @@
                 this.activeIndex = this.$route.name;
             },
             logout() {
-                api.post('api/user/logout', {}).then((res) => {
+                api.post('api/user/logout', {from: 'web'}).then((res) => {
                     if (res.data.res_code === 1) {
                         this.$localStorage.set('token', '');
                         this.$router.push({ path: '/login' });
