@@ -1,8 +1,8 @@
 <template>
 <div class='manage-redeem-code'>
     <div class='manage-redeem-code-search-mask' v-if='showPopper' @click='showPopper = false'></div>
-    <Poptip ref="searchpop" placement="bottom" :width="280" popper-class='manage-redeem-code-search-pop' v-model='showPopper'>
-        <div class='search-result'>
+    <Poptip ref="searchpop" placement="bottom" :width="300" popper-class='manage-redeem-code-search-pop' v-model='showPopper'>
+        <div class='search-result' slot="content">
             <h2>{{searchResult.code_name}}</h2>
             <Row class='code' type='flex' justify='space-between'>
                 <span>兑换码：{{searchData}}</span>
@@ -26,7 +26,7 @@
         </div>
     </Poptip>
     <Row class='header' type='flex' justify='space-between' align='middle'>
-        <Input class="search-input" placeholder="兑换码查询" icon="search" v-model="searchData" :on-icon-click="searchHandler" v-popover:searchpop></Input>
+        <Input class="search-input" placeholder="兑换码查询" icon="ios-search" v-model="searchData" @on-click="searchHandler" ></Input>
         <Button type='primary' icon="plus" @click='addCode'>添加兑换码</Button>
     </Row>
     <data-list class='data-list light-header' @export='exportHandler' @detail='detailHandler' :rowClassName='getRowClassName' :isStripe='false' :table-data='dataList' :header-data='dataHeader'
@@ -202,18 +202,24 @@ export default {
                     confirmButtonText: '确定',
                     callback: action => { }
                 });
-            }
-            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-                setTimeout(() => {
-                    this.loadingInstance.close();
-                }, Config.base_timeout);
-            query_code(this.searchData).then(res => {
+            }else{
+              this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+              setTimeout(() => {
+                this.loadingInstance.close();
+              }, Config.base_timeout);
+              query_code(this.searchData).then(res => {
                 if(res.data.res_code === 1){
-                    this.searchResult = res.data.msg;
-                    this.showPopper = true;
+                  this.searchResult = res.data.msg;
+                  this.showPopper = true;
+                }else{
+                  this.$Modal.info({
+                    title: '提示',
+                    content: '兑换码不存在'
+                  })
                 }
-               if(this.loadingInstance) this.loadingInstance.close();
-            })
+                if(this.loadingInstance) this.loadingInstance.close();
+              })
+            }
         },
         getRowClassName(row,index) {
             if(new Date(row.end_time).getTime() < new Date().getTime()) return 'base-list-row invalid-row';
@@ -233,10 +239,28 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.search-input{ width: 260px !important}
+    /deep/ .ivu-poptip{
+        display: flex;
+        position: absolute;
+        top: 40px;
+        left: 170px;
+    }
+    /deep/ .ivu-poptip-arrow{
+        display: none;
+    }
+    /deep/ .ivu-input-icon-normal + .ivu-input{
+        border-radius: 100px;
+        padding-left: 12px;
+    }
+    /deep/ .ivu-icon-ios-search{
+        margin-right: 4px;
+    }
+.search-input{
+    width: 260px !important;
+}
 .manage-redeem-code-search-pop {
     .search-result {
-        width:280px;
+        width:100%;
         height:280px;
         padding:20px 10px;
         box-sizing: border-box;
@@ -298,7 +322,7 @@ export default {
             }
             i {
                 color: #3B3B3B;
-            }   
+            }
         }
         .el-button {
             width:120px;

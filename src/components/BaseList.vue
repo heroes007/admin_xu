@@ -68,7 +68,7 @@
                 </span>
             </template>
             <template slot-scope="{ column, row, index }" slot="operation">
-                <div style="display:flex">
+                <div style="display:flex; justify-content: center">
                     <div class='handle-component' v-for='btn in column.groupBtn' :key="btn.id"
                          v-if='btn.showFunc?btn.showFunc(row):true'>
                         <Button :type="btn.canDisabled?'text':'text'"
