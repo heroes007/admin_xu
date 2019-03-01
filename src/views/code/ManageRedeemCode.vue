@@ -314,24 +314,6 @@ export default {
         height:60px;
         background-color: #333333;
         padding: 0 40px;
-        .el-input {
-            width:250px;
-            input {
-            border-radius: 100px;
-            border-color: #cccccc;
-            }
-            i {
-                color: #3B3B3B;
-            }
-        }
-        .el-button {
-            width:120px;
-            height:26px;
-            background-color: #3DAAFF;
-            padding: 0;
-            border: 0;
-            border-radius: 2px;
-        }
     }
     .data-list {
         .base-list-row {
