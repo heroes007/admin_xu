@@ -249,7 +249,7 @@ export default {
         display: none;
     }
     /deep/ .ivu-input-icon-normal + .ivu-input{
-        border-radius: 100px;
+        border-radius: 100px !important;
         padding-left: 12px;
     }
     /deep/ .ivu-icon-ios-search{

@@ -6,6 +6,7 @@ export function doGroupSlice(numPerRow, data) {
   return result;
 }
 export function doTimeFormat(val) {
+  if(!val) return ''
   if (val == "0000-00-00 00:00:00") {
     return "不限期";
   }
@@ -126,7 +127,7 @@ export const MenuList = [
     list:[{
       name: 'manage-student',
       title: '学员管理',
-    }, 
+    },
     {
         name: 'redeem-code',
         title: '兑换码管理'
