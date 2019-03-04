@@ -51,6 +51,7 @@
         a {
             text-decoration: none;
         }
+        overflow: hidden;
     }
     .sub-header {
         margin: 20px;

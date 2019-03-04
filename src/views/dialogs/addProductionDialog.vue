@@ -302,26 +302,25 @@ export default {
             this.addProductionDialog = false;
         },
         handleNextStep(formName) {
-          console.log(formName)
-          // var arrObj = {
-          //   default: this.form.img_url,
-          //   video: this.form.video_url
-          // }
-          // var description= this.$refs.description_editor.editor.getContent();
-          // this.form.description = description;
-          // this.form.img_url_arr = JSON.stringify(arrObj);
-          // this.form.price = Math.round(parseFloat(this.form.show_price));
-          // this.form.original_price = Math.round(parseFloat(this.form.show_original_price));
-          // if(this.form.price > this.form.original_price){
-          //   this.$Modal.info({
-          //     title: '提示',
-          //     content: '真实售价不能高于定价！'
-          //   });
-          // }else{
-          //   this.fromLabelWidth = 0;
-          //   this.formItemLabelWidth = 80
-          //   this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
-          // }
+          var arrObj = {
+            default: this.form.img_url,
+            video: this.form.video_url
+          }
+          var description= this.$refs.description_editor.editor.getContent();
+          this.form.description = description;
+          this.form.img_url_arr = JSON.stringify(arrObj);
+          this.form.price = this.form.price.toFixed(2)
+          this.form.original_price = this.form.original_price.toFixed(2)
+          if(this.form.price > this.form.original_price){
+            this.$Modal.info({
+              title: '提示',
+              content: '真实售价不能高于定价！'
+            });
+          }else{
+            this.fromLabelWidth = 0;
+            this.formItemLabelWidth = 80
+            this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
+          }
         },
         handlePreStep() {
             this.fromLabelWidth = 121
@@ -344,6 +343,8 @@ export default {
             //         content: '真实售价不能高于定价！'
             //     });
             //  }else{
+              this.form.price = this.form.price.toFixed(2)
+              this.form.original_price = this.form.original_price.toFixed(2)
                if(this.payload) {
                  this.update_production(this.form);
                }

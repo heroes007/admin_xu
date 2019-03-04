@@ -62,10 +62,10 @@
         </Row>
         <data-list class='data-list light-header' @showDetail='showDetailHandler' @queryHomework='queryHomeworkHandler' @deleteStudent='deleteStudentHandle'
                    @queryTask='queryTaskHandler' @queryOffline='queryOfflineHandler' @query='queryHandler' @edit='editHandler'
-                   :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
+                :table-height="tableHeight" :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
         <back-to-top/>
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page :current="curPage" @on-page-size-change="handleSizeChange" :page-size='pageSize' @on-change="handleCurrentChange" :total="total"/>
+            <Page :current="curPage" @on-page-size-change="handleSizeChange" :page-size='pageSize' show-sizer @on-change="handleCurrentChange" :total="total"/>
         </Row>
     </div>
 </template>
@@ -83,8 +83,7 @@
 
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'back-to-top': BackToTop
-    },
+    components: { 'header-component': Header, 'data-list': BaseList, 'back-to-top': BackToTop },
     data() {
       return {
         user: {
@@ -288,6 +287,10 @@
       }
     },
     computed: {
+      tableHeight(){
+        let w = document.documentElement.offsetHeight;
+        return w > 821 ? w - 356 : w - 436;
+      },
       list() {
         return this.$store.state.student.student_list;
       },
@@ -425,6 +428,7 @@
 </script>
 <style lang="scss" scoped>
     .manage-student-view {
+       height: 100%;
         .find-by-term {
             padding-top: 22px;
             text-align: left;
@@ -521,7 +525,7 @@
                 .pager {
                     margin: 30px 0;
                     padding-right: 40px;
-
+                    height: 6px;
                     .el-pagination {
                         button {
                             &.disabled {

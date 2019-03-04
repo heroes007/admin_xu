@@ -1,6 +1,6 @@
 <template>
 <div class='manage-redeem-code'>
-    <div class='manage-redeem-code-search-mask' v-if='showPopper' @click='showPopper = false'></div>
+    <!-- <div class='manage-redeem-code-search-mask' v-if='showPopper' @click='showPopper = false'></div> -->
     <Poptip ref="searchpop" placement="bottom" :offset="5" :width="300" popper-class='manage-redeem-code-search-pop' v-model='showPopper'>
         <div class='search-result' slot="content">
             <h2>{{searchResult.code_name}}</h2>
@@ -250,7 +250,7 @@ export default {
         display: none;
     }
     /deep/ .ivu-input-icon-normal + .ivu-input{
-        border-radius: 100px;
+        border-radius: 100px !important;
         padding-left: 12px;
     }
     /deep/ .ivu-icon-ios-search{

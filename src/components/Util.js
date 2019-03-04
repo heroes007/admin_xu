@@ -128,7 +128,7 @@ export const MenuList = [
     list:[{
       name: 'manage-student',
       title: '学员管理',
-    }, 
+    },
     {
         name: 'redeem-code',
         title: '兑换码管理'

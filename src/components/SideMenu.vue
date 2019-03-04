@@ -98,6 +98,9 @@
     watch: {
       $route() {
         this.initMenu();
+         if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
+           this.selectItem(this.activeIndex)
+         }
       }
     },
     methods: {
@@ -177,9 +180,7 @@
           for (var i = 0; i < this.userInfo.role_arr.length; i++) {
             for (var j = 0; j < this.roleList.length; j++) {
               if (this.userInfo.role_arr[i] === this.roleList[j].role_id) {
-                if (this.userInfo.role_arr[i] == 0) {
-                  continue;
-                }
+                if (this.userInfo.role_arr[i] == 0) { continue;}
                 if (result !== '') result = result + ',' + this.roleList[j].role_name;
                 else result = result + this.roleList[j].role_name;
                 break;

@@ -8,9 +8,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+
 // function pathResolve(relPath) {
 //   return path.resolve(__dirname, relPath);
 // }
+// 需要gzip压缩的文件后缀
+const productionGzipExtensions = ['js', 'css']
 var webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
   module: {
@@ -61,7 +65,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // publicPath: 'https://file.laoshi123.com',
     publicPath: config.prod.publicPath,
     filename: config.base.assetsPath + '/js/[name].[chunkhash].js',
-    chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
+    // chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
   performance: {
     hints: false
@@ -115,8 +119,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     // extract css into its own file
     // new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
     new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-      chunkFilename: '[id].[hash].css',
+      filename: config.base.assetsPath + '[name].[chunkhash].css',
+      chunkFilename: config.base.assetsPath + '[id].[chunkhash].css',
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -135,6 +139,11 @@ var webpackConfig = merge(baseWebpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'*/
+    }),
+    new CompressionWebpackPlugin({
+      test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+      threshold: 8192,
+      minRatio: 0.8
     })
     // split vendor js into its own file
     /*new webpack.optimize.CommonsChunkPlugin({
