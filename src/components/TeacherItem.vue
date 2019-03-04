@@ -58,7 +58,6 @@
         });
       },
       editTeacher() {
-        console.log(this.tid)
         this.type ? this.handleSelModal(ADD_CERTIFICATE, this.tid) : this.handleSelModal(ADD_TEACHER, this.tid)
       }
     }
