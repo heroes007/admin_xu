@@ -236,9 +236,6 @@
       }
     },
     mounted() {
-      this.$nextTick(()=>{
-        console.log(this.tableData,'123123')
-      })
       // 资料管理来回切换报异常
       if (this.comboModelList && this.comboModelList.length > 0) {
         this.comboDataList = [];
@@ -332,7 +329,6 @@
             }
           }
         })
-        console.log(this.headerData);
       },
       getHeaderLabel(item) {
         return item.ruleCount ? item.label + '(' + item.ruleCount + ')' : item.label;
@@ -504,11 +500,16 @@
     }
   }
 </script>
+
 <style lang='scss' scoped>
     /deep/ .ivu-icon-ios-trash-outline {
         font-size: 18px
     }
-    /deep/ .btn-icon { font-size: 24px }
+
+    /deep/ .btn-icon {
+        font-size: 24px
+    }
+
     /deep/ .ivu-switch-checked:after {
         left: 36px;
     }

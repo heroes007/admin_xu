@@ -16,7 +16,7 @@
                     <div class="elRow">
                         <img class="input-img" src='../../static/img/lock.png'>
                         <span class="input-span">|</span>
-                        <input class="el-input" type='password' placeholder="输入密码" v-model="password" />
+                        <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/>
                     </div>
                     <!-- <div class='remember elRowJustifyLeft'>
                         <Switch v-model="remember" />
@@ -145,7 +145,7 @@
                 margin-bottom:10.8%;
                 position: relative;
                 height: 38px;
-                img { 
+                img {
                     height: 38px;
                     width: 136px;
                     float: left;
