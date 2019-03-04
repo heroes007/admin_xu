@@ -112,12 +112,12 @@
                         <Button type="text" size="small" class="btn-text" @click="createStudent(row)">创建学员</Button>
                     </template>
                 </Table>
-                <Row class='pager' type='flex' justify='end' align='middle'>
-                    <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size-opts="[20, 50, 100]"
-                        show-sizer :page-size="pageSize" :total="total">
-                    </Page>
-                </Row>
             </div>
+        </Row>
+        <Row class='pager' type='flex' justify='end' align='middle'>
+            <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage" :page-size-opts="[20, 50, 100]"
+                  show-sizer :page-size="pageSize" :total="total">
+            </Page>
         </Row>
     </div>
 </template>
@@ -553,5 +553,13 @@
     }
     .search-bar{
         align-items: normal;
+    }
+    .data-container{
+        height: calc(100% - 256px);
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .manage-student-view{
+        height: 100%;
     }
 </style>
