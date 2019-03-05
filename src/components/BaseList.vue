@@ -53,15 +53,15 @@
                 </Button>
                 <Select :transfer='true' v-if='column.useCombo&&columnComboData&&comboDataList'
                         v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择"
-                     @on-open-change="selectOpenChange(row,column.comboListIndex)"  @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
+                        @on-open-change="selectOpenChange(row,column.comboListIndex)"
+                        @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
                         :disabled="column.disabledFunc?column.disabledFunc(row):false">
-                    <Option v-for="(c,k) in selectList[column.comboListIndex]" :key="k"
+                    <Option v-for="(c,k) in columnComboData[column.comboListIndex]" :key="k"
                             :label="c[column.listLabel]" :value="c[column.listValue]"></Option>
                 </Select>
                 <DatePicker v-if='column.useTimePicker&&comboDataList' v-model="comboDataList[index]" type="datetime"
-                            placeholder="选择日期时间"
-                            @on-change='changeTimeSelect(row,index,column.actionName,column.prop,column.param)'
-                            :transfer="true">
+                            placeholder="选择日期时间" :transfer="true"
+                            @on-change='changeTimeSelect(row,index,column.actionName,column.prop,column.param)'>
                 </DatePicker>
                 <span v-if='column.useMark'>
                   <Icon type="md-checkmark" v-if='row[column.prop] === 1'/>
@@ -76,7 +76,7 @@
                                 @click="handleBtnClick(index,row,btn.param)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
                                 :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
-                            <Icon  class="btn-icon" :type='btn.text' v-if='btn.isIcon' />
+                            <Icon class="btn-icon" :type='btn.text' v-if='btn.isIcon'/>
                             <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(row)?btn.disabledText:btn.text:btn.text}}</span>
                         </Button>
                         <Switch :value='row[btn.switchKey]' :disabled="checkSwitchDisabled(row,btn.disabledFuc)"
@@ -85,8 +85,10 @@
                             <span slot="open">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.onText}}</span>
                             <span slot="close">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.offText}}</span>
                         </Switch>
-                        <Checkbox v-model='row[btn.switchKey]' @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
-                            v-if='btn.useCheckBox'>{{btn.text}}</Checkbox>
+                        <Checkbox v-model='row[btn.switchKey]'
+                                  @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
+                                  v-if='btn.useCheckBox'>{{btn.text}}
+                        </Checkbox>
                     </div>
                 </div>
             </template>
@@ -96,13 +98,14 @@
 </template>
 <script>
   import baseList from './BaseList.vue'
+
   export default {
     name: 'baseList',
     data() {
       return {
         dataChange: false,
         comboDataList: null,
-        selectList: this.columnComboData 
+        selectList: this.columnComboData
       }
     },
     props: {
@@ -121,7 +124,7 @@
       columnFormatter: {
         type: Array
       },
-      columnFormatterData: { type: Array },
+      columnFormatterData: {type: Array},
       columnComboData: {
         type: Array
       },
@@ -244,7 +247,7 @@
         }
       }
     },
-    computed:{
+    computed: {
       //  selectList(){
       //    return JSON.parse(JSON.stringify(this.columnComboData))
       //  }
@@ -343,16 +346,16 @@
       showBadgeCount(propname, row) {
         return row[propname];
       },
-      selectOpenChange(row,index){
-           this.selectList = this.$config.copy(this.columnComboData,[])
-           let list = this.selectList[index]
-           if(row && row.title &&  list && list.length > 0){
-              list.map((it,k) => {
-               if(it.title === row.title){
-                 list.splice(k,1)
-               }
-              })
-           }
+      selectOpenChange(row, index) {
+        this.selectList = this.$config.copy(this.columnComboData, [])
+        let list = this.selectList[index]
+        if (row && row.title && list && list.length > 0) {
+          list.map((it, k) => {
+            if (it.title === row.title) {
+              list.splice(k, 1)
+            }
+          })
+        }
       },
       comboChangeHandler(row, index, actionName, key) {
         if (actionName) {

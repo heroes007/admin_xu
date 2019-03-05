@@ -228,7 +228,14 @@ export default {
                     this.form.examine_type = res.data.msg.examine_type;
                     if(this.form.h5_url) this.form.redirectType = true;
                     var arrObj = JSON.parse(res.data.msg.img_url_arr);
-                    this.form.img_url = arrObj.default;
+                    if(arrObj.default.includes("[")){
+                       let d = JSON.parse(arrObj.default);
+                       this.form.img_url = d[0]
+                       this.form.img_url2 = d[1]
+                       this.form.img_url3 = d[2]
+                       this.form.img_url4 = d[3]
+                       this.form.img_url5 = d[4]
+                    }else this.form.img_url = arrObj.default;
                     this.form.video_url = arrObj.video;
                     if(this.form.video_url)
                         this.form.displayVideo = true;
@@ -376,7 +383,7 @@ export default {
           var description= this.$refs.description_editor.editor.getContent();
           this.form.description = description;
           this.form.img_url_arr = JSON.stringify(arrObj);
-          if(Number(this.form.price) > Number(this.form.original_price)){
+          if(Number(this.form.show_price) > Number(this.form.show_original_price)){
             this.$Modal.info({
               title: '提示',
               content: '真实售价不能高于定价！'
@@ -393,10 +400,10 @@ export default {
             this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
         handleSubmit() {
-              this.form.price = Number(this.form.price).toFixed(2)
-              this.form.original_price = Number(this.form.original_price).toFixed(2)
-               if(this.payload)  this.update_production(this.form);
-               else this.add_production(this.form);
+              this.form.price = Number(this.form.show_price).toFixed(2)
+              this.form.original_price = Number(this.form.show_original_price).toFixed(2)
+              if(this.payload)  this.update_production(this.form);
+              else this.add_production(this.form);
         }
     }
 }

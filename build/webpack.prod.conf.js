@@ -25,8 +25,8 @@ var webpackConfig = merge(baseWebpackConfig, {
           {
             loader: 'babel-loader',
             options: {
-              presets: [["@babel/preset-env",{"targets": { "esmodules": true,"node": true }}]]
-            }
+              presets: [["@babel/preset-env",{"targets": { "esmodules": true,"node": true }}]],
+            },
           }
         ],
         // include: [pathResolve('node_modules/vue-ueditor')],
@@ -39,7 +39,7 @@ var webpackConfig = merge(baseWebpackConfig, {
           options: {
             loaders: {
               scss: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-            }
+            },
           }
         },
           {
