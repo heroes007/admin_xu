@@ -25,8 +25,8 @@ var webpackConfig = merge(baseWebpackConfig, {
           {
             loader: 'babel-loader',
             options: {
-              presets: [["@babel/preset-env",{"targets": { "esmodules": true,"node": true }}]]
-            }
+              presets: [["@babel/preset-env",{"targets": { "esmodules": true,"node": true }}]],
+            },
           }
         ],
         // include: [pathResolve('node_modules/vue-ueditor')],
@@ -39,7 +39,7 @@ var webpackConfig = merge(baseWebpackConfig, {
           options: {
             loaders: {
               scss: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-            }
+            },
           }
         },
           {
@@ -65,7 +65,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // publicPath: 'https://file.laoshi123.com',
     publicPath: config.prod.publicPath,
     filename: config.base.assetsPath + '/js/[name].[chunkhash].js',
-    // chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
+    chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
   performance: {
     hints: false
@@ -119,8 +119,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     // extract css into its own file
     // new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
     new MiniCssExtractPlugin({
-      filename: config.base.assetsPath + '[name].[chunkhash].css',
-      chunkFilename: config.base.assetsPath + '[id].[chunkhash].css',
+      filename: config.base.assetsPath + '/css/[name].[hash].css',
+      chunkFilename: config.base.assetsPath + '/css/[name].[hash].css'
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
