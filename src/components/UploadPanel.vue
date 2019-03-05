@@ -1,5 +1,6 @@
 <template>
     <Row class="upload-panel">
+        <Icon class="icon-colse" v-if="close&&!is_show" type="md-close-circle" @click="closeModal" />
         <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
             <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
             <Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />
@@ -27,19 +28,12 @@
 
 <script>
     import VueCropper from 'vue-cropperjs'
-    import {
-        get_sign
-    } from '../api/modules/ali_oss'
+    import { get_sign } from '../api/modules/ali_oss'
     import axios from 'axios'
     const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
     const ossHostVideo = 'http://dscj-video.oss-cn-beijing.aliyuncs.com/';
     const ossHostApp = 'http://dscj-static-file.oss-cn-qingdao.aliyuncs.com/';
-    import {
-        Loading
-    } from 'element-ui';
-    import {
-        get_video_source
-    } from '../api/modules/tools_video'
+    import { get_video_source } from '../api/modules/tools_video'
     export default {
         props: {
             panelOptions: {
@@ -61,7 +55,11 @@
                     }
                 }
             },
-            resourse: {}
+            resourse: {},
+            close: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {
@@ -107,7 +105,12 @@
                     this.handleGetassignKey(blob);
                 })
             },
-
+            closeModal(){
+                this.is_show = true;
+                // this.resourse_url = '';
+                // this.resultUrl = ''
+                this.$emit('uploadcomplete', "");
+            },
             //通过插件显示图片
             handleChangeMedia(e) {
                  this.fullscreenLoading = this.$LoadingY({message: "",show: true})
@@ -300,6 +303,13 @@
     }
 </script>
 <style lang="scss" scoped>
+    .icon-colse{
+        position: absolute;
+        z-index: 1000;
+        right: 0;
+        color: white;
+        font-size: 20px;
+    }
     /deep/ .md-cloud-upload{
         margin-top: 40px;
     }

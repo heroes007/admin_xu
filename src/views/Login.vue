@@ -4,17 +4,17 @@
             <div class="login-left"></div>
             <div class='login-right'>
                 <div class='logo'>
-                    <img src='../../static/img/logo_copy.png'>
+                    <img src='/static/img/logo_copy.png'>
                 </div>
-                <h1 class="login-title">九划医疗后台管理系统</h1>
+                <h1 class="login-title">九划医疗后台管理系统 --A</h1>
                 <div class='data-input'>
                     <div class="elRow">
-                        <img class="input-img" src='../../static/img/head.png'>
+                        <img class="input-img" src='/static/img/head.png'>
                         <span class="input-span">|</span>
                         <input  class="el-input" placeholder="输入用户名" v-model="name" />
                     </div>
                     <div class="elRow">
-                        <img class="input-img" src='../../static/img/lock.png'>
+                        <img class="input-img" src='/static/img/lock.png'>
                         <span class="input-span">|</span>
                         <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/>
                     </div>

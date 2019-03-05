@@ -49,7 +49,6 @@
         z-index:9999;
         background-color: rgba(0,0,0,0.7);
         text-align: center;
-
         .message-pop {
             margin-top: 40vh;
             z-index: 99999;

@@ -9,7 +9,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 // function pathResolve(relPath) {
 //   return path.resolve(__dirname, relPath);
 // }
@@ -64,8 +64,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   output: {
     // publicPath: 'https://file.laoshi123.com',
     publicPath: config.prod.publicPath,
-    filename: config.base.assetsPath + '/js/[name].[chunkhash].js',
-    // chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
+    filename: config.base.assetsPath + '/js/[name].[hash].js',
+    chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
   performance: {
     hints: false
@@ -90,7 +90,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       new OptimizeCssAssetsPlugin({
         assetNameRegExp: /\.optimize\.(sc|c)ss$/g,
         cssProcessor: require('cssnano'),
-        cssProcessorOptions: { safe: true, discardComments: { removeAll: true } },
+        cssProcessorOptions: { safe: true, discardComments: { removeAll: true }, autoprefixer: false},
         canPrint: true
       })
     ],
@@ -110,17 +110,13 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   //devtool: "#source-map",
   plugins: [
+    new CleanWebpackPlugin([config.base.path]),
     new VueLoaderPlugin(),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-    // new webpack.optimize.UglifyJsPlugin(),
     // extract css into its own file
-    // new ExtractTextPlugin(config.base.assetsPath + '/css/[name].[contenthash].css'),
     new MiniCssExtractPlugin({
-      filename: config.base.assetsPath + '[name].[chunkhash].css',
-      chunkFilename: config.base.assetsPath + '[id].[chunkhash].css',
+      filename: config.base.assetsPath + '/css/[name].[hash].css',
+      chunkFilename: config.base.assetsPath + '/css/[name].[chunkhash].css'
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -144,7 +140,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
       threshold: 8192,
       minRatio: 0.8
-    })
+    }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
     // split vendor js into its own file
     /*new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor','manifest']

@@ -5,7 +5,6 @@
         </Row>
     </div>
 </template>
-
 <script>
     export default{
         data(){
@@ -35,8 +34,5 @@
 <style lang='scss'>
     .back-to-top {
         position: fixed;
-        .btn {
-
-        }
     }
 </style>
