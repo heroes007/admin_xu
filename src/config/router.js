@@ -39,6 +39,7 @@ const ManageProductionGroup = () => import('../views/production/ManageProduction
 const ManageNews = () => import('../views/news/ManageNews')
 const ProjectList = () => import('../components/ProjectList');
 const ManagRedeemCode = () => import('../views/code/ManageRedeemCode');
+
 const UserManage = () => import('../views/UserManage/index')
 const ProductManage = () => import('../views/ProductManage/index')
 const SystemManage = () => import('../views/SystemManage/index')

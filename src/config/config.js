@@ -29,4 +29,8 @@ export default{
         }
         return obj2; //然后在把复制好的对象给return出去
     },
+      // 为小于10的数字添加0
+    addZero (data) {
+        if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
+    },
 }
