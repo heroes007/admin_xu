@@ -1,28 +1,214 @@
 <template>
     <div class='manage-production-view'>
-        <header-component title='产品信息' :type='1' :showAdd='true' addText='新建产品' @addClick='addProductionHandler' @addCert="addCertificate"></header-component>
+        <!-- <header-component title='产品信息' :type='1' :showAdd='true' addText='新建产品' @addClick='addProductionHandler' @addCert="addCertificate"></header-component> -->
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
-                <FormItem label="产品名称" :label-width="80">
-                    <Input v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
+                <Select v-model="model1" style="width:200px">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+                <Select v-model="model1" style="width:200px">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+                <FormItem>
+                    <Input v-model="formInline.searchData" placeholder="搜索产品名称"></Input>
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" @click="search">查询</Button>
+                    产品总数：9 
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" @click="clearSearch">清除</Button>
+                    <Button  type="primary">添加产品</Button>
                 </FormItem>
+               <!-- <FormItem><Button type="primary" @click="search">查询</Button></FormItem>
+                <FormItem><Button type="primary" @click="clearSearch">清除</Button></FormItem> -->
             </Form>
         </Row>
-        <data-list class='data-list light-header' @editProtocol='editProtocol' @edit='editHandler'
+       <!-- <data-list class='data-list light-header' @editProtocol='editProtocol' @edit='editHandler'
                    @detail='showCourseDetailHandler' @delete='deleteHandler'
                    :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
                    :column-formatter-data='listColumnFormatterData'
                    :comboIsSelect='true' :columnComboData='columnComboData' :comboModelList='comboDataList'>
-        </data-list>
+        </data-list> -->
+        
+        <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
+             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
+                  <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     ID:
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>2109981</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <div class="cad-top-right">
+                        上架
+                        </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price"  >
+                       ¥1980
+                     </Col>
+                     <Col span="4" class="al-left cad-btn-relprice"  >
+                       ¥2298
+                     </Col>
+                     <Col span="16" class="al-right cad-btn-people" >
+                       171人报名
+                     </Col>
+                  </Row>
+             </Card>
+             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
+                  <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     ID:
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>2109981</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <div class="cad-top-right">
+                        上架
+                        </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price"  >
+                       ¥1980
+                     </Col>
+                     <Col span="4" class="al-left cad-btn-relprice"  >
+                       ¥2298
+                     </Col>
+                     <Col span="16" class="al-right cad-btn-people" >
+                       171人报名
+                     </Col>
+                  </Row>
+             </Card>
+              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
+                  <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     ID:
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>2109981</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <div class="cad-top-right">
+                        上架
+                        </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price"  >
+                       ¥1980
+                     </Col>
+                     <Col span="4" class="al-left cad-btn-relprice"  >
+                       ¥2298
+                     </Col>
+                     <Col span="16" class="al-right cad-btn-people" >
+                       171人报名
+                     </Col>
+                  </Row>
+             </Card>
+            <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
+                  <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     ID:
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>2109981</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <div class="cad-top-right">
+                        上架
+                        </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price"  >
+                       ¥1980
+                     </Col>
+                     <Col span="4" class="al-left cad-btn-relprice"  >
+                       ¥2298
+                     </Col>
+                     <Col span="16" class="al-right cad-btn-people" >
+                       171人报名
+                     </Col>
+                  </Row>
+             </Card>
+              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
+                  <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     ID:
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>2109981</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <div class="cad-top-right">
+                        上架
+                        </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price"  >
+                       ¥1980
+                     </Col>
+                     <Col span="4" class="al-left cad-btn-relprice"  >
+                       ¥2298
+                     </Col>
+                     <Col span="16" class="al-right cad-btn-people" >
+                       171人报名
+                     </Col>
+                  </Row>
+             </Card>
+              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
+                  <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     ID:
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>2109981</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <div class="cad-top-right">
+                        上架
+                        </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price"  >
+                       ¥1980
+                     </Col>
+                     <Col span="4" class="al-left cad-btn-relprice"  >
+                       ¥2298
+                     </Col>
+                     <Col span="16" class="al-right cad-btn-people" >
+                       171人报名
+                     </Col>
+                  </Row>
+             </Card>
+        </Row>
+       
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total"/>
-        </Row>
+        </Row> 
     </div>
 </template>
 <script>
@@ -50,6 +236,7 @@
         formInline: {
           searchData: ""
         },
+        cityList:""
       };
     },
     methods: {
@@ -108,7 +295,15 @@
           title: this.formInline.searchData
         };
         this.get_production_list(data);
-      }
+      },
+      handleJump(){
+        let routeData = this.$router.resolve({
+          query: '',
+          params: '',
+          name: "open-product",
+        });
+        window.open(routeData.href, "_blank")
+      },
     },
     mounted() {
       this.getData();
@@ -173,6 +368,8 @@
 </script>
 <style lang="scss" scoped>
     .manage-production-view {
+      background: #f0f0f7;
+      min-height: 1200px;
         .base-list-container {
             .base-list-row {
                 height: 60px;
@@ -237,6 +434,49 @@
                     padding-right: 40px;
                 }
             }
+        }
+        .al-left{
+          text-align: left;
+        }
+        .al-right{
+          text-align: right;
+        }
+        .cad-top-left{
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          color: #474C63;
+          letter-spacing: 0;
+        }
+        .cad-top-right{
+          width: 50px;
+          height: 20px;
+          float: right;
+          background: #74C818;
+          font-family: PingFangSC-Medium;
+          font-size: 14px;
+          color: #FFFFFF;
+          letter-spacing: 0;
+          text-align: center;
+          border-radius: 20px;
+        }
+        .cad-btm-price{
+          font-family: PingFangSC-Medium;
+          font-size: 16px;
+          color: #F54802;
+          letter-spacing: 0;
+        }
+        .cad-btn-relprice{
+          font-family: PingFangSC-Regular;
+          font-size: 16px;
+          color: #474C63;
+          letter-spacing: 0;
+          text-decoration: line-through;
+        }
+        .cad-btn-people{
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          color: #474C63;
+          letter-spacing: 0;
         }
     }
 </style>
