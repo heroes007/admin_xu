@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import manageProduction from '../../components/ProjectList'
+    import manageProduction from '../production/ManageProduction'
   export default {
     name: "index",
     components:{manageProduction}
