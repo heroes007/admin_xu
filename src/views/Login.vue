@@ -6,7 +6,7 @@
                 <div class='logo'>
                     <img src='/static/img/logo_copy.png'>
                 </div>
-                <h1 class="login-title">九划医疗后台管理系统 --A</h1>
+                <h1 class="login-title">九划医疗后台管理系统</h1>
                 <div class='data-input'>
                     <div class="elRow">
                         <img class="input-img" src='/static/img/head.png'>
@@ -17,6 +17,14 @@
                         <img class="input-img" src='/static/img/lock.png'>
                         <span class="input-span">|</span>
                         <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/>
+                    </div>
+                    <div class="elRow">
+                        <img class="input-img" src='/static/img/lock.png'>
+                        <span class="input-span">|</span>
+                         <Select class="el-input" v-model="projectId">
+                            <Option v-for="item in projectList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                        </Select>
+                        <!-- <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/> -->
                     </div>
                     <!-- <div class='remember elRowJustifyLeft'>
                         <Switch v-model="remember" />
@@ -48,7 +56,8 @@
                 password: '',
                 remember: true,
                 isLogining: false,
-                loginViewStyl: {}
+                loginViewStyl: {},
+                projectId: 0
             }
         },
         computed: {
@@ -91,7 +100,6 @@
             }
         },
         mounted() {
-            console.log('');
             if(this.$localStorage.get('login_user')){
               let user = Base64.decode(this.$localStorage.get('login_user'))
               let u = JSON.parse(user.slice(2))
@@ -174,6 +182,16 @@
                     .input-span{
                         margin-right: 10px;
                         color: #EEE
+                    }
+                    /deep/ .ivu-select-single .ivu-select-selection{
+                        width: 100%;
+                        height: 48px;
+                    }
+                    /deep/ .ivu-select-selection{
+                        border:none
+                    }
+                    /deep/ .ivu-select-visible .ivu-select-selection{
+                        box-shadow: none
                     }
                     .el-input {
                         width: 100%;
