@@ -308,7 +308,7 @@
             .logo-title {
                 color: #fff;
                 font-size: 18px;
-                margin-left: 4px;
+                margin-left: 10px;
             }
         }
 

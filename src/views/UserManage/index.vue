@@ -1,7 +1,7 @@
 <template>
     <Tabs value="manage">
         <TabPane label="管理列表" name="manage">
-            <screen :types="4" size-title1="管理总数" :size-num1="23" btn-name="添加管理" :select1="selectList" :select2="selectList"
+            <screen :types="1" size-title1="管理总数" :size-num1="23" btn-name="添加管理" :select1="selectList" :select2="selectList"
                     @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
         </TabPane>
         <TabPane label="机构列表" name="product">标签二的内容</TabPane>
