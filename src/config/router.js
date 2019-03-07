@@ -42,6 +42,7 @@ const ManagRedeemCode = () => import('../views/code/ManageRedeemCode');
 const UserManage = () => import('../views/UserManage/index')
 const ProductManage = () => import('../views/ProductManage/index')
 const SystemManage = () => import('../views/SystemManage/index')
+const OpenProduct = () => import('../views/ProductManage/OpenProduct/index')
 
 Vue.use(VueRouter);
 
@@ -236,6 +237,11 @@ const routes = [
       //   component: FromPageData
       // }
     ]
+  },
+  {
+    path: '/dashboard/open-product',
+    name: 'open-product',
+    component: OpenProduct
   },
   {
     path: '/login',

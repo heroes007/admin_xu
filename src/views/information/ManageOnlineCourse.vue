@@ -122,42 +122,41 @@
       gradeList() {
         return this.$store.state.grade.grade_list;
       },
-      isLoading() {
-        return this.$store.state.online_curriculum.showMainLoading;
-      },
+      // isLoading() {
+      //   return this.$store.state.online_curriculum.showMainLoading;
+      // },
       listHeight() {
         return window.innerHeight - 60 - 50;
       }
     },
     watch: {
       listColumnFormatterData(val) {},
-      isLoading(val) {
-        if (val) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-          setTimeout(() => {
-            this.loadingInstance.close();
-          }, Config.base_timeout);
-        } else {
-          if (this.loadingInstance) this.loadingInstance.close();
-          this.dirty = false;
-        }
-      },
+      // isLoading(val) {
+      //   if (val) {
+      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
+      //     setTimeout(() => {
+      //       this.loadingInstance.close();
+      //     }, Config.base_timeout);
+      //   } else {
+      //     if (this.loadingInstance) this.loadingInstance.close();
+      //     this.dirty = false;
+      //   }
+      // },
       projectId(v) {
         this.$store.dispatch('get_online_curriculum_list', {
           project_id: v
         });
       },
-      dataList(v) {
-        var loadingInstance = null;
-        if (v) {
-          setTimeout(a => {
-            loadingInstance && loadingInstance.close();
-          }, Config.base_timeout)
-        } else {
-          loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-
-        }
-      }
+      // dataList(v) {
+      //   var loadingInstance = null;
+      //   if (v) {
+      //     setTimeout(a => {
+      //       loadingInstance && loadingInstance.close();
+      //     }, Config.base_timeout)
+      //   } else {
+      //     loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
+      //   }
+      // }
     },
     methods: {
       editChapterHandler(index) {
@@ -239,10 +238,10 @@
       initData() {
         var vm = this;
         if (this.$store.state.project.project_list.length === 0) {
-          var loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
+          // var loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
           this.$store.dispatch('get_project_list', {
             callback(v) {
-              loadingInstance && loadingInstance.close();
+              // loadingInstance && loadingInstance.close();
               if (vm.dataList.length === 0) {
                 vm.$store.dispatch('get_online_curriculum_list', {
                   project_id: v

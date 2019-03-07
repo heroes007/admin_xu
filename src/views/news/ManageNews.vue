@@ -97,9 +97,9 @@
       this.getData();
     },
     watch: {
-      isLoading(val) {
-        this.$config.IsLoading(val);
-      }
+      // isLoading(val) {
+      //   this.$config.IsLoading(val);
+      // }
     },
     computed: {
       ...mapState({
