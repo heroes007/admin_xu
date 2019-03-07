@@ -59,6 +59,8 @@
       ...mapActions(["get_production_list", "change_production_vailid", "delete_production", "get_production_group_list"]),
       handleJump(){
         let routeData = this.$router.resolve({
+          query: '',
+          params: '',
           name: "open-product",
         });
         window.open(routeData.href, "_blank")
