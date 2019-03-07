@@ -51,7 +51,7 @@
                             <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
                         </MenuItem>
                         <MenuItem v-else :name="it.name">
-                            <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
+                            <Icon type="ios-folder-open" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span>
                         </MenuItem>
                     </div>
                 </Menu>
@@ -255,39 +255,15 @@
         padding-top: 14px !important;
         padding-bottom: 14px !important;
       }
-    .menu-item{
-        display: flex;
-        width: 100%;
-        height: 100%;
-        align-items: center;
-        padding: 14px 24px;
-        img{
-            margin-right: 6px;
-        }
-    }
-    /*/deep/ .ivu-menu-item{  padding: 0; }*/
-    /*/deep/ .ivu-menu-submenu-title-icon{*/
-      /*top: 18px ;*/
-      /*position: absolute;*/
-      /*right: 0;*/
-    /*}*/
-    /*/deep/ .ivu-menu-submenu-title{*/
-        /*padding: 0;*/
-        /*display: flex;*/
-        /*flex-direction: row;*/
-        /*i{*/
-            /*height: 14px;*/
-        /*}*/
-    /*}*/
-
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;
     }
 
     /deep/ .ivu-menu-item, /deep/ .ivu-menu-submenu-title {
-        text-align: left;
+        text-align: center;
         color: #fff;
+        margin: 10px;
     }
 
     /deep/ .ivu-menu-vertical.ivu-menu-light:after {

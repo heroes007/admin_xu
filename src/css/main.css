@@ -107,3 +107,4 @@ body { background-color: #fff; height: 100%; }
     width: 80px !important;
     margin-left: 22px  !important;
 }
+.ivu-tabs-bar{border: none !important;}
