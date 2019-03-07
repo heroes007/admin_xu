@@ -1,6 +1,3 @@
-/**
- * Created by lesonli on 2016/11/16.
- */
 <template>
     <div>
         <header-component/>

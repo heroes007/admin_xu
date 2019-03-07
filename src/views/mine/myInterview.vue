@@ -29,7 +29,7 @@
         <!--</keep-alive>-->
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage"
-                  :page-size="pageSize" :total="total">
+                  :page-size="pageSize" :total="total" show-sizer>
             </Page>
         </Row>
     </div>

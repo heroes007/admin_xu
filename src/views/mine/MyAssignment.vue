@@ -1,6 +1,6 @@
 <template>
     <div class='my-assignment-view'>
-        <header-component :type='4' title="批改任务作业" @reRenderList="reRenderListHandler" style="margin-bottom:20px;"/>
+        <header-component :type='4' title="批阅任务作业" @reRenderList="reRenderListHandler" style="margin-bottom:20px;"/>
         <Form :inline="true" :label-width="80" style="text-align:left">
             <FormItem label="学科：">
                 <Select v-model="selectSubject" placeholder="请选择" @on-change='getNewList'>

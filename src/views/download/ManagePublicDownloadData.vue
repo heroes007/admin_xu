@@ -1,6 +1,6 @@
 <template>
     <div class='manage-public-download-data'>
-        <header-component title="推荐课程资料" :type='0' :showAdd='true' addText='添加公共资料' @addClick='addClickHandler'/>
+        <header-component title="推荐资料" :type='0' :showAdd='true' addText='添加推荐资料' @addClick='addClickHandler'/>
         <data-list class='data-list light-header' @delete='deleteHandler' :isStripe='false' :table-data='dataList'
           :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData'></data-list>
     </div>

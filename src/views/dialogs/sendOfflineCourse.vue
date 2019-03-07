@@ -17,8 +17,8 @@
                        :columns="courseColumns" style="width: 100%" @on-selection-change="handleSelectionChange">
                 </Table>
                 <Row class="course-page">
-                    <Page @on-page-size-change="handleSizeChange" @on-change="handleCurrentChange" :current="curPage"
-                          size="small" :page-size="pageSize" :total="totalNum"></Page>
+                    <Page @on-change="handleCurrentChange" :current="curPage"
+                       size="small" :page-size="pageSize" :total="totalNum"></Page>
                 </Row>
                 <Row class="btns">
                     <Button class="send-btn" @click="handleSendTask">发送</Button>
@@ -132,7 +132,6 @@
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      handleSizeChange(val) {},
       handleCurrentChange(val) {
         this.$store.dispatch('get_students_by_offline_term', {
           offline_term_id: this.payload.row.id,

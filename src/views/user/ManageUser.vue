@@ -104,7 +104,7 @@
             <span>当前用户 {{total}} 人</span>
         </Row>
         <Row class='data-container'>
-            <div class='list'>
+            <div class='list' style="height: 100%;">
                 <Table :columns="columns1" :data="list">
                     <template slot-scope="{ column, row, index }" slot="action">
                         <!--<Button type="text" size="small" class="btn-text" @click="editDealer(row)">修改分站</Button>-->
@@ -556,10 +556,16 @@
     }
     .data-container{
         height: calc(100% - 256px);
+    }
+    .manage-student-view{
+        height: 100%;
+    }
+    /deep/ .ivu-table-body{
+        height: 100%;
         overflow: hidden;
         overflow-y: auto;
     }
-    .manage-student-view{
+    /deep/ .ivu-table-wrapper{
         height: 100%;
     }
 </style>

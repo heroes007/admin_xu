@@ -1,5 +1,5 @@
 <template>
-<Modal :transfer=false :title="!payload? '创建产品' : '编辑产品'" :footer-hide=true
+<Modal :transfer=false :title="!payload? '创建产品' : '编辑产品'" :footer-hide=true 
  v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
     <base-input @closedialog="handleClose">
         <Row slot="body">
@@ -54,14 +54,41 @@
                     <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
                        <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
                     </FormItem>
-                    <FormItem label="展示图片" v-if="nextStep == 0">
-                        <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
-                            <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                        </upload-panel>
+                     <FormItem v-show="nextStep == 0" label="产品图片">
+                        <Row class='row-container' type='flex' justify='start' align='middle'>
+                        <Switch  v-model="form.displayImg" @on-change="displayImgChage" size="large">
+                            <span slot="open">使用</span><span slot="close">不使用</span>
+                        </Switch>
+                        </Row>
+                    </FormItem>
+                    <FormItem label="展示图片" v-if="nextStep == 0 && form.displayImg">
+                        <Row>
+                            <Col :span="8">
+                            <upload-panel :close=true ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
+                            </upload-panel>
+                            </Col>
+                            <Col :span="8">
+                            <upload-panel :close=true ref="upload_panel2" :resourse="form.img_url2" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler2s">
+                            </upload-panel>
+                             </Col>
+                            <Col :span="8">
+                            <upload-panel :close=true ref="upload_panel3" :resourse="form.img_url3" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler3">
+                            </upload-panel>
+                             </Col>
+                            <Col :span="8">
+                            <upload-panel :close=true ref="upload_panel4" :resourse="form.img_url4" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler4">
+                            </upload-panel>
+                             </Col>
+                            <Col :span="8">
+                            <upload-panel :close=true ref="upload_panel5" :resourse="form.img_url5" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler5">
+                            </upload-panel>
+                             </Col>
+                        </Row>
+                         <p>只能上传 jpg/png 文件，且图片480*270</p>
                     </FormItem>
                     <FormItem v-show="nextStep == 0" label="产品视频">
                         <Row class='row-container' type='flex' justify='start' align='middle'>
-                        <Switch  v-model="form.displayVideo" size="large">
+                        <Switch  v-model="form.displayVideo" @on-change="displayVideoChage" size="large">
                             <span slot="open">使用</span><span slot="close">不使用</span>
                         </Switch>
                         </Row>
@@ -127,8 +154,13 @@ export default {
                 h5_url:'',
                 redirectType:false,
                 displayVideo:false,
+                displayImg: true,
                 curriculum_id:null,
                 img_url:'',
+                img_url2:'',
+                img_url3:'',
+                img_url4:'',
+                img_url5:'',
                 video_url:'',
                 show_price:'',
                 show_original_price:'',
@@ -196,7 +228,14 @@ export default {
                     this.form.examine_type = res.data.msg.examine_type;
                     if(this.form.h5_url) this.form.redirectType = true;
                     var arrObj = JSON.parse(res.data.msg.img_url_arr);
-                    this.form.img_url = arrObj.default;
+                    if(arrObj.default.includes("[")){
+                       let d = JSON.parse(arrObj.default);
+                       this.form.img_url = d[0]
+                       this.form.img_url2 = d[1]
+                       this.form.img_url3 = d[2]
+                       this.form.img_url4 = d[3]
+                       this.form.img_url5 = d[4]
+                    }else this.form.img_url = arrObj.default;
                     this.form.video_url = arrObj.video;
                     if(this.form.video_url)
                         this.form.displayVideo = true;
@@ -260,6 +299,29 @@ export default {
                 }
             }
         },
+        displayVideoChage(){
+            if(this.form.displayImg){
+               this.$nextTick(() => {
+                   this.form.displayVideo = false
+               })
+               this.$Message.warning('已选择图片，就不能上传视频了');
+            }else{
+                this.form.img_url = ''
+                this.form.img_url2 = ''
+                this.form.img_url3 = ''
+                this.form.img_url4 = ''
+                this.form.img_url5 = ''
+            }
+        },
+        displayImgChage(){
+             console.log(this.from,'from')
+            if(this.form.displayVideo){
+                this.$nextTick(() => {
+                   this.form.displayImg = false
+               })
+               this.$Message.warning('已选择视频，就不能上传图片了');
+            }else if(this.form.video_url)  this.form.video_url = ''
+        },
         clearSearch(){
             this.searchData = '';
             get_list(this.projectId).then(res => {
@@ -294,6 +356,18 @@ export default {
         uploadCompleteHandler1(url){
             this.form.img_url = url;
         },
+        uploadCompleteHandler2s(url){
+            this.form.img_url2 = url;
+        },
+        uploadCompleteHandler3(url){
+            this.form.img_url3 = url;
+        },
+        uploadCompleteHandler4(url){
+            this.form.img_url4 = url;
+        },
+        uploadCompleteHandler5(url){
+            this.form.img_url5 = url;
+        },
         uploadCompleteHandler2(url){
             this.form.video_url = url;
         },
@@ -303,15 +377,13 @@ export default {
         },
         handleNextStep(formName) {
           var arrObj = {
-            default: this.form.img_url,
-            video: this.form.video_url
+            default: this.form.displayImg ? JSON.stringify([this.form.img_url,this.form.img_url2,this.form.img_url3,this.form.img_url4,this.form.img_url5]) : '',
+            video: this.form.displayVideo ? this.form.video_url : ''
           }
           var description= this.$refs.description_editor.editor.getContent();
           this.form.description = description;
           this.form.img_url_arr = JSON.stringify(arrObj);
-          this.form.price = this.form.price.toFixed(2)
-          this.form.original_price = this.form.original_price.toFixed(2)
-          if(this.form.price > this.form.original_price){
+          if(Number(this.form.show_price) > Number(this.form.show_original_price)){
             this.$Modal.info({
               title: '提示',
               content: '真实售价不能高于定价！'
@@ -328,38 +400,20 @@ export default {
             this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
         handleSubmit() {
-            // var arrObj = {
-            //     default: this.form.img_url,
-            //     video: this.form.video_url
-            // }
-            // var description= this.$refs.description_editor.editor.getContent();
-            // this.form.description = description;
-            // this.form.img_url_arr = JSON.stringify(arrObj);
-            //  this.form.price = Math.round(parseFloat(this.form.show_price));
-            //  this.form.original_price = Math.round(parseFloat(this.form.show_original_price));
-            //  if(this.form.price > this.form.original_price){
-            //     this.$Modal.info({
-            //         title: '提示',
-            //         content: '真实售价不能高于定价！'
-            //     });
-            //  }else{
-              this.form.price = this.form.price.toFixed(2)
-              this.form.original_price = this.form.original_price.toFixed(2)
-               if(this.payload) {
-                 this.update_production(this.form);
-               }
-               else {
-                 this.add_production(this.form);
-               }
-             // }
-        },
-    },
+              this.form.price = Number(this.form.show_price).toFixed(2)
+              this.form.original_price = Number(this.form.show_original_price).toFixed(2)
+              if(this.payload)  this.update_production(this.form);
+              else this.add_production(this.form);
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
 /deep/.ivu-switch-large { width: 75px }
 /deep/ .ivu-switch-large.ivu-switch-checked:after{ left: 55px; }
 /deep/ .ivu-modal{ width: 800px !important }
+/deep/ .upload-space, /deep/ .upload-space>input{ height: 150px !important; }
+/deep/ .upload-panel .img img { width: 160px;height: 148px; }
 .add-task-form{
     width: 80% !important;
     margin-left: 10%;
