@@ -91,6 +91,7 @@
             }
         },
         mounted() {
+            console.log('');
             if(this.$localStorage.get('login_user')){
               let user = Base64.decode(this.$localStorage.get('login_user'))
               let u = JSON.parse(user.slice(2))
