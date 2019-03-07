@@ -1,6 +1,6 @@
 <template>
     <div class='manage-online-course'>
-        <header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/>
+       <header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/> 
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler'
                    @moveDown='moveDownHandler'
                    @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList'
@@ -32,17 +32,30 @@
       dataHeader() {
         return [{
           sort: true,
-          label: '排序',
+          label: '序号',
           width: 90
-        }, {
-          prop: 'teacher_name',
-          label: '讲师',
-          width: 100
-        }, {
+        }, 
+        {
           prop: 'title',
           label: '课程名称',
           minWidth: 200
-        }, {
+        },
+        {
+          prop: 'teacher_name',
+          label: '讲师',
+          width: 100
+        }, 
+         {
+          prop: 'subject_id',
+          label: '科室',
+          width: 80
+        }, 
+        {
+          prop: 'grade_id',
+          label: '年级',
+          width: 80
+        },
+         {
           prop: 'state',
           label: '状态',
           width: 80
@@ -51,38 +64,32 @@
           label: '创建时间',
           width: 120
         }, {
-          prop: 'grade_id',
-          label: '学段',
-          width: 80
-        }, {
-          prop: 'subject_id',
-          label: '学科',
-          width: 80
-        }, {
           label: '操作',
           width: 350,
           groupBtn: [{
-            text: '编辑章节',
+            text: '添加章节',
             param: 'editChapter'
           }, {
             text: '编辑课程',
             param: 'editCourse',
-            hoverShow: true
-          }, {
-            text: 'md-arrow-dropup',
-            param: 'moveUp',
-            hoverShow: true,
-            isIcon: true
-          }, {
-            text: 'md-arrow-dropdown',
-            param: 'moveDown',
-            hoverShow: true,
-            isIcon: true
-          }, {
-            text: 'ios-trash-outline',
+            // hoverShow: true
+          }, 
+          // {
+          //   text: 'md-arrow-dropup',
+          //   param: 'moveUp',
+          //   // hoverShow: true,
+          //   isIcon: true
+          // }, {
+          //   text: 'md-arrow-dropdown',
+          //   param: 'moveDown',
+          //   // hoverShow: true,
+          //   isIcon: true
+          // }, 
+          {
+            text: '删除',
             param: 'deleteCourse',
-            hoverShow: true,
-            isIcon: true
+            // hoverShow: true,
+            // isIcon: true
           }]
         }]
       },
@@ -274,5 +281,5 @@
 
 </script>
 <style scoped lang='scss'>
-
+  /deep/ .ivu-btn-text{color: #4098FF }
 </style>
