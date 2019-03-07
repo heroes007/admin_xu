@@ -1,13 +1,14 @@
 <template>
-    <Modal :transfer=false :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true"
-           v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="800"
+    <Modal :transfer=false :title="dialogIndex == 1 ? '添加课程' : '前置课程'" :footer-hide="true"
+           v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="654"
            :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form ref="form" :model="form" class="add-course-form" :label-position="labelPosition">
-                        <Row>
-                            <Col :span="11">
+                    <Form  :model="formLeft" class="add-course-form" :label-position="labelPosition" :label-width="100">
+                    
+                        <!--<Row>-->
+                            <Col>
                                 <FormItem label="课程名称">
                                     <Input v-model="form.title" placeholder="请输入课程名称"></Input>
                                 </FormItem>
@@ -16,7 +17,12 @@
                                         <Option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="学段">
+                                <FormItem label="科室">
+                                    <Select v-model="form.subject_id" placeholder="请选择学科">
+                                        <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem label="年级">
                                     <Select v-model="form.grade_id" placeholder="请选择学段">
                                         <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
@@ -26,8 +32,20 @@
                                         <Option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
+                               <FormItem label="课程介绍">
+                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
+                                </FormItem>
+                                <FormItem label="展示封面">
+                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
+                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
+                                    </upload-panel>
+                                </FormItem> 
+                                <FormItem class="btns">
+                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
+                                    <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
+                                </FormItem>
                             </Col>
-                            <Col :span="11" :offset="2">
+                            <!--<Col :span="11" :offset="2">
                                 <FormItem label="开课时间">
                                     <DatePicker v-model="selectDateRange" type="daterange" placeholder="选择日期范围" :transfer="true"></DatePicker>
                                 </FormItem>
@@ -51,9 +69,9 @@
                                         <Button type='text' v-if='newData.show' @click='cancelAddData'>取消</Button>
                                     </Row>
                                 </FormItem>
-                            </Col>
-                        </Row>
-                        <Row>
+                            </Col>-->
+                        <!--</Row>-->
+                        <!--<Row>
                             <div class='add-download-data' v-if='newData.show'>
                                 <Row type='flex' align='middle'>
                                     <Col :span='4'>资料名称：</Col>
@@ -63,15 +81,10 @@
                                 </Row>
                                 <file-uploader :filters="dataFilters" maxFileCount="1" :maxFileSize="10000" @uploadComplete="uploadComplete" bucket="dscj-static-file" :dir="getDir()"/>
                             </div>
-                        </Row>
-                        <Row>
-                            <Col :span="11">
-                                <FormItem label="展示图片">
-                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                                    </upload-panel>
-                                </FormItem>
-                            </Col>
+                            
+                        </Row>-->
+                       <!-- <Row>
+                            
                             <Col :span="11" :offset="2">
                                 <FormItem label="文字图片">
                                     <upload-panel ref="upload_panel" :resourse="form.img_3_8" :upload-config="uploadConfig" @uploadcomplete="handle38UploadComplete">
@@ -79,18 +92,13 @@
                                     </upload-panel>
                                 </FormItem>
                             </Col>
-                        </Row>
-                        <Row class="course-description">
+                        </Row>-->
+                        <!--<Row class="course-description">
                             <FormItem label="课程简介">
                                 <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
                             </FormItem>
-                        </Row>
-                        <Row>
-                            <FormItem class="btns">
-                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
-                                <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
-                            </FormItem>
-                        </Row>
+                        </Row>-->
+                        
                     </Form>
                 </Row>
                 <Row v-if="dialogIndex==2">
@@ -183,7 +191,7 @@
           project_id: 1
         },
         dialogIndex: 1,
-        labelPosition: 'top',
+        labelPosition: 'left',
         panelOptions: {
           panelHeight: 158
         },

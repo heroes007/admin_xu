@@ -1,5 +1,5 @@
 <template>
-<Modal :transfer=false :title="!payload? '创建产品' : '编辑产品'" :footer-hide=true 
+<Modal :transfer=false :title="!payload? '产品信息' : '编辑产品'" :footer-hide=true 
  v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
     <base-input @closedialog="handleClose">
         <Row slot="body">
@@ -22,7 +22,7 @@
             </Row>
             <Row class="body-top">
                 <Form ref="form" :model="form" :label-width="fromLabelWidth" class="add-task-form">
-                    <FormItem v-show="nextStep == 0" label="编码">
+                    <FormItem v-show="nextStep == 0" style="letter-spacing:4px;" label="产品ID">
                         <Input v-model="form.code" placeholder="请输入产品编码"></Input>
                     </FormItem>
                     <!-- <FormItem label='考试类型' :label-width="formItemLabelWidth">
@@ -33,18 +33,28 @@
                     <FormItem v-show="nextStep == 0" label="产品名称">
                         <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                     </FormItem>
-                    <FormItem v-show="nextStep == 0" label="定价">
-                        <Input placeholder="0为免费，单位默认（元）" v-model="form.show_original_price"></Input>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" label="真实售价">
+                    <FormItem v-show="nextStep == 0" style="letter-spacing:14px;" label="原价">
                         <Input placeholder="售价必须小于等于定价" v-model="form.show_price"></Input>
                     </FormItem>
-                    <FormItem v-show="nextStep == 0" label="荣誉证书" >
+                    <FormItem v-show="nextStep == 0" label="实际售价">
+                        <Input placeholder="0为免费，单位默认（元）" v-model="form.show_original_price"></Input>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 0" label="解锁方式">
+                        <Select v-model="model" placeholder="不限/按课程解锁/按章节解锁/按视频解锁">
+                            <Option v-for="item in list" :value="value" :key="item"></Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem v-show="nextStep == 0" label="产品状态">
+                        <Select v-model="model" placeholder="首页推荐/已上架/已下架/测试中">
+                            <Option v-for="item in list" :value="value" :key="item"></Option>
+                        </Select>
+                    </FormItem>
+                    <!--<FormItem v-show="nextStep == 0" label="荣誉证书" >
                         <Select v-model="form.certificate" multiple >
                             <Option v-for="(item, index) in certificate" :key="item.id" :value="item.id" :label="item.name"></Option>
                         </Select>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" label="跳转配置">
+                    </FormItem>-->
+                    <!--<FormItem v-show="nextStep == 0" label="跳转配置">
                         <Row class='row-container' type='flex' justify='start' align='middle'>
                         <Switch  v-model="form.redirectType" size="large">
                             <span slot="open">自定义</span><span slot="close">默认</span>
@@ -53,54 +63,63 @@
                     </FormItem>
                     <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
                        <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
-                    </FormItem>
-                     <FormItem v-show="nextStep == 0" label="产品图片">
+                    </FormItem>-->
+                     <!--<FormItem v-show="nextStep == 0" label="产品图片">
                         <Row class='row-container' type='flex' justify='start' align='middle'>
                         <Switch  v-model="form.displayImg" @on-change="displayImgChage" size="large">
                             <span slot="open">使用</span><span slot="close">不使用</span>
                         </Switch>
                         </Row>
+                    </FormItem>-->
+                    <FormItem v-show="nextStep == 0" label="产品介绍">
+                        <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
                     </FormItem>
-                    <FormItem label="展示图片" v-if="nextStep == 0 && form.displayImg">
-                        <Row>
-                            <Col :span="8">
-                            <upload-panel :close=true ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
-                            </upload-panel>
-                            </Col>
-                            <Col :span="8">
-                            <upload-panel :close=true ref="upload_panel2" :resourse="form.img_url2" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler2s">
-                            </upload-panel>
-                             </Col>
-                            <Col :span="8">
-                            <upload-panel :close=true ref="upload_panel3" :resourse="form.img_url3" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler3">
-                            </upload-panel>
-                             </Col>
-                            <Col :span="8">
-                            <upload-panel :close=true ref="upload_panel4" :resourse="form.img_url4" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler4">
-                            </upload-panel>
-                             </Col>
-                            <Col :span="8">
-                            <upload-panel :close=true ref="upload_panel5" :resourse="form.img_url5" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler5">
-                            </upload-panel>
-                             </Col>
-                        </Row>
-                         <p>只能上传 jpg/png 文件，且图片480*270</p>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" label="产品视频">
+                    <Tabs value="name1" v-show="nextStep == 0">
+                        <TabPane label="展示图片" name="name1">
+                             <FormItem label="展示图片" v-if="nextStep == 0 && form.displayImg">
+                                <Row>
+                                    <Col :span="8">
+                                    <upload-panel :close=true ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
+                                    </upload-panel>
+                                    </Col>
+                                    <Col :span="8">
+                                    <upload-panel :close=true ref="upload_panel2" :resourse="form.img_url2" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler2s">
+                                    </upload-panel>
+                                    </Col>
+                                    <Col :span="8">
+                                    <upload-panel :close=true ref="upload_panel3" :resourse="form.img_url3" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler3">
+                                    </upload-panel>
+                                    </Col>
+                                    <Col :span="8">
+                                    <upload-panel :close=true ref="upload_panel4" :resourse="form.img_url4" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler4">
+                                    </upload-panel>
+                                    </Col>
+                                    <Col :span="8">
+                                    <upload-panel :close=true ref="upload_panel5" :resourse="form.img_url5" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler5">
+                                    </upload-panel>
+                                    </Col>
+                                </Row>
+                                <p>只能上传 jpg/png 文件，且图片480*270</p>
+                            </FormItem>
+                        </TabPane>
+                        <TabPane label="展示视频" name="name2">
+                            <FormItem label="展示视频" v-show="nextStep == 0">
+                                <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
+                                    <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
+                                </upload-panel>
+                            </FormItem>
+                        </TabPane>
+                    </Tabs>
+                   
+                    <!--<FormItem v-show="nextStep == 0" label="产品视频">
                         <Row class='row-container' type='flex' justify='start' align='middle'>
                         <Switch  v-model="form.displayVideo" @on-change="displayVideoChage" size="large">
                             <span slot="open">使用</span><span slot="close">不使用</span>
                         </Switch>
                         </Row>
-                    </FormItem>
-                    <FormItem label="展示视频" v-if="nextStep == 0 && form.displayVideo">
-                        <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
-                             <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
-                        </upload-panel>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" label="产品简介">
-                        <Input type="textarea" :rows="6" placeholder="请输入产品简介" v-model="form.short_description"></Input>
-                    </FormItem>
+                    </FormItem>-->
+                    
+                    
                     <FormItem v-show="nextStep == 2" label="编辑产品课程图文详情:" :label-width='160'>
                     </FormItem>
                     <FormItem v-show="nextStep == 2" label="" :label-width='0'>
@@ -109,8 +128,9 @@
                     <FormItem class="btns">
                         <Button type='text' v-show='nextStep == 2 || nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</Button>
                         <Button v-show="nextStep == 2" class="btn-orange" @click="handleSubmit('form')">提交</Button>
-                        <Button v-show="nextStep == 0 || nextStep == 1" class="btn-orange btn-next" @click="handleNextStep(form)">下一步</Button>
+                        
                     </FormItem>
+                    <Button v-show="nextStep == 0 || nextStep == 1" class="btn-orange btn-next" @click="handleNextStep(form)">下一步</Button>
                 </Form>
             </Row>
         </Row>
@@ -390,7 +410,7 @@ export default {
             });
           }else{
             this.fromLabelWidth = 0;
-            this.formItemLabelWidth = 80
+            this.formItemLabelWidth = 0
             this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
           }
         },
@@ -411,10 +431,16 @@ export default {
 <style lang="scss" scoped>
 /deep/.ivu-switch-large { width: 75px }
 /deep/ .ivu-switch-large.ivu-switch-checked:after{ left: 55px; }
-/deep/ .ivu-modal{ width: 800px !important }
+/deep/ .ivu-modal{ width: 654px !important }
 /deep/ .upload-space, /deep/ .upload-space>input{ height: 150px !important; }
 /deep/ .upload-panel .img img { width: 160px;height: 148px; }
-.add-task-form{
+/deep/ .ivu-modal-header { background-color:#ffffff!important; padding:21px 16px;font-family: PingFangSC-Regular;font-size: 20px!important;color: #474C63!important;letter-spacing: 0!important;border-radius: 10px}
+/deep/ .ivu-modal-header-inner { color:#474C63 !important; }
+/deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
+/deep/ .ivu-modal-content {border-radius: 6px !important;}
+/deep/ .ivu-form-item {margin-bottom: 15px;}
+/deep/ .ivu-input {border-radius: 4px !important;}
+ .add-task-form{
     width: 80% !important;
     margin-left: 10%;
 }
@@ -424,7 +450,7 @@ export default {
     color: #fff;
 }
 .btn-orange{
-    margin-left: 20%;
+    margin-left: 10%;
     background: #3DAAFF;
     border: 1px solid #3DAAFF;
     border-radius: 4px;
@@ -450,5 +476,13 @@ export default {
             color: #757575;
         }
     }
+}
+.btn-pre{
+    color: #474C63;
+    width: 150px;
+    height: 36px;
+    background: #FFFFFF;
+    border: 1px solid #9397AD;
+    border-radius: 4px;
 }
 </style>
