@@ -1,5 +1,5 @@
 <template>
-    <manage-production></manage-production>
+    <manage-production />
 </template>
 
 <script>

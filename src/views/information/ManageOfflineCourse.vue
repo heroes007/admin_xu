@@ -159,22 +159,22 @@
       dataList() {
         return this.$store.state.offline_curriculum.offline_term_list;
       },
-      isLoadingCurriculum() {
-        return this.$store.state.offline_curriculum.showLoading;
-      }
+      // isLoadingCurriculum() {
+      //   return this.$store.state.offline_curriculum.showLoading;
+      // }
     },
     watch: {
-      isLoadingCurriculum(val) {
-        if (val) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-          setTimeout(() => {
-            this.loadingInstance.close()
-          }, Config.base_timeout);
-        } else {
-          if (this.loadingInstance) this.loadingInstance.close()
-          this.dirty = false
-        }
-      }
+      // isLoadingCurriculum(val) {
+      //   if (val) {
+      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
+      //     setTimeout(() => {
+      //       this.loadingInstance.close()
+      //     }, Config.base_timeout);
+      //   } else {
+      //     if (this.loadingInstance) this.loadingInstance.close()
+      //     this.dirty = false
+      //   }
+      // }
     },
     methods: {
       ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail', 'get_grade_list', 'get_city_list' ]),

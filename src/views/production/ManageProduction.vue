@@ -208,7 +208,14 @@
        
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total"/>
+<<<<<<< HEAD
         </Row> 
+=======
+        </Row>
+        <Card>
+            <p @click="handleJump">点击我跳转</p>
+        </Card>
+>>>>>>> 4cb85e7f6b386432078d4b4f8547db8f8ff2a9d6
     </div>
 </template>
 <script>
@@ -241,6 +248,12 @@
     },
     methods: {
       ...mapActions(["get_production_list", "change_production_vailid", "delete_production", "get_production_group_list"]),
+      handleJump(){
+        let routeData = this.$router.resolve({
+          name: "open-product",
+        });
+        window.open(routeData.href, "_blank")
+      },
       addProductionHandler() {
         this.handleSelModal(ADD_PRODUCTION);
       },
