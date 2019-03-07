@@ -1,12 +1,12 @@
 <template>
-    <Card>
-        ID：2109981
-    </Card>
+    <manage-production></manage-production>
 </template>
 
 <script>
+    import manageProduction from '../../components/ProjectList'
   export default {
-    name: "index"
+    name: "index",
+    components:{manageProduction}
   }
 </script>
 
