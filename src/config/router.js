@@ -39,6 +39,9 @@ const ManageProductionGroup = () => import('../views/production/ManageProduction
 const ManageNews = () => import('../views/news/ManageNews')
 const ProjectList = () => import('../components/ProjectList');
 const ManagRedeemCode = () => import('../views/code/ManageRedeemCode');
+const UserManage = () => import('../views/UserManage/index')
+const ProductManage = () => import('../views/ProductManage/index')
+const SystemManage = () => import('../views/SystemManage/index')
 
 Vue.use(VueRouter);
 
@@ -75,7 +78,22 @@ const routes = [
     children:[
       {
         path:'',
-        redirect:'/dashboard/manage-production'
+        redirect:'user-manage'
+      },
+      {
+        path: 'user-manage',
+        name: 'user-manage',
+        component: UserManage
+      },
+      {
+        path: 'product-manage',
+        name: 'product-manage',
+        component: ProductManage
+      },
+      {
+        path: 'system-manage',
+        name: 'system-manage',
+        component: SystemManage
       },
       // {
       //   name:'add-homework',

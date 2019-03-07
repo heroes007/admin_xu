@@ -104,6 +104,20 @@
       }
     },
     methods: {
+      // openChangeMenu(name){
+      //   console.log(name)
+      // },
+      // selectItemMenu(index){
+      //   console.log(index)
+      //   localStorage.setItem('menuActiveIndex', index);
+      //   this.menuList.forEach((it) => {
+      //     if(!it.icon.includes('_gray')) it.icon = it.icon + '_gray';
+      //     if(it.name === index) it.icon = it.icon.split('_')[0];
+      //   })
+      //   if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
+      //   this.name = index
+      //   this.$router.push({name: index});
+      // },
       setProductInfoIcon(it,str){
          let d = this.$config.copy(it)
          d.icon = str
@@ -206,7 +220,7 @@
     },
     mounted() {
       this.setSubmenuTitleIconMouse()
-      let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'manage-production'
+      let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
       this.selectItem(menuActive)
       this.initMenu();
       if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
@@ -237,9 +251,9 @@
   }
 </script>
 <style lang="scss" scoped>
-    .sub-item-title {        
+    .sub-item-title {
         padding-top: 14px !important;
-        padding-bottom: 14px !important; 
+        padding-bottom: 14px !important;
       }
     .menu-item{
         display: flex;
@@ -251,20 +265,20 @@
             margin-right: 6px;
         }
     }
-    /deep/ .ivu-menu-item{  padding: 0; }
-    /deep/ .ivu-menu-submenu-title-icon{ 
-      top: 18px ;
-      position: absolute;
-      right: 0;
-    }
-    /deep/ .ivu-menu-submenu-title{
-        padding: 0;
-        display: flex;
-        flex-direction: row;
-        i{
-            height: 14px;
-        }
-    }
+    /*/deep/ .ivu-menu-item{  padding: 0; }*/
+    /*/deep/ .ivu-menu-submenu-title-icon{*/
+      /*top: 18px ;*/
+      /*position: absolute;*/
+      /*right: 0;*/
+    /*}*/
+    /*/deep/ .ivu-menu-submenu-title{*/
+        /*padding: 0;*/
+        /*display: flex;*/
+        /*flex-direction: row;*/
+        /*i{*/
+            /*height: 14px;*/
+        /*}*/
+    /*}*/
 
     /deep/ .ivu-menu {
         background-color: #333;
