@@ -1,6 +1,7 @@
 <template>
     <div class='manage-offline-course'>
-        <header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>
+        <!-- <header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/> -->
+        <screen :types="1" size-title1="线下课总数" :size-num1="sizeNumber" btn-name="添加线下课" @handleClick="addOfflineSemesterHandler" @reRenderList="reRenderListHandler"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
                    @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
@@ -17,9 +18,10 @@
   import * as types from '../dialogs/types';
   import { mapActions, mapState } from 'vuex'
   import { Config } from '../../config/base'
+  import screen from '../../components/ScreenFrame'
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder },
+    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder ,screen},
     data() {
       return {
         gradeList: [{
@@ -33,7 +35,8 @@
         dirty: false,
         loadingInstance: null,
         isdelete: false,
-        deleteData: null
+        deleteData: null,
+        sizeNumber:12
       }
     },
     computed: {
@@ -41,13 +44,28 @@
         offline_curriculum_detail1: state => state.offline_curriculum.offline_curriculum_detail
       }),
       dataHeader() {
-        return [{
+        return [
+          {
+          sort: true,
+          label: '序号',
+          width: 90
+        }, {
           prop: 'name',
           label: '学期名称',
           minWidth: 100
+        }, 
+        {
+          prop: 'curriculum_count',
+          label: '课程数量',
+          width: 100
+        },
+        {
+          sort: true,
+          label: '参加人数',
+          width: 100
         }, {
           prop: '',
-          label: '开课日期范围',
+          label: '开课日期',
           width: 200,
           mixColumn: true,
           mixFunc: (function (data) {
@@ -55,33 +73,54 @@
             var end_date = doTimeFormat(data.end_time);
             return open_date + '至' + end_date;
           })
-        }, {
-          prop: 'curriculum_count',
-          label: '课程数量',
-          width: 100
-        }, {
-          prop: 'create_time',
-          label: '创建时间',
-          width: 150
-        }, {
+        },  
+        {
+          prop: '',
+          label: '报名截止日期',
+          width: 200,
+          mixColumn: true,
+          mixFunc: (function (data) {
+            var open_date = doTimeFormat(data.start_time);
+            var end_date = doTimeFormat(data.end_time);
+            return  end_date;
+          })
+        }, 
+        // {
+        //   prop: 'create_time',
+        //   label: '创建时间',
+        //   width: 100
+        // }, 
+        {
           label: '操作',
           width: 650,
-          groupBtn: [{
-            text: '编辑学期',
+          groupBtn: [
+            {
+            text: '查看',
             param: 'edit'
-          }, {
-            text: '回执管理',
-            param: 'manageSignup'
-          }, {
-            //   text: '发送线下课',
-            //   param: 'sendOfflineCourse',
-            // hoverShow: true
-            isSwitch: true,
-            switchKey: 'is_valid',
-            onText: '启用',
-            offText: '停用',
-            actionName: 'change_offline_term_valid'
-          }, {
+          }, 
+            {
+            text: '编辑',
+            param: 'edit'
+          }, 
+          {
+            text: '复制',
+            param: 'edit'
+          },
+          // {
+          //   text: '回执管理',
+          //   param: 'manageSignup'
+          // }, 
+          // {
+          //   //   text: '发送线下课',
+          //   //   param: 'sendOfflineCourse',
+          //   // hoverShow: true
+          //   isSwitch: true,
+          //   switchKey: 'is_valid',
+          //   onText: '启用',
+          //   offText: '停用',
+          //   actionName: 'change_offline_term_valid'
+          // }, 
+          {
             text: '发送学期',
             param: 'sendOfflineCourse',
           }, {
@@ -89,10 +128,10 @@
             param: 'add',
             // hoverShow: true
           }, {
-            text: 'ios-trash-outline',
+            text: '删除',
             param: 'delete',
             // hoverShow: true,
-            isIcon: true,
+            // isIcon: true,
           }]
         }, {
           listExpand: true,
@@ -281,5 +320,10 @@
   }
 </script>
 <style scoped lang='scss'>
-
+/deep/.ivu-btn-text{
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #4098FF;
+  letter-spacing: 0;
+}
 </style>

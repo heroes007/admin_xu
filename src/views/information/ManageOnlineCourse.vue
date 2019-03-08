@@ -1,7 +1,7 @@
 <template>
     <div class='manage-online-course'>
       <!-- <header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/> -->
-      <screen :types="1" size-title1="线上课总数" :size-num1="12" btn-name="添加线上课" @handleClick="addCourseHandler" @reRenderList="reRenderListHandler"/>
+      <screen :types="1" size-title1="线上课总数" :size-num1="sizeNumber" btn-name="添加线上课" @handleClick="addCourseHandler" @reRenderList="reRenderListHandler"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler'
                    @moveDown='moveDownHandler'
                    @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList'
@@ -27,7 +27,8 @@
     data() {
       return {
         dirty: false,
-        loadingInstance: null
+        loadingInstance: null,
+        sizeNumber:12
       }
     },
     computed: {
@@ -284,5 +285,10 @@
 
 </script>
 <style scoped lang='scss'>
-  /deep/ .ivu-btn-text{color: #4098FF }
+  /deep/.ivu-btn-text{
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #4098FF;
+  letter-spacing: 0;
+}
 </style>
