@@ -122,14 +122,14 @@
             teacherListData() {
                 return doGroupSlice(6, this.teachers);
             },
-            isLoading() {
-                return this.$store.state.teacher.showLoading;
-            }
+            // isLoading() {
+            //     return this.$store.state.teacher.showLoading;
+            // }
         },
         watch: {
-            isLoading(val) {
-                this.$config.IsLoading(val);
-            }
+            // isLoading(val) {
+            //     this.$config.IsLoading(val);
+            // }
         },
         mounted() {
             if (this.teachers.length === 0) this.$store.dispatch('get_teacher_list');

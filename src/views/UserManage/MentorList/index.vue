@@ -1,7 +1,7 @@
 <template>
    <div>
-       <h1>管理列表</h1>
-         <UserModal :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+       <h1>导师列表</h1>
+        <UserModal :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
    </div>
 </template>
@@ -9,7 +9,6 @@
 <script>
   import Tables from '../../../components/tables.vue'
   import UserModal from '../../../components/UserModal.vue'
-  import { mapState } from 'vuex'
   export default {
     name: "ManagementList",
     components: { Tables, UserModal },
@@ -30,9 +29,19 @@
                 key: 'sex',
             },
             {
-                title: '手机号',
+                title: '管理权限',
+                key: 'admin',
+                align: 'left',
+            },
+                {
+                title: '管理权限',
                 key: 'phone',
                 align: 'left',
+            },
+            {
+                title: '所属机构',
+                key: 'company',
+                align: 'left'
             },
                 {
                 title: '状态',
@@ -58,12 +67,14 @@
                     "phone": "15022211134",
                     "from_domain": '正常',
                     "create_time": "2019/01/12 21:34",
-                    "action": "action"
+                    "action": "action",
+                    admin: '超级管理员',
+                    company: "北京大学人民医院"
                 }
             ],
             formList: [
                 { type: 'input', name: '真实姓名',  field: 'realname'},
-                { type: 'input', name: '管理账号',  field: 'name' },
+                { type: 'input', name: '导师账号',  field: 'name' },
                 { type: 'input', name: '账号密码',  field: 'pass' },
                 { type: 'select', name: '管理权限', field: 'jurisdiction' ,
                     selectList: [ 'jurisdiction' ], selectField: [ 'id','name' ]
@@ -71,14 +82,11 @@
             ],
             rules:{
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
-                name: [{ required: true, message: '请输入管理账号', trigger: 'blur' } ],
+                name: [{ required: true, message: '请输入导师账号', trigger: 'blur' } ],
                 pass: [{ required: true, message: '请输入账号密码', trigger: 'blur' } ],
                 jurisdiction: [{ required: true, message: '请选择管理权限'} ],
             }
         }
-    },
-    computed: {
-     ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
     },
     methods: {
         closeModal(){
@@ -88,7 +96,7 @@
             console.log(row,rowIndex,'see',this.show);
         },
         edit(row,rowIndex){
-            this.modalTitle = '修改管理'
+            this.modalTitle = '修改导师'
             this.show = true
             // console.log(row,rowIndex);
         },

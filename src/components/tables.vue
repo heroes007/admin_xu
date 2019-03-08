@@ -1,8 +1,8 @@
 <template>
 <div>
-    <Table border :columns="columns" :data="datas">
+    <Table :columns="columns" :data="datas" >
        <template slot-scope="{ column, row, index }" slot="operation">
-            <Button v-for="(t,i) in column.operation" :key="i" type="primary" size="small" style="margin-right: 5px" @click="show(row,index,i)">{{t}}</Button>
+            <Button type="text" v-for="(t,i) in column.operation" :key="i" size="small" style="margin-right: 5px" @click="show(row,index,i)">{{t}}</Button>
         </template>
     </Table>
 </div>
@@ -62,6 +62,10 @@
       handleColumns(c){
         if(this.isSerial) c.unshift({ title: '序号', key: 'serial_number' })
         if(this.isSelection) c.unshift( { type: 'selection', width: 60, align: 'center' })
+        c.map((t) => {
+          if(!t.hasOwnProperty('align')) t.align = 'center'
+          t.tooltip = true
+        })
         this.columns = c
       }
     },
@@ -75,4 +79,6 @@
     /deep/ .ivu-table th {
         height: 50px;
     }
+    /deep/ .ivu-btn{ color: #4098FF; }
+    /deep/ .ivu-btn-text:focus{ box-shadow: none }
 </style>

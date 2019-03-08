@@ -8,11 +8,11 @@
                 <img :src='userHeader'>
             </div>
         </div>
-        <Row><Col>
-            <Menu  @on-open-change="openChange" @on-select="selectItem" :active-name='activeIndex'>
-                <MenuItem  name="">项目管理</MenuItem>
-            </Menu>
-        </Col></Row>
+        <!--<Row><Col>-->
+            <!--<Menu  @on-open-change="openChange" @on-select="selectItem" :active-name='activeIndex'>-->
+                <!--<MenuItem  name="">项目管理</MenuItem>-->
+            <!--</Menu>-->
+        <!--</Col></Row>-->
     </div>
 </template>
 

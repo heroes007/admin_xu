@@ -1,9 +1,9 @@
 <template>
-    <manage-production></manage-production>
+    <manage-production />
 </template>
 
 <script>
-    import manageProduction from '../../components/ProjectList'
+    import manageProduction from '../production/ManageProduction'
   export default {
     name: "index",
     components:{manageProduction}

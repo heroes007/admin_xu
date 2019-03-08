@@ -40,9 +40,9 @@
       }
     },
     computed: {
-      isLoading() {
-        return this.$store.state.task.showLoading;
-      },
+      // isLoading() {
+      //   return this.$store.state.task.showLoading;
+      // },
       categoryList() {
         return this.$store.state.task.task_category_list;
       },
@@ -92,17 +92,17 @@
       },
     },
     watch: {
-      isLoading(val) {
-        if (val) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-          setTimeout(() => {
-            this.loadingInstance.close()
-          }, Config.base_timeout);
-        }else{
-          if(this.loadingInstance) this.loadingInstance.close()
-          this.dirty = false
-        }
-      },
+      // isLoading(val) {
+      //   if (val) {
+      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+      //     setTimeout(() => {
+      //       this.loadingInstance.close()
+      //     }, Config.base_timeout);
+      //   }else{
+      //     if(this.loadingInstance) this.loadingInstance.close()
+      //     this.dirty = false
+      //   }
+      // },
       categoryList(val) {
         if (val.length !== 0) this.checkInit();
       }

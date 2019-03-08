@@ -158,14 +158,14 @@
             }
         },
         watch: {
-            isLoading(val) {
-               if (val) {
-                   this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-                    setTimeout(() => {
-                        this.loadingInstance.close()
-                    }, Config.base_timeout);
-                }else if(this.loadingInstance) this.loadingInstance.close()
-            },
+            // isLoading(val) {
+            //    if (val) {
+            //        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+            //         setTimeout(() => {
+            //             this.loadingInstance.close()
+            //         }, Config.base_timeout);
+            //     }else if(this.loadingInstance) this.loadingInstance.close()
+            // },
             messageList(val) {
                 this.updateWrapper();
             },

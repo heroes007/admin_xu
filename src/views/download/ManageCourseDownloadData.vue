@@ -35,7 +35,7 @@
     },
     computed: {
       ...mapState({
-        isLoading: state => state.download_data.isLoading,
+        // isLoading: state => state.download_data.isLoading,
         dataList: state => state.download_data.course_download_data_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
         projectId: state => state.project.select_project_id
@@ -109,16 +109,16 @@
       }
     },
     watch: {
-      isLoading(val) {
-        if (val) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true});
-          setTimeout(() => {
-            this.loadingInstance.close();
-          }, Config.base_timeout);
-        } else {
-          if (this.loadingInstance) this.loadingInstance.close();
-        }
-      }
+      // isLoading(val) {
+      //   if (val) {
+      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true});
+      //     setTimeout(() => {
+      //       this.loadingInstance.close();
+      //     }, Config.base_timeout);
+      //   } else {
+      //     if (this.loadingInstance) this.loadingInstance.close();
+      //   }
+      // }
     },
     methods: {
       ...mapActions([ 'get_online_curriculum_list', 'get_curriculum_donwload_data_list', 'delete_download_data' ]),
