@@ -1,6 +1,7 @@
 <template>
     <div class='manage-notification'>
-        <header-component :type="0" :showAdd="activeName == tabName ? true : false" addText="添加通知" title="通知管理" @addClick="createNotificationHandler()"/>
+        <!-- <header-component :type="0" :showAdd="activeName == tabName ? true : false" addText="添加通知" title="通知管理" @addClick="createNotificationHandler()"/> -->
+        <screen :types="6" title="通知管理" btnName="添加通知" @handleClick="createNotificationHandler"/>
         <Tabs v-model="activeName" @on-click="handleClick" value='notification'>
             <TabPane class='notification-content' label="通知" name="notification">
                 <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter' @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
@@ -47,9 +48,10 @@
     import { send_by_project_id } from '../../api/modules/tools_sys_msg'
     import defaultHeader from '../../assets/img/side-menu/default-header.jpg'
     // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
+    import screen from '../../components/ScreenFrame'
     export default {
         mixins: [Dialog],
-        components: { 'header-component': Header, 'data-list': BaseList },
+        components: { 'header-component': Header, 'data-list': BaseList,screen },
         data() {
             return {
                 messageContent: '',

@@ -1,7 +1,7 @@
 <template>
     <div class='manage-production-view'>
-        <header-component title='行业资讯' :type='0' :showAdd='true' addText='创建文章'
-                          @addClick='addNewsHandler'></header-component>
+        <!-- <header-component title='行业资讯' :type='0' :showAdd='true' addText='创建文章' @addClick='addNewsHandler'></header-component> -->
+        <screen :types="6" title="行业资讯" btnName="创建文章" @handleClick="addNewsHandler"/>
         <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
                 <FormItem label="文章状态" :label-width="80">
@@ -36,6 +36,7 @@
   import {Config} from '../../config/base'
   import {mapState, mapActions, mapGetters} from 'vuex'
   import {doDateFormat, doTimeFormat, reunitPrice} from '../../components/Util'
+  import screen from '../../components/ScreenFrame'
 
   export default {
     mixins: [Dialog, MPop],
@@ -161,7 +162,8 @@
       'header-component': Header,
       'subject-filter': SubjectFilter,
       'data-list': BaseList,
-      'back-to-top': BackToTop
+      'back-to-top': BackToTop,
+      screen
     }
   }
 
