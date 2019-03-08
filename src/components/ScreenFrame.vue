@@ -39,7 +39,7 @@
       }
     },
     props:{
-      //type=1：搜索框+数量+按钮； type=2：下拉框+搜索框+数量+按钮； type=3：下拉框+搜索框+数量*2+按钮； type=4：下拉框*2+搜索框+数量+按钮； type=5：下拉框*2+搜索框+付费学员+数量*2
+      //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮； types=5：下拉框*2+搜索框+付费学员+数量*2
       types: {
         type: Number,
         required: true,
@@ -98,6 +98,7 @@
         background: #F0F0F7;
         display: flex;
         align-items: center;
+        position: relative;
     }
     /deep/ .ivu-select-selection{
         border-radius: 100px;

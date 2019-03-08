@@ -1,6 +1,7 @@
 <template>
     <div class='manage-offline-course'>
-        <header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>
+        <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
+        <screen :types="1" sizeTitle1="线上课总数" :sizeNum1="courseNums" btnName="添加学期" @inputChange="inputChange" @handleClick="handleClick"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
                    @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
@@ -12,6 +13,7 @@
   import Header from '../../components/ProjectHeader'
   import BaseList from '../../components/BaseList'
   import SaveOrder from '../../components/SaveOrder'
+  import screen from '../../components/ScreenFrame'
   import {doTimeFormat, doDateFormat, doOfflineCurriculumTypeFormat} from '../../components/Util'
   import { Dialog } from '../dialogs';
   import * as types from '../dialogs/types';
@@ -19,7 +21,7 @@
   import { Config } from '../../config/base'
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder },
+    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen },
     data() {
       return {
         gradeList: [{
@@ -33,7 +35,8 @@
         dirty: false,
         loadingInstance: null,
         isdelete: false,
-        deleteData: null
+        deleteData: null,
+        courseNums: 12
       }
     },
     computed: {
@@ -178,6 +181,12 @@
     },
     methods: {
       ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail', 'get_grade_list', 'get_city_list' ]),
+      inputChange(val){
+        console.log(val)
+      },
+      handleClick(val){
+        console.log(val)
+      },
       sendOfflineCourseHandler(index, row) {
         this.handleSelModal(types.SEND_OFFLINE_COURSE, {row: row});
       },

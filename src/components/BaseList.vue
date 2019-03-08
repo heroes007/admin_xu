@@ -9,7 +9,7 @@
             </div>
         </Row>
         <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName"
-               :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+               :highlight-row='canSelect' :show-header='showHeader'
                :columns="headerData" :data="tableData" :height="tableHeight" @on-expand="rowExpandHandler"
                @on-row-click='rowClickHandler'>
             <template slot-scope="{ column, row, index }" slot="badge">

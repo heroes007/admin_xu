@@ -1,7 +1,7 @@
 <template>
     <div class='manage-online-course'>
-      <!-- <header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/> -->
-      <screen :types="1" size-title1="线上课总数" :size-num1="12" btn-name="添加线上课" @handleClick="addCourseHandler" @reRenderList="reRenderListHandler"/>
+       <!--<header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/> -->
+        <screen :types="1" sizeTitle1="线上课总数" :sizeNum1="courseNums" btnName="添加课程" @inputChange="inputChange" @handleClick="handleClick"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler'
                    @moveDown='moveDownHandler'
                    @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList'
@@ -27,7 +27,8 @@
     data() {
       return {
         dirty: false,
-        loadingInstance: null
+        loadingInstance: null,
+        courseNums: 12
       }
     },
     computed: {
@@ -36,7 +37,7 @@
           sort: true,
           label: '序号',
           width: 90
-        }, 
+        },
         {
           prop: 'title',
           label: '课程名称',
@@ -46,12 +47,12 @@
           prop: 'teacher_name',
           label: '讲师',
           width: 100
-        }, 
+        },
          {
           prop: 'subject_id',
           label: '科室',
           width: 80
-        }, 
+        },
         {
           prop: 'grade_id',
           label: '年级',
@@ -75,7 +76,7 @@
             text: '编辑课程',
             param: 'editCourse',
             // hoverShow: true
-          }, 
+          },
           // {
           //   text: 'md-arrow-dropup',
           //   param: 'moveUp',
@@ -86,7 +87,7 @@
           //   param: 'moveDown',
           //   // hoverShow: true,
           //   isIcon: true
-          // }, 
+          // },
           {
             text: '删除',
             param: 'deleteCourse',
@@ -168,6 +169,12 @@
       // }
     },
     methods: {
+      inputChange(val){
+        console.log(val)
+      },
+      handleClick(val){
+        this.handleSelModal(ADD_COURSE);
+      },
       editChapterHandler(index) {
         this.$router.push({
           name: 'online-course-chapter',
@@ -278,7 +285,7 @@
       'header-component': Header,
       'data-list': BaseList,
       'save-order': SaveOrder,
-      screen
+       screen
     }
   }
 

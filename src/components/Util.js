@@ -116,7 +116,7 @@ export const MenuList = [
   },
   {
     name: 'product-manage',
-    title: '产品管理',
+    title: '培训管理',
     icon:'01.organ_gray'
   },
   {
