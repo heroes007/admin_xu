@@ -12,7 +12,7 @@
                         <div @click="toggleListShow(index)">
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                                 <!--<div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>-->
-                                <div><span>第{{index + 1}}章</span> 
+                                <div><span>第{{index + 1}}章</span>
                                 <Input  v-model="item.group_name" @on-change="editorNote(item)" @on-focus="showDataState(index)" style="width: 300px" />
                                 </div>
                                 <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
@@ -284,7 +284,7 @@
       },
       backClickHandler() {
         if (this.dirty) this.resetOrder();
-        this.$router.replace({name: 'online-course'});
+        this.$router.replace({name: 'open-product'});
       },
       initChapter() {
         this.newChapterData.showAddChapter = false;

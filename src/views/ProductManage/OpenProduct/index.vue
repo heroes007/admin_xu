@@ -1,8 +1,8 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col class='menu-bar'span="4">
-                <sideMenu />
+            <Col class='menu-bar'>
+                <sideMenu/>
             </Col>
             <Col class='sub-view'>
                 <Tabs value="online">
@@ -34,37 +34,42 @@
 
   export default {
     name: "OpenProduct",
-    components:{sideMenu, online, offline, task, course}
+    components: {sideMenu, online, offline, task, course}
   }
 </script>
 
 <style scoped lang="scss">
-    body{
-        background-color:#333333;
-    }
-    .dashboard-view {
-        box-sizing:border-box;
-        width:100%;
-        height: 100%;
-        background-color:#ffffff;
-    .col-container {
-        height: 100%;
-        flex-wrap: nowrap !important;
-    .menu-bar {
-        height: 100%;
-        max-width:260px;
-        min-width:260px;
-        min-height:800px;
+    body {
         background-color: #333333;
-        box-shadow: 2px 0 10px 0 rgba(51,51,51,0.06);
     }
-    .sub-view {
+
+    .dashboard-view {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
         background-color: #ffffff;
-        position: relative;
-        min-height: 100vh;
-        width: calc(100% - 200px);
-        padding-bottom: 50px;
-    }
-    }
+
+        .col-container {
+            height: 100%;
+            flex-wrap: nowrap !important;
+
+            .menu-bar {
+                height: 100%;
+                max-width: 260px;
+                min-width: 260px;
+                min-height: 800px;
+                background-color: #333333;
+                box-shadow: 2px 0 10px 0 rgba(51, 51, 51, 0.06);
+                overflow-y: auto;
+            }
+
+            .sub-view {
+                background-color: #ffffff;
+                position: relative;
+                min-height: 100vh;
+                width: calc(100% - 260px);
+                padding-bottom: 50px;
+            }
+        }
     }
 </style>
