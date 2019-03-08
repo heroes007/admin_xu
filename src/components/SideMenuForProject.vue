@@ -1,18 +1,41 @@
 <template>
     <div class='side-menu-for-project'>
-        <div class='logo elRow' type='flex' justify='center' align='middle'>
-            <img src='../assets/img/logo-white.png'>
-        </div>
-        <div class="elRow" type='flex' justify='center' align='middle'>
+        <Row class='logo' type='flex' justify='center' align='middle'>
+            <img class="logo-img" src='../assets/img/logo-white1.jpg'>
+            <div class="logo-title">九划医疗</div>
+        </Row>
+        <div class="elRow">
             <div class='head-img'>
                 <img :src='userHeader'>
             </div>
+            <div class="head-title">浙江医院全科医生临床能力提升计划</div>
+            <div class="head-list">
+                <div>
+                    <span class="w80">实际售价:</span><span>实际售价</span>
+                </div>
+                <div>
+                    <span class="w80"><span>原</span><span>价:</span></span><span>实际售价</span>
+                </div>
+                <div>
+                    <span class="w80">阅读人数:</span><span>实际售价</span>
+                </div>
+                <div>
+                    <span class="w80">购买人数:</span><span>实际售价</span>
+                </div>
+                <div>
+                    <span class="w80">结业人数:</span><span>实际售价</span>
+                </div>
+                <div style="margin-top: 30px;">
+                    <span class="w80">创建人名:</span><span>实际售价</span>
+                </div>
+                <div>
+                    <span class="w80">创建时间:</span><span>实际售价</span>
+                </div>
+            </div>
+            <Button type="default" ghost style="margin-top: 80px;">编辑</Button>
+            <Button type="default" ghost style="margin-top: 20px;">统计</Button>
+            <Button type="default" ghost style="margin-top: 130px;">删除</Button>
         </div>
-        <!--<Row><Col>-->
-            <!--<Menu  @on-open-change="openChange" @on-select="selectItem" :active-name='activeIndex'>-->
-                <!--<MenuItem  name="">项目管理</MenuItem>-->
-            <!--</Menu>-->
-        <!--</Col></Row>-->
     </div>
 </template>
 
@@ -92,12 +115,11 @@
             }
         }
         .head-img {
-            width: 100px;
             height: 100px;
             margin-bottom: 18px;
             img {
-                width: 100%;
-                border-radius: 50%;
+                width: 190px;
+                height: 100px;
             }
         }
         .setting {
@@ -150,5 +172,55 @@
             }
             margin-bottom:50px;
         }
+    }
+    .logo {
+        margin-bottom: 40px;
+
+        .logo-img {
+            width: 34px !important;
+        }
+
+        .logo-title {
+            color: #fff;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+    }
+    .elRow{
+        display: flex;
+        flex-direction: column;
+        padding: 35px;
+
+        .head-title{
+            font-family: PingFangSC-Medium;
+            font-size: 16px;
+            color: #FFFFFF;
+            letter-spacing: 0;
+            text-align: justify;
+            line-height: 26px;
+        }
+
+        .head-list{
+            font-family: PingFangSC-Regular;
+            font-size: 14px;
+            color: #FFFFFF;
+            letter-spacing: 0;
+            margin-top: 30px;
+
+            div{
+                margin-bottom: 10px;
+                display: flex;
+            }
+        }
+    }
+    .w80{
+        display: flex;
+        width: 60px;
+        justify-content: space-between;
+        margin-right: 6px;
+    }
+    /deep/ .ivu-btn{
+        width: 190px;
+        height: 40px;
     }
 </style>

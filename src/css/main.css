@@ -110,3 +110,4 @@ body { background-color: #fff; height: 100%; }
 .ivu-table th{
   background: #fff !important;
 }
+.ivu-tabs-bar{border: none !important;}

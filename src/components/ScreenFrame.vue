@@ -1,0 +1,186 @@
+<template>
+    <div class="screen" :style="types == 4 ? backgroundColor:''">
+        <Select v-if="types !== 1 && types" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
+            <Option v-for="item in select1" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
+        <Select v-if="types == 4 || types == 5" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
+            <Option v-for="item in select2" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
+        <Input v-if="types" v-model="valueInput" :placeholder="placehodleInput" @on-change="inputChange" class="input">
+            <Icon type="md-search" slot="prefix" />
+        </Input>
+        <div v-if="types == 5" class="money-student" @click="moneyStudent">
+            <Icon :color="iconColor" size="20" type="md-radio-button-on" />
+            <span class="money-student-content">付费学员</span>
+        </div>
+        <div v-if="types"  class="all-size">
+            <span class="all-content">{{sizeTitle1}}</span>
+            <span class="all-num">{{sizeNum1}}</span>
+        </div>
+        <div v-if="types ==3 || types ==5" class="money-size">
+            <span class="all-content">{{sizeTitle2}}</span>
+            <span class="all-num">{{sizeNum2}}</span>
+        </div>
+        <Button v-if="types && types !== 5" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
+    </div>
+</template>
+
+<script>
+  export default {
+    name: "ScreenFrame",
+    data() {
+      return {
+        valueSelect1: '',
+        valueSelect2: '',
+        valueInput: '',
+        placehodleInput: '搜索用户名/姓名/手机号',
+        iconColor: '#9397AD',
+        backgroundColor: 'background: #fff'
+      }
+    },
+    props:{
+      //type=1：搜索框+数量+按钮； type=2：下拉框+搜索框+数量+按钮； type=3：下拉框+搜索框+数量*2+按钮； type=4：下拉框*2+搜索框+数量+按钮； type=5：下拉框*2+搜索框+付费学员+数量*2
+      types: {
+        type: Number,
+        required: true,
+      },
+      select1: {
+        type: Array
+      },
+      select2: {
+        type: Array
+      },
+      sizeTitle1: {
+        type: String
+      },
+      sizeNum1: {
+        type: Number
+      },
+      sizeTitle2: {
+        type: String
+      },
+      sizeNum2: {
+        type: Number
+      },
+      btnName:{
+        type: String
+      }
+    },
+    methods:{
+      // 付费学员返回事件，click触发，选中返回true
+      moneyStudent(){
+        this.iconColor = this.iconColor == '#9397AD' ? "#4098ff" : "#9397AD"
+        this.$emit('moneyStudent', this.iconColor == '#9397AD' ? false : true)
+      },
+      //一个下拉框，change触发，返回value
+      selectChange1(val){
+        this.$emit('selectChange1', val)
+      },
+      //第二个下拉框，change触发，返回value
+      selectChange2(val){
+        this.$emit('selectChange1', val)
+      },
+      //输入事件，change触发，返回model
+      inputChange(){
+        this.$emit('inputChange', this.valueInput)
+      },
+      //按钮，click触发事件
+      handleClick(){
+        this.$emit('handleClick')
+      }
+    }
+  }
+</script>
+
+<style scoped lang="scss">
+    .screen{
+        height: 66px;
+        background: #F0F0F7;
+        display: flex;
+        align-items: center;
+    }
+    /deep/ .ivu-select-selection{
+        border-radius: 100px;
+        height: 36px;
+        padding-left: 15px;
+    }
+    /deep/ .ivu-select-placeholder{
+        font-size: 16px !important;
+    }
+    .input{
+        width: 300px;
+        height: 36px;
+        margin-left: 10px;
+    }
+    /deep/ .ivu-input{
+        border-radius: 100px !important;
+        padding-left: 40px;
+        font-size: 16px !important;
+    }
+    /deep/ .ivu-input-prefix{
+        margin-left: 10px;
+    }
+    /deep/ .ivu-icon-md-search{
+        font-size: 20px;
+    }
+    .money-student{
+        width: 130px;
+        height: 36px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        border-radius: 100px;
+        margin-left: 10px;
+        cursor: pointer;
+        &:hover{
+            .money-student-content{
+                color: #4098ff;
+            }
+        }
+        /deep/ .ivu-icon-md-radio-button-on{
+            margin-left: 16px;
+        }
+        .money-student-content{
+            margin-left: 10px;
+            font-family: PingFangSC-Regular;
+            font-size: 16px;
+            color: #474C63;
+            letter-spacing: 0;
+        }
+    }
+    .all-size{
+        margin-left: 20px;
+    }
+    .money-size{
+        border-left: 1px solid #CDCED3;
+        margin-left: 12px;
+        padding-left: 12px;
+    }
+    .all-content{
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #474C63;
+        letter-spacing: 0;
+    }
+
+    .all-num{
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #4098FF;
+        letter-spacing: 0;
+        margin-left: 10px;
+    }
+    .all-list{
+        margin-right: 12px;
+    }
+    .btn{
+        width: 110px;
+        height: 36px;
+        position: absolute;
+        right: 34px;
+    }
+    .select-list{
+        width:200px;
+        margin-left: 21px;
+    }
+</style>

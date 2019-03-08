@@ -1,6 +1,8 @@
 <template>
    <div>
-       <h1>管理列表</h1>
+       <!-- <h1>管理列表</h1> -->
+          <screen :types="1" size-title1="管理总数" :size-num1="23" btn-name="添加管理" :select1="selectList" :select2="selectList"
+                    @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
          <UserModal :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
    </div>
@@ -9,14 +11,30 @@
 <script>
   import Tables from '../../../components/tables.vue'
   import UserModal from '../../../components/UserModal.vue'
+  import screen from '../../../components/ScreenFrame'
+
   import { mapState } from 'vuex'
   export default {
     name: "ManagementList",
-    components: { Tables, UserModal },
+    components: { Tables, UserModal, screen },
     data (){
         return{
             show: false,
             modalTitle: '',
+            selectList:[
+            {
+                value:'all',
+                label:'全部机构'
+            },
+            {
+                value:'zj',
+                label:'浙江医院'
+            },
+            {
+                value:'bj',
+                label:'北京医院'
+            },
+            ],
             columns1: [
             {
                 title: '用户名',
@@ -95,6 +113,18 @@
         deletes(row,rowIndex){
             // console.log(row,rowIndex);
         },
+        selectChange1(val){
+            console.log(val)
+        },
+        selectChange2(val){
+            console.log(val)
+        },
+        inputChange(val){
+            console.log(val)
+        },
+        handleClick(){
+            console.log('open modal')
+        }
     },
     mounted() {}
   }

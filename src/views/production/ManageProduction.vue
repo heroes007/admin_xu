@@ -1,216 +1,36 @@
 <template>
     <div class='manage-production-view'>
-        <!-- <header-component title='产品信息' :type='1' :showAdd='true' addText='新建产品' @addClick='addProductionHandler' @addCert="addCertificate"></header-component> -->
-        <Row>
-            <Form :inline="true" :model="formInline" class="find-by-term">
-                <Select v-model="model1" style="width:200px">
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-                <Select v-model="model2" style="width:200px">
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-                <FormItem>
-                    <Input v-model="formInline.searchData" placeholder="搜索产品名称"></Input>
-                </FormItem>
-                <FormItem>
-                    产品总数：9 
-                </FormItem>
-                <FormItem>
-                    <Button  type="primary">添加产品</Button>
-                </FormItem>
-               <!-- <FormItem><Button type="primary" @click="search">查询</Button></FormItem>
-                <FormItem><Button type="primary" @click="clearSearch">清除</Button></FormItem> -->
-            </Form>
-        </Row>
-       <!-- <data-list class='data-list light-header' @editProtocol='editProtocol' @edit='editHandler'
-                   @detail='showCourseDetailHandler' @delete='deleteHandler'
-                   :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
-                   :column-formatter-data='listColumnFormatterData'
-                   :comboIsSelect='true' :columnComboData='columnComboData' :comboModelList='comboDataList'>
-        </data-list> -->
-        
+        <screen :types="4" size-title1="管理总数" :size-num1="23" btn-name="添加管理" :select1="selectList" :select2="selectList"
+                @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
         <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
-             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
+             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;" v-for="(item, index) in cardList" :key="index">
                   <Row>
                     <Col span="2" class="al-left cad-top-left" >
-                     ID:
+                     <p>ID:</p>
                     </Col>
                     <Col span="9" class="al-left cad-top-left" >
                       <p>2109981</p>
                     </Col>
                     <Col span="13" class="al-right" >
-                        <div class="cad-top-right">
-                        上架
-                        </div>
+                        <div class="cad-top-right">上架</div>
                     </Col>
                   </Row>
                   <Row>
-                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
+                    <h2 class="product-title">浙江医院全科医生临床能力提升计划</h2>
                   </Row>
                   <Row>
-                     <Col span="4" class="al-left cad-btm-price"  >
-                       ¥1980
-                     </Col>
-                     <Col span="4" class="al-left cad-btn-relprice"  >
-                       ¥2298
-                     </Col>
-                     <Col span="16" class="al-right cad-btn-people" >
-                       171人报名
-                     </Col>
-                  </Row>
-             </Card>
-             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
-                  <Row>
-                    <Col span="2" class="al-left cad-top-left" >
-                     ID:
-                    </Col>
-                    <Col span="9" class="al-left cad-top-left" >
-                      <p>2109981</p>
-                    </Col>
-                    <Col span="13" class="al-right" >
-                        <div class="cad-top-right">
-                        上架
-                        </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
-                  </Row>
-                  <Row>
-                     <Col span="4" class="al-left cad-btm-price"  >
-                       ¥1980
-                     </Col>
-                     <Col span="4" class="al-left cad-btn-relprice"  >
-                       ¥2298
-                     </Col>
-                     <Col span="16" class="al-right cad-btn-people" >
-                       171人报名
-                     </Col>
-                  </Row>
-             </Card>
-              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
-                  <Row>
-                    <Col span="2" class="al-left cad-top-left" >
-                     ID:
-                    </Col>
-                    <Col span="9" class="al-left cad-top-left" >
-                      <p>2109981</p>
-                    </Col>
-                    <Col span="13" class="al-right" >
-                        <div class="cad-top-right">
-                        上架
-                        </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
-                  </Row>
-                  <Row>
-                     <Col span="4" class="al-left cad-btm-price"  >
-                       ¥1980
-                     </Col>
-                     <Col span="4" class="al-left cad-btn-relprice"  >
-                       ¥2298
-                     </Col>
-                     <Col span="16" class="al-right cad-btn-people" >
-                       171人报名
-                     </Col>
-                  </Row>
-             </Card>
-            <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
-                  <Row>
-                    <Col span="2" class="al-left cad-top-left" >
-                     ID:
-                    </Col>
-                    <Col span="9" class="al-left cad-top-left" >
-                      <p>2109981</p>
-                    </Col>
-                    <Col span="13" class="al-right" >
-                        <div class="cad-top-right">
-                        上架
-                        </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
-                  </Row>
-                  <Row>
-                     <Col span="4" class="al-left cad-btm-price"  >
-                       ¥1980
-                     </Col>
-                     <Col span="4" class="al-left cad-btn-relprice"  >
-                       ¥2298
-                     </Col>
-                     <Col span="16" class="al-right cad-btn-people" >
-                       171人报名
-                     </Col>
-                  </Row>
-             </Card>
-              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
-                  <Row>
-                    <Col span="2" class="al-left cad-top-left" >
-                     ID:
-                    </Col>
-                    <Col span="9" class="al-left cad-top-left" >
-                      <p>2109981</p>
-                    </Col>
-                    <Col span="13" class="al-right" >
-                        <div class="cad-top-right">
-                        上架
-                        </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
-                  </Row>
-                  <Row>
-                     <Col span="4" class="al-left cad-btm-price"  >
-                       ¥1980
-                     </Col>
-                     <Col span="4" class="al-left cad-btn-relprice"  >
-                       ¥2298
-                     </Col>
-                     <Col span="16" class="al-right cad-btn-people" >
-                       171人报名
-                     </Col>
-                  </Row>
-             </Card>
-              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;">
-                  <Row>
-                    <Col span="2" class="al-left cad-top-left" >
-                     ID:
-                    </Col>
-                    <Col span="9" class="al-left cad-top-left" >
-                      <p>2109981</p>
-                    </Col>
-                    <Col span="13" class="al-right" >
-                        <div class="cad-top-right">
-                        上架
-                        </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <h2 style="font-family: PingFangSC-Medium;font-size: 18px;color: #474C63;letter-spacing: 0;text-align: left;margin:15px 0">浙江医院全科医生临床能力提升计划</h2>
-                  </Row>
-                  <Row>
-                     <Col span="4" class="al-left cad-btm-price"  >
-                       ¥1980
-                     </Col>
-                     <Col span="4" class="al-left cad-btn-relprice"  >
-                       ¥2298
-                     </Col>
-                     <Col span="16" class="al-right cad-btn-people" >
-                       171人报名
-                     </Col>
+                     <Col span="4" class="al-left cad-btm-price">¥1980</Col>
+                     <Col span="4" class="al-left cad-btn-relprice">¥2298</Col>
+                     <Col span="16" class="al-right cad-btn-people">171人报名</Col>
                   </Row>
              </Card>
         </Row>
-       
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total"/>
+          <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total"/>
         </Row>
     </div>
 </template>
+
 <script>
   import Header from "../../components/Header";
   import BaseList from "../../components/BaseList";
@@ -225,10 +45,12 @@
   import {mapState, mapActions, mapGetters} from "vuex";
   import {doDateFormat, doTimeFormat, reunitPrice} from "../../components/Util";
   import tableHeadData from './consts'
+  import screen from '../../components/ScreenFrame'
+
 
   export default {
     mixins: [Dialog, MPop],
-    components: {"header-component": Header, "data-list": BaseList},
+    components: {"header-component": Header, "data-list": BaseList, screen},
     data() {
       return {
         model1: '',
@@ -238,71 +60,37 @@
         formInline: {
           searchData: ""
         },
-        cityList:""
+        cityList:"",
+        cardList: [1,2,3,4,5],
+        selectList:[
+          {
+            value:'all',
+            label:'全部机构'
+          },
+          {
+            value:'zj',
+            label:'浙江医院'
+          },
+          {
+            value:'bj',
+            label:'北京医院'
+          },
+        ]
       };
     },
     methods: {
       ...mapActions(["get_production_list", "change_production_vailid", "delete_production", "get_production_group_list"]),
-      handleJump(){
-        let routeData = this.$router.resolve({
-          name: "open-product",
-        });
-        window.open(routeData.href, "_blank")
+      selectChange1(val){
+        console.log(val)
       },
-      addProductionHandler() {
-        this.handleSelModal(ADD_PRODUCTION);
+      selectChange2(val){
+        console.log(val)
       },
-      addCertificate(){
-
+      inputChange(val){
+        console.log(val)
       },
-      editHandler(index, row) {
-        this.handleSelModal(ADD_PRODUCTION, row);
-      },
-      editProtocol(index, row) {
-        this.handleSelModal(EDIT_PROTOCOL, row.id);
-      },
-      showCourseDetailHandler(index, row) {
-        this.$router.push({
-          name: "manage-production-curriculum",
-          params: {id: row.id}
-        });
-      },
-      deleteHandler(index, row) {
-        let vm = this;
-        this.$Modal.confirm({
-          title: '提示',
-          content: '是否确认删除该产品?',
-          onOk: () => {
-            this.delete_production({
-              id: row.id,
-              _fn: function () {
-                vm.showPop('删除成功！');
-              }
-            });
-          }
-        });
-      },
-      clearSearch() {
-        this.formInline.searchData = "";
-        this.curPage = 1;
-        var data = this.getData();
-      },
-      search() {
-        this.curPage = 1;
-        var data = this.getData();
-      },
-      handleCurrentChange(val) {
-        this.curPage = val;
-        var data = this.getData();
-      },
-      getData() {
-        var data = {
-          project_id: this.projectId,
-          page_index: this.curPage - 1,
-          page_size: 20,
-          title: this.formInline.searchData
-        };
-        this.get_production_list(data);
+      handleClick(){
+        console.log('open modal')
       },
       handleJump(){
         let routeData = this.$router.resolve({
@@ -312,24 +100,87 @@
         });
         window.open(routeData.href, "_blank")
       },
+      // addProductionHandler() {
+      //   this.handleSelModal(ADD_PRODUCTION);
+      // },
+      // addCertificate(){
+      //
+      // },
+      // editHandler(index, row) {
+      //   this.handleSelModal(ADD_PRODUCTION, row);
+      // },
+      // editProtocol(index, row) {
+      //   this.handleSelModal(EDIT_PROTOCOL, row.id);
+      // },
+      // showCourseDetailHandler(index, row) {
+      //   this.$router.push({
+      //     name: "manage-production-curriculum",
+      //     params: {id: row.id}
+      //   });
+      // },
+      // deleteHandler(index, row) {
+      //   let vm = this;
+      //   this.$Modal.confirm({
+      //     title: '提示',
+      //     content: '是否确认删除该产品?',
+      //     onOk: () => {
+      //       this.delete_production({
+      //         id: row.id,
+      //         _fn: function () {
+      //           vm.showPop('删除成功！');
+      //         }
+      //       });
+      //     }
+      //   });
+      // },
+      // clearSearch() {
+      //   this.formInline.searchData = "";
+      //   this.curPage = 1;
+      //   var data = this.getData();
+      // },
+      // search() {
+      //   this.curPage = 1;
+      //   var data = this.getData();
+      // },
+      handleCurrentChange(val) {
+        this.curPage = val;
+        var data = this.getData();
+      },
+      // getData() {
+      //   var data = {
+      //     project_id: this.projectId,
+      //     page_index: this.curPage - 1,
+      //     page_size: 20,
+      //     title: this.formInline.searchData
+      //   };
+      //   this.get_production_list(data);
+      // },
+      // handleJump(){
+      //   let routeData = this.$router.resolve({
+      //     query: '',
+      //     params: '',
+      //     name: "open-product",
+      //   });
+      //   window.open(routeData.href, "_blank")
+      // },
     },
     mounted() {
-      this.getData();
-      this.get_production_group_list({
-        page_index: 0,
-        page_size: 20,
-        state: [0, 1, 2, 3]
-      });
+      // this.getData();
+      // this.get_production_group_list({
+      //   page_index: 0,
+      //   page_size: 20,
+      //   state: [0, 1, 2, 3]
+      // });
     },
     watch: {
-      isLoading(val) {
-        if (val) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-          setTimeout(() => {
-            this.loadingInstance.close()
-          }, Config.base_timeout);
-        } else if (this.loadingInstance) this.loadingInstance.close()
-      }
+      // isLoading(val) {
+      //   if (val) {
+      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
+      //     setTimeout(() => {
+      //       this.loadingInstance.close()
+      //     }, Config.base_timeout);
+      //   } else if (this.loadingInstance) this.loadingInstance.close()
+      // }
     },
     computed: {
       ...mapState({
@@ -486,5 +337,13 @@
           color: #474C63;
           letter-spacing: 0;
         }
+    }
+    .product-title{
+        font-family: PingFangSC-Medium;
+        font-size: 18px;
+        color: #474C63;
+        letter-spacing: 0;
+        text-align: left;
+        margin:15px 0
     }
 </style>
