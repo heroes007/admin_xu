@@ -1,7 +1,7 @@
 <template>
     <div class='manage-offline-course'>
         <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
-        <screen :types="1" sizeTitle1="线上课总数" :sizeNum1="courseNums" btnName="添加学期" @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :types="1" sizeTitle1="线下课总数" :sizeNum1="courseNums" btnName="添加学期" @inputChange="inputChange" @handleClick="handleClick"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
                    @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
@@ -19,7 +19,6 @@
   import * as types from '../dialogs/types';
   import { mapActions, mapState } from 'vuex'
   import { Config } from '../../config/base'
-  import screen from '../../components/ScreenFrame'
   export default {
     mixins: [Dialog],
     components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen },
@@ -61,9 +60,9 @@
           width: 100
         },
         {
-          sort: true,
+          // sort: true,
           label: '参加人数',
-          width: 100
+          width: 200
         }, {
           prop: '',
           label: '开课日期',
@@ -78,7 +77,7 @@
         {
           prop: '',
           label: '报名截止日期',
-          width: 200,
+          width: 150,
           mixColumn: true,
           mixFunc: (function (data) {
             var open_date = doTimeFormat(data.start_time);

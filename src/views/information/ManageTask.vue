@@ -1,13 +1,14 @@
 <template>
     <div class='manage-task'>
-        <header-component title="任务包" :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" />
-        <div class="category-list">
+        <!-- <header-component title="任务包" :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" /> -->
+        <screen :types="2" sizeTitle1="作业总数" :sizeNum1="courseNums" btnName="添加作业" @inputChange="manageEdit" @handleClick="addTaskCategory"/>
+        <!-- <div class="category-list">
             <category-item v-for='(item, index) in categoryList' :key="index" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
                            :selected='getSelected(item.id, item.type)' @select='changeCategory(item)'/>
         </div>
         <div class="create-panel">
             <Button @click="addTask()">创建</Button>
-        </div>
+        </div> -->
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler'
                    class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter'
@@ -26,17 +27,19 @@
   import { mapActions } from 'vuex'
   import { Config } from '../../config/base'
   import { taskHeadData } from './consts'
+  import screen from '../../components/ScreenFrame'
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem },
+    components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem, screen },
     data() {
       return {
         dirty: false,
         loadingInstance: null,
-        selectCategory: -1,
-        selectedType: 0,
+        selectCategory: 12,
+        selectedType: 1,
         isInited: false,
-        showClose: false
+        showClose: false,
+        courseNums:12
       }
     },
     computed: {
@@ -201,6 +204,12 @@
 
 </script>
 <style scoped lang='scss'>
+/deep/.ivu-btn-text{
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #4098FF;
+  letter-spacing: 0;
+}
     .category-list { display: flex;flex-wrap: wrap }
     .task-category-item{ margin-bottom: 10px; }
     .manage-task {
@@ -227,4 +236,5 @@
             }
         }
     }
+    
 </style>

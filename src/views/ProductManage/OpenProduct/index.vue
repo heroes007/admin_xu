@@ -13,7 +13,9 @@
             <TabPane label="资料" name="course">
                 <course/>
             </TabPane>
-            <TabPane label="证书" name="user">证书</TabPane>
+            <TabPane label="证书" name="houner">
+                <houner/>
+            </TabPane>
         </Tabs>
     </div>
 </template>
@@ -24,10 +26,11 @@
   import offline from '../../information/ManageOfflineCourse'
   import task from '../../information/ManageTask'
   import course from '../../download/ManageCourseDownloadData'
+  import houner from '../../information/ManageHouner'
 
   export default {
     name: "OpenProduct",
-    components: {sideMenu, online, offline, task, course}
+    components: {sideMenu, online, offline, task, course,houner}
   }
 </script>
 
