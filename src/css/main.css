@@ -111,3 +111,6 @@ body { background-color: #fff; height: 100%; }
     border: none !important;
     margin-bottom: 0 !important;
 }
+.ivu-table th{
+  background: #fff !important;
+}

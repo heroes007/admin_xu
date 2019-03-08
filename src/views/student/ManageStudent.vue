@@ -1,6 +1,6 @@
 <template>
     <div class='manage-student-view'>
-        <header-component title='学员管理' @reRenderList="reRenderList" :showAdd='true' addText='创建学员' @addClick='addStudentHandler' />
+        <!-- <header-component title='学员管理' @reRenderList="reRenderList" :showAdd='true' addText='创建学员' @addClick='addStudentHandler' /> -->
         <Row>
             <Form :inline="true" :model="formInline" :label-width="40" class="find-by-term">
                 <FormItem label="类型">
