@@ -10,13 +10,11 @@
       :select1="selectList"
       :select2="selectList"
       @selectChange1="selectChange1"
-      @selectChange2="selectChange2"
       @inputChange="inputChange"
-      @handleClick="handleClick"
+      @handleClick="addOfflineSemesterHandler"
     />
     <Row class="card-houner" >
       <Card
-        @click.native="handleJump"
         class="card-houner-col"
         v-for="(item, index) in cardList1"
         :key="index"
@@ -44,19 +42,18 @@
                     <a>取消关联</a>
                   </Col>
                 <Col span="5">
-                    <a>编辑</a>
+                    <a @click="hadleChange()">编辑</a>
                 </Col>
                 <Col span="5">
                     <a>统计</a>
                 </Col>
                 <Col span="5">
-                  <a>发证</a>  
+                  <a @click="sendOfflineCourseHandler()">发证</a>  
                 </Col>
               </Row>
         </Col>
       </Card>
         <Card
-        @click.native="handleJump"
         class="card-houner-col"
         v-for="(item, index) in cardList2"
         :key="item"
@@ -84,7 +81,7 @@
                     <a>关联</a>
                   </Col>
                 <Col span="5">
-                    <a>编辑</a>
+                    <a @click="hadleChange()">编辑</a>
                 </Col>
               </Row>
         </Col>
@@ -110,6 +107,7 @@ import { mapState, mapActions, mapGetters } from "vuex";
 import { doDateFormat, doTimeFormat, reunitPrice } from "../../components/Util";
 import tableHeadData from "./consts";
 import screen from "../../components/ScreenFrame";
+import * as types from '../dialogs/types';
 
 export default {
   mixins: [Dialog, MPop],
@@ -164,6 +162,15 @@ export default {
     },
     handleClick() {
       console.log("open modal");
+    },
+    addOfflineSemesterHandler() {
+      this.handleSelModal(types.ADD_HOUNER, { type: 1 })
+    },
+    hadleChange() {
+      this.handleSelModal(types.ADD_HOUNER, { type: 2 })
+    },
+    sendOfflineCourseHandler(index, row) {
+        this.handleSelModal(types.SEND_HOUNER, {row: row});
     },
     handleJump() {
       let routeData = this.$router.resolve({

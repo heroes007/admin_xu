@@ -35,3 +35,5 @@ export const SELECT_PRODUCTION = 'select-production';
 export const ADD_NEWS = 'add-news';
 export const EDIT_PROTOCOL = 'edit-protocol';
 export const ADD_CERTIFICATE = 'add-certificate';
+export const ADD_HOUNER = 'add-houner';
+export const SEND_HOUNER = 'send-houner';
