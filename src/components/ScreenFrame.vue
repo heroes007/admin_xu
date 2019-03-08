@@ -1,19 +1,19 @@
 <template>
     <div class="screen" :style="types == 4 ? backgroundColor:''">
-        <Select v-if="types !== 1 && types" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
+        <Select v-if="types !== 1 && types && types !== 6 && types !== 7" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select1" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
         <Select v-if="types == 4 || types == 5" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select2" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-        <Input v-if="types" v-model="valueInput" :placeholder="placehodleInput" @on-change="inputChange" class="input">
+        <Input v-if="types && types !== 6 && types !== 7" v-model="valueInput" :placeholder="placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
         <div v-if="types == 5" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
             <span class="money-student-content">付费学员</span>
         </div>
-        <div v-if="types"  class="all-size">
+        <div v-if="types && types !== 6 && types !== 7"  class="all-size">
             <span class="all-content">{{sizeTitle1}}</span>
             <span class="all-num">{{sizeNum1}}</span>
         </div>
@@ -21,7 +21,14 @@
             <span class="all-content">{{sizeTitle2}}</span>
             <span class="all-num">{{sizeNum2}}</span>
         </div>
-        <Button v-if="types && types !== 5" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
+        <div v-if="types == 6 || types == 7" class="back" @click="handleBack">
+            <img class="back-img" src="../../static/icon/back.png" alt="">
+            <div class="back-title">返回</div>
+        </div>
+        <div v-if="types == 6 || types == 7" class="title">
+            <div>{{title}}</div>
+        </div>
+        <Button v-if="types && types !== 5 && types !== 7" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
     </div>
 </template>
 
@@ -39,7 +46,7 @@
       }
     },
     props:{
-      //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮； types=5：下拉框*2+搜索框+付费学员+数量*2
+      //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮； types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：视频列表； types=7：批阅作业列表
       types: {
         type: Number,
         required: true,
@@ -64,7 +71,14 @@
       },
       btnName:{
         type: String
+      },
+      title:{
+        type: String
       }
+    },
+    mounted() {
+      if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
+      if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
     },
     methods:{
       // 付费学员返回事件，click触发，选中返回true
@@ -87,6 +101,10 @@
       //按钮，click触发事件
       handleClick(){
         this.$emit('handleClick')
+      },
+      //返回按钮触发事件
+      handleBack(){
+        this.$emit('handleBack')
       }
     }
   }
@@ -183,5 +201,33 @@
     .select-list{
         width:200px;
         margin-left: 21px;
+    }
+    .back{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 40px;
+        cursor: pointer;
+
+        .back-img{
+            width: 23px;
+            height: 19px;
+        }
+        .back-title{
+            margin-left: 10px;
+            font-family: PingFangSC-Regular;
+            font-size: 16px;
+            color: #474C63;
+            letter-spacing: 0;
+        }
+    }
+    .title{
+        font-family: PingFangSC-Medium;
+        font-size: 18px;
+        color: #474C63;
+        letter-spacing: 0;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 </style>

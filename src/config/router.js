@@ -241,18 +241,18 @@ const routes = [
     ]
   },
   {
-    path: '',
+    path: '/product',
     name: 'main-product',
     component: MainProduct,
-    redirect: '/dashboard/open-product',
+    redirect: '/product/open-product',
     children: [
       {
-        path: '/dashboard/open-product',
+        path: 'open-product',
         name: 'open-product',
         component: OpenProduct,
       },
       {
-        path: '/dashboard/open-product/online-course-chapter',
+        path: 'open-product/online-course-chapter/:id',
         name: 'online-course-chapter',
         component: ManageOnlineCourseChapter
       },
