@@ -291,5 +291,10 @@
 
 </script>
 <style scoped lang='scss'>
-  /deep/ .ivu-btn-text{color: #4098FF }
+  /deep/.ivu-btn-text{
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #4098FF;
+  letter-spacing: 0;
+}
 </style>

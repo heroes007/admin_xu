@@ -1,6 +1,7 @@
 <template>
     <div class='manage-course-download-data'>
-        <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/>
+        <!-- <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/> -->
+        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="courseNums" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler"/>
         <data-list class='data-list light-header' @delete='deleteHandler' :isStripe='false' :table-data='dataList'
           :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'></data-list>
     </div>
@@ -14,9 +15,10 @@
   import { ADD_DOWNLOAD_DATA } from '../dialogs/types'
   import { doTimeFormat } from '../../components/Util'
   import { Config } from '../../config/base'
+  import screen from '../../components/ScreenFrame'
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList },
+    components: { 'header-component': Header, 'data-list': BaseList ,screen},
     data() {
       return {
         searchData: '',
@@ -30,7 +32,8 @@
           phone: '',
           use_time: null,
           state: 1
-        }
+        },
+        courseNums:12
       }
     },
     computed: {
@@ -73,15 +76,22 @@
       dataHeader() {
         return [
           {
+            sort:true,
+            label: '序号',
+            width:50
+          },
+          {
             prop: 'name',
-            label: '资料',
-            width: 200
-          }, {
-            prop: 'download_url',
-            label: '下载链接',
-            width: 700
-          }, {
-            label: '前置课',
+            label: '资料名称',
+            width: 500
+          }, 
+          // {
+          //   prop: 'download_url',
+          //   label: '下载链接',
+          //   width: 700
+          // }, 
+          {
+            label: '绑定课程',
             prop: 'pre_curriculum',
             useCombo: true,
             comboListIndex: 0,
@@ -92,18 +102,31 @@
           {
             label: '操作',
             minwidth: 300,
-            groupBtn: [{
-              isSwitch: true,
-              switchKey: 'is_valid',
-              onText: '启用',
-              offText: '停用',
-              disableText: '失效',
-              actionName: 'change_public_download_data_valid'
-            }, {
-              text: 'ios-trash-outline',
+            groupBtn: [
+            //   {
+            //   isSwitch: true,
+            //   switchKey: 'is_valid',
+            //   onText: '启用',
+            //   offText: '停用',
+            //   disableText: '失效',
+            //   actionName: 'change_public_download_data_valid'
+            // }, 
+            {
+              text: '下载',
               param: 'delete',
-              isIcon: true
-            }]
+              // isIcon: true
+            },
+            {
+              text: '编辑',
+              param: 'delete',
+              // isIcon: true
+            },
+            {
+              text: '删除',
+              param: 'delete',
+              // isIcon: true
+            }
+            ]
           }
         ]
       }
@@ -125,6 +148,9 @@
       addClickHandler() {
         this.handleSelModal(ADD_DOWNLOAD_DATA, 1);
       },
+      manageEdit(){
+        console.log("课程资料搜索");
+      },
       deleteHandler(index, row) {
         this.$Modal.confirm({
           title: '提示',
@@ -141,7 +167,8 @@
     }
   }
 </script>
-<style lang='scss'>
+<style scope lang='scss'>
+
     .manage-course-download-data {
         .data-list {
             .base-list-row {
@@ -152,4 +179,5 @@
             }
         }
     }
+  
 </style>

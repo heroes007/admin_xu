@@ -54,7 +54,7 @@
         overflow: hidden;
     }
     .sub-header {
-        margin: 20px;
+        // margin: 20px;
     }
 
 </style>

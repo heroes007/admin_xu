@@ -1,6 +1,6 @@
 <template>
     <div class='manage-production-view'>
-        <screen :types="4" size-title1="管理总数" :size-num1="23" btn-name="添加管理" :select1="selectList" :select2="selectList"
+        <screen :types="4" size-title1="管理总数" :size-num1="courseNums" btn-name="添加管理" :select1="selectList" :select2="selectList"
                 @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
         <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;" v-for="(item, index) in cardList" :key="index">
@@ -75,7 +75,8 @@
             value:'bj',
             label:'北京医院'
           },
-        ]
+        ],
+        courseNums:12
       };
     },
     methods: {

@@ -24,7 +24,7 @@ export function delete_category_by_id(category_id) {
 }
 
 export function get_tasklist_by_cid(category_id) {
-    return api.post('api/tools_task/get_tasklist_by_cid',{cid:category_id});
+    return api.post('api/tools_task/get_tasklist_by_cid',{cid:12});
 }
 
 export function create_task(category_id,params) {

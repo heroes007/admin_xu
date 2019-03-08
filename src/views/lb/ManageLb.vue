@@ -1,12 +1,13 @@
     <template>
     <div class='manage-student-view'>
-        <header-component title='广告图' :noSelect="noSelect"></header-component>
+        <!-- <header-component title='广告图' :noSelect="noSelect"></header-component> -->
+        <screen :types="6" title="广告图" btnName="添加广告图" @handleClick="addLb"/>
+        <!-- <Button class='btn-add' type='text' @click='addLb()'>添加广告图</Button> -->
         <Row class='sub-header' type='flex' justify='space-between' align='middle'>
-            <Breadcrumb separator="/">
+            <!-- <Breadcrumb separator="/">
                 <BreadcrumbItem>广告图管理</BreadcrumbItem>
                 <BreadcrumbItem>查看广告</BreadcrumbItem>
-            </Breadcrumb>
-            <Button class='btn-add' type='text' @click='addLb()'>添加广告图</Button>
+            </Breadcrumb> -->
             <Modal :transfer=false v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="800">
                 <div slot="header" class="modal-header">
                     <div>广告信息</div>
@@ -77,9 +78,10 @@
     import UploadBtn from '../../components/UploadButton'
     import {Config} from '../../config/base'
     import { get_detail, update_lb, add_lb, delete_lb } from '../../api/modules/tools_lb'
+    import screen from '../../components/ScreenFrame'
 
     export default{
-        components: { 'header-component': Header, 'btn-upload': UploadBtn },
+        components: { 'header-component': Header, 'btn-upload': UploadBtn ,screen},
         data(){
             return {
                 positionList:[
