@@ -13,7 +13,9 @@
             <TabPane label="资料" name="course">
                 <course/>
             </TabPane>
-            <TabPane label="证书" name="user">证书</TabPane>
+            <TabPane label="证书" name="user">
+                <upload-btn @uploadcomplete="uploadcomplete" dir='user_task'/>
+            </TabPane>
         </Tabs>
     </div>
 </template>
@@ -24,10 +26,21 @@
   import offline from '../../information/ManageOfflineCourse'
   import task from '../../information/ManageTask'
   import course from '../../download/ManageCourseDownloadData'
+  import uploadBtn from '../../../components/UploadButton'
 
   export default {
     name: "OpenProduct",
-    components: {sideMenu, online, offline, task, course}
+    components: {sideMenu, online, offline, task, course, uploadBtn},
+    data(){
+      return{
+
+      }
+    },
+    methods:{
+      uploadcomplete(name, url){
+        console.log(name, url)
+      }
+    }
   }
 </script>
 

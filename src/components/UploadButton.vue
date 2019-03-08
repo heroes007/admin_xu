@@ -53,7 +53,12 @@
                 axios({
                     method: 'POST',
                     url: url,
-                    data: formData
+                    data: formData,
+                      onUploadProgress: function (progressEvent) {
+                        var progress = Math.round(progressEvent.lengthComputable ? progressEvent.loaded *
+                          100 / progressEvent.total : 0);
+                        vm.percentage = progress;
+                      },
                 }).then(res => {
                     this.resultUrl = url + '/' + this.resultUrl;
                     this.$emit('uploadcomplete',{name: this.fileName, url: this.resultUrl});
