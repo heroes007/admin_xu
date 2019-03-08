@@ -1,7 +1,10 @@
 <template>
    <div>
-       <h1>导师列表</h1>
+        <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <UserModal :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+
+        <screen :types="2" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
+                    @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
    </div>
 </template>
@@ -9,13 +12,32 @@
 <script>
   import Tables from '../../../components/tables.vue'
   import UserModal from '../../../components/UserModal.vue'
+  import screen from '../../../components/ScreenFrame'
+  import see from '../../../components/SeeInfo.vue'
+  import details from './const'
+  import seeMixin from '../seeMixin'
+  import userModalMixin from '../userModalMixin'
   export default {
     name: "ManagementList",
-    components: { Tables, UserModal },
+    components: { Tables, UserModal, screen, see },
+    mixins: [seeMixin, userModalMixin],
     data (){
         return{
-            show: false,
             modalTitle: '',
+            tableRowData: {},
+            selectList:[
+            {
+                value:'all',
+                label:'全部机构'
+            },
+            {
+                value:'zj',
+                label:'浙江医院'
+            },
+            {
+                value:'bj',
+                label:'北京医院'
+            }],
             columns1: [
             {
                 title: '用户名',
@@ -89,11 +111,10 @@
         }
     },
     methods: {
-        closeModal(){
-            this.show = false;
-        },
         see(row,rowIndex){
-            console.log(row,rowIndex,'see',this.show);
+            this.detailShow = true;
+            this.tableRowData = details;
+            console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){
             this.modalTitle = '修改导师'
@@ -103,6 +124,18 @@
         deletes(row,rowIndex){
             // console.log(row,rowIndex);
         },
+        selectChange1(val){
+        console.log(val)
+        },
+        inputChange(val){
+            console.log(val)
+        },
+        handleClick(){
+            this.modalTitle = '添加导师'
+            this.show = true
+            this.tableRow = {}
+            console.log('open modal')
+        }
     },
     mounted() {}
   }

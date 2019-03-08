@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="show" :title="title" :width="590" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
       <div v-if="uploadFlie" class="upload-flie">
-           <Upload action="//jsonplaceholder.typicode.com/posts/">
+           <Upload action="//jsonplaceholder.typicode.com/posts/" :data="uploadData" @on-success="uploadSuccess">
                 <div class="modal-upload-flie">
                     <img class="upload-flie-img" src="/static/icon/upload.png"/>
                     <p>点击上传</p>
@@ -73,7 +73,8 @@ export default {
     data (){
         return{
             show: false,
-            formItem: {}
+            formItem: {},
+            uploadData: {}
         }
     },
     computed: {
@@ -105,6 +106,9 @@ export default {
                     this.$Message.error('Fail!');
                 }
             })
+        },
+        uploadSuccess(response, file){
+            console.log(response, file)
         }
     }
 }
@@ -131,7 +135,7 @@ export default {
 .btn-orange{
     width: 150px;
 }
-/deep/ .foot-btn{ display: flex; justify-content: center;margin-top: 30px; }
+.foot-btn{ display: flex; justify-content: center;margin-top: 30px; }
 .upload-flie{ display: flex; justify-content: center; }
 .modal-upload-flie{
     width: 118px;

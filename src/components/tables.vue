@@ -2,6 +2,10 @@
 <div>
     <Table :columns="columns" :data="datas" >
        <template slot-scope="{ column, row, index }" slot="operation">
+            <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)" >
+                <span slot="open">启用</span>
+                <span slot="close">禁用</span>
+            </Switch>
             <Button type="text" v-for="(t,i) in column.operation" :key="i" size="small" style="margin-right: 5px" @click="show(row,index,i)">{{t}}</Button>
         </template>
     </Table>
@@ -67,6 +71,9 @@
           t.tooltip = true
         })
         this.columns = c
+      },
+      change(row){
+        this.$emit('table-swtich', row)
       }
     },
     mounted() {

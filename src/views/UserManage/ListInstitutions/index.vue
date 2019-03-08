@@ -1,7 +1,9 @@
 <template>
    <div>
-       <h1>机构列表</h1>
-        <UserModal :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" />
+        <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
+        <UserModal :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" />
+
+        <screen :types="1" size-title1="机构总数" :size-num1="23" btn-name="添加机构"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
    </div>
 </template>
@@ -10,13 +12,30 @@
   import Tables from '../../../components/tables.vue'
   import { mapState } from 'vuex'
   import UserModal from '../../../components/UserModal.vue'
+  import screen from '../../../components/ScreenFrame'
+  import see from '../../../components/SeeInfo.vue'
+  import details from './const'
+  import seeMixin from '../seeMixin'
+  import userModalMixin from '../userModalMixin'
   export default {
     name: "ManagementList",
-    components: { Tables, UserModal },
+    components: { Tables, UserModal, screen, see },
+    mixins: [seeMixin, userModalMixin],
     data (){
         return{
-            show: false,
             modalTitle: '',
+            tableRow: {},
+            tableRowData: {},
+            selectList:[
+                {
+                    value:'all',
+                    label:'全部机构'
+                },
+                {
+                    value:'zj',
+                    label:'浙江医院'
+                }
+            ],
             columns1: [
             {
                 title: '机构名称',
@@ -74,20 +93,32 @@
      ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
     },
     methods: {
-        closeModal(){
-            this.show = false;
-        },
         see(row,rowIndex){
-            console.log(row,rowIndex,'see',this.show);
+            this.detailShow = true;
+            this.tableRowData = details;
+            this.tableRowData.mechanismName = row.name;
+            console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){
              this.show = true
              this.modalTitle = '修改机构'
+             this.tableRow = {
+                 
+             }
             // console.log(row,rowIndex);
         },
         deletes(row,rowIndex){
             // console.log(row,rowIndex);
         },
+        inputChange(val){
+            console.log(val)
+        },
+        handleClick(){
+            this.modalTitle = '添加机构'
+            this.show = true
+            this.tableRow = {}
+            console.log('open modal')
+        }
     },
     mounted() {
         console.log(this.projectList);
