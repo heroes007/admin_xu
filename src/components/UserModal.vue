@@ -8,7 +8,7 @@
                 </div>
             </Upload>
       </div>
-       <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate">
+       <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}">
            <div v-for="(t,index) in formList" :key="index">
                 <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
                     <Input v-model="formItem[t.field]" :placeholder="'‘请输入'+t.name"></Input>
@@ -41,7 +41,11 @@ export default {
         title: {
           type: String,
           default: ''
-       },
+        },
+        detailData: {
+          type: Object,
+          default: () => {}
+        },
         // [
         //     { type: 'input', name: '真实姓名',  field: 'realname'},
         //     { type: 'select', name: '管理权限', field: 'jurisdiction' ,
@@ -78,6 +82,9 @@ export default {
     watch:{
         showModal(_new){
             this.ModalState(_new)
+        },
+        detailData(_new){
+            this.formItem = _new
         }
     },
     methods: {

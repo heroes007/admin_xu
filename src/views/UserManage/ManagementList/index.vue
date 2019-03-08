@@ -3,7 +3,7 @@
        <!-- <h1>管理列表</h1> -->
           <screen :types="1" size-title1="管理总数" :size-num1="23" btn-name="添加管理" :select1="selectList" :select2="selectList"
                     @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
-         <UserModal :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+         <UserModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
    </div>
 </template>
@@ -21,6 +21,7 @@
         return{
             show: false,
             modalTitle: '',
+            tableRow: {},
             selectList:[
             {
                 value:'all',
@@ -81,7 +82,7 @@
             ],
             formList: [
                 { type: 'input', name: '真实姓名',  field: 'realname'},
-                { type: 'input', name: '管理账号',  field: 'name' },
+                { type: 'input', name: '管理账号',  field: 'nickname' },
                 { type: 'input', name: '账号密码',  field: 'pass' },
                 { type: 'select', name: '管理权限', field: 'jurisdiction' ,
                     selectList: [ 'jurisdiction' ], selectField: [ 'id','name' ]
@@ -108,6 +109,12 @@
         edit(row,rowIndex){
             this.modalTitle = '修改管理'
             this.show = true
+            this.tableRow = {
+                realname: row.realname,
+                nickname: row.nickname,
+                pass: '',
+                jurisdiction: ''
+            }
             // console.log(row,rowIndex);
         },
         deletes(row,rowIndex){
@@ -123,6 +130,8 @@
             console.log(val)
         },
         handleClick(){
+            this.modalTitle = '添加管理'
+            this.show = true
             console.log('open modal')
         }
     },
