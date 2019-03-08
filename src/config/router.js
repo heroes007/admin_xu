@@ -39,6 +39,7 @@ const ManageProductionGroup = () => import('../views/production/ManageProduction
 const ManageNews = () => import('../views/news/ManageNews')
 const ProjectList = () => import('../components/ProjectList');
 const ManagRedeemCode = () => import('../views/code/ManageRedeemCode');
+
 const UserManage = () => import('../views/UserManage/index')
 const ProductManage = () => import('../views/ProductManage/index')
 const SystemManage = () => import('../views/SystemManage/index')
@@ -141,11 +142,11 @@ const routes = [
         path:'online-course',
         component:ManageOnlineCourse
       },
-      {
-        name:'online-course-chapter',
-        path:'online-course-chapter/:id',
-        component:ManageOnlineCourseChapter
-      },
+      // {
+      //   name:'online-course-chapter',
+      //   path:'online-course-chapter/:id',
+      //   component:ManageOnlineCourseChapter
+      // },
       {
         name:'offline-course',
         path:'offline-course',
@@ -241,7 +242,12 @@ const routes = [
   {
     path: '/dashboard/open-product',
     name: 'open-product',
-    component: OpenProduct
+    component: OpenProduct,
+  },
+  {
+    path: '/dashboard/open-product/online-course-chapter',
+    name: 'online-course-chapter',
+    component: ManageOnlineCourseChapter
   },
   {
     path: '/login',

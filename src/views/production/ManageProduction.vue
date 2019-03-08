@@ -25,6 +25,9 @@
                   </Row>
              </Card>
         </Row>
+        <Row class='pager' type='flex' justify='end' align='middle'>
+          <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total"/>
+        </Row>
     </div>
 </template>
 
@@ -50,6 +53,8 @@
     components: {"header-component": Header, "data-list": BaseList, screen},
     data() {
       return {
+        model1: '',
+        model2: '',
         loadingInstance: null,
         curPage: 1,
         formInline: {

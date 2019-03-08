@@ -41,7 +41,7 @@
                 background-color: #ffffff;
                 position: relative;
                 min-height: 100vh;
-                width: calc(100% - 200px);
+                width: calc(100% - 260px);
                 padding-bottom: 50px;
             }
         }
