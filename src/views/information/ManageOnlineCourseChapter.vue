@@ -1,7 +1,7 @@
 <template>
     <div class='manage-online-course-chapter'>
         <!--<header-component :show-add='false'/>-->
-        <screen :types="6" btn-name="上传批阅" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle"/>
+        <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle"/>
         <!--<Row class='course-name' type='flex' justify='space-between' align='middle'>-->
         <!--<div><h2>课程：{{curriculumName}}</h2></div>-->
         <!--<div><Button type='text' @click='backClickHandler'>返回</Button></div>-->
@@ -19,7 +19,7 @@
                                            @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
                                 </div>
                                 <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
-                                <div>
+                                <div style="margin-right: 25px;">
                                     <Button type='text' @click="addVideo(item)">添加视频</Button>
                                     <Button type='text' @click="addTest(item)">添加测验</Button>
                                     <Button v-if='showListState[index] == 0' type="text"  @click="toggleListShow(index)">展开</Button>
@@ -33,44 +33,57 @@
                                    :column-formatter='listColumnFormatter'
                                    :column-formatter-data='listColumnFormatterData' :is-stripe='false'
                                    v-show='showListState[index] == 1 && item.classList.length > 0'></data-list>
-                        <Row class='chapter-btns' type='flex' justify='space-between' align='middle'
-                             v-if='showListState[index] == 1 || (index == chapterList.length - 1 && !newChapterData.showAddChapter)'>
-                            <div>
-                                <Button type='text' icon='plus'
-                                        v-if='index == chapterList.length - 1 && !newChapterData.showAddChapter'
-                                        @click.stop='addChapterHandler'>添加章节
-                                </Button>
-                            </div>
-                            <Row type='flex' align='middle' v-if='showListState[index] == 1'>
-                                <Button type='text' @click="addVideo(item)">添加视频</Button>
-                                <div class='line'></div>
-                                <Button type='text' @click="addTest(item)">添加测验</Button>
-                                <!--<div class='line'></div>
-                                <Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>-->
-                            </Row>
-                        </Row>
+                        <!--<Row class='chapter-btns' type='flex' justify='space-between' align='middle'-->
+                             <!--v-if='showListState[index] == 1 || (index == chapterList.length - 1 && !newChapterData.showAddChapter)'>-->
+                            <!--<div>-->
+                                <!--<Button type='text' icon='plus'-->
+                                        <!--v-if='index == chapterList.length - 1 && !newChapterData.showAddChapter'-->
+                                        <!--@click.stop='addChapterHandler'>添加章节-->
+                                <!--</Button>-->
+                            <!--</div>-->
+                            <!--<Row type='flex' align='middle' v-if='showListState[index] == 1'>-->
+                                <!--<Button type='text' @click="addVideo(item)">添加视频</Button>-->
+                                <!--<div class='line'></div>-->
+                                <!--<Button type='text' @click="addTest(item)">添加测验</Button>-->
+                                <!--&lt;!&ndash;<div class='line'></div>-->
+                                <!--<Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>&ndash;&gt;-->
+                            <!--</Row>-->
+                        <!--</Row>-->
                     </div>
                     <div class='chapter-item' v-if='newChapterData.showAddChapter'>
+                        <!--<Row class='chapter-title' type='flex' justify='space-between' align='middle'>-->
+                            <!--<div>-->
+                                <!--<span>第{{chapterList.length + 1}}章</span>-->
+                                <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
+                            <!--</div>-->
+                            <!--<div>-->
+                                <!--<Icon type="ios-arrow-up"/>-->
+                            <!--</div>-->
+                        <!--</Row>-->
+                        <!--<Row class='chapter-btns' type='flex' justify='space-between' align='middle'>-->
+                            <!--<div>-->
+                                <!--<span class='warning'>请至少添加一个视频或测验，否则章节信息将无法保存成功。取消添加请点击返回。</span>-->
+                            <!--</div>-->
+                            <!--<Row type='flex' align='middle'>-->
+                                <!--<Button type='text' @click="addVideo()">添加视频</Button>-->
+                                <!--<Button type='text' @click="addTest()">添加测验</Button>-->
+                                <!--&lt;!&ndash;<div class='line'></div>-->
+                                <!--<Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>&ndash;&gt;-->
+                            <!--</Row>-->
+                        <!--</Row>-->
                         <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
-                            <div>
-                                <span>第{{chapterList.length + 1}}章</span>
-                                <input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>
+                            <div style="display: flex;align-items: center">
+                                <span class="row-title">第{{chapterList.length + 1}}章</span>
+                                <Input v-model="newChapterData.group_name"  @on-blur="outInput(0)" placeholder="请输入章节名称"
+                                       @on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>
                             </div>
-                            <div>
-                                <Icon type="ios-arrow-up"/>
-                            </div>
-                        </Row>
-                        <Row class='chapter-btns' type='flex' justify='space-between' align='middle'>
-                            <div>
-                                <span class='warning'>请至少添加一个视频或测验，否则章节信息将无法保存成功。取消添加请点击返回。</span>
-                            </div>
-                            <Row type='flex' align='middle'>
+                            <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
+                            <div style="margin-right: 25px;">
                                 <Button type='text' @click="addVideo()">添加视频</Button>
-                                <div class='line'></div>
                                 <Button type='text' @click="addTest()">添加测验</Button>
-                                <!--<div class='line'></div>
-                                <Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>-->
-                            </Row>
+                                <!--<Button v-if='showListState[0] == 0' type="text"  @click="toggleListShow(0)">展开</Button>-->
+                                <!--<Button v-else-if='showListState[0] == 1' type="text"  @click="toggleListShow(0)">收起</Button>-->
+                            </div>
                         </Row>
                     </div>
                 </div>
@@ -142,9 +155,9 @@
           {prop: 'create_time', label: '创建时间', width: 200},
           {
             label: '操作', width: 350, groupBtn: [{text: '编辑', param: 'edit'},
-              {text: 'md-arrow-dropup', param: 'moveUp', isIcon: true},
-              {text: 'md-arrow-dropdown', param: 'moveDown', isIcon: true},
-              {text: 'ios-trash-outline', param: 'delete', isIcon: true}]
+              {text: '上移', param: 'moveUp' },
+              {text: '下移', param: 'moveDown' },
+              {text: '删除', param: 'delete' }]
           }
         ]
       },
@@ -215,7 +228,7 @@
     },
     methods: {
       handleClick(val) {
-        console.log(val);
+        this.newChapterData.showAddChapter = true;
       },
       handleBack() {
         // if (this.dirty) this.resetOrder();
@@ -385,16 +398,11 @@
     /deep/ .ivu-input {
         border: none;
         background-color: #FBFBFB;
-        /*cursor: pointer;*/
         font-size: 16px !important;
     }
 
     /deep/ .ivu-icon {
         font-size: 24px
-    }
-
-    /deep/ .ivu-btn-text{
-        border: none !important;
     }
 
     /deep/ .ivu-btn-text:focus{
@@ -470,6 +478,14 @@
                     background-color: #FBFBFB;
                     border: 1px solid #E5E5E5;
                     height: 60px;
+
+
+                    /deep/ .ivu-btn-text{
+                        border: none !important;
+                        font-family: PingFangSC-Regular;
+                        font-size: 16px;
+                    }
+
 
                     span,
                     h3 {
