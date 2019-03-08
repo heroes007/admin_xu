@@ -50,15 +50,15 @@ body { background-color: #fff; height: 100%; }
     font-size: 16px !important;
   }
 .ivu-modal-header-inner{
-    font-size: 16px !important;
+    font-size: 20px !important;
     text-align: center !important;
-    color: #fff !important
+    color: #474C63 !important
 }
 .ivu-modal-header{
-    background-color: #333 !important;
+    background-color: #fff !important;
 }
 .ivu-modal-close .ivu-icon-ios-close,.ivu-modal-close .ivu-icon-ios-close:hover{
-    color: #fff !important
+  color: #474C63!important
 }
 .ivu-input-number{
     width: 100% !important;

@@ -1,8 +1,9 @@
 <template>
     <div class='manage-offline-course'>
+        <LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>
         <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
         <screen :types="1" sizeTitle1="线下课总数" :sizeNum1="courseNums" btnName="添加学期" @inputChange="inputChange" @handleClick="handleClick"/>
-        <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
+        <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
                    @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
         <save-order v-if='dirty' @saveOrder='saveOrderHandler'/>
@@ -19,9 +20,10 @@
   import * as types from '../dialogs/types';
   import { mapActions, mapState } from 'vuex'
   import { Config } from '../../config/base'
+  import LookTerm from './LookTerm'
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen },
+    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm },
     data() {
       return {
         gradeList: [{
@@ -36,7 +38,9 @@
         loadingInstance: null,
         isdelete: false,
         deleteData: null,
-        courseNums: 12
+        courseNums: 12,
+        showModal: false,
+        detailData: {}
       }
     },
     computed: {
@@ -96,7 +100,7 @@
           groupBtn: [
             {
             text: '查看',
-            param: 'edit'
+            param: 'detail'
           }, 
             {
             text: '编辑',
@@ -104,7 +108,7 @@
           }, 
           {
             text: '复制',
-            param: 'edit'
+            param: 'copy'
           },
           // {
           //   text: '回执管理',
@@ -222,6 +226,17 @@
       },
       handleClick(val){
         console.log(val)
+      },
+      closeModal(){
+        this.showModal = false;
+      },
+      showCourseDetailHandler(index, row) {
+        this.detailData = row;
+        this.showModal = true;
+      },
+      //复制
+      copyItem(index, row){
+        console.log(row,index,'copy')
       },
       sendOfflineCourseHandler(index, row) {
         this.handleSelModal(types.SEND_OFFLINE_COURSE, {row: row});

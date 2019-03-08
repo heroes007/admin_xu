@@ -650,6 +650,7 @@
     }
     /deep/ .ivu-modal-header {
         display: none;
+        background-color: #fff;
     }
     /deep/ .ivu-modal-body {
         padding: 0;

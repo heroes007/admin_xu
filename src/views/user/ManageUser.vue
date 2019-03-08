@@ -474,6 +474,7 @@
     }
     /deep/ .ivu-modal-header{
         padding: 0;
+        background-color: #fff;
     }
     /deep/ .ivu-icon-ios-close{
         color: #bfcbd9 !important;

@@ -50,6 +50,7 @@
             },
             handleUploadFile(formData, url, headers) {
                 // TODO 上传到OSS上
+                let vm = this;
                 axios({
                     method: 'POST',
                     url: url,

@@ -271,7 +271,7 @@
         width: calc(100% - 70px) !important;
     }
     .ivu-modal-header{
-        background-color: #546573;
+        background-color: #fff;
         border-radius: 6px 6px 0 0;
         padding: 20px !important;
 
