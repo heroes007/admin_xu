@@ -44,6 +44,7 @@ const UserManage = () => import('../views/UserManage/index')
 const ProductManage = () => import('../views/ProductManage/index')
 const SystemManage = () => import('../views/SystemManage/index')
 const OpenProduct = () => import('../views/ProductManage/OpenProduct/index')
+const MainProduct = () => import('../views/ProductManage/MainProduct/index')
 
 Vue.use(VueRouter);
 
@@ -240,14 +241,22 @@ const routes = [
     ]
   },
   {
-    path: '/dashboard/open-product',
-    name: 'open-product',
-    component: OpenProduct,
-  },
-  {
-    path: '/dashboard/open-product/online-course-chapter',
-    name: 'online-course-chapter',
-    component: ManageOnlineCourseChapter
+    path: '',
+    name: 'main-product',
+    component: MainProduct,
+    redirect: '/dashboard/open-product',
+    children: [
+      {
+        path: '/dashboard/open-product',
+        name: 'open-product',
+        component: OpenProduct,
+      },
+      {
+        path: '/dashboard/open-product/online-course-chapter',
+        name: 'online-course-chapter',
+        component: ManageOnlineCourseChapter
+      },
+    ]
   },
   {
     path: '/login',
