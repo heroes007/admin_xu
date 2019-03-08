@@ -8,7 +8,7 @@
                 <BreadcrumbItem>广告图管理</BreadcrumbItem>
                 <BreadcrumbItem>查看广告</BreadcrumbItem>
             </Breadcrumb> -->
-            <Modal :transfer=false v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="800">
+            <Modal v-model="dialogVisible" size="small" :mask-closable='false' :footer-hide="true" class='add-student-view' width="800">
                 <div slot="header" class="modal-header">
                     <div>广告信息</div>
                 </div>

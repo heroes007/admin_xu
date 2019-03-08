@@ -32,8 +32,14 @@
          <Divider />
      </div>
      <div class="personal-detail">
-          <img class="detail-data1-img" :src="detailData.img" />
-          <img class="detail-data1-img-auth" v-if="detailData.authentication" src="/static/icon/authentication.png" />
+          <div class="personal-detail-img-list">
+            <img class="detail-data1-img" :src="detailData.img" />
+            <img class="detail-data1-img-auth" v-if="detailData.authentication" src="/static/icon/authentication.png" />
+            <div class="learning-statistics" v-if="detailData.learningStatistics">
+                <img src="/static/icon/learning-statistics.png"/>
+                <p>学习统计</p>
+            </div>
+          </div>
            <div class="detail-data1-content">
                  <h1>{{detailData.name}} <img :src="detailData.sex ? male: female" /></h1>
                  <p v-for="(t,i) in detailData.list" :key="i" class="personal-detail-text">{{t}}</p>
@@ -181,5 +187,21 @@ export default {
     height: 28px;
     left: 157px;
     top: 92px;
+}
+.personal-detail-img-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.learning-statistics{
+    width: 30px;
+    height: 25px;
+    margin-top: 20px;
+    p{
+        font-family: PingFangSC-Medium;
+        font-size: 14px;
+        color: #4098FF;
+        white-space: nowrap;
+    }
 }
 </style>
