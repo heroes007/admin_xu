@@ -15,6 +15,7 @@
             </TabPane>
             <TabPane label="证书" name="user">
                 <upload-btn @uploadcomplete="uploadcomplete" dir='user_task'/>
+                <houner/>
             </TabPane>
         </Tabs>
     </div>
@@ -27,10 +28,11 @@
   import task from '../../information/ManageTask'
   import course from '../../download/ManageCourseDownloadData'
   import uploadBtn from '../../../components/UploadButton'
+  import houner from '../../information/ManageHouner'
 
   export default {
     name: "OpenProduct",
-    components: {sideMenu, online, offline, task, course, uploadBtn},
+    components: {sideMenu, online, offline, task, course, uploadBtn, houner},
     data(){
       return{
 

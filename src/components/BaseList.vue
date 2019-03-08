@@ -535,6 +535,13 @@
         outline: none
     }
 
+      /deep/.ivu-btn-text{
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #4098FF;
+  letter-spacing: 0;
+}
+
     /deep/ .ivu-table-cell-ellipsis > div {
         display: inline-block;
         width: 100%;
