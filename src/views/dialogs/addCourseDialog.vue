@@ -5,7 +5,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form  :model="formLeft" class="add-course-form" :label-position="labelPosition" :label-width="100">
+                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
                     
                         <!--<Row>-->
                             <Col>
@@ -444,6 +444,18 @@
   }
 </script>
 <style scoped lang="scss">
+/deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
+/deep/.ivu-modal-header-inner{
+font-family: PingFangSC-Regular;
+font-size: 20px !important;
+color: #474C63 !important;
+letter-spacing: 0;
+}
+/deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
+/deep/ .ivu-form-item{margin-bottom: 15px;}
+/deeep/.upload-panel .upload-space{
+  height: 250px !important;
+}
     /deep/ .ivu-modal-body {
         padding: 30px 50px;
     }

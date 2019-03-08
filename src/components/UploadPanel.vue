@@ -41,7 +41,7 @@
                 default: function () {
                     return {
                         panelWidth: '100%',
-                        panelHeight: 200
+                        panelHeight: 250
                     }
                 }
             },
@@ -311,7 +311,7 @@
         font-size: 20px;
     }
     /deep/ .md-cloud-upload{
-        margin-top: 40px;
+        margin-top: 70px;
     }
     .upload-panel {
         .file-require {
@@ -347,7 +347,7 @@
         }
 
         .upload-space {
-            height: 200px;
+            height: 250px;
             background: #F6F6F6;
             border: 1px solid #CCCCCC;
             display: block;

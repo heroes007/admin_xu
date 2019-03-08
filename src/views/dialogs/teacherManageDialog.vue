@@ -292,7 +292,7 @@ export default {
             .upload-form1 {
                 @include el-upload-common(200px);
                 .upload-space {
-                    height: 200px;
+                    height: 250px;
                     background: #F6F6F6;
                     border: 1px solid #CCCCCC;
                     display: block;
