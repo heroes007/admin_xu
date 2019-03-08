@@ -18,7 +18,7 @@
       <Card
         @click.native="handleJump"
         class="card-houner-col"
-        v-for="(item, index) in cardList"
+        v-for="(item, index) in cardList1"
         :key="index"
       >
         <Col class="card-houner-img" span="11" >
@@ -58,8 +58,8 @@
         <Card
         @click.native="handleJump"
         class="card-houner-col"
-        v-for="(item, index) in cardList"
-        :key="index"
+        v-for="(item, index) in cardList2"
+        :key="item"
       >
         <Col class="card-houner-img" span="11" >
              <img width="100%" height="100px" :src="cardImg2" alt="">
@@ -124,7 +124,8 @@ export default {
         searchData: ""
       },
       cityList: "",
-      cardList: [1, 2, 3, 4, 5],
+      cardList1: [1, 2, 3, 4, 5],
+      cardList2: [6, 7, 8, 9, 10],
       selectList: [
         {
           value: "all",

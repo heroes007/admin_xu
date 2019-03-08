@@ -1,9 +1,9 @@
 <template>
     <div class='manage-offline-course'>
         <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
-        <screen :types="1" sizeTitle1="线下课总数" :sizeNum1="courseNums" btnName="添加学期" @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :types="1" sizeTitle1="线下课总数" :sizeNum1="courseNums" btnName="添加学期" @inputChange="inputChange" @handleClick="addOfflineSemesterHandler"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
-                   @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
+                   @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' @copy='manageCopy' class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
         <save-order v-if='dirty' @saveOrder='saveOrderHandler'/>
     </div>
@@ -104,7 +104,7 @@
           }, 
           {
             text: '复制',
-            param: 'edit'
+            param: 'copy'
           },
           // {
           //   text: '回执管理',
@@ -133,48 +133,50 @@
             // hoverShow: true,
             // isIcon: true,
           }]
-        }, {
-          listExpand: true,
-          width: 90,
-          childHeader: [{
-            prop: 'title',
-            label: '课程名称',
-          }, {
-            prop: 'type',
-            label: '类型',
-            width: 100
-          }, {
-            prop: '',
-            label: '开课日期范围',
-            width: 300,
-            mixColumn: true,
-            mixFunc: (function (data) {
-              var open_date = doDateFormat(data.start_time);
-              var end_date = doDateFormat(data.end_time);
-              return open_date + '至' + end_date;
-            })
-          }, {
-            prop: 'teacher_name',
-            label: '导师',
-            width: 100
-          }, {
-            label: '操作',
-            width: 350,
-            groupBtn: [{
-              text: '编辑课程',
-              param: 'editCourse'
-            }, {
-              text: 'ios-trash-outline',
-              param: 'deleteCourse',
-              hoverShow: true,
-              isIcon: true
-            }]
-          }],
-          listColumnFormatter: [{
-            columnName: 'type',
-            doFormat: doOfflineCurriculumTypeFormat
-          }]
-        }]
+        }
+        // {
+        //   listExpand: true,
+        //   width: 90,
+        //   childHeader: [{
+        //     prop: 'title',
+        //     label: '课程名称',
+        //   }, {
+        //     prop: 'type',
+        //     label: '类型',
+        //     width: 100
+        //   }, {
+        //     prop: '',
+        //     label: '开课日期范围',
+        //     width: 300,
+        //     mixColumn: true,
+        //     mixFunc: (function (data) {
+        //       var open_date = doDateFormat(data.start_time);
+        //       var end_date = doDateFormat(data.end_time);
+        //       return open_date + '至' + end_date;
+        //     })
+        //   }, {
+        //     prop: 'teacher_name',
+        //     label: '导师',
+        //     width: 100
+        //   }, {
+        //     label: '操作',
+        //     width: 350,
+        //     groupBtn: [{
+        //       text: '编辑课程',
+        //       param: 'editCourse'
+        //     }, {
+        //       text: 'ios-trash-outline',
+        //       param: 'deleteCourse',
+        //       hoverShow: true,
+        //       isIcon: true
+        //     }]
+        //   }],
+        //   listColumnFormatter: [{
+        //     columnName: 'type',
+        //     doFormat: doOfflineCurriculumTypeFormat
+        //   }]
+        // }
+        ]
       },
       listColumnFormatter() {
         return [{
@@ -291,6 +293,9 @@
       },
       manageSignupHandler(index, row) {
         this.$router.replace({ name: 'offline-course-manage-signup', params: { id: row.id } })
+      },
+      manageCopy(){
+        console.log("copy");
       }
     },
     mounted() {
