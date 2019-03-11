@@ -186,6 +186,8 @@
         });
       },
       editCourseHandler(index) {
+        console.log(index);
+        
         this.handleSelModal(ADD_COURSE, this.dataList[index]);
       },
       reRenderListHandler(v) {

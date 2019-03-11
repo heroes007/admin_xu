@@ -2,7 +2,7 @@
     <div class='manage-course-download-data'>
         <!-- <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/> -->
         <screen :types="2" sizeTitle1="资料总数" :sizeNum1="courseNums" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler"/>
-        <data-list class='data-list light-header' @delete='deleteHandler' :isStripe='false' :table-data='dataList'
+        <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg' @edit='addClickHandler2' :isStripe='false' :table-data='dataList'
           :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'></data-list>
     </div>
 </template>
@@ -113,12 +113,13 @@
             // }, 
             {
               text: '下载',
-              param: 'delete',
+              prop:'download_url',
+              param: 'download',
               // isIcon: true
             },
             {
               text: '编辑',
-              param: 'delete',
+              param: 'edit',
               // isIcon: true
             },
             {
@@ -148,6 +149,9 @@
       addClickHandler() {
         this.handleSelModal(ADD_DOWNLOAD_DATA, 1);
       },
+      addClickHandler2() {
+        this.handleSelModal(ADD_DOWNLOAD_DATA, 0);
+      },
       manageEdit(){
         console.log("课程资料搜索");
       },
@@ -159,6 +163,11 @@
             this.delete_download_data(row.id);
           },
         });
+      },
+      downloadMsg(row){
+        console.log(this.dataList);
+        
+          // window.open(this.dataList[row].download_url)
       }
     },
     mounted() {

@@ -1,5 +1,5 @@
 <template>
-    <div class="upload-field">
+    <div class="upload-field" >
         <div class="file-name-field">
             <div class="file-name-field-layout">
                 <div class="fileName">

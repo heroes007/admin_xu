@@ -1,11 +1,11 @@
 <template>
-    <Modal title="发送学期" :transfer=false :width=700 :show-close="false" v-model="sendOfflineCourse"
+    <Modal title="颁发证书" :transfer=false :width=700 :show-close="false" v-model="sendOfflineCourse"
            @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
             <Row slot="header" class='search-bar' type='flex' justify='center' align='middle'>
                 <Input placeholder="请输入用户名" v-model="searchData">
                     <Select v-model="searchType" slot="prepend" placeholder="请选择">
-                        <Option label="ID" value="id"></Option>
+                        <!-- <Option label="ID" value="id"></Option> -->
                         <Option label="昵称" value="nickname"></Option>.
                         <Option label="手机号" value="phone"></Option>
                     </Select>
@@ -77,6 +77,10 @@
             key: 'grade_name',
           },
           {
+            title: '完成率',
+            key: 'grade_name',
+          },
+          {
             type: 'selection'
           }
         ]
@@ -108,13 +112,13 @@
       handleTableToName(d, v) {
         var name = ''
         d.map(item => {
-          if (item.id == v) name = item.name
+        //   if (item.id == v) name = item.name
         })
         return name;
       },
       handleQueryList() {
         this.$store.dispatch('get_students_by_offline_term', {
-          offline_term_id: this.payload.row.id,
+        //   offline_term_id: this.payload.row.id,
           page_index: this.pageIndex,
           page_size: this.pageSize,
           subject_id: '',
