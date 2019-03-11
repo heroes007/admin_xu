@@ -7,10 +7,21 @@
                 <span slot="close">禁用</span>
             </Switch>
             <span v-for="(t,i) in column.operation" :key="i">
-              <Button type="text" v-if="column.operation_btn_hide&&t[2] ? row.state : true" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+              <!-- poptip_state -->
+               <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
+                    <Button type="text">查看</Button>
+                    <div class="poptip-main" slot="content">
+                      <img class="poptip-img" src="../../static/mn.jpeg" />
+                      <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
+                    </div>
+               </Poptip>
+              <Button type="text" v-else-if="column.operation_btn_hide&&t[2] ? row.state : true" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
                 {{handleBtnText(t,row,column)}}
               </Button>
             </span>
+        </template>
+        <template slot-scope="{ column, row, index }" slot="radio-item">
+            <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
         </template>
     </Table>
 </div>
@@ -34,17 +45,33 @@
             type: Array,
             default: []
        },
-       // isSerial --> true -- 序号  false -- 选项
+       // isSerial -->  序号
        isSerial: {
           type: Boolean,
           default: false
        },
+       // 选项
        isSelection: {
+          type: Boolean,
+          default: false
+       },
+       // 选项
+       isSelectionRight: {
           type: Boolean,
           default: false
        }
     },
     methods:{
+      radioChange(r,c){
+          this.datas.map((t,k) => {
+          t.state = false
+          if(t.id === r.id){
+            t.state = true;
+            this.$emit('radioChange',t)
+          }
+
+        })
+      },
       handleTableData(d){
         d.map((t,k) => {
          if(this.isSerial) t.serial_number = this.$config.addZero(k)
@@ -60,6 +87,7 @@
       handleColumns(c){
         if(this.isSerial) c.unshift({ title: '序号', key: 'serial_number' })
         if(this.isSelection) c.unshift( { type: 'selection', width: 60, align: 'center' })
+        if(this.isSelectionRight) c.push( { type: 'selection', width: 60, align: 'center' })
         c.map((t) => {
           if(!t.hasOwnProperty('align')) t.align = 'center'
           t.tooltip = true
@@ -83,10 +111,69 @@
     } 
   }
 </script>
-<style scoped>
+<style lang='less' scoped>
     /deep/ .ivu-table th {
         height: 50px;
     }
     /deep/ .ivu-btn{ color: #4098FF; }
     /deep/ .ivu-btn-text:focus{ box-shadow: none }
+    /deep/ .ivu-radio-inner {
+        /*border-radius: unset;*/
+        width: 22px;
+        height: 22px;
+        border-radius: 4px;
+        border: 1px solid #9397AD;
+    }
+    /deep/ .ivu-radio-wrapper {
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 0;
+    }
+    /deep/ .ivu-radio .ivu-radio-inner {
+        background-position: 1.5px 1.5px;
+    }
+    /deep/ .ivu-radio-checked .ivu-radio-inner {
+        background-image: url('../../static/icon/tick.png');
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        background-position: 1.5px 1.5px;
+        border-color: #5298f7;
+    }
+    /deep/ .ivu-radio-inner::after {
+        display: none;
+    }
+    /deep/ .ivu-tooltip-rel{
+        width: 100%;
+    }
+    .poptip-main{
+      display: flex;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      align-items: center;
+      .poptip-img{
+        width: 80px;
+        height: 80px;
+        margin-right: 20px;
+        border-radius: 40px;
+      }
+      .poptip-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        h2{
+          font-family: PingFangSC-Medium;
+          font-size: 20px;
+          color: #474C63;
+          text-align: left;
+          margin-bottom: 10px;
+        }
+        p{
+          font-family: PingFangSC-Regular;
+          font-size: 16px;
+          color: #474C63;
+        }
+      }
+    }
 </style>

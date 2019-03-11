@@ -1,4 +1,6 @@
 <template>
+<div>
+  <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList" @close="exchangeContentClose" @selectChecked="exchangeContentChecked" />
   <Modal v-model="show" :title="title" :width="590" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
       <div v-if="uploadFlie" class="upload-flie">
            <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
@@ -22,7 +24,13 @@
                  <FormItem v-if="t.type==='input-number'" :label="t.name" :prop="t.field">
                       <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></InputNumber>
                 </FormItem>
-                 <FormItem v-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
+                <!-- 处理兑换码 -- 兑换内容 exchange_content -->
+                <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name" :prop="t.field">
+                     <Select class="exchange-content-select" v-model="formItem[t.field]" @on-open-change="exchangeContentOpen">
+                          <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
+                     </Select>
+                </FormItem>
+                 <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
                     <Select v-model="formItem[t.field]">
                         <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                     </Select>
@@ -46,12 +54,15 @@
              <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
         </div>
     </Modal>
+</div>
 </template>
 <script>
 import { get_sign } from '../api/modules/ali_oss'
 import axios from 'axios'
 const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
+import ExchangeContent from './ExchangeContent'
 export default {
+    components: { ExchangeContent },
     props:{
         showModal: {
             type: Boolean,
@@ -91,6 +102,8 @@ export default {
     },
     data (){
         return{
+            exchangeContentShow: false,
+            exchangeContentList: [],
             show: false,
             formItem: {},
             uploadData: {},
@@ -140,6 +153,16 @@ export default {
         switchChange(_new){
 
         },
+        exchangeContentChecked(t){
+            this.formItem[this.formList[2].field] = t.id
+        },
+        exchangeContentClose(){
+            this.exchangeContentShow = false
+        },
+        exchangeContentOpen(v){
+            this.exchangeContentShow = true
+            this.exchangeContentList = this.formList[2].selectList
+        },
         ModalState(_new){
             this.show = _new
             console.log(this.projectList);
@@ -148,14 +171,19 @@ export default {
             this.handleGetassignKey(file);
             return false
         },
+        handleFormData(){
+             this.$Message.success('Success!');
+             this.closeModal()
+             this.$emit('handleSubmit',this.formItem)
+        },
         handleSubmit(name){
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    this.$Message.success('Success!');
-                    this.closeModal()
-                } else {
-                    this.$Message.error('Fail!');
-                }
+                    if(this.formList[4].type==='switch-datetimerange'){
+                        if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
+                        else this.handleFormData()
+                    }else this.handleFormData()
+                } else this.$Message.error('Fail!');
             })
         },
         // 上传到oss上
@@ -245,6 +273,9 @@ export default {
 /deep/ .ivu-switch-inner{left: 36px ;}
 /deep/ .ivu-switch-checked .ivu-switch-inner{ left: 12px;}
 /deep/ .ivu-switch-large.ivu-switch-checked:after{left: 48px;}
-.form-item-other {padding-left: 100px;}
+.form-item-other {padding-left: 30px;}
+.exchange-content-select /deep/ .ivu-select-dropdown{display: none !important;}
+/deep/ .ivu-modal-wrap{ display: flex;align-items: center; }
+/deep/ .ivu-modal{top: 0}
 </style>
 

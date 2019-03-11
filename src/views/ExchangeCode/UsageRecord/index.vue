@@ -1,5 +1,6 @@
 <template>
    <div>
+       <SendCode title="发送兑换码" :show-modal="codeShow" :list="codeList" @close="codeClose" @selectChecked="codeChecked" />
        <screen :types="8" size-title1="兑换码总数" :code-name="codeName" placehodle="搜索兑换码" :size-num1="23"  :select1="selectList" 
           size-title2="已使用"  :size-num2="17" @handleBack="handleBack"  @selectChange1="selectChange1"  @inputChange="inputChange" />
         <Tables :is-serial=true @operation1="see" @operation2="immediateFailure" :column="columns1" :table-data="list" />
@@ -9,13 +10,15 @@
 <script>
   import Tables from '../../../components/tables.vue'
   import screen from '../../../components/ScreenFrame'
+  import SendCode from './SendCode'
   export default {
     name: "UsageRecord",
-    components: { Tables, screen },
+    components: { Tables, screen, SendCode },
     data (){
         return{
-            tableRowData: {},
             codeName: '',
+            codeShow: false,
+            codeList: [],
             selectList:[
             {
                 value:'all',
@@ -53,6 +56,7 @@
                 width: 320,
                 slot: 'operation',
                 operation_state: true,
+                poptip_state: true,
                 operation: [[['查看','发送'],'operation1'], [['立即失效','立即生效'],'operation2']],
             }],
             list: [
@@ -82,9 +86,17 @@
         }
     },
     methods: {
+        codeClose(){
+            this.codeShow = false;
+        },
+        codeChecked(val){
+            console.log(val);
+        },
         see(row,rowIndex){
-            this.tableRowData = {};
             console.log(row,rowIndex,'see');
+            if(!row.use_state){
+                this.codeShow = true
+            }
         },
         immediateFailure(row,rowIndex){
             console.log(row,rowIndex,'immediateFailure');

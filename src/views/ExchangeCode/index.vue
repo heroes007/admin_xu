@@ -105,8 +105,8 @@
                 { type: 'select', name: '兑换类型', field: 'jurisdiction' ,
                     selectList: [ { id: 1, name: '培训1' }, { id: 2, name: '培训2' } ], selectField: [ 'id','name' ]
                 },
-                { type: 'select', name: '兑换内容', field: 'content' ,
-                    selectList: [ { id: 1, name: '浙江医院全科医生培训1' }, { id: 2, name: '浙江医院全科医生培训2' } ], selectField: [ 'id','name' ]
+                { type: 'select', name: '兑换内容', field: 'content' , exchange_content: true,
+                    selectList: [ { id: 1, name: '浙江医院全科医生培训1' },{ id: 2, name: '浙江医院全科医生培训2' },{ id: 3, name: '浙江医院全科医生培训3' }], selectField: [ 'id','name' ]
                 },
                 { type: 'input-number', name: '兑换数量',  field: 'num', disable: false },
                 { type: 'switch-datetimerange', name: '有效时间',  field: ['isswitch','effective_time'], disable: false, switchList: ['永久','有效'] }

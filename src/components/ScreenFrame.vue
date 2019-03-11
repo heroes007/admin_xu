@@ -1,5 +1,9 @@
 <template>
     <div class="screen" :style="(types == 4 || types == 8 || types == 9) ? backgroundColor:''">
+        <div v-if="types == 6 || types == 7 || types == 8 || types == 9" class="back" @click="handleBack">
+            <img class="back-img" src="../../static/icon/back.png" alt="">
+            <div class="back-title">返回</div>
+        </div>
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select1" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
@@ -20,10 +24,6 @@
         <div v-if="types ==3 || types ==5 || types ==8" class="money-size">
             <span class="all-content">{{sizeTitle2}}</span>
             <span class="all-num">{{sizeNum2}}</span>
-        </div>
-        <div v-if="types == 6 || types == 7 || types == 8 || types == 9" class="back" @click="handleBack">
-            <img class="back-img" src="../../static/icon/back.png" alt="">
-            <div class="back-title">返回</div>
         </div>
         <div v-if="types == 6 || types == 7 || types == 9" class="title">
             <div>{{title}}</div>
@@ -217,7 +217,6 @@
         align-items: center;
         margin-left: 40px;
         cursor: pointer;
-
         .back-img{
             width: 23px;
             height: 19px;
