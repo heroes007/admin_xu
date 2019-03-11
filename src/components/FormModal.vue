@@ -246,6 +246,6 @@ export default {
 /deep/ .ivu-switch-inner{left: 36px ;}
 /deep/ .ivu-switch-checked .ivu-switch-inner{ left: 12px;}
 /deep/ .ivu-switch-large.ivu-switch-checked:after{left: 48px;}
-.form-item-other {padding-left: 100px;}
+.form-item-other {padding-left: 30px;}
 </style>
 

@@ -2,7 +2,16 @@
     <div class='manage-task'>
         <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" >
           <div slot="form-other">
-            图文编辑
+            <Form >
+              <FormItem label="作业描述">
+                <text-editor ref='content_editor' :content='contentData' />
+              </FormItem>
+              <FormItem  label="上传附件" >
+              <file-uploader :filters="dataFilters" maxFileCount="1"
+                          :maxFileSize="30000"  @uploadComplete="uploadComplete"
+                          bucket="dscj-static-file" :dir='getDir()'/>
+              </FormItem>
+            </Form>
           </div>
         </FormModal>
 
@@ -30,15 +39,17 @@
   import { Dialog } from '../dialogs'
   import { ADD_TASK_CATEGORY, ADD_TASK, NOTIFICATION, MANUL_ACTIVE } from '../dialogs/types'
   import { doTimeFormat } from '../../components/Util'
-  import { mapActions } from 'vuex'
+  import { mapActions,mapState } from 'vuex'
   import { Config } from '../../config/base'
   import { taskHeadData } from './consts'
   import screen from '../../components/ScreenFrame'
   import FormModal from '../../components/FormModal'
   import FormModalMixin from '../UserManage/FormModalMixin'
+  import Editor from '../../components/Editor'
+  import Uploader from '../../components/Upload'
   export default {
     mixins: [Dialog,FormModalMixin],
-    components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem, screen, FormModal },
+    components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem, screen, FormModal ,'text-editor': Editor,'file-uploader': Uploader},
     data() {
       return {
         dirty: false,
@@ -66,6 +77,7 @@
             jurisdiction: [{ required: true, message: '请选择作业类型'} ],
             binding_course: [{ required: true, message: '请选择绑定课程'} ]
         },
+        contentData:''
       }
     },
     computed: {
@@ -119,6 +131,12 @@
       gradeList() {
         return this.$store.state.grade.grade_list;
       },
+       ...mapState({
+              dataFilters(){
+            var str = ['doc','pdf','zip'];
+            return str;
+            }
+        })
     },
     watch: {
       // isLoading(val) {
@@ -215,7 +233,14 @@
             }
           }
         }
-      }
+      },
+      uploadComplete(id,result) {
+            this.form.download_url = result.url;
+        },
+      getDir() {
+        if(this.payload === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
+        return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
+      },
     },
     mounted() {
       var vm = this;

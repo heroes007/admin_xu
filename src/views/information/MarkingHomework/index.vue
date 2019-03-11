@@ -8,10 +8,13 @@
 </template>
 
 <script>
-  import Tables from '../../../components/tables.vue'
-  import screen from '../../../components/ScreenFrame'
+  import Tables from '../../../components/tables.vue';
+  import screen from '../../../components/ScreenFrame';
+  import * as types from '../../dialogs/types';
+  import { Dialog } from '../../dialogs/index';
 
   export default {
+    mixins: [Dialog],
     name: "MarkingHomework",
     components: { Tables, screen },
     data (){
@@ -80,10 +83,12 @@
         console.log(val)
         },
         see(row,rowIndex){
-            console.log(row,rowIndex,'see');
+            // console.log(row,rowIndex,'see');
+           this.handleSelModal(types.READ_OVER, { type: 2, row })
         },
         edit(row,rowIndex){
-            console.log(row,rowIndex);
+            // console.log(row,rowIndex);
+            this.handleSelModal(types.READ_OVER, { type: 1, row })
         },
         deletes(row,rowIndex){
             console.log(row,rowIndex);
