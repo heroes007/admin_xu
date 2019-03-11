@@ -1,5 +1,5 @@
 <template>
-<Modal :transfer=false :title="payload === 0?'添加推荐资料':'课程资料上传'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false"  :footer-hide="true">
+<Modal :transfer=false :title="payload === 0?'编辑课程资料':'添加课程资料'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false"  :footer-hide="true">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
@@ -7,7 +7,12 @@
                     <FormItem label="资料名称">
                         <Input v-model="form.name" placeholder="请输入分类名称"></Input>
                    </FormItem>
-                    <FormItem label="学科" v-if='payload === 0'>
+                   <FormItem label="绑定课程" >
+                        <Select v-model="form.subject_id" placeholder="请选择绑定课程">
+                            <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                        </Select>
+                    </FormItem>
+                    <!-- <FormItem label="学科" v-if='payload === 0'>
                                 <Select v-model="form.subject_id" placeholder="请选择学科">
                                     <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                 </Select>
@@ -16,7 +21,7 @@
                                 <Select v-model="form.grade_id" placeholder="请选择学段">
                                     <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                 </Select>
-                           </FormItem>
+                           </FormItem> -->
                     <FormItem :label-width='0'>
                         <file-uploader :filters="dataFilters" maxFileCount="1"
                                     :maxFileSize="30000"  @uploadComplete="uploadComplete"
@@ -58,6 +63,7 @@ export default {
             projectId:state => state.project.select_project_id,
             query_grade_list: state => state.grade.grade_list,
             query_subject_list: state => state.subject.subject_list,
+            course_download_data_list: state => state.download_data
             }),
         dataFilters(){
             var str = ['doc','pdf','zip'];
@@ -88,8 +94,10 @@ export default {
             this.form.download_url = result.url;
         },
         saveHandler() {
-           if(this.payload === 0) this.add_public_download_data(this.form);
-           else this.add_course_download_data(this.form);
+        //    if(this.payload === 0) this.add_public_download_data(this.form);
+        //    else this.add_course_download_data(this.form);
+          console.log(this.course_download_data_list);
+        
         },
         handleClose() {
             this.addDownloadDataDialog = false;
@@ -107,10 +115,13 @@ export default {
             this.form.grade_id = 0;
             this.form.subject_id = 0;
         }
+      
+        
     }
 }
 </script>
 <style lang="scss">
+   
     #add-download-data-container {
         @import "base.scss";
         input,
@@ -137,4 +148,5 @@ export default {
     .sub-btn{
         width: 170px;
     }
+
 </style>

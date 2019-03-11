@@ -32,9 +32,11 @@
                     <span class="w80">创建时间:</span><span>实际售价</span>
                 </div>
             </div>
-            <Button type="default" ghost style="margin-top: 80px;">编辑</Button>
-            <Button type="default" ghost style="margin-top: 20px;">统计</Button>
-            <Button type="default" ghost style="margin-top: 130px;">删除</Button>
+            <div class="head-btn">
+                <Button type="default" ghost class="btn-content" style="top: 10%;">编辑</Button>
+                <Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>
+                <Button type="default" ghost class="btn-content" style="top: 50%;">删除</Button>
+            </div>
         </div>
     </div>
 </template>
@@ -108,6 +110,7 @@
     }
     .side-menu-for-project {
         padding: 27px 0;
+        height: 100%;
         .logo {
             margin-bottom: 40px;
             img {
@@ -190,6 +193,7 @@
         display: flex;
         flex-direction: column;
         padding: 35px;
+        height: calc(100% - 100px);
 
         .head-title{
             font-family: PingFangSC-Medium;
@@ -218,6 +222,17 @@
         width: 60px;
         justify-content: space-between;
         margin-right: 6px;
+    }
+    .head-btn{
+        position: relative;
+        flex: 1;
+        width: 170px;
+        padding-bottom: 40px;
+
+        .btn-content{
+            position: relative;
+            left: 0;
+        }
     }
     /deep/ .ivu-btn{
         width: 190px;

@@ -215,6 +215,7 @@
             },
             // 上传到oss上
             handleUploadFile(form_data, url, fileItem) {
+              console.log(form_data,'fffffff')
                 var vm = this;
                 axios({
                     method: 'POST',
