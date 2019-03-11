@@ -29,12 +29,12 @@
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
   import seeMixin from '../seeMixin'
-  import userModalMixin from '../userModalMixin'
+  import FormModalMixin from '../FormModalMixin'
 
   export default {
     name: "LecturerList",
     components: { FormModal, screen, see },
-    mixins: [seeMixin, userModalMixin],
+    mixins: [seeMixin, FormModalMixin],
     data (){
         return{
             modalTitle: '',
@@ -55,8 +55,8 @@
                 { type: 'textarea', name: '讲师介绍',  field: 'introduce' }
             ],
             rules:{
-                realname: [{ required: true, message: '讲师姓名', trigger: 'blur' } ],
-                introduce: [{ required: true, message: '讲师介绍', trigger: 'blur' } ]
+                realname: [{ required: true, message: '请输入讲师姓名', trigger: 'blur' } ],
+                introduce: [{ required: true, message: '请输入讲师介绍', trigger: 'blur' } ]
             },
             list: [
                {

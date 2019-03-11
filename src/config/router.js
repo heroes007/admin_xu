@@ -47,7 +47,7 @@ const OpenProduct = () => import('../views/ProductManage/OpenProduct/index')
 const MainProduct = () => import('../views/ProductManage/MainProduct/index')
 const ExchangeCode = () => import('../views/ExchangeCode/index')
 const UsageRecord = () => import('../views/ExchangeCode/UsageRecord/index')
-
+const MarkingHomework = () => import('../views/information/MarkingHomework/index')
 Vue.use(VueRouter);
 
 // 页面路由
@@ -103,10 +103,11 @@ const routes = [
       {
         path: 'exchange-code',
         name: 'exchange-code',
-        component: ExchangeCode,
+        component: ExchangeCode
       },
+      // 兑换码使用记录
       {
-        path: 'usage-record/:id',
+        path: ':id/usage-record',
         name: 'usage-record',
         component: UsageRecord 
       },
@@ -267,6 +268,12 @@ const routes = [
         path: 'open-product/online-course-chapter/:id',
         name: 'online-course-chapter',
         component: ManageOnlineCourseChapter
+      },
+      // 作业--批阅作业
+      {
+        path: 'open-product/:id/marking-homework',
+        name: 'marking-homework',
+        component: MarkingHomework 
       },
     ]
   },
