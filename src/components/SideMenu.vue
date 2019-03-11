@@ -261,9 +261,10 @@
     }
 
     /deep/ .ivu-menu-item, /deep/ .ivu-menu-submenu-title {
-        text-align: center;
+        text-align: left;
         color: #fff;
         margin: 10px;
+        padding-left: 68px;
     }
 
     /deep/ .ivu-menu-vertical.ivu-menu-light:after {

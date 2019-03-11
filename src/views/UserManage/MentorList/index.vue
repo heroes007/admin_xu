@@ -1,7 +1,7 @@
 <template>
    <div>
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <UserModal :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+        <FormModal :modal-text="true" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
 
         <screen :types="2" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
                     @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
@@ -11,15 +11,17 @@
 
 <script>
   import Tables from '../../../components/tables.vue'
-  import UserModal from '../../../components/UserModal.vue'
+  import FormModal from '../../../components/FormModal.vue'
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
   import details from './const'
   import seeMixin from '../seeMixin'
   import userModalMixin from '../userModalMixin'
+  import jurisdictionList from '../jurisdictionList'
+
   export default {
     name: "ManagementList",
-    components: { Tables, UserModal, screen, see },
+    components: { Tables, FormModal, screen, see },
     mixins: [seeMixin, userModalMixin],
     data (){
         return{
@@ -78,7 +80,7 @@
                 title: '操作',
                 width: 260,
                 slot: 'operation',
-                operation: ['查看', '编辑', '删除']
+                operation: [['查看','operation1'], ['编辑','operation2'], ['删除','operation3']],
             }],
             list: [
                 {
@@ -99,7 +101,7 @@
                 { type: 'input', name: '导师账号',  field: 'name' },
                 { type: 'input', name: '账号密码',  field: 'pass' },
                 { type: 'select', name: '管理权限', field: 'jurisdiction' ,
-                    selectList: [ 'jurisdiction' ], selectField: [ 'id','name' ]
+                    selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
                 }
             ],
             rules:{

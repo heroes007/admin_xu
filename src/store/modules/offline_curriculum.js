@@ -264,6 +264,7 @@ const mutations = {
                 break;
             }
         }
+        state.offline_curriculum_list = params.result;
        if(state.showLoading) state.showLoading = false;
     },
     [types.OFFLINE_CURRICULUM_ADDING](state, msg) {

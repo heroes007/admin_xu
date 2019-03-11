@@ -6,7 +6,7 @@
         <Select v-if="types == 4 || types == 5" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select2" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-        <Input v-if="types && types !== 6 && types !== 7" v-model="valueInput" :placeholder="placehodleInput" @on-change="inputChange" class="input">
+        <Input v-if="types && types !== 6 && types !== 7" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
         <div v-if="types == 5" class="money-student" @click="moneyStudent">
@@ -17,18 +17,19 @@
             <span class="all-content">{{sizeTitle1}}</span>
             <span class="all-num">{{sizeNum1}}</span>
         </div>
-        <div v-if="types ==3 || types ==5" class="money-size">
+        <div v-if="types ==3 || types ==5 || types ==8" class="money-size">
             <span class="all-content">{{sizeTitle2}}</span>
             <span class="all-num">{{sizeNum2}}</span>
         </div>
-        <div v-if="types == 6 || types == 7" class="back" @click="handleBack">
+        <div v-if="types == 6 || types == 7 || types == 8" class="back" @click="handleBack">
             <img class="back-img" src="../../static/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
         <div v-if="types == 6 || types == 7" class="title">
             <div>{{title}}</div>
         </div>
-        <Button v-if="types && types !== 5 && types !== 7" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
+        <Button v-if="types && types !== 5 && types !== 7 && types !== 8" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
+        <p class="code_name_text" v-if="types == 8">{{codeName}}</p>
     </div>
 </template>
 
@@ -46,7 +47,8 @@
       }
     },
     props:{
-      //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮； types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：视频列表； types=7：批阅作业列表
+      //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
+      // types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：视频列表； types=7：批阅作业列表 types=8 兑换码--使用记录
       types: {
         type: Number,
         required: true,
@@ -74,7 +76,14 @@
       },
       title:{
         type: String
-      }
+      },
+      placehodle: {
+         type: String
+      },
+      codeName: {
+         type: String,
+         default: ''
+      },
     },
     mounted() {
       if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
@@ -229,5 +238,12 @@
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+    }
+    .code_name_text{
+      font-family: PingFangSC-Regular;
+      font-size: 16px;
+      color: #474C63;
+      position: absolute;
+      right: 40px;
     }
 </style>

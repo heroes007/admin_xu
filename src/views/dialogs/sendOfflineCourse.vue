@@ -1,18 +1,18 @@
 <template>
-    <Modal title="发送线下课" :transfer=false :width=700 :show-close="false" v-model="sendOfflineCourse"
+    <Modal title="发送学期" :transfer=false :width=700 :show-close="false" v-model="sendOfflineCourse"
            @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
+            <Row slot="header" class='search-bar' type='flex' justify='center' align='middle'>
+                <Input placeholder="请输入用户名" v-model="searchData">
+                    <Select v-model="searchType" slot="prepend" placeholder="请选择">
+                        <Option label="ID" value="id"></Option>
+                        <Option label="昵称" value="nickname"></Option>.
+                        <Option label="手机号" value="phone"></Option>
+                    </Select>
+                    <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
+                </Input>
+            </Row>
             <Row slot="body">
-                <Row class='search-bar' type='flex' justify='center' align='middle'>
-                    <Input placeholder="请输入用户名" v-model="searchData">
-                        <Select v-model="searchType" slot="prepend" placeholder="请选择">
-                            <Option label="ID" value="id"></Option>
-                            <Option label="昵称" value="nickname"></Option>.
-                            <Option label="手机号" value="phone"></Option>
-                        </Select>
-                        <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
-                    </Input>
-                </Row>
                 <Table class="table" ref="table" :data="queryOfflineUserList" @on-select-all="handleSelectedAll"
                        :columns="courseColumns" style="width: 100%" @on-selection-change="handleSelectionChange">
                 </Table>
@@ -55,7 +55,7 @@
         checked: false,
         courseColumns: [
           {
-            title: 'ID',
+            title: '用户名',
             key: 'user_id'
           },
           {
@@ -64,16 +64,16 @@
             ...tooltips
           },
           {
-            title: '注册手机',
+            title: '手机号',
             key: 'phone',
             ...tooltips
           },
           {
-            title: '学科',
+            title: '科室',
             key: 'subject_name'
           },
           {
-            title: '学段',
+            title: '班级',
             key: 'grade_name',
           },
           {
@@ -216,6 +216,15 @@
     /deep/ .ivu-input-group-prepend {
         width: 20%
     }
+    /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
+    /deep/.ivu-modal-header-inner{
+    font-family: PingFangSC-Regular;
+    font-size: 20px !important;
+    color: #474C63 !important;
+    letter-spacing: 0;
+    }
+    /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
+    /deep/ .ivu-form-item{margin-bottom: 15px;}
     .btns {
         padding-top: 20px;
         padding-bottom: 20px;

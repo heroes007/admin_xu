@@ -3,7 +3,7 @@
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <screen :types="5" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
                 size-title2="付费学员" :size-num2="14"   @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes" @table-swtich="swtichChange" :column="columns1" :table-data="list" />
+        <Tables :is-serial=true @operation1="see"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
    </div>
 </template>
 
@@ -69,7 +69,7 @@
                 title: '操作',
                 width: 260,
                 slot: 'operation',
-                operation: ['查看'],
+                operation: [['查看','operation1']],
                 isSwitch: true, // true --> 启用 false --> 禁用
                 switchKey: 'switch_state'
             }],
@@ -95,12 +95,6 @@
             this.detailShow = true;
             this.tableRowData = details;
             console.log(row,rowIndex,'see',this.detailShow);
-        },
-        edit(row,rowIndex){
-            console.log(row,rowIndex);
-        },
-        deletes(row,rowIndex){
-            console.log(row,rowIndex);
         },
         swtichChange(row){
              console.log(row);

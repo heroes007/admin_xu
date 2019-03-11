@@ -12,7 +12,7 @@
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler'
                    class='data-list light-header' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter'
-                   :column-formatter-data='listColumnFormatterData'></data-list>
+                @statistics="statistics"   :column-formatter-data='listColumnFormatterData'></data-list>
         <div class='manage-online-course'></div>
     </div>
 </template>
@@ -135,6 +135,9 @@
           this.$store.dispatch('get_task_list', { task_category_id: this.selectCategory });
           this.isInited = true;
         }
+      },
+      statistics(index, row) {
+        console.log(row,'统计');
       },
       editHandler(index, row) {
         this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });

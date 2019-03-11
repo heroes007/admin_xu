@@ -56,6 +56,7 @@ body { background-color: #fff; height: 100%; }
 }
 .ivu-modal-header{
     background-color: #fff !important;
+    padding: 21px 0px
 }
 .ivu-modal-close .ivu-icon-ios-close,.ivu-modal-close .ivu-icon-ios-close:hover{
   color: #474C63!important

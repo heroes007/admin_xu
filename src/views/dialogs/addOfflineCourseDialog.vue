@@ -23,7 +23,7 @@
                             </Select>
                         </FormItem>
                         <FormItem label="课程类型" prop="type" required>
-                            <Select v-model="form.type" placeholder="请选择讲师">
+                            <Select v-model="form.type" placeholder="请选择课程类型">
                                 <Option label="讲座" value="1">讲座</Option>
                                 <Option label="实践" value="2">实践</Option>
                             </Select>
@@ -284,6 +284,15 @@
         width: 80%;
         margin-left: 10%
     }
+    /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
+    /deep/.ivu-modal-header-inner{
+    font-family: PingFangSC-Regular;
+    font-size: 20px !important;
+    color: #474C63 !important;
+    letter-spacing: 0;
+    }
+    /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
+    /deep/ .ivu-form-item{margin-bottom: 15px;}
 
     #add-offline-course-container {
         @import "base.scss";

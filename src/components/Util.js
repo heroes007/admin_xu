@@ -124,6 +124,11 @@ export const MenuList = [
     title: '平台管理',
     icon:'01.organ_gray'
   },
+  {
+    name: 'exchange-code',
+    title: '兑换码',
+    icon:'01.organ_gray'
+  },
   // {
   //   name: 'manage-project',
   //   title: '机构管理',

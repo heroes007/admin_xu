@@ -1,7 +1,7 @@
 <template>
    <div>
          <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-         <UserModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
 
         <screen :types="1" size-title1="管理总数" :size-num1="23" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
@@ -10,16 +10,17 @@
 
 <script>
   import Tables from '../../../components/tables.vue'
-  import UserModal from '../../../components/UserModal.vue'
+  import FormModal from '../../../components/FormModal.vue'
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
   import details from './const'
-  import { mapState } from 'vuex'
   import seeMixin from '../seeMixin'
   import userModalMixin from '../userModalMixin'
+  import jurisdictionList from '../jurisdictionList'
+
   export default {
     name: "ManagementList",
-    components: { Tables, UserModal, screen, see },
+    components: { Tables, FormModal, screen, see },
     mixins: [seeMixin, userModalMixin],
     data (){
         return{
@@ -56,7 +57,7 @@
                 title: '操作',
                 width: 260,
                 slot: 'operation',
-                operation: ['查看', '编辑', '删除']
+                operation: [['查看','operation1'], ['编辑','operation2'], ['删除','operation3']],
             }],
             list: [
                 {
@@ -75,7 +76,7 @@
                 { type: 'input', name: '管理账号',  field: 'nickname' },
                 { type: 'input', name: '账号密码',  field: 'pass' },
                 { type: 'select', name: '管理权限', field: 'jurisdiction' ,
-                    selectList: [ 'jurisdiction' ], selectField: [ 'id','name' ]
+                    selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
                 }
             ],
             rules:{
@@ -85,9 +86,6 @@
                 jurisdiction: [{ required: true, message: '请选择管理权限'} ],
             }
         }
-    },
-    computed: {
-     ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
     },
     methods: {
         see(row,rowIndex){
@@ -104,10 +102,10 @@
                 pass: '',
                 jurisdiction: ''
             }
-            // console.log(row,rowIndex);
+            console.log(row,rowIndex);
         },
         deletes(row,rowIndex){
-            // console.log(row,rowIndex);
+            console.log(row,rowIndex);
         },
         inputChange(val){
             console.log(val)

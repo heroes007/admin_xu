@@ -1,12 +1,16 @@
 <template>
   <Modal v-model="show" :title="detailData.name" :width="800" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
-    <Tables :is-serial=true @operation1="see" @operation2="edit"  :column="columns1" :table-data="list" />
+    <Tables :is-serial=true @operation1="edit" @operation2="deletes"  :column="columns1" :table-data="list" />
   </Modal>
 </template>
 
 <script>
 import Tables from  '../../components/tables'
+import { Dialog } from '../dialogs';
+import * as types from '../dialogs/types';
+import { mapState, mapActions } from 'vuex'
 export default {
+    mixins: [Dialog],
     components: { Tables },
     props:{
         showModal: {
@@ -18,6 +22,9 @@ export default {
           default: () => {}
         }
     },
+    ...mapState({
+        offline_curriculum_detail1: state => state.offline_curriculum.offline_curriculum_detail
+    }),
     data (){
         return{
             show: false,
@@ -45,7 +52,7 @@ export default {
                 title: '操作',
                 width: 150,
                 slot: 'operation',
-                operation: ['查看', '编辑']
+                operation: [['编辑','operation1'], ['删除','operation2']],
             }],
             list: [
                 {
@@ -60,24 +67,35 @@ export default {
     },
     watch:{
         showModal(_new){
-            this.show = _new
+            this.show = _new;
+            if(_new) {
+                // this.$store.dispatch('get_offline_curriculum_list', { offline_term_id: this.detailData.id })
+                // console.log(this.offline_curriculum_list);
+            }
         }
     },
     methods: {
+        ...mapActions([ 'delete_offline_curriculum']),
         closeModal(){
             this.show = false;
             this.$emit("close")
         },
-        see(row,rowIndex){
-            console.log(row,rowIndex);
-        },
         edit(row,rowIndex){
-            console.log(row,rowIndex);
-        //   this.get_offline_curriculum_detail({ index, row,
-        //     callback() {
-        //       vm.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row, index, data: vm.offline_curriculum_detail1 });
-        //     }
-        //   });
+            this.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row })
+            //   this.get_offline_curriculum_detail({ index, row,
+            //     callback() {
+            //       vm.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row, index, data: vm.offline_curriculum_detail1 });
+            //     }
+            //   });
+        },
+        deletes(row,index){
+            this.$Modal.confirm({
+            title: '提示',
+            content: '<p>确定要删除该课程吗!</p>',
+            onOk: () => {
+            //   this.delete_offline_curriculum({ index, row });
+            },
+          });
         }
     }
 }

@@ -6,7 +6,9 @@
                 <span slot="open">启用</span>
                 <span slot="close">禁用</span>
             </Switch>
-            <Button type="text" v-for="(t,i) in column.operation" :key="i" size="small" style="margin-right: 5px" @click="show(row,index,i)">{{t}}</Button>
+            <Button type="text" v-for="(t,i) in column.operation" :key="i" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+              {{handleBtnText(t,row,column)}}
+            </Button>
         </template>
     </Table>
 </div>
@@ -50,18 +52,8 @@
         })
         this.datas = d
       },
-      show(row,rowIndex,index) {
-        switch(index){
-        case 0:
-        this.$emit('operation1',row,rowIndex)
-        break;
-        case 1:
-        this.$emit('operation2',row,rowIndex)
-        break;
-        case 2:
-        this.$emit('operation3',row,rowIndex)
-        break;
-        }
+      show(row,rowIndex,params) {
+        this.$emit(params, row, rowIndex)
       },
       handleColumns(c){
         if(this.isSerial) c.unshift({ title: '序号', key: 'serial_number' })
@@ -74,6 +66,14 @@
       },
       change(row){
         this.$emit('table-swtich', row)
+      },
+      handleBtnText(t,r,c){
+        // operation_state -- 处理 兑换码使用记录页
+        // state
+        if(Array.isArray(t[0])){
+          if(c.operation_state && t[0][0] == '立即失效')  return c.operation_state && r.state ? t[0][0] : c.operation_state && r.state === 0 ?  t[0][1] : t[0]
+          return c.operation_state && r.use_state ? t[0][0] : c.operation_state && r.use_state === 0 ?  t[0][1] : t[0]
+        }else return t[0]
       }
     },
     mounted() {

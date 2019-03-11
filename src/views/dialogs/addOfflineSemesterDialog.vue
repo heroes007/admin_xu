@@ -1,35 +1,36 @@
 <template>
-    <Modal :transfer=false v-model="addOfflineSemesterDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
-           :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" :closable="true">
+    <Modal :transfer=false v-model="addOfflineSemesterDialog" :title="payload.type == 2 ? '编辑学期' : '添加学期'" @on-cancel="handleRemoveModal(remove)" size="auto"
+           :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" style="border-radius:6px !important" :closable="true">
+          
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
-                <Tabs type="line">
-                    <TabPane :label="payload.type == 2 ? '编辑学期' : '添加学期'">
-                        <Form ref="myForm1" :rules="rules1" :model="form1" :label-width="120">
+                <!-- <Tabs type="line"> -->
+                    <!-- <TabPane :label="payload.type == 2 ? '编辑学期' : '添加学期'"> -->
+                        <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="120">
                             <FormItem label="学期名称" prop="name1" required>
                                 <Input v-model="form1.name1" placeholder="请输入学期名称"></Input>
                             </FormItem>
-                            <FormItem label="学期阶段" prop="level1" required>
+                            <!-- <FormItem label="学期阶段" prop="level1" required>
                                 <Select v-model="form1.level1" placeholder="请选择学期阶段">
                                     <Option label="一阶" :value="0"></Option>
                                     <Option label="二阶" :value="1"></Option>
                                 </Select>
-                            </FormItem>
+                            </FormItem> -->
                             <FormItem label="开课日期" prop="stage1" required>
                                 <DatePicker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
                             </FormItem>
-                            <FormItem label="截止报名日期">
+                            <FormItem label="报名截止">
                                 <DatePicker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
                             </FormItem>
                             <FormItem label="学期描述" class="semester-description" prop="description1" required>
                                 <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description1"></Input>
                             </FormItem>
                             <div style="text-align: center">
-                                <Button type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
+                                <Button style="margin: 40px 227px" type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
                             </div>
                         </Form>
-                    </TabPane>
-                    <TabPane label="复制学期" v-if="payload.type == 1">
+                    <!-- </TabPane> -->
+                    <!-- <TabPane label="复制学期" v-if="payload.type == 1">
                         <Form ref="myForm2" :rules="rules2" :model="form2" :label-width="120">
                             <FormItem label="选择学期" prop="semester" required>
                                 <Select v-model="form2.semester" placeholder="请选择学期" @on-change="handleSelectItem">
@@ -55,8 +56,8 @@
                                 <Button type="primary" class="sub-btn" @click="handleSave('myForm2')">保存</Button>
                             </div>
                         </Form>
-                    </TabPane>
-                </Tabs>
+                    </TabPane> -->
+                <!-- </Tabs> -->
             </Row>
         </base-input>
     </Modal>
@@ -289,6 +290,15 @@
     /deep/ textarea.ivu-input{
         resize: none;
     }
+    /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
+    /deep/.ivu-modal-header-inner{
+    font-family: PingFangSC-Regular;
+    font-size: 20px !important;
+    color: #474C63 !important;
+    letter-spacing: 0;
+    }
+    /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
+    /deep/ .ivu-form-item{margin-bottom: 15px;}
     #add-offline-semester-container {
         @import "base.scss";
         input,

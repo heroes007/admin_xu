@@ -45,6 +45,8 @@ const ProductManage = () => import('../views/ProductManage/index')
 const SystemManage = () => import('../views/SystemManage/index')
 const OpenProduct = () => import('../views/ProductManage/OpenProduct/index')
 const MainProduct = () => import('../views/ProductManage/MainProduct/index')
+const ExchangeCode = () => import('../views/ExchangeCode/index')
+const UsageRecord = () => import('../views/ExchangeCode/UsageRecord/index')
 
 Vue.use(VueRouter);
 
@@ -97,6 +99,16 @@ const routes = [
         path: 'system-manage',
         name: 'system-manage',
         component: SystemManage
+      },
+      {
+        path: 'exchange-code',
+        name: 'exchange-code',
+        component: ExchangeCode,
+      },
+      {
+        path: 'usage-record/:id',
+        name: 'usage-record',
+        component: UsageRecord 
       },
       // {
       //   name:'add-homework',

@@ -52,7 +52,7 @@ let d = [
     groupBtn: [
       {
         text: '统计',
-        param: 'edit'
+        param: 'statistics'
       }, 
       {
         text: '批阅',
