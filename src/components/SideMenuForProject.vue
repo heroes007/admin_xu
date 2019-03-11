@@ -33,13 +33,10 @@
                 </div>
             </div>
             <div class="head-btn">
-                <Button type="default" ghost class="btn-content" style="top: 22.8%;">编辑</Button>
-                <Button type="default" ghost class="btn-content" style="top: 50.4%;">统计</Button>
-                <Button type="default" ghost class="btn-content" style="top: 100%;">删除</Button>
+                <Button type="default" ghost class="btn-content" style="top: 10%;">编辑</Button>
+                <Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>
+                <Button type="default" ghost class="btn-content" style="top: 50%;">删除</Button>
             </div>
-            <!--<Button type="default" ghost style="margin-top: 22.8%;">编辑</Button>-->
-            <!--<Button type="default" ghost style="margin-top: 5.6%;">统计</Button>-->
-            <!--<Button type="default" ghost style="margin-top: 37.1%;">删除</Button>-->
         </div>
     </div>
 </template>
@@ -230,9 +227,10 @@
         position: relative;
         flex: 1;
         width: 170px;
+        padding-bottom: 40px;
 
         .btn-content{
-            position: absolute;
+            position: relative;
             left: 0;
         }
     }
