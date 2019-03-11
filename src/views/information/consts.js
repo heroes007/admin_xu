@@ -49,6 +49,7 @@ let d = [
   {
     label: '操作',
     width: 250,
+    align:"center",
     groupBtn: [
       {
         text: '统计',

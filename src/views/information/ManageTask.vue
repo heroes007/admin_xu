@@ -113,7 +113,7 @@
     methods: {
       ...mapActions([ 'delete_task' ]),
       addTaskCategory() {
-        this.handleSelModal(ADD_TASK_CATEGORY, { orderby: this.categoryList.length + 1 });
+        this.handleSelModal(ADD_TASK_CATEGORY);
       },
       manageEdit(v) {
         this.showClose = v;
