@@ -1,11 +1,11 @@
 <template>
     <Modal :transfer=false title="添加测验" v-model="addTestContentDialog" :footer-hide="true"
-           @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" width="920">
-        <base-input @closedialog="handleClose" :baseInputWidth="900">
+           @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" width="800">
+        <base-input @closedialog="handleClose">
             <Row slot="body">
-                <Form :inline="true" :model="formInline1" class="row1-test-form" :label-width="80">
-                    <FormItem label="测验名称">
-                        <Input v-model="formInline1.title" placeholder="请输入测验的名称" :disabled='isEdit'></Input>
+                <Form :inline="true" :model="formInline1" class="row1-test-form" label-position="left">
+                    <FormItem label="测验名称" class="form-title">
+                        <Input class="formInput" v-model="formInline1.title" placeholder="请输入测验的名称" :disabled='isEdit'></Input>
                     </FormItem>
                     <!--<FormItem label="测验权限">-->
                         <!--<Select v-model="formInline1.video_test_roles" placeholder="选择测验权限" :disabled='isEdit' multiple>-->
@@ -17,42 +17,43 @@
                         <!--<Button @click="handleEditTest" class="edit-test-btn" v-if='isEdit'>编辑测验</Button>-->
                     <!--</FormItem>-->
                 </Form>
-                <Form :inline="true" :model="formInline2" class="row2-test-form" :label-width="80">
-                    <Row class="row2-top">
-                        <Col :span="12" class="col2-left">
-                            <FormItem label="题干名称">
-                                <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body">
-                                </Input>
-                            </FormItem>
-                            <FormItem label="选项数量">
-                                <Select v-model="formInline2.select_count" placeholder="选项数量">
-                                    <Option label="2" value="2"></Option>
-                                    <Option label="3" value="3"></Option>
-                                    <Option label="4" value="4"></Option>
-                                    <Option label="5" value="5"></Option>
-                                    <Option label="6" value="6"></Option>
-                                </Select>
-                            </FormItem>
-                            <FormItem label="排列序号">
-                                <InputNumber v-model="formInline2.orderby" :min="1"></InputNumber>
-                            </FormItem>
-                        </Col>
-                        <Col :span="12" class="col2-right">
-                            <FormItem v-for='item in answerList' :key="item.id">
-                                <Col :span="6">
-                                    <Checkbox v-model="item.answer">{{item.name}}</Checkbox>
-                                </Col>
-                                <Col :span="18">
-                                    <Input placeholder="请输入内容" v-model="item.desc"></Input>
-                                </Col>
-                            </FormItem>
-                            <!-- <span style="clear: left"></span> -->
-                            <FormItem class="save-test-item">
-                                <Button @click="cancelSaveHandler" class="cancel-test-item-btn">取消</Button>
-                                <Button type="primary" @click="saveTestDetailHandler" class="save-test-item-btn">保存题干</Button>
-                            </FormItem>
-                        </Col>
-                    </Row>
+                <Form :inline="true" :model="formInline2" class="row2-test-form">
+                    <FormItem label="题干名称">
+                        <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body" class="input-text"></Input>
+                        <div class="route-link" ref="formInput">
+                            <div class="route-data" v-for="(item, index) in accessoryList" :key="index">
+                                <span style="cursor: pointer" @click="handleModel(item)">{{item.name}}</span>
+                            </div>
+                        </div>
+                        <div class="upload-list">
+                            <div class="upload-title">* 只能上传 jpg/png/mp4/mov/avi 文件，且不超过2m</div>
+                            <uploadBtn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
+                        </div>
+                    </FormItem>
+                    <FormItem label="选项数量">
+                        <Select v-model="formInline2.select_count" placeholder="选项数量" style="width: 260px;">
+                            <Option label="2" value="2"></Option>
+                            <Option label="3" value="3"></Option>
+                            <Option label="4" value="4"></Option>
+                            <Option label="5" value="5"></Option>
+                            <Option label="6" value="6"></Option>
+                        </Select>
+                    </FormItem>
+                    <!--<FormItem label="排列序号">-->
+                        <!--<InputNumber v-model="formInline2.orderby" :min="1"></InputNumber>-->
+                    <!--</FormItem>-->
+                    <FormItem v-for='(item, index) in answerList' :key="item.id">
+                        <div class="answer">
+                            <div class="answer-title"><span v-if="index == 0">选项结果</span></div>
+                            <Checkbox class="answer-checkbox" v-model="item.answer">{{item.name}}</Checkbox>
+                            <Input placeholder="请输入内容" v-model="item.desc"></Input>
+                        </div>
+                    </FormItem>
+                    <!-- <span style="clear: left"></span> -->
+                    <FormItem class="save-test-item">
+                        <!--<Button @click="cancelSaveHandler" class="cancel-test-item-btn">取消</Button>-->
+                        <Button type="primary" @click="saveTestDetailHandler" class="save-test-item-btn">保存</Button>
+                    </FormItem>
                     <Row class="quetion-list">
                         <data-list @edit='editHandler' @delete='deleteHandler' class='data-list light-header' :table-data='dataList'
                                    :header-data='dataHeader' :column-formatter='listColumnFormatter' :is-stripe='false'></data-list>
@@ -60,11 +61,18 @@
                 </Form>
             </Row>
         </base-input>
+        <Modal v-model="modalAccessory" :title="accessoryName" :mask-closable="false" :footer-hide="true" :closable="true" @on-cancel="closeAccessory" width="600">
+            <div class="accessory">
+                <img class="maxw" v-if="accessoryImg" :src="accessoryImg" alt="">
+                <video class="maxw" v-if="accessoryVideo" :src="accessoryVideo" controls autoplay></video>
+            </div>
+        </Modal>
     </Modal>
 </template>
 
 <script>
   import BaseInput from '../../components/BaseInput'
+  import uploadBtn from '../../components/UploadButton'
   import BaseList from '../../components/BaseList'
   import { get_detail, get_test_detail_list, add_test_detail, update_test_detail, delete_test_detail } from '../../api/modules/tools_video_test'
   import { RemoveModal } from './mixins'
@@ -80,7 +88,8 @@
     },
     components: {
       'base-input': BaseInput,
-      'data-list': BaseList
+      'data-list': BaseList,
+      uploadBtn
     },
     data() {
       return {
@@ -104,7 +113,12 @@
           content: ''
         },
         dataList: [],
-        isEdit: false
+        isEdit: false,
+        accessoryList: [],
+        modalAccessory: false,
+        accessoryImg: '',
+        accessoryVideo: '',
+        accessoryName: ''
       }
     },
     watch: {
@@ -188,6 +202,24 @@
       }
     },
     methods: {
+      uploadImg(val){
+        this.accessoryList.push(val)
+      },
+      handleModel(item){
+        console.log(item.name.split('.')[item.name.split('.').length-1])
+        if(item.name.split('.')[item.name.split('.').length-1] == 'jpg' || item.name.split('.')[item.name.split('.').length-1] == 'png'){
+          this.accessoryImg = item.url
+        }else{
+          this.accessoryVideo = item.url
+        }
+        this.accessoryName = item.name
+        this.modalAccessory = true
+      },
+      closeAccessory(){
+        this.accessoryImg = ''
+        this.accessoryVideo = ''
+        this.accessoryName = ''
+      },
       setSelectCount(val) {
         var labelList = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
         this.formInline2.answerList = [];
@@ -233,20 +265,24 @@
         this.clearDetail();
       },
       saveTestDetailHandler() {
-        if (this.formInline1.video_test_id === 0) {
-          this.$Modal.info({
-            title: '提示',
-            content: '请先保存测验，再添加题干。'
-          });
-        } else if (this.formInline1.video_test_roles.length === 0) {
-          this.$Modal.info({
-            title: '提示',
-            content: '请选择测验权限',
-            onOk: () => {
-              action => { }
-            },
-          });
-        } else {
+        // if (this.formInline1.video_test_id === 0) {
+        //   this.$Modal.info({
+        //     title: '提示',
+        //     content: '请先保存测验，再添加题干。'
+        //   });
+        // } else if (this.formInline1.video_test_roles.length === 0) {
+        //   this.$Modal.info({
+        //     title: '提示',
+        //     content: '请选择测验权限',
+        //     onOk: () => {
+        //       action => { }
+        //     },
+        //   });
+        // } else {
+        new Promise((resolve, reject)=>{
+          this.$store.dispatch('add_online_curriculum_test', this.formInline1)
+          resolve()
+        }).then(res=>{
           this.formInline2.result = [];
           for (var i = 0; i < this.formInline2.answerList.length; i++) {
             if (this.formInline2.answerList[i].answer) {
@@ -295,7 +331,10 @@
               }
             })
           }
-        }
+          this.cancelSaveHandler()
+        })
+
+        // }
       },
       clearDetail() {
         this.formInline2.video_test_detail_id = 0;
@@ -335,42 +374,91 @@
     }
   }
 </script>
-<style lang="scss">
-    #add-question-container {
-        @import "base.scss";
-        input,
-        textarea {
-            resize: none;
-            outline: none;
-        }
-
-        .close-dialog-panel {
-            position: absolute;
-            top: -40px;
-            right: 13.5px;
-            z-index: 99999;
-            font-size: 30px;
-            cursor: pointer;
-
-            &:before {
-                // color: #fff;
-                color: #757575;
-            }
-        }
+<style lang="scss" scoped>
+    .row1-test-form{
+        background: #F0F0F7;
+        padding: 0 30px;
     }
-    .row1-test-form {
+    .form-title{
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        height: 50px;
     }
-    .row2-test-form {
-        background-color: #FBFBFB;
-        padding-top: 40px;
+    /deep/ .ivu-form-item{
+        display: flex !important;
+        width: 100%;
+    }
+    .formInput{
+        width: 630px;
+    }
+    .input-text{
+        width: 630px;
+    }
+    /deep/ textarea.ivu-input{
+        resize: none;
+    }
+    /deep/ .ivu-form-item-label{
+        text-align: left;
+    }
+    .row2-test-form{
+        padding: 0 30px;
+        margin-top: 30px;
+    }
+    .upload-list{
+        display: flex;
+        margin-top: 15px;
 
-        .col2-left {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+        .upload-title{
+            font-family: PingFangSC-Regular;
+            font-size: 14px;
+            color: #F54802;
+            letter-spacing: 0;
         }
+        .upload-img{
+            margin-left: 160px;
+        }
+        .upload-video{
+            margin-left: 10px;
+        }
+    }
+    .answer{
+        display: flex;
+        width: 700px;
+
+        .answer-title{
+            width: 80px;
+            text-align: left;
+            font-family: PingFangSC-Regular;
+            font-size: 14px;
+            color: #474C63;
+            letter-spacing: 0;
+        }
+        .answer-checkbox{
+            width: 40px;
+        }
+    }
+    .save-test-item{
+        display: flex;
+        justify-content: center;
+
+        .save-test-item-btn{
+            width: 200px;
+        }
+    }
+    .route-link{
+        width: 630px;
+        text-align: left;
+
+        .route-data{
+            color: #4098ff;
+            margin: 0 10px;
+        }
+    }
+    .accessory{
+        text-align: center;
+        width: 100%;
+    }
+    .maxw{
+        max-width: 100%;
     }
 </style>

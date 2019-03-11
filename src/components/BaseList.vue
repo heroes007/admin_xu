@@ -263,7 +263,7 @@
       handleHeaderData() {
         this.headerData.map((it) => {
           it.title = it.label
-          it.align = 'center'
+          // it.align = 'center'
           if (it.prop) it.key = it.prop || ''
           if (it.minwidth) it.minWidth = it.minwidth
           if (!it.isFree && it.groupBtn) {

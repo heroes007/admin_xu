@@ -54,13 +54,8 @@
                     method: 'POST',
                     url: url,
                     data: formData,
-                      onUploadProgress: function (progressEvent) {
-                        var progress = Math.round(progressEvent.lengthComputable ? progressEvent.loaded *
-                          100 / progressEvent.total : 0);
-                        vm.percentage = progress;
-                      },
                 }).then(res => {
-                    this.resultUrl = url + '/' + this.resultUrl;
+                  this.resultUrl = url + '/' + this.resultUrl;
                     this.$emit('uploadcomplete',{name: this.fileName, url: this.resultUrl});
                     var f = this.$refs.input;
                     if(f.value){
@@ -86,9 +81,7 @@
                         formData.append('file', fileItem);
                         this.handleUploadFile(
                                 formData,
-                                encodeURI(
-                                       this.host
-                                )
+                                encodeURI(this.host)
                         );
                     }
                 })
@@ -98,5 +91,4 @@
 
         }
     }
-
 </script>

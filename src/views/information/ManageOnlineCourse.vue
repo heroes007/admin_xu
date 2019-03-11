@@ -41,7 +41,8 @@
         {
           prop: 'title',
           label: '课程名称',
-          minWidth: 200
+          minWidth: 200,
+          align: 'left'
         },
         {
           prop: 'teacher_name',
@@ -69,7 +70,8 @@
         }, {
           label: '操作',
           width: 350,
-          groupBtn: [{
+          align: 'center',
+            groupBtn: [{
             text: '添加章节',
             param: 'editChapter'
           }, {
