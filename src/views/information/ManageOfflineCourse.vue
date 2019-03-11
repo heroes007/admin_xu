@@ -56,8 +56,9 @@
         }, {
           prop: 'name',
           label: '学期名称',
+          align: 'left',
           minWidth: 100
-        }, 
+        },
         {
           prop: 'curriculum_count',
           label: '课程数量',
@@ -77,7 +78,7 @@
             var end_date = doTimeFormat(data.end_time);
             return open_date + '至' + end_date;
           })
-        },  
+        },
         {
           prop: '',
           label: '报名截止日期',
@@ -88,12 +89,12 @@
             var end_date = doTimeFormat(data.end_time);
             return  end_date;
           })
-        }, 
+        },
         // {
         //   prop: 'create_time',
         //   label: '创建时间',
         //   width: 100
-        // }, 
+        // },
         {
           label: '操作',
           width: 650,
@@ -101,11 +102,11 @@
             {
             text: '查看',
             param: 'detail'
-          }, 
+          },
             {
             text: '编辑',
             param: 'edit'
-          }, 
+          },
           {
             text: '复制',
             param: 'copy'
@@ -113,7 +114,7 @@
           // {
           //   text: '回执管理',
           //   param: 'manageSignup'
-          // }, 
+          // },
           // {
           //   //   text: '发送线下课',
           //   //   param: 'sendOfflineCourse',
@@ -123,7 +124,7 @@
           //   onText: '启用',
           //   offText: '停用',
           //   actionName: 'change_offline_term_valid'
-          // }, 
+          // },
           {
             text: '发送学期',
             param: 'sendOfflineCourse',

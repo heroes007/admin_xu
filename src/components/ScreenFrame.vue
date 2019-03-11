@@ -1,12 +1,12 @@
 <template>
-    <div class="screen" :style="types == 4 ? backgroundColor:''">
-        <Select v-if="types !== 1 && types && types !== 6 && types !== 7" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
+    <div class="screen" :style="(types == 4 || types == 8 || types == 9) ? backgroundColor:''">
+        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select1" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
         <Select v-if="types == 4 || types == 5" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select2" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-        <Input v-if="types && types !== 6 && types !== 7" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
+        <Input v-if="types && types !== 6 && types !== 7 && types !== 9" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
         <div v-if="types == 5" class="money-student" @click="moneyStudent">
@@ -21,14 +21,14 @@
             <span class="all-content">{{sizeTitle2}}</span>
             <span class="all-num">{{sizeNum2}}</span>
         </div>
-        <div v-if="types == 6 || types == 7 || types == 8" class="back" @click="handleBack">
+        <div v-if="types == 6 || types == 7 || types == 8 || types == 9" class="back" @click="handleBack">
             <img class="back-img" src="../../static/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
-        <div v-if="types == 6 || types == 7" class="title">
+        <div v-if="types == 6 || types == 7 || types == 9" class="title">
             <div>{{title}}</div>
         </div>
-        <Button v-if="types && types !== 5 && types !== 7 && types !== 8" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
+        <Button v-if="types && types !== 5 && types !== 7 && types !== 8 && types !== 9" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
         <p class="code_name_text" v-if="types == 8">{{codeName}}</p>
     </div>
 </template>

@@ -38,6 +38,9 @@
                 </FormItem>
            </div>
         </Form>
+        <div class="form-item-other">
+            <slot name="form-other"></slot>
+        </div>
         <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p>
         <div class="foot-btn">
              <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
@@ -242,5 +245,6 @@ export default {
 /deep/ .ivu-switch-inner{left: 36px ;}
 /deep/ .ivu-switch-checked .ivu-switch-inner{ left: 12px;}
 /deep/ .ivu-switch-large.ivu-switch-checked:after{left: 48px;}
+.form-item-other {padding-left: 30px;}
 </style>
 

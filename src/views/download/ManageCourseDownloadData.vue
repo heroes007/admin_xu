@@ -76,20 +76,21 @@
       dataHeader() {
         return [
           {
-            sort:true,
+            sort: true,
             label: '序号',
-            width:50
+            width: 100
           },
           {
             prop: 'name',
             label: '资料名称',
+            align: 'left',
             width: 500
-          }, 
+          },
           // {
           //   prop: 'download_url',
           //   label: '下载链接',
           //   width: 700
-          // }, 
+          // },
           {
             label: '绑定课程',
             prop: 'pre_curriculum',
@@ -110,7 +111,7 @@
             //   offText: '停用',
             //   disableText: '失效',
             //   actionName: 'change_public_download_data_valid'
-            // }, 
+            // },
             {
               text: '下载',
               prop:'download_url',
@@ -166,7 +167,7 @@
       },
       downloadMsg(row){
         console.log(this.dataList);
-        
+
           // window.open(this.dataList[row].download_url)
       }
     },
@@ -188,5 +189,5 @@
             }
         }
     }
-  
+
 </style>

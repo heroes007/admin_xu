@@ -1,5 +1,20 @@
 <template>
     <div class='manage-task'>
+        <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" >
+          <div slot="form-other">
+            <Form >
+              <FormItem label="作业描述">
+                <text-editor ref='content_editor' :content='contentData' />
+              </FormItem>
+              <FormItem  label="上传附件" >
+              <file-uploader :filters="dataFilters" maxFileCount="1"
+                          :maxFileSize="30000"  @uploadComplete="uploadComplete"
+                          bucket="dscj-static-file" :dir='getDir()'/>
+              </FormItem>
+            </Form>
+          </div>
+        </FormModal>
+
         <!-- <header-component title="任务包" :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" /> -->
         <screen :types="2" sizeTitle1="作业总数" :sizeNum1="courseNums" btnName="添加作业" @inputChange="manageEdit" @handleClick="addTaskCategory"/>
         <!-- <div class="category-list">
@@ -11,7 +26,7 @@
         </div> -->
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler'
                    class='data-list light-header' :table-data='dataList'
-                   :header-data='dataHeader' :column-formatter='listColumnFormatter'
+                 @marking="marking"  :header-data='dataHeader' :column-formatter='listColumnFormatter'
                 @statistics="statistics"   :column-formatter-data='listColumnFormatterData'></data-list>
         <div class='manage-online-course'></div>
     </div>
@@ -24,13 +39,17 @@
   import { Dialog } from '../dialogs'
   import { ADD_TASK_CATEGORY, ADD_TASK, NOTIFICATION, MANUL_ACTIVE } from '../dialogs/types'
   import { doTimeFormat } from '../../components/Util'
-  import { mapActions } from 'vuex'
+  import { mapActions,mapState } from 'vuex'
   import { Config } from '../../config/base'
   import { taskHeadData } from './consts'
   import screen from '../../components/ScreenFrame'
+  import FormModal from '../../components/FormModal'
+  import FormModalMixin from '../UserManage/FormModalMixin'
+  import Editor from '../../components/Editor'
+  import Uploader from '../../components/Upload'
   export default {
-    mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem, screen },
+    mixins: [Dialog,FormModalMixin],
+    components: { 'header-component': Header, 'data-list': BaseList, 'category-item': TaskCategoryItem, screen, FormModal ,'text-editor': Editor,'file-uploader': Uploader},
     data() {
       return {
         dirty: false,
@@ -39,7 +58,26 @@
         selectedType: 1,
         isInited: false,
         showClose: false,
-        courseNums:12
+        courseNums:12,
+        show: false,
+        modalTitle: '',
+        tableRow: {},
+        tableRowData: {},
+        formList: [
+            { type: 'input', name: '作业名称',  field: 'realname'},
+            { type: 'select', name: '作业类型', field: 'jurisdiction' ,
+                selectList: [ {id: 1, name: '线上作业'},{id: 0, name: '线下作业'} ], selectField: [ 'id','name' ]
+            },
+            { type: 'select', name: '绑定课程', field: 'binding_course' ,
+                selectList: [ {id: 1, name: '天涯'},{id: 2, name: '天下'} ], selectField: [ 'id','name' ]
+            }
+        ],
+        rules:{
+            realname: [{ required: true, message: '请输入作业名称', trigger: 'blur' } ],
+            jurisdiction: [{ required: true, message: '请选择作业类型'} ],
+            binding_course: [{ required: true, message: '请选择绑定课程'} ]
+        },
+        contentData:''
       }
     },
     computed: {
@@ -93,6 +131,12 @@
       gradeList() {
         return this.$store.state.grade.grade_list;
       },
+       ...mapState({
+              dataFilters(){
+            var str = ['doc','pdf','zip'];
+            return str;
+            }
+        })
     },
     watch: {
       // isLoading(val) {
@@ -113,7 +157,9 @@
     methods: {
       ...mapActions([ 'delete_task' ]),
       addTaskCategory() {
-        this.handleSelModal(ADD_TASK_CATEGORY);
+        this.show = true
+        this.modalTitle = "添加作业"
+        // this.handleSelModal(ADD_TASK_CATEGORY, { orderby: this.categoryList.length + 1 });
       },
       manageEdit(v) {
         this.showClose = v;
@@ -139,8 +185,15 @@
       statistics(index, row) {
         console.log(row,'统计');
       },
+      marking(index, row) {
+        this.$router.replace({path: `/product/open-product/${row.id}/marking-homework/`})
+        console.log(row,'marking');
+        localStorage.setItem('MarkingHomework',JSON.stringify(row))
+      },
       editHandler(index, row) {
-        this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
+        this.show = true;
+        this.modalTitle = '编辑作业';
+        // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
       },
       deleteHandler(index, row) {
         var vm = this;
@@ -180,7 +233,14 @@
             }
           }
         }
-      }
+      },
+      uploadComplete(id,result) {
+            this.form.download_url = result.url;
+        },
+      getDir() {
+        if(this.payload === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
+        return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
+      },
     },
     mounted() {
       var vm = this;

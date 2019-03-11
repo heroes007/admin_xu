@@ -13,11 +13,11 @@
   import FormModal from '../../components/FormModal.vue'
   import screen from '../../components/ScreenFrame'
   import { mapState } from 'vuex'
-  import userModalMixin from '../UserManage/userModalMixin'
+  import FormModalMixin from '../UserManage/FormModalMixin'
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen },
-    mixins: [userModalMixin],
+    mixins: [FormModalMixin],
     data (){
         return{
             show: false,
@@ -65,13 +65,14 @@
             },
             {
                 title: '状态',
-                key: 'state',
+                key: 'state1',
             },
             {
                 title: '操作',
                 width: 320,
                 slot: 'operation',
-                operation: [['批量下载','operation1'], ['编辑','operation2'], ['使用记录','operation3'], ['立即失效','operation4']],
+                operation_state: true,
+                operation: [['批量下载','operation1'], ['编辑','operation2'], ['使用记录','operation3'], [['立即失效','立即生效'],'operation4']],
             }],
             list: [
                 {
@@ -83,7 +84,19 @@
                     "create_time": "2019/01/12 21:34",
                     "already_used": 17,
                     failure_time: "2019/01/15 21:34",
-                    state: '生效中',
+                    state: 1,
+                    isswitch: false,
+                },
+                {
+                    "id": 13186,
+                    jurisdiction: "培训",
+                    "realname": "王晓东",
+                    "product": "浙江全科医生培训",
+                    "num": 1000,
+                    "create_time": "2019/01/12 21:34",
+                    "already_used": 17,
+                    failure_time: "2019/01/15 21:34",
+                    state: 0,
                     isswitch: false,
                 }
             ],
@@ -117,7 +130,7 @@
             console.log(row,rowIndex,'batchDownload');
         },
         useRecords(row,rowIndex){
-            this.$router.replace({path: `/dashboard/usage-record/${row.id}`})
+            this.$router.replace({path: `/dashboard/${row.id}/usage-record/`})
             console.log(row,rowIndex,'useRecords');
             localStorage.setItem('useRecords',JSON.stringify(row))
         },
@@ -155,9 +168,15 @@
             this.formList[3].disable = false
             this.tableRow = this.tableRow1
             console.log('open modal')
+        },
+        handleList(){
+            this.list.map((it) => {
+                it.state1 = it.state ? '生效中' : '已失效'
+            })
         }
     },
     mounted() {
+         this.handleList()
          this.tableRow = this.tableRow1
     }
   }
