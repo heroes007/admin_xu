@@ -13,7 +13,6 @@
             <TabPane label="资料" name="course">
                 <course/>
             </TabPane>
-
             <TabPane label="证书" name="houner">
                 <houner/>
             </TabPane>

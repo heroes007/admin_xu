@@ -263,7 +263,7 @@
       handleHeaderData() {
         this.headerData.map((it) => {
           it.title = it.label
-          // it.align = 'center'
+          it.align && it.align == 'left' ? it.align = 'left' : it.align = 'center'
           if (it.prop) it.key = it.prop || ''
           if (it.minwidth) it.minWidth = it.minwidth
           if (!it.isFree && it.groupBtn) {
@@ -275,7 +275,7 @@
           if (it.sort) {
             it.type = 'index'
             it.title = this.getHeaderLabel(it)
-            it.width = 65
+            it.width = 100
           }
           if (it.useCombo && it.key === 'pre_curriculum') it.width = 300
           if (it.isFree || !it.groupBtn && !it.selection && !it.sort && !it.listExpand && !it.badge) {
@@ -535,12 +535,12 @@
         outline: none
     }
 
-      /deep/.ivu-btn-text{
-  font-family: PingFangSC-Medium;
-  font-size: 16px;
-  color: #4098FF;
-  letter-spacing: 0;
-}
+    /deep/ .ivu-btn-text {
+        font-family: PingFangSC-Medium;
+        font-size: 16px;
+        color: #4098FF;
+        letter-spacing: 0;
+    }
 
     /deep/ .ivu-table-cell-ellipsis > div {
         display: inline-block;
