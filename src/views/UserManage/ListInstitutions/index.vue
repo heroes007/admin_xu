@@ -15,12 +15,12 @@
   import see from '../../../components/SeeInfo.vue'
   import details from './const'
   import seeMixin from '../seeMixin'
-  import userModalMixin from '../userModalMixin'
+  import FormModalMixin from '../FormModalMixin'
   import jurisdictionList from '../jurisdictionList'
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen, see },
-    mixins: [seeMixin, userModalMixin],
+    mixins: [seeMixin, FormModalMixin],
     data (){
         return{
             modalTitle: '',

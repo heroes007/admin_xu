@@ -33,6 +33,7 @@
             {
                 title: '兑换码',
                 key: 'realname',
+                align: 'left'
             },
             {
                 title: '是否使用',
