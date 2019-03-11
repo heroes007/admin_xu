@@ -166,19 +166,19 @@
         });
       },
       downloadMsg(row){
-        console.log(this.dataList);
-
-          // window.open(this.dataList[row].download_url)
+        // window.open(this.dataList[row].download_url)
       }
     },
     mounted() {
+      setTimeout(()=>{
+        console.log(this.dataList,'this.dataList');
+      },1000)
       this.get_online_curriculum_list({project_id: this.projectId});
       this.get_curriculum_donwload_data_list({project_id: this.projectId});
     }
   }
 </script>
 <style scope lang='scss'>
-
     .manage-course-download-data {
         .data-list {
             .base-list-row {

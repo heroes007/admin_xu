@@ -23,7 +23,7 @@
 <script>
   import sideMenu from '../../../components/SideMenuForProject'
   import online from '../../information/ManageOnlineCourse'
-  import offline from '../../information/ManageOfflineCourse'
+  import offline from '../../information/ManageOfflineList'
   import task from '../../information/ManageTask'
   import course from '../../download/ManageCourseDownloadData'
   import houner from '../../information/ManageHouner'

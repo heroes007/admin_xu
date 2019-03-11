@@ -115,3 +115,21 @@ body { background-color: #fff; height: 100%; }
 .ivu-table th{
   background: #fff !important;
 }
+.ivu-table{
+    font-size: 16px !important;
+}
+.ivu-btn{
+    font-size: 16px !important;
+}
+.ivu-btn{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.ivu-btn-text{
+    display: inline-block !important;
+}
+textarea.ivu-input{
+    resize: none;
+}

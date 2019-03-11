@@ -261,6 +261,9 @@
         return this.rowClassName
       },
       handleHeaderData() {
+        if(this.headerData[1].label == '资料名称'){
+          console.log(this.headerData,'123123')
+        }
         this.headerData.map((it) => {
           it.title = it.label
           it.align && it.align == 'left' ? it.align = 'left' : it.align = 'center'
@@ -505,6 +508,9 @@
 </script>
 
 <style lang='scss' scoped>
+    /deep/ .ivu-table{
+        font-size: 16px !important;
+    }
     /deep/ .ivu-icon-ios-trash-outline {
         font-size: 18px
     }
@@ -558,7 +564,7 @@
     }
 
     /deep/ th, td > .ivu-table-cell > div > span {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     /deep/ .ivu-table th {
@@ -566,7 +572,7 @@
     }
 
     /deep/ .ivu-tooltip-rel {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     .base-list-container {
@@ -604,7 +610,7 @@
                         .cell {
                             background-color: #ffffff;
                             font-weight: 400;
-                            font-size: 14px;
+                            /*font-size: 14px;*/
                             color: #757575;
                             letter-spacing: 0;
                         }
@@ -615,7 +621,7 @@
 
         .base-list-row {
             .cell {
-                font-size: 14px;
+                /*font-size: 14px;*/
                 color: #141111;
                 letter-spacing: 0;
 
@@ -627,7 +633,7 @@
                     margin: 0;
 
                     span {
-                        font-size: 14px;
+                        /*font-size: 14px;*/
                         color: #141111;
 
                         i {

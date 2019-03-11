@@ -99,10 +99,10 @@
           label: '操作',
           width: 650,
           groupBtn: [
-            {
-            text: '查看',
-            param: 'detail'
-          },
+          //   {
+          //   text: '查看',
+          //   param: 'detail'
+          // },
             {
             text: '编辑',
             param: 'edit'
@@ -126,61 +126,63 @@
           //   actionName: 'change_offline_term_valid'
           // },
           {
-            text: '发送学期',
+            text: '发送',
             param: 'sendOfflineCourse',
-          }, {
-            text: '添加课程',
-            param: 'add',
-            // hoverShow: true
-          }, {
+          },
+          //   {
+          //   text: '添加课程',
+          //   param: 'add',
+          //   // hoverShow: true
+          // },
+            {
             text: '删除',
             param: 'delete',
             // hoverShow: true,
             // isIcon: true,
           }]
+        },
+        {
+          listExpand: true,
+          width: 90,
+          childHeader: [{
+            prop: 'title',
+            label: '课程名称',
+          }, {
+            prop: 'type',
+            label: '类型',
+            width: 100
+          }, {
+            prop: '',
+            label: '开课日期范围',
+            width: 300,
+            mixColumn: true,
+            mixFunc: (function (data) {
+              var open_date = doDateFormat(data.start_time);
+              var end_date = doDateFormat(data.end_time);
+              return open_date + '至' + end_date;
+            })
+          }, {
+            prop: 'teacher_name',
+            label: '导师',
+            width: 100
+          }, {
+            label: '操作',
+            width: 350,
+            groupBtn: [{
+              text: '编辑',
+              param: 'editCourse'
+            }, {
+              text: '删除',
+              param: 'deleteCourse',
+              // hoverShow: true,
+              // isIcon: true
+            }]
+          }],
+          listColumnFormatter: [{
+            columnName: 'type',
+            doFormat: doOfflineCurriculumTypeFormat
+          }]
         }
-        // {
-        //   listExpand: true,
-        //   width: 90,
-        //   childHeader: [{
-        //     prop: 'title',
-        //     label: '课程名称',
-        //   }, {
-        //     prop: 'type',
-        //     label: '类型',
-        //     width: 100
-        //   }, {
-        //     prop: '',
-        //     label: '开课日期范围',
-        //     width: 300,
-        //     mixColumn: true,
-        //     mixFunc: (function (data) {
-        //       var open_date = doDateFormat(data.start_time);
-        //       var end_date = doDateFormat(data.end_time);
-        //       return open_date + '至' + end_date;
-        //     })
-        //   }, {
-        //     prop: 'teacher_name',
-        //     label: '导师',
-        //     width: 100
-        //   }, {
-        //     label: '操作',
-        //     width: 350,
-        //     groupBtn: [{
-        //       text: '编辑课程',
-        //       param: 'editCourse'
-        //     }, {
-        //       text: 'ios-trash-outline',
-        //       param: 'deleteCourse',
-        //       hoverShow: true,
-        //       isIcon: true
-        //     }]
-        //   }],
-        //   listColumnFormatter: [{
-        //     columnName: 'type',
-        //     doFormat: doOfflineCurriculumTypeFormat
-        //   }]
-        // }
         ]
       },
       listColumnFormatter() {

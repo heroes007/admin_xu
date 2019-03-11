@@ -51,7 +51,7 @@
                             <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
                         </MenuItem>
                         <MenuItem v-else :name="it.name">
-                            <Icon type="ios-folder-open" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span>
+                            <Icon :type="it.icon" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span>
                         </MenuItem>
                     </div>
                 </Menu>
@@ -166,10 +166,10 @@
       },
       selectItem(index) {
         localStorage.setItem('menuActiveIndex', index);
-        this.menuList.forEach((it) => {
-          if(!it.icon.includes('_gray')) it.icon = it.icon + '_gray';
-          if(it.name === index) it.icon = it.icon.split('_')[0];
-        })
+        // this.menuList.forEach((it) => {
+        //   if(!it.icon.includes('_gray')) it.icon = it.icon + '_gray';
+        //   if(it.name === index) it.icon = it.icon.split('_')[0];
+        // })
         if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
         this.name = index
         this.$router.push({name: index});
@@ -258,6 +258,11 @@
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;
+    }
+
+    /deep/ .ivu-menu-item{
+        display: flex;
+        align-items: center;
     }
 
     /deep/ .ivu-menu-item, /deep/ .ivu-menu-submenu-title {

@@ -17,7 +17,7 @@
                                     <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                         <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
                                     </upload-panel>
-                                </FormItem> 
+                                </FormItem>
                                 <FormItem class="btns">
                                 <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
                                     <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
@@ -38,10 +38,11 @@
                                     <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                         <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
                                     </upload-panel>
-                                </FormItem> 
+                                </FormItem>
                                 <FormItem class="btns">
                                 <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
-                                    <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
+                                    <Button type="error" class="next-btn" style="width: 120px;" @click="handleDelete">删除证书</Button>
+                                    <Button type="primary" class="next-btn" style="margin-left: 40px;" @click="handleSubmit">保存</Button>
                                 </FormItem>
                             </Col>
                     </Form>
@@ -226,6 +227,10 @@
         this.dialogIndex = idx
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
+      handleDelete(){
+        this.$Message.info('证书使用中，请先解除关联。')
+        this.$Message.info('删除证书后所有统计数据不可查看，是否确认删除 （确认、取消）')
+      },
       handleSubmit() {
         this.form.img_url_arr = {
           'default': this.form.img_default,
@@ -400,6 +405,11 @@ letter-spacing: 0;
     .btns {
         margin-top: 30px;
         position: relative;
+
+        /deep/ .ivu-form-item-content{
+            display: flex;
+            justify-content: center;
+        }
     }
     .pre-btn {
         position: absolute;

@@ -14,8 +14,8 @@
                         <p>绑定课程：{{t.num}}个</p>
                     </div>
                     <div class="lecturer-item-btn">
-                       <img @click="edit(t)" class="lecturer-btn-icon" src="/static/icon/edit/edit-a.png" />
-                       <img @click="deletes(t)" src="/static/icon/edit/Group14.png" />
+                       <img @click="edit(t)" class="lecturer-btn-icon" src="/static/icon/write.jpg" />
+                       <img @click="deletes(t)" src="/static/icon/delete.jpg" />
                     </div>
                 </div>
             </Col>
@@ -179,7 +179,7 @@
        .lecturer-btn-icon{
            margin-top: 20px;
            margin-bottom: 30px;
-       }    
+       }
        img{
            width: 17.5px;
            height: 17.5px;

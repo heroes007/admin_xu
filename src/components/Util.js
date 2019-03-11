@@ -112,22 +112,22 @@ export const MenuList = [
   {
     name: 'user-manage',
     title: '用户管理',
-    icon:'01.organ_gray'
+    icon:'md-person',
   },
   {
     name: 'product-manage',
     title: '培训管理',
-    icon:'01.organ_gray'
+    icon:'md-easel',
   },
   {
     name: 'system-manage',
     title: '平台管理',
-    icon:'01.organ_gray'
+    icon:'ios-settings',
   },
   {
     name: 'exchange-code',
     title: '兑换码',
-    icon:'01.organ_gray'
+    icon:'md-clipboard',
   },
   // {
   //   name: 'manage-project',

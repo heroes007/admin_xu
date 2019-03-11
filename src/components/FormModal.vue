@@ -149,6 +149,7 @@ export default {
             return false
         },
         handleSubmit(name){
+            this.$emit('handleSubmit',this.formItem)
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$Message.success('Success!');
@@ -210,7 +211,7 @@ export default {
     padding: 40px;
 }
 .modal-text{
-     margin-left: 100px; 
+     margin-left: 100px;
      font-family: PingFangSC-Regular;
     font-size: 14px;
     color: #F54802;
