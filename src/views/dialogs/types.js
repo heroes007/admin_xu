@@ -37,3 +37,4 @@ export const EDIT_PROTOCOL = 'edit-protocol';
 export const ADD_CERTIFICATE = 'add-certificate';
 export const ADD_HOUNER = 'add-houner';
 export const SEND_HOUNER = 'send-houner';
+export const READ_OVER = 'read-over';

@@ -1,49 +1,57 @@
 <template>
-    <Modal :transfer=false :title="payload.type == 1 ? '添加证书' : '编辑证书'" :footer-hide="true"
+    <Modal :transfer=false :title="payload.type == 1 ? '批阅作业' : '查看批阅'" :footer-hide="true"
            v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="654"
-           :mask-closable="false">
-        <base-input @closedialog="handleClose">
-            <Row slot="body">
+           :mask-closable="false" >
+        <base-input  @closedialog="handleClose">
+            <Row  slot="body">
                 <Row class="body-top" v-if="payload.type==1">
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
-                            <Col>
-                                <FormItem label="证书名称">
-                                    <Input v-model="form.title" placeholder="请输入课程名称"></Input>
-                                </FormItem>
-                               <FormItem label="证书描述">
-                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
-                                </FormItem>
-                                <FormItem label="证书照片">
-                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                                    </upload-panel>
-                                </FormItem>
-                                <FormItem class="btns">
-                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
-                                    <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
-                                </FormItem>
+                            <Col class="head-form">
+                                <img :src="studata.stuimg" alt="">
+                                <p>{{studata.stuname}}</p>
                             </Col>
+                            <Col class="body-form">
+                                <p>{{studata.stuwork}}</p>
+                                <Col class="download-from">
+                                    <img class="file-icon" src="../../../static/icon/文件icon.png" alt="">
+                                    <a href="">{{studata.stuurl}}</a>
+                                    <img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">
+                                </Col>
+                            </Col>
+                            <Col class="input-form">
+                                <Input type="textarea" size="small" placeholder="请输入批阅内容"></Input>
+                            </Col>
+                            <FormItem class="number-from" label="评分" :label-width="40">
+                                <Input style="width:150px"  placeholder="满分100分"></Input>
+                            </FormItem>
+                            <Button type="primary" class="save-from">保存</Button>
                     </Form>
                 </Row>
                 <Row class="body-top" v-if="payload.type==2">
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
-                            <Col>
-                                <FormItem label="证书名称">
-                                    <Input v-model="form.title" placeholder="请输入课程名称"></Input>
-                                </FormItem>
-                               <FormItem label="证书描述">
-                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
-                                </FormItem>
-                                <FormItem label="证书照片">
-                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                                    </upload-panel>
-                                </FormItem>
-                                <FormItem class="btns">
-                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
-                                    <Button type="error" class="next-btn" style="width: 120px;" @click="handleDelete">删除证书</Button>
-                                    <Button type="primary" class="next-btn" style="margin-left: 40px;" @click="handleSubmit">保存</Button>
-                                </FormItem>
+                            <Col class="head-form">
+                                <img :src="studata.stuimg" alt="">
+                                <p>{{studata.stuname}}</p>
+                            </Col>
+                            <Col class="body-form">
+                                <p>{{studata.stuwork}}</p>
+                                <Col class="download-from">
+                                    <img class="file-icon" src="../../../static/icon/文件icon.png" alt="">
+                                    <a href="">{{studata.stuurl}}</a>
+                                    <img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">
+                                </Col>
+                            </Col>
+                            <Col class="show-from" v-for="(item, index) in studata.teacherTail" :key="index">
+                                <Row class="show-from-line1">
+                                    <p class="tail-title">导师评语：</p>
+                                    <p class="tail-number">{{item.contnumber}}分</p>
+                                </Row>  
+                                <Row class="show-from-line2">
+                                    <p class="tail-detail">{{item.contdetail}}</p>
+                                </Row>
+                                <Row class="show-from-line3">
+                                    <p class="tail-time">{{item.conttime}}</p>
+                                </Row>  
                             </Col>
                     </Form>
                 </Row>
@@ -116,7 +124,25 @@
           type: 1
         },
         resourse1: '',
-        resourse2: ''
+        resourse2: '',
+        studata:{
+            stuimg:'https://ysf.nosdn.127.net/E07821B15D5420E8DF04C6BB4F474D92?imageView&thumbnail=300x300',
+            stuname:"王晓东",
+            stuwork:"这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息",
+            stuurl:"XXXXXXXX作业文.zip",
+            teacherTail:{
+                teacher1:{
+                    contnumber:"11",
+                    contdetail:"这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语",
+                    conttime:"2019/01/02"
+                },
+                teacher2:{
+                    contnumber:"99",
+                    contdetail:"这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语",
+                    conttime:"2019/11/22"
+            }
+            }
+        }
       }
     },
     mounted() {
@@ -226,10 +252,6 @@
       handleNextStep(idx) {
         this.dialogIndex = idx
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
-      },
-      handleDelete(){
-        this.$Message.info('证书使用中，请先解除关联。')
-        this.$Message.info('删除证书后所有统计数据不可查看，是否确认删除 （确认、取消）')
       },
       handleSubmit() {
         this.form.img_url_arr = {
@@ -369,14 +391,22 @@ letter-spacing: 0;
 /deeep/.upload-panel .upload-space{
   height: 250px !important;
 }
-    /deep/ .ivu-modal-body {
-        padding: 30px 50px;
-    }
+/deep/ textarea.ivu-input{
+    min-height: 200px !important;
+    border-radius: 4px !important;
+}
+/deep/ .ivu-form-item-content{
+    position: relative;
+    line-height: 32px;
+    font-size: 14px;
+    float: left;
+    margin-left: 0px !important;
+}
     .btns {
         text-align: center;
 
         .next-btn {
-            width: 170px;
+            width: 200px;
         }
     }
     .upload-field {
@@ -405,11 +435,6 @@ letter-spacing: 0;
     .btns {
         margin-top: 30px;
         position: relative;
-
-        /deep/ .ivu-form-item-content{
-            display: flex;
-            justify-content: center;
-        }
     }
     .pre-btn {
         position: absolute;
@@ -417,5 +442,120 @@ letter-spacing: 0;
     }
     .public-btn {
         width: 170px;
+    }
+    .head-form{
+        display: flex;
+        padding-left: 15px;
+        padding-bottom: 20px;
+        p{
+            line-height: 49px;
+            font-family: PingFangSC-Medium;
+            font-size: 18px;
+            color: #474C63;
+            letter-spacing: 0;
+            padding-left: 15px;
+        }
+        img{
+            width: 49px;
+            height: 49px;
+            border-radius: 50%; 
+        }
+    }
+    .body-form{
+        // width: 594px;
+        height: 147px;
+        background: #F0F0F7;
+        border-radius: 4px;
+        margin: 0 auto;
+        padding: 20px;
+        p{
+            font-family: PingFangSC-Medium;
+            font-size: 16px;
+            color: #474C63;
+            letter-spacing: 0;
+            line-height: 28px;
+            padding-bottom: 11px;
+            text-align: left;
+        }
+        .download-from{
+            width: 350px;
+            height: 40px;
+            background: #FFFFFF;
+            border: 1px solid #C8CCDD;
+            border-radius: 4px;
+            .file-icon{
+                float: left;
+                padding-top: 10px;
+                padding-left: 21px;
+            }
+            .download-icon{
+                float: right;
+                padding-top: 10px;
+                padding-right: 21px;
+            }
+            a{
+                font-family: PingFangSC-Regular;
+                font-size: 14px;
+                color: #474C63;
+                letter-spacing: 0;
+                padding-top: 10px;
+                float: left;
+                padding-left: 15px;
+            }
+        }
+    }
+    .input-form{
+        padding-top: 30px;
+    }
+    .number-from{
+        padding-top: 21px;
+    }
+    .add-course-form{
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    .save-from{
+        background: #4098FF;
+        border-radius: 4px;
+        width: 200px;
+        margin: 0 auto;
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+    .tail-title{
+        float: left;
+        font-family: PingFangSC-Medium;
+        font-size: 16px;
+        color: #474C63;
+        letter-spacing: 0;
+    }
+    .tail-number{
+        float: right;
+        font-family: PingFangSC-Medium;
+        font-size: 16px;
+        color: #F54802;
+        letter-spacing: 0;
+    }
+    .tail-detail{
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #474C63;
+        letter-spacing: 0;
+        text-align: left;
+    }
+    .tail-time{
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #9397AD;
+        letter-spacing: 0;
+        text-align: left;
+    }
+    .show-from{
+        padding: 30px;
+        border-bottom: 1px solid #E4E7F5;
+        .show-from-line2{
+            padding-top: 15px;
+            padding-bottom: 10px;
+        }
     }
 </style>

@@ -109,7 +109,7 @@ const routes = [
       {
         path: ':id/usage-record',
         name: 'usage-record',
-        component: UsageRecord 
+        component: UsageRecord
       },
       // {
       //   name:'add-homework',
@@ -161,11 +161,11 @@ const routes = [
       //   path:'online-course-chapter/:id',
       //   component:ManageOnlineCourseChapter
       // },
-      {
-        name:'offline-course',
-        path:'offline-course',
-        component:ManageOfflineCourse
-      },
+      // {
+      //   name:'offline-course',
+      //   path:'offline-course',
+      //   component:ManageOfflineCourse
+      // },
       {
         name:'offline-course-manage-signup',
         path:'offline-course-manage-signup/:id',
@@ -273,7 +273,12 @@ const routes = [
       {
         path: 'open-product/:id/marking-homework',
         name: 'marking-homework',
-        component: MarkingHomework 
+        component: MarkingHomework
+      },
+      {
+        name:'offline-course',
+        path:'open-product/offline-course',
+        component:ManageOfflineCourse
       },
     ]
   },

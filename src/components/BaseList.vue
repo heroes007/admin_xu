@@ -261,9 +261,12 @@
         return this.rowClassName
       },
       handleHeaderData() {
+        if(this.headerData[1].label == '资料名称'){
+          console.log(this.headerData,'123123')
+        }
         this.headerData.map((it) => {
           it.title = it.label
-          // it.align = 'center'
+          it.align && it.align == 'left' ? it.align = 'left' : it.align = 'center'
           if (it.prop) it.key = it.prop || ''
           if (it.minwidth) it.minWidth = it.minwidth
           if (!it.isFree && it.groupBtn) {
@@ -275,7 +278,7 @@
           if (it.sort) {
             it.type = 'index'
             it.title = this.getHeaderLabel(it)
-            it.width = 65
+            it.width = 100
           }
           if (it.useCombo && it.key === 'pre_curriculum') it.width = 300
           if (it.isFree || !it.groupBtn && !it.selection && !it.sort && !it.listExpand && !it.badge) {
@@ -313,22 +316,34 @@
               t.key = t.prop
             })
             it.render = (h, params) => {
-              return h(baseList, {
-                props: {
-                  tableData: params.row.childData,
-                  headerData: it.childHeader,
-                  isStripe: false,
-                  parentData: params.row,
-                  columnFormatter: it.listColumnFormatter
-                },
-                on: {
-                  childBtnClick: (param, index, parentData) => {
-                    this.$nextTick(() => {
-                      this.childBtnClickHandler(param, index, parentData)
-                    })
+              return h('div', {style:{display:'flex',justifyContent:'center',flexDirection: 'column',flexWrap: 'nowrap'}},[
+                h(baseList, {
+                  props: {
+                    tableData: params.row.childData,
+                    headerData: it.childHeader,
+                    isStripe: false,
+                    parentData: params.row,
+                    columnFormatter: it.listColumnFormatter
+                  },
+                  on: {
+                    childBtnClick: (param, index, parentData) => {
+                      this.$nextTick(() => {
+                        this.childBtnClickHandler(param, index, parentData)
+                      })
+                    }
                   }
-                }
-              })
+                }),
+                h('div',{style:{display:'flex',justifyContent:'center',flexWrap: 'nowrap',alignItems: 'center', color: '#4098FF',marginTop: '10px' }},[
+                  h('Icon',{props: { type: 'md-add', size: 30}}),
+                  h('span',{
+                          on: {
+                              click: () => {
+                                  console.log('添加')
+                              }
+                          }
+                    },'添加课程')
+                 ])
+              ]);
             }
           }
         })
@@ -505,6 +520,11 @@
 </script>
 
 <style lang='scss' scoped>
+    /deep/ td.ivu-table-expanded-cell{ padding: 0; padding-bottom: 10px;}
+    /deep/ .ivu-icon-md-add{ margin-right: 5px; }
+    /deep/ .ivu-table{
+        font-size: 16px !important;
+    }
     /deep/ .ivu-icon-ios-trash-outline {
         font-size: 18px
     }
@@ -535,12 +555,12 @@
         outline: none
     }
 
-      /deep/.ivu-btn-text{
-  font-family: PingFangSC-Medium;
-  font-size: 16px;
-  color: #4098FF;
-  letter-spacing: 0;
-}
+    /deep/ .ivu-btn-text {
+        font-family: PingFangSC-Medium;
+        font-size: 16px;
+        color: #4098FF;
+        letter-spacing: 0;
+    }
 
     /deep/ .ivu-table-cell-ellipsis > div {
         display: inline-block;
@@ -558,7 +578,7 @@
     }
 
     /deep/ th, td > .ivu-table-cell > div > span {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     /deep/ .ivu-table th {
@@ -566,7 +586,7 @@
     }
 
     /deep/ .ivu-tooltip-rel {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     .base-list-container {
@@ -604,7 +624,7 @@
                         .cell {
                             background-color: #ffffff;
                             font-weight: 400;
-                            font-size: 14px;
+                            /*font-size: 14px;*/
                             color: #757575;
                             letter-spacing: 0;
                         }
@@ -615,7 +635,7 @@
 
         .base-list-row {
             .cell {
-                font-size: 14px;
+                /*font-size: 14px;*/
                 color: #141111;
                 letter-spacing: 0;
 
@@ -627,7 +647,7 @@
                     margin: 0;
 
                     span {
-                        font-size: 14px;
+                        /*font-size: 14px;*/
                         color: #141111;
 
                         i {
