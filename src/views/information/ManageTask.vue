@@ -1,18 +1,18 @@
 <template>
     <div class='manage-task'>
         <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" >
-          <div slot="form-other">
-            <Form >
-              <FormItem label="作业描述">
-                <text-editor ref='content_editor' :content='contentData' />
-              </FormItem>
-              <FormItem  label="上传附件" >
-              <file-uploader :filters="dataFilters" maxFileCount="1"
-                          :maxFileSize="30000"  @uploadComplete="uploadComplete"
-                          bucket="dscj-static-file" :dir='getDir()'/>
-              </FormItem>
-            </Form>
-          </div>
+          <!--<div slot="form-other">-->
+            <!--<Form >-->
+              <!--<FormItem label="作业描述">-->
+                <!--<text-editor ref='content_editor' :content='contentData' />-->
+              <!--</FormItem>-->
+              <!--<FormItem  label="上传附件" >-->
+              <!--<file-uploader :filters="dataFilters" maxFileCount="1"-->
+                          <!--:maxFileSize="30000"  @uploadComplete="uploadComplete"-->
+                          <!--bucket="dscj-static-file" :dir='getDir()'/>-->
+              <!--</FormItem>-->
+            <!--</Form>-->
+          <!--</div>-->
         </FormModal>
 
         <!-- <header-component title="任务包" :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" /> -->
@@ -70,12 +70,14 @@
             },
             { type: 'select', name: '绑定课程', field: 'binding_course' ,
                 selectList: [ {id: 1, name: '天涯'},{id: 2, name: '天下'} ], selectField: [ 'id','name' ]
-            }
+            },
+            { type: 'upload', name: '作业描述', field: 'uploading' }
         ],
         rules:{
             realname: [{ required: true, message: '请输入作业名称', trigger: 'blur' } ],
             jurisdiction: [{ required: true, message: '请选择作业类型'} ],
-            binding_course: [{ required: true, message: '请选择绑定课程'} ]
+            binding_course: [{ required: true, message: '请选择绑定课程'} ],
+            uploading: [{ required: true, message: '请输入课程介绍'} ],
         },
         contentData:''
       }
@@ -299,5 +301,5 @@
             }
         }
     }
-    
+
 </style>

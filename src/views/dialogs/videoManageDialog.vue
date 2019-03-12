@@ -1,11 +1,11 @@
 <template>
     <Modal :transfer=false v-model="videoManageDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
-           :mask-closable="false" :footer-hide="true" width="600">
+           :mask-closable="false" :footer-hide="true" width="600" title="添加视频">
         <base-input :baseInputWidth="560" @closedialog="handleClose">
             <Row slot="body">
                 <!-- <span class="dscj-webfont-remove-sign"></span> -->
-                <Tabs type="line">
-                    <TabPane label="视频设置">
+                <!--<Tabs type="line">-->
+                    <!--<TabPane label="视频设置">-->
                         <Form ref="form" :model="form" :label-width="80">
                             <FormItem label="小节名称">
                                 <Input v-model="form.title" placeholder="请输入小节名称"></Input>
@@ -19,13 +19,13 @@
                             <FormItem label="视频时长（分）">
                                 <Input v-model="form.duration" placeholder="请输入视频时长"></Input>
                             </FormItem>
-                            <FormItem label="观看权限（多选）">
-                                <Select v-model="form.video_roles" placeholder="请选择观看权限" multiple>
-                                    <Option v-for="item in roleList" :key="item.id" :label="item.role_name"
-                                            :value="item.role_id">
-                                    </Option>
-                                </Select>
-                            </FormItem>
+                            <!--<FormItem label="观看权限（多选）">-->
+                                <!--<Select v-model="form.video_roles" placeholder="请选择观看权限" multiple>-->
+                                    <!--<Option v-for="item in roleList" :key="item.id" :label="item.role_name"-->
+                                            <!--:value="item.role_id">-->
+                                    <!--</Option>-->
+                                <!--</Select>-->
+                            <!--</FormItem>-->
                             <FormItem label="上传视频" class="upload-form">
                                 <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler'
                                               :upload-config='uploaderConfig'>
@@ -36,42 +36,42 @@
                                 <Button type="primary" class="sub-btn" @click="handleSubmit">发布</Button>
                             </div>
                         </Form>
-                    </TabPane>
-                    <TabPane label="复制视频">
-                        <Form ref="form" :model="form" :label-width="80" class="has-video-form">
-                            <FormItem label="所属项目">
-                                <Select v-model="projectId" @on-change='changeProjectHandler'>
-                                    <Option :label='item.name' :value='item.id' v-for='item in projectList'
-                                            :key="item.id"></Option>
-                                </Select>
-                            </FormItem>
-                            <FormItem class="course-list">
-                                <Collapse @on-change='toggleCurriculum' :accordion='true'>
-                                    <Panel :name="index" v-for='(item,index) in curriculumList' :key="item.id">
-                                        {{item.title}}
-                                        <Row slot="content" class="course-item" v-for='catalog in item.chapterList'
-                                             :key="catalog.id">
-                                            <Col :span="3">
-                                                第{{catalog.chapterIndex + 1}}章
-                                            </Col>
-                                            <Col :span="18">
-                                                <Icon type="md-star" /><span>{{item.orderIndex}}</span>
-                                                {{catalog.video_title?catalog.video_title:''}}{{catalog.video_test_title?catalog.video_test_title:''}}
-                                            </Col>
-                                            <Col :span="3">
-                                                <Checkbox class="radio" v-model="catalog.isSelected"
-                                                          @on-change='changeVideoSelect(catalog)'></Checkbox>
-                                            </Col>
-                                        </Row>
-                                    </Panel>
-                                </Collapse>
-                            </FormItem>
-                            <div class="btns">
-                                <Button type="primary" class="sub-btn" @click="handleSelect">保存</Button>
-                            </div>
-                        </Form>
-                    </TabPane>
-                </Tabs>
+                    <!--</TabPane>-->
+                    <!--<TabPane label="复制视频">-->
+                        <!--<Form ref="form" :model="form" :label-width="80" class="has-video-form">-->
+                            <!--<FormItem label="所属项目">-->
+                                <!--<Select v-model="projectId" @on-change='changeProjectHandler'>-->
+                                    <!--<Option :label='item.name' :value='item.id' v-for='item in projectList'-->
+                                            <!--:key="item.id"></Option>-->
+                                <!--</Select>-->
+                            <!--</FormItem>-->
+                            <!--<FormItem class="course-list">-->
+                                <!--<Collapse @on-change='toggleCurriculum' :accordion='true'>-->
+                                    <!--<Panel :name="index" v-for='(item,index) in curriculumList' :key="item.id">-->
+                                        <!--{{item.title}}-->
+                                        <!--<Row slot="content" class="course-item" v-for='catalog in item.chapterList'-->
+                                             <!--:key="catalog.id">-->
+                                            <!--<Col :span="3">-->
+                                                <!--第{{catalog.chapterIndex + 1}}章-->
+                                            <!--</Col>-->
+                                            <!--<Col :span="18">-->
+                                                <!--<Icon type="md-star" /><span>{{item.orderIndex}}</span>-->
+                                                <!--{{catalog.video_title?catalog.video_title:''}}{{catalog.video_test_title?catalog.video_test_title:''}}-->
+                                            <!--</Col>-->
+                                            <!--<Col :span="3">-->
+                                                <!--<Checkbox class="radio" v-model="catalog.isSelected"-->
+                                                          <!--@on-change='changeVideoSelect(catalog)'></Checkbox>-->
+                                            <!--</Col>-->
+                                        <!--</Row>-->
+                                    <!--</Panel>-->
+                                <!--</Collapse>-->
+                            <!--</FormItem>-->
+                            <!--<div class="btns">-->
+                                <!--<Button type="primary" class="sub-btn" @click="handleSelect">保存</Button>-->
+                            <!--</div>-->
+                        <!--</Form>-->
+                    <!--</TabPane>-->
+                <!--</Tabs>-->
             </Row>
         </base-input>
     </Modal>
@@ -274,6 +274,10 @@
   }
 </script>
 <style scoped lang="scss">
+    .btns{
+        display: flex;
+        justify-content: center;
+    }
     .sub-btn {
         width: 170px;
         margin-bottom: 10px;

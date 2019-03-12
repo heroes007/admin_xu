@@ -1,8 +1,8 @@
 <template>
     <div class="content">
-        <Card class="card" @click.native="handleTabAdd">
+        <Card class="card">
             <img class="card-img" src="../../../static/icon/addIcon.png" alt="">
-            <div class="card-add">添加主题</div>
+            <div class="card-add" @click="handleTabAdd">添加主题</div>
         </Card>
         <Card class="card" v-for="(item ,index) in dataList" :key="index">
             <div class="card-row">
@@ -18,11 +18,11 @@
             <div class="card-row mt20">
                 <div class="card-end-time">创建时间：{{time}}</div>
                 <Button class="card-end-btn r0" type="text" ghost @click="handleEdit(item)">编辑</Button>
-                <Button class="card-end-btn r48" type="text" ghost @click="handleAdd(item)">添加</Button>
+                <Button class="card-end-btn r48" type="text" ghost @click="handleAdd(item)">查看</Button>
             </div>
         </Card>
 
-        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" @handleSubmit="handleSubmit"/>
+        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @handleSubmit="handleSubmit"/>
     </div>
 </template>
 
@@ -33,7 +33,7 @@
     name: "ManageOfflineList",
     data() {
       return {
-        dataList: [1, 2, 3, 4, 5],
+        dataList: [1, 2, 3, 4, 5, 6],
         time: '2019/01/02',
         tableRow: {},
         formList: [
@@ -45,24 +45,32 @@
           realname: [{ required: true, message: '请输入主题名称', trigger: 'blur' } ],
           introduce: [{ required: true, message: '请输入主题描述', trigger: 'blur' } ]
         },
-        show: false
+        show: false,
+        detailData:{}
       }
     },
     components: {formModal},
     methods: {
       handleTabAdd() {
+        this.modalTitle = '添加主题'
         this.show = true
       },
       handleEdit(item) {
-        this.$router.push('open-product/offline-course')
+        this.modalTitle = '编辑主题'
+        this.detailData = {
+          realname: '这是一个主题名称',
+          introduce: '这是一个主题描述'
+        }
+        this.show = true
       },
       handleAdd(item) {
-        this.show = true
+        this.$router.push('open-product/offline-course')
       },
       handleSubmit() {
 
       },
       closeModal() {
+        this.detailData = {}
         this.show = false
       }
     }
@@ -74,7 +82,7 @@
         display: flex;
         flex-wrap: wrap;
         padding: 15px;
-        justify-content: center;
+        /*justify-content: center;*/
 
         .card {
             width: 440px;
@@ -87,11 +95,13 @@
             }
 
             .card-add {
-                margin-top: 25px;
+                margin: 25px auto 0 auto;
                 font-family: PingFangSC-Regular;
                 font-size: 18px;
                 color: #4098FF;
                 letter-spacing: 1.2px;
+                cursor: pointer;
+                width: 140px;
             }
         }
 
