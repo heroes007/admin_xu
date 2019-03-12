@@ -48,7 +48,7 @@
     },
     props:{
       //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
-      // types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：视频列表； types=7：批阅作业列表 types=8 兑换码--使用记录
+      // types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
       types: {
         type: Number,
         required: true,
