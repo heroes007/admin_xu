@@ -46,11 +46,10 @@
                 </FormItem>
                <!--可插入输入框-->
                <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload">
-                   <div v-model="formItem[t.field]" class="form-message" ref="inputStyle" contentEditable="true">
-                   </div>
+                   <div class="form-message" ref="inputStyle" contentEditable="true"></div>
                    <div ref="divStyle" style="display: flex;margin-top: 15px;">
                        <Dropdown trigger="click" @on-click="handleDrop">
-                           <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img"></a>
+                           <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a>
                            <DropdownMenu slot="list">
                                <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
                            </DropdownMenu>
@@ -58,10 +57,13 @@
                        <Dropdown trigger="click" @on-click="handleDrop1">
                            <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a>
                            <DropdownMenu slot="list">
-                               <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">{{item.name}}</DropdownItem>
+                               <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
+                                   <span class="drop-box" :style="{backgroundColor: item.color}"/>
+                                   <span>{{item.name}}</span>
+                               </DropdownItem>
                            </DropdownMenu>
                        </Dropdown>
-                       <upload-btn text="上传附件" bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
+                       <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
                        <upload-btn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
                    </div>
                    <down-loading :formData="downList"/>
@@ -70,7 +72,7 @@
         </Form>
         <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p>
         <div class="foot-btn">
-             <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
+            <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
         </div>
     </Modal>
 </div>
@@ -85,6 +87,9 @@ import downLoading from './DownLoading'
 import iconFont from '../../static/icon/font.png'
 import iconColor from '../../static/icon/color.png'
 import iconCopy from '../../static/icon/photo.png'
+import iconFontCopy from '../../static/icon/font_copy.png'
+import iconColorCopy from '../../static/icon/color_copy.png'
+import iconCopyCopy from '../../static/icon/photo_copy.png'
 
 export default {
     components: { ExchangeContent, uploadBtn, downLoading },
@@ -188,6 +193,9 @@ export default {
         }
     },
     methods: {
+      overImg(val){
+        console.log(val);
+      },
       handleColor(){
         // console.log(this.$refs.color[0].$el.children[0])
         // this.$refs.color[0].$el.children[0].children[0].click()
@@ -238,6 +246,8 @@ export default {
              this.$emit('handleSubmit',this.formItem)
         },
         handleSubmit(name){
+          this.formItem.uploading = this.$refs.inputStyle[0].innerHTML
+          console.log(this.formItem)
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     if(this.formList[4].type==='switch-datetimerange'){
@@ -284,6 +294,7 @@ export default {
         },
       uploadImg(val){
         this.downList.push(val)
+        this.formItem.downList = this.downList
       },
       addImg(val){
         var img = new Image()
@@ -294,12 +305,11 @@ export default {
       },
       handleDrop(val){
         this.$refs.inputStyle[0].style.fontSize = val + 'px'
-        if(val == 32){
-          this.$refs.inputStyle[0].style.fontWeight = 'bold'
-        }
+        if(val == 32) this.$refs.inputStyle[0].style.fontWeight = 'bold'
+        else  this.$refs.inputStyle[0].style.fontWeight = 'normal'
       },
       handleDrop1(val){
-        this.$refs.inputStyle[0].style.color = '#' + val
+        this.$refs.inputStyle[0].style.color = val
       }
     }
 }
@@ -365,15 +375,23 @@ export default {
     margin-left: 260px;
 }
 .form-message{
+    padding: 0 15px;
     width: 475px;
     height: 300px;
     border: 1px solid #d7dde4;
     outline: none;
     overflow: hidden;
-    overflow-y: auto
+    overflow-y: auto;
+    font-size: 16px;
 }
 .up-img{
     margin-right: 10px;
 }
+    .drop-box{
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        margin-right: 10px;
+    }
 </style>
 
