@@ -6,10 +6,10 @@
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!headImg" class="modal-upload-flie">
-                        < img class="upload-flie-img" src="/static/icon/upload.png"/>
+                        <img class="upload-flie-img" src="/static/icon/upload.png"/>
                         <p>点击上传</p >
                     </div>
-                    < img v-if="headImg" class="upload-flie-img-2" :src="headImg"/>
+                    <img v-if="headImg" class="upload-flie-img-2" :src="headImg"/>
                 </Upload>
             </div>
             <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}">
@@ -237,7 +237,7 @@
       },
       ModalState(_new){
         this.show = _new
-        console.log(this.projectList);
+        // console.log(this.projectList);
       },
       handleBeforeUpload(file){
         this.handleGetassignKey(file);

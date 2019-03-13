@@ -96,7 +96,8 @@
         this.datas = d
       },
       show(row,rowIndex,params) {
-        row.list = this.getArray(this.selectList, row)
+        if(this.selectList) row.list = this.getArray(this.selectList, row)
+        console.log(params, row, '123123')
         this.$emit(params, row, rowIndex)
       },
       handleColumns(c){
@@ -121,14 +122,14 @@
       },
       getArray(name, string){
         let arr = [], str
-        for(var x in string){
-          name.forEach((item, index) => {
-            if(x == item.title) {
-              str =  item.name + ':' + string[x]
-              arr.push(str)
-            }
-          })
-        }
+          for(var x in string){
+            name.forEach((item, index) => {
+              if(x == item.title) {
+                str =  item.name + ':' + string[x]
+                arr.push(str)
+              }
+            })
+          }
         return arr
       }
     },

@@ -1,6 +1,6 @@
 <template>
   <Modal v-model="show" :title="title" :width="590" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
-     <div v-if="detailData.isMechanism">
+     <div v-if="detailData.description">
          <div class="detail-data1">
              <img class="detail-data1-img" :src="detailData.img" />
              <div class="detail-data1-content">
@@ -27,7 +27,7 @@
          </div>
          <div class="mechanism-detail">
              <h1>机构介绍：</h1>
-             <p>{{detailData.details}}</p>
+             <p>{{detailData.description}}</p>
          </div>
          <Divider />
      </div>

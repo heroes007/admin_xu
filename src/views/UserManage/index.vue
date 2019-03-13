@@ -1,5 +1,5 @@
 <template>
-    <Tabs value="tabName">
+    <Tabs value="tabName" style="height: 100%;">
         <TabPane v-show='permissionCode1' label="管理列表" name="item1"><ManagementList :permission-item1="permissionItem1" /></TabPane>
         <TabPane v-show='permissionCode2' label="机构列表" name="item2"><ListInstitutions :permission-item2="permissionItem2" /></TabPane>
         <TabPane v-show='permissionCode3' label="导师列表" name="item3"><MentorList :permission-item3="permissionItem3" /></TabPane>
