@@ -96,7 +96,7 @@
              this.show = true
              this.modalTitle = '修改机构'
              this.tableRow = {
-                 
+
              }
             // console.log(row,rowIndex);
         },
@@ -120,7 +120,7 @@
                 page_num: 1
             }
             postData('user/getDeptAdminList', d).then((res) => {
-                  this.list = res.list
+                  this.list = res.data.list
             })
         },
         handleAuth(){

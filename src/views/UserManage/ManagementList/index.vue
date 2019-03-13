@@ -1,10 +1,14 @@
 <template>
    <div>
-         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules' @handle-submit="handleSubmit"/>
+        <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
 
-        <screen :btn-type="btnType" :types="1" size-title1="管理总数" :size-num1="23" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
+        <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+
+        <screen :btn-type="btnType" :types="1" size-title1="管理总数" :size-num1="total" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
+
+        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="management"/>
+
+        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
 
    </div>
 </template>
@@ -14,15 +18,18 @@
   import FormModal from '../../../components/FormModal.vue'
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
-  import details from './const'
   import seeMixin from '../seeMixin'
   import FormModalMixin from '../FormModalMixin'
   import jurisdictionList from '../jurisdictionList'
   import postData from 'src/api/postData'
+  import UserMixins from '../Mixins/UserMixins'
+  import pageList from '../../../components/Page'
+  import pageMixin from '../../mixins/pageMixins'
+
   export default {
     name: "ManagementList",
-    components: { Tables, FormModal, screen, see },
-    mixins: [seeMixin, FormModalMixin],
+    components: { Tables, FormModal, screen, see, pageList },
+    mixins: [seeMixin, FormModalMixin, UserMixins, pageMixin],
     props: {
         permissionItem1: {
             type: Object,
@@ -31,7 +38,7 @@
     },
     data (){
         return{
-            modalTitle: '',
+          modalTitle: '',
             tableRow: {},
             tableRowData: {},
             btnType: false,
@@ -70,21 +77,22 @@
             list:[],
             formList: [
                 { type: 'input', name: '真实姓名',  field: 'realname'},
-                { type: 'input', name: '管理账号',  field: 'nickname' },
-                { type: 'input', name: '账号密码',  field: 'pass' },
-                { type: 'select', name: '管理权限', field: 'jurisdiction' ,
-                    selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
-                }
+                { type: 'input', name: '管理账号',  field: 'username' },
+                { type: 'input', name: '账号密码',  field: 'password' },
+                { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'九划超级管理员'}
+                // { type: 'select', name: '管理权限', field: 'jurisdiction' ,
+                //     selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
+                // }
             ],
             rules:{
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
                 name: [{ required: true, message: '请输入管理账号', trigger: 'blur' } ],
                 pass: [{ required: true, message: '请输入账号密码', trigger: 'blur' } ],
-                jurisdiction: [{ required: true, message: '请选择管理权限'} ],
+                // jurisdiction: [{ required: true, message: '请选择管理权限'} ],
             },
             data1: null,
             keyword: '',
-            operationList: [['查看','operation1'], ['编辑','operation2'], ['删除','operation3']]
+            operationList: [['查看','operation1'], ['编辑','operation2'], ['删除','operation3']],
         }
     },
     watch: {
@@ -93,46 +101,56 @@
         }
     },
     methods: {
-      handleSubmit(val){
-        console.log(val,'val');
-      },
         see(row,rowIndex){
             this.detailShow = true;
-            this.tableRowData = details;
+            this.tableRowData = row;
             console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){
-            this.modalTitle = '修改管理'
+            this.modalTitle = '编辑管理'
             this.show = true
             this.tableRow = {
                 realname: row.realname,
                 nickname: row.nickname,
                 pass: '',
-                jurisdiction: ''
+                jurisdiction: '',
+                id: row.id
             }
-            console.log(row,rowIndex);
+        },
+        handleSubmit(val){
+          if(this.modalTitle == '添加管理') {
+            this.fromAddAndEdit('user/addSuperAdmin',val)
+          }
+           else {
+             postData('/user/modifySuperAdmin',val).then(res => {
+               if(res.res_code == 1) this.getList()
+             })
+          }
         },
         deletes(row,rowIndex){
-            console.log(row,rowIndex);
+            console.log(row,rowIndex,'123');
+            postData('/user/removeSuperAdmin',{id: row.id}).then(res => {
+              if(res.res_code == 1) this.getList()
+            })
         },
         inputChange(val){
             this.keyword = val;
             this.getList()
         },
         handleClick(){
-            this.modalTitle = '编辑管理'
+            this.modalTitle = '添加管理'
             this.show = true
             this.tableRow = {}
-            console.log('open modal')
         },
         getList(){
             let d = {
                 keyword: this.keyword,
-                page_size: 1,
-                page_num: 1
+                page_size: this.pageSize,
+                page_num: this.current
             }
             postData('user/getSuperAdminList', d).then((res) => {
-                  this.list = res.list
+                  this.list = res.data.list
+                  this.total = res.data.count
             })
         },
         handleAuth(d){
@@ -145,7 +163,7 @@
                     if(n>1) col.push(this.operationList[n-2])
                 })
             }
-        }
+        },
     },
     mounted() {
         this.getList()

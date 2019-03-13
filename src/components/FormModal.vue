@@ -1,18 +1,15 @@
 <template>
     <div>
-        <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList"
-                         @close="exchangeContentClose" @selectChecked="exchangeContentChecked"/>
-        <Modal v-model="show" :title="title" :width="645" @on-cancel="closeModal" :mask-closable=false
-               :footer-hide="true">
+        <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList" @close="exchangeContentClose" @selectChecked="exchangeContentChecked" />
+        <Modal v-model="show" :title="title" :width="645" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
             <div v-if="uploadFlie" class="upload-flie">
-                <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/"
-                        :format="['jpg','jpeg','png']" :data="uploadData"
-                        :before-upload="handleBeforeUpload" :on-format-error="handleFormatError">
+                <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
+                        :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!headImg" class="modal-upload-flie">
-                        <img class="upload-flie-img" src="/static/icon/upload.png"/>
-                        <p>点击上传</p>
+                        < img class="upload-flie-img" src="/static/icon/upload.png"/>
+                        <p>点击上传</p >
                     </div>
-                    <img v-if="headImg" class="upload-flie-img-2" :src="headImg"/>
+                    < img v-if="headImg" class="upload-flie-img-2" :src="headImg"/>
                 </Upload>
             </div>
             <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}">
@@ -20,59 +17,48 @@
                     <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
+                    <FormItem v-if="t.type==='inputTab'" :label="t.name" :prop="t.field">
+                        <Input disabled :value="t.content"></Input>
+                    </FormItem>
                     <FormItem v-if="t.type==='textarea'" :label="t.name" :prop="t.field">
-                        <Input type="textarea" :rows="6" v-model="formItem[t.field]"
-                               :placeholder="'请输入'+t.name"></Input>
+                        <Input type="textarea" :rows="6" v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <!-- input-number -->
                     <FormItem v-if="t.type==='input-number'" :label="t.name" :prop="t.field">
-                        <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
-                                     :placeholder="'请输入'+t.name"></InputNumber>
+                        <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></InputNumber>
                     </FormItem>
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
-                    <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name"
-                              :prop="t.field">
-                        <Select class="exchange-content-select" v-model="formItem[t.field]"
-                                @on-open-change="exchangeContentOpen">
-                            <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
-                                {{m[t.selectField[1]]}}
-                            </Option>
+                    <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name" :prop="t.field">
+                        <Select class="exchange-content-select" v-model="formItem[t.field]" @on-open-change="exchangeContentOpen">
+                            <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
                         <Select v-model="formItem[t.field]">
-                            <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
-                                {{m[t.selectField[1]]}}
-                            </Option>
+                            <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
                     <!-- switch-datetimerange-->
-                    <FormItem v-if="(t.type==='switch') || (t.type.includes('date'))" :label="t.name"
-                              :prop="handleField(t,1)">
-                        <Switch class="form-item-swtich" size="large" v-if="t.switchList&&t.switchList.length>0"
-                                v-model="formItem[handleField(t,0)]" @on-change="switchChange">
+                    <FormItem v-if="(t.type==='switch') || (t.type.includes('date'))" :label="t.name" :prop="handleField(t,1)">
+                        <Switch class="form-item-swtich" size="large" v-if="t.switchList&&t.switchList.length>0" v-model="formItem[handleField(t,0)]" @on-change="switchChange" >
                             <span slot="open">{{t.switchList[0]}}</span>
                             <span slot="close">{{t.switchList[1]}}</span>
                         </Switch>
-                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)"
-                                    format="yyyy/MM/dd HH:mm" v-model="formItem[handleField(t,1)]"
-                                    :placeholder="handlePlaceholder(t)"></DatePicker>
+                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)" format="yyyy/MM/dd HH:mm" v-model="formItem[handleField(t,1)]"
+                                    :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload">
                         <div class="form-message" ref="inputStyle" contentEditable="true"></div>
                         <div ref="divStyle" style="display: flex;margin-top: 15px;">
                             <Dropdown trigger="click" @on-click="handleDrop">
-                                <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img"
-                                                                  @mouseover="overImg"></a>
+                                <a href=" ">< img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
                                 <DropdownMenu slot="list">
-                                    <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">
-                                        {{item.name}}
-                                    </DropdownItem>
+                                    <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                             <Dropdown trigger="click" @on-click="handleDrop1">
-                                <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a>
+                                <a href="javascript:void(0)">< img :src="iconColor" alt="" class="up-img"></a >
                                 <DropdownMenu slot="list">
                                     <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
                                         <span class="drop-box" :style="{backgroundColor: item.color}"/>
@@ -80,15 +66,14 @@
                                     </DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg"
-                                        type="image/jpeg"/>
+                            <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
                             <upload-btn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
                         </div>
                         <down-loading :formData="downList"/>
                     </FormItem>
                 </div>
             </Form>
-            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p>
+            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p >
             <div class="foot-btn">
                 <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
@@ -96,9 +81,8 @@
     </div>
 </template>
 <script>
-  import {get_sign} from '../api/modules/ali_oss'
+  import { get_sign } from '../api/modules/ali_oss'
   import axios from 'axios'
-
   const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
   import ExchangeContent from './ExchangeContent'
   import uploadBtn from '../components/UploadButton'
@@ -111,8 +95,8 @@
   import iconCopyCopy from '../../static/icon/photo_copy.png'
 
   export default {
-    components: {ExchangeContent, uploadBtn, downLoading},
-    props: {
+    components: { ExchangeContent, uploadBtn, downLoading },
+    props:{
       showModal: {
         type: Boolean,
         default: false
@@ -123,8 +107,7 @@
       },
       detailData: {
         type: Object,
-        default: () => {
-        }
+        default: () => {}
       },
       modalText: {
         type: Boolean,
@@ -150,9 +133,9 @@
         default: false
       }
     },
-    data() {
-      return {
-        iconFont, iconColor, iconCopy,
+    data (){
+      return{
+        iconFont,iconColor,iconCopy,
         exchangeContentShow: false,
         exchangeContentList: [],
         show: false,
@@ -165,8 +148,8 @@
           dir: 'user_task',
           type: 1
         },
-        downList: [],
-        fontList: [
+        downList:[],
+        fontList:[
           {
             name: '标题',
             size: 32,
@@ -181,7 +164,7 @@
             size: 16
           },
         ],
-        colorList: [
+        colorList:[
           {
             name: '红色',
             color: '#f00'
@@ -198,72 +181,72 @@
         color: ''
       }
     },
-    watch: {
-      showModal(_new) {
+    watch:{
+      showModal(_new){
         this.ModalState(_new)
         this.$nextTick(() => {
           this.formItem = this.detailData
         })
       },
-      detailData(_new) {
+      detailData(_new){
         this.formItem = _new
       },
-      formList(_new) {
+      formList(_new){
         this.formList = _new
       }
     },
     methods: {
-      overImg(val) {
+      overImg(val){
         console.log(val);
       },
-      handleColor() {
+      handleColor(){
         // console.log(this.$refs.color[0].$el.children[0])
         // this.$refs.color[0].$el.children[0].children[0].click()
       },
-      handleDateShow(t) {
-        return t.type === 'switch-datetimerange' ? !this.formItem[this.handleField(t, 0)] : true
+      handleDateShow(t){
+        return t.type==='switch-datetimerange' ? !this.formItem[this.handleField(t,0)] : true
       },
-      handlePlaceholder(t) {
-        return t.type === 'switch-datetimerange' ? '请选择' + t.name + '范围' : '请选择' + t.name
+      handlePlaceholder(t){
+        return t.type==='switch-datetimerange' ? '请选择'+t.name + '范围' : '请选择'+t.name
       },
-      handleType(t) {
-        return t.type === 'switch-datetimerange' ? 'datetimerange' : t.type
+      handleType(t){
+        return t.type==='switch-datetimerange' ? 'datetimerange' : t.type
       },
-      handleField(t, n) {
-        return t.type === 'switch-datetimerange' ? t.field[n] : t.field
+      handleField(t,n){
+        return t.type==='switch-datetimerange' ? t.field[n]: t.field
       },
-      closeModal() {
+      closeModal(){
         this.show = false;
         this.$emit("close")
       },
-      handleFormatError(file) {
+      handleFormatError (file) {
         this.$Message.warning('请上传图片');
       },
-      switchChange(_new) {
+      switchChange(_new){
 
       },
-      exchangeContentChecked(t) {
+      exchangeContentChecked(t){
         this.formItem[this.formList[2].field] = t.id
       },
-      exchangeContentClose() {
+      exchangeContentClose(){
         this.exchangeContentShow = false
       },
-      exchangeContentOpen(v) {
+      exchangeContentOpen(v){
         this.exchangeContentShow = true
         this.exchangeContentList = this.formList[2].selectList
       },
-      ModalState(_new) {
+      ModalState(_new){
         this.show = _new
         console.log(this.projectList);
       },
-      handleBeforeUpload(file) {
+      handleBeforeUpload(file){
         this.handleGetassignKey(file);
         return false
       },
-      handleFormData() {
+      handleFormData(){
         this.$Message.success('Success!');
+        this.$emit('from-submit', this.formItem)
         this.closeModal()
-        this.$emit('handleSubmit', this.formItem)
       },
       handleSubmit(name){
         if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].innerHTML
@@ -311,74 +294,53 @@
             }
           })
       },
-      uploadImg(val) {
+      uploadImg(val){
         this.downList.push(val)
         this.formItem.downList = this.downList
       },
-      addImg(val) {
+      addImg(val){
         var img = new Image()
         img.src = val.url
         img.width = 100
         img.style.display = 'block'
         this.$refs.inputStyle[0].appendChild(img)
       },
-      handleDrop(val) {
+      handleDrop(val){
         this.$refs.inputStyle[0].style.fontSize = val + 'px'
-        if (val == 32) this.$refs.inputStyle[0].style.fontWeight = 'bold'
-        else this.$refs.inputStyle[0].style.fontWeight = 'normal'
+        if(val == 32) this.$refs.inputStyle[0].style.fontWeight = 'bold'
+        else  this.$refs.inputStyle[0].style.fontWeight = 'normal'
       },
-      handleDrop1(val) {
+      handleDrop1(val){
         this.$refs.inputStyle[0].style.color = val
       }
     }
   }
 </script>
 <style lang="less" scoped>
-    /deep/ .ivu-modal-header {
-        background: #fff !important;
-        padding: 0 !important;
-    }
-
-    /deep/ .ivu-modal-close .ivu-icon-ios-close {
-        color: #9397AD !important;
-    }
-
-    /deep/ .ivu-modal-header-inner {
+    /deep/ .ivu-modal-header{background: #fff !important; padding: 0 !important;}
+    /deep/ .ivu-modal-close .ivu-icon-ios-close{ color:#9397AD !important; }
+    /deep/ .ivu-modal-header-inner{
         font-family: PingFangSC-Regular !important;
         font-size: 20px !important;
         color: #474C63 !important;
         height: 70px;
         line-height: 70px;
     }
-
-    /deep/ .ivu-modal-body {
+    /deep/ .ivu-modal-body{
         padding: 40px;
     }
-
-    .modal-text {
+    .modal-text{
         margin-left: 100px;
         font-family: PingFangSC-Regular;
         font-size: 14px;
         color: #F54802;
     }
-
-    .btn-orange {
+    .btn-orange{
         width: 150px;
     }
-
-    .foot-btn {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px;
-    }
-
-    .upload-flie {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
-    .modal-upload-flie {
+    .foot-btn{ display: flex; justify-content: center;margin-top: 30px; }
+    .upload-flie{ display: flex; justify-content: center;margin-bottom: 20px; }
+    .modal-upload-flie{
         width: 118px;
         height: 118px;
         background: #F0F0F7;
@@ -388,86 +350,33 @@
         align-items: center;
         flex-direction: column;
     }
-
-    .upload-flie-img {
-        width: 40px;
-        height: 35px;
-    }
-
-    .upload-flie-img-2 {
-        width: 118px;
-        height: 118px;
-        border-radius: 100px
-    }
-
-    /deep/ .ivu-form-item-content {
-        display: flex;
-    }
-
-    .form-item-swtich {
+    .upload-flie-img{ width: 40px;height: 35px; }
+    .upload-flie-img-2{width: 118px;height: 118px; border-radius: 100px}
+    /deep/ .ivu-form-item-content{ display: flex; }
+    .form-item-swtich{
         width: 80px;
         height: 34px;
         margin-right: 20px;
         line-height: 34px;
     }
-
-    /deep/ .ivu-switch:after {
-        width: 30px;
-        height: 30px;
+    /deep/ .ivu-switch:after{ width: 30px;height: 30px; }
+    /deep/ .ivu-form-item-label{ font-size: 16px }
+    .form-item-date{flex:1}
+    /deep/ .ivu-switch-inner{left: 36px ;}
+    /deep/ .ivu-switch-checked .ivu-switch-inner{ left: 12px;}
+    /deep/ .ivu-switch-large.ivu-switch-checked:after{left: 48px;}
+    .form-item-other {padding-left: 30px;}
+    .exchange-content-select /deep/ .ivu-select-dropdown{display: none !important;}
+    /deep/ .ivu-modal-wrap{ display: flex;align-items: center; }
+    /deep/ .ivu-modal{top: 0}
+    .upload{
+        /deep/ .ivu-input{height: 400px;}
+        /deep/ .ivu-form-item-content{flex-direction: column}
     }
-
-    /deep/ .ivu-form-item-label {
-        font-size: 16px
-    }
-
-    .form-item-date {
-        flex: 1
-    }
-
-    /deep/ .ivu-switch-inner {
-        left: 36px;
-    }
-
-    /deep/ .ivu-switch-checked .ivu-switch-inner {
-        left: 12px;
-    }
-
-    /deep/ .ivu-switch-large.ivu-switch-checked:after {
-        left: 48px;
-    }
-
-    .form-item-other {
-        padding-left: 30px;
-    }
-
-    .exchange-content-select /deep/ .ivu-select-dropdown {
-        display: none !important;
-    }
-
-    /deep/ .ivu-modal-wrap {
-        display: flex;
-        align-items: center;
-    }
-
-    /deep/ .ivu-modal {
-        top: 0
-    }
-
-    .upload {
-        /deep/ .ivu-input {
-            height: 400px;
-        }
-
-        /deep/ .ivu-form-item-content {
-            flex-direction: column
-        }
-    }
-
-    .upload-img {
+    .upload-img{
         margin-left: 260px;
     }
-
-    .form-message {
+    .form-message{
         padding: 0 15px;
         width: 475px;
         height: 300px;
@@ -477,16 +386,17 @@
         overflow-y: auto;
         font-size: 16px;
     }
-
-    .up-img {
+    .up-img{
         margin-right: 10px;
     }
-
-    .drop-box {
+    .drop-box{
         width: 10px;
         height: 10px;
         display: inline-block;
         margin-right: 10px;
     }
+    /deep/ .ivu-input[disabled]{
+        font-family: PingFangSC-Regular;
+        color: #474C63;
+    }
 </style>
-

@@ -66,6 +66,7 @@
             doLogin() {
                 this.isLogining = true;
                 login_pwd(this.name, this.password).then((res) => {
+                  console.log(res)
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
                         let d = res.data.data;
@@ -92,11 +93,8 @@
                 let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
                 let d1 = JSON.parse(d.slice(4))
                 d1.forEach(t => {
-                    let num = +t.permission_code.slice(0,2)
-                    if(num === 1) Vue.prototype.$PERMISSIONS1 = t
-                    if(num === 2) Vue.prototype.$PERMISSIONS2 = t
-                    if(num === 3) Vue.prototype.$PERMISSIONS3 = t
-                    if(num === 4) Vue.prototype.$PERMISSIONS4 = t
+                    let num = +t.permission_code.slice(0,2);
+                    Vue.prototype['$PERMISSIONS' + num] = t
                 });
                 }
             }
