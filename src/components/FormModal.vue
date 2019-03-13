@@ -6,16 +6,19 @@
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!headImg" class="modal-upload-flie">
-                        < img class="upload-flie-img" src="/static/icon/upload.png"/>
+                        <img class="upload-flie-img" src="/static/icon/upload.png"/>
                         <p>点击上传</p >
                     </div>
-                    < img v-if="headImg" class="upload-flie-img-2" :src="headImg"/>
+                    <img v-if="headImg" class="upload-flie-img-2" :src="headImg"/>
                 </Upload>
             </div>
             <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}">
                 <div v-for="(t,index) in formList" :key="index">
                     <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
+                    </FormItem>
+                     <FormItem v-if="t.type==='password'" :label="t.name" :prop="t.field">
+                        <Input type="password" v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <FormItem v-if="t.type==='inputTab'" :label="t.name" :prop="t.field">
                         <Input disabled :value="t.content"></Input>

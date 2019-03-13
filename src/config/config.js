@@ -1,6 +1,7 @@
 import $LoadingY from '../plug/loading'
 import {Config} from './base'
 import axios from 'axios'
+import Vue from 'vue'
 
 var loadingInstance = null;
 export default {
@@ -35,4 +36,14 @@ export default {
   addZero(data) {
     if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
   },
+  setAuth(){
+    if(localStorage.getItem('PERMISSIONS')){
+    let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+    let d1 = JSON.parse(d.slice(4))
+    d1.forEach(t => {
+        let num = +t.permission_code.slice(0,2);
+        Vue.prototype['$PERMISSIONS' + num] = t
+    });
+    }
+  }
 }

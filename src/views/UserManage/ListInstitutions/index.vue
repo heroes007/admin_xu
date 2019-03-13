@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <FormModal :modal-text="true" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" />
 

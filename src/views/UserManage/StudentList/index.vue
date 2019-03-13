@@ -1,7 +1,7 @@
 <template>
-   <div>
+   <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <screen :select-type1="selectType1" :select-type2="selectType2" :types="5" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
+        <screen :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
                 size-title2="付费学员" :size-num2="14"   @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
    </div>
@@ -37,6 +37,7 @@
             tableRowData: {},
             selectType1: false,
             selectType2: true,
+            radioType: false,
             selectList:[
             {
                 value:'all',

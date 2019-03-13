@@ -13,7 +13,7 @@
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
-        <div v-if="types == 5" class="money-student" @click="moneyStudent">
+        <div v-if="types == 5 && radioType" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
             <span class="money-student-content">付费学员</span>
         </div>
@@ -59,6 +59,10 @@
         default: false
       },
       selectType2: {
+        type: Boolean,
+        default: false
+      },
+      radioType: {
         type: Boolean,
         default: false
       },

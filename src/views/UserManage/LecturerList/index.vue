@@ -1,7 +1,7 @@
 <template>
-   <div>
+   <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <FormModal :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" />
+        <FormModal :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
 
         <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="23" btn-name="添加讲师" placehodle="搜索讲师姓名" @inputChange="inputChange" @handleClick="handleClick"/>
         <div class="lecturer-list">
@@ -21,6 +21,8 @@
             </Col>
         </Row>
        </div>
+
+         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
 
@@ -32,11 +34,12 @@
   import FormModalMixin from '../FormModalMixin'
   import postData from 'src/api/postData'
   import UserMixins from '../Mixins/UserMixins'
-
+  import pageList from '../../../components/Page'
+  import pageMixin from '../../mixins/pageMixins'
   export default {
     name: "LecturerList",
-    components: { FormModal, screen, see },
-    mixins: [seeMixin, FormModalMixin, UserMixins],
+    components: { FormModal, screen, see, pageList },
+    mixins: [seeMixin, FormModalMixin, UserMixins, pageMixin],
     props: {
         permissionItem5: {
             type: Object,
@@ -55,6 +58,7 @@
             tableRowData: {},
             lectureesItem2: false,
             lectureesItem3: false,
+            keyword: '',
             selectList:[
                 {
                     value:'all',
@@ -66,12 +70,12 @@
                 }
             ],
             formList: [
-                { type: 'input', name: '讲师姓名',  field: 'realname'},
-                { type: 'textarea', name: '讲师介绍',  field: 'introduce' }
+                { type: 'input', name: '讲师姓名',  field: 'name'},
+                { type: 'textarea', name: '讲师介绍',  field: 'description' }
             ],
             rules:{
-                realname: [{ required: true, message: '请输入讲师姓名', trigger: 'blur' } ],
-                introduce: [{ required: true, message: '请输入讲师介绍', trigger: 'blur' } ]
+                name: [{ required: true, message: '请输入讲师姓名', trigger: 'blur' } ],
+                description: [{ required: true, message: '请输入讲师介绍', trigger: 'blur' } ]
             },
             operationList: null,
             list: [
@@ -96,10 +100,13 @@
             console.log(t,'edit')
         },
         deletes(t){
-           console.log(t,'delete')
+            postData('user/removeTeacher', {id: t.id}).then((res) => {
+                this.getList()
+            })
         },
         inputChange(val){
-            console.log(val)
+            this.keyword = val;
+            this.getList()
         },
         handleClick(){
             this.modalTitle = '添加讲师'
@@ -107,15 +114,19 @@
             this.tableRow = {}
             console.log('open modal')
         },
+        handleSubmit(val){
+           if(this.modalTitle == '添加讲师') this.fromAddAndEdit('user/addTeacher',val)
+           else this.fromAddAndEdit('user/modifyTeacher',val)
+        },
         getList(){
             let d = {
                 keyword: this.keyword,
-                page_size: 10,
-                page_num: 1
+                page_size: this.pageSize,
+                page_num: this.current
             }
             postData('user/getTeacherList', d).then((res) => {
-                console.log(res);
                   this.list = res.data.list
+                  this.total = res.data.count
             })
         }
     },
@@ -189,4 +200,7 @@
     margin: 20px;
 }
 /deep/ .ivu-col-span-6{margin-bottom: 20px;}
+/deep/ .ivu-page {
+    
+}
 </style>

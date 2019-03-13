@@ -1,5 +1,5 @@
 <template>
-    <Tabs value="tabName">
+    <Tabs value="tabName" class="tab-name">
         <TabPane v-show='permissionCode1' label="管理列表" name="item1"><ManagementList :permission-item1="permissionItem1" /></TabPane>
         <TabPane v-show='permissionCode2' label="机构列表" name="item2"><ListInstitutions :permission-item2="permissionItem2" /></TabPane>
         <TabPane v-show='permissionCode3' label="导师列表" name="item3"><MentorList :permission-item3="permissionItem3" /></TabPane>
@@ -30,7 +30,6 @@
         permissionItem3: null,
         permissionItem4: null,
         permissionItem5: null,
-        title1: '天涯',
         tabName: ''
       }
     },
@@ -57,6 +56,18 @@
   }
 </script>
 
-<style scoped lang="scss">
-
+<style lang="scss" scoped>
+  .tab-name, /deep/.ivu-tabs-content, .user-manage-main{
+    height: 100% !important;
+  }
+  .user-manage-main{
+    position: relative;
+  }
+  /deep/ .ivu-page{
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
 </style>

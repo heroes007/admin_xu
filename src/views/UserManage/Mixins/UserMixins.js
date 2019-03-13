@@ -15,9 +15,7 @@ export default {
         },
         fromAddAndEdit(url,d){
             postData(url, d).then((res) => {
-              if(res.res_code == 1){
-                    this.getList()
-                }
+              if(res.res_code == 1) this.getList()
           })
         },
         // 处理权限
@@ -35,13 +33,12 @@ export default {
                             else this['lectureesItem' + n] = true
                        }
                     }
-                    if(m.type === 'select'){
-                        this.selectType1 = true
-                    }
+                    if(m.type === 'select') this.selectType1 = true
                     if(m.type === 'switch'){
                         let d  = this.columns1[this.columns1.length-1]
                         d.isSwitch = true
                     }
+                    if(m.type === 'radio') this.radioType = true
                 })
             }
         },
