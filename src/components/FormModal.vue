@@ -242,15 +242,14 @@ export default {
         },
         handleFormData(){
              this.$Message.success('Success!');
+             this.$emit('from-submit', this.formItem)
              this.closeModal()
-             this.$emit('handleSubmit',this.formItem)
         },
         handleSubmit(name){
-          this.formItem.uploading = this.$refs.inputStyle[0].innerHTML
-          console.log(this.formItem)
+         if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].innerHTML
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    if(this.formList[4].type==='switch-datetimerange'){
+                    if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
                         if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
                         else this.handleFormData()
                     }else this.handleFormData()

@@ -125,7 +125,7 @@
         }
     },
     mounted() {
-        console.log(this.projectList);
+       
     }
   }
 </script>

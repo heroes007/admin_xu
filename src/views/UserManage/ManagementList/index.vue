@@ -1,7 +1,7 @@
 <template>
    <div>
          <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
 
         <screen :btn-type="btnType" :types="1" size-title1="管理总数" :size-num1="23" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
@@ -19,10 +19,11 @@
   import FormModalMixin from '../FormModalMixin'
   import jurisdictionList from '../jurisdictionList'
   import postData from 'src/api/postData'
+  import UserMixins from '../Mixins/UserMixins'
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen, see },
-    mixins: [seeMixin, FormModalMixin],
+    mixins: [seeMixin, FormModalMixin, UserMixins],
     props: {
         permissionItem1: {
             type: Object,
@@ -99,7 +100,7 @@
             console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){
-            this.modalTitle = '修改管理'
+            this.modalTitle = '编辑管理'
             this.show = true
             this.tableRow = {
                 realname: row.realname,
@@ -109,6 +110,9 @@
             }
             console.log(row,rowIndex);
         },
+        handleSubmit(val){
+            this.fromAddAndEdit('user/addSuperAdmin',val)
+        },
         deletes(row,rowIndex){
             console.log(row,rowIndex);
         },
@@ -117,10 +121,9 @@
             this.getList()
         },
         handleClick(){
-            this.modalTitle = '编辑管理'
+            this.modalTitle = '添加管理'
             this.show = true
             this.tableRow = {}
-            console.log('open modal')
         },
         getList(){
             let d = {
