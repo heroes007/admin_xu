@@ -1,7 +1,7 @@
 <template>
    <div>
          <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules' @handle-submit="handleSubmit"/>
 
         <screen :btn-type="btnType" :types="1" size-title1="管理总数" :size-num1="23" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
@@ -93,6 +93,9 @@
         }
     },
     methods: {
+      handleSubmit(val){
+        console.log(val,'val');
+      },
         see(row,rowIndex){
             this.detailShow = true;
             this.tableRowData = details;
