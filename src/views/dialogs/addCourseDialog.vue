@@ -1,12 +1,11 @@
 <template>
-    <Modal :transfer=false :title="dialogIndex == 1 ? '添加课程' : '前置课程'" :footer-hide="true"
-           v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="654"
-           :mask-closable="false">
+    <Modal :transfer=false :title="dialogIndex == 1 ? '添加课程' : '前置课程'" :footer-hide="true" :styles="{top: '60px'}"
+           v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="654" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
-                    
+
                         <!--<Row>-->
                             <Col>
                                 <FormItem label="课程名称">
@@ -33,13 +32,13 @@
                                     </Select>
                                 </FormItem>
                                <FormItem label="课程介绍">
-                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
+                                    <Input type="textarea" :rows="7" placeholder="请输入课程介绍" v-model="form.description"></Input>
                                 </FormItem>
                                 <FormItem label="展示封面">
                                     <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
+                                        <span slot="file-require">只能上传 jpg/png 文件，且图片比例为16:9，建议尺寸768*432px</span>
                                     </upload-panel>
-                                </FormItem> 
+                                </FormItem>
                                 <FormItem class="btns">
                                 <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
                                     <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
@@ -81,10 +80,10 @@
                                 </Row>
                                 <file-uploader :filters="dataFilters" maxFileCount="1" :maxFileSize="10000" @uploadComplete="uploadComplete" bucket="dscj-static-file" :dir="getDir()"/>
                             </div>
-                            
+
                         </Row>-->
                        <!-- <Row>
-                            
+
                             <Col :span="11" :offset="2">
                                 <FormItem label="文字图片">
                                     <upload-panel ref="upload_panel" :resourse="form.img_3_8" :upload-config="uploadConfig" @uploadcomplete="handle38UploadComplete">
@@ -98,7 +97,7 @@
                                 <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
                             </FormItem>
                         </Row>-->
-                        
+
                     </Form>
                 </Row>
                 <Row v-if="dialogIndex==2">
@@ -461,6 +460,12 @@ letter-spacing: 0;
     }
     .btns {
         text-align: center;
+
+        /deep/ .ivu-form-item-content{
+            display: flex;
+            justify-content: center;
+            margin: 0 !important;
+        }
 
         .next-btn {
             width: 170px;

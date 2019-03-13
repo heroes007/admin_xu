@@ -74,7 +74,7 @@
         menuList: [],
         iconImg: '../../static/img/menu/',
         png: '.png',
-        name:''
+        name:'',
       }
     },
     computed: {

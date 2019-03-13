@@ -3,13 +3,13 @@
            @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
             <Row slot="header" class='search-bar' type='flex' justify='center' align='middle'>
-                <Input placeholder="请输入用户名" v-model="searchData">
-                    <Select v-model="searchType" slot="prepend" placeholder="请选择">
-                        <Option label="ID" value="id"></Option>
-                        <Option label="昵称" value="nickname"></Option>.
-                        <Option label="手机号" value="phone"></Option>
-                    </Select>
-                    <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
+                <Select v-model="searchType" placeholder="请选择" style="width: 200px;margin-left: 20px;">
+                    <Option label="ID" value="id"></Option>
+                    <Option label="昵称" value="nickname"></Option>.
+                    <Option label="手机号" value="phone"></Option>
+                </Select>
+                <Input prefix="ios-search" placeholder="搜索用户名/姓名/手机号" v-model="searchData" style="width: 350px;margin-left: 15px;">
+                    <!--<Button slot="append" type='text' @click='searchStudent'>搜索</Button>-->
                 </Input>
             </Row>
             <Row slot="body">
@@ -17,8 +17,7 @@
                        :columns="courseColumns" style="width: 100%" @on-selection-change="handleSelectionChange">
                 </Table>
                 <Row class="course-page">
-                    <Page @on-change="handleCurrentChange" :current="curPage"
-                       size="small" :page-size="pageSize" :total="totalNum"></Page>
+                    <Page @on-change="handleCurrentChange" :current="curPage" :page-size="pageSize" :total="totalNum"></Page>
                 </Row>
                 <Row class="btns">
                     <Button class="send-btn" @click="handleSendTask">发送</Button>
@@ -226,8 +225,9 @@
     /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
     /deep/ .ivu-form-item{margin-bottom: 15px;}
     .btns {
-        padding-top: 20px;
-        padding-bottom: 20px;
+        padding: 40px 0;
+        display: flex;
+        justify-content:center;
 
         .send-btn {
             background: #3DAAFF;
@@ -240,10 +240,24 @@
             color: #fff;
         }
     }
-    .course-page, .table {
+    .course-page {
         margin-top: 20px;
     }
     /deep/ .ivu-modal-body {
-        padding: 16px 0px 0px 0px;
+        padding: 0
+    }
+    .search-bar{
+        height: 60px;
+        background: #F0F0F7;
+        width: 100%;
+        display: flex;
+        justify-content: left;
+    }
+    /deep/ .ivu-select-selection{
+        border-radius: 100px;
+        padding: 0 10px;
+    }
+    /deep/ .ivu-input{
+        border-radius: 100px !important;
     }
 </style>

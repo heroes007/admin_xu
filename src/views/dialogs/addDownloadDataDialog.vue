@@ -1,5 +1,6 @@
 <template>
-<Modal :transfer=false :title="payload === 0?'编辑课程资料':'添加课程资料'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false"  :footer-hide="true">
+<Modal :transfer=false :title="payload === 0?'编辑资料':'添加资料'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false"
+       :footer-hide="true" :styles="{top: '17.3%'}" width="645">
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
@@ -22,7 +23,7 @@
                                     <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                 </Select>
                            </FormItem> -->
-                    <FormItem :label-width='0'>
+                    <FormItem label="上传附件" >
                         <file-uploader :filters="dataFilters" maxFileCount="1"
                                     :maxFileSize="30000"  @uploadComplete="uploadComplete"
                                     bucket="dscj-static-file" :dir='getDir()'/>
@@ -41,6 +42,7 @@ import BaseInput from '../../components/BaseInput'
 import { RemoveModal } from './mixins'
 import UploadPanel from '../../components/UploadPanel'
 import Uploader from '../../components/Upload'
+import uploadPanel from '../../components/UploadPanel'
 import { get_category_by_id } from '../../api/modules/tools_task'
 import { Config } from '../../config/base'
 import { doTimeFormat } from '../../components/Util'
@@ -56,7 +58,8 @@ export default {
     },
     components: {
         'base-input': BaseInput,
-        'file-uploader': Uploader
+        'file-uploader': Uploader,
+        uploadPanel
     },
     computed:{
          ...mapState({
@@ -97,7 +100,7 @@ export default {
         //    if(this.payload === 0) this.add_public_download_data(this.form);
         //    else this.add_course_download_data(this.form);
           console.log(this.course_download_data_list);
-        
+
         },
         handleClose() {
             this.addDownloadDataDialog = false;
@@ -115,13 +118,13 @@ export default {
             this.form.grade_id = 0;
             this.form.subject_id = 0;
         }
-      
-        
+
+
     }
 }
 </script>
-<style lang="scss">
-   
+<style lang="scss" scoped>
+
     #add-download-data-container {
         @import "base.scss";
         input,
@@ -144,9 +147,13 @@ export default {
     }
     .btn-content{
         text-align: center;
+        display: flex;
+        justify-content: center;
     }
     .sub-btn{
         width: 170px;
     }
-
+    /deep/ .ivu-modal-body{
+        padding: 40px 50px;
+    }
 </style>

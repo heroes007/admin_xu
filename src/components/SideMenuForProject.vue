@@ -35,96 +35,120 @@
             <div class="head-btn">
                 <Button type="default" ghost class="btn-content" style="top: 10%;">编辑</Button>
                 <Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>
-                <Button type="default" ghost class="btn-content" style="top: 50%;">删除</Button>
+                <Button type="default" ghost class="btn-content" style="top: 50%;" @click="handleDelete">注销</Button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import api from '../api/modules/config'
-    import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-    export default {
-        data() {
-            return {
-                use_router: true,
-                activeIndex: ''
-            }
-        },
-        methods: {
-            openChange(name) {},
-            selectItem(index) {
-                this.$router.push({ name: index });
-            },
-            initMenu() {
-                this.activeIndex = this.$route.name;
-            },
-            logout() {
-                api.post('api/user/logout', {from: 'web'}).then((res) => {
-                    if (res.data.res_code === 1) {
-                        this.$localStorage.set('token', '');
-                        this.$router.push({ path: '/login' });
-                    }
-                });
-            }
-        },
-        watch: {
-            $route() {
-                this.initMenu();
-            }
-        },
-        mounted() {
-            this.initMenu();
-            if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
-        },
-        computed: {
-            userInfo() {
-                return this.$store.state.auth.userInfo;
-            },
-            userHeader() {
-                if (!this.userInfo)  return defaultHeader;
-                if (this.userInfo.head_img_url) return this.userInfo.head_img_url;
-                else return defaultHeader;
-            }
-        }
+  import api from '../api/modules/config'
+  import defaultHeader from '../assets/img/side-menu/default-header.jpg'
+
+  export default {
+    data() {
+      return {
+        use_router: true,
+        activeIndex: ''
+      }
+    },
+    methods: {
+      openChange(name) {
+      },
+      selectItem(index) {
+        this.$router.push({name: index});
+      },
+      initMenu() {
+        this.activeIndex = this.$route.name;
+      },
+      logout() {
+        api.post('api/user/logout', {from: 'web'}).then((res) => {
+          if (res.data.res_code === 1) {
+            this.$localStorage.set('token', '');
+            this.$router.push({path: '/login'});
+          }
+        });
+      },
+      handleDelete() {
+        this.$Modal.confirm({
+          title: '提示',
+          content: '注销后将永久删除，确认是否注销',
+          onOk: () => {
+            this.$Message.info('Clicked ok');
+          },
+          onCancel: () => {
+            this.$Message.info('Clicked cancel');
+          }
+        });
+      }
+    },
+    watch: {
+      $route() {
+        this.initMenu();
+      }
+    },
+    mounted() {
+      this.initMenu();
+      if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
+    },
+    computed: {
+      userInfo() {
+        return this.$store.state.auth.userInfo;
+      },
+      userHeader() {
+        if (!this.userInfo) return defaultHeader;
+        if (this.userInfo.head_img_url) return this.userInfo.head_img_url;
+        else return defaultHeader;
+      }
     }
+  }
 
 </script>
 <style lang="scss" scoped>
-    /deep/.ivu-menu{
+    /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;
     }
-    /deep/.ivu-menu-item,.ivu-menu-item:hover{
+
+    /deep/ .ivu-menu-item, .ivu-menu-item:hover {
         text-align: left;
         color: #3DAAFF !important;
     }
-    /deep/.ivu-menu-vertical.ivu-menu-light:after{
+
+    /deep/ .ivu-menu-vertical.ivu-menu-light:after {
         content: none !important
     }
-    /deep/.ivu-menu-item-active{
-         background-color: #333 !important;
+
+    /deep/ .ivu-menu-item-active {
+        background-color: #333 !important;
     }
-    /deep/.ivu-menu-item-active:not(.ivu-menu-submenu):after{
-         background-color: #333 !important;
+
+    /deep/ .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+        background-color: #333 !important;
     }
+
     .side-menu-for-project {
         padding: 27px 0;
         height: 100%;
+
         .logo {
             margin-bottom: 40px;
+
             img {
                 width: 120px;
             }
         }
+
         .head-img {
             height: 100px;
             margin-bottom: 18px;
+
             img {
                 width: 190px;
                 height: 100px;
             }
         }
+
         .setting {
             position: absolute;
             top: 74px;
@@ -139,6 +163,7 @@
             text-align: center;
             line-height: 26px;
             cursor: pointer;
+
             .hover-glow {
                 width: 34px;
                 height: 34px;
@@ -150,22 +175,26 @@
                 border: 0;
                 display: none;
             }
+
             &:hover {
                 .hover-glow {
                     display: block;
                 }
             }
         }
+
         .user-name {
             font-size: 14px;
             color: #FFFFFF;
             letter-spacing: 0;
             white-space: nowrap;
             padding: 0 35px;
+
             i {
                 color: #3DAAFF;
                 margin-right: 10px;
             }
+
             p {
                 display: -webkit-box;
                 white-space: normal;
@@ -173,9 +202,11 @@
                 overflow: hidden;
                 -webkit-line-clamp: 1;
             }
-            margin-bottom:50px;
+
+            margin-bottom: 50px;
         }
     }
+
     .logo {
         margin-bottom: 40px;
 
@@ -189,13 +220,14 @@
             margin-left: 10px;
         }
     }
-    .elRow{
+
+    .elRow {
         display: flex;
         flex-direction: column;
         padding: 35px;
         height: calc(100% - 100px);
 
-        .head-title{
+        .head-title {
             font-family: PingFangSC-Medium;
             font-size: 16px;
             color: #FFFFFF;
@@ -204,37 +236,40 @@
             line-height: 26px;
         }
 
-        .head-list{
+        .head-list {
             font-family: PingFangSC-Regular;
             font-size: 14px;
             color: #FFFFFF;
             letter-spacing: 0;
             margin-top: 30px;
 
-            div{
+            div {
                 margin-bottom: 10px;
                 display: flex;
             }
         }
     }
-    .w80{
+
+    .w80 {
         display: flex;
         width: 60px;
         justify-content: space-between;
         margin-right: 6px;
     }
-    .head-btn{
+
+    .head-btn {
         position: relative;
         flex: 1;
         width: 170px;
         padding-bottom: 40px;
 
-        .btn-content{
+        .btn-content {
             position: relative;
             left: 0;
         }
     }
-    /deep/ .ivu-btn{
+
+    /deep/ .ivu-btn {
         width: 190px;
         height: 40px;
     }

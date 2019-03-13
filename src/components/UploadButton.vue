@@ -1,7 +1,8 @@
 <template>
-    <div>
-        <div class='el-upload__inner'>
-            <Button type='primary' @click='handleStartUploadFile'>{{text}} </Button>
+    <div contentEditable="false">
+        <div class='el-upload__inner' contentEditable="false">
+            <img v-if="iconType" :src="iconType"  @click='handleStartUploadFile' style="cursor: pointer"/>
+            <Button v-else type='primary' @click='handleStartUploadFile'>{{text}} </Button>
             <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
         </div>
     </div>
@@ -37,6 +38,10 @@
             host:{
                 type:String,
                 default:Config.ossHost
+            },
+            iconType: {
+              type:String,
+              default: ''
             }
         },
         methods: {
