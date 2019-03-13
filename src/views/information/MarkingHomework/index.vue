@@ -41,6 +41,8 @@
                 {
                 title: '状态',
                 key: 'state1',
+                slot: 'state-item',
+                stateKey: 'state'
             },
                 {
                 title: '提交作业时间',

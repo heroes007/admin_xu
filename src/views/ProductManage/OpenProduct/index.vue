@@ -21,7 +21,6 @@
 </template>
 
 <script>
-  import sideMenu from '../../../components/SideMenuForProject'
   import online from '../../information/ManageOnlineCourse'
   import offline from '../../information/ManageOfflineList'
   import task from '../../information/ManageTask'
@@ -30,7 +29,7 @@
 
   export default {
     name: "OpenProduct",
-    components: {sideMenu, online, offline, task, course, houner},
+    components: { online, offline, task, course, houner},
     data(){
       return{
 

@@ -264,7 +264,7 @@
       this.$store.dispatch('get_subject_list');
       this.$store.dispatch('get_teachers');
       this.$store.dispatch('get_student_managers');
-      this.$store.dispatch('get_role');
+      // this.$store.dispatch('get_role');
       var vm = this;
       this.form._fn = function () { vm.handleClose(); };
       this.form.user_id = this.payload.user_id;

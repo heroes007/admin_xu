@@ -8,15 +8,14 @@ export function logout(from) {
         from: from
     });
 }
-export function login_pwd(name,password,debug) {
-    return api.post('api/user/login', {
+export function login_pwd(name,password) {
+    return api.post('/user/login', {
         username: name,
-        pwd: password,
-        is_debug:debug,
-        from:'xg'
+        password: password,
+        from:'web'
     });
 }
 
 export function user_info(){
-    return api.post('api/user/user_info', {});
+    return api.post('/user/getUsreDetail', {from:'web'});
 }

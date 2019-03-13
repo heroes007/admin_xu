@@ -28,7 +28,7 @@
         <div v-if="types == 6 || types == 7 || types == 9" class="title">
             <div>{{title}}</div>
         </div>
-        <Button v-if="types && types !== 5 && types !== 7 && types !== 8 && types !== 9" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
+        <Button v-if="types && types !== 5 && types !== 7 && types !== 8 && types !== 9 && btnType" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
         <p class="code_name_text" v-if="types == 8">{{codeName}}</p>
     </div>
 </template>
@@ -52,6 +52,11 @@
       types: {
         type: Number,
         required: true,
+      },
+      // 控制按钮 的 显示隐藏
+      btnType: {
+        type: Boolean,
+        default: false
       },
       select1: {
         type: Array

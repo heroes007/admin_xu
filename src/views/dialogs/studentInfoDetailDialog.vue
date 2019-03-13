@@ -579,7 +579,7 @@
       this.get_subject_list();
       this.get_teachers();
       this.get_student_managers();
-      this.get_role();
+      // this.get_role();
       var vm = this;
       this.form1.user_id = this.payload.user_id;
       this.form1.nickname = this.payload.nickname;

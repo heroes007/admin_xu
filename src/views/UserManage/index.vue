@@ -1,14 +1,15 @@
 <template>
-    <Tabs value="name1">
-        <TabPane label="管理列表" name="manage"><ManagementList /></TabPane>
-        <TabPane label="机构列表" name="product"><ListInstitutions /></TabPane>
-        <TabPane label="导师列表" name="teacher"><MentorList /></TabPane>
-        <TabPane label="学员列表" name="user"><StudentList/></TabPane>
-        <TabPane label="讲师列表" name="lecturer"><LecturerList/></TabPane>
+    <Tabs value="tabName">
+        <TabPane v-show='permissionCode1' label="管理列表" name="item1"><ManagementList :permission-item1="permissionItem1" /></TabPane>
+        <TabPane v-show='permissionCode2' label="机构列表" name="item2"><ListInstitutions /></TabPane>
+        <TabPane v-show='permissionCode3' label="导师列表" name="item3"><MentorList /></TabPane>
+        <TabPane v-show='permissionCode4' label="学员列表" name="item4"><StudentList/></TabPane>
+        <TabPane v-show='permissionCode5' label="讲师列表" name="item5"><LecturerList/></TabPane>
     </Tabs>
 </template>
 
 <script>
+  import Vue from 'vue'
   import ManagementList from './ManagementList/index'
   import ListInstitutions from './ListInstitutions/index'
   import StudentList from './StudentList/index'
@@ -16,7 +17,42 @@
   import LecturerList from './LecturerList/index'
   export default {
     name: "UserManage",
-    components: { ManagementList, ListInstitutions, StudentList, MentorList, LecturerList }
+    components: { ManagementList, ListInstitutions, StudentList, MentorList, LecturerList },
+    data(){
+      return{
+        permissionCode1: false,
+        permissionCode2: false,
+        permissionCode3: false,
+        permissionCode4: false,
+        permissionCode5: false,
+        permissionItem1: {},
+        title1: '天涯',
+        tabName: ''
+      }
+    },
+    methods: {
+      setAuth(n,t) {
+        this[ 'permissionCode' + n ] = true
+        this['permissionItem' + n] = t
+      },
+      handleAuth(){
+        if(this.$PERMISSIONS1&&this.$PERMISSIONS1.hasOwnProperty('child')){
+          let d = this.$PERMISSIONS1.child;
+          d.forEach(t => {
+            let n = +t.permission_code.slice(2,4)
+            this.setAuth(n,t)
+          });
+          let num = + d[0].permission_code.slice(2,4)
+          this.tabName = 'item' + num;
+          this.permissionItem1 = d[0]
+        }
+      }
+    },
+    mounted(){
+       this.$nextTick(() => {
+          this.handleAuth()
+       })
+    }
   }
 </script>
 

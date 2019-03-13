@@ -1,10 +1,14 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col class='menu-bar'>
-                <sideMenu/>
+            <Col  v-if="menushow" class='menu-bar'>
+                <SideMenu />
             </Col>
-            <Col class='sub-view'>
+            <Col  v-if="!menushow">
+             <HideMenu />
+            </Col>
+            <Col class='sub-view' :style="viewStyl">
+                <div class="hide-menu-btn" @click="hideMenu"><Icon class="hide-icon" :type="hideIcon" /></div>
                <router-view />
             </Col>
         </Row>
@@ -12,15 +16,17 @@
 </template>
 
 <script>
-  import sideMenu from '../../../components/SideMenuForProject'
+  import SideMenu from '../../../components/SideMenuForProject'
   import online from '../../information/ManageOnlineCourse'
   import offline from '../../information/ManageOfflineCourse'
   import task from '../../information/ManageTask'
   import course from '../../download/ManageCourseDownloadData'
-
+  import HideMenu from '../../../components/HideMenu.vue'
+  import hideMenuMixins from './hideMenuMixins'
   export default {
     name: "MainProduct",
-    components: {sideMenu, online, offline, task, course}
+    components: { SideMenu, online, offline, task, course, HideMenu},
+    mixins: [hideMenuMixins],
   }
 </script>
 
@@ -53,8 +59,28 @@
                 background-color: #ffffff;
                 position: relative;
                 min-height: 100vh;
-                width: calc(100% - 260px);
                 padding-bottom: 50px;
+                .hide-menu-btn{
+                    z-index: 1000;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                    margin: auto 0;
+                    height: 110px;
+                    width: 15px;
+                    padding: 0;
+                    background: #333333;
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                    display: flex;
+                    align-items: center;
+                    .hide-icon{
+                        font-size: 14px;
+                        color: #fff
+                    }
+                }
             }
         }
     }

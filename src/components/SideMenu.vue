@@ -20,9 +20,9 @@
                 </div>
             </Poptip>
         </Row>
-        <Row class='user-name'>
-            <Tooltip :content="getRoleStr()" placement="right" theme="light">
-                <p><span>{{ getRoleStr() }}</span></p >
+        <Row class='user-name' v-if="userInfo.name">
+            <Tooltip :content="userInfo.name" placement="right" theme="light">
+                <p><span>{{ userInfo.name }}</span></p >
             </Tooltip>
         </Row>
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
@@ -31,7 +31,7 @@
                 <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
                       :active-name='activeIndex' :open-names="menuOpenName">
                     <div v-for="(it,index) in menuList" :key="index">
-                        <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
+                        <!-- <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
                             <template class="menu-padding" slot="title"><div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src='iconImg + it.icon + png'/>{{it.title}}</div></template>
                             <div v-for="(t, index) in it.list" :key="index">
                                 <div v-if="t.check">
@@ -49,8 +49,8 @@
                         </MenuItem>
                         <MenuItem v-else-if="it.checkItem && checkRole(it.checkItem)" :name="it.name">
                             <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
-                        </MenuItem>
-                        <MenuItem v-else :name="it.name">
+                        </MenuItem> -->
+                        <MenuItem :name="it.name">
                             <Icon :type="it.icon" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span>
                         </MenuItem>
                     </div>
@@ -62,7 +62,6 @@
 <script>
   import api from '../api/modules/config'
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-  // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
   import { mapActions, mapGetters } from 'vuex'
   import { MenuList } from './Util'
 
@@ -70,9 +69,9 @@
     data() {
       return {
         use_router: true,
-        activeIndex: "manage-production",
+        activeIndex: "",
         menuOpenName: ['6', '2'],
-        menuList: MenuList,
+        menuList: [],
         iconImg: '../../static/img/menu/',
         png: '.png',
         name:''
@@ -84,7 +83,7 @@
         return this.$store.state.roles.role_list;
       },
       userInfo() {
-        return this.$store.state.auth.userInfo;
+        return JSON.parse(localStorage.getItem('PERSONALDETAILS'))
       },
       userHeader() {
         if (!this.userInfo) return defaultHeader;
@@ -98,9 +97,9 @@
     watch: {
       $route() {
         this.initMenu();
-         if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
-           this.selectItem(this.activeIndex)
-         }
+        //  if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
+        //    this.selectItem(this.activeIndex)
+        //  }
       }
     },
     methods: {
@@ -178,31 +177,18 @@
         this.activeIndex = this.$route.name;
       },
       logout() {
-        api.post('api/user/logout', {from: 'web'}).then((res) => {
+        api.post('user/logout', {from: 'web'}).then((res) => {
           if (res.data.res_code === 1) {
             this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
             this.$localStorage.remove('lastSelectedProject');
             this.$localStorage.remove('menuOpenName');
             localStorage.removeItem('menuActiveIndex');
+            localStorage.removeItem('PERMISSIONS');
+            localStorage.removeItem('menuActiveIndex');
+            // localStorage.removeItem('login_user');
           }
         });
-      },
-      getRoleStr() {
-        var result = '';
-        if (this.userInfo && this.roleList) {
-          for (var i = 0; i < this.userInfo.role_arr.length; i++) {
-            for (var j = 0; j < this.roleList.length; j++) {
-              if (this.userInfo.role_arr[i] === this.roleList[j].role_id) {
-                if (this.userInfo.role_arr[i] == 0) { continue;}
-                if (result !== '') result = result + ',' + this.roleList[j].role_name;
-                else result = result + this.roleList[j].role_name;
-                break;
-              }
-            }
-          }
-        }
-        return result;
       },
       setSubmenuTitleIconMouse(){
         let doc = document.querySelectorAll('.ivu-menu-submenu-title-icon');
@@ -216,37 +202,28 @@
             it.addEventListener('mouseout' ,() => { this.outImg(item) })
           }
         })
+      },
+      handleMenuList(){
+        let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+        let d1 = JSON.parse(d.slice(4));
+        d1.forEach(t => {
+           let num = +t.permission_code.slice(0,2)
+          this.menuList.push(MenuList[num - 1])
+        });
+        if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
       }
     },
     mounted() {
+      this.handleMenuList()
       this.setSubmenuTitleIconMouse()
       let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
       this.selectItem(menuActive)
-      this.initMenu();
-      if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
-      // server.on('connect', () => {
-      //     console.log(server.id); // 'G5p5...'
-      // });
-      // server.on(this.userInfo.user_id, data => {
-      //         this.$Notice.open({
-      //         title: '通知',
-      //         desc: '你收到一条新私信，请在我的通知里查看。'
-      //     });
-      //     this.add_unread_count(data);
-      // });
-      // server.on('disconnect', res => {
-      //     console.log('disconnect')
-      //     server.disconnect();
-      //     server.close();
-      // });
-      // server.on('error', error => {
-      //     console.log(error);
-      // })
-      this.get_unread_list();
+      // if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
+      // this.get_unread_list();
       if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
-      this.$nextTick(() => {
-        this.$refs.SideMenu.updateOpened();
-      })
+      // this.$nextTick(() => {
+      //   this.$refs.SideMenu.updateOpened();
+      // })
     }
   }
 </script>

@@ -41,6 +41,9 @@
             {
                 title: '是否使用',
                 key: 'state_text',
+                slot: 'state-item',
+                stateKey: 'state',
+                stateOther: true
             },
             {
                 title: '发送时间',

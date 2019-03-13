@@ -18,14 +18,6 @@
                         <span class="input-span">|</span>
                         <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/>
                     </div>
-                    <div class="elRow">
-                        <img class="input-img" src='/static/img/lock.png'>
-                        <span class="input-span">|</span>
-                         <Select class="el-input" v-model="projectId">
-                            <Option v-for="item in projectList" :value="item.id" :key="item.id">{{ item.name }}</Option>
-                        </Select>
-                        <!-- <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/> -->
-                    </div>
                     <!-- <div class='remember elRowJustifyLeft'>
                         <Switch v-model="remember" />
                         <span class="rememberMeText">记住我</span>
@@ -48,6 +40,7 @@
     import { login_pwd, user_info } from '../api/modules/auth';
     import { Base64 } from 'js-base64';
     import { mapState, mapActions } from 'vuex';
+    import Vue from 'vue'
     export default {
         components: {  EllipsisAni  },
         data() {
@@ -57,39 +50,35 @@
                 remember: true,
                 isLogining: false,
                 loginViewStyl: {},
-                projectId: 0
+                projectData: []
             }
         },
         computed: {
-            ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
+            ...mapState({ isLoading: state => state.project.isLoading })
         },
         watch: {
             isLoading(val) {
-            this.$config.IsLoading(val);
+               this.$config.IsLoading(val);
             }
         },
         methods: {
              ...mapActions([ "get_project_list", "change_selected_project_id", "clear_store" ]),
             doLogin() {
                 this.isLogining = true;
-                let vm = this;
-                login_pwd(this.name, this.password, 1).then((res) => {
+                login_pwd(this.name, this.password).then((res) => {
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
-                        user_info().then((res) => {
-                            if (res.data.res_code === 1) {
-                                let roleArr = res.data.msg.role_arr
-                               if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {
-                                    vm.$store.dispatch('set_user_info', res.data.msg);
-                                    this.get_project_list();
-                                    vm.$router.replace({ path: 'dashboard' });
-                                }else vm.$Message.warning('权限错误，请重新登录');
-                            }
-                        })
+                        let d = res.data.data;
+                        localStorage.setItem('lastSelectedProject',d.userInfo[0].organization_id)
+                        this.$store.dispatch('set_user_info', d.userInfo[0]);
+                        localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
+                        this.$router.push({ path: 'dashboard' });
+                        localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
+                        localStorage.setItem('token',d.token)
+                        this.setAuth()
                         this.remember ? this.$localStorage.set('login_user', Base64.encode('天涯'+JSON.stringify({name:this.name,pass:this.password}))) : this.$localStorage.remove('login_user');
-                        this.$localStorage.set('token', res.data.token);
                     } else {
-                        vm.$Message.warning(res.data.msg);
+                        this.$Message.warning(res.data.msg);
                         this.isLogining = false;
                     }
                 });
@@ -97,9 +86,23 @@
             setUser({name,pass}){
               this.name = name
               this.password = pass
+            },
+            setAuth(){
+                if(localStorage.getItem('PERMISSIONS')){
+                let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+                let d1 = JSON.parse(d.slice(4))
+                d1.forEach(t => {
+                    let num = +t.permission_code.slice(0,2)
+                    if(num === 1) Vue.prototype.$PERMISSIONS1 = t
+                    if(num === 2) Vue.prototype.$PERMISSIONS2 = t
+                    if(num === 3) Vue.prototype.$PERMISSIONS3 = t
+                    if(num === 4) Vue.prototype.$PERMISSIONS4 = t
+                });
+                }
             }
         },
         mounted() {
+            this.setAuth()
             if(this.$localStorage.get('login_user')){
               let user = Base64.decode(this.$localStorage.get('login_user'))
               let u = JSON.parse(user.slice(2))
@@ -107,6 +110,7 @@
             }else this.setUser({name:'',pass:''})
             let hei = document.documentElement.clientHeight * .555;
             this.loginViewStyl = { 'width' :  (hei > 480 ? hei : 480) * 2 + 'px'}
+            this.get_project_list();
         }
     }
 

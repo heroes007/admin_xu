@@ -23,6 +23,10 @@
         <template slot-scope="{ column, row, index }" slot="radio-item">
             <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
         </template>
+        <template slot-scope="{ column, row, index }" slot="state-item">
+           <span v-if="column.stateOther" :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
+           <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
+        </template>
     </Table>
 </div>
 </template>
@@ -60,6 +64,12 @@
           type: Boolean,
           default: false
        }
+    },
+    watch:{
+      tableData(_new){
+        this.tableData = _new;
+        this.handleTableData(this.tableData)
+      }
     },
     methods:{
       radioChange(r,c){
@@ -106,12 +116,14 @@
       }
     },
     mounted() {
-      this.handleTableData(this.tableData)
       this.handleColumns(this.column)
     } 
   }
 </script>
 <style lang='less' scoped>
+   .state-key1,.state-key-other1 { color:  #2EBF07;}
+   .state-key-other0 { color: #474C63; }
+   .state-key0 { color:  #F54802;}
     /deep/ .ivu-table th {
         height: 50px;
     }

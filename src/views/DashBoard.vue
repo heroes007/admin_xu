@@ -1,18 +1,44 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col class='menu-bar'> <side-menu/> </Col>
-            <Col class='sub-view'>
-                <keep-alive> <router-view /> </keep-alive>
+             <Col  v-if="menushow" class='menu-bar'>
+               <side-menu/>
+            </Col>
+            <Col  v-if="!menushow">
+             <HideMenu />
+            </Col>
+            <Col class='sub-view' :style="viewStyl">
+                <div class="hide-menu-btn" @click="hideMenu"><Icon class="hide-icon" :type="hideIcon" /></div>
+                <router-view />
             </Col>
         </Row>
     </div>
 </template>
 <script>
     import SideMenu from '../components/SideMenu'
+    import hideMenuMixins from './ProductManage/MainProduct/hideMenuMixins'
+    import HideMenu from '../components/HideMenu'
+    import Vue from 'vue'
     export default{
-        components:{ 'side-menu':SideMenu },
+        mixins: [hideMenuMixins],
+        components:{ 'side-menu':SideMenu, HideMenu },
+        methods: {
+               setAuth(){
+                if(localStorage.getItem('PERMISSIONS')){
+                let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+                let d1 = JSON.parse(d.slice(4))
+                d1.forEach(t => {
+                    let num = +t.permission_code.slice(0,2)
+                    if(num === 1) Vue.prototype.$PERMISSIONS1 = t
+                    if(num === 2) Vue.prototype.$PERMISSIONS2 = t
+                    if(num === 3) Vue.prototype.$PERMISSIONS3 = t
+                    if(num === 4) Vue.prototype.$PERMISSIONS4 = t
+                });
+                }
+            }
+        },
         mounted(){
+            this.setAuth()
             this.$store.dispatch('get_subject_list');
         }
     }
@@ -41,8 +67,28 @@
                 background-color: #ffffff;
                 position: relative;
                 min-height: 100vh;
-                width: calc(100% - 260px);
                 padding-bottom: 50px;
+                .hide-menu-btn{
+                    z-index: 1000;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    left: 0;
+                    margin: auto 0;
+                    height: 110px;
+                    width: 15px;
+                    padding: 0;
+                    background: #333333;
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                    display: flex;
+                    align-items: center;
+                    .hide-icon{
+                        font-size: 14px;
+                        color: #fff
+                    }
+                }
             }
         }
     }

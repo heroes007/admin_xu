@@ -38,9 +38,9 @@ const actions = {
         commit(types.PROJECT_LIST_LOADING, true);
         if (state.project_list.length === 0) {
             get_project_list().then(res => {
-                if (res.data.res_code === 1 && res.data.msg.length > 0) {
+                if (res.data.res_code === 1) {
                     commit(types.QUERY_PROJECT_LIST, {
-                        data: res.data.msg,
+                        data: res.data.data,
                         callback: payload ? payload.callback : null
                     })
                 }
