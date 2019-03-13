@@ -59,7 +59,7 @@
                 background-color: #ffffff;
                 position: relative;
                 min-height: 100vh;
-                padding-bottom: 50px;
+                padding-bottom: 10px;
                 .hide-menu-btn{
                     z-index: 1000;
                     position: absolute;

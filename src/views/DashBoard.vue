@@ -22,20 +22,8 @@
     export default{
         mixins: [hideMenuMixins],
         components:{ 'side-menu':SideMenu, HideMenu },
-        methods: {
-               setAuth(){
-                if(localStorage.getItem('PERMISSIONS')){
-                let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
-                let d1 = JSON.parse(d.slice(4))
-                d1.forEach(t => {
-                    let num = +t.permission_code.slice(0,2)
-                    Vue.prototype['$PERMISSIONS' + num] = t
-                });
-                }
-            }
-        },
         mounted(){
-            this.setAuth()
+            this.$config.setAuth()
             this.$store.dispatch('get_subject_list');
         }
     }
@@ -64,7 +52,7 @@
                 background-color: #ffffff;
                 position: relative;
                 min-height: 100vh;
-                padding-bottom: 50px;
+                padding-bottom: 10px;
                 .hide-menu-btn{
                     z-index: 1000;
                     position: absolute;

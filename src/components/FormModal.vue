@@ -17,6 +17,9 @@
                     <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
+                     <FormItem v-if="t.type==='password'" :label="t.name" :prop="t.field">
+                        <Input type="password" v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
+                    </FormItem>
                     <FormItem v-if="t.type==='inputTab'" :label="t.name" :prop="t.field">
                         <Input disabled :value="t.content"></Input>
                     </FormItem>

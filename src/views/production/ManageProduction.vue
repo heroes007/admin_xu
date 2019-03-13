@@ -46,7 +46,7 @@
   import {doDateFormat, doTimeFormat, reunitPrice} from "../../components/Util";
   import tableHeadData from './consts'
   import screen from '../../components/ScreenFrame'
-
+  import postData from '../../api/postData'
 
   export default {
     mixins: [Dialog, MPop],

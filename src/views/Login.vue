@@ -76,7 +76,7 @@
                         this.$router.push({ path: 'dashboard' });
                         localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
                         localStorage.setItem('token',d.token)
-                        this.setAuth()
+                        this.$config.setAuth()
                         this.remember ? this.$localStorage.set('login_user', Base64.encode('天涯'+JSON.stringify({name:this.name,pass:this.password}))) : this.$localStorage.remove('login_user');
                     } else {
                         this.$Message.warning(res.data.msg);
@@ -87,20 +87,10 @@
             setUser({name,pass}){
               this.name = name
               this.password = pass
-            },
-            setAuth(){
-                if(localStorage.getItem('PERMISSIONS')){
-                let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
-                let d1 = JSON.parse(d.slice(4))
-                d1.forEach(t => {
-                    let num = +t.permission_code.slice(0,2);
-                    Vue.prototype['$PERMISSIONS' + num] = t
-                });
-                }
             }
         },
         mounted() {
-            this.setAuth()
+            this.$config.setAuth()
             if(this.$localStorage.get('login_user')){
               let user = Base64.decode(this.$localStorage.get('login_user'))
               let u = JSON.parse(user.slice(2))
