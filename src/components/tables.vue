@@ -63,7 +63,11 @@
        isSelectionRight: {
           type: Boolean,
           default: false
-       }
+       },
+      //筛选选项
+      selectList: {
+         type: Array,
+      }
     },
     watch:{
       tableData(_new){
@@ -92,6 +96,7 @@
         this.datas = d
       },
       show(row,rowIndex,params) {
+        row.list = this.getArray(this.selectList, row)
         this.$emit(params, row, rowIndex)
       },
       handleColumns(c){
@@ -113,11 +118,23 @@
           if(c.operation_state && t[0][0] == '立即失效')  return c.operation_state && r.state ? t[0][0] : c.operation_state && r.state === 0 ?  t[0][1] : t[0]
           return c.operation_state && r.use_state ? t[0][0] : c.operation_state && r.use_state === 0 ?  t[0][1] : t[0]
         }else return t[0]
+      },
+      getArray(name, string){
+        let arr = [], str
+        for(var x in string){
+          name.forEach((item, index) => {
+            if(x == item.title) {
+              str =  item.name + ':' + string[x]
+              arr.push(str)
+            }
+          })
+        }
+        return arr
       }
     },
     mounted() {
       this.handleColumns(this.column)
-    } 
+    }
   }
 </script>
 <style lang='less' scoped>

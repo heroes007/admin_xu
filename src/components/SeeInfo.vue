@@ -33,7 +33,7 @@
      </div>
      <div class="personal-detail">
           <div class="personal-detail-img-list">
-            <img class="detail-data1-img" :src="detailData.img" />
+            <img class="detail-data1-img" :src="detailData.head_img_url" />
             <img class="detail-data1-img-auth" v-if="detailData.authentication" src="/static/icon/authentication.png" />
             <div class="learning-statistics" v-if="detailData.learningStatistics">
                 <img src="/static/icon/learning-statistics.png"/>
@@ -41,7 +41,7 @@
             </div>
           </div>
            <div class="detail-data1-content">
-                 <h1>{{detailData.name}} <img :src="detailData.sex ? male: female" /></h1>
+                 <h1>{{detailData.realname}} <img :src="detailData.sex ? male: female" /></h1>
                  <p v-for="(t,i) in detailData.list" :key="i" class="personal-detail-text">{{t}}</p>
            </div>
      </div>

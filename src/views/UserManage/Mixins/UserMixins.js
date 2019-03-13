@@ -11,12 +11,11 @@ export default {
         },
         setState(n){
             // -2删除 -1禁止登陆 0正常
-            return n === -2 ? '删除' : n === -1 '禁用' : '正常'
+            return n === -2 ? '删除' : n === -1 ? '禁用' : '正常'
         },
         fromAddAndEdit(url,d){
             postData(url, d).then((res) => {
-                console.log(res.data,'ss')
-                if(res){
+              if(res.res_code == 1){
                     this.getList()
                 }
           })
@@ -45,6 +44,11 @@ export default {
                     }
                 })
             }
+        },
+        formGetData(url, data) {
+            postData(url, data).then((res) => {
+                console.log(res.data)
+            })
         }
-    },
+    }
 }
