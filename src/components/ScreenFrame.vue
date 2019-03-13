@@ -8,7 +8,7 @@
             <Option v-for="item in select1" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Select v-if="types == 4 || types == 5 && selectType2" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
-            <Option v-for="item in select2" :value="item.value" :key="item.id">{{ item.title }}</Option>
+            <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
