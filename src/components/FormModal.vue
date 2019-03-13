@@ -240,7 +240,7 @@
       },
       ModalState(_new){
         this.show = _new
-        console.log(this.projectList);
+        // console.log(this.projectList);
       },
       handleBeforeUpload(file){
         this.handleGetassignKey(file);

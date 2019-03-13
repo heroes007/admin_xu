@@ -42,10 +42,5 @@ export default {
                 })
             }
         },
-        formGetData(url, data) {
-            postData(url, data).then((res) => {
-                console.log(res.data)
-            })
-        }
     }
 }

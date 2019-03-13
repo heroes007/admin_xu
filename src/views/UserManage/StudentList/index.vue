@@ -40,17 +40,9 @@
             radioType: false,
             selectList:[
             {
-                value:'all',
-                label:'全部机构'
-            },
-            {
-                value:'zj',
-                label:'浙江医院'
-            },
-            {
-                value:'bj',
-                label:'北京医院'
-            }],
+                id:'all',
+                title:'全部机构'
+            },],
             columns1: [
             {
                 title: '用户名',
