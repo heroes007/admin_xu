@@ -46,9 +46,6 @@
             let n = +t.permission_code.slice(2,4)
             this.setAuth(n,t)
           });
-          let num = + d[0].permission_code.slice(2,4)
-          this.tabName = 'item' + num;
-          this.permissionItem1 = d[0]
         }
       }
     },

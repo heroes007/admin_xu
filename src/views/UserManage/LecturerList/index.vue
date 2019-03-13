@@ -3,19 +3,19 @@
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <FormModal :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" />
 
-        <screen :types="1" size-title1="讲师总数" :size-num1="23" btn-name="添加讲师" placehodle="搜索讲师姓名" @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="23" btn-name="添加讲师" placehodle="搜索讲师姓名" @inputChange="inputChange" @handleClick="handleClick"/>
         <div class="lecturer-list">
            <Row :gutter="20">
             <Col span="6" v-for="(t,i) in list" :key="i">
                 <div class="lecturer-list-item">
-                    <img class="lecturer-item-img" :src="t.img" />
+                    <img class="lecturer-item-img" :src="t.img_url" />
                     <div class="lecturer-item-content">
                         <h2>{{t.name}}</h2>
                         <p>绑定课程：{{t.num}}个</p>
                     </div>
                     <div class="lecturer-item-btn">
-                       <img @click="edit(t)" class="lecturer-btn-icon" src="/static/icon/write.jpg" />
-                       <img @click="deletes(t)" src="/static/icon/delete.jpg" />
+                       <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="/static/icon/write.jpg" />
+                       <img v-if="lectureesItem3" @click="deletes(t)" src="/static/icon/delete.jpg" />
                     </div>
                 </div>
             </Col>
@@ -30,16 +30,31 @@
   import see from '../../../components/SeeInfo.vue'
   import seeMixin from '../seeMixin'
   import FormModalMixin from '../FormModalMixin'
+  import postData from 'src/api/postData'
+  import UserMixins from '../Mixins/UserMixins'
 
   export default {
     name: "LecturerList",
     components: { FormModal, screen, see },
-    mixins: [seeMixin, FormModalMixin],
+    mixins: [seeMixin, FormModalMixin, UserMixins],
+    props: {
+        permissionItem5: {
+            type: Object,
+            default: null
+        }
+    },
+    watch: {
+        permissionItem5(_new){
+            this.handleAuth(_new)
+        }
+    },
     data (){
         return{
             modalTitle: '',
             tableRow: {},
             tableRowData: {},
+            lectureesItem2: false,
+            lectureesItem3: false,
             selectList:[
                 {
                     value:'all',
@@ -58,48 +73,17 @@
                 realname: [{ required: true, message: '请输入讲师姓名', trigger: 'blur' } ],
                 introduce: [{ required: true, message: '请输入讲师介绍', trigger: 'blur' } ]
             },
+            operationList: null,
             list: [
                {
                    img: 'static/mn.jpeg',
                    name: '王金金',
-                   num: 5,
-                   edit: true,
-                   delete: true
+                   num: 5
                },
                {
                    img: 'static/mn.jpeg',
                    name: '王金金',
-                   num: 6,
-                   edit: true,
-                   delete: true
-               },
-               {
-                   img: 'static/mn.jpeg',
-                   name: '王金金',
-                   num: 7,
-                   edit: true,
-                   delete: true
-               },
-               {
-                   img: 'static/mn.jpeg',
-                   name: '王金金',
-                   num: 8,
-                   edit: true,
-                   delete: true
-               },
-               {
-                   img: 'static/mn.jpeg',
-                   name: '王金金',
-                   num: 9,
-                   edit: true,
-                   delete: true
-               },
-               {
-                   img: 'static/mn.jpeg',
-                   name: '王金金',
-                   num: 10,
-                   edit: true,
-                   delete: true
+                   num: 6
                }
             ]
         }
@@ -122,10 +106,22 @@
             this.show = true
             this.tableRow = {}
             console.log('open modal')
+        },
+        getList(){
+            let d = {
+                keyword: this.keyword,
+                page_size: 10,
+                page_num: 1
+            }
+            postData('user/getTeacherList', d).then((res) => {
+                console.log(res);
+                  this.list = res.data.list
+            })
         }
     },
     mounted() {
-       
+       this.getList()
+       if(this.permissionItem5) this.handleAuth(this.permissionItem5)
     }
   }
 </script>

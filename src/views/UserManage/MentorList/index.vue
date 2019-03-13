@@ -3,7 +3,7 @@
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <FormModal :modal-text="true" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
 
-        <screen :types="2" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
+        <screen :btn-type="btnType" :select-type1="selectType1" :types="2" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
                     @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
    </div>
@@ -18,15 +18,30 @@
   import seeMixin from '../seeMixin'
   import FormModalMixin from '../FormModalMixin'
   import jurisdictionList from '../jurisdictionList'
+  import UserMixins from '../Mixins/UserMixins'
+  import postData from 'src/api/postData'
 
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen, see },
-    mixins: [seeMixin, FormModalMixin],
+    mixins: [seeMixin, FormModalMixin, UserMixins],
+    props: {
+        permissionItem3: {
+            type: Object,
+            default: null
+        }
+    },
+    watch: {
+        permissionItem3(_new){
+            this.handleAuth(_new)
+        }
+    },
     data (){
         return{
             modalTitle: '',
             tableRowData: {},
+            selectType1: false,
+            keyword: '',
             selectList:[
             {
                 value:'all',
@@ -43,7 +58,7 @@
             columns1: [
             {
                 title: '用户名',
-                key: 'nickname',
+                key: 'username',
                 align: 'left',
             },{
                 title: '真实姓名',
@@ -54,22 +69,17 @@
             },
             {
                 title: '管理权限',
-                key: 'admin',
-                align: 'left',
-            },
-                {
-                title: '管理权限',
-                key: 'phone',
+                key: 'role_id',
                 align: 'left',
             },
             {
                 title: '所属机构',
-                key: 'company',
+                key: 'title',
                 align: 'left'
             },
-                {
+            {
                 title: '状态',
-                key: 'from_domain',
+                key: 'state',
             },
                 {
                 title: '最近登录时间',
@@ -80,7 +90,7 @@
                 title: '操作',
                 width: 260,
                 slot: 'operation',
-                operation: [['查看','operation1'], ['编辑','operation2'], ['删除','operation3']],
+                operation: [],
             }],
             list: [
                 {
@@ -96,6 +106,7 @@
                     company: "北京大学人民医院"
                 }
             ],
+            operationList: [['查看','operation1'], ['编辑','operation2'], ['删除','operation3']],
             formList: [
                 { type: 'input', name: '真实姓名',  field: 'realname'},
                 { type: 'input', name: '导师账号',  field: 'name' },
@@ -137,9 +148,23 @@
             this.show = true
             this.tableRow = {}
             console.log('open modal')
+        },
+        getList(){
+            let d = {
+                keyword: this.keyword,
+                page_size: 1,
+                page_num: 1
+            }
+            postData('user/getDeptTeacherList', d).then((res) => {
+                console.log(res);
+                  this.list = res.data.list
+            })
         }
     },
-    mounted() {}
+    mounted() {
+        this.getList()
+        if(this.permissionItem3) this.handleAuth(this.permissionItem3)
+    }
   }
 </script>
 

@@ -1,9 +1,9 @@
 <template>
    <div>
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <screen :types="5" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
+        <screen :select-type1="selectType1" :select-type2="selectType2" :types="5" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
                 size-title2="付费学员" :size-num2="14"   @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
-        <Tables :is-serial=true @operation1="see"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
+        <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
    </div>
 </template>
 
@@ -13,13 +13,30 @@
   import see from '../../../components/SeeInfo.vue'
   import details from './const'
   import seeMixin from '../seeMixin'
+  import UserMixins from '../Mixins/UserMixins'
+  import postData from 'src/api/postData'
+
   export default {
     name: "ManagementList",
     components: { Tables, screen, see },
-    mixins: [seeMixin],
+    mixins: [seeMixin, UserMixins],
+    props: {
+        permissionItem4: {
+            type: Object,
+            default: null
+        }
+    },
+    watch: {
+        permissionItem4(_new){
+            this.handleAuth(_new)
+            console.log(_new,'_new')
+        }
+    },
     data (){
         return{
             tableRowData: {},
+            selectType1: false,
+            selectType2: true,
             selectList:[
             {
                 value:'all',
@@ -36,7 +53,7 @@
             columns1: [
             {
                 title: '用户名',
-                key: 'nickname',
+                key: 'username',
                 align: 'left',
             },{
                 title: '真实姓名',
@@ -47,32 +64,33 @@
             },
             {
                 title: '学科',
-                key: 'admin',
+                key: 'department_name',
                 align: 'left',
             },
-                {
+            {
                 title: '年级',
-                key: 'phone',
+                key: 'grade_name',
                 align: 'left',
             },
             {
                 title: '所属机构',
-                key: 'company',
+                key: 'organization_name',
                 align: 'left'
             },
-                {
+            {
                 title: '最近登录时间',
-                key: 'create_time',
+                key: 'last_time',
                 align: 'left',
             },
             {
                 title: '操作',
                 width: 260,
                 slot: 'operation',
-                operation: [['查看','operation1']],
-                isSwitch: true, // true --> 启用 false --> 禁用
+                operation: [],
+                isSwitch: false,
                 switchKey: 'switch_state'
             }],
+            operationList: [['查看','operation1']],
             list: [
                 {
                     "user_id": 13186,
@@ -85,7 +103,7 @@
                     "action": "action",
                     admin: '超级管理员',
                     company: "北京大学人民医院",
-                    switch_state: true
+                    switch_state: true //true --> 启用 false --> 禁用
                 }
             ]
         }
@@ -113,9 +131,25 @@
             this.show = true
             this.tableRow = {}
             console.log('open modal')
+        },
+        radioChange(_new){
+            console.log(_new)
+        },
+        getList(){
+            let d = {
+                keyword: this.keyword,
+                page_size: 1,
+                page_num: 1
+            }
+            postData('user/getStudentList', d).then((res) => {
+                  this.list = res.data.list
+            })
         }
     },
-    mounted() {}
+    mounted() {
+        this.getList()
+         if(this.permissionItem4) this.handleAuth(this.permissionItem4)
+    }
   }
 </script>
 

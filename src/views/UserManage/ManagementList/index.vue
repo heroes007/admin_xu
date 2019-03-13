@@ -35,7 +35,6 @@
             modalTitle: '',
             tableRow: {},
             tableRowData: {},
-            btnType: false,
             columns1: [
             {
                 title: '用户名',
@@ -132,19 +131,8 @@
                 page_num: 1
             }
             postData('user/getSuperAdminList', d).then((res) => {
-                  this.list = res.list
+                this.list = res.data.list
             })
-        },
-        handleAuth(d){
-            if(d && d.hasOwnProperty('child')){
-                let t = d.child;
-                let col = this.columns1[this.columns1.length-1].operation
-                t.forEach((m) => {
-                    let n = +m.permission_code.slice(4,6)
-                    if(n === 1) this.btnType = true
-                    if(n>1) col.push(this.operationList[n-2])
-                })
-            }
         }
     },
     mounted() {

@@ -4,10 +4,10 @@
             <img class="back-img" src="../../static/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
-        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
+        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select1" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-        <Select v-if="types == 4 || types == 5" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
+        <Select v-if="types == 4 || types == 5 && selectType2" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select2" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
@@ -52,6 +52,15 @@
       types: {
         type: Number,
         required: true,
+      },
+      // 控制 select
+      selectType1: {
+        type: Boolean,
+        default: false
+      },
+      selectType2: {
+        type: Boolean,
+        default: false
       },
       // 控制按钮 的 显示隐藏
       btnType: {

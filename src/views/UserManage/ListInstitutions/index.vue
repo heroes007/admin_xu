@@ -19,16 +19,22 @@
   import jurisdictionList from '../jurisdictionList'
   import postData from 'src/api/postData'
   import { mapState } from 'vuex'
+  import UserMixins from '../Mixins/UserMixins'
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen, see },
-    mixins: [seeMixin, FormModalMixin],
+    mixins: [seeMixin, FormModalMixin, UserMixins],
+    props: {
+        permissionItem2: {
+            type: Object,
+            default: null
+        }
+    },
     data (){
         return{
             modalTitle: '',
             tableRow: {},
             tableRowData: {},
-            btnType: false,
             keyword: '',
             selectList:[
                 {
@@ -47,14 +53,11 @@
                 align: 'left'
             },{
                 title: '导师人数',
-                key: 'admin_id',
-            },{
-                title: '学员总数',
-                key: 'admin_id',
+                key: 'tutor_count',
             },
             {
                 title: '付费学员',
-                key: 'admin_id',
+                key: 'student_count',
             },
             {
                 title: '状态',
@@ -64,7 +67,7 @@
                 title: '操作',
                 width: 260,
                 slot: 'operation',
-                operation: [['查看','operation1'], ['编辑','operation2'], ['注销','operation3']],
+                operation: [],
             }],
             list: [],
             formList: [
@@ -82,7 +85,13 @@
                 name: [{ required: true, message: '请输入机构账号', trigger: 'blur' } ],
                 pass: [{ required: true, message: '请输入账号密码', trigger: 'blur' } ],
                 jurisdiction: [{ required: true, message: '请选择管理权限' } ],
-            }
+            },
+            operationList: [['查看','operation1'], ['编辑','operation2'], ['注销','operation3']]
+        }
+    },
+    watch: {
+        permissionItem2(_new){
+            this.handleAuth(_new)
         }
     },
     methods: {
@@ -120,24 +129,25 @@
                 page_num: 1
             }
             postData('user/getDeptAdminList', d).then((res) => {
-                  this.list = res.list
+                  this.list = res.data.list
             })
         },
-        handleAuth(){
-            if(this.$PERMISSIONS_ITEM.child){
-                let d = this.$PERMISSIONS_ITEM.child;
-                let col = this.columns1[this.columns1.length-1].operation
-                d.map((m) => {
-                    if(m.permission_code === 13) this.btnType = true
-                    if(m.permission_code === 14)  col.push(this.operationList[0])
-                    if(m.permission_code === 15)  col.push(this.operationList[1])
-                    if(m.permission_code === 16)  col.push(this.operationList[2])
-                })
-            }
-        }
+        // handleAuth(){
+        //     if(this.$PERMISSIONS_ITEM.child){
+        //         let d = this.$PERMISSIONS_ITEM.child;
+        //         let col = this.columns1[this.columns1.length-1].operation
+        //         d.map((m) => {
+        //             if(m.permission_code === 13) this.btnType = true
+        //             if(m.permission_code === 14)  col.push(this.operationList[0])
+        //             if(m.permission_code === 15)  col.push(this.operationList[1])
+        //             if(m.permission_code === 16)  col.push(this.operationList[2])
+        //         })
+        //     }
+        // }
     },
     mounted() {
         this.getList()
+        if(this.permissionItem2) this.handleAuth(this.permissionItem2)
     }
   }
 </script>
