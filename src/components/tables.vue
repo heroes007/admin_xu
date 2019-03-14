@@ -137,7 +137,6 @@
                 }
               }
             })
-        console.log(arr, 'arr');
         return arr
       }
     },

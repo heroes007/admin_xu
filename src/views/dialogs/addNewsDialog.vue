@@ -24,6 +24,7 @@
             </Row>
         </base-input>
     </Modal>
+    <!-- <FormModal :detail-data="tableRow" :show-modal='show'  :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal> -->
 </template>
 <!-- task_id = 19 -->
 <script>
@@ -40,6 +41,7 @@ import dateFormat from '../../config/dateFormat'
 import {MPop} from '../../components/MessagePop'
 import {Dialog} from './index'
 import {RECORD_DETAIL} from './types'
+import FormModal from '../../components/FormModal'
 
 export default {
     mixins: [RemoveModal, MPop],
@@ -63,7 +65,26 @@ export default {
                 _fn: null
             },
             contentData: '',
-            loadingInstance: null
+            loadingInstance: null,
+            tableRow:{},
+            formList: [
+            { type: 'input', name: '作业名称',  field: 'realname'},
+            { type: 'select', name: '作业类型', field: 'jurisdiction' ,
+                selectList: [ {id: 1, name: '线上作业'},{id: 0, name: '线下作业'} ], selectField: [ 'id','name' ]
+            },
+            { type: 'select', name: '绑定课程', field: 'binding_course' ,
+                selectList: [ {id: 1, name: '天涯'},{id: 2, name: '天下'} ], selectField: [ 'id','name' ]
+            },
+            { type: 'upload', name: '作业描述', field: 'uploading' }
+            ],
+            rules:{
+            realname: [{ required: true, message: '请输入作业名称', trigger: 'blur' } ],
+            jurisdiction: [{ required: true, message: '请选择作业类型'} ],
+            binding_course: [{ required: true, message: '请选择绑定课程'} ],
+            uploading: [{ required: true, message: '请输入课程介绍'} ],
+             },
+            modalTitle:'创建文章',
+            show:true
         }
     },
     mounted() {
@@ -121,6 +142,7 @@ export default {
         'upload-panel': UploadPanel,
         'text-editor': Editor,
         'data-list': BaseList,
+        FormModal
     },
 }
 </script>

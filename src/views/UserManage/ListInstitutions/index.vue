@@ -106,13 +106,11 @@
     },
     methods: {
         see(row,rowIndex){
-          console.log(row,'row');
           this.detailShow = true;
             // postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
               // Object.assign(row, res.data[0])
               // Object.assign(row, res.data[0].admin[0])
               // let new_obj = {...row, ...res.data[0], ...res.data[0].admin[0]}
-              // console.log(new_obj,'000000');
               this.tableRowData = row
               this.tableRowData.mechanismName = row.title;
             // })
@@ -138,7 +136,6 @@
             this.modalTitle = '添加机构'
             this.show = true
             this.tableRow = {}
-            console.log('open modal')
         },
         getList(){
             let d = {
