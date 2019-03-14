@@ -1,12 +1,15 @@
 <template>
-    <Tabs value="tabName">
-        <TabPane v-if="permissionCode1" label="首页轮播" name="lb">
-            <lb/>
-        </TabPane>
-        <TabPane v-if="permissionCode2" label="课程页轮播" name="news">
-            
-        </TabPane>
-    </Tabs>
+    <Row>
+        <Tabs value="tabName" @on-click="changeatub" >
+            <TabPane  v-if="permissionCode1" label="首页轮播" name="lb">
+                <lb ref="mychild"/>
+            </TabPane>
+            <TabPane v-if="permissionCode2" label="课程页轮播" name="news">
+                <lb ref="mychild"/>
+            </TabPane>
+        </Tabs>
+         <Button class="add-advert" type="primary" @click="addatub()">添加广告</Button>
+    </Row>
 </template>
 
 <script>
@@ -20,7 +23,7 @@
                 permissionCode2: true,
                 permissionItem1: null,
                 permissionItem2: null,
-                tabName: ''
+                tabName: 'lb'
             }
         },
         methods: {
@@ -38,6 +41,16 @@
                         // this.setAuth(n,t)
                     });
                 }
+            },
+            changeatub(name){
+                this.tabName = name
+            },
+            addatub(){
+                if (this.tabName == "lb") {
+                    this.$refs.mychild.addLb()
+                }else{
+                    this.$refs.mychild.addNew()
+                }
             }
         },
         mounted(){
@@ -53,5 +66,18 @@
 </script>
 
 <style scoped>
-
+    .add-advert{
+        width: 130px;
+        height: 36px;
+        background: #4098FF;
+        border-radius: 4px;
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #FFFFFF;
+        letter-spacing: 0;
+        text-align: center;
+        position: absolute;
+        top:12px;
+        right: 18px;
+    }
 </style>
