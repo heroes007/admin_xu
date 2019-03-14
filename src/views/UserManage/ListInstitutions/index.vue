@@ -106,7 +106,6 @@
     methods: {
         see(row,rowIndex){
             this.detailShow = true;
-            console.log(row,'row')
             postData('/user/getDeptTeacherDetail', {id: row.id}).then((res) => {
               Object.assign(res.data[0], row)
               console.log(res.data[0],'res')

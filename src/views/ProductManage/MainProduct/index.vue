@@ -1,15 +1,17 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col  v-if="menushow" class='menu-bar'>
-                <SideMenu />
+            <Col v-if="menushow" class='menu-bar'>
+                <SideMenu/>
             </Col>
-            <Col  v-if="!menushow">
-             <HideMenu />
+            <Col v-if="!menushow">
+                <HideMenu/>
             </Col>
             <Col class='sub-view' :style="viewStyl">
-                <div class="hide-menu-btn" @click="hideMenu"><Icon class="hide-icon" :type="hideIcon" /></div>
-               <router-view />
+                <div class="hide-menu-btn" @click="hideMenu">
+                    <Icon class="hide-icon" :type="hideIcon"/>
+                </div>
+                <router-view/>
             </Col>
         </Row>
     </div>
@@ -23,9 +25,10 @@
   import course from '../../download/ManageCourseDownloadData'
   import HideMenu from '../../../components/HideMenu.vue'
   import hideMenuMixins from './hideMenuMixins'
+
   export default {
     name: "MainProduct",
-    components: { SideMenu, online, offline, task, course, HideMenu},
+    components: {SideMenu, online, offline, task, course, HideMenu},
     mixins: [hideMenuMixins],
   }
 </script>
@@ -60,7 +63,8 @@
                 position: relative;
                 min-height: 100vh;
                 padding-bottom: 10px;
-                .hide-menu-btn{
+
+                .hide-menu-btn {
                     z-index: 1000;
                     position: absolute;
                     top: 0;
@@ -76,7 +80,8 @@
                     border-bottom-right-radius: 2px;
                     display: flex;
                     align-items: center;
-                    .hide-icon{
+
+                    .hide-icon {
                         font-size: 14px;
                         color: #fff
                     }

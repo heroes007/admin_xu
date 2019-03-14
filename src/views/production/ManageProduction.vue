@@ -64,16 +64,16 @@
         cardList: [1,2,3,4,5],
         selectList:[
           {
-            value:'all',
-            label:'全部机构'
+            id:'all',
+            name:'全部机构'
           },
           {
-            value:'zj',
-            label:'浙江医院'
+            id:'zj',
+            name:'浙江医院'
           },
           {
-            value:'bj',
-            label:'北京医院'
+            id:'bj',
+            name:'北京医院'
           },
         ],
         courseNums:12

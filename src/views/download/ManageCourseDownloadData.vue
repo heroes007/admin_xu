@@ -1,7 +1,7 @@
 <template>
     <div class='manage-course-download-data'>
         <!-- <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/> -->
-        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="courseNums" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler"/>
+        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="courseNums" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler" :btnType="true"/>
         <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg' @edit='addClickHandler2' :isStripe='false' :table-data='dataList'
           :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'></data-list>
     </div>

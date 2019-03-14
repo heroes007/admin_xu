@@ -52,7 +52,7 @@
                     </FormItem>
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload">
-                        <div v-model="formItem.uploadDatas" class="form-message" ref="inputStyle" contentEditable="true"></div>
+                        <div class="form-message" ref="inputStyle" contentEditable="true"></div>
                         <div ref="divStyle" style="display: flex;margin-top: 15px;">
                             <Dropdown trigger="click" @on-click="handleDrop">
                                 <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
@@ -72,7 +72,7 @@
                             <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
                             <upload-btn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
                         </div>
-                        <down-loading v-model="formItem.uploadFlie" :formData="downList"/>
+                        <down-loading :formData="downList"/>
                     </FormItem>
                 </div>
             </Form>
@@ -252,16 +252,17 @@
         this.closeModal()
       },
       handleSubmit(name){
+        if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].outerHTML
+        if(this.downList) this.formItem.downList = this.downList
         console.log(this.formItem)
-        // if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].innerHTML
-        // this.$refs[name].validate((valid) => {
-        //   if (valid) {
-        //     if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
-        //       if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
-        //       else this.handleFormData()
-        //     }else this.handleFormData()
-        //   } else this.$Message.error('Fail!');
-        // })
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
+              if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
+              else this.handleFormData()
+            }else this.handleFormData()
+          } else this.$Message.error('Fail!');
+        })
       },
       // 上传到oss上
       handleUploadFile(form_data, url, fileItem) {

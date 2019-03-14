@@ -146,11 +146,11 @@
                     if (res.data.res_code == 1) {
                         this.ossFileName = res.data.msg.filename;
                         const formData = new FormData();
-                        formData.append('key', res.data.msg.filename);
-                        formData.append('OSSAccessKeyId', res.data.msg.accessKeyID);
+                        formData.append('key', res.data.data.filename);
+                        formData.append('OSSAccessKeyId', res.data.data.accessKeyID);
                         formData.append('success_action_status', '200');
-                        formData.append('signature', res.data.msg.sign);
-                        formData.append('policy', res.data.msg.policyBase64);
+                        formData.append('signature', res.data.data.sign);
+                        formData.append('policy', res.data.data.policyBase64);
                         formData.append('file', fileItem);
                         this.handleUploadFile(
                             formData,
