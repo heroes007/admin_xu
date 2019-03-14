@@ -12,7 +12,6 @@ import VueRouter from 'vue-router';
 // import ProjectList from '../components/ProjectList';
 // import ManageRecruit from '../views/information/ManageRecruit';
 // import MyInterview from '../views/mine/MyInterview';
-// import ManageNews from '../views/news/ManageNews';
 // import StatisticsData from '../views/statistics/StatisticsData';
 // import FromPageData from '../views/statistics/FromPageData';
 // import TeamGrouping from '../views/team/TeamGrouping';
@@ -48,6 +47,7 @@ const MainProduct = () => import('../views/ProductManage/MainProduct/index')
 const ExchangeCode = () => import('../views/ExchangeCode/index')
 const UsageRecord = () => import('../views/ExchangeCode/UsageRecord/index')
 const MarkingHomework = () => import('../views/information/MarkingHomework/index')
+const AdvertisingMap = () => import('../views/AdvertisingMap/index')
 Vue.use(VueRouter);
 
 // 页面路由
@@ -110,6 +110,21 @@ const routes = [
         path: ':id/usage-record',
         name: 'usage-record',
         component: UsageRecord
+      },
+      {
+        name:'advertising-map',
+        path:'advertising-map',
+        component:AdvertisingMap
+      },
+      {
+        name: 'manage-news',
+        path: 'manage-news',
+        component: ManageNews
+      },
+      {
+        name:'notification-chat',
+        path:'notification-chat',
+        component:ManageNotification
       },
       // {
       //   name:'add-homework',
@@ -182,11 +197,6 @@ const routes = [
       //   component:MyAssignment
       // },
       // {
-      //   name:'notification-chat',
-      //   path:'notification-chat',
-      //   component:ManageNotification
-      // },
-      // {
       //   name:'redeem-code',
       //   path:'redeem-code',
       //   component:ManagRedeemCode
@@ -235,11 +245,6 @@ const routes = [
       //   name: 'manage-production-group',
       //   path: 'manage-production-group',
       //   component: ManageProductionGroup
-      // },
-      // {
-      //   name: 'manage-news',
-      //   path: 'manage-news',
-      //   component: ManageNews
       // },
       // {
       //   name: 'statistics-data',

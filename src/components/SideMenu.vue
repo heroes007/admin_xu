@@ -31,26 +31,26 @@
                 <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
                       :active-name='activeIndex' :open-names="menuOpenName">
                     <div v-for="(it,index) in menuList" :key="index">
-                        <!-- <Submenu  v-if="it.list&&it.check&&checkRole(it.check)" :name="it.name">
-                            <template class="menu-padding" slot="title"><div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src='iconImg + it.icon + png'/>{{it.title}}</div></template>
+                        <Submenu  v-if="it.list" :name="it.name">
+                            <template class="menu-padding" slot="title"><div class="menu-item" ><Icon :type="it.icon" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span></div></template>
                             <div v-for="(t, index) in it.list" :key="index">
-                                <div v-if="t.check">
+                                <!-- <div v-if="t.check">
                                     <MenuItem class="sub-item-title" v-if="routeName == t.name[1]" :name="t.name[1]">{{t.title}}</MenuItem>
                                     <MenuItem class="sub-item-title" v-if="routeName != t.name[1]" :name="t.name[0]">{{t.title}}</MenuItem>
-                                </div>
-                                <MenuItem v-else :name="t.name" class="sub-item-title">
+                                </div> -->
+                                <MenuItem :name="t.name" class="sub-item-title">
                                     <Badge v-if="t.name === 'notification-chat'" :count="unread_count"> {{t.title}}</Badge>
                                     <span v-else>{{t.title}}</span>
                                 </MenuItem>
                             </div>
                         </Submenu>
-                        <MenuItem v-else-if="it.checkItem && it.checkItem ==='product-information' && checkRole(it.checkItem)" :name="routeName == it.name[1] ? it.name[1] : it.name[0]">
+                        <!-- <MenuItem v-else-if="it.checkItem && it.checkItem ==='product-information' && checkRole(it.checkItem)" :name="routeName == it.name[1] ? it.name[1] : it.name[0]">
                             <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
                         </MenuItem>
                         <MenuItem v-else-if="it.checkItem && checkRole(it.checkItem)" :name="it.name">
                             <div class="menu-item" @mouseout="outImg(it)" @mouseover="overImg(it)"><img :src="iconImg + it.icon + png"/>{{it.title}}</div>
                         </MenuItem> -->
-                        <MenuItem :name="it.name">
+                        <MenuItem v-else :name="it.name">
                             <Icon :type="it.icon" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span>
                         </MenuItem>
                     </div>
@@ -232,6 +232,19 @@
         padding-top: 14px !important;
         padding-bottom: 14px !important;
       }
+    /deep/ .ivu-icon-ios-settings{
+      position: relative;
+      top: -2px;
+    }
+    /deep/ .ivu-menu-vertical .ivu-menu-submenu-title-icon{
+      position: absolute;
+      top: 20px;
+      right: 10px;
+      clear: both;
+    }
+    /deep/ .sub-item-title{
+      padding-left: 100px !important;
+    }
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;
