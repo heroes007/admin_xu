@@ -3,20 +3,20 @@
         <screen :types="4" size-title1="管理总数" :size-num1="courseNums" btn-name="添加管理" :select1="selectList" :select2="selectList"
                 @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
         <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
-             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;" v-for="(t, index) in cardList" :key="index">
+             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;" v-for="(item, index) in cardList" :key="index">
                   <Row>
                     <Col span="2" class="al-left cad-top-left" >
-                     <p>ID:</p>
+                     <p>ID:</p >
                     </Col>
                     <Col span="9" class="al-left cad-top-left" >
-                      <p>{{t.id}}</p>
+                      <p>2109981</p >
                     </Col>
                     <Col span="13" class="al-right" >
                         <div class="cad-top-right">上架</div>
                     </Col>
                   </Row>
                   <Row>
-                    <h2 class="product-title">{{t.title}}</h2>
+                    <h2 class="product-title">浙江医院全科医生临床能力提升计划</h2>
                   </Row>
                   <Row>
                      <Col span="4" class="al-left cad-btm-price">¥1980</Col>
@@ -64,16 +64,16 @@
         cardList: [1,2,3,4,5],
         selectList:[
           {
-            value:'all',
-            label:'全部机构'
+            id:'all',
+            name:'全部机构'
           },
           {
-            value:'zj',
-            label:'浙江医院'
+            id:'zj',
+            name:'浙江医院'
           },
           {
-            value:'bj',
-            label:'北京医院'
+            id:'bj',
+            name:'北京医院'
           },
         ],
         courseNums:12
@@ -164,14 +164,8 @@
       //   });
       //   window.open(routeData.href, "_blank")
       // },
-      getList(){
-        postData('/product/product/get_list').then((res) => {
-         this.cardList = res.data
-        })
-      }
     },
     mounted() {
-      this.getList()
       // this.getData();
       // this.get_production_group_list({
       //   page_index: 0,

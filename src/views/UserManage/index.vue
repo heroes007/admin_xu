@@ -1,10 +1,10 @@
 <template>
-    <Tabs value="tabName" class="tab-name">
-        <TabPane v-show='permissionCode1' label="管理列表" name="item1"><ManagementList :permission-item1="permissionItem1" /></TabPane>
-        <TabPane v-show='permissionCode2' label="机构列表" name="item2"><ListInstitutions :permission-item2="permissionItem2" /></TabPane>
-        <TabPane v-show='permissionCode3' label="导师列表" name="item3"><MentorList :permission-item3="permissionItem3" /></TabPane>
-        <TabPane v-show='permissionCode4' label="学员列表" name="item4"><StudentList :permission-item4="permissionItem4" /></TabPane>
-        <TabPane v-show='permissionCode5' label="讲师列表" name="item5"><LecturerList :permission-item5="permissionItem5" /></TabPane>
+    <Tabs value="tabName" @on-click="tabs" class="tab-name">
+        <TabPane v-if='permissionCode1' label="管理列表" name="item1"><ManagementList v-if="pane1" :permission-item1="permissionItem1" /></TabPane>
+        <TabPane v-if='permissionCode2' label="机构列表" name="item2"><ListInstitutions v-if="pane2" :permission-item2="permissionItem2" /></TabPane>
+        <TabPane v-if='permissionCode3' label="导师列表" name="item3"><MentorList v-if="pane3" :permission-item3="permissionItem3" /></TabPane>
+        <TabPane v-if='permissionCode4' label="学员列表" name="item4"><StudentList v-if="pane4" :permission-item4="permissionItem4" /></TabPane>
+        <TabPane v-if='permissionCode5' label="讲师列表" name="item5"><LecturerList  v-if="pane5" :permission-item5="permissionItem5" /></TabPane>
     </Tabs>
 </template>
 
@@ -25,6 +25,11 @@
         permissionCode3: false,
         permissionCode4: false,
         permissionCode5: false,
+        pane1: false,
+        pane2: false,
+        pane3: false,
+        pane4: false,
+        pane5: false,
         permissionItem1: null,
         permissionItem2: null,
         permissionItem3: null,
@@ -38,12 +43,17 @@
         this[ 'permissionCode' + n ] = true
         this['permissionItem' + n] = t
       },
+      tabs(v){
+        let n = +v.replace(/[^0-9]/ig,"");
+        if(this[ 'permissionCode' + n ]) this['pane' + n] = true
+      },
       handleAuth(){
         if(this.$PERMISSIONS1&&this.$PERMISSIONS1.hasOwnProperty('child')){
           let d = this.$PERMISSIONS1.child;
-          d.forEach(t => {
+          d.forEach((t, k) => {
             let n = +t.permission_code.slice(2,4)
             this.setAuth(n,t)
+            if(k === 0) this['pane' + n] = true
           });
         }
       }

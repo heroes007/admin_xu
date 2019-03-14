@@ -3,7 +3,7 @@
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <FormModal :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
 
-        <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="23" btn-name="添加讲师" placehodle="搜索讲师姓名" @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="total" btn-name="添加讲师" placehodle="搜索讲师姓名" @inputChange="inputChange" @handleClick="handleClick"/>
         <div class="lecturer-list">
            <Row :gutter="20">
             <Col span="6" v-for="(t,i) in list" :key="i">
@@ -11,7 +11,7 @@
                     <img class="lecturer-item-img" :src="t.img_url" />
                     <div class="lecturer-item-content">
                         <h2>{{t.name}}</h2>
-                        <p>绑定课程：{{t.num}}个</p>
+                        <p>绑定课程：{{t.curriculum_count}}个</p>
                     </div>
                     <div class="lecturer-item-btn">
                        <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="/static/icon/write.jpg" />
@@ -96,7 +96,7 @@
         edit(t){
             this.modalTitle = '编辑讲师'
             this.show = true
-            this.tableRow = {}
+            this.tableRow = t
             console.log(t,'edit')
         },
         deletes(t){
@@ -115,7 +115,7 @@
             console.log('open modal')
         },
         handleSubmit(val){
-           if(this.modalTitle == '添加讲师') this.fromAddAndEdit('user/addTeacher',val)
+           if(this.modalTitle === '添加讲师') this.fromAddAndEdit('user/addTeacher',val)
            else this.fromAddAndEdit('user/modifyTeacher',val)
         },
         getList(){

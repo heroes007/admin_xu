@@ -70,7 +70,7 @@
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
                         let d = res.data.data;
-                        localStorage.setItem('lastSelectedProject',d.userInfo[0].organization_id)
+                        localStorage.setItem('organizationId',d.userInfo[0].organization_id)
                         this.$store.dispatch('set_user_info', d.userInfo[0]);
                         localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
                         this.$router.push({ path: 'dashboard' });

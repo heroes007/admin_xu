@@ -95,11 +95,11 @@ const routes = [
         name: 'product-manage',
         component: ProductManage
       },
-      {
-        path: 'system-manage',
-        name: 'system-manage',
-        component: SystemManage
-      },
+      // {
+      //   path: 'system-manage',
+      //   name: 'system-manage',
+      //   component: SystemManage
+      // },
       {
         path: 'exchange-code',
         name: 'exchange-code',

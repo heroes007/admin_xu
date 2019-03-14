@@ -27,7 +27,7 @@
   import postData from 'src/api/postData'
   import pageList from '../../../components/Page'
   import pageMixin from '../../mixins/pageMixins'
-
+  import  { validatePass, validateUsername3 } from '../validate'
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen, see, pageList },
@@ -107,15 +107,15 @@
             formList: [
                 { type: 'input', name: '真实姓名',  field: 'realname'},
                 { type: 'input', name: '导师账号',  field: 'username' },
-                { type: 'input', name: '账号密码',  field: 'password' },
+                { type: 'password', name: '账号密码',  field: 'password' },
                 { type: 'select', name: '管理权限', field: 'role_id' ,
                     selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
                 }
             ],
             rules:{
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
-                username: [{ required: true, message: '请输入导师账号', trigger: 'blur' } ],
-                password: [{ required: true, message: '请输入账号密码', trigger: 'blur' } ],
+                username: [{ required: true, validator: validateUsername3 }],
+                password: [{ required: true, validator: validatePass }],
                 role_id: [{ required: true, message: '请选择管理权限'} ],
             }
         }
@@ -137,7 +137,6 @@
               role_id: row.role_id,
               id: row.id
             }
-            // console.log(row,rowIndex);
         },
         deletes(row,rowIndex){
             // console.log(row,rowIndex);
@@ -171,7 +170,7 @@
             })
         },
         handleSubmit(val){
-          val.organization_id = Number(localStorage.getItem('lastSelectedProject'))
+          val.organization_id = Number(localStorage.getItem('organizationId'))
           if(this.modalTitle == '添加导师') {
             this.fromAddAndEdit('/user/addDeptTeacher',val)
           }

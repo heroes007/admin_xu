@@ -5,7 +5,7 @@ import {
 } from '../../api/modules/tools_project'
 import Vue from 'vue';
 
-let id = localStorage.getItem('lastSelectedProject') ? +localStorage.getItem('lastSelectedProject') : 1
+let id = localStorage.getItem('organizationId') ? +localStorage.getItem('organizationId') : 1
 const state = {
     select_project_id: id,
     project_list: [],
@@ -79,7 +79,7 @@ const mutations = {
         state.project_list = payload.data;
         if (payload.callback) payload.callback(state.select_project_id);
         state.isLoading = false;
-        Vue.localStorage.set('lastSelectedProject', payload.data[0].id)
+        Vue.localStorage.set('organizationId', payload.data[0].id)
     },
     [types.CHANGE_SELECTED_PROEJCT_ID](state, payload) {
         state.select_project_id = payload;
