@@ -105,17 +105,11 @@
         edit(row,rowIndex){
             this.modalTitle = '编辑管理'
             this.show = true
-            this.tableRow = {
-                realname: row.realname,
-                nickname: row.nickname,
-                pass: '',
-                jurisdiction: '',
-                id: row.id
-            }
+            this.tableRow = row
         },
         handleSubmit(val){
            if(this.modalTitle == '添加管理') this.fromAddAndEdit('user/addSuperAdmin',val)
-           else this.fromAddAndEdit('user/addSuperAdmin',val)
+           else this.fromAddAndEdit('user/modifySuperAdmin',val)
         },
         deletes(row,rowIndex){
             console.log(row,rowIndex,'123');

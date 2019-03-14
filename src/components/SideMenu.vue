@@ -181,7 +181,7 @@
           if (res.data.res_code === 1) {
             this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
-            this.$localStorage.remove('lastSelectedProject');
+            this.$localStorage.remove('organizationId');
             this.$localStorage.remove('menuOpenName');
             localStorage.removeItem('menuActiveIndex');
             localStorage.removeItem('PERMISSIONS');

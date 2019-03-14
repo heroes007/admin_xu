@@ -27,6 +27,7 @@
   import UserMixins from '../Mixins/UserMixins'
   import pageList from '../../../components/Page'
   import pageMixin from '../../mixins/pageMixins'
+  import  { validatePass, validateUsername2 } from '../validate'
 
   export default {
     name: "ManagementList",
@@ -82,7 +83,7 @@
                 { type: 'input', name: '机构名称',  field: 'title'},
                 { type: 'textarea', name: '机构介绍',  field: 'description' },
                 { type: 'input', name: '机构账号',  field: 'username' },
-                { type: 'input', name: '账号密码',  field: 'password' },
+                { type: 'password', name: '账号密码',  field: 'password' },
                 { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'九划超级管理员'}
               // { type: 'select', name: '管理权限', field: 'jurisdiction' ,
                 //     selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
@@ -91,9 +92,9 @@
             rules:{
                 title: [{ required: true, message: '请输入机构名称', trigger: 'blur' } ],
                 description: [{ required: true, message: '请输入机构介绍', trigger: 'blur' } ],
-                username: [{ required: true, message: '请输入机构账号', trigger: 'blur' } ],
-                password: [{ required: true, message: '请输入账号密码', trigger: 'blur' } ],
-                // jurisdiction: [{ required: true, message: '请选择管理权限' } ],
+                username: [{ required: true, validator: validateUsername2 }],
+                password: [{ required: true, validator: validatePass }],
+                jurisdiction: [],
             },
             operationList: [['查看','operation1'], ['编辑','operation2'], ['注销','operation3']]
         }
@@ -106,23 +107,26 @@
     methods: {
         see(row,rowIndex){
             this.detailShow = true;
-            postData('/user/getDeptTeacherDetail', {id: row.id}).then((res) => {
-              Object.assign(res.data[0], row)
+            postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
+            //   Object.assign(res.data[0], row)
               console.log(res.data[0],'res')
-              this.tableRowData = res.data[0];
+            //   this.tableRowData = res.data[0];
             })
             this.tableRowData.mechanismName = row.name;
             console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){
-             this.show = true
-             this.modalTitle = '修改机构'
-             this.tableRow = {
-             }
-            console.log(row,rowIndex,'row');
+             postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
+                this.show = true
+                this.modalTitle = '编辑机构'
+                let username = res.data[0].admin[0].username
+                let password = res.data[0].admin[0].password
+                let organization_id = row.organization_id
+                this.tableRow = {...res.data[0],username ,password, organization_id}
+             })
         },
         deletes(row,rowIndex){
-          this.fromAddAndEdit('/user/removeDept', {id: row.id})
+          this.fromAddAndEdit('user/removeDept', {id: row.organization_id})
         },
         inputChange(val){
            this.keyword = val;
@@ -146,7 +150,8 @@
             })
         },
         handleSubmit(val) {
-          this.fromAddAndEdit('/user/addDeptAdmin', val)
+          if(this.modalTitle === '添加机构') this.fromAddAndEdit('user/addDeptAdmin', val)
+          else this.fromAddAndEdit('user/modifyDept', val)
         }
         // handleAuth(){
         //     if(this.$PERMISSIONS_ITEM.child){
