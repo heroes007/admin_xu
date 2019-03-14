@@ -7,7 +7,6 @@
 
         <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="management"/>
 
-
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
 
    </div>
@@ -37,7 +36,6 @@
     watch: {
         permissionItem4(_new){
             this.handleAuth(_new)
-            console.log(_new,'_new')
         }
     },
     data (){

@@ -126,11 +126,11 @@ const routes = [
       //   path:'grade-homework',
       //   component:GradeHomework
       // },
-      {
-        name:'manage-student',
-        path:'manage-student',
-        component:ManageStudent
-      },
+      // {
+      //   name:'manage-student',
+      //   path:'manage-student',
+      //   component:ManageStudent
+      // },
       // {
       //   name:'add-student',
       //   path:'add-student',
@@ -141,21 +141,21 @@ const routes = [
       //   path:'add-homework/:id',
       //   component:AddHomework
       // },
-      {
-        name:'manage-user',
-        path:'manage-user',
-        component:ManageUser
-      },
-      {
-        name:'manage-lb',
-        path:'manage-lb',
-        component:ManageLb
-      },
-      {
-        name:'online-course',
-        path:'online-course',
-        component:ManageOnlineCourse
-      },
+      // {
+      //   name:'manage-user',
+      //   path:'manage-user',
+      //   component:ManageUser
+      // },
+      // {
+      //   name:'manage-lb',
+      //   path:'manage-lb',
+      //   component:ManageLb
+      // },
+      // {
+      //   name:'online-course',
+      //   path:'online-course',
+      //   component:ManageOnlineCourse
+      // },
       // {
       //   name:'online-course-chapter',
       //   path:'online-course-chapter/:id',
@@ -166,51 +166,51 @@ const routes = [
       //   path:'offline-course',
       //   component:ManageOfflineCourse
       // },
-      {
-        name:'offline-course-manage-signup',
-        path:'offline-course-manage-signup/:id',
-        component:ManageOfflineCourseSignup
-      },
-      {
-        name:'task',
-        path:'task',
-        component:ManageTask
-      },
-      {
-        name:'manage-my-assignment',
-        path:'manage-my-assignment',
-        component:MyAssignment
-      },
-      {
-        name:'notification-chat',
-        path:'notification-chat',
-        component:ManageNotification
-      },
-      {
-        name:'redeem-code',
-        path:'redeem-code',
-        component:ManagRedeemCode
-      },
-      {
-        name:'course-download-data',
-        path:'course-download-data',
-        component:ManageCourseDownloadData
-      },
-      {
-        name:'public-download-data',
-        path:'public-download-data',
-        component:ManagePublicDownloadData
-      },
+      // {
+      //   name:'offline-course-manage-signup',
+      //   path:'offline-course-manage-signup/:id',
+      //   component:ManageOfflineCourseSignup
+      // },
+      // {
+      //   name:'task',
+      //   path:'task',
+      //   component:ManageTask
+      // },
+      // {
+      //   name:'manage-my-assignment',
+      //   path:'manage-my-assignment',
+      //   component:MyAssignment
+      // },
+      // {
+      //   name:'notification-chat',
+      //   path:'notification-chat',
+      //   component:ManageNotification
+      // },
+      // {
+      //   name:'redeem-code',
+      //   path:'redeem-code',
+      //   component:ManagRedeemCode
+      // },
+      // {
+      //   name:'course-download-data',
+      //   path:'course-download-data',
+      //   component:ManageCourseDownloadData
+      // },
+      // {
+      //   name:'public-download-data',
+      //   path:'public-download-data',
+      //   component:ManagePublicDownloadData
+      // },
       // {
       //   name: 'manage-app',
       //   path: 'manage-app',
       //   component: ManageApp
       // },
-      {
-        name: 'manage-project',
-        path: 'manage-project',
-        component: ProjectList
-      },
+      // {
+      //   name: 'manage-project',
+      //   path: 'manage-project',
+      //   component: ProjectList
+      // },
       // {
       //   name: 'manage-recruit',
       //   path: 'manage-recruit',
@@ -221,26 +221,26 @@ const routes = [
       //   path: 'manage-my-interview',
       //   component: MyInterview
       // },
-      {
-        name: 'manage-production',
-        path: 'manage-production',
-        component: ManageProduction
-      },
-      {
-        name: 'manage-production-curriculum',
-        path: 'manage-production-curriculum/:id',
-        component: ManageProductionCurriculum
-      },
-      {
-        name: 'manage-production-group',
-        path: 'manage-production-group',
-        component: ManageProductionGroup
-      },
-      {
-        name: 'manage-news',
-        path: 'manage-news',
-        component: ManageNews
-      },
+      // {
+      //   name: 'manage-production',
+      //   path: 'manage-production',
+      //   component: ManageProduction
+      // },
+      // {
+      //   name: 'manage-production-curriculum',
+      //   path: 'manage-production-curriculum/:id',
+      //   component: ManageProductionCurriculum
+      // },
+      // {
+      //   name: 'manage-production-group',
+      //   path: 'manage-production-group',
+      //   component: ManageProductionGroup
+      // },
+      // {
+      //   name: 'manage-news',
+      //   path: 'manage-news',
+      //   component: ManageNews
+      // },
       // {
       //   name: 'statistics-data',
       //   path: 'statistics-data',
