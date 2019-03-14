@@ -11,7 +11,7 @@
                     <img class="lecturer-item-img" :src="t.img_url" />
                     <div class="lecturer-item-content">
                         <h2>{{t.name}}</h2>
-                        <p>绑定课程：{{t.num}}个</p>
+                        <p>绑定课程：{{t.curriculum_count}}个</p>
                     </div>
                     <div class="lecturer-item-btn">
                        <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="/static/icon/write.jpg" />
