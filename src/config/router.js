@@ -12,7 +12,6 @@ import VueRouter from 'vue-router';
 // import ProjectList from '../components/ProjectList';
 // import ManageRecruit from '../views/information/ManageRecruit';
 // import MyInterview from '../views/mine/MyInterview';
-// import ManageNews from '../views/news/ManageNews';
 // import StatisticsData from '../views/statistics/StatisticsData';
 // import FromPageData from '../views/statistics/FromPageData';
 // import TeamGrouping from '../views/team/TeamGrouping';
@@ -48,6 +47,7 @@ const MainProduct = () => import('../views/ProductManage/MainProduct/index')
 const ExchangeCode = () => import('../views/ExchangeCode/index')
 const UsageRecord = () => import('../views/ExchangeCode/UsageRecord/index')
 const MarkingHomework = () => import('../views/information/MarkingHomework/index')
+const AdvertisingMap = () => import('../views/AdvertisingMap/index')
 Vue.use(VueRouter);
 
 // 页面路由
@@ -111,6 +111,21 @@ const routes = [
         name: 'usage-record',
         component: UsageRecord
       },
+      {
+        name:'advertising-map',
+        path:'advertising-map',
+        component:AdvertisingMap
+      },
+      {
+        name: 'manage-news',
+        path: 'manage-news',
+        component: ManageNews
+      },
+      {
+        name:'notification-chat',
+        path:'notification-chat',
+        component:ManageNotification
+      },
       // {
       //   name:'add-homework',
       //   path:'add-homework',
@@ -126,11 +141,11 @@ const routes = [
       //   path:'grade-homework',
       //   component:GradeHomework
       // },
-      {
-        name:'manage-student',
-        path:'manage-student',
-        component:ManageStudent
-      },
+      // {
+      //   name:'manage-student',
+      //   path:'manage-student',
+      //   component:ManageStudent
+      // },
       // {
       //   name:'add-student',
       //   path:'add-student',
@@ -141,21 +156,21 @@ const routes = [
       //   path:'add-homework/:id',
       //   component:AddHomework
       // },
-      {
-        name:'manage-user',
-        path:'manage-user',
-        component:ManageUser
-      },
-      {
-        name:'manage-lb',
-        path:'manage-lb',
-        component:ManageLb
-      },
-      {
-        name:'online-course',
-        path:'online-course',
-        component:ManageOnlineCourse
-      },
+      // {
+      //   name:'manage-user',
+      //   path:'manage-user',
+      //   component:ManageUser
+      // },
+      // {
+      //   name:'manage-lb',
+      //   path:'manage-lb',
+      //   component:ManageLb
+      // },
+      // {
+      //   name:'online-course',
+      //   path:'online-course',
+      //   component:ManageOnlineCourse
+      // },
       // {
       //   name:'online-course-chapter',
       //   path:'online-course-chapter/:id',
@@ -166,51 +181,46 @@ const routes = [
       //   path:'offline-course',
       //   component:ManageOfflineCourse
       // },
-      {
-        name:'offline-course-manage-signup',
-        path:'offline-course-manage-signup/:id',
-        component:ManageOfflineCourseSignup
-      },
-      {
-        name:'task',
-        path:'task',
-        component:ManageTask
-      },
-      {
-        name:'manage-my-assignment',
-        path:'manage-my-assignment',
-        component:MyAssignment
-      },
-      {
-        name:'notification-chat',
-        path:'notification-chat',
-        component:ManageNotification
-      },
-      {
-        name:'redeem-code',
-        path:'redeem-code',
-        component:ManagRedeemCode
-      },
-      {
-        name:'course-download-data',
-        path:'course-download-data',
-        component:ManageCourseDownloadData
-      },
-      {
-        name:'public-download-data',
-        path:'public-download-data',
-        component:ManagePublicDownloadData
-      },
+      // {
+      //   name:'offline-course-manage-signup',
+      //   path:'offline-course-manage-signup/:id',
+      //   component:ManageOfflineCourseSignup
+      // },
+      // {
+      //   name:'task',
+      //   path:'task',
+      //   component:ManageTask
+      // },
+      // {
+      //   name:'manage-my-assignment',
+      //   path:'manage-my-assignment',
+      //   component:MyAssignment
+      // },
+      // {
+      //   name:'redeem-code',
+      //   path:'redeem-code',
+      //   component:ManagRedeemCode
+      // },
+      // {
+      //   name:'course-download-data',
+      //   path:'course-download-data',
+      //   component:ManageCourseDownloadData
+      // },
+      // {
+      //   name:'public-download-data',
+      //   path:'public-download-data',
+      //   component:ManagePublicDownloadData
+      // },
       // {
       //   name: 'manage-app',
       //   path: 'manage-app',
       //   component: ManageApp
       // },
-      {
-        name: 'manage-project',
-        path: 'manage-project',
-        component: ProjectList
-      },
+      // {
+      //   name: 'manage-project',
+      //   path: 'manage-project',
+      //   component: ProjectList
+      // },
       // {
       //   name: 'manage-recruit',
       //   path: 'manage-recruit',
@@ -221,26 +231,21 @@ const routes = [
       //   path: 'manage-my-interview',
       //   component: MyInterview
       // },
-      {
-        name: 'manage-production',
-        path: 'manage-production',
-        component: ManageProduction
-      },
-      {
-        name: 'manage-production-curriculum',
-        path: 'manage-production-curriculum/:id',
-        component: ManageProductionCurriculum
-      },
-      {
-        name: 'manage-production-group',
-        path: 'manage-production-group',
-        component: ManageProductionGroup
-      },
-      {
-        name: 'manage-news',
-        path: 'manage-news',
-        component: ManageNews
-      },
+      // {
+      //   name: 'manage-production',
+      //   path: 'manage-production',
+      //   component: ManageProduction
+      // },
+      // {
+      //   name: 'manage-production-curriculum',
+      //   path: 'manage-production-curriculum/:id',
+      //   component: ManageProductionCurriculum
+      // },
+      // {
+      //   name: 'manage-production-group',
+      //   path: 'manage-production-group',
+      //   component: ManageProductionGroup
+      // },
       // {
       //   name: 'statistics-data',
       //   path: 'statistics-data',

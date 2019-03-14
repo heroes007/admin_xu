@@ -120,15 +120,32 @@ export const MenuList = [
     icon:'md-easel',
   },
   {
-    name: 'system-manage',
-    title: '平台管理',
-    icon:'ios-settings',
-  },
-  {
     name: 'exchange-code',
-    title: '兑换码',
+    title: '产品兑换',
     icon:'md-clipboard',
   },
+  {
+    name: 'system-manage',
+    title: '平台管理',
+    icon: 'ios-settings',
+    list: [
+    {
+      name: 'advertising-map',
+      title: '广告图'
+    }, 
+    {
+      name: 'manage-news',
+      title: '行业资讯'
+    }, 
+    {
+      name: 'notification-chat',
+      badge: true,
+      title: '通知管理',
+    }
+   ]
+  },
+
+
   // {
   //   name: 'manage-project',
   //   title: '机构管理',
