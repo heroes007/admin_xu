@@ -1,9 +1,9 @@
 <template>
     <div class='manage-production-view'>
-        <screen :typeBtn='true' :types="4" size-title1="管理总数" :size-num1="courseNums" btn-name="添加管理" :select1="selectList" :select2="selectList"
+        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="管理总数" :size-num1="total" btn-name="添加管理" :select1="selectList" :select2="selectList"
                 @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
         <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
-             <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;" v-for="(t, index) in cardList" :key="index">
+             <Card style="min-width:350px;min-height:127px;margin:20px;" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
                   <Row>
                     <Col span="2" class="al-left cad-top-left" >
                      <p>ID:</p>
@@ -12,7 +12,7 @@
                       <p>{{t.id}}</p>
                     </Col>
                     <Col span="13" class="al-right" >
-                        <div class="cad-top-right">上架</div>
+                        <div class="cad-top-right">{{t.stateText}}</div>
                     </Col>
                   </Row>
                   <Row>
@@ -41,6 +41,7 @@
       return {
         curPage: 1,
         cardList: [],
+        search: '',
         selectList:[
           {
             id:'all',
@@ -66,12 +67,14 @@
         console.log(val)
       },
       inputChange(val){
-        console.log(val)
+        this.search = val;
+        this.getList()
       },
       handleClick(){
         console.log('open modal')
       },
-      handleJump(){
+      handleJump(t){
+        localStorage.setItem('PRODUCTINFO',JSON.stringify(t))
         let routeData = this.$router.resolve({
           query: '',
           params: '',
@@ -84,15 +87,19 @@
         var data = this.getData();
       },
       getList(){
+        let organization_id = localStorage.getItem('organization_id') !== 1 ? localStorage.getItem('organization_id') : ''
         let d = {
-          // organization_id: 1,
+          organization_id,
           // state: 1,
           search: "",
-          page_size: 2,
-          page_num: 1
+          page_size: this.pageSize,
+          page_num: this.current,
         }
         postData('/product/product/get_list',d).then((res) => {
          this.cardList = res.data.data
+         this.cardList.map((t) => {
+           t.stateText = this.$config.setProductState(t.state)
+         })
          this.total = res.data.count
         })
       }

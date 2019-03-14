@@ -170,7 +170,7 @@
               console.log(res,'resss')
                   this.list = res.data.list
                   this.total = res.data.count
-                  this.allNum = localStorage.getItem('lastSelectedProject') == 1 ? res.data.all_student : res.data.count
+                  this.allNum = localStorage.getItem('organizationId') == 1 ? res.data.all_student : res.data.count
             })
         }
     },
