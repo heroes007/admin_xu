@@ -1,16 +1,50 @@
 <template>
     <div class='manage-production-view'>
         <!-- <header-component title='行业资讯' :type='0' :showAdd='true' addText='创建文章' @addClick='addNewsHandler'></header-component> -->
-        <screen :types="6" title="行业资讯" btnName="创建文章" @handleClick="addNewsHandler"/>
-        <Row>
+        <screen :types="10" selectType1 btnType title="行业资讯" btnName="创建文章" @handleClick="addNewsHandler" style="background:#ffffff"/>
+        <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :upload-btn="false" :rule-validate="rules" ></FormModal>
+        <!-- <Row>
             <Form :inline="true" :model="formInline" class="find-by-term">
-                <FormItem label="文章状态" :label-width="80">
-                    <Select v-model="formInline.state" placeholder="请选择文章状态" @on-change='changeFilterHandler' style="width: 130px;">
+                <FormItem  :label-width="0">
+                    <Select v-model="formInline.state" placeholder="选择状态" @on-change='changeFilterHandler' style="width: 200px;
+                    background: #F0F0F7;
+                    border-radius: 100px;
+                    ">
                         <Option v-for="item in stateList" :key="item.id" :label="item.name" :value="item.id"></Option>
                     </Select>
                 </FormItem>
+                    <FormItem label="" style="
+                        margin: 0 auto;
+                        text-align: center;
+                        width: 73%;
+                    ">
+                        <Row style="
+                        font-family: PingFangSC-Medium;
+                        font-size: 18px;
+                        color: #474C63;
+                        letter-spacing: 0;
+                        line-height:40px;
+                        ">
+                            行业资讯
+                        </Row>
+                    </FormItem>
+                <FormItem  label="" style="float:right;margin-right40px">
+                    <Button @click="addNewsHandler()"
+                    type="primary" style="
+                        width:130px;
+                        height:36px;
+                        background: #4098FF;
+                        border-radius: 4px;
+                        font-family: PingFangSC-Regular;
+                        font-size: 16px;
+                        color: #FFFFFF;
+                        letter-spacing: 0;
+                        text-align: center;
+                        margin-right:20px
+                    ">创建文章</Button>
+                </FormItem>
             </Form>
-        </Row>
+        </Row> -->
         <data-list class='data-list light-header' @edit='editHandler' @delete='deleteHandler' :table-data='dataList'
                    :header-data='dataHeader' :column-formatter='listColumnFormatter'
                    :column-formatter-data='listColumnFormatterData'></data-list>
@@ -37,9 +71,10 @@
   import {mapState, mapActions, mapGetters} from 'vuex'
   import {doDateFormat, doTimeFormat, reunitPrice} from '../../components/Util'
   import screen from '../../components/ScreenFrame'
-
+  import FormModal from '../../components/FormModal'
+  import FormModalMixin from '../UserManage/FormModalMixin'
   export default {
-    mixins: [Dialog, MPop],
+    mixins: [Dialog, MPop,FormModalMixin],
     data() {
       return {
         loadingInstance: null,
@@ -47,7 +82,20 @@
         formInline: {
           state: null
         },
-        pageSize: 20
+        pageSize: 20,
+        tableRow: {},
+        show: false,
+        formList: [
+            { type: 'input', name: '文章标题',  field: 'textname'},
+            { type: 'textarea', name:'文章摘要',field:  'textdesc'},
+            { type: 'upload', name: '文章正文', field: 'uploading' }
+        ],
+        modalTitle: '创建文章',
+        rules:{
+            textname: [{ required: true, message: '请输入文章标题', trigger: 'blur' } ],
+            textdesc: [{ required: true, message: '请输入文章摘要'}],
+            uploading: [{ required: true, message: '请输入文章正文'} ],
+        },
       }
     },
 
@@ -57,7 +105,8 @@
         'delete_news'
       ]),
       addNewsHandler() {
-        this.handleSelModal(ADD_NEWS);
+        // this.handleSelModal(ADD_NEWS);
+        this.show = true
       },
       editHandler(index, row) {
         this.handleSelModal(ADD_NEWS, row.id);
@@ -111,38 +160,55 @@
       }),
       dataHeader() {
         return [{
-          label: '排序',
+          label: '序号',
           width: 90,
           sort: true
-        }, {
-          prop: 'create_time',
-          label: '创建时间',
-          width: 160
-        }, {
+        }, 
+        {
           prop: 'title',
-          label: '标题'
-        }, {
+          label: '新闻标题'
+        }, 
+        {
           prop: 'count',
           label: '浏览量',
           width: 100
-        }, {
+        }, 
+        {
+          prop: 'create_time',
+          label: '状态',
+        }, 
+        {
+          prop: 'create_time',
+          label: '发布时间',
+          width: 160
+        }, 
+         {
+          prop: 'create_time',
+          label: '发布人',
+        }, 
+        {
           label: '操作',
           width: 320,
-          groupBtn: [{
-            isSwitch: true,
-            switchKey: 'is_valid',
-            onText: '启用',
-            offText: '停用',
-            disableText: '失效',
-            actionName: 'change_news_valid'
-
-          }, {
+          groupBtn: [
+        //     {
+        //     isSwitch: true,
+        //     switchKey: 'is_valid',
+        //     onText: '启用',
+        //     offText: '停用',
+        //     disableText: '失效',
+        //     actionName: 'change_news_valid'
+        //   }, 
+            {
+            text: '下架',
+            param: 'edit'
+            },
+          {
             text: '编辑',
             param: 'edit'
           }, {
-            text: 'ios-trash-outline',
+            text: '删除',
             param: 'delete',
-            isIcon: true
+            // isIcon: true
           }]
         }]
       },
@@ -163,7 +229,8 @@
       'subject-filter': SubjectFilter,
       'data-list': BaseList,
       'back-to-top': BackToTop,
-      screen
+      screen,
+      FormModal
     }
   }
 
@@ -210,7 +277,8 @@
         }
 
         .find-by-term {
-            padding-top: 22px;
+            padding-top: 18px;
+            // padding-bottom: 17px;
             text-align: left;
             margin-left: 20px;
 
@@ -414,7 +482,7 @@
             .data-form {
                 width: 550px;
                 background-color: #ffffff;
-                border: 1px solid #EBEBEC;
+                // border: 1px solid #EBEBEC;
                 border-radius: 6px;
                 padding: 20px 0;
 

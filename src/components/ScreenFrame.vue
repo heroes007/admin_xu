@@ -4,13 +4,13 @@
             <img class="back-img" src="../../static/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
-        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
+        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1  " v-model="valueSelect1" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select1" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 4 || types == 5 && selectType2" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
+        <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Input v-if="types && types !== 6 && types !== 7 && types !== 9" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
+        <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
         <div v-if="types == 5 && radioType" class="money-student" @click="moneyStudent">
@@ -25,7 +25,7 @@
             <span class="all-content">{{sizeTitle2}}</span>
             <span class="all-num">{{sizeNum2}}</span>
         </div>
-        <div v-if="types == 6 || types == 7 || types == 9" class="title">
+        <div v-if="types == 6 || types == 7 || types == 9 || types == 10" class="title">
             <div>{{title}}</div>
         </div>
         <Button v-if="types && types !== 5 && types !== 7 && types !== 8 && types !== 9 && btnType" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>

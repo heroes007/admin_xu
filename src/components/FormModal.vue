@@ -70,7 +70,7 @@
                                 </DropdownMenu>
                             </Dropdown>
                             <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
-                            <upload-btn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
+                            <upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
                         </div>
                         <down-loading :formData="downList"/>
                     </FormItem>
@@ -101,6 +101,11 @@
     components: { ExchangeContent, uploadBtn, downLoading },
     props:{
       showModal: {
+        type: Boolean,
+        default: false
+      },
+      //控制上传附件按钮
+      uploadBtn: {
         type: Boolean,
         default: false
       },

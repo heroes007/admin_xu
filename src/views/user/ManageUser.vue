@@ -539,7 +539,7 @@
     .add-student-view .result .data-form {
       width: 550px;
       background-color: #ffffff;
-      border: 1px solid #EBEBEC;
+      // border: 1px solid #EBEBEC;
       border-radius: 6px;
       padding: 20px 0;
     }

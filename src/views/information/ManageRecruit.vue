@@ -508,7 +508,7 @@ export default {
     .data-form {
       width: 550px;
       background-color: #ffffff;
-      border: 1px solid #ebebec;
+      // border: 1px solid #ebebec;
       border-radius: 6px;
       padding: 20px 0;
       .user-info {
