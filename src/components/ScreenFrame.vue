@@ -4,16 +4,16 @@
             <img class="back-img" src="../../static/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
-        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1  " v-model="valueSelect1" @on-change="selectChange1" class="select-list">
+        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select1" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
+        <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
-        <div v-if="types == 5 && radioType" class="money-student" @click="moneyStudent">
+        <div v-if="types == 5 && radioType && isSuper" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
             <span class="money-student-content">付费学员</span>
         </div>
@@ -21,7 +21,7 @@
             <span class="all-content">{{sizeTitle1}}</span>
             <span class="all-num">{{sizeNum1}}</span>
         </div>
-        <div v-if="types ==3 || types ==5 || types ==8" class="money-size">
+        <div v-if="types ==3 || types ==5 || types ==8 && isSuper" class="money-size">
             <span class="all-content">{{sizeTitle2}}</span>
             <span class="all-num">{{sizeNum2}}</span>
         </div>
@@ -43,7 +43,8 @@
         valueInput: '',
         placehodleInput: '搜索用户名/姓名/手机号',
         iconColor: '#9397AD',
-        backgroundColor: 'background: #fff'
+        backgroundColor: 'background: #fff',
+        isSuper: false
       }
     },
     props:{
@@ -107,12 +108,13 @@
     mounted() {
       if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
+      this.isSuper = localStorage.getItem('lastSelectedProject') == 1 ? true : false
     },
     methods:{
       // 付费学员返回事件，click触发，选中返回true
       moneyStudent(){
         this.iconColor = this.iconColor == '#9397AD' ? "#4098ff" : "#9397AD"
-        this.$emit('moneyStudent', this.iconColor == '#9397AD' ? false : true)
+        this.$emit('moneyStudent', this.iconColor == '#9397AD' ? 'YES' : 'NO')
       },
       //一个下拉框，change触发，返回value
       selectChange1(val){
@@ -120,7 +122,7 @@
       },
       //第二个下拉框，change触发，返回value
       selectChange2(val){
-        this.$emit('selectChange1', val)
+        this.$emit('selectChange2', val)
       },
       //输入事件，change触发，返回model
       inputChange(){

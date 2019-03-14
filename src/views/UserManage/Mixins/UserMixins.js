@@ -39,7 +39,7 @@ export default {
                     if(m.type === 'select') this.selectType1 = true
                     if(m.type === 'switch'){
                         let d  = this.columns1[this.columns1.length-1]
-                        d.isSwitch = true
+                        // d.isSwitch = false
                     }
                     if(m.type === 'radio') this.radioType = true
                 })

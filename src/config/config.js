@@ -47,6 +47,25 @@ export default {
     })
     if(da&&da.hasOwnProperty('child')) return da.child
     return false
+  },
+
+  //判断管理身份
+  status(n){
+    switch (n) {
+      case 1:
+        return '九划超级管理员'
+        break
+      case 2:
+        return '机构管理员'
+        break
+      case 3:
+        return '机构导师'
+        break
+      case 4:
+        return '机构学管'
+        break
+      default: return '不存在该身份'
+    }
   }
   // setAuth(){
   //   if(localStorage.getItem('PERMISSIONS')){

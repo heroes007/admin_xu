@@ -27,11 +27,14 @@
            <span v-if="column.stateOther" :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
            <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
         </template>
+        <template  slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
+        <template  slot-scope="{ column, row, index }" slot="_index">{{row._index == 0 ? '未认证' : '已认证'}}</template>
     </Table>
 </div>
 </template>
 
 <script>
+    import Config from '../config/config'
   export default {
     data(){
       return{
@@ -97,7 +100,6 @@
       },
       show(row,rowIndex,params) {
         if(this.selectList) row.list = this.getArray(this.selectList, row)
-        console.log(params, row, '123123')
         this.$emit(params, row, rowIndex)
       },
       handleColumns(c){
@@ -121,15 +123,20 @@
         }else return t[0]
       },
       getArray(name, string){
+        console.log(name, string , '123123123123')
         let arr = [], str
-          for(var x in string){
             name.forEach((item, index) => {
-              if(x == item.title) {
-                str =  item.name + ':' + string[x]
-                arr.push(str)
+              for(var x in string)
+                if(x == item.title) {
+                if(item.title == 'role_id' && x == 'role_id' && string[x] == 1){
+                  arr.push(`${item.name}: 九划医疗`)
+                }else{
+                  if(x == 'role_id') string[x] = Config.status(string[x])
+                  str =  item.name + ':' + ' ' + string[x]
+                  arr.push(str)
+                }
               }
             })
-          }
         return arr
       }
     },

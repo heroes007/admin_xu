@@ -1,8 +1,8 @@
 <template>
   <Modal v-model="show" :title="title" :width="590" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
-     <div v-if="detailData.description">
+     <div v-if="detailData.mechanismName">
          <div class="detail-data1">
-             <img class="detail-data1-img" :src="detailData.img" />
+             <img class="detail-data1-img" :src="detailData.img_url" />
              <div class="detail-data1-content">
                  <h1>{{detailData.mechanismName}}</h1>
                  <div class="detail-data1-text">
@@ -77,6 +77,7 @@ export default {
             this.ModalState(_new)
         },
         detailData(_new){
+          console.log(_new, '传值')
             this.formItem = _new
         }
     },
