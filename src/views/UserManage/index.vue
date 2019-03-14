@@ -15,6 +15,7 @@
   import StudentList from './StudentList/index'
   import MentorList from './MentorList/index'
   import LecturerList from './LecturerList/index'
+  import postData from 'src/api/postData'
   export default {
     name: "UserManage",
     components: { ManagementList, ListInstitutions, StudentList, MentorList, LecturerList },
@@ -48,19 +49,19 @@
         if(this[ 'permissionCode' + n ]) this['pane' + n] = true
       },
       handleAuth(){
-        if(this.$PERMISSIONS1&&this.$PERMISSIONS1.hasOwnProperty('child')){
-          let d = this.$PERMISSIONS1.child;
-          d.forEach((t, k) => {
+        let d = this.$config.getAuth(1)
+        if(d){
+            d.forEach((t, k) => {
             let n = +t.permission_code.slice(2,4)
             this.setAuth(n,t)
             if(k === 0) this['pane' + n] = true
-          });
-        }
+          }); 
+        }          
       }
     },
     mounted(){
        this.$nextTick(() => {
-          this.handleAuth()
+        this.handleAuth()
        })
     }
   }

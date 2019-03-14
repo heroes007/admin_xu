@@ -8,7 +8,7 @@ import { Message } from 'iview';
 import LoadingY from '../plug/index';
 import config from './config';
 import { Base64 } from 'js-base64';
-
+import postData from '../api/postData'
 Vue.prototype.$config = config;
 Vue.use(LoadingY)
 // sync the router with the vuex store.
@@ -20,7 +20,18 @@ router.beforeEach((to, from, next) => {
     } else {
       user_info().then((res) => {
         if (res.data.res_code === 1) {
-          next();
+          let d = res.data.data;
+          localStorage.setItem('organizationId',d.organization_id)
+          store.dispatch('set_user_info', d);
+          localStorage.setItem('PERSONALDETAILS',JSON.stringify(d))
+          postData('user/getUserPermission',{from:"web"}).then((res) => {
+            if(res.res_code === 1 && res.data && res.data.length>0){
+              localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(res.data)))
+              next();
+            }else{
+              Message.warning('暂无权限');
+            }
+          })
         } else {
           if (to.name !== 'login') next({ path: '/login' });
           else next();

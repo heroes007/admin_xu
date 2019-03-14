@@ -18,14 +18,12 @@
     import SideMenu from '../components/SideMenu'
     import hideMenuMixins from './ProductManage/MainProduct/hideMenuMixins'
     import HideMenu from '../components/HideMenu'
+    import postData from 'src/api/postData'
     import Vue from 'vue'
+    import { Base64 } from 'js-base64';
     export default{
         mixins: [hideMenuMixins],
-        components:{ 'side-menu':SideMenu, HideMenu },
-        mounted(){
-            this.$config.setAuth()
-            this.$store.dispatch('get_subject_list');
-        }
+        components:{ 'side-menu':SideMenu, HideMenu }
     }
 </script>
 <style lang="scss">

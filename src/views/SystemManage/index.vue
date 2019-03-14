@@ -48,13 +48,9 @@
             }
         },
         mounted(){
-            this.$nextTick(() => {
-                if(this.$PERMISSIONS4)  this.handleAuth()
-                else{
-                    this.$config.setAuth()
-                    this.handleAuth()
-                }
-            })
+            // this.$nextTick(() => {
+            //     this.handleAuth()
+            // })
         }
     }
 </script>

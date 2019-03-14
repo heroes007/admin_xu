@@ -2,7 +2,8 @@ import $LoadingY from '../plug/loading'
 import {Config} from './base'
 import axios from 'axios'
 import Vue from 'vue'
-
+import { Base64 } from 'js-base64';
+import postData from '../api/postData'
 var loadingInstance = null;
 export default {
   IsLoading: (val) => {
@@ -36,14 +37,25 @@ export default {
   addZero(data) {
     if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
   },
-  setAuth(){
-    if(localStorage.getItem('PERMISSIONS')){
+  getAuth(v){
     let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
     let d1 = JSON.parse(d.slice(4))
-    d1.forEach(t => {
-        let num = +t.permission_code.slice(0,2);
-        Vue.prototype['$PERMISSIONS' + num] = t
-    });
-    }
+    let da = null
+    d1.map((t) => {
+      let n = +t.permission_code.slice(0,2)
+      if(n === v) da = t
+    })
+    if(da&&da.hasOwnProperty('child')) return da.child
+    return false
   }
+  // setAuth(){
+  //   if(localStorage.getItem('PERMISSIONS')){
+  //   let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+  //   let d1 = JSON.parse(d.slice(4))
+  //   d1.forEach(t => {
+  //       let num = +t.permission_code.slice(0,2); 
+  //       Vue.prototype['$PERMISSIONS' + num] = t
+  //   });
+  //   }
+  // },
 }

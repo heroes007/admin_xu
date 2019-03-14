@@ -64,7 +64,7 @@
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
   import { mapActions, mapGetters } from 'vuex'
   import { MenuList } from './Util'
-
+  import postData from '../api/postData'
   export default {
     data() {
       return {
@@ -204,17 +204,23 @@
         })
       },
       handleMenuList(){
-        let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
-        let d1 = JSON.parse(d.slice(4));
-        d1.forEach(t => {
-           let num = +t.permission_code.slice(0,2)
-          this.menuList.push(MenuList[num - 1])
-        });
-        if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
-      }
+        if(localStorage.getItem('PERMISSIONS')){
+          let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+          let d1 = JSON.parse(d.slice(4))
+            if(d1&&d1.length>0){
+              d1.forEach(t => {
+                let num = +t.permission_code.slice(0,2)
+                this.menuList.push(MenuList[num - 1])
+              });
+              if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
+            }
+          }
+        }
     },
     mounted() {
-      this.handleMenuList()
+       this.$nextTick(() => {
+        this.handleMenuList()
+       })
       this.setSubmenuTitleIconMouse()
       let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
       this.selectItem(menuActive)
