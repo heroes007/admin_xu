@@ -1,9 +1,14 @@
 <template>
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <screen :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList" 
-                size-title2="付费学员" :size-num2="14"   @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
-        <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
+
+        <screen :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5" size-title1="导师总数" :size-num1="23" btn-name="添加导师" :select1="selectList"
+                :select2="selectList1" size-title2="付费学员" :size-num2="14"   @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick" />
+
+        <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="management"/>
+
+       <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+
    </div>
 </template>
 
@@ -15,11 +20,13 @@
   import seeMixin from '../seeMixin'
   import UserMixins from '../Mixins/UserMixins'
   import postData from 'src/api/postData'
+  import pageList from '../../../components/Page'
+  import pageMixin from '../../mixins/pageMixins'
 
   export default {
     name: "ManagementList",
-    components: { Tables, screen, see },
-    mixins: [seeMixin, UserMixins],
+    components: { Tables, screen, see, pageList },
+    mixins: [seeMixin, UserMixins, pageMixin],
     props: {
         permissionItem4: {
             type: Object,
@@ -29,7 +36,6 @@
     watch: {
         permissionItem4(_new){
             this.handleAuth(_new)
-            console.log(_new,'_new')
         }
     },
     data (){
@@ -43,6 +49,16 @@
                 id:'all',
                 title:'全部机构'
             },],
+            selectList1: [{
+              id: 1,
+              title: '一年级'
+            }, {
+              id: 2,
+              title: '二年级'
+            }, {
+              id: 3,
+              title: '三年级'
+            }, ],
             columns1: [
             {
                 title: '用户名',
@@ -104,7 +120,7 @@
     methods: {
         see(row,rowIndex){
             this.detailShow = true;
-            this.tableRowData = details;
+            this.tableRowData = row;
             console.log(row,rowIndex,'see',this.detailShow);
         },
         swtichChange(row){
@@ -130,18 +146,24 @@
         },
         getList(){
             let d = {
-                keyword: this.keyword,
-                page_size: 1,
-                page_num: 1
+              keyword: this.keyword,
+              page_size: this.pageSize,
+              page_num: this.current,
+              organization_id: this.organization_id
             }
             postData('user/getStudentList', d).then((res) => {
+              console.log(res,'resss')
                   this.list = res.data.list
+                  this.total = res.data.count
             })
         }
     },
     mounted() {
         this.getList()
          if(this.permissionItem4) this.handleAuth(this.permissionItem4)
+        postData('/user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
+          this.selectList = res.data.list
+        })
     }
   }
 </script>

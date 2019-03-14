@@ -18,7 +18,7 @@ app.get('*',function (req, res) {
     response.send('Hello World!');
 });*/
 
-var PORT = parseInt(process.env.npm_package_config_port || 8102);
+var PORT = parseInt(process.env.npm_package_config_port || 8021);
 app.listen(PORT, function () {
     console.log('Node app is running, port:', PORT, '\n\n\n\n\n\n');
 });

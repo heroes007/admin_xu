@@ -16,7 +16,7 @@
         </FormModal>
 
         <!-- <header-component title="任务包" :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" /> -->
-        <screen :types="2" sizeTitle1="作业总数" :sizeNum1="courseNums" btnName="添加作业" @inputChange="manageEdit" @handleClick="addTaskCategory"/>
+        <screen :types="2" sizeTitle1="作业总数" :sizeNum1="courseNums" btnName="添加作业" @inputChange="manageEdit" @handleClick="addTaskCategory" :btnType="true"/>
         <!-- <div class="category-list">
             <category-item v-for='(item, index) in categoryList' :key="index" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
                            :selected='getSelected(item.id, item.type)' @select='changeCategory(item)'/>

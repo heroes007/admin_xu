@@ -21,9 +21,9 @@
         components:{lb, news, notification},
         data(){
             return{
-                permissionCode1: false,
-                permissionCode2: false,
-                permissionCode3: false,
+                permissionCode1: true ,
+                permissionCode2: true ,
+                permissionCode3: true ,
                 permissionItem1: null,
                 permissionItem2: null,
                 permissionItem3: null,
