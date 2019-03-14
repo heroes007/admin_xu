@@ -171,7 +171,7 @@
             })
         },
         handleSubmit(val){
-          val.organization_id = Number(localStorage.getItem('lastSelectedProject'))
+          val.organization_id = Number(localStorage.getItem('organizationId'))
           if(this.modalTitle == '添加导师') {
             this.fromAddAndEdit('/user/addDeptTeacher',val)
           }

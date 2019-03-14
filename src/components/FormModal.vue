@@ -5,11 +5,11 @@
             <div v-if="uploadFlie" class="upload-flie">
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
-                    <div v-if="!headImg" class="modal-upload-flie">
+                    <div v-if="!img_url" class="modal-upload-flie">
                         <img class="upload-flie-img" src="/static/icon/upload.png"/>
                         <p>点击上传</p >
                     </div>
-                    <img v-if="headImg" class="upload-flie-img-2" :src="headImg"/>
+                    <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
                 </Upload>
             </div>
             <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}">
@@ -144,7 +144,7 @@
         show: false,
         formItem: {},
         uploadData: {},
-        headImg: '',
+        img_url: '',
         resourse_url: '',
         uploadConfig: {
           bucket: 'dscj-app',
@@ -189,6 +189,9 @@
         this.ModalState(_new)
         this.$nextTick(() => {
           this.formItem = this.detailData
+          if(this.formItem.hasOwnProperty('img_url')){
+            this.img_url = this.formItem.img_url
+          }else this.img_url = ''
         })
       },
       detailData(_new){
@@ -247,21 +250,21 @@
         return false
       },
       handleFormData(){
+        if(this.uploadFlie) this.formItem.img_url = this.img_url
         this.$Message.success('Success!');
         this.$emit('from-submit', this.formItem)
         this.closeModal()
       },
       handleSubmit(name){
-        console.log(this.formItem)
-        // if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].innerHTML
-        // this.$refs[name].validate((valid) => {
-        //   if (valid) {
-        //     if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
-        //       if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
-        //       else this.handleFormData()
-        //     }else this.handleFormData()
-        //   } else this.$Message.error('Fail!');
-        // })
+        if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].innerHTML
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
+              if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
+              else this.handleFormData()
+            }else this.handleFormData()
+          } else this.$Message.error('Fail!');
+        })
       },
       // 上传到oss上
       handleUploadFile(form_data, url, fileItem) {
@@ -276,7 +279,7 @@
             vm.percentage = progress;
           },
         }).then(res => {
-          this.headImg = url + this.resourse_url;
+          this.img_url = url + this.resourse_url;
         });
       },
       // 从oss上获取assignKey;
@@ -287,12 +290,12 @@
           .then(res => {
             if (res.data.res_code == 1) {
               const formData = new FormData();
-              this.resourse_url = res.data.msg.filename;
-              formData.append('key', res.data.msg.filename);
-              formData.append('OSSAccessKeyId', res.data.msg.accessKeyID);
+              this.resourse_url = res.data.data.filename;
+              formData.append('key', res.data.data.filename);
+              formData.append('OSSAccessKeyId', res.data.data.accessKeyID);
               formData.append('success_action_status', '200');
-              formData.append('signature', res.data.msg.sign);
-              formData.append('policy', res.data.msg.policyBase64);
+              formData.append('signature', res.data.data.sign);
+              formData.append('policy', res.data.data.policyBase64);
               formData.append('file', file_item);
               this.handleUploadFile(formData, encodeURI(ossHostImage));
             }

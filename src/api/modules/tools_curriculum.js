@@ -4,7 +4,7 @@
 import api from './config'
 
 export function get_list(project_id,title) {
-    let id = project_id ? project_id:  +localStorage.getItem('lastSelectedProject')
+    let id = project_id ? project_id:  +localStorage.getItem('organizationId')
     return api.post('api/tools_curriculum/get_list',{
         project_id: id,
         title:title});

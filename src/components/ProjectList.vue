@@ -30,10 +30,10 @@ export default {
   methods: {
     ...mapActions([ "get_project_list", "change_selected_project_id", "clear_store" ]),
     changeSelectProject(id) {
-      var oldId = this.$localStorage.get("lastSelectedProject");
+      var oldId = this.$localStorage.get("organizationId");
       this.change_selected_project_id(id);
       if (oldId != id) {
-        this.$localStorage.set("lastSelectedProject", id);
+        this.$localStorage.set("organizationId", id);
         this.clear_store();
       }
       this.$router.replace({ path: "/dashboard" });
