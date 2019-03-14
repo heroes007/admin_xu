@@ -7,7 +7,7 @@
         <screen :btn-type="btnType" :select-type1="selectType1" :types="2" size-title1="导师总数" :size-num1="total" btn-name="添加导师" :select1="selectList"
                     @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
 
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
+        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="mentor"/>
 
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
 
@@ -62,7 +62,7 @@
                 key: 'realname',
             },{
                 title: '性别',
-                key: 'sex',
+                slot: 'sex',
             },
             {
                 title: '管理权限',
@@ -74,10 +74,10 @@
                 key: 'title',
                 align: 'left'
             },
-            {
-                title: '状态',
-                key: 'state',
-            },
+            // {
+            //     title: '状态',
+            //     key: 'state',
+            // },
                 {
                 title: '最近登录时间',
                 key: 'create_time',
@@ -123,7 +123,7 @@
     methods: {
         see(row,rowIndex){
             this.detailShow = true;
-            this.tableRowData = details;
+            this.tableRowData = row;
             console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){

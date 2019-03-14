@@ -4,6 +4,7 @@
         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
 
         <screen :btn-type="btnType" :types="1" size-title1="管理总数" :size-num1="total" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
+
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="management"/>
 
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -48,17 +49,17 @@
                 key: 'realname',
             },{
                 title: '性别',
-                key: 'sex',
+                slot: 'sex',
             },
             {
                 title: '手机号',
                 key: 'phone',
                 align: 'left',
             },
-                {
-                title: '状态',
-                key: 'state',
-            },
+            //     {
+            //     title: '状态',
+            //     key: 'state',
+            // },
                 {
                 title: '最近登录时间',
                 key: 'create_time',
@@ -112,7 +113,6 @@
            else this.fromAddAndEdit('user/modifySuperAdmin',val)
         },
         deletes(row,rowIndex){
-            console.log(row,rowIndex,'123');
             postData('/user/removeSuperAdmin',{id: row.id}).then(res => {
               if(res.res_code == 1) this.getList()
             })

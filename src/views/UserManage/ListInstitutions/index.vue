@@ -68,10 +68,10 @@
                 title: '付费学员',
                 key: 'student_count',
             },
-            {
-                title: '状态',
-                key: 'state',
-            },
+            // {
+            //     title: '状态',
+            //     key: 'state',
+            // },
             {
                 title: '操作',
                 width: 260,
@@ -106,14 +106,16 @@
     },
     methods: {
         see(row,rowIndex){
-            this.detailShow = true;
-            postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
-            //   Object.assign(res.data[0], row)
-              console.log(res.data[0],'res')
-            //   this.tableRowData = res.data[0];
-            })
-            this.tableRowData.mechanismName = row.name;
-            console.log(row,rowIndex,'see',this.detailShow);
+          console.log(row,'row');
+          this.detailShow = true;
+            // postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
+              // Object.assign(row, res.data[0])
+              // Object.assign(row, res.data[0].admin[0])
+              // let new_obj = {...row, ...res.data[0], ...res.data[0].admin[0]}
+              // console.log(new_obj,'000000');
+              this.tableRowData = row
+              this.tableRowData.mechanismName = row.title;
+            // })
         },
         edit(row,rowIndex){
              postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
@@ -147,6 +149,11 @@
             postData('user/getDeptAdminList', d).then((res) => {
               this.list = res.data.list
               this.total = res.data.count
+              this.list.forEach((item, index) => {
+                postData('user/getDeptDetail', {id: item.organization_id}).then((res) => {
+                  this.list[index] = {...this.list[index], ...res.data[0], ...res.data[0].admin[0]}
+                })
+              })
             })
         },
         handleSubmit(val) {
