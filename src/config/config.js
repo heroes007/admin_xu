@@ -66,6 +66,32 @@ export default {
         break
       default: return '不存在该身份'
     }
+  },
+  setProductState(n){
+    // -2删除 -1下架 0未上架 1测试 2上架 3推荐
+    let stateText = ''
+    switch(n)
+    {
+    case -2:
+      stateText = '删除'
+      break;
+      case -1:
+      stateText = '下架'
+      break;
+      case 0:
+      stateText = '未上架'
+      break;
+      case 1:
+      stateText = '测试'
+      break;
+      case 2:
+      stateText = '上架'
+      break;
+      case 3:
+      stateText = '推荐'
+      break;
+    }
+    return stateText
   }
   // setAuth(){
   //   if(localStorage.getItem('PERMISSIONS')){
