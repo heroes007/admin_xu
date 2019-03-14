@@ -108,7 +108,7 @@
     mounted() {
       if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
-      this.isSuper = localStorage.getItem('lastSelectedProject') == 1 ? true : false
+      this.isSuper = localStorage.getItem('organizationId') == 1 ? true : false
     },
     methods:{
       // 付费学员返回事件，click触发，选中返回true
