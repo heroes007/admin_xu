@@ -48,7 +48,7 @@
                 key: 'realname',
             },{
                 title: '性别',
-                key: 'grade_id',
+                key: 'sex',
             },
             {
                 title: '手机号',

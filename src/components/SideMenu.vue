@@ -233,9 +233,9 @@
         padding-bottom: 14px !important;
       }
     /deep/ .ivu-icon-ios-settings{
-      position: relative;
-      top: -2px;
-    }
+         position: relative;
+         top: -2px;
+     }
     /deep/ .ivu-menu-vertical .ivu-menu-submenu-title-icon{
       position: absolute;
       top: 20px;

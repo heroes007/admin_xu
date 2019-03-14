@@ -7,7 +7,7 @@
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
             <Option v-for="item in select1" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 4 || types == 5 && selectType2" v-model="valueSelect2" @on-change="selectChange1" class="select-list">
+        <Select v-if="types == 4 || types == 5 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
@@ -111,7 +111,7 @@
       // 付费学员返回事件，click触发，选中返回true
       moneyStudent(){
         this.iconColor = this.iconColor == '#9397AD' ? "#4098ff" : "#9397AD"
-        this.$emit('moneyStudent', this.iconColor == '#9397AD' ? false : true)
+        this.$emit('moneyStudent', this.iconColor == '#9397AD' ? 'YES' : 'NO')
       },
       //一个下拉框，change触发，返回value
       selectChange1(val){
@@ -119,7 +119,7 @@
       },
       //第二个下拉框，change触发，返回value
       selectChange2(val){
-        this.$emit('selectChange1', val)
+        this.$emit('selectChange2', val)
       },
       //输入事件，change触发，返回model
       inputChange(){
