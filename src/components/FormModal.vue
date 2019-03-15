@@ -232,8 +232,9 @@
         return t.type==='switch-datetimerange' ? t.field[n]: t.field
       },
       closeModal(){
+        this.formItem = {};
         this.show = false;
-        this.$emit("close")
+        this.$emit("close");
       },
       handleFormatError (file) {
         this.$Message.warning('请上传图片');

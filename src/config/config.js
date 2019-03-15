@@ -92,7 +92,7 @@ export default {
       break;
     }
     return stateText
-  }
+  },
   // setAuth(){
   //   if(localStorage.getItem('PERMISSIONS')){
   //   let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
