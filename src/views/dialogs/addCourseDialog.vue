@@ -326,18 +326,18 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
-        console.log('submit');
+        console.log(this.form);
         // this.form.img_url_arr = {
         //   'default': this.form.img_default,
         //   '3_8': this.form.img_3_8
         // };
         // this.form.project_id = this.project_id;
         // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        // var vm = this;
-        // this.form._fn = function () {
-        //   vm.handleClose();
-        //   vm.showPop('保存成功！', 1000);
-        // };
+        var vm = this;
+        this.form._fn = function () {
+          vm.handleClose();
+          vm.showPop('保存成功！', 1000);
+        };
         // if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
         //   var preList = [];
         //   for (var i = 0; i < this.top_course_list.length; i++) {
@@ -345,8 +345,8 @@
         //   }
         //   this.form.pre_curriculum_ids = preList;
         // }
-        // if (!this.payload) this.add_online_curriculum(this.form);
-        // else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
+        if (this.stateName == 1) this.add_online_curriculum(this.form);
+        else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},

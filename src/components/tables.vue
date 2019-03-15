@@ -139,7 +139,6 @@
             }
           }
         })
-        // if (!string.realname) string.realname = string.mechanismName + '管理员'
         return arr
       }
     },

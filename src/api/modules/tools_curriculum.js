@@ -16,21 +16,17 @@ export function get_list(page, keyword) {
 }
 
 export function add_curriculum(data) {
-    return api.post('api/tools_curriculum/add_curriculum',{
-        title:data.title,
-        teacher_id:data.teacher_id,
-        start_time:data.start_time,
-        end_time:data.end_time,
-        subject_id:data.subject_id,
-        grade_id:data.grade_id,
-        state:data.state,
-        img_url_arr:data.img_url_arr,
-        description:data.description,
-        orderby:data.orderby,
-        pre_curriculum_ids:data.pre_curriculum_ids,
-        curriculum_roles:data.curriculum_roles,
-        project_id:data.project_id,
-        data_center_id:data.data_center_id});
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('product/curriculum_online/add', {
+      product_id: id,
+      title: data.title,
+      teacher_id: data.teacher_id,
+      department_id: 'data.department_id',
+      grade_id: data.grade_id,
+      state: data.state,
+      description: data.description,
+      img_url: data.img_default
+    })
 }
 
 export function update_curriculum(curriculum_id,data) {

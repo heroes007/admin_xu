@@ -63,6 +63,7 @@
         modalTitle: '',
         tableRow: {},
         tableRowData: {},
+        homeworkId:'',
         formList: [
             { type: 'input', name: '作业名称',  field: 'realname'},
             { type: 'select', name: '作业类型', field: 'jurisdiction' ,
@@ -201,8 +202,16 @@
         localStorage.setItem('MarkingHomework',JSON.stringify(row))
       },
       editHandler(index, row) {
+        console.log(row);
+        
         this.show = true;
         this.modalTitle = '编辑作业';
+        let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
+        this.$store.dispatch('get_curriculumlist_list',{product_id:v})
+        this.formList[2].selectList = this.curricumList
+        this.tableRow.realname = row.title
+        this.tableRow.uploading = row.description
+        this.homeworkId = row.id
         // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
       },
       deleteHandler(index, row) {
@@ -252,10 +261,16 @@
         return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
       },
       saveHomework(val){
-        this.$store.dispatch('add_task_category', val);
+        if (this.modalTitle == "添加作业") {
+          this.$store.dispatch('add_task_category', val);
+        }else{
+          this.$store.dispatch('edit_task_category',val,this.homeworkId);
+        }
       },
     },
     mounted() {
+      this.$store.dispatch('get_grade_list');
+      this.$store.dispatch('get_subject_list');
       var vm = this;
       if (this.$store.state.project.project_list.length === 0) {
         this.$store.dispatch('get_project_list', {
@@ -269,12 +284,10 @@
         })
       }
       if (this.categoryList.length === 0) {
-        // this.$store.dispatch('get_task_category_list', {
-        //     project_id: this.$store.state.project.select_project_id
-        // })
+        this.$store.dispatch('get_task_category_list', {
+            project_id: this.$store.state.project.select_project_id
+        })
       } else this.checkInit();
-      this.$store.dispatch('get_grade_list');
-      this.$store.dispatch('get_subject_list');
     }
   }
 

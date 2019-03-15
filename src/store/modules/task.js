@@ -43,9 +43,17 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
+            let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
             get_category_list(params.project_id).then(res => {
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data.data);
+                }
+            }),
+            get_curriculumlist_online(v).then(res => {
+                if (res.data.res_code === 1) {
+                    commit(types.TASK_CURRICUMLIST,{
+                        result:res.data.data.data
+                    })
                 }
             })
         },
@@ -61,15 +69,15 @@ const actions = {
         add_task_category({
             commit
         }, params) {
-            // console.log(params);
+           
             commit(types.TASK_SHOW_LOADING);
             create_category(params).then(res => {
                 if (res.data.res_code === 1) {
+                   
                     commit(types.TASK_CATEGORY_ADDED, {
                         result: res.data.msg,
                         data: params
                     });
-                    // params._fn();
                     alert("添加成功")
                 }else{
                     alert(res.msg)
@@ -80,13 +88,14 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
-
-            edit_category_by_id(params.task_category_id, params).then(res => {
-                if (res.data.res_code === 1) {
-                    commit(types.TASK_CATEGORY_EDITED, params);
-                    params._fn();
-                }
-            })
+            console.log(params);
+            
+            // edit_category_by_id(params.task_category_id, params).then(res => {
+            //     if (res.data.res_code === 1) {
+            //         commit(types.TASK_CATEGORY_EDITED, params);
+            //         // params._fn();
+            //     }
+            // })
         },
         delete_task_category({
             commit
@@ -193,10 +202,13 @@ const mutations = {
     },
     [types.TASK_CATEGORY_ADDED](state, params) {
         state.task_category_list.push({
-            id: params.result,
-            name: params.data.name,
-            type: params.data.type,
-            task_list: []
+            // id: params.result,
+            // name: params.data.name,
+            // type: params.data.type,
+            // task_list: []
+            title:params.data.realname,
+            curriculum_title:params.data.binding_course,
+            type:params.data.jurisdiction
         });
         state.showLoading = false;
     },
