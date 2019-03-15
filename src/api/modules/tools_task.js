@@ -12,7 +12,13 @@ export function get_category_list(project_id) {
 }
 
 export function create_category(params) {
-    return api.post('/product/homework/add',{title:params.realname,type:params.jurisdiction,curriculum_id:1,description:params.uploading,attachment_url:params.attachment_url?params.attachment_url:"www.baidu.com"});
+    return api.post('/product/homework/add',{
+        title:params.realname,
+        type:params.jurisdiction,
+        curriculum_id:params.binding_course,
+        description:params.uploading,
+        attachment_url:params.attachment_url?params.attachment_url:"www.laoshi123.com"
+    });
 }
 
 export function get_category_by_id(category_id) {
