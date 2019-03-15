@@ -1,6 +1,6 @@
 <template>
     <div class='manage-task'>
-        <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" >
+        <FormModal :detail-data="tableRow" @from-submit="saveHomework"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" uploadBtn >
           <!--<div slot="form-other">-->
             <!--<Form >-->
               <!--<FormItem label="作业描述">-->
@@ -66,10 +66,10 @@
         formList: [
             { type: 'input', name: '作业名称',  field: 'realname'},
             { type: 'select', name: '作业类型', field: 'jurisdiction' ,
-                selectList: [ {id: 1, name: '线上作业'},{id: 0, name: '线下作业'} ], selectField: [ 'id','name' ]
+                selectList: [ {id: 'online', name: '线上作业'},{id: 'underline', name: '线下作业'} ], selectField: [ 'id','name' ]
             },
             { type: 'select', name: '绑定课程', field: 'binding_course' ,
-                selectList: [ {id: 1, name: '天涯'},{id: 2, name: '天下'} ], selectField: [ 'id','name' ]
+                selectList: [], selectField: [ 'id','title' ]
             },
             { type: 'upload', name: '作业描述', field: 'uploading' }
         ],
@@ -77,7 +77,7 @@
             realname: [{ required: true, message: '请输入作业名称', trigger: 'blur' } ],
             jurisdiction: [{ required: true, message: '请选择作业类型'} ],
             binding_course: [{ required: true, message: '请选择绑定课程'} ],
-            uploading: [{ required: true, message: '请输入课程介绍'} ],
+            // uploading: [{ required: true, message: '请输入课程介绍'} ],
         },
         contentData:''
       }
@@ -112,10 +112,11 @@
           dataIndex: 2,
           dataProp: 'id',
           dataValue: 'name'
-        }]
+        },
+        ]
       },
       listColumnFormatterData() {
-        return [this.gradeList, this.subjectList, this.$store.state.task.activityTypeList];
+        return [this.gradeList, this.subjectList, this.$store.state.task.activityTypeList,this.stateList];
       },
       dataList() {
         if (!this.selectedCategory) return [];
@@ -134,11 +135,14 @@
         return this.$store.state.grade.grade_list;
       },
        ...mapState({
-              dataFilters(){
+          dataFilters(){
             var str = ['doc','pdf','zip'];
             return str;
-            }
+            },
+           dataList: state => state.task.task_category_list,
+           curricumList: state => state.task.curricum_list
         })
+      
     },
     watch: {
       // isLoading(val) {
@@ -161,7 +165,11 @@
       addTaskCategory() {
         this.show = true
         this.modalTitle = "添加作业"
+        let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
+        this.$store.dispatch('get_curriculumlist_list',{product_id:v})
+        this.formList[2].selectList = this.curricumList
         // this.handleSelModal(ADD_TASK_CATEGORY, { orderby: this.categoryList.length + 1 });
+        //  console.log(this.dataList);
       },
       manageEdit(v) {
         this.showClose = v;
@@ -242,6 +250,9 @@
       getDir() {
         if(this.payload === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
         return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
+      },
+      saveHomework(val){
+        this.$store.dispatch('add_task_category', val);
       },
     },
     mounted() {

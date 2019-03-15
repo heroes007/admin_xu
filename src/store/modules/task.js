@@ -10,7 +10,8 @@ import {
     create_task,
     edit_task,
     delete_task_by_id,
-    get_userlist_by_tid
+    get_userlist_by_tid,
+    get_curriculumlist_online
 } from '../../api/modules/tools_task'
 
 const state = {
@@ -30,8 +31,9 @@ const state = {
     total_num: 0,
     cur_page: 1,
     page_size: 10,
-    catch_every_page: {}
-
+    catch_every_page: {},
+    curricum_list:[]
+    // activityTypeList:[{type:"online",name:'线上课'},{type:"underline",name:'线下课'}]
 }
 var catch_cid = ''
 
@@ -41,25 +43,36 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
-
             get_category_list(params.project_id).then(res => {
                 if (res.data.res_code === 1) {
-                    commit(types.TASK_CATEGORY_LIST_LOADED, res.data.msg);
+                    commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data.data);
+                }
+            })
+        },
+        get_curriculumlist_list({commit},params){
+            get_curriculumlist_online(params).then(res => {
+                if (res.data.res_code === 1) {
+                    commit(types.TASK_CURRICUMLIST,{
+                        result:res.data.data.data
+                    })
                 }
             })
         },
         add_task_category({
             commit
         }, params) {
+            // console.log(params);
             commit(types.TASK_SHOW_LOADING);
-
-            create_category(params.project_id, params).then(res => {
+            create_category(params).then(res => {
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CATEGORY_ADDED, {
                         result: res.data.msg,
                         data: params
                     });
-                    params._fn();
+                    // params._fn();
+                    alert("添加成功")
+                }else{
+                    alert(res.msg)
                 }
             })
         },
@@ -155,17 +168,26 @@ const mutations = {
         state.showLoading = true;
     },
     [types.TASK_CATEGORY_LIST_LOADED](state, params) {
-        let first = {
-            id:0,
-            name:"未选择",
-            orderby:0,
-            task_list:[],
-            type:0
+        // let first = {
+        //     id:0,
+        //     name:"未选择",
+        //     orderby:0,
+        //     task_list:[],
+        //     type:0
+        // }
+        // for (var i = 0; i < params.length; i++) {
+        //     params[i].task_list = [];
+        // }
+        // params.unshift(first);
+
+        for (let i = 0; i < params.length; i++) {
+            if (params[i].type == "online") {
+                params[i].type = "线上课"
+            }else{
+                params[i].type = "线下课"
+            }
         }
-        for (var i = 0; i < params.length; i++) {
-            params[i].task_list = [];
-        }
-        params.unshift(first);
+
         state.task_category_list = params || state.task_category_list;
         state.showLoading = false;
     },
@@ -257,6 +279,9 @@ const mutations = {
       state.catch_every_page[params.task_id] = params.data.list;
       state.total_num = params.data.count;
       state.showLoading = false;
+    },
+    [types.TASK_CURRICUMLIST](state, params){
+        state.curricum_list = params.result
     }
 }
 

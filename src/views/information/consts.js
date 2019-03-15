@@ -14,19 +14,19 @@ let d = [
   width:10
 },
 {
-  prop: 'name',
+  prop: 'title',
   label: '作业名称',
   // minWidth: 80
   width:200
 }, 
 {
-  prop: 'name',
+  prop: 'curriculum_title',
   label: '绑定课程',
   // minWidth: 80
   width:100
 }, 
 {
-  prop: 'name',
+  prop: 'type',
   label: '类型',
   // minWidth: 80
   width:50

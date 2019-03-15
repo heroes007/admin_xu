@@ -81,11 +81,33 @@
                                 </FormItem>
                             </TabPane>
                         </Tabs>
-                    
-                        <!-- <FormItem v-if="nextStep == 2" class="btns">
+
+                         <!--可插入输入框-->
+                        <FormItem v-if="nextStep == 2" label=""  class="upload">
+                            <div class="form-message" ref="inputStyl" contentEditable="true"></div>
+                            <div ref="divStyle" style="display: flex;margin-top: 15px;margin-left: 10px">
+                                <Dropdown trigger="click" @on-click="handleDrop">
+                                    <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                                <Dropdown trigger="click" @on-click="handleDrop1">
+                                    <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a >
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
+                                            <span class="drop-box" :style="{backgroundColor: item.color}"/>
+                                            <span>{{item.name}}</span>
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                                <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
+                            </div>
+                        </FormItem>
+                        <FormItem v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
                             <Button  class="btn-orange" @click="handleSubmit('form')">提交</Button>
-                        </FormItem>  -->
+                        </FormItem> 
                         <Button v-if="nextStep == 0 || nextStep == 1" class="btn-orange btn-center" @click="handleNextStep(form)">下一步</Button>
                     </Form>
                 </Row>
@@ -106,9 +128,17 @@ import { get_detail, get_product_certificate } from '../../api/modules/tools_pro
 import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
 import UploadImgs  from '../../components/UploadButton'
+import UploadBtn from '../../components/UploadButton'
+import iconFont from '../../../static/icon/font.png'
+import iconColor from '../../../static/icon/color.png'
+import iconCopy from '../../../static/icon/photo.png'
+import iconFontCopy from '../../../static/icon/font_copy.png'
+import iconColorCopy from '../../../static/icon/color_copy.png'
+import iconCopyCopy from '../../../static/icon/photo_copy.png'
+
 export default {
-    mixins: [RemoveModal,MPop,FormModalMixin],
-    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'data-list': BaseList, UploadImgs },
+    mixins: [RemoveModal,MPop],
+    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'data-list': BaseList, UploadImgs, 'upload-btn': UploadBtn },
     props: {
         remove: {
             type: String
@@ -117,6 +147,7 @@ export default {
     },
     data() {
         return {
+            iconFont,iconColor,iconCopy,
             addProductionDialog: true,
             activePane: 'displayImg',
             unlock_type: '',
@@ -165,6 +196,37 @@ export default {
             paneItem: '',
             disabled2: false,
             disabled1: false,
+            description: '',
+            fontList:[
+            {
+                name: '标题',
+                size: 32,
+                weight: true
+            },
+            {
+                name: '小标题',
+                size: 24
+            },
+            {
+                name: '正文',
+                size: 16
+            },
+            ],
+            colorList:[
+            {
+                name: '红色',
+                color: '#f00'
+            },
+            {
+                name: '绿色',
+                color: '#0f0'
+            },
+            {
+                name: '蓝色',
+                color: '#00f'
+            },
+            ],
+            color: ''
         }
     },
     mounted() {
@@ -209,11 +271,11 @@ export default {
                     var arrObj = JSON.parse(res.data.msg.img_url_arr);
                     if(arrObj.default.includes("[")){
                        let d = JSON.parse(arrObj.default);
-                       this.form.img_url = d[0]
-                       this.form.img_url2 = d[1]
-                       this.form.img_url3 = d[2]
-                       this.form.img_url4 = d[3]
-                       this.form.img_url5 = d[4]
+                    //    this.form.img_url = d[0]
+                    //    this.form.img_url2 = d[1]
+                    //    this.form.img_url3 = d[2]
+                    //    this.form.img_url4 = d[3]
+                    //    this.form.img_url5 = d[4]
                     }else this.form.img_url = arrObj.default;
                     this.form.video_url = arrObj.video;
                     if(this.form.video_url)
@@ -277,6 +339,26 @@ export default {
                     }
                 }
             }
+        },
+        overImg(val){
+
+        },
+        addImg(val){
+            var img = new Image()
+            img.src = val.url
+            img.width = 100
+            img.style.display = 'block'
+            this.$refs.inputStyl.appendChild(img)
+            //  if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].outerHTML
+        },
+        handleDrop(val){
+            console.log(this.$refs.inputStyl,'this.$refs.inputStyl');
+            this.$refs.inputStyl.style.fontSize = val + 'px'
+            if(val == 32) this.$refs.inputStyl.style.fontWeight = 'bold'
+            else  this.$refs.inputStyl.style.fontWeight = 'normal'
+        },
+        handleDrop1(val){
+            this.$refs.inputStyl.style.color = val
         },
         uploadcomplete(v){
             this.disabled2 = true
@@ -380,8 +462,9 @@ export default {
             this.fromLabelWidth = 0;
             this.formItemLabelWidth = 0
             console.log(this.form,'this.form')
-            this.addProductionDialog = false;
-            this.show = true
+            this.fromLabelWidth = 0;
+            this.formItemLabelWidth = 0
+            this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
           }
         },
         handlePreStep() {
@@ -475,5 +558,22 @@ export default {
     background: #FFFFFF;
     border: 1px solid #9397AD;
     border-radius: 4px;
+}
+ .upload-img{
+     margin-left: 260px;
+}
+.form-message{
+    padding: 0 15px;
+    width: 604px;
+    height: 648px;
+    border: 1px solid #d7dde4;
+    outline: none;
+    overflow: hidden;
+    overflow-y: auto;
+    font-size: 16px;
+    margin-left: 10px;
+}
+.up-img{
+    margin-right: 10px;
 }
 </style>
