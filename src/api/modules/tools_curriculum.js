@@ -5,9 +5,12 @@ import api from './config'
 
 export function get_list(project_id,title) {
     let id = project_id ? project_id:  +localStorage.getItem('organizationId')
-    return api.post('api/tools_curriculum/get_list',{
-        project_id: id,
-        title:title});
+    return api.post('product/curriculum_online/get_list',{
+        // project_id: id,
+        // title:title
+        product_id: 11,
+        page_size:  2,
+        page_num:  1});
 }
 
 export function add_curriculum(data) {
