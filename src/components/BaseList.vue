@@ -262,7 +262,7 @@
       },
       handleHeaderData() {
         if(this.headerData[1].label == '资料名称'){
-          console.log(this.headerData,'123123')
+          // console.log(this.headerData,'123123')
         }
         this.headerData.map((it) => {
           it.title = it.label

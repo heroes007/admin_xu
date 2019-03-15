@@ -32,6 +32,9 @@
     import { get_sign } from '../api/modules/ali_oss'
     import axios from 'axios'
     import { get_video_source } from '../api/modules/tools_video'
+    import { Config } from '../config/base'
+    const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
+
     export default {
         props: {
             panelOptions: {
@@ -284,13 +287,13 @@
                                     this.handleUploadFile(formData, encodeURI(ossHostImage));
                                     break;
                                 case 2:
-                                    this.handleUploadFile(formData, encodeURI(ossHostVideo), file_item);
+                                    this.handleUploadFile(formData, encodeURI(Config.ossHostVideo), file_item);
                                     break;
                                 case 3:
-                                    this.handleUploadFile(formData, encodeURI(ossHostApp));
+                                    this.handleUploadFile(formData, encodeURI(Config.ossHostApp));
                                     break;
                                 case 4:
-                                    this.handleUploadFile(formData, encodeURI(ossHostApp));
+                                    this.handleUploadFile(formData, encodeURI(Config.ossHostApp));
                                     break;
                             };
 

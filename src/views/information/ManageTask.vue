@@ -1,6 +1,6 @@
 <template>
     <div class='manage-task'>
-        <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" >
+        <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" :upload-btn="true">
           <!--<div slot="form-other">-->
             <!--<Form >-->
               <!--<FormItem label="作业描述">-->
