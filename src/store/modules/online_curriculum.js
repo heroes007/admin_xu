@@ -93,7 +93,7 @@ const actions = {
         commit(types.ONLINE_CURRICULUM_ADDING);
         add_curriculum(params).then(res => {
             if(res.data.res_code === 1){
-                // commit(types.ONLINE_CURRICULUM_ADDED,{data:params,result:res.data.msg});
+                commit(types.ONLINE_CURRICULUM_ADDED,{data:params,result:res.data.msg});
                 get_list(project_id).then(function (res) {
                     if(res.data.res_code === 1){
                         commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.msg);
@@ -374,10 +374,27 @@ const mutations = {
         state.showMainLoading = true;
     },
     [types.ONLINE_CURRICULUM_ADDED] (state, params) {
-        state.showMainLoading = false;
-        var newCurriculum = {create_time:new Date().getTime(),curriculum_id:params.result,grade_id:params.data.grade_id,subject_id:params.data.subject_id,title:params.data.title,orderby:params.data.orderby,state:params.data.state};
-        state.online_curriculum_list.push(newCurriculum);
-        state.online_curriculum_old_list = state.online_curriculum_list.concat();
+        console.log(params,'params')
+        // state.showMainLoading = false;
+        // var newCurriculum = {create_time:new Date().getTime(),
+        //   curriculum_id:params.result,
+        //   grade_id:params.data.grade_id,
+        //   subject_id:params.data.subject_id,
+        //   title:params.data.title,
+        //   orderby:params.data.orderby,
+        //   state:params.data.state};
+        // var a = {
+        //   title: data.title,
+        //   teacher_id: data.teacher_id,
+        //   department_id: data.department_id,
+        //   grade_id: data.grade_id,
+        //   state: data.state,
+        //   description: data.description,
+        //   img_url: data.img_default,
+        //   unlock_type: data.unlock_type
+        // }
+        // state.online_curriculum_list.push(newCurriculum);
+        // state.online_curriculum_old_list = state.online_curriculum_list.concat();
     },
     [types.ONLINE_CURRICULUM_DELETING] (state) {
         state.showMainLoading = true;

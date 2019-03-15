@@ -256,6 +256,10 @@
         width: 100% !important;
     }
 
+    /deep/ .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
+        background: #292929 !important;
+    }
+
     /deep/ .ivu-menu-item{
         display: flex;
         align-items: center;
@@ -264,8 +268,7 @@
     /deep/ .ivu-menu-item, /deep/ .ivu-menu-submenu-title {
         text-align: left;
         color: #fff;
-        margin: 10px;
-        padding-left: 68px;
+        padding-left: 78px;
     }
 
     /deep/ .ivu-menu-vertical.ivu-menu-light:after {
@@ -273,12 +276,13 @@
     }
 
     /deep/ .ivu-menu-item-active {
-        background-color: #333 !important;
+        background-color: #292929 ;
+
+        .ivu-menu-item{
+            background-color: #292929 ;
+        }
     }
 
-    /deep/ .ivu-menu-item-active:not(.ivu-menu-submenu):after {
-        background-color: #333 !important;
-    }
 
     /deep/ .ivu-poptip-body {
         padding: 0
