@@ -1,9 +1,9 @@
 <template>
     <div class='manage-production-view'>
-        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="管理总数" :size-num1="total" btn-name="添加管理" :select1="selectList" :select2="selectList2"
+        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="管理总数" :size-num1="total" btn-name="添加培训" :select1="selectList" :select2="selectList2"
                 @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
         <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
-             <Card style="min-width:350px;min-height:127px;margin:20px;" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
+             <Card style="min-width:350px;min-height:127px;margin:20px;" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
                   <Row>
                     <Col span="2" class="al-left cad-top-left" >
                      <p>ID:</p>
@@ -12,7 +12,8 @@
                       <p>{{t.id}}</p>
                     </Col>
                     <Col span="13" class="al-right" >
-                        <div class="cad-top-right">{{t.stateText}}</div>
+                        <!-- -1下架 0未上架 1测试 2上架 3推荐 -->
+                        <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.stateText}}</div>
                     </Col>
                   </Row>
                   <Row>
@@ -34,9 +35,10 @@
   import postData from '../../api/postData'
   import pageList from '../../components/Page'
   import pageMixin from '../mixins/pageMixins'
-
+   import {Dialog} from "../dialogs";
+  import { ADD_PRODUCTION } from "../dialogs/types";
   export default {
-    mixins: [pageMixin],
+    mixins: [pageMixin, Dialog],
     components: { screen, pageList },
     data() {
       return {
@@ -44,23 +46,30 @@
         cardList: [],
         search: '',
         selectList: [],
-        selectList2: [],
-        courseNums:12
-      };
+        selectList2: [{id: '',title:'全部'},{id: '-1',title:'下架'},{id: '0',title:'未上架'},{id: '1',title:'测试'},{id: '2',title:'上架'},{id: '3',title:'推荐'}],
+        courseNums:12,
+        organization_id: localStorage.getItem('organization_id'),
+        state: ''
+      }
     },
     methods: {
+      handleCardClass(t){
+        return (t === 2 || t === 3) ? 'card-main-list1' : 'card-main-list0'
+      },
       selectChange1(val){
-        console.log(val)
+       this.organization_id = val;
+       this.getList()
       },
       selectChange2(val){
-        console.log(val)
+        this.state = val
+        this.getList()
       },
       inputChange(val){
         this.search = val;
         this.getList()
       },
       handleClick(){
-        console.log('open modal')
+         this.handleSelModal(ADD_PRODUCTION);
       },
       handleJump(t){
         localStorage.setItem('PRODUCTINFO',JSON.stringify(t))
@@ -76,20 +85,20 @@
         var data = this.getData();
       },
       getDeptAdminList(){
-         postData('/user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
+         postData('user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
           this.selectList = res.data.list
         })
       },
       getList(){
-        let organization_id = localStorage.getItem('organization_id') !== 1 ? localStorage.getItem('organization_id') : ''
+        let organization_id = this.organization_id !== 1 ? this.organization_id : ''
         let d = {
           organization_id,
-          // state: 1,
-          search: "",
+          state: this.state,
+          search: this.search,
           page_size: this.pageSize,
           page_num: this.current,
         }
-        postData('/product/product/get_list',d).then((res) => {
+        postData('product/product/get_list',d).then((res) => {
          this.cardList = res.data.data
          this.cardList.map((t) => {
            t.stateText = this.$config.setProductState(t.state)
@@ -105,9 +114,30 @@
   };
 </script>
 <style lang="scss" scoped>
+   .card-main-list0{
+     color: #9397AD;
+   }
+   .card-main-list1{
+     color: #474C63;
+   }
+   .card-state-color3{
+    background: #FF9600;
+   }
+   .card-state-color2{
+    background: #74C818;
+   }
+   .card-state-color1{
+    background: #4098FF;
+   }
+   .card-state-color0{
+    background: #9397AD;
+   }
+    .card-state-color-1{
+        background: #9397AD;
+    }
     .manage-production-view {
       background: #f0f0f7;
-      min-height: 1200px;
+      height: 100%;
       position: relative;
         .base-list-container {
             .base-list-row {
@@ -183,14 +213,12 @@
         .cad-top-left{
           font-family: PingFangSC-Regular;
           font-size: 14px;
-          color: #474C63;
           letter-spacing: 0;
         }
         .cad-top-right{
           width: 50px;
           height: 20px;
           float: right;
-          background: #74C818;
           font-family: PingFangSC-Medium;
           font-size: 14px;
           color: #FFFFFF;
@@ -207,28 +235,25 @@
         .cad-btn-relprice{
           font-family: PingFangSC-Regular;
           font-size: 16px;
-          color: #474C63;
           letter-spacing: 0;
           text-decoration: line-through;
         }
         .cad-btn-people{
           font-family: PingFangSC-Regular;
           font-size: 14px;
-          color: #474C63;
           letter-spacing: 0;
         }
     }
     .product-title{
         font-family: PingFangSC-Medium;
         font-size: 18px;
-        color: #474C63;
         letter-spacing: 0;
         text-align: left;
         margin:15px 0
     }
     /deep/ .ivu-page{
       position: absolute;
-      bottom: 250px;
+      bottom: 50px;
       left: 0;
       right: 0;
       margin: 0 auto;
