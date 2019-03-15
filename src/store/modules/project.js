@@ -32,22 +32,25 @@ const getters = {
 }
 
 const actions = {
-    get_project_list({
-        commit
-    }, payload) {
-        commit(types.PROJECT_LIST_LOADING, true);
-        if (state.project_list.length === 0) {
-            get_project_list().then(res => {
-                if (res.data.res_code === 1) {
-                    commit(types.QUERY_PROJECT_LIST, {
-                        data: res.data.data,
-                        callback: payload ? payload.callback : null
-                    })
-                }
-            })
-        } else {
-            commit(types.PROJECT_LIST_LOADING, false)
-        }
+    // get_project_list({
+    //     commit
+    // }, payload) {
+    //     commit(types.PROJECT_LIST_LOADING, true);
+    //     if (state.project_list.length === 0) {
+    //         get_project_list().then(res => {
+    //             if (res.data.res_code === 1) {
+    //                 commit(types.QUERY_PROJECT_LIST, {
+    //                     data: res.data.data,
+    //                     callback: payload ? payload.callback : null
+    //                 })
+    //             }
+    //         })
+    //     } else {
+    //         commit(types.PROJECT_LIST_LOADING, false)
+    //     }
+    // },
+    get_project_list({}){
+
     },
     change_selected_project_id({
         commit

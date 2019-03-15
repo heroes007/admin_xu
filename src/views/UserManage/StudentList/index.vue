@@ -49,7 +49,7 @@
             {
                 id:'all',
                 title:'全部机构'
-            },],
+            }],
             selectList1: [{
               id: 1,
               title: '一年级'
