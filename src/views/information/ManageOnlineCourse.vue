@@ -24,7 +24,6 @@
   import pageMixin from '../mixins/pageMixins'
   import pageList from '../../components/Page'
 
-
   export default {
     mixins: [Dialog, pageMixin],
     data() {

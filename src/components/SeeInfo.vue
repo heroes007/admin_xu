@@ -77,8 +77,8 @@ export default {
             this.ModalState(_new)
         },
         detailData(_new){
-          console.log(_new, '传值')
-            this.formItem = _new
+          if (!_new.realname) _new.realname = _new.mechanismName + '管理员'
+          this.formItem = _new
         }
     },
     methods: {
