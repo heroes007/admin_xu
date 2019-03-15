@@ -3,12 +3,16 @@
  */
 import api from './config'
 
+// export function get_category_list(project_id) {
+//     return api.post('api/tools_task/get_category_list',{project_id:project_id});
+// }
+
 export function get_category_list(project_id) {
-    return api.post('api/tools_task/get_category_list',{project_id:project_id});
+    return api.post('/product/homework/get_list',{product_id:project_id,page_size:10,page_num:1});
 }
 
-export function create_category(project_id,params) {
-    return api.post('api/tools_task/create_category',{project_id:project_id,name:params.name,type:params.type});
+export function create_category(params) {
+    return api.post('/product/homework/add',{title:params.realname,type:params.jurisdiction,curriculum_id:1,description:params.uploading,attachment_url:params.attachment_url?params.attachment_url:"www.baidu.com"});
 }
 
 export function get_category_by_id(category_id) {
@@ -105,4 +109,12 @@ export function get_student_task_list(project_id,user_id) {
 
 export function get_student_work_list(project_id,user_id) {
     return api.post('api/tools_task/get_student_work_list',{project_id:project_id,user_id:user_id});
+}
+
+export function get_curriculumlist_online(params) {
+    return api.post('/product/curriculum_online/get_list',{
+        product_id:params.product_id,
+        page_size:998,
+        page_num:1,
+    });
 }
