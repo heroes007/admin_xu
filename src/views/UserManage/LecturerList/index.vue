@@ -59,16 +59,6 @@
             lectureesItem2: false,
             lectureesItem3: false,
             keyword: '',
-            selectList:[
-                {
-                    value:'all',
-                    label:'全部机构'
-                },
-                {
-                    value:'zj',
-                    label:'浙江医院'
-                }
-            ],
             formList: [
                 { type: 'input', name: '讲师姓名',  field: 'name'},
                 { type: 'textarea', name: '讲师介绍',  field: 'description' }

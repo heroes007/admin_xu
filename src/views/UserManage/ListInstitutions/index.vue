@@ -107,13 +107,8 @@
     methods: {
         see(row,rowIndex){
           this.detailShow = true;
-            // postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
-              // Object.assign(row, res.data[0])
-              // Object.assign(row, res.data[0].admin[0])
-              // let new_obj = {...row, ...res.data[0], ...res.data[0].admin[0]}
-              this.tableRowData = row
-              this.tableRowData.mechanismName = row.title;
-            // })
+          this.tableRowData = this.list[rowIndex]
+          this.tableRowData.mechanismName = this.list[rowIndex].title;
         },
         edit(row,rowIndex){
              postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
@@ -157,22 +152,9 @@
           if(this.modalTitle === '添加机构') this.fromAddAndEdit('user/addDeptAdmin', val)
           else this.fromAddAndEdit('user/modifyDept', val)
         }
-        // handleAuth(){
-        //     if(this.$PERMISSIONS_ITEM.child){
-        //         let d = this.$PERMISSIONS_ITEM.child;
-        //         let col = this.columns1[this.columns1.length-1].operation
-        //         d.map((m) => {
-        //             if(m.permission_code === 13) this.btnType = true
-        //             if(m.permission_code === 14)  col.push(this.operationList[0])
-        //             if(m.permission_code === 15)  col.push(this.operationList[1])
-        //             if(m.permission_code === 16)  col.push(this.operationList[2])
-        //         })
-        //     }
-        // }
     },
     mounted() {
         this.getList()
-        if(this.permissionItem2) this.handleAuth(this.permissionItem2)
     }
   }
 </script>

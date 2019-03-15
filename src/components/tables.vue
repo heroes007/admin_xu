@@ -34,7 +34,6 @@
 </template>
 
 <script>
-    import Config from '../config/config'
   export default {
     data(){
       return{
@@ -99,6 +98,7 @@
         this.datas = d
       },
       show(row,rowIndex,params) {
+        row = this.datas[rowIndex]
         if(this.selectList) row.list = this.getArray(this.selectList, row)
         this.$emit(params, row, rowIndex)
       },
@@ -123,7 +123,6 @@
         }else return t[0]
       },
       getArray(name, string){
-        console.log(name, string , '123123123123')
         let arr = [], str
             name.forEach((item, index) => {
               for(var x in string)
@@ -131,7 +130,7 @@
                 if(item.title == 'role_id' && x == 'role_id' && string[x] == 1){
                   arr.push(`${item.name}: 九划医疗`)
                 }else{
-                  if(x == 'role_id') string[x] = Config.status(string[x])
+                  if(x == 'role_id') string[x] = this.$config.status(string[x])
                   str =  item.name + ':' + ' ' + string[x]
                   arr.push(str)
                 }
