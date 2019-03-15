@@ -32,6 +32,9 @@
     import { get_sign } from '../api/modules/ali_oss'
     import axios from 'axios'
     import { get_video_source } from '../api/modules/tools_video'
+    const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
+    const ossHostVideo = 'http://dscj-video.oss-cn-beijing.aliyuncs.com/';
+    const ossHostApp = 'http://dscj-static-file.oss-cn-qingdao.aliyuncs.com/';
     export default {
         props: {
             panelOptions: {

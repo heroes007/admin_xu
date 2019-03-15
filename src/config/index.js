@@ -25,8 +25,9 @@ router.beforeEach((to, from, next) => {
           store.dispatch('set_user_info', d);
           localStorage.setItem('PERSONALDETAILS',JSON.stringify(d))
           postData('user/getUserPermission',{from:"web"}).then((res) => {
-            if(res.res_code === 1 && res.data && res.data.length>0){
-              localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(res.data)))
+            if(res.res_code === 1 && res.data){
+              localStorage.setItem('token',res.data.token)
+              localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(res.data.permissions)));
               next();
             }else{
               Message.warning('暂无权限');

@@ -155,6 +155,7 @@
     },
     mounted() {
         this.getList()
+        if(this.permissionItem2) this.handleAuth(this.permissionItem2)
     }
   }
 </script>

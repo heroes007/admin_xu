@@ -1,157 +1,114 @@
 <template>
-<Modal :transfer=false :title="!payload? '产品信息' : '编辑产品'" :footer-hide=true 
- v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
-    <base-input @closedialog="handleClose">
-        <Row slot="body">
-            <Row class='curriculum-list' v-if='nextStep == 1'>
-                <Row class='title' type='flex' justify='start' align='middle'>
-                    <h2>添加课程：（只能选择一个课）</h2>
+<div>
+    <Modal :transfer=false :title="!payload? '添加培训' : '编辑培训'" :footer-hide=true :width="654"
+    v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
+        <base-input @closedialog="handleClose">
+            <Row slot="body">
+                <Row class='curriculum-list' v-if='nextStep == 1'>
+                    <Row class='title' type='flex' justify='start' align='middle'>
+                        <h2>添加课程：（只能选择一个课）</h2>
+                    </Row>
+                    <Row class='search-bar' type='flex' justify='start' align='middle'>
+                        <Col :span="18">
+                            <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
+                        </Col>
+                        <Col :span="6">
+                            <Button class="sub-btn" type="primary" @click="searchCurriculum">查询</Button>
+                            <Button class="sub-btn" type="primary" @click="clearSearch">清除</Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                    <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='curriculumList' :header-data='dataHeader'></data-list>
+                    </Row>
                 </Row>
-                <Row class='search-bar' type='flex' justify='start' align='middle'>
-                    <Col :span="18">
-                        <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
-                    </Col>
-                    <Col :span="6">
-                        <Button class="sub-btn" type="primary" @click="searchCurriculum">查询</Button>
-                        <Button class="sub-btn" type="primary" @click="clearSearch">清除</Button>
-                    </Col>
-                </Row>
-                <Row>
-                <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='curriculumList' :header-data='dataHeader'></data-list>
+                <Row class="body-top">
+                    <Form ref="form" :model="form" :label-width="fromLabelWidth" class="add-task-form">
+                        <FormItem v-show="nextStep == 0" label="产品名称">
+                            <Input v-model="form.title" placeholder="请输入产品名称"></Input>
+                        </FormItem>
+                        <FormItem v-show="nextStep == 0" style="letter-spacing:14px;" label="原价">
+                            <Input placeholder="售价必须小于等于定价" v-model="form.original_price"></Input>
+                        </FormItem>
+                        <FormItem v-show="nextStep == 0" label="实际售价">
+                            <Input placeholder="0为免费，单位默认（元）" v-model="form.price"></Input>
+                        </FormItem>
+                        <FormItem v-show="nextStep == 0" label="解锁方式">
+                            <Select v-model="form.unlock_type" placeholder="不限/按课程/">
+                                <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}</Option>
+                            </Select>
+                        </FormItem>
+                        <FormItem v-show="nextStep == 0" label="产品状态">
+                            <Select v-model="form.state" placeholder="推荐/已上架/已下架/测试中">
+                                <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}</Option>
+                            </Select>
+                        </FormItem>
+                        <!--<FormItem v-show="nextStep == 0" label="荣誉证书" >
+                            <Select v-model="form.certificate" multiple >
+                                <Option v-for="(item, index) in certificate" :key="item.id" :value="item.id" :label="item.name"></Option>
+                            </Select>
+                        </FormItem>-->
+                        <!--<FormItem v-show="nextStep == 0" label="跳转配置">
+                            <Row class='row-container' type='flex' justify='start' align='middle'>
+                            <Switch  v-model="form.redirectType" size="large">
+                                <span slot="open">自定义</span><span slot="close">默认</span>
+                            </Switch>
+                            </Row>
+                        </FormItem>
+                        <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
+                        <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
+                        </FormItem>-->
+                        <FormItem v-show="nextStep == 0" label="产品介绍">
+                            <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
+                        </FormItem>
+                        <Tabs :v-model="activePane" @on-click="imgOrVideo" v-show="nextStep == 0">
+                            <TabPane label="展示图片"  :disabled="disabled1" name="displayImg">
+                                <FormItem label="展示图片" v-if="nextStep == 0">
+                                    <Row :gutter="10" class="upload-img-row">
+                                        <Col class="upload-img-col" span="8" v-for="(t,i) in form.imgList" :key="i">
+                                            <div class="upload-img-main">
+                                                <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="dscj-app" @uploadcomplete="uploadcomplete" />
+                                                <img v-else class="upload-img-item"  :src="t" />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </FormItem>
+                            </TabPane>
+                            <TabPane label="展示视频" :disabled="disabled2" name="displayVideo">
+                                <FormItem label="展示视频" v-show="nextStep == 0">
+                                    <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
+                                        <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
+                                    </upload-panel>
+                                </FormItem>
+                            </TabPane>
+                        </Tabs>
+                    
+                        <!-- <FormItem v-if="nextStep == 2" class="btns">
+                            <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
+                            <Button  class="btn-orange" @click="handleSubmit('form')">提交</Button>
+                        </FormItem>  -->
+                        <Button v-if="nextStep == 0 || nextStep == 1" class="btn-orange btn-center" @click="handleNextStep(form)">下一步</Button>
+                    </Form>
                 </Row>
             </Row>
-            <Row class="body-top">
-                <Form ref="form" :model="form" :label-width="fromLabelWidth" class="add-task-form">
-                    <FormItem v-show="nextStep == 0" style="letter-spacing:4px;" label="产品ID">
-                        <Input v-model="form.code" placeholder="请输入产品编码"></Input>
-                    </FormItem>
-                    <!-- <FormItem label='考试类型' :label-width="formItemLabelWidth">
-                    <Select v-model="form.examine_type" placeholder="请选择考试类型">
-                        <Option v-for="item in examineTypeList" :key="item.id" :label="item.name" :value="item.id"></Option>
-                    </Select>
-                    </FormItem> -->
-                    <FormItem v-show="nextStep == 0" label="产品名称">
-                        <Input v-model="form.title" placeholder="请输入产品名称"></Input>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" style="letter-spacing:14px;" label="原价">
-                        <Input placeholder="售价必须小于等于定价" v-model="form.show_price"></Input>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" label="实际售价">
-                        <Input placeholder="0为免费，单位默认（元）" v-model="form.show_original_price"></Input>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" label="解锁方式">
-                        <Select v-model="model" placeholder="不限/按课程解锁/按章节解锁/按视频解锁">
-                            <Option v-for="item in list" :value="value" :key="item"></Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 0" label="产品状态">
-                        <Select v-model="model" placeholder="首页推荐/已上架/已下架/测试中">
-                            <Option v-for="item in list" :value="value" :key="item"></Option>
-                        </Select>
-                    </FormItem>
-                    <!--<FormItem v-show="nextStep == 0" label="荣誉证书" >
-                        <Select v-model="form.certificate" multiple >
-                            <Option v-for="(item, index) in certificate" :key="item.id" :value="item.id" :label="item.name"></Option>
-                        </Select>
-                    </FormItem>-->
-                    <!--<FormItem v-show="nextStep == 0" label="跳转配置">
-                        <Row class='row-container' type='flex' justify='start' align='middle'>
-                        <Switch  v-model="form.redirectType" size="large">
-                            <span slot="open">自定义</span><span slot="close">默认</span>
-                        </Switch>
-                        </Row>
-                    </FormItem>
-                    <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
-                       <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
-                    </FormItem>-->
-                     <!--<FormItem v-show="nextStep == 0" label="产品图片">
-                        <Row class='row-container' type='flex' justify='start' align='middle'>
-                        <Switch  v-model="form.displayImg" @on-change="displayImgChage" size="large">
-                            <span slot="open">使用</span><span slot="close">不使用</span>
-                        </Switch>
-                        </Row>
-                    </FormItem>-->
-                    <FormItem v-show="nextStep == 0" label="产品介绍">
-                        <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
-                    </FormItem>
-                    <Tabs value="name1" v-show="nextStep == 0">
-                        <TabPane label="展示图片" name="name1">
-                             <FormItem label="展示图片" v-if="nextStep == 0 && form.displayImg">
-                                <Row>
-                                    <Col :span="8">
-                                    <upload-panel :close=true ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler1">
-                                    </upload-panel>
-                                    </Col>
-                                    <Col :span="8">
-                                    <upload-panel :close=true ref="upload_panel2" :resourse="form.img_url2" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler2s">
-                                    </upload-panel>
-                                    </Col>
-                                    <Col :span="8">
-                                    <upload-panel :close=true ref="upload_panel3" :resourse="form.img_url3" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler3">
-                                    </upload-panel>
-                                    </Col>
-                                    <Col :span="8">
-                                    <upload-panel :close=true ref="upload_panel4" :resourse="form.img_url4" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler4">
-                                    </upload-panel>
-                                    </Col>
-                                    <Col :span="8">
-                                    <upload-panel :close=true ref="upload_panel5" :resourse="form.img_url5" :upload-config="uploadConfig" @uploadcomplete="uploadCompleteHandler5">
-                                    </upload-panel>
-                                    </Col>
-                                </Row>
-                                <p>只能上传 jpg/png 文件，且图片480*270</p>
-                            </FormItem>
-                        </TabPane>
-                        <TabPane label="展示视频" name="name2">
-                            <FormItem label="展示视频" v-show="nextStep == 0">
-                                <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
-                                    <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
-                                </upload-panel>
-                            </FormItem>
-                        </TabPane>
-                    </Tabs>
-                   
-                    <!--<FormItem v-show="nextStep == 0" label="产品视频">
-                        <Row class='row-container' type='flex' justify='start' align='middle'>
-                        <Switch  v-model="form.displayVideo" @on-change="displayVideoChage" size="large">
-                            <span slot="open">使用</span><span slot="close">不使用</span>
-                        </Switch>
-                        </Row>
-                    </FormItem>-->
-                    
-                    
-                    <FormItem v-show="nextStep == 2" label="编辑产品课程图文详情:" :label-width='160'>
-                    </FormItem>
-                    <FormItem v-show="nextStep == 2" label="" :label-width='0'>
-                        <text-editor ref='description_editor' :content='form.description'/>
-                    </FormItem>
-                    <FormItem class="btns">
-                        <Button type='text' v-show='nextStep == 2 || nextStep == 1' class='btn-pre' @click='handlePreStep'>上一步</Button>
-                        <Button v-show="nextStep == 2" class="btn-orange" @click="handleSubmit('form')">提交</Button>
-                        
-                    </FormItem>
-                    <Button v-show="nextStep == 0 || nextStep == 1" class="btn-orange btn-next" @click="handleNextStep(form)">下一步</Button>
-                </Form>
-            </Row>
-        </Row>
-    </base-input>
-</Modal>
+        </base-input>
+    </Modal>
+</div>
 </template>
 <script>
 import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
-import Editor from '../../components/Editor'
 import BaseList from '../../components/BaseList'
 import { Config } from '../../config/base'
 import { RemoveModal } from './mixins'
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex'
 import { get_list } from '../../api/modules/tools_curriculum'
 import { get_detail, get_product_certificate } from '../../api/modules/tools_product'
 import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
+import UploadImgs  from '../../components/UploadButton'
 export default {
-    mixins: [RemoveModal,MPop],
-    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'text-editor':Editor,'data-list': BaseList },
+    mixins: [RemoveModal,MPop,FormModalMixin],
+    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'data-list': BaseList, UploadImgs },
     props: {
         remove: {
             type: String
@@ -161,10 +118,17 @@ export default {
     data() {
         return {
             addProductionDialog: true,
+            activePane: 'displayImg',
+            unlock_type: '',
+            states: '',
+            selectList1: [{id: '0',title:'不限'},{id: '1',title:'按课程'}],
+            show: false,
+            selectList2: [{id: '',title:'全部'},{id: '-1',title:'下架'},{id: '0',title:'未上架'},{id: '1',title:'测试'},{id: '2',title:'上架'},{id: '3',title:'推荐'}],
             form: {
-                project_id:0,
-                product_id:0,
-                code:'',
+                project_id: 0,
+                product_id: 0,
+                unlock_type: '',
+                state: '',
                 title:'',
                 price:0,
                 original_price:0,
@@ -173,20 +137,13 @@ export default {
                 img_url_arr:'',
                 h5_url:'',
                 redirectType:false,
-                displayVideo:false,
-                displayImg: true,
                 curriculum_id:null,
-                img_url:'',
-                img_url2:'',
-                img_url3:'',
-                img_url4:'',
-                img_url5:'',
+                imgList: ['upload-btn'],
                 video_url:'',
-                show_price:'',
-                show_original_price:'',
-                examine_type:3,
+                original_price:'',
+                price:'',
                 _fn:null,
-                certificate:[]
+                certificate:[],
             },
             nextStep: 0,
             isInited: false,
@@ -204,7 +161,10 @@ export default {
             curriculumList:[],
             loadingInstance:null,
             fromLabelWidth:121,
-            formItemLabelWidth:121
+            formItemLabelWidth:121,
+            paneItem: '',
+            disabled2: false,
+            disabled1: false,
         }
     },
     mounted() {
@@ -237,10 +197,9 @@ export default {
             this.form.product_id = this.payload.id;
             get_detail(this.payload.id).then(res => {
                 if(res.data.res_code === 1){
-                    this.form.code = res.data.msg.code;
                     this.form.title = res.data.msg.title;
-                    this.form.show_price = (res.data.msg.price).toString();
-                    this.form.show_original_price = (res.data.msg.original_price).toString();
+                    this.form.original_price = (res.data.msg.price).toString();
+                    this.form.price = (res.data.msg.original_price).toString();
                     this.form.short_description = res.data.msg.short_description;
                     this.form.description = res.data.msg.description;
                     this.form.curriculum_id = res.data.msg.curriculum_id;
@@ -319,6 +278,15 @@ export default {
                 }
             }
         },
+        uploadcomplete(v){
+            this.disabled2 = true
+            this.disabled1 = false
+            if(this.form.imgList.length<6) this.form.imgList.push(v.url)
+            else this.$Message.warning('最多上传5张图片');
+        },
+        imgOrVideo(name){
+            this.paneItem = name
+        },
         displayVideoChage(){
             if(this.form.displayImg){
                this.$nextTick(() => {
@@ -334,7 +302,6 @@ export default {
             }
         },
         displayImgChage(){
-             console.log(this.from,'from')
             if(this.form.displayVideo){
                 this.$nextTick(() => {
                    this.form.displayImg = false
@@ -390,20 +357,21 @@ export default {
         },
         uploadCompleteHandler2(url){
             this.form.video_url = url;
+            this.disabled1 = true;
+            this.disabled2 = false;
         },
         handleClose() {
             this.form.description = '';
             this.addProductionDialog = false;
         },
         handleNextStep(formName) {
-          var arrObj = {
-            default: this.form.displayImg ? JSON.stringify([this.form.img_url,this.form.img_url2,this.form.img_url3,this.form.img_url4,this.form.img_url5]) : '',
-            video: this.form.displayVideo ? this.form.video_url : ''
-          }
-          var description= this.$refs.description_editor.editor.getContent();
-          this.form.description = description;
-          this.form.img_url_arr = JSON.stringify(arrObj);
-          if(Number(this.form.show_price) > Number(this.form.show_original_price)){
+        //   this.form.imgList.shift('upload-btn')
+        //   var arrObj = {
+        //     default: this.paneItem === 'displayImg' ? JSON.stringify(this.form.imgList) : '',
+        //     video:  this.paneItem === 'displayVideo' ? this.form.video_url : ''
+        //   }
+        //   this.form.img_url_arr = JSON.stringify(arrObj);
+          if(Number(this.form.original_price) > Number(this.form.price)){
             this.$Modal.info({
               title: '提示',
               content: '真实售价不能高于定价！'
@@ -411,7 +379,9 @@ export default {
           }else{
             this.fromLabelWidth = 0;
             this.formItemLabelWidth = 0
-            this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
+            console.log(this.form,'this.form')
+            this.addProductionDialog = false;
+            this.show = true
           }
         },
         handlePreStep() {
@@ -420,8 +390,8 @@ export default {
             this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
         handleSubmit() {
-              this.form.price = Number(this.form.show_price).toFixed(2)
-              this.form.original_price = Number(this.form.show_original_price).toFixed(2)
+              this.form.price = Number(this.form.original_price).toFixed(2)
+              this.form.original_price = Number(this.form.price).toFixed(2)
               if(this.payload)  this.update_production(this.form);
               else this.add_production(this.form);
         }
@@ -432,7 +402,6 @@ export default {
 /deep/.ivu-switch-large { width: 75px }
 /deep/ .ivu-switch-large.ivu-switch-checked:after{ left: 55px; }
 /deep/ .ivu-modal{ width: 654px !important }
-/deep/ .upload-space, /deep/ .upload-space>input{ height: 150px !important; }
 /deep/ .upload-panel .img img { width: 160px;height: 148px; }
 /deep/ .ivu-modal-header { background-color:#ffffff!important; padding:21px 16px;font-family: PingFangSC-Regular;font-size: 20px!important;color: #474C63!important;letter-spacing: 0!important;border-radius: 10px}
 /deep/ .ivu-modal-header-inner { color:#474C63 !important; }
@@ -440,17 +409,39 @@ export default {
 /deep/ .ivu-modal-content {border-radius: 6px !important;}
 /deep/ .ivu-form-item {margin-bottom: 15px;}
 /deep/ .ivu-input {border-radius: 4px !important;}
+.upload-img-col{
+    height: 130px;
+    margin-bottom: 10px;
+}
+.upload-img-row{
+    margin: 10px 0px 0px 0px !important;
+}
+.upload-img-main{
+   width: 100%;
+   height: 100%;
+   border: 1px solid #C8CCDD;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+.upload-img-item{
+    width: 100%;
+    height: 100%;
+}
  .add-task-form{
-    width: 80% !important;
-    margin-left: 10%;
+    width: 100% !important;
+    padding-top: 30px;
+    padding-right: 40px;
 }
 .btn-next{ margin-left: 20%; }
 .btn-orange:hover,.btn-next:hover{
     background: #3DAAFF;
     color: #fff;
 }
+.btn-center{
+    margin: 0 auto
+}
 .btn-orange{
-    margin-left: 10%;
     background: #3DAAFF;
     border: 1px solid #3DAAFF;
     border-radius: 4px;

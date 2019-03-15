@@ -233,7 +233,8 @@
       },
       closeModal(){
         this.show = false;
-        this.$emit("close")
+        this.$emit("close");
+        this.formItem = {}
       },
       handleFormatError (file) {
         this.$Message.warning('请上传图片');

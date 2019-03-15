@@ -5,7 +5,7 @@
             <div class="back-title">返回</div>
         </div>
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
-            <Option v-for="item in select1" :value="item.id" :key="item.id">{{ item.title }}</Option>
+            <Option v-for="item in select1" :value="item.organization_id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
@@ -108,7 +108,7 @@
     mounted() {
       if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
-      this.isSuper = localStorage.getItem('organizationId') == 1 ? true : false
+      this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
     },
     methods:{
       // 付费学员返回事件，click触发，选中返回true
