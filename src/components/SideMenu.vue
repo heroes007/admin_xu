@@ -69,7 +69,7 @@
     data() {
       return {
         use_router: true,
-        activeIndex: "",
+        activeIndex: "user-manage",
         menuOpenName: ['6', '2'],
         menuList: [],
         iconImg: '../../static/img/menu/',
@@ -96,7 +96,7 @@
     },
     watch: {
       $route() {
-        this.initMenu();
+        // this.initMenu();
         //  if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
         //    this.selectItem(this.activeIndex)
         //  }
@@ -172,6 +172,7 @@
         if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
         this.name = index
         this.$router.push({name: index});
+        this.activeIndex = index
       },
       initMenu() {
         this.activeIndex = this.$route.name;

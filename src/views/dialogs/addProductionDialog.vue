@@ -60,7 +60,7 @@
                         <FormItem v-show="nextStep == 0" label="产品介绍">
                             <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
                         </FormItem>
-                        <Tabs :v-model="activePane" @on-click="imgOrVideo" v-show="nextStep == 0">
+                        <Tabs v-model="paneItem" v-show="nextStep == 0">
                             <TabPane label="展示图片"  :disabled="disabled1" name="displayImg">
                                 <FormItem label="展示图片" v-if="nextStep == 0">
                                     <Row :gutter="10" class="upload-img-row">
@@ -149,7 +149,6 @@ export default {
         return {
             iconFont,iconColor,iconCopy,
             addProductionDialog: true,
-            activePane: 'displayImg',
             unlock_type: '',
             states: '',
             selectList1: [{id: 0,title:'不限'},{id: 1,title:'按课程'}],
@@ -227,7 +226,8 @@ export default {
                 color: '#00f'
             },
             ],
-            color: ''
+            color: '',
+            paneItem: 'displayImg'
         }
     },
     mounted() {
@@ -366,9 +366,6 @@ export default {
             if(this.form.imgList.length<6) this.form.imgList.push(v.url)
             else this.$Message.warning('最多上传5张图片');
         },
-        imgOrVideo(name){
-            this.paneItem = name
-        },
         displayVideoChage(){
             if(this.form.displayImg){
                this.$nextTick(() => {
@@ -447,10 +444,10 @@ export default {
             this.addProductionDialog = false;
         },
         handleNextStep(formName) {
-          if(Number(this.form.original_price) > Number(this.form.price)){
+          if(Number(this.form.price) > Number(this.form.original_price)){
             this.$Modal.info({
               title: '提示',
-              content: '真实售价不能高于定价！'
+              content: '实际售价不能高于原价！'
             });
           }else{
             this.fromLabelWidth = 0;
@@ -469,11 +466,11 @@ export default {
         handleSubmit() {
             this.form.imgList.shift('upload-btn')
             var arrObj = {
-                default: this.paneItem === 'displayImg' ? JSON.stringify(this.form.imgList) : '',
-                video:  this.paneItem === 'displayVideo' ? this.form.video_url : ''
+                default: JSON.stringify(this.form.imgList),
+                video:  this.form.video_url 
             }
-            if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
             this.form.url_arr = JSON.stringify(arrObj);
+            if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
             this.form.price = Number(this.form.original_price).toFixed(2)
             this.form.original_price = Number(this.form.price).toFixed(2)
             if(this.payload)  this.update_production(this.form);
