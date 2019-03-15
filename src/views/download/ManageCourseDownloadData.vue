@@ -173,7 +173,7 @@
       setTimeout(()=>{
         console.log(this.dataList,'this.dataList');
       },1000)
-      this.get_online_curriculum_list({project_id: this.projectId});
+      // this.get_online_curriculum_list({project_id: this.projectId});
       this.get_curriculum_donwload_data_list({project_id: this.projectId});
     }
   }

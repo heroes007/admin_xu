@@ -5,7 +5,7 @@
         <FormModal :modal-text="true" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" />
 
-        <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick" />
 
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="institution"/>
 
@@ -84,7 +84,7 @@
                 { type: 'textarea', name: '机构介绍',  field: 'description' },
                 { type: 'input', name: '机构账号',  field: 'username' },
                 { type: 'password', name: '账号密码',  field: 'password' },
-                { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'九划超级管理员'}
+                { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'机构管理员'}
               // { type: 'select', name: '管理权限', field: 'jurisdiction' ,
                 //     selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
                 // }
@@ -155,6 +155,7 @@
     },
     mounted() {
         this.getList()
+        if(this.permissionItem2) this.handleAuth(this.permissionItem2)
     }
   }
 </script>

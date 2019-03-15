@@ -1,11 +1,10 @@
 <template>
-    <Modal :transfer=false :title="dialogIndex == 1 ? '添加课程' : '前置课程'" :footer-hide="true" :styles="{top: '60px'}"
+    <Modal :transfer=false :title="stateName == 1 ? '添加课程' : '编辑课程'" :footer-hide="true" :styles="{top: '60px'}"
            v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="654" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
-
                         <!--<Row>-->
                             <Col>
                                 <FormItem label="课程名称">
@@ -13,17 +12,17 @@
                                 </FormItem>
                                 <FormItem label="课程讲师">
                                     <Select v-model="form.teacher_id" placeholder="请选择观讲师">
-                                        <Option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                        <Option v-for="item in teacherList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="科室">
                                     <Select v-model="form.subject_id" placeholder="请选择学科">
-                                        <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                        <Option v-for="item in detpysList" :key="item.code" :label="item.name" :value="item.code"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="年级">
                                     <Select v-model="form.grade_id" placeholder="请选择学段">
-                                        <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                        <Option v-for="item in gradesList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="课程状态">
@@ -154,6 +153,7 @@
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'
   import { MPop } from '../../components/MessagePop'
+  import postData from '../../api/postData'
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -165,6 +165,7 @@
       return {
         addCourseDialogVisible: true,
         videoManageDialog: true,
+        stateName: 1,
         form: {
           title: '',
           teacher_id: '',
@@ -206,16 +207,23 @@
           type: 1
         },
         resourse1: '',
-        resourse2: ''
+        resourse2: '',
+        teacherList: [],
+        detpysList: [],
+        gradesList: []
+
       }
     },
     mounted() {
-      if (this.query_teacher_list.length === 0) this.get_teacher_list();
-      this.get_role_list();
-      this.get_subject_list();
-      this.get_grade_list();
-      this.checkPayload();
-      this.get_curriculum_donwload_data_list({project_id: this.project_id});
+      this.stateName = this.payload.state
+      this.getListTeacher()
+
+      // if (this.query_teacher_list.length === 0) this.get_teacher_list();
+      // this.get_role_list();
+      // this.get_subject_list();
+      // this.get_grade_list();
+      // this.checkPayload();
+      // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
     watch: {
       query_subject_list(val) {
@@ -318,25 +326,26 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
-        this.form.img_url_arr = {
-          'default': this.form.img_default,
-          '3_8': this.form.img_3_8
-        };
-        this.form.project_id = this.project_id;
-        this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
+        console.log(this.form);
+        // this.form.img_url_arr = {
+        //   'default': this.form.img_default,
+        //   '3_8': this.form.img_3_8
+        // };
+        // this.form.project_id = this.project_id;
+        // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
         var vm = this;
         this.form._fn = function () {
           vm.handleClose();
           vm.showPop('保存成功！', 1000);
         };
-        if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
-          var preList = [];
-          for (var i = 0; i < this.top_course_list.length; i++) {
-            preList.push(this.top_course_list[i].curriculum_id);
-          }
-          this.form.pre_curriculum_ids = preList;
-        }
-        if (!this.payload) this.add_online_curriculum(this.form);
+        // if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
+        //   var preList = [];
+        //   for (var i = 0; i < this.top_course_list.length; i++) {
+        //     preList.push(this.top_course_list[i].curriculum_id);
+        //   }
+        //   this.form.pre_curriculum_ids = preList;
+        // }
+        if (this.stateName == 1) this.add_online_curriculum(this.form);
         else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
       },
       handleRemove(file, fileList) {},
@@ -438,6 +447,20 @@
       },
       handle38UploadComplete(url) {
         this.form.img_3_8 = url;
+      },
+      getListTeacher() {
+        postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
+          console.log(res,'teacher')
+          this.teacherList = res.data
+        })
+        postData('components/getDepts').then((res) => {
+          console.log(res,'teacher')
+          this.detpysList = res.data
+        })
+        postData('components/getGrades').then((res) => {
+          console.log(res,'teacher')
+          this.gradesList = res.data
+        })
       }
     }
   }

@@ -8,8 +8,13 @@ export default {
   },
   methods: {
     pageList(val) {
-      this.current = val
-      this.getList()
+      if(this.pageTotal){
+        this.current = val
+        this.initData();
+      }else{
+        this.current = val
+        this.getList()
+      }
     }
   }
 }

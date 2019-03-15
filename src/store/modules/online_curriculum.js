@@ -10,6 +10,7 @@ const state = {
     online_curriculum_list: [],
     online_curriculum_old_list:[],
     msg:'',
+    total: null,
     showChapterLoading:false,
     showMainLoading:false,
     newVideoTestId:0,
@@ -20,11 +21,12 @@ let project_id = null
 // actions
 const actions = {
     get_online_curriculum_list ({ commit }, param) {
-        project_id = param.project_id
+      // project_id = param.project_id
         commit(types.ONLINE_CURRICULUM_LIST_LOADING);
-        get_list(param.project_id).then(function (res) {
+        get_list(param.page, param.keyword).then(function (res) {
             if(res.data.res_code === 1){
-                commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.msg);
+                commit(types.ONLINE_CURRICULUM_LIST_LOADED,res.data.data.data);
+                commit(types.ONLINE_CURRICULUM_PAGE_LOADED,res.data.data);
             }
         });
     },
@@ -120,10 +122,10 @@ const actions = {
     },
     delete_online_curriculum( {commit}, params) {
         commit(types.ONLINE_CURRICULUM_DELETING);
-        delete_curriculum(params.curriculum_id).then(res => {
+        delete_curriculum(params.id).then(res => {
             if(res.data.res_code === 1)
             {
-                commit(types.ONLINE_CURRICULUM_DELETED,params.curriculum_id);
+                commit(types.ONLINE_CURRICULUM_DELETED,params.id);
             }
         })
     },
@@ -188,6 +190,7 @@ const actions = {
 // mutations
 const mutations = {
     [types.ONLINE_CURRICULUM_LIST_LOADED] (state,list) {
+        console.log(list, 'listlist')
         for(var i=0;i<list.length;i++)
         {
             list[i].chapterList = [];
@@ -195,6 +198,10 @@ const mutations = {
         }
         state.online_curriculum_list = list || state.list;
         state.showMainLoading = true;
+    },
+    [types.ONLINE_CURRICULUM_PAGE_LOADED] (state, page) {
+        console.log(page, 'pagepage')
+        state.total = page.count
     },
     [types.ONLINE_CURRICULUM_LIST_LOADING] (state) {
         state.showMainLoading = true;
@@ -375,10 +382,10 @@ const mutations = {
     [types.ONLINE_CURRICULUM_DELETING] (state) {
         state.showMainLoading = true;
     },
-    [types.ONLINE_CURRICULUM_DELETED] (state, curriculum_id) {
+    [types.ONLINE_CURRICULUM_DELETED] (state, id) {
         for(var i=0;i<state.online_curriculum_list.length;i++)
         {
-            if(state.online_curriculum_list[i].curriculum_id == curriculum_id)
+            if(state.online_curriculum_list[i].id == id)
             {
                 state.online_curriculum_list.splice(i,1);
                 break;

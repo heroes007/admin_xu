@@ -143,7 +143,7 @@
            dataList: state => state.task.task_category_list,
            curricumList: state => state.task.curricum_list
         })
-      
+
     },
     watch: {
       // isLoading(val) {
