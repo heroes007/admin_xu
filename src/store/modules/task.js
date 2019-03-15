@@ -32,7 +32,8 @@ const state = {
     cur_page: 1,
     page_size: 10,
     catch_every_page: {},
-    curricum_list:[]
+    curricum_list:[],
+    homworkId:'',
     // activityTypeList:[{type:"online",name:'线上课'},{type:"underline",name:'线下课'}]
 }
 var catch_cid = ''
@@ -69,7 +70,6 @@ const actions = {
         add_task_category({
             commit
         }, params) {
-           
             commit(types.TASK_SHOW_LOADING);
             create_category(params).then(res => {
                 if (res.data.res_code === 1) {
@@ -88,14 +88,12 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
-            console.log(params);
-            
-            // edit_category_by_id(params.task_category_id, params).then(res => {
-            //     if (res.data.res_code === 1) {
-            //         commit(types.TASK_CATEGORY_EDITED, params);
-            //         // params._fn();
-            //     }
-            // })
+            edit_category_by_id(state.homworkId, params).then(res => {
+                if (res.data.res_code === 1) {
+                    commit(types.TASK_CATEGORY_EDITED, params);
+                    // params._fn();
+                }
+            })
         },
         delete_task_category({
             commit
@@ -143,6 +141,8 @@ const actions = {
             commit(types.TASK_SHOW_LOADING);
 
             edit_task(params.task_id, params).then(res => {
+             
+                
                 if (res.data.res_code === 1) {
                     commit(types.TASK_EDITED, params);
                     params.callback.call();
@@ -153,8 +153,8 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
-
-            delete_task_by_id(params.task_id, params.is_del_ut).then(res => {
+            delete_task_by_id(params).then(res => {    
+                // console.log(res);            
                 if (res.data.res_code === 1) {
                     commit(types.TASK_DELETED, params);
                 }
@@ -169,6 +169,9 @@ const actions = {
           } else {
             commit(types.TASK_USERLIST_TY_TID, state.catch_every_page[params.page_index]);
           }
+        },
+        change_homework_id({commit},params){
+            commit(types.TASK_CHANGE_HOMEID,params)
         }
     }
     // mutations
@@ -214,8 +217,10 @@ const mutations = {
     },
     [types.TASK_CATEGORY_EDITED](state, params) {
         for (var i = 0; i < state.task_category_list.length; i++) {
-            if (state.task_category_list[i].id === params.task_category_id) {
-                state.task_category_list[i].name = params.name;
+            if (state.task_category_list[i].id === state.homworkId) {
+                state.task_category_list[i].title = params.realname;
+                state.task_category_list[i].curriculum_title = params.binding_course;
+                state.task_category_list[i].type = params.jurisdiction;
                 break;
             }
         }
@@ -257,7 +262,7 @@ const mutations = {
     },
     [types.TASK_EDITED](state, params) {
         for (var i = 0; i < state.task_category_list.length; i++) {
-            if (state.task_category_list[i].id === params.task_category_id) {
+            if (state.task_category_list[i].id === params) {
                 for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {
                     if (state.task_category_list[i].task_list[j].id === params.task_id) {
                         state.task_category_list[i].task_list[j].name = params.name;
@@ -273,14 +278,17 @@ const mutations = {
         state.showLoading = false;
     },
     [types.TASK_DELETED](state, params) {
+        console.log(state.task_category_list);
+        
         for (var i = 0; i < state.task_category_list.length; i++) {
-            if (state.task_category_list[i].id === params.task_category_id) {
-                for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {
-                    if (state.task_category_list[i].task_list[j].id === params.task_id) {
-                        state.task_category_list[i].task_list.splice(j, 1);
-                        break;
-                    }
-                }
+            if (state.task_category_list[i].id === params) {
+                // for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {
+                //     if (state.task_category_list[i].task_list[j].id === params.task_id) {
+                //         state.task_category_list[i].task_list.splice(j, 1);
+                //         break;
+                //     }
+                // }
+                state.task_category_list.splice(i, 1);
                 break;
             }
         }
@@ -294,6 +302,9 @@ const mutations = {
     },
     [types.TASK_CURRICUMLIST](state, params){
         state.curricum_list = params.result
+    },
+    [types.TASK_CHANGE_HOMEID](state, params){
+        state.homworkId = params
     }
 }
 

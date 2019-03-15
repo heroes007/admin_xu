@@ -63,7 +63,6 @@
         modalTitle: '',
         tableRow: {},
         tableRowData: {},
-        homeworkId:'',
         formList: [
             { type: 'input', name: '作业名称',  field: 'realname'},
             { type: 'select', name: '作业类型', field: 'jurisdiction' ,
@@ -202,8 +201,6 @@
         localStorage.setItem('MarkingHomework',JSON.stringify(row))
       },
       editHandler(index, row) {
-        console.log(row);
-        
         this.show = true;
         this.modalTitle = '编辑作业';
         let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
@@ -211,16 +208,18 @@
         this.formList[2].selectList = this.curricumList
         this.tableRow.realname = row.title
         this.tableRow.uploading = row.description
-        this.homeworkId = row.id
+        this.$store.dispatch("change_homework_id",row.id)
         // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
       },
       deleteHandler(index, row) {
+        console.log(row);
+        
         var vm = this;
         this.$Modal.confirm({
           title: '提示',
           content: '<p>您确定要删除该任务吗?</p>',
           onOk: () => {
-            this.delete_task({ task_category_id: this.selectCategory, task_id: row.id, is_del_ut: 1 })
+            this.delete_task(row.id)
           },
         });
       },
@@ -264,7 +263,7 @@
         if (this.modalTitle == "添加作业") {
           this.$store.dispatch('add_task_category', val);
         }else{
-          this.$store.dispatch('edit_task_category',val,this.homeworkId);
+          this.$store.dispatch('edit_task_category',val);
         }
       },
     },
