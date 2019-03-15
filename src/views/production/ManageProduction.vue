@@ -1,6 +1,6 @@
 <template>
     <div class='manage-production-view'>
-        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="管理总数" :size-num1="total" btn-name="添加管理" :select1="selectList" :select2="selectList2"
+        <screen :btn-type='true' :select-type1="selectType1" :select-type2="true" :types="4" size-title1="管理总数" :size-num1="total" btn-name="添加管理" :select1="selectList" :select2="selectList2"
                 @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
         <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
              <Card style="min-width:350px;min-height:127px;margin:20px;" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">

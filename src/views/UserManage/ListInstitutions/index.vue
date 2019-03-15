@@ -107,8 +107,8 @@
     methods: {
         see(row,rowIndex){
           this.detailShow = true;
-              this.tableRowData = row
-              this.tableRowData.mechanismName = row.title;
+          this.tableRowData = this.list[rowIndex]
+          this.tableRowData.mechanismName = this.list[rowIndex].title;
         },
         edit(row,rowIndex){
              postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
