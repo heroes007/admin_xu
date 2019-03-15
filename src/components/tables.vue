@@ -1,141 +1,145 @@
 <template>
-<div>
-    <Table :columns="columns" :data="datas" >
-       <template slot-scope="{ column, row, index }" slot="operation">
-            <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)" >
-                <span slot="open">启用</span>
-                <span slot="close">禁用</span>
-            </Switch>
-            <span v-for="(t,i) in column.operation" :key="i">
+    <div>
+        <Table :columns="columns" :data="datas">
+            <template slot-scope="{ column, row, index }" slot="operation">
+                <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
+                    <span slot="open">启用</span>
+                    <span slot="close">禁用</span>
+                </Switch>
+                <span v-for="(t,i) in column.operation" :key="i">
               <!-- poptip_state -->
                <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
                     <Button type="text">查看</Button>
                     <div class="poptip-main" slot="content">
-                      <img class="poptip-img" src="../../static/mn.jpeg" />
+                      <img class="poptip-img" src="../../static/mn.jpeg"/>
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
                     </div>
                </Poptip>
-              <Button type="text" v-else-if="column.operation_btn_hide&&t[2] ? row.state : true" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+              <Button type="text" v-else-if="column.operation_btn_hide&&t[2] ? row.state : true" size="small"
+                      style="margin-right: 5px" @click="show(row,index,t[1])">
                 {{handleBtnText(t,row,column)}}
               </Button>
             </span>
-        </template>
-        <template slot-scope="{ column, row, index }" slot="radio-item">
-            <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
-        </template>
-        <template slot-scope="{ column, row, index }" slot="state-item">
-           <span v-if="column.stateOther" :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
-           <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
-        </template>
-        <template  slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
-        <template  slot-scope="{ column, row, index }" slot="_index">{{row._index == 0 ? '未认证' : '已认证'}}</template>
-    </Table>
-</div>
+            </template>
+            <template slot-scope="{ column, row, index }" slot="radio-item">
+                <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
+            </template>
+            <template slot-scope="{ column, row, index }" slot="state-item">
+                <span v-if="column.stateOther"
+                      :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
+                <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
+            </template>
+            <template slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
+            <template slot-scope="{ column, row, index }" slot="_index">{{row._index == 0 ? '未认证' : '已认证'}}</template>
+        </Table>
+    </div>
 </template>
 
 <script>
   export default {
-    data(){
-      return{
+    data() {
+      return {
         datas: [],
         columns: [],
         btnList: []
       }
     },
     props: {
-       column: {
-            type: Array,
-            default: []
-       },
-       tableData: {
-            type: Array,
-            default: []
-       },
-       // isSerial -->  序号
-       isSerial: {
-          type: Boolean,
-          default: false
-       },
-       // 选项
-       isSelection: {
-          type: Boolean,
-          default: false
-       },
-       // 选项
-       isSelectionRight: {
-          type: Boolean,
-          default: false
-       },
+      column: {
+        type: Array,
+        default: []
+      },
+      tableData: {
+        type: Array,
+        default: []
+      },
+      // isSerial -->  序号
+      isSerial: {
+        type: Boolean,
+        default: false
+      },
+      // 选项
+      isSelection: {
+        type: Boolean,
+        default: false
+      },
+      // 选项
+      isSelectionRight: {
+        type: Boolean,
+        default: false
+      },
       //筛选选项
       selectList: {
-         type: Array,
+        type: Array,
       }
     },
-    watch:{
-      tableData(_new){
+    watch: {
+      tableData(_new) {
         this.tableData = _new;
         this.handleTableData(this.tableData)
       }
     },
-    methods:{
-      radioChange(r,c){
-          this.datas.map((t,k) => {
+    methods: {
+      radioChange(r, c) {
+        this.datas.map((t, k) => {
           t.state = false
-          if(t.id === r.id){
+          if (t.id === r.id) {
             t.state = true;
-            this.$emit('radioChange',t)
+            this.$emit('radioChange', t)
           }
 
         })
       },
-      handleTableData(d){
-        d.map((t,k) => {
-         if(this.isSerial) t.serial_number = this.$config.addZero(k)
-         if(t.hasOwnProperty('slot')){
-           if(t.operation.length>0) this.btnList = t.operation
-         }
+      handleTableData(d) {
+        d.map((t, k) => {
+          if (this.isSerial) t.serial_number = this.$config.addZero(k)
+          if (t.hasOwnProperty('slot')) {
+            if (t.operation.length > 0) this.btnList = t.operation
+          }
         })
         this.datas = d
       },
-      show(row,rowIndex,params) {
+      show(row, rowIndex, params) {
         row = this.datas[rowIndex]
-        if(this.selectList) row.list = this.getArray(this.selectList, row)
+        if (this.selectList) row.list = this.getArray(this.selectList, row)
         this.$emit(params, row, rowIndex)
       },
-      handleColumns(c){
-        if(this.isSerial) c.unshift({ title: '序号', key: 'serial_number' })
-        if(this.isSelection) c.unshift( { type: 'selection', width: 60, align: 'center' })
-        if(this.isSelectionRight) c.push( { type: 'selection', width: 60, align: 'center' })
+      handleColumns(c) {
+        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number'})
+        if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
+        if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
         c.map((t) => {
-          if(!t.hasOwnProperty('align')) t.align = 'center'
+          if (!t.hasOwnProperty('align')) t.align = 'center'
           t.tooltip = true
         })
         this.columns = c
       },
-      change(row){
+      change(row) {
         this.$emit('table-swtich', row)
       },
-      handleBtnText(t,r,c){
+      handleBtnText(t, r, c) {
         // operation_state -- 处理 兑换码
-        if(Array.isArray(t[0])){
-          if(c.operation_state && t[0][0] == '立即失效')  return c.operation_state && r.state ? t[0][0] : c.operation_state && r.state === 0 ?  t[0][1] : t[0]
-          return c.operation_state && r.use_state ? t[0][0] : c.operation_state && r.use_state === 0 ?  t[0][1] : t[0]
-        }else return t[0]
+        if (Array.isArray(t[0])) {
+          if (c.operation_state && t[0][0] == '立即失效') return c.operation_state && r.state ? t[0][0] : c.operation_state && r.state === 0 ? t[0][1] : t[0]
+          return c.operation_state && r.use_state ? t[0][0] : c.operation_state && r.use_state === 0 ? t[0][1] : t[0]
+        } else return t[0]
       },
-      getArray(name, string){
+      getArray(name, string) {
         let arr = [], str
-            name.forEach((item, index) => {
-              for(var x in string)
-                if(x == item.title) {
-                if(item.title == 'role_id' && x == 'role_id' && string[x] == 1){
-                  arr.push(`${item.name}: 九划医疗`)
-                }else{
-                  if(x == 'role_id') string[x] = this.$config.status(string[x])
-                  str =  item.name + ':' + ' ' + string[x]
-                  arr.push(str)
-                }
+        name.forEach((item, index) => {
+          for (var x in string) {
+            if (x == item.title) {
+              if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
+                arr.push(`${item.name}: 九划医疗`)
+              } else {
+                if (x == 'role_id') string[x] = this.$config.status(string[x])
+                str = item.name + ':' + ' ' + string[x]
+                arr.push(str)
               }
-            })
+            }
+          }
+        })
+        // if (!string.realname) string.realname = string.mechanismName + '管理员'
         return arr
       }
     },
@@ -145,14 +149,30 @@
   }
 </script>
 <style lang='less' scoped>
-   .state-key1,.state-key-other1 { color:  #2EBF07;}
-   .state-key-other0 { color: #474C63; }
-   .state-key0 { color:  #F54802;}
+    .state-key1, .state-key-other1 {
+        color: #2EBF07;
+    }
+
+    .state-key-other0 {
+        color: #474C63;
+    }
+
+    .state-key0 {
+        color: #F54802;
+    }
+
     /deep/ .ivu-table th {
         height: 50px;
     }
-    /deep/ .ivu-btn{ color: #4098FF; }
-    /deep/ .ivu-btn-text:focus{ box-shadow: none }
+
+    /deep/ .ivu-btn {
+        color: #4098FF;
+    }
+
+    /deep/ .ivu-btn-text:focus {
+        box-shadow: none
+    }
+
     /deep/ .ivu-radio-inner {
         /*border-radius: unset;*/
         width: 22px;
@@ -160,6 +180,7 @@
         border-radius: 4px;
         border: 1px solid #9397AD;
     }
+
     /deep/ .ivu-radio-wrapper {
         font-size: 16px;
         display: flex;
@@ -167,9 +188,11 @@
         align-items: center;
         margin-right: 0;
     }
+
     /deep/ .ivu-radio .ivu-radio-inner {
         background-position: 1.5px 1.5px;
     }
+
     /deep/ .ivu-radio-checked .ivu-radio-inner {
         background-image: url('../../static/icon/tick.png');
         background-repeat: no-repeat;
@@ -177,39 +200,46 @@
         background-position: 1.5px 1.5px;
         border-color: #5298f7;
     }
+
     /deep/ .ivu-radio-inner::after {
         display: none;
     }
-    /deep/ .ivu-tooltip-rel{
+
+    /deep/ .ivu-tooltip-rel {
         width: 100%;
     }
-    .poptip-main{
-      display: flex;
-      margin-top: 20px;
-      margin-bottom: 10px;
-      align-items: center;
-      .poptip-img{
-        width: 80px;
-        height: 80px;
-        margin-right: 20px;
-        border-radius: 40px;
-      }
-      .poptip-content{
+
+    .poptip-main {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        h2{
-          font-family: PingFangSC-Medium;
-          font-size: 20px;
-          color: #474C63;
-          text-align: left;
-          margin-bottom: 10px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        align-items: center;
+
+        .poptip-img {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+            border-radius: 40px;
         }
-        p{
-          font-family: PingFangSC-Regular;
-          font-size: 16px;
-          color: #474C63;
+
+        .poptip-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+
+            h2 {
+                font-family: PingFangSC-Medium;
+                font-size: 20px;
+                color: #474C63;
+                text-align: left;
+                margin-bottom: 10px;
+            }
+
+            p {
+                font-family: PingFangSC-Regular;
+                font-size: 16px;
+                color: #474C63;
+            }
         }
-      }
     }
 </style>

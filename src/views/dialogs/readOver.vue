@@ -45,13 +45,13 @@
                                 <Row class="show-from-line1">
                                     <p class="tail-title">导师评语：</p>
                                     <p class="tail-number">{{item.contnumber}}分</p>
-                                </Row>  
+                                </Row>
                                 <Row class="show-from-line2">
                                     <p class="tail-detail">{{item.contdetail}}</p>
                                 </Row>
                                 <Row class="show-from-line3">
                                     <p class="tail-time">{{item.conttime}}</p>
-                                </Row>  
+                                </Row>
                             </Col>
                     </Form>
                 </Row>
@@ -458,7 +458,7 @@ letter-spacing: 0;
         img{
             width: 49px;
             height: 49px;
-            border-radius: 50%; 
+            border-radius: 50%;
         }
     }
     .body-form{

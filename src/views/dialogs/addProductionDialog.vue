@@ -104,10 +104,10 @@
                                 <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
                             </div>
                         </FormItem>
-                        <FormItem v-if="nextStep == 2" class="btns">
+                        <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
                             <Button  class="btn-orange" @click="handleSubmit('form')">提交</Button>
-                        </FormItem> 
+                        </div> 
                         <Button v-if="nextStep == 0 || nextStep == 1" class="btn-orange btn-center" @click="handleNextStep(form)">下一步</Button>
                     </Form>
                 </Row>
@@ -152,9 +152,9 @@ export default {
             activePane: 'displayImg',
             unlock_type: '',
             states: '',
-            selectList1: [{id: '0',title:'不限'},{id: '1',title:'按课程'}],
+            selectList1: [{id: 0,title:'不限'},{id: 1,title:'按课程'}],
             show: false,
-            selectList2: [{id: '',title:'全部'},{id: '-1',title:'下架'},{id: '0',title:'未上架'},{id: '1',title:'测试'},{id: '2',title:'上架'},{id: '3',title:'推荐'}],
+            selectList2: [{id: -1,title:'下架'},{id: 0,title:'未上架'},{id: 1,title:'测试'},{id: 2,title:'上架'},{id: 3,title:'推荐'}],
             form: {
                 project_id: 0,
                 product_id: 0,
@@ -165,7 +165,7 @@ export default {
                 original_price:0,
                 short_description:'',
                 description:'',
-                img_url_arr:'',
+                url_arr:'',
                 h5_url:'',
                 redirectType:false,
                 curriculum_id:null,
@@ -175,6 +175,7 @@ export default {
                 price:'',
                 _fn:null,
                 certificate:[],
+                description: ''
             },
             nextStep: 0,
             isInited: false,
@@ -349,7 +350,6 @@ export default {
             img.width = 100
             img.style.display = 'block'
             this.$refs.inputStyl.appendChild(img)
-            //  if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].outerHTML
         },
         handleDrop(val){
             console.log(this.$refs.inputStyl,'this.$refs.inputStyl');
@@ -447,12 +447,6 @@ export default {
             this.addProductionDialog = false;
         },
         handleNextStep(formName) {
-        //   this.form.imgList.shift('upload-btn')
-        //   var arrObj = {
-        //     default: this.paneItem === 'displayImg' ? JSON.stringify(this.form.imgList) : '',
-        //     video:  this.paneItem === 'displayVideo' ? this.form.video_url : ''
-        //   }
-        //   this.form.img_url_arr = JSON.stringify(arrObj);
           if(Number(this.form.original_price) > Number(this.form.price)){
             this.$Modal.info({
               title: '提示',
@@ -473,15 +467,23 @@ export default {
             this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
         handleSubmit() {
-              this.form.price = Number(this.form.original_price).toFixed(2)
-              this.form.original_price = Number(this.form.price).toFixed(2)
-              if(this.payload)  this.update_production(this.form);
-              else this.add_production(this.form);
+            this.form.imgList.shift('upload-btn')
+            var arrObj = {
+                default: this.paneItem === 'displayImg' ? JSON.stringify(this.form.imgList) : '',
+                video:  this.paneItem === 'displayVideo' ? this.form.video_url : ''
+            }
+            if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
+            this.form.url_arr = JSON.stringify(arrObj);
+            this.form.price = Number(this.form.original_price).toFixed(2)
+            this.form.original_price = Number(this.form.price).toFixed(2)
+            if(this.payload)  this.update_production(this.form);
+            else this.add_production(this.form);
         }
     }
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .ivu-btn{display: inline-block !important;}
 /deep/.ivu-switch-large { width: 75px }
 /deep/ .ivu-switch-large.ivu-switch-checked:after{ left: 55px; }
 /deep/ .ivu-modal{ width: 654px !important }

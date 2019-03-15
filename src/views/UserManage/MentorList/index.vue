@@ -5,7 +5,7 @@
         <FormModal :detail-data="tableRow" :modal-text="true" :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate='rules'/>
 
         <screen :btn-type="btnType" :select-type1="selectType1" :types="2" size-title1="导师总数" :size-num1="total" btn-name="添加导师" :select1="selectList"
-                    @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
+               @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
 
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="mentor"/>
 

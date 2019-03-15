@@ -76,7 +76,7 @@
                     </FormItem>
                 </div>
             </Form>
-            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p >
+            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p>
             <div class="foot-btn">
                 <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>

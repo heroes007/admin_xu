@@ -3,11 +3,16 @@
  */
 import api from './config'
 
-export function get_list(project_id,title) {
-    let id = project_id ? project_id:  +localStorage.getItem('organizationId')
-    return api.post('api/tools_curriculum/get_list',{
+export function get_list(page, keyword) {
+    // let id = project_id ? project_id:  +localStorage.getItem('organizationId')
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('product/curriculum_online/get_list',{
         project_id: id,
-        title:title});
+        // title:title
+        // product_id: 11,
+        page_size: page.page_size,
+        page_num: page.page_num,
+        keyword: keyword});
 }
 
 export function add_curriculum(data) {
@@ -46,9 +51,9 @@ export function update_curriculum(curriculum_id,data) {
         data_center_id:data.data_center_id});
 }
 
-export function delete_curriculum(curriculum_id,project_id) {
-    return api.post('api/tools_curriculum/delete_curriculum',{
-        curriculum_id:curriculum_id});
+export function delete_curriculum(id,project_id) {
+    return api.post('product/curriculum_online/delete',{
+      curriculum_online_id:id});
 }
 
 export function get_detail(curriculum_id) {

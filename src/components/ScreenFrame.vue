@@ -5,7 +5,7 @@
             <div class="back-title">返回</div>
         </div>
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
-            <Option v-for="item in select1" :value="item.organization_id" :key="item.id">{{ item.title }}</Option>
+            <Option v-for="(item,i) in select" :value="item.id " :key="i">{{ item.title }}</Option>
         </Select>
         <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import postData from '../api/postData'
   export default {
     name: "ScreenFrame",
     data() {
@@ -44,7 +45,8 @@
         placehodleInput: '搜索用户名/姓名/手机号',
         iconColor: '#9397AD',
         backgroundColor: 'background: #fff',
-        isSuper: false
+        isSuper: false,
+        select: [{id: '', title:'全部机构'}]
       }
     },
     props:{
@@ -106,9 +108,13 @@
       },
     },
     mounted() {
-      if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
+      // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
       this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
+      postData('components/getOrganization').then((res) => {
+        console.log(res,'res')
+        this.select = [...this.select, ...res.data]
+      })
     },
     methods:{
       // 付费学员返回事件，click触发，选中返回true
