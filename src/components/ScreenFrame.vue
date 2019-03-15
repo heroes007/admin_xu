@@ -5,7 +5,7 @@
             <div class="back-title">返回</div>
         </div>
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
-            <Option v-for="item in select" :value="item.id " :key="item.id">{{ item.title }}</Option>
+            <Option v-for="(item,i) in select" :value="item.id " :key="i">{{ item.title }}</Option>
         </Select>
         <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>

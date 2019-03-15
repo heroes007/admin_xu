@@ -1,19 +1,19 @@
 <template>
     <div >
         <Tabs value="online">
-            <TabPane label="线上课" name="online">
+            <TabPane label="线上课" v-if="item1" name="online">
                 <online/>
             </TabPane>
-            <TabPane label="线下课" name="offline">
+            <TabPane label="线下课" v-if="item2" name="offline">
                 <offline/>
             </TabPane>
-            <TabPane label="作业" name="task">
+            <TabPane label="作业" v-if="item3" name="task">
                 <task/>
             </TabPane>
-            <TabPane label="资料" name="course">
+            <TabPane label="资料" v-if="item4" name="course">
                 <course/>
             </TabPane>
-            <TabPane label="证书" name="houner">
+            <TabPane label="证书" v-if="item5" name="houner">
                 <houner/>
             </TabPane>
         </Tabs>
@@ -32,11 +32,34 @@
     components: { online, offline, task, course, houner},
     data(){
       return{
-
+          item1: false,
+          item2: false,
+          item3: false,
+          item4: false,
+          item5: false,
       }
     },
     methods:{
-
+        setAuth(){
+            if(localStorage.getItem('PERSONALDETAILS')){
+               let d = JSON.parse(localStorage.getItem('PERSONALDETAILS'));
+               this.item1 = true;
+               this.item2 = true;
+               this.item3 = true;
+               this.item4 = true;
+               this.item5 = true;
+               if(d.role_id === 4){
+                    this.item1 = false;
+                    this.item2 = false;
+                    this.item3 = true;
+                    this.item4 = false;
+                    this.item5 = false;
+               }
+            }
+        }
+    },
+    mounted(){
+        this.setAuth()
     }
   }
 </script>

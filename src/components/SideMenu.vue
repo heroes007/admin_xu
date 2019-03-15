@@ -69,7 +69,7 @@
     data() {
       return {
         use_router: true,
-        activeIndex: "",
+        activeIndex: "user-manage",
         menuOpenName: ['6', '2'],
         menuList: [],
         iconImg: '../../static/img/menu/',
@@ -96,7 +96,7 @@
     },
     watch: {
       $route() {
-        this.initMenu();
+        // this.initMenu();
         //  if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
         //    this.selectItem(this.activeIndex)
         //  }
@@ -172,6 +172,7 @@
         if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
         this.name = index
         this.$router.push({name: index});
+        this.activeIndex = index
       },
       initMenu() {
         this.activeIndex = this.$route.name;
@@ -256,6 +257,10 @@
         width: 100% !important;
     }
 
+    /deep/ .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu){
+        background: #292929 !important;
+    }
+
     /deep/ .ivu-menu-item{
         display: flex;
         align-items: center;
@@ -264,8 +269,7 @@
     /deep/ .ivu-menu-item, /deep/ .ivu-menu-submenu-title {
         text-align: left;
         color: #fff;
-        margin: 10px;
-        padding-left: 68px;
+        padding-left: 78px;
     }
 
     /deep/ .ivu-menu-vertical.ivu-menu-light:after {
@@ -273,12 +277,13 @@
     }
 
     /deep/ .ivu-menu-item-active {
-        background-color: #333 !important;
+        background-color: #292929 ;
+
+        .ivu-menu-item{
+            background-color: #292929 ;
+        }
     }
 
-    /deep/ .ivu-menu-item-active:not(.ivu-menu-submenu):after {
-        background-color: #333 !important;
-    }
 
     /deep/ .ivu-poptip-body {
         padding: 0

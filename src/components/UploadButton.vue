@@ -1,6 +1,10 @@
 <template>
     <div contentEditable="false">
-        <div class='el-upload__inner' contentEditable="false">
+        <div v-if="imgtypes">
+            <img class="uploadImg" src="/static/icon/upload.png"  @click='handleStartUploadFile'/>
+            <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
+        </div>
+        <div v-else class='el-upload__inner' contentEditable="false">
             <img v-if="iconType" :src="iconType"  @click='handleStartUploadFile' style="cursor: pointer"/>
             <Button v-else type='primary' @click='handleStartUploadFile'>{{text}} </Button>
             <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
@@ -19,6 +23,10 @@
             }
         },
         props:{
+            imgtypes: {
+                type: Number,
+                default: 0
+            },
             type:{
                 type:String,
                 default:'*'
@@ -98,3 +106,11 @@
         }
     }
 </script>
+<style scoped>
+.uploadImg{
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+}
+</style>
+

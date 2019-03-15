@@ -16,13 +16,18 @@
                                     </Select>
                                 </FormItem>
                                 <FormItem label="科室">
-                                    <Select v-model="form.subject_id" placeholder="请选择学科">
+                                    <Select v-model="form.department_id" placeholder="请选择科室">
                                         <Option v-for="item in detpysList" :key="item.code" :label="item.name" :value="item.code"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="年级">
                                     <Select v-model="form.grade_id" placeholder="请选择学段">
                                         <Option v-for="item in gradesList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem label="解锁方式">
+                                    <Select v-model="form.unlock_type" placeholder="请选择解锁方式">
+                                        <Option v-for="item in clearList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="课程状态">
@@ -182,6 +187,7 @@
           curriculum_roles: [0],
           pre_curriculum_ids: [],
           data_center_id: 0,
+          unlock_type: 0
         },
         newData: {
           show: false,
@@ -210,13 +216,27 @@
         resourse2: '',
         teacherList: [],
         detpysList: [],
-        gradesList: []
-
+        gradesList: [],
+        clearList: [
+          {
+            id: 0,
+            name: '不限'
+          },
+          {
+            id: 2,
+            name: '按章节解锁'
+          },
+          {
+            id: 3,
+            name: '按视频解锁'
+          }
+        ]
       }
     },
     mounted() {
       this.stateName = this.payload.state
       this.getListTeacher()
+      this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
 
       // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
@@ -450,15 +470,13 @@
       },
       getListTeacher() {
         postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
-          console.log(res,'teacher')
           this.teacherList = res.data
         })
         postData('components/getDepts').then((res) => {
-          console.log(res,'teacher')
+          console.log(res.data,'...')
           this.detpysList = res.data
         })
         postData('components/getGrades').then((res) => {
-          console.log(res,'teacher')
           this.gradesList = res.data
         })
       }
