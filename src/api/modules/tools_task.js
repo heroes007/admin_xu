@@ -7,8 +7,9 @@ import api from './config'
 //     return api.post('api/tools_task/get_category_list',{project_id:project_id});
 // }
 
-export function get_category_list(project_id) {
-    return api.post('/product/homework/get_list',{product_id:project_id,page_size:10,page_num:1});
+export function get_category_list() {
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('/product/homework/get_list',{product_id:id,page_size:10,page_num:1});
 }
 
 export function create_category(params) {
@@ -125,9 +126,29 @@ export function get_student_work_list(project_id,user_id) {
 }
 
 export function get_curriculumlist_online(params) {
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
     return api.post('/product/curriculum_online/get_list',{
-        product_id:params.product_id,
+        product_id:id,
         page_size:998,
         page_num:1,
     });
+}
+
+export function get_read_over(params) {
+    let id = JSON.parse(localStorage.getItem('MarkingHomework')).id
+    return api.post('/product/homework/student_homework_get_list',{
+        homework_id: id,
+        search: "",
+        page_size: 3,
+        page_num: 1,
+    });
+}
+
+export function save_datalist(params) {
+    return api.post('/product/data/add',{
+        title: params.name,
+        curriculum_id: params.subject_id,
+        attachment_url: params.download_url,
+        state: 1
+    })
 }

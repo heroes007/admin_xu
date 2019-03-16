@@ -30,18 +30,18 @@ const actions = {
     },
     get_role_list({ commit }) {
         if (!state.is_loading_list && state.role_list.length === 0) {
-            get_list().then((res) => {
-                if (res.data.res_code === 1) {
-                    res.data.msg.unshift({ role_id: 0, role_name: '普通用户', category_id: 0, category_name: '' });
+            // get_list().then((res) => {
+            //     if (res.data.res_code === 1) {
+            //         res.data.msg.unshift({ role_id: 0, role_name: '普通用户', category_id: 0, category_name: '' });
 
-                    var roleList = res.data.msg;
+            //         var roleList = res.data.msg;
 
-                    commit(types.ROLE_LIST_LOADED, roleList);
-                }
-                else {
-                    commit(types.ROLE_LIST_LOADED, []);
-                }
-            });
+            //         commit(types.ROLE_LIST_LOADED, roleList);
+            //     }
+            //     else {
+            //         commit(types.ROLE_LIST_LOADED, []);
+            //     }
+            // });
         }
     }
 }

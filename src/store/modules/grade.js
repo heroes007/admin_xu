@@ -14,13 +14,13 @@ const actions = {
     get_grade_list({ commit }) {
 
         if (!state.is_loading_list && state.grade_list.length === 0) {
-            commit(types.GRADE_LIST_LOADING)
-            get_list().then(function (res) {
-                if (res.data.res_code === 1) {
-                    // res.data.msg.unshift({id:0,name:'全学段'});
-                    commit(types.GRADE_LIST_LOADED, res.data.msg);
-                }
-            });
+            // commit(types.GRADE_LIST_LOADING)
+            // get_list().then(function (res) {
+            //     if (res.data.res_code === 1) {
+            //         // res.data.msg.unshift({id:0,name:'全学段'});
+            //         commit(types.GRADE_LIST_LOADED, res.data.msg);
+            //     }
+            // });
         }
 
     }

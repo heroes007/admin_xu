@@ -115,12 +115,13 @@
                 </Row>
             </Modal>
         </Row>
-        <Table :columns="columns1" :data="list">
+        <!-- <Table :columns="columns1" :data="list">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="text" size="small" class="btn-text" @click="editLb(row)">编辑</Button>
                 <Button type="text" size="small" class="btn-text" @click="deleteLb(row)">删除</Button>
             </template>
-        </Table>
+        </Table> -->
+        <Tables :is-serial=true @operation1="batchDownload" @operation2="edit"   @table-swtich="swtichChange" :column="columns1" :table-data="list" />
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page @on-page-size-change="handleSizeChange"  @on-change="handleCurrentChange" :current="curPage"
                 :page-size-opts="[10, 20, 50, 100]" :page-size="pageSize" show-sizer :total="total">
@@ -132,12 +133,13 @@
     import Header from '../../components/Header'
     import UploadBtn from '../../components/UploadButton'
     import {Config} from '../../config/base'
-    import { get_detail, update_lb, add_lb, delete_lb } from '../../api/modules/tools_lb'
+    import { get_detail, update_lb, add_lb, delete_lb, get_all_bl } from '../../api/modules/tools_lb'
     import screen from '../../components/ScreenFrame'
+    import Tables from '../../components/tables.vue'
     
 
     export default{
-        components: { 'header-component': Header, 'btn-upload': UploadBtn ,screen},
+        components: { 'header-component': Header, 'btn-upload': UploadBtn ,screen,Tables},
         data(){
             return {
                 positionList:[
@@ -176,9 +178,7 @@
                 isEdit: false,
                 noSelect: true,
                 loadingInstance: null,
-                columns1:[{
-                    title:'序号'
-                },
+                columns1:[
                   {
                     title: '广告名称',
                     key: 'name'
@@ -193,13 +193,17 @@
                   },
                   {
                       title:'创建人',
-
+                      key:'man'
                   },
                   {
                     title: '操作',
-                    slot: 'action'
+                    width: 420,
+                    slot: 'operation',
+                    operation_state: true,
+                    operation: [['编辑','operation1'], ['删除','operation2']],
                   },
                 ],
+                list:[],
                 adutplace:'首页广告'
             }
         },
@@ -309,6 +313,10 @@
         },
         mounted() {
             if (this.list.length === 0)  this.$store.dispatch('get_lb_list', {curPage: 1, pageSize: 10})
+            get_all_bl().then(res => {
+                console.log(res);
+                this.list = res.data.data.list
+            })
         },
         computed: {
             list(){

@@ -73,12 +73,11 @@ const actions = {
             commit(types.TASK_SHOW_LOADING);
             create_category(params).then(res => {
                 if (res.data.res_code === 1) {
-                   
                     commit(types.TASK_CATEGORY_ADDED, {
                         result: res.data.msg,
                         data: params
                     });
-                    alert("添加成功")
+                    // window.location.reload()
                 }else{
                     alert(res.msg)
                 }
@@ -92,6 +91,7 @@ const actions = {
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CATEGORY_EDITED, params);
                     // params._fn();
+                    window.location.reload()
                 }
             })
         },
