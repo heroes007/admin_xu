@@ -17,7 +17,7 @@
                                 </FormItem>
                                 <FormItem label="科室">
                                     <Select v-model="form.department_id" placeholder="请选择科室">
-                                        <Option v-for="item in detpysList" :key="item.code" :label="item.name" :value="item.code"></Option>
+                                        <Option v-for="item in detpysList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="年级">
@@ -376,6 +376,7 @@
                 page: this.payload.page,
                 keyword: this.payload.keyword
             })
+            this.addCourseDialogVisible = false
         }
         else {
             console.log(this.form,'forms')
