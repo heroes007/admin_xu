@@ -32,7 +32,7 @@ export function doOfflineCurriculumTypeFormat(val) {
       return '实践';
   }
 }
-export function doSortFormatCatalogList(list) {
+export function doSortFormatCatalogList(list)   {
   if (list.length === 0)
     return [];
 

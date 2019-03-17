@@ -177,23 +177,35 @@
       // }
     },
     methods: {
+        submit(){
+            this.initData()
+        },
       inputChange(val){
         this.keyword = val
         this.initData()
       },
       handleClick(val){
-        this.handleSelModal(ADD_COURSE, {state: 1});
+        this.handleSelModal(ADD_COURSE, {
+            page: {page_size: this.pageSize, page_num: this.current},
+            keyword: this.keyword,
+            state: 1
+        });
       },
       editChapterHandler(index) {
         this.$router.push({
           name: 'online-course-chapter',
           params: {
-            id: this.dataList[index].curriculum_id
+            id: this.dataList[index].id
           }
         });
       },
       editCourseHandler(index) {
-        this.handleSelModal(ADD_COURSE, {state: 0});
+        this.handleSelModal(ADD_COURSE, {
+              page: {page_size: this.pageSize, page_num: this.current},
+              keyword: this.keyword,
+              state: 0,
+              index
+        });
       },
       reRenderListHandler(v) {
         if (this.$store.state.project.project_list.length > 0) {

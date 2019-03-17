@@ -1,7 +1,7 @@
 <template>
     <div class='manage-online-course-chapter'>
         <!--<header-component :show-add='false'/>-->
-        <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle"/>
+        <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle" :btnType="true"/>
         <!--<Row class='course-name' type='flex' justify='space-between' align='middle'>-->
         <!--<div><h2>课程：{{curriculumName}}</h2></div>-->
         <!--<div><Button type='text' @click='backClickHandler'>返回</Button></div>-->
@@ -189,11 +189,14 @@
         return '';
       },
       chapterList() {
-        var curriculumList = this.$store.state.online_curriculum.online_curriculum_list;
+          var curriculumList = this.$store.state.online_curriculum.online_curriculum_list;
         if (Array.isArray(curriculumList) && curriculumList.length > 0) {
           var curriculumId = this.$route.params.id;
           for (var i = 0; i < curriculumList.length; i++) {
-            if (curriculumList[i].curriculum_id == curriculumId) return doSortFormatCatalogList(curriculumList[i].chapterList);
+            if (curriculumList[i].curriculum_id == curriculumId) {
+                console.log(doSortFormatCatalogList(curriculumList[i].chapterList),'logggggggggg');
+                return doSortFormatCatalogList(curriculumList[i].chapterList);
+            }
           }
         }
         return [];
@@ -326,7 +329,7 @@
       initChapter() {
         this.newChapterData.showAddChapter = false;
         this.dirty = false;
-        if (this.chapterList.length === 0) this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_id: this.$route.params.id})
+        if (this.chapterList.length === 0) this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: parseInt(this.$route.params.id)})
         else this.setChapterShowState();
         this.isInited = true;
       },
@@ -383,6 +386,7 @@
         }
       },
       getLists() {
+          console.log(this.$store.state.online_curriculum.online_curriculum_list,'this.$store.state.online_curriculum.online_curriculum_list')
         if (this.$store.state.online_curriculum.online_curriculum_list.length === 0) this.$store.dispatch('get_online_curriculum_list', {project_id: this.$store.state.project.select_project_id});
         else this.initChapter();
         this.$store.dispatch('get_role_list');

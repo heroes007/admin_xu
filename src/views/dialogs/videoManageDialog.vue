@@ -207,6 +207,7 @@
         this.videoManageDialog = false;
       },
       handleSubmit() {
+          this.form.duration = parseInt(this.form.duration)
         if (this.form.video_roles.length === 0) {
           this.$Modal.info({
             title: '提示',

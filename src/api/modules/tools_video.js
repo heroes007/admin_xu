@@ -4,18 +4,22 @@
 import api from './config'
 
 export function add_video(data) {
-    return api.post('api/tools_video/add_video',{
-        title:data.title,
-        duration:data.duration,
-        video_roles:data.video_roles,
-        dir:data.dir,
-        filename:data.filename,
-        video_url:data.video_url,
-        format:data.format,
-        curriculum_id:data.curriculum_id,
-        group_orderby:data.group_orderby,
-        group_name:data.group_name,
-        orderby:data.orderby
+    return api.post('product/curriculum_online_catalog/add_video',{
+        // title:data.title,
+        // duration:data.duration,
+        // video_roles:data.video_roles,
+        // dir:data.dir,
+        // filename:data.filename,
+        // video_url:data.video_url,
+        // format:data.format,
+        // curriculum_id:data.curriculum_id,
+        // group_orderby:data.group_orderby,
+        // group_name:data.group_name,
+        // orderby:data.orderby
+           curriculum_id: data.curriculum_id,
+            video_url: data.video_url,
+            duration: data.duration,
+            group_name: data.group_name,
     });
 }
 
