@@ -202,7 +202,7 @@
         localStorage.setItem('MarkingHomework',JSON.stringify(row))
       },
       editHandler(index, row) {
-        console.log(row);
+        console.log(row,'row');
         
         this.show = true;
         this.modalTitle = '编辑作业';

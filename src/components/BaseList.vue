@@ -334,13 +334,14 @@
                   }
                 }),
                 h('div',{style:{display:'flex',justifyContent:'center',flexWrap: 'nowrap',alignItems: 'center', color: '#4098FF',marginTop: '10px' }},[
-                  h('Icon',{props: { type: 'md-add', size: 30}}),
+                  h('Icon',{props: { type: 'md-add', size: 30},
+                  on: {
+                        click: () => {  this.$emit('add-off-line-courses', params.row) }
+                  }}),
                   h('span',{
-                          on: {
-                              click: () => {
-                                  console.log('添加')
-                              }
-                          }
+                      on: {
+                          click: () => {  this.$emit('add-off-line-courses', params.row) }
+                      }
                     },'添加课程')
                  ])
               ]);
@@ -446,7 +447,7 @@
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {
               if (this.columnFormatter[i].doFormat) {
-                if (this.columnFormatter[i].doFormat(row[propname]).length > 0) return this.columnFormatter[i].doFormat(row[propname]);
+                if (this.columnFormatter[i].doFormat(row[propname])&&this.columnFormatter[i].doFormat(row[propname]).length > 0) return this.columnFormatter[i].doFormat(row[propname]);
               } else {
                 for (var j = 0; j < this.columnFormatterData[this.columnFormatter[i].dataIndex].length; j++) {
                   if (row[propname] instanceof Array) {

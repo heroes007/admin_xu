@@ -1,10 +1,12 @@
 <template>
     <div class='manage-production-view'>
-        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="管理总数" :size-num1="total" btn-name="添加培训" :select1="selectList" :select2="selectList2"
+        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="培训总数" :size-num1="total" btn-name="添加培训" :select1="selectList" :select2="selectList2"
                 @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
-        <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
-             <Card style="min-width:350px;min-height:127px;margin:20px;" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
-                  <Row>
+          <div class="lecturer-list">
+           <Row :gutter="20">
+            <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
+                <div class="manage-production-col">
+                    <Row>
                     <Col span="2" class="al-left cad-top-left" >
                      <p>ID:</p>
                     </Col>
@@ -24,8 +26,10 @@
                      <Col span="4" class="al-left cad-btn-relprice">¥{{t.original_price}}</Col>
                      <Col span="16" class="al-right cad-btn-people">{{t.join_number}}人报名</Col>
                   </Row>
-             </Card>
+                </div>
+            </Col>
         </Row>
+       </div>
          <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -114,6 +118,14 @@
   };
 </script>
 <style lang="scss" scoped>
+  .lecturer-list{
+      margin: 20px;
+  }
+  .manage-production-col{
+    background: #fff;
+    margin-bottom: 20px;
+    padding: 15px;
+  }
    .card-main-list0{
      color: #9397AD;
    }

@@ -4,49 +4,51 @@
             <img class="card-img" src="../../../static/icon/addIcon.png" alt="">
             <div class="card-add" @click="handleTabAdd">添加主题</div>
         </Card>
-        <Card class="card" v-for="(item ,index) in dataList" :key="index">
+        <Card class="card" v-for="(t ,index) in list" :key="index">
             <div class="card-row">
                 <div class="card-title-state">开课中</div>
                 <div class="card-title-num">已开课<span style="color: #4098FF;margin: 0 5px;">4</span>期</div>
             </div>
             <div class="mt14">
-                <div class="card-content-title">这是一个线下课主题名称XXXXXXXXXXX</div>
+                <div class="card-content-title">{{t.title}}</div>
                 <div class="card-content-details">
-                    以提升基层全科医师临床能力为目的，通过对医共体全科医生进行理论、临床实践技能的培训，进一步提高全科医生的临床实践能力水平，培养一支能看病的全科医生团队
+                   {{t.description}}
                 </div>
             </div>
             <div class="card-row mt20">
-                <div class="card-end-time">创建时间：{{time}}</div>
-                <Button class="card-end-btn r0" type="text" ghost @click="handleEdit(item)">编辑</Button>
-                <Button class="card-end-btn r48" type="text" ghost @click="handleAdd(item)">查看</Button>
+                <div class="card-end-time">创建时间：{{t.create_time}}</div>
+                <Button class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
+                <Button class="card-end-btn r48" type="text" ghost @click="handleSee(t)">查看</Button>
             </div>
         </Card>
 
-        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @handleSubmit="handleSubmit"/>
+        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit"/>
     </div>
 </template>
 
 <script>
   import formModal from '../../components/FormModal'
-
-  export default {
+  import postData from '../../api/postData'
+  import postMixins from '../mixins/postMixins.js'
+  export default { 
     name: "ManageOfflineList",
+    mixins: [postMixins],
     data() {
       return {
-        dataList: [1, 2, 3, 4, 5, 6],
-        time: '2019/01/02',
+        list: [],
         tableRow: {},
         formList: [
-          { type: 'input', name: '主题名称',  field: 'realname'},
-          { type: 'textarea', name: '主题描述',  field: 'introduce' }
+          { type: 'input', name: '主题名称',  field: 'title'},
+          { type: 'textarea', name: '主题描述',  field: 'description' }
         ],
         modalTitle: '',
         rules:{
-          realname: [{ required: true, message: '请输入主题名称', trigger: 'blur' } ],
-          introduce: [{ required: true, message: '请输入主题描述', trigger: 'blur' } ]
+          title: [{ required: true, message: '请输入主题名称', trigger: 'blur' } ],
+          description: [{ required: true, message: '请输入主题描述', trigger: 'blur' } ]
         },
         show: false,
-        detailData:{}
+        detailData:{},
+        product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id
       }
     },
     components: {formModal},
@@ -58,22 +60,37 @@
       handleEdit(item) {
         this.modalTitle = '编辑主题'
         this.detailData = {
-          realname: '这是一个主题名称',
-          introduce: '这是一个主题描述'
+          subject_id: item.id,
+          title: item.title,
+          description: item.description
         }
         this.show = true
       },
-      handleAdd(item) {
+      handleSee(item) {
         this.$router.push('open-product/offline-course')
+        localStorage.setItem('OffLineClassTheme',JSON.stringify(item))
       },
-      handleSubmit() {
-
+      handleSubmit(v) {
+           let d = { ...v , product_id: this.product_id}
+         if(this.modalTitle === '添加主题') this.fromAddAndEdit('/product/curriculum_offline_subject/add',d)
+         else this.fromAddAndEdit('/product/curriculum_offline_subject/change',v)
       },
       closeModal() {
         this.detailData = {}
         this.show = false
+      },
+      getList(){
+          let d = {
+              product_id: this.product_id
+          }
+          postData('product/curriculum_offline/subject_get_list',d).then((res) => {
+              this.list = res.data;
+          })
       }
-    }
+    },
+    mounted() {
+       this.getList()
+    },
   }
 </script>
 

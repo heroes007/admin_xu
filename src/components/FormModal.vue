@@ -47,8 +47,8 @@
                             <span slot="open">{{t.switchList[0]}}</span>
                             <span slot="close">{{t.switchList[1]}}</span>
                         </Switch>
-                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)" format="yyyy/MM/dd HH:mm" v-model="formItem[handleField(t,1)]"
-                                    :placeholder="handlePlaceholder(t)" ></DatePicker>
+                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)" :format="handleDateType(t)" v-model="formItem[handleField(t,1)]"
+                                  :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload">
@@ -195,6 +195,7 @@
         this.ModalState(_new)
         this.$nextTick(() => {
           this.formItem = this.detailData
+          console.log(this.formItem,'gg')
           if(this.formItem.hasOwnProperty('img_url')){
             this.img_url = this.formItem.img_url
           }else this.img_url = ''
@@ -212,6 +213,9 @@
       }
     },
     methods: {
+      handleDateType(t){
+        return t.type.includes('time') ? 'yyyy/MM/dd HH:mm' : 'yyyy/MM/dd'
+      },
       overImg(val){
         console.log(val);
       },
@@ -263,7 +267,7 @@
       handleFormData(){
         if(this.uploadFlie) this.formItem.img_url = this.img_url
         if(this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].outerHTML
-        if(this.downList) this.formItem.downList = this.downList
+        if(this.downList&&this.downList.length>0) this.formItem.downList = this.downList
         if(this.formItem.hasOwnProperty('password')){
           if(this.copyFormItem.password === this.formItem.password){
             delete this.formItem.password

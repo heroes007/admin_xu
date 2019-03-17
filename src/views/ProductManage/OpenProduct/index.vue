@@ -1,6 +1,6 @@
 <template>
     <div >
-        <Tabs value="online">
+        <Tabs @on-click="tabs" v-model="online">
             <TabPane label="线上课" v-if="item1" name="online">
                 <online/>
             </TabPane>
@@ -32,6 +32,7 @@
     components: { online, offline, task, course, houner},
     data(){
       return{
+          online: '',
           item1: false,
           item2: false,
           item3: false,
@@ -40,6 +41,9 @@
       }
     },
     methods:{
+        tabs(name){
+            localStorage.setItem('onlinePane',name)
+        },
         setAuth(){
             if(localStorage.getItem('PERSONALDETAILS')){
                let d = JSON.parse(localStorage.getItem('PERSONALDETAILS'));
@@ -54,12 +58,16 @@
                     this.item3 = true;
                     this.item4 = false;
                     this.item5 = false;
+                    this.online = localStorage.getItem('onlinePane')
                }
             }
         }
     },
     mounted(){
         this.setAuth()
+        if(localStorage.getItem('onlinePane')){
+            this.online = localStorage.getItem('onlinePane')
+        }
     }
   }
 </script>

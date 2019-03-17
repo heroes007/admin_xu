@@ -1,12 +1,13 @@
 <template>
     <div class='manage-offline-course'>
+        <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
         <LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>
         <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
-        <screen :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
+        <screen :btn-type="true" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
                    @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
-                   :header-data='dataHeader' :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :is-stripe='false'></data-list>
-        <save-order v-if='dirty' @saveOrder='saveOrderHandler'/>
+                @add-off-line-courses="addOffLineCourses"   :header-data='dataHeader' :is-stripe='false'></data-list>
+         <Page :current="page_conut" :total="total" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
 
@@ -21,12 +22,15 @@
   import { mapActions, mapState } from 'vuex'
   import { Config } from '../../config/base'
   import LookTerm from './LookTerm'
-
+  import postData from '../../api/postData.js'
+  import { search_user } from '../../api/modules/tools_user';
+  import FormModal from '../../components/FormModal.vue'
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm },
+    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm, FormModal },
     data() {
       return {
+        show: false,
         gradeList: [{
           id: 1,
           name: '小学'
@@ -42,38 +46,66 @@
         courseNums: 12,
         showModal: false,
         detailData: {},
-        title: '线下课主题名称XXXXXXXXXX'
+        subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+        title: JSON.parse(localStorage.getItem('OffLineClassTheme')).title,
+        current: 1,
+        total: null,
+        pageSize: 12,
+        page_num: 1,
+        tableRow: {},
+        modalTitle: '',
+        show: false,
+        formList: [
+            { type: 'input', name: '课程名称',  field: 'title'},
+            { type: 'date', name: '开课时间',  field: 'start_time' },
+            { type: 'date', name: '结课时间',  field: 'end_time' },
+            { type: 'select', name: '课程讲师', field: 'teacher_id' ,
+                selectList: [], selectField: [ 'id','name' ]
+            },
+            { type: 'select', name: '课程类型', field: 'type' ,
+                selectList: [{id: 1, name: '讲座'},{id: 2, name: '实践'}], selectField: [ 'id','name' ]
+            }
+        ],
+        rules:{
+            title: [{ required: true, message: '请输入课程名称', trigger: 'blur' } ],
+            start_time: [{ required: true, message: '请输入开课时间'} ],
+            end_time: [{ required: true, message: '请输入结课时间'}],
+            teacher_id: [{required: true, message: '请选择课程讲师'}],
+            type: [{required: true, message: '请选择课程类型'}],
+        },
+        term_row: null,
       }
     },
     computed: {
       ...mapState({
-        offline_curriculum_detail1: state => state.offline_curriculum.offline_curriculum_detail
+        offline_curriculum_detail1: state => state.offline_curriculum.offline_curriculum_detail,
+        page_conut: state => state.offline_curriculum.page_conut,
       }),
       dataHeader() {
         return [
           {
             sort: true,
             label: '序号',
-            width: 90
+            width: 60
           }, {
-            prop: 'name',
+            prop: 'title',
             label: '学期名称',
             align: 'left',
             minWidth: 100
           },
           {
-            prop: 'curriculum_count',
+            prop: 'curriculum_num',
             label: '课程数量',
             width: 100
           },
           {
-            // sort: true,
+            prop: 'student_num',
             label: '参加人数',
-            width: 200
+            width: 100
           }, {
             prop: '',
             label: '开课日期',
-            width: 200,
+            width: 320,
             mixColumn: true,
             mixFunc: (function (data) {
               var open_date = doTimeFormat(data.start_time);
@@ -82,15 +114,9 @@
             })
           },
           {
-            prop: '',
+            prop: 'register_end_time',
             label: '报名截止日期',
             width: 150,
-            mixColumn: true,
-            mixFunc: (function (data) {
-              var open_date = doTimeFormat(data.start_time);
-              var end_date = doTimeFormat(data.end_time);
-              return  end_date;
-            })
           },
           // {
           //   prop: 'create_time',
@@ -99,7 +125,7 @@
           // },
           {
             label: '操作',
-            width: 650,
+            width: 350,
             groupBtn: [
               //   {
               //   text: '查看',
@@ -150,27 +176,30 @@
             childHeader: [{
               prop: 'title',
               label: '课程名称',
-            }, {
-              prop: 'type',
+            },
+             {
+              prop: 'type_text',
               label: '类型',
               width: 100
-            }, {
-              prop: '',
-              label: '开课日期范围',
-              width: 300,
-              mixColumn: true,
-              mixFunc: (function (data) {
-                var open_date = doDateFormat(data.start_time);
-                var end_date = doDateFormat(data.end_time);
-                return open_date + '至' + end_date;
-              })
-            }, {
+            },
+             {
+              prop: 'start_time',
+              label: '开课时间',
+              width: 150
+            },
+             {
+              prop: 'end_time',
+              label: '结课时间',
+              width: 150
+            },
+             {
               prop: 'teacher_name',
               label: '导师',
               width: 100
-            }, {
+            },
+             {
               label: '操作',
-              width: 350,
+              width: 260,
               groupBtn: [{
                 text: '编辑',
                 param: 'editCourse'
@@ -180,61 +209,47 @@
                 // hoverShow: true,
                 // isIcon: true
               }]
-            }],
-            listColumnFormatter: [{
-              columnName: 'type',
-              doFormat: doOfflineCurriculumTypeFormat
             }]
           }
         ]
       },
-      listColumnFormatter() {
-        return [{
-          columnName: 'create_time',
-          doFormat: doTimeFormat
-        }, {
-          columnName: 'grade',
-          dataIndex: 0,
-          dataProp: 'id',
-          dataValue: 'name'
-        }, {
-          columnName: 'subject',
-          dataIndex: 1,
-          dataProp: 'id',
-          dataValue: 'name'
-        }]
-      },
-      listColumnFormatterData() {
-        return [this.gradeList, this.subjectList];
-      },
       dataList() {
         return this.$store.state.offline_curriculum.offline_term_list;
       },
-      // isLoadingCurriculum() {
-      //   return this.$store.state.offline_curriculum.showLoading;
-      // }
-    },
-    watch: {
-      // isLoadingCurriculum(val) {
-      //   if (val) {
-      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-      //     setTimeout(() => {
-      //       this.loadingInstance.close()
-      //     }, Config.base_timeout);
-      //   } else {
-      //     if (this.loadingInstance) this.loadingInstance.close()
-      //     this.dirty = false
-      //   }
-      // }
     },
     methods: {
-      ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail', 'get_grade_list', 'get_city_list' ]),
+      ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail']),
       handleBack() {
         this.$router.replace({name: 'open-product'})
       },
-      handleClick() {
-
+      getLecturerList(){
+        postData('/components/getTeachers', {organization_id: +localStorage.getItem('organizationId')}).then((res) => {
+          if(res.res_code === 1)  this.formList[3].selectList = res.data
+        })
       },
+      closeModal2(){
+        this.show = false
+      },
+      addOffLineCourses(row, type, index){
+        this.term_row = row
+        this.modalTitle = type ? '编辑课程' : '添加课程'
+        this.tableRow = type ? this.$config.copy(row.childData[index],{}) : {}
+        this.show = true
+      },
+      handleSubmit(v){
+        // curriculum_underline_term_id
+        console.log(this.tableRow,'this.this.tableRow')
+        let d1 = this.modalTitle === '添加课程' ? { term_underline_id: this.term_row.id} : {curriculum_underline_term_id: this.tableRow.id}
+        let url = this.modalTitle === '添加课程' ? '/product/curriculum_offline/term_curriculum_add' : '/product/curriculum_offline/term_curriculum_change'
+        postData(url,{...d1,...v}).then((res) => {
+          if(res.res_code === 1){
+            this.$Message.warning(res.msg);
+            this.rowExpandHandler(this.term_row)
+            this.closeModal2()
+          }
+        })
+      },
+      handleClick() {},
       inputChange(val){
         console.log(val)
       },
@@ -247,7 +262,11 @@
       },
       //复制
       copyItem(index, row){
-        console.log(row,index,'copy')
+       postData('/product/curriculum_offline/term_copy',{...this.dataList[index], term_underline_id:row.id}).then((res) => {
+         if(res.res_code === 1){
+           this.getList()
+         }
+       })
       },
       sendOfflineCourseHandler(index, row) {
         this.handleSelModal(types.SEND_OFFLINE_COURSE, {row: row});
@@ -263,12 +282,16 @@
       editChapterHandler(index) {
         this.$router.push({ name: 'online-course-chapter', params: { id: '1' } })
       },
-      editCourseHandler(param, index, row) {},
+      editCourseHandler(param, index, row) {
+
+      },
       editOfflineSemester(index, row) {
-        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 2, row })
+        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 2, row,page_size: this.pageSize,
+            page_num: this.page_num })
       },
       addOfflineSemesterHandler() {
-        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 1 })
+        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 1, page_size: this.pageSize,
+            page_num: this.page_num,})
       },
       moveUpHandler(index) {
         this.dirty = true;
@@ -295,7 +318,6 @@
         this.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 1, row })
       },
       childBtnClickHandler(param, index, row) {
-        console.log(param)
         var vm = this;
         if (param == 'deleteCourse') {
           this.$Modal.confirm({
@@ -306,49 +328,34 @@
             },
           });
         } else {
-          this.get_offline_curriculum_detail({ index, row,
-            callback() {
-              vm.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row, index, data: vm.offline_curriculum_detail1 });
-            }
-          });
+         this.addOffLineCourses(row , 1 , index)
+        }
+      },
+      setData(){
+        return {
+           subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+           page_size: this.pageSize,
+           page_num: this.page_num,
         }
       },
       rowExpandHandler(row) {
-        this.$store.dispatch('get_offline_curriculum_list', { offline_term_id: row.id })
+        this.$store.dispatch('get_offline_curriculum_list', { page_size: this.pageSize,
+           page_num: this.page_num,term_underline_id: row.id})
       },
       manageSignupHandler(index, row) {
         this.$router.replace({ name: 'offline-course-manage-signup', params: { id: row.id } })
+      },
+      pageList(val){
+        this.page_num = val;
+        this.getList()
+      },
+      getList(){
+        this.$store.dispatch('get_offline_term_list', this.setData());
       }
     },
     mounted() {
-      this.get_city_list()
-      var vm = this;
-      if (this.$store.state.project.project_list.length === 0) {
-        this.$store.dispatch('get_project_list', {
-          callback(v) {
-            if (vm.dataList.length === 0) {
-              vm.$store.dispatch('get_offline_term_list', { project_id: v, last_count: 0 });
-              // vm.$store.dispatch('save_static_offline_project_id', v);
-            }
-          }
-        });
-        return;
-      } else {
-        this.$store.dispatch('get_offline_term_list', { project_id: this.$store.state.project.select_project_id, last_count: 0 });
-      }
-      // debugger;
-      // if (this.$store.state.project.offline_project_id != this.$store.state.project.select_project_id) {
-      // this.$store.dispatch('get_offline_term_list', {
-      //     project_id: this.$store.state.project.select_project_id,
-      //     last_count: 0
-      // });
-      // }
-      if (this.$store.state.grade.grade_list.length == 0) {
-        this.$store.dispatch('get_grade_list');
-      }
-      if (this.$store.state.subject.subject_list.length == 0) {
-        this.$store.dispatch('get_subject_list');
-      }
+     this.getList()
+     this.getLecturerList()
     }
   }
 </script>
