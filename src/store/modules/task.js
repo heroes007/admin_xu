@@ -111,14 +111,14 @@ const actions = {
         }, params) {
             commit(types.TASK_SHOW_LOADING);
             catch_cid = params.task_category_id
-            get_tasklist_by_cid(params.task_category_id).then(res => {
-                if (res.data.res_code === 1) {
-                    commit(types.TASK_LIST_LOADED, {
-                        task_category_id: params.task_category_id,
-                        result: res.data.msg
-                    });
-                }
-            })
+            // get_tasklist_by_cid(params.task_category_id).then(res => {
+            //     if (res.data.res_code === 1) {
+            //         commit(types.TASK_LIST_LOADED, {
+            //             task_category_id: params.task_category_id,
+            //             result: res.data.msg
+            //         });
+            //     }
+            // })
         },
         add_task({
             commit

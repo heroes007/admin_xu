@@ -96,7 +96,7 @@
     },
     watch: {
       $route() {
-        // this.initMenu();
+        this.initMenu();
         //  if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
         //    this.selectItem(this.activeIndex)
         //  }
@@ -172,10 +172,10 @@
         if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
         this.name = index
         this.$router.push({name: index});
-        this.activeIndex = index
+        // this.activeIndex = index
       },
       initMenu() {
-        this.activeIndex = this.$route.name;
+        // this.activeIndex = this.$route.name;
       },
       logout() {
         api.post('user/logout', {from: 'web'}).then((res) => {

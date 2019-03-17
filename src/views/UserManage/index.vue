@@ -1,5 +1,5 @@
 <template>
-    <Tabs value="tabName" @on-click="tabs" class="tab-name">
+    <Tabs v-model="tabName" @on-click="tabs" class="tab-name">
         <TabPane v-if='permissionCode1' label="管理列表" name="item1"><ManagementList v-if="pane1" :permission-item1="permissionItem1" /></TabPane>
         <TabPane v-if='permissionCode2' label="机构列表" name="item2"><ListInstitutions v-if="pane2" :permission-item2="permissionItem2" /></TabPane>
         <TabPane v-if='permissionCode3' label="导师列表" name="item3"><MentorList v-if="pane3" :permission-item3="permissionItem3" /></TabPane>
@@ -45,6 +45,7 @@
         this['permissionItem' + n] = t
       },
       tabs(v){
+        localStorage.setItem('UserManagePane',v)
         let n = +v.replace(/[^0-9]/ig,"");
         if(this[ 'permissionCode' + n ]) this['pane' + n] = true
       },
@@ -56,13 +57,17 @@
             this.setAuth(n,t)
             if(k === 0) this['pane' + n] = true
           }); 
-        }          
+        }
+        if(localStorage.getItem('UserManagePane')){
+          this.tabName = localStorage.getItem('UserManagePane')   
+          this.tabs(this.tabName)
+        }     
       }
     },
     mounted(){
        this.$nextTick(() => {
         this.handleAuth()
-       })
+       })  
     }
   }
 </script>
