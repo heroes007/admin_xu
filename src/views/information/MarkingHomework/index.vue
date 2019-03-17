@@ -12,6 +12,7 @@
   import screen from '../../../components/ScreenFrame';
   import * as types from '../../dialogs/types';
   import { Dialog } from '../../dialogs/index';
+  import {get_read_over} from '../../../api/modules/tools_task';
 
   export default {
     mixins: [Dialog],
@@ -57,26 +58,26 @@
                 operation: [['查看','operation1',true], ['批阅','operation2']],
             }],
             list: [
-                {
-                    "user_id": 13186,
-                    "nickname": "150****1134",
-                    sex: "呼吸内科",
-                    "realname": "王晓东",
-                    "phone": "住培一年级",
-                    "from_domain": '正常',
-                    "create_time": "2019/01/12 21:34",
-                     state: 0
-                },
-                 {
-                    "user_id": 13186,
-                    "nickname": "150****1134",
-                    sex: "呼吸内科",
-                    "realname": "王晓东",
-                    "phone": "住培一年级",
-                    "from_domain": '正常',
-                    "create_time": "2019/01/12 21:34",
-                     state: 1 //1--已批阅 0 -- 未批阅
-                }
+                // {
+                //     "user_id": 13186,
+                //     "nickname": "150****1134",
+                //     "sex": "呼吸内科",
+                //     "realname": "王晓东",
+                //     "phone": "住培一年级",
+                //     "from_domain": '正常',
+                //     "create_time": "2019/01/12 21:34",
+                //     "state1": 0
+                // },
+                //  {
+                //     "user_id": 13186,
+                //     "nickname": "150****1134",
+                //     "sex": "呼吸内科",
+                //     "realname": "王晓东",
+                //     "phone": "住培一年级",
+                //     "from_domain": '正常',
+                //     "create_time": "2019/01/12 21:34",
+                //     "state1": 1 //1--已批阅 0 -- 未批阅
+                // }
             ]
         }
     },
@@ -115,6 +116,10 @@
         if(localStorage.getItem('MarkingHomework')){
             this.screenTitle = JSON.parse(localStorage.getItem('MarkingHomework')).name
         }
+        get_read_over().then(res=>{
+            console.log(res);
+            this.list = res.data.data.data
+        })
     }
   }
 </script>

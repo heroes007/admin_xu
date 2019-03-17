@@ -41,6 +41,7 @@
   import pageMixin from '../mixins/pageMixins'
    import {Dialog} from "../dialogs";
   import { ADD_PRODUCTION } from "../dialogs/types";
+  import {mapState} from 'vuex'
   export default {
     mixins: [pageMixin, Dialog],
     components: { screen, pageList },
@@ -55,6 +56,14 @@
         organization_id: localStorage.getItem('organization_id'),
         state: ''
       }
+    },
+    watch:{
+      productState(_new){
+        if(_new) this.getList()
+      }
+    },
+    computed:{
+      ...mapState({productState: state => state.production.add_product_state})
     },
     methods: {
       handleCardClass(t){

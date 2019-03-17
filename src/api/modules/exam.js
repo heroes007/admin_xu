@@ -67,3 +67,10 @@ export function drop_student_signup(signup_id){
         signup_id:signup_id
     });
 }
+
+export function get_houner_list(){
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('product/get_product_honours',{
+        product_id:id
+    })
+}

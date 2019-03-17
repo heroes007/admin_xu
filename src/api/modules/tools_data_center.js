@@ -3,8 +3,9 @@
  */
 import api from './config'
 
-export function get_curriculum_data_center(project_id) {
-    return api.post('api/tools_data_center/get_curriculum_data_center',{project_id:project_id});
+export function get_curriculum_data_center() {
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('/product/data/get_list',{product_id:id,page_size: 2,page_num: 1});
 }
 
 export function get_public_data_center(project_id) {

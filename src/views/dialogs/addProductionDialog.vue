@@ -4,40 +4,29 @@
     v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
         <base-input @closedialog="handleClose">
             <Row slot="body">
-                <Row class='curriculum-list' v-if='nextStep == 1'>
-                    <Row class='title' type='flex' justify='start' align='middle'>
-                        <h2>添加课程：（只能选择一个课）</h2>
-                    </Row>
-                    <Row class='search-bar' type='flex' justify='start' align='middle'>
-                        <Col :span="18">
-                            <Input v-model="searchData" placeholder="请输入搜索内容"></Input>
-                        </Col>
-                        <Col :span="6">
-                            <Button class="sub-btn" type="primary" @click="searchCurriculum">查询</Button>
-                            <Button class="sub-btn" type="primary" @click="clearSearch">清除</Button>
-                        </Col>
-                    </Row>
-                    <Row>
-                    <data-list class='data-list light-header' @changeSelect='changeRowSelectHandler' :table-data='curriculumList' :header-data='dataHeader'></data-list>
-                    </Row>
-                </Row>
                 <Row class="body-top">
                     <Form ref="form" :model="form" :label-width="fromLabelWidth" class="add-task-form">
-                        <FormItem v-show="nextStep == 0" label="产品名称">
+                        <FormItem v-show="nextStep == 0" label="产品名称" required>
                             <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0" style="letter-spacing:14px;" label="原价">
+                        <FormItem v-show="nextStep == 0"  label="原价" required>
                             <Input placeholder="售价必须小于等于定价" v-model="form.original_price"></Input>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0" label="实际售价">
+                        <FormItem v-show="nextStep == 0" label="实际售价" required>
                             <Input placeholder="0为免费，单位默认（元）" v-model="form.price"></Input>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0" label="解锁方式">
-                            <Select v-model="form.unlock_type" placeholder="不限/按课程/">
+                        <FormItem v-show="nextStep == 0" label="解锁方式" required>
+                            <Select v-model="form.unlock_type" placeholder="不限/按课程/按章节/按视频">
                                 <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0" label="产品状态">
+                        <FormItem v-show="organizationList&&nextStep == 0" label="机构" required>
+                            <Select v-model="form.organization_id" placeholder="请选择机构">
+                                <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
+                            </Select>
+                        </FormItem>
+                        <!-- organizationList -->
+                        <FormItem v-show="nextStep == 0" label="产品状态" required>
                             <Select v-model="form.state" placeholder="推荐/已上架/已下架/测试中">
                                 <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
@@ -57,12 +46,12 @@
                         <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
                         <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
                         </FormItem>-->
-                        <FormItem v-show="nextStep == 0" label="产品介绍">
+                        <FormItem v-show="nextStep == 0" label="产品介绍" required>
                             <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
                         </FormItem>
                         <Tabs v-model="paneItem" v-show="nextStep == 0">
                             <TabPane label="展示图片"  :disabled="disabled1" name="displayImg">
-                                <FormItem label="展示图片" v-if="nextStep == 0">
+                                <FormItem label="展示图片" v-if="nextStep == 0" required>
                                     <Row :gutter="10" class="upload-img-row">
                                         <Col class="upload-img-col" span="8" v-for="(t,i) in form.imgList" :key="i">
                                             <div class="upload-img-main">
@@ -84,7 +73,8 @@
 
                          <!--可插入输入框-->
                         <FormItem v-if="nextStep == 2" label=""  class="upload">
-                            <div class="form-message" ref="inputStyl" contentEditable="true"></div>
+                            <div class="form-message" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div>
+                            <!-- <div v-if="descriptionHtml" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div> -->
                             <div ref="divStyle" style="display: flex;margin-top: 15px;margin-left: 10px">
                                 <Dropdown trigger="click" @on-click="handleDrop">
                                     <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
@@ -135,6 +125,7 @@ import iconCopy from '../../../static/icon/photo.png'
 import iconFontCopy from '../../../static/icon/font_copy.png'
 import iconColorCopy from '../../../static/icon/color_copy.png'
 import iconCopyCopy from '../../../static/icon/photo_copy.png'
+import postData from '../../api/postData';
 
 export default {
     mixins: [RemoveModal,MPop],
@@ -151,13 +142,12 @@ export default {
             addProductionDialog: true,
             unlock_type: '',
             states: '',
-            selectList1: [{id: 0,title:'不限'},{id: 1,title:'按课程'}],
+            selectList1: [{id: 0,title:'不限'},{id: 1,title:'按课程'},{id: 2,title:'按章节'},{id: 3,title:'按视频'}],
             show: false,
             selectList2: [{id: -1,title:'下架'},{id: 0,title:'未上架'},{id: 1,title:'测试'},{id: 2,title:'上架'},{id: 3,title:'推荐'}],
             form: {
-                project_id: 0,
-                product_id: 0,
                 unlock_type: '',
+                product_id: '',
                 state: '',
                 title:'',
                 price:0,
@@ -165,17 +155,17 @@ export default {
                 short_description:'',
                 description:'',
                 url_arr:'',
-                h5_url:'',
                 redirectType:false,
                 curriculum_id:null,
                 imgList: ['upload-btn'],
                 video_url:'',
                 original_price:'',
                 price:'',
+                organization_id: null,
                 _fn:null,
-                certificate:[],
                 description: ''
             },
+            descriptionHtml: '',
             nextStep: 0,
             isInited: false,
             uploadConfig: {
@@ -188,13 +178,12 @@ export default {
                 dir:'video/production',
                 type:4
             },
-            searchData:'',
-            curriculumList:[],
             loadingInstance:null,
             fromLabelWidth:121,
             formItemLabelWidth:121,
+            // certificate: [],
             paneItem: '',
-            disabled2: false,
+            disabled2: true,
             disabled1: false,
             description: '',
             fontList:[
@@ -227,67 +216,34 @@ export default {
             },
             ],
             color: '',
-            paneItem: 'displayImg'
+            paneItem: 'displayImg',
+            organizationList: null
         }
     },
     mounted() {
-        // this.get_certificate_list()
-        if(this.payload){
-          this.$nextTick(()=>{
-            get_product_certificate(this.form).then(res => {
-              res.data.data.forEach((item) => {
-                this.form.certificate.push(item.honour_id)
-              })
-            })
-          })
+        this.organizationList = null
+        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1){
+            this.getOrganization()
         }
-        if(this.projectType === 1){
-            get_list(this.projectId).then(res => {
-                if(res.data.res_code === 1){
-                    for(var i=0;i<res.data.msg.length;i++){
-                        res.data.msg[i].is_valid = false;
-                    }
-                    this.curriculumList = res.data.msg;
-                    this.checkCurriculum();
-                }
-            })
-        }
-        if(this.payload){
-            this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-                setTimeout(() => {
-                    this.loadingInstance.close();
-                }, Config.base_timeout);
-            this.form.product_id = this.payload.id;
-            get_detail(this.payload.id).then(res => {
-                if(res.data.res_code === 1){
-                    this.form.title = res.data.msg.title;
-                    this.form.original_price = (res.data.msg.price).toString();
-                    this.form.price = (res.data.msg.original_price).toString();
-                    this.form.short_description = res.data.msg.short_description;
-                    this.form.description = res.data.msg.description;
-                    this.form.curriculum_id = res.data.msg.curriculum_id;
-                    this.form.h5_url = res.data.msg.h5_url;
-                    this.form.examine_type = res.data.msg.examine_type;
-                    if(this.form.h5_url) this.form.redirectType = true;
-                    var arrObj = JSON.parse(res.data.msg.img_url_arr);
-                    if(arrObj.default.includes("[")){
-                       let d = JSON.parse(arrObj.default);
-                    //    this.form.img_url = d[0]
-                    //    this.form.img_url2 = d[1]
-                    //    this.form.img_url3 = d[2]
-                    //    this.form.img_url4 = d[3]
-                    //    this.form.img_url5 = d[4]
-                    }else this.form.img_url = arrObj.default;
-                    this.form.video_url = arrObj.video;
-                    if(this.form.video_url)
-                        this.form.displayVideo = true;
-                    this.checkCurriculum();
-                  if(this.loadingInstance)  this.loadingInstance.close();
-                }
-            })
+        if(this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2){
+            let d = this.payload.row
+            this.form.title = d.title;
+            this.form.original_price = (d.price).toString();
+            this.form.price = (d.original_price).toString();
+            this.form.short_description = d.short_description;
+            this.form.unlock_type = d.unlock_type;
+            this.form.state = d.state;
+            let arrObj = JSON.parse(d.url_arr);
+            this.form.imgList = [...this.form.imgList,...arrObj.default]
+            this.form.video_url = arrObj.video
+            this.form.product_id = d.id
+            // if(this.$refs.inputStyl) this.$refs.inputStyl.appendChild(d.description)
+            this.descriptionHtml = d.description.replace('form-message')
+            this.form.organization_id = this.organization_id
+                console.log(this.descriptionHtml,'this.descriptionHtml');
         }
         var vm = this;
-        this.form.project_id = this.projectId;
+        // this.form.project_id = this.projectId;
         this.form._fn = function(){
             vm.handleClose();
             vm.showPop('保存成功！');
@@ -297,7 +253,7 @@ export default {
         ...mapState({
             projectId:state => state.project.select_project_id,
             examineTypeList:state => state.production.examineTypeList,
-            certificate:state => state.production.certificate_list
+            // certificate:state => state.production.certificate_list
         }),
         ...mapGetters({ projectType: 'select_project_type' }),
         selectSubject() {
@@ -305,50 +261,24 @@ export default {
         },
         selectGrade() {
             return this.form.grade_id;
-        },
-        dataHeader() {
-             return [{
-                    label:'排序',
-                    width:90,
-                    sort:true
-                }, {
-                    prop: 'teacher_name',
-                    label: '讲师',
-                    width: 150
-                }, {
-                    prop: 'title',
-                    label: '课程名称'
-                },  {
-                    label: '操作',
-                    width: 100,
-                    groupBtn: [{
-                        text: '',
-                        param: 'changeSelect',
-                        switchKey:'is_valid',
-                        useCheckBox:true
-                    }]
-                }]
         }
     },
     methods: {
         ...mapActions([ 'add_production', 'update_production', 'get_certificate_list', 'change_certificate_list' ]),
-        checkCurriculum() {
-            if(this.curriculumList.length > 0 && this.form.curriculum_id){
-                for(var i=0;i<this.curriculumList.length;i++){
-                    if(this.curriculumList[i].curriculum_id === this.form.curriculum_id){
-                        this.curriculumList[i].is_valid = true;
-                    }
-                }
-            }
-        },
         overImg(val){
 
+        },
+        getOrganization(){
+            postData('/components/getOrganization').then((res) => {
+                this.organizationList = res.data
+            })
         },
         addImg(val){
             var img = new Image()
             img.src = val.url
             img.width = 100
             img.style.display = 'block'
+            console.log(this.$refs.inputStyl,'this.$refs.inputStyl')
             this.$refs.inputStyl.appendChild(img)
         },
         handleDrop(val){
@@ -387,37 +317,6 @@ export default {
                })
                this.$Message.warning('已选择视频，就不能上传图片了');
             }else if(this.form.video_url)  this.form.video_url = ''
-        },
-        clearSearch(){
-            this.searchData = '';
-            get_list(this.projectId).then(res => {
-                if(res.data.res_code === 1){
-                    for(var i=0;i<res.data.msg.length;i++){
-                        res.data.msg[i].is_valid = false;
-                    }
-                    this.curriculumList = res.data.msg;
-                    this.checkCurriculum();
-                }
-            })
-        },
-        searchCurriculum() {
-            get_list(this.projectId,this.searchData).then(res => {
-                if(res.data.res_code === 1){
-                    for(var i=0;i<res.data.msg.length;i++){
-                        res.data.msg[i].is_valid = false;
-                    }
-                    this.curriculumList = res.data.msg;
-                    this.checkCurriculum();
-                }
-            })
-        },
-        changeRowSelectHandler(row) {
-            if(row.is_valid){
-                for(var i=0;i<this.curriculumList.length;i++){
-                    if(this.curriculumList[i].curriculum_id !== row.curriculum_id) this.curriculumList[i].is_valid = false;
-                    else this.form.curriculum_id = row.curriculum_id;
-                }
-            } else this.form.curriculum_id = null;
         },
         uploadCompleteHandler1(url){
             this.form.img_url = url;
@@ -463,23 +362,29 @@ export default {
             this.formItemLabelWidth = 121
             this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
-        handleSubmit() {
-            this.form.imgList.shift('upload-btn')
-            var arrObj = {
-                default: JSON.stringify(this.form.imgList),
-                video:  this.form.video_url 
-            }
-            this.form.url_arr = JSON.stringify(arrObj);
-            if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
-            this.form.price = Number(this.form.original_price).toFixed(2)
-            this.form.original_price = Number(this.form.price).toFixed(2)
-            if(this.payload)  this.update_production(this.form);
-            else this.add_production(this.form);
-        }
+        handleSubmit(name) {
+            //  this.$refs[name].validate((valid) => {
+            //   if (valid) {
+                this.form.imgList.shift('upload-btn')
+                var arrObj = {
+                    default: this.form.imgList,
+                    video:  this.form.video_url 
+                }
+                this.form.url_arr = JSON.stringify(arrObj);
+                if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
+                this.form.price = Number(this.form.original_price).toFixed(2)
+                this.form.original_price = Number(this.form.price).toFixed(2)
+                if(this.payload)  this.update_production(this.form);
+                else this.add_production(this.form);
+                
+        //    }
+        // })
+      }
     }
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .ivu-select-selected-value, /deep/ .ivu-select-item{ letter-spacing: normal; }
 /deep/ .ivu-btn{display: inline-block !important;}
 /deep/.ivu-switch-large { width: 75px }
 /deep/ .ivu-switch-large.ivu-switch-checked:after{ left: 55px; }

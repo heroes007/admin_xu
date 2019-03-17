@@ -53,8 +53,7 @@ const actions = {
             cached = param;
             get_offline_term_list(param).then(function(res) {
                 if (res.data.res_code === 1) {
-                    console.log(res.data,'111')
-                    commit(types.OFFLINE_TERM_LIST_LOADED, res.data.data.data, res.data.data.count);
+                    commit(types.OFFLINE_TERM_LIST_LOADED, res.data.data);
                 }
             });
         },
@@ -219,14 +218,13 @@ const actions = {
     }
     // mutations
 const mutations = {
-    [types.OFFLINE_TERM_LIST_LOADED](state, list, c) {
-        console.log(list,'list')
-        state.page_conut = c
-        for (var i = 0; i < list.length; i++) {
-           list[i].childData = [];
+    [types.OFFLINE_TERM_LIST_LOADED](state, list) {
+        state.page_conut = list.count
+        for (var i = 0; i < list.data.length; i++) {
+            list.data[i].childData = [];
             // list[i].is_valid = list[i].state === 0?false:true;
         }
-        state.offline_term_list = list || state.offline_term_list;
+        state.offline_term_list = list.data || state.offline_term_list;
         state.showLoading = false;
     },
     [types.OFFLINE_TERM_VALID_UPDATED](state, param) {

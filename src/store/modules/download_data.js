@@ -25,8 +25,8 @@ const actions = {
         commit(types.DOWNLOAD_SHOW_LOADING);
         get_curriculum_data_center(params.project_id).then(res => {
             if(res.data.res_code === 1)
-            {
-                commit(types.CURRICULUM_DOWNLOAD_LIST_LOADED,res.data.msg);
+            {                
+                commit(types.CURRICULUM_DOWNLOAD_LIST_LOADED,res.data.data.data);
             }
         })
     },
@@ -92,10 +92,12 @@ const mutations = {
         state.isLoading = false;
     },
     [types.CURRICULUM_DOWNLOAD_LIST_LOADED](state, param) {
-        for (var i = 0; i < param.length; i++) {
-            param[i].is_valid = param[i].state === 0?false:true;
-        }
-        state.course_download_data_list = param || state.course_download_data_list;
+        console.log(param);
+        // for (var i = 0; i < param.length; i++) {
+        //     param[i].is_valid = param[i].state === 0?false:true;
+        // }
+        // state.course_download_data_list = param || state.course_download_data_list;
+        state.course_download_data_list = param;
         state.isLoading = false;
     },
     [types.DOWNLOAD_CHANGE_PRE_CURRICULUM](state, params) {

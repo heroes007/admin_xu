@@ -7,44 +7,48 @@ export function get_list(page, keyword) {
     // let id = project_id ? project_id:  +localStorage.getItem('organizationId')
     let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
     return api.post('product/curriculum_online/get_list',{
-        project_id: id,
+        product_id: id,
         // title:title
         // product_id: 11,
         page_size: page.page_size,
         page_num: page.page_num,
-        keyword: keyword});
+        keyword: keyword
+    });
 }
 
 export function add_curriculum(data) {
+    console.log(data,'datas')
     let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
     return api.post('product/curriculum_online/add', {
       product_id: id,
       title: data.title,
       teacher_id: data.teacher_id,
-      department_id: 'data.department_id',
+      department_id: data.department_id,
       grade_id: data.grade_id,
       state: data.state,
       description: data.description,
-      img_url: data.img_default
+      img_url: data.img_default,
+      unlock_type: data.unlock_type
     })
 }
 
 export function update_curriculum(curriculum_id,data) {
-    return api.post('api/tools_curriculum/update_curriculum',{
-        curriculum_id:curriculum_id,
-        title:data.title,
-        teacher_id:data.teacher_id,
-        start_time:data.start_time,
-        end_time:data.end_time,
-        subject_id:data.subject_id,
-        grade_id:data.grade_id,
-        state:data.state,
-        img_url_arr:data.img_url_arr,
-        description:data.description,
-        orderby:data.orderby,
-        pre_curriculum_ids:data.pre_curriculum_ids,
-        curriculum_roles:data.curriculum_roles,
-        data_center_id:data.data_center_id});
+    return api.post('/product/add_new_honour_certificate',{
+        // curriculum_id:curriculum_id,
+        name:data.title,
+        // teacher_id:data.teacher_id,
+        // start_time:data.start_time,
+        // end_time:data.end_time,
+        // subject_id:data.subject_id,
+        // grade_id:data.grade_id,
+        // state:data.state,
+        img_url:data.img_url_arr.default,
+        detail:data.description,
+        // orderby:data.orderby,
+        // pre_curriculum_ids:data.pre_curriculum_ids,
+        // curriculum_roles:data.curriculum_roles,
+        // data_center_id:data.data_center_id
+    });
 }
 
 export function delete_curriculum(id,project_id) {
