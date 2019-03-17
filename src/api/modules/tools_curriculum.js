@@ -32,24 +32,19 @@ export function add_curriculum(data) {
     })
 }
 
-export function update_curriculum(curriculum_id,data) {
-    return api.post('/product/add_new_honour_certificate',{
-        // curriculum_id:curriculum_id,
-        name:data.title,
-        // teacher_id:data.teacher_id,
-        // start_time:data.start_time,
-        // end_time:data.end_time,
-        // subject_id:data.subject_id,
-        // grade_id:data.grade_id,
-        // state:data.state,
-        img_url:data.img_url_arr.default,
-        detail:data.description,
-        // orderby:data.orderby,
-        // pre_curriculum_ids:data.pre_curriculum_ids,
-        // curriculum_roles:data.curriculum_roles,
-        // data_center_id:data.data_center_id
+export function update_curriculum(data) {
+    return api.post('product/curriculum_online/change',{
+        curriculum_online_id:data.id,
+        title:data.title,
+        teacher_id: data.teacher_id,
+        department_id: data.department_id,
+        grade_id: data.grade_id,
+        state: data.state,
+        description: data.description,
+        img_url: data.img_url
     });
 }
+
 
 export function delete_curriculum(id,project_id) {
     return api.post('product/curriculum_online/delete',{

@@ -15,8 +15,8 @@ export function delete_catalog(catalog_id) {
     });
 }
 
-export function get_catalog(curriculum_id) {
-    return api.post('api/tools_curriculum_catalog/get_catalog',{
-        curriculum_id:curriculum_id
+export function get_catalog(curriculum_online_id) {
+    return api.post('product/curriculum_online_catalog/get_list',{
+        curriculum_online_id:curriculum_online_id
     });
 }

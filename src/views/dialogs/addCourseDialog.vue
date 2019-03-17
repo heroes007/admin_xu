@@ -237,8 +237,10 @@
       this.stateName = this.payload.state
       this.getListTeacher()
       this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
+        console.log(this.payload,'payload')
+        if(this.payload.state == 0) this.form = this.$store.state.online_curriculum.online_curriculum_old_list[this.payload.index]
 
-      // if (this.query_teacher_list.length === 0) this.get_teacher_list();
+        // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
       // this.get_grade_list();
@@ -346,18 +348,17 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
-        console.log(this.form);
         // this.form.img_url_arr = {
         //   'default': this.form.img_default,
         //   '3_8': this.form.img_3_8
         // };
         // this.form.project_id = this.project_id;
         // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        var vm = this;
-        this.form._fn = function () {
-          vm.handleClose();
-          vm.showPop('保存成功！', 1000);
-        };
+        // var vm = this;
+        // this.form._fn = function () {
+        //   vm.handleClose();
+        //   vm.showPop('保存成功！', 1000);
+        // };
         // if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
         //   var preList = [];
         //   for (var i = 0; i < this.top_course_list.length; i++) {
@@ -365,8 +366,21 @@
         //   }
         //   this.form.pre_curriculum_ids = preList;
         // }
-        if (this.stateName == 1) this.add_online_curriculum(this.form);
-        else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
+        this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
+        if (this.stateName == 1) {
+            this.add_online_curriculum(this.form)
+            // this.$emit('submit')
+            var vm = this;
+            vm.$store.dispatch('get_online_curriculum_list', {
+                // project_id: v,
+                page: this.payload.page,
+                keyword: this.payload.keyword
+            })
+        }
+        else {
+            console.log(this.form,'forms')
+            this.edit_online_curriculum({data: this.form});
+        }
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},
@@ -473,12 +487,22 @@
           this.teacherList = res.data
         })
         postData('components/getDepts').then((res) => {
-          console.log(res.data,'...')
           this.detpysList = res.data
         })
         postData('components/getGrades').then((res) => {
           this.gradesList = res.data
         })
+      },
+      getName(arr){
+          arr.forEach((item, index) => {
+              item.list.forEach(it => {
+                  if(item.id == it.id){
+                      console.log(item, it, '00000')
+                      this.form[item.name] = it.name
+                  }
+              })
+          })
+          console.log(this.form,'form')
       }
     }
   }
