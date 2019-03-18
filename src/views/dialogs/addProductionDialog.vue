@@ -71,7 +71,7 @@
                                 </FormItem>
                             </TabPane>
                         </Tabs>
-                        <FormItem> <p class="upload-img-text">* 支持jpg/png/mp4/mov/avi文件；图片可上传1～5张，建议尺寸475*250px；视频可上传1个，且大小不超过2m</p></FormItem>
+                        <FormItem v-show="nextStep == 0"> <p class="upload-img-text">* 支持jpg/png/mp4/mov/avi文件；图片可上传1～5张，建议尺寸475*250px；视频可上传1个，且大小不超过2m</p></FormItem>
 
                          <!--可插入输入框-->
                         <FormItem v-if="nextStep == 2" label=""  class="upload">

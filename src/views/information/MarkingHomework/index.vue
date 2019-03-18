@@ -45,7 +45,7 @@
                 key: 'grade_name',
                 align: 'left',
             },
-                {
+            {
                 title: '状态',
                 key: 'isState',
                 // slot: 'state-item',
