@@ -4,12 +4,12 @@
         <base-input @closedialog="handleClose">
             <Row slot="header" class='search-bar' type='flex' justify='center' align='middle'>
                 <Select v-model="searchType" placeholder="请选择" style="width: 200px;margin-left: 20px;">
-                    <Option label="ID" value="id"></Option>
-                    <Option label="昵称" value="nickname"></Option>.
+                    <Option label="用户名" value="username"></Option>
+                    <Option label="姓名" value="realname"></Option>.
                     <Option label="手机号" value="phone"></Option>
                 </Select>
-                <Input prefix="ios-search" placeholder="搜索用户名/姓名/手机号" v-model="searchData" style="width: 350px;margin-left: 15px;">
-                    <!--<Button slot="append" type='text' @click='searchStudent'>搜索</Button>-->
+                <Input prefix="ios-search" placeholder="搜索用户名/姓名/手机号" v-model="searchData" @on-change="searchStudent" style="width: 350px;margin-left: 15px;">
+                    <!-- <Button slot="append" type='text' @click='searchStudent'>搜索</Button> -->
                 </Input>
             </Row>
             <Row slot="body">
@@ -55,11 +55,12 @@
         courseColumns: [
           {
             title: '用户名',
-            key: 'user_id'
+            key: 'username',
+             ...tooltips
           },
           {
             title: '姓名',
-            key: 'nickname',
+            key: 'realname',
             ...tooltips
           },
           {
@@ -69,7 +70,7 @@
           },
           {
             title: '科室',
-            key: 'subject_name'
+            key: 'department_name'
           },
           {
             title: '班级',
@@ -84,10 +85,12 @@
     computed: {
       queryOfflineUserList() {
         let _d = this.$store.state.offline_curriculum.offline_term_student
-        _d.map((it) => {
-          it.subject_name = this.handleTableToName(this.$store.state.subject.subject_list, it.subject_id)
-          it.grade_name = this.handleTableToName(this.$store.state.grade.grade_list, it.grade_id)
-        })
+        // if(_d&&_d.length>0){
+        //   _d.map((it) => {
+        //   it.subject_name = this.handleTableToName(this.$store.state.subject.subject_list, it.subject_id)
+        //   it.grade_name = this.handleTableToName(this.$store.state.grade.grade_list, it.grade_id)
+        // })
+        // }
         return _d
       },
       pageSize() {
@@ -113,13 +116,9 @@
       },
       handleQueryList() {
         this.$store.dispatch('get_students_by_offline_term', {
-          offline_term_id: this.payload.row.id,
-          page_index: this.pageIndex,
+          subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+          page_num: this.pageIndex,
           page_size: this.pageSize,
-          subject_id: '',
-          grade_id: '',
-          phone: '',
-          username: ''
         })
       },
       handleSelectedAll(val) {
@@ -133,24 +132,20 @@
       },
       handleCurrentChange(val) {
         this.$store.dispatch('get_students_by_offline_term', {
-          offline_term_id: this.payload.row.id,
-          page_index: val,
+          subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+          page_num: this.pageIndex,
           page_size: this.pageSize,
-          subject_id: '',
-          grade_id: '',
-          phone: '',
-          username: ''
         })
       },
       handleSendTask() {
         var list = [];
         if (this.multipleSelection && this.multipleSelection.length > 0) {
           this.multipleSelection.map(item => {
-            list.push(item.user_id)
+            list.push(item.id)
           });
         }
         if (list.length > 0) {
-          send_student_offline_curriculum({offline_term_id: this.payload.row.id, user_id: list}).then(res => {
+          send_student_offline_curriculum({term_underline_id: this.payload.row.id, student_id_arr: JSON.stringify(list)}).then(res => {
             if (res.data.res_code == 1) {
               this.$Modal.info({
                 title: '提示',
@@ -164,29 +159,15 @@
         }
       },
       searchStudent() {
-        var phone = '';
-        var username = '';
-        var id = '';
-        switch (this.searchType) {
-          case 'phone':
-            phone = this.searchData;
-            break;
-          case 'nickname':
-            username = this.searchData;
-            break;
-          case 'id':
-            id = this.searchData;
-            break;
+        let d = {
+            type: this.searchType,
+            search: this.searchData
         }
         this.$store.dispatch('get_students_by_offline_term', {
-          offline_term_id: this.payload.row.id,
-          page_index: 0,
+          subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+          page_num: this.pageIndex,
           page_size: this.pageSize,
-          subject_id: this.payload.row.subject_id,
-          grade_id: this.payload.row.grade_id,
-          phone: phone,
-          username: username,
-          userid: id
+          ...d
         })
       }
     }

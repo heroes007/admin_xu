@@ -31,7 +31,7 @@
                 <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
                       :active-name='activeIndex' :open-names="menuOpenName">
                     <div v-for="(it,index) in menuList" :key="index">
-                        <Submenu  v-if="it.list" :name="it.name">
+                        <Submenu  v-if="it&&it.list" :name="it.name">
                             <template class="menu-padding" slot="title"><div class="menu-item" ><Icon :type="it.icon" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span></div></template>
                             <div v-for="(t, index) in it.list" :key="index">
                                 <!-- <div v-if="t.check">
@@ -96,7 +96,7 @@
     },
     watch: {
       $route() {
-        // this.initMenu();
+        this.initMenu();
         //  if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
         //    this.selectItem(this.activeIndex)
         //  }
@@ -172,10 +172,10 @@
         if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
         this.name = index
         this.$router.push({name: index});
-        this.activeIndex = index
+        // this.activeIndex = index
       },
       initMenu() {
-        this.activeIndex = this.$route.name;
+        // this.activeIndex = this.$route.name;
       },
       logout() {
         api.post('user/logout', {from: 'web'}).then((res) => {
@@ -211,7 +211,7 @@
             if(d1&&d1.length>0){
               d1.forEach(t => {
                 let num = +t.permission_code.slice(0,2)
-                this.menuList.push(MenuList[num - 1])
+                if(num !== 3) this.menuList.push(MenuList[num - 1])
               });
               if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
             }
@@ -221,6 +221,7 @@
     mounted() {
        this.$nextTick(() => {
         this.handleMenuList()
+        console.log(this.menuList,'this.menuList')
        })
       this.setSubmenuTitleIconMouse()
       let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'

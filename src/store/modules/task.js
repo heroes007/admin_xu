@@ -17,6 +17,7 @@ import {
 const state = {
     task_category_list: [],
     showLoading: false,
+    total: null,
     activityTypeList: [{
         id: 1,
         name: '手动发送'
@@ -32,24 +33,22 @@ const state = {
     cur_page: 1,
     page_size: 10,
     catch_every_page: {},
-    curricum_list:[]
+    curricum_list:[],
+    homworkId:'',
     // activityTypeList:[{type:"online",name:'线上课'},{type:"underline",name:'线下课'}]
 }
 var catch_cid = ''
 
 // actions
 const actions = {
-        get_task_category_list({
-            commit
-        }, params) {
+        get_task_category_list({ commit }, params) {
             commit(types.TASK_SHOW_LOADING);
-            let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
-            get_category_list(params.project_id).then(res => {
+            get_category_list(params.page, params.keyword).then(res => {
                 if (res.data.res_code === 1) {
-                    commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data.data);
+                    commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data);
                 }
             }),
-            get_curriculumlist_online(v).then(res => {
+            get_curriculumlist_online().then(res => {
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CURRICUMLIST,{
                         result:res.data.data.data
@@ -69,16 +68,14 @@ const actions = {
         add_task_category({
             commit
         }, params) {
-           
             commit(types.TASK_SHOW_LOADING);
             create_category(params).then(res => {
                 if (res.data.res_code === 1) {
-                   
                     commit(types.TASK_CATEGORY_ADDED, {
                         result: res.data.msg,
                         data: params
                     });
-                    alert("添加成功")
+                    // window.location.reload()
                 }else{
                     alert(res.msg)
                 }
@@ -88,14 +85,13 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
-            console.log(params);
-            
-            // edit_category_by_id(params.task_category_id, params).then(res => {
-            //     if (res.data.res_code === 1) {
-            //         commit(types.TASK_CATEGORY_EDITED, params);
-            //         // params._fn();
-            //     }
-            // })
+            edit_category_by_id(state.homworkId, params).then(res => {
+                if (res.data.res_code === 1) {
+                    commit(types.TASK_CATEGORY_EDITED, params);
+                    // params._fn();
+                    window.location.reload()
+                }
+            })
         },
         delete_task_category({
             commit
@@ -108,19 +104,17 @@ const actions = {
                 }
             })
         },
-        get_task_list({
-            commit
-        }, params) {
+        get_task_list({ commit }, params) {
             commit(types.TASK_SHOW_LOADING);
             catch_cid = params.task_category_id
-            get_tasklist_by_cid(params.task_category_id).then(res => {
-                if (res.data.res_code === 1) {
-                    commit(types.TASK_LIST_LOADED, {
-                        task_category_id: params.task_category_id,
-                        result: res.data.msg
-                    });
-                }
-            })
+            // get_tasklist_by_cid(params.task_category_id).then(res => {
+            //     if (res.data.res_code === 1) {
+            //         commit(types.TASK_LIST_LOADED, {
+            //             task_category_id: params.task_category_id,
+            //             result: res.data.msg
+            //         });
+            //     }
+            // })
         },
         add_task({
             commit
@@ -143,6 +137,8 @@ const actions = {
             commit(types.TASK_SHOW_LOADING);
 
             edit_task(params.task_id, params).then(res => {
+             
+                
                 if (res.data.res_code === 1) {
                     commit(types.TASK_EDITED, params);
                     params.callback.call();
@@ -153,8 +149,8 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
-
-            delete_task_by_id(params.task_id, params.is_del_ut).then(res => {
+            delete_task_by_id(params).then(res => {    
+                // console.log(res);            
                 if (res.data.res_code === 1) {
                     commit(types.TASK_DELETED, params);
                 }
@@ -169,6 +165,9 @@ const actions = {
           } else {
             commit(types.TASK_USERLIST_TY_TID, state.catch_every_page[params.page_index]);
           }
+        },
+        change_homework_id({commit},params){
+            commit(types.TASK_CHANGE_HOMEID,params)
         }
     }
     // mutations
@@ -177,6 +176,8 @@ const mutations = {
         state.showLoading = true;
     },
     [types.TASK_CATEGORY_LIST_LOADED](state, params) {
+        console.log(params,'aaaaaaaaaaaa')
+        state.total = params.count
         // let first = {
         //     id:0,
         //     name:"未选择",
@@ -189,15 +190,15 @@ const mutations = {
         // }
         // params.unshift(first);
 
-        for (let i = 0; i < params.length; i++) {
-            if (params[i].type == "online") {
-                params[i].type = "线上课"
+        for (let i = 0; i < params.data.length; i++) {
+            if (params.data[i].type == "online") {
+                params.data[i].type = "线上课"
             }else{
-                params[i].type = "线下课"
+                params.data[i].type = "线下课"
             }
         }
 
-        state.task_category_list = params || state.task_category_list;
+        state.task_category_list = params.data || state.task_category_list;
         state.showLoading = false;
     },
     [types.TASK_CATEGORY_ADDED](state, params) {
@@ -214,8 +215,10 @@ const mutations = {
     },
     [types.TASK_CATEGORY_EDITED](state, params) {
         for (var i = 0; i < state.task_category_list.length; i++) {
-            if (state.task_category_list[i].id === params.task_category_id) {
-                state.task_category_list[i].name = params.name;
+            if (state.task_category_list[i].id === state.homworkId) {
+                state.task_category_list[i].title = params.realname;
+                state.task_category_list[i].curriculum_title = params.binding_course;
+                state.task_category_list[i].type = params.jurisdiction;
                 break;
             }
         }
@@ -257,7 +260,7 @@ const mutations = {
     },
     [types.TASK_EDITED](state, params) {
         for (var i = 0; i < state.task_category_list.length; i++) {
-            if (state.task_category_list[i].id === params.task_category_id) {
+            if (state.task_category_list[i].id === params) {
                 for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {
                     if (state.task_category_list[i].task_list[j].id === params.task_id) {
                         state.task_category_list[i].task_list[j].name = params.name;
@@ -273,14 +276,17 @@ const mutations = {
         state.showLoading = false;
     },
     [types.TASK_DELETED](state, params) {
+        console.log(state.task_category_list);
+        
         for (var i = 0; i < state.task_category_list.length; i++) {
-            if (state.task_category_list[i].id === params.task_category_id) {
-                for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {
-                    if (state.task_category_list[i].task_list[j].id === params.task_id) {
-                        state.task_category_list[i].task_list.splice(j, 1);
-                        break;
-                    }
-                }
+            if (state.task_category_list[i].id === params) {
+                // for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {
+                //     if (state.task_category_list[i].task_list[j].id === params.task_id) {
+                //         state.task_category_list[i].task_list.splice(j, 1);
+                //         break;
+                //     }
+                // }
+                state.task_category_list.splice(i, 1);
                 break;
             }
         }
@@ -294,6 +300,9 @@ const mutations = {
     },
     [types.TASK_CURRICUMLIST](state, params){
         state.curricum_list = params.result
+    },
+    [types.TASK_CHANGE_HOMEID](state, params){
+        state.homworkId = params
     }
 }
 

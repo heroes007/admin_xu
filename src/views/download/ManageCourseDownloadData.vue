@@ -1,9 +1,10 @@
 <template>
     <div class='manage-course-download-data'>
         <!-- <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/> -->
-        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="courseNums" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler" :btnType="true"/>
+        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="pageTotal" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler" :btnType="true"/>
         <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg' @edit='addClickHandler2' :isStripe='false' :table-data='dataList'
-          :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'></data-list>
+          :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'  :table-height='listHeight'></data-list>
+        <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
@@ -16,9 +17,12 @@
   import { doTimeFormat } from '../../components/Util'
   import { Config } from '../../config/base'
   import screen from '../../components/ScreenFrame'
+  import pageMixin from '../mixins/pageMixins'
+  import pageList from '../../components/Page'
+
   export default {
-    mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList ,screen},
+    mixins: [Dialog, pageMixin],
+    components: { 'header-component': Header, 'data-list': BaseList ,screen, pageList},
     data() {
       return {
         searchData: '',
@@ -41,19 +45,25 @@
         // isLoading: state => state.download_data.isLoading,
         dataList: state => state.download_data.course_download_data_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
-        projectId: state => state.project.select_project_id
+        projectId: state => state.project.select_project_id,
       }),
+        pageTotal() {
+            return this.$store.state.download_data.total;
+        },
+        listHeight() {
+            return window.innerHeight - 60 - 50 - 70;
+        },
       comboDataList() {
-        var r = [];
-        var v = []
-        for (var i = 0; i < this.dataList.length; i++) {
-          v = [];
-          for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
-            v.push(this.dataList[i].pre_curriculum[j]);
-          }
-          r.push(v);
-        }
-        return r;
+        // var r = [];
+        // var v = []
+        // for (var i = 0; i < this.dataList.length; i++) {
+        //   v = [];
+        //   for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
+        //     v.push(this.dataList[i].pre_curriculum[j]);
+        //   }
+        //   r.push(v);
+        // }
+        // return r;
       },
       categoryList() {
         return this.$store.state.task.task_category_list;
@@ -62,16 +72,16 @@
         return [this.query_online_course_list];
       },
       columnComboModel() {
-        var result = [];
-        var value = []
-        for (var i = 0; i < this.dataList.length; i++) {
-          value = [];
-          for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
-            value.push(this.dataList[i].pre_curriculum[j]);
-          }
-          result.push({data: value});
-        }
-        return result;
+        // var result = [];
+        // var value = []
+        // for (var i = 0; i < this.dataList.length; i++) {
+        //   value = [];
+        //   for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
+        //     value.push(this.dataList[i].pre_curriculum[j]);
+        //   }
+        //   result.push({data: value});
+        // }
+        // return result;
       },
       dataHeader() {
         return [
@@ -81,7 +91,7 @@
             width: 100
           },
           {
-            prop: 'name',
+            prop: 'title',
             label: '资料名称',
             align: 'left',
             width: 500
@@ -93,7 +103,7 @@
           // },
           {
             label: '绑定课程',
-            prop: 'pre_curriculum',
+            prop: 'curriculum_id',
             useCombo: true,
             comboListIndex: 0,
             listLabel: 'title',
@@ -114,7 +124,7 @@
             // },
             {
               text: '下载',
-              prop:'download_url',
+              prop:'attachment_url',
               param: 'download',
               // isIcon: true
             },
@@ -166,15 +176,21 @@
         });
       },
       downloadMsg(row){
-        // window.open(this.dataList[row].download_url)
-      }
+        window.open(this.dataList[row].attachment_url)
+      },
+        initData(){
+            this.get_curriculum_donwload_data_list({
+                project_id: this.projectId,
+                page: {page_size: this.pageSize, page_num: this.current}
+            });
+        }
     },
     mounted() {
-      setTimeout(()=>{
-        console.log(this.dataList,'this.dataList');
-      },1000)
+      // setTimeout(()=>{
+      //   console.log(this.dataList,'this.dataList');
+      // },1000)
       // this.get_online_curriculum_list({project_id: this.projectId});
-      this.get_curriculum_donwload_data_list({project_id: this.projectId});
+        this.initData()
     }
   }
 </script>

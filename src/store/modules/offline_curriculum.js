@@ -35,11 +35,12 @@ const state = {
     offline_curriculum_detail: {},
     catch_offline_curriculum_detail: {},
     offline_term_student: [],
-    page_size: 10,
+    page_size: 12,
     page_index: 1,
     total_num: 0,
     receipt_list:[],
-    receipt_total:0
+    receipt_total:0,
+    page_conut: 0,
 }
 var cached = {};
 
@@ -50,9 +51,9 @@ const actions = {
         }, param) {
             commit(types.OFFLINE_TERM_LIST_LOADING);
             cached = param;
-            get_offline_term_list(param.project_id, param.last_count).then(function(res) {
+            get_offline_term_list(param).then(function(res) {
                 if (res.data.res_code === 1) {
-                    commit(types.OFFLINE_TERM_LIST_LOADED, res.data.msg);
+                    commit(types.OFFLINE_TERM_LIST_LOADED, res.data.data);
                 }
             });
         },
@@ -61,11 +62,11 @@ const actions = {
             commit
         }, param) {
             commit(types.OFFLINE_CURRICULUM_LIST_LOADING, param)
-            get_offline_curriculum_list(param.offline_term_id).then(res => {
+            get_offline_curriculum_list(param).then(res => {
                 if (res.data.res_code === 1) {
                     commit(types.OFFLINE_CURRICULUM_LIST_LOADED, {
-                        result: res.data.msg,
-                        offline_term_id: param.offline_term_id
+                        result: res.data.data,
+                        term_underline_id: param.term_underline_id
                     });
                 }
             })
@@ -112,16 +113,15 @@ const actions = {
             state
         }, payload) {
             commit(types.OFFLINE_SEMESTER_ADDING);
-            add_offline_term(payload.project_id, payload).then(res => {
+            add_offline_term(payload).then(res => {
                 if (res.data.res_code === 1) {
                     commit(types.OFFLINE_SEMESTER_ADDED);
                     payload.callback();
-                    get_offline_term_list(cached.project_id, cached.last_count).then(res => {
-                        if (res.data.res_code === 1) {
-                            commit(types.OFFLINE_TERM_LIST_LOADED, res.data.msg);
-
-                        }
-                    })
+                    // get_offline_term_list(cached).then(res => {
+                    //     if (res.data.res_code === 1) {
+                    //         commit(types.OFFLINE_TERM_LIST_LOADED, res.data.msg);
+                    //     }
+                    // })
                 }
             })
         },
@@ -155,6 +155,7 @@ const actions = {
             state
         }, payload) {
             commit(types.OFFLINE_LOADING_CURRICULUM_DETAIL);
+            console.log(payload,'pp')
             // if (!state.catch_offline_curriculum_detail[payload.row.childData[payload.index].id]) {
                 get_offline_curriculum_detail(payload.row.childData[payload.index].id).then(res => {
                     if (res.data.res_code == 1) {
@@ -174,17 +175,9 @@ const actions = {
         },
         get_students_by_offline_term({commit},params){
             commit(types.OFFLINE_TERM_LIST_LOADING);
-            get_students_by_offline_term({
-              offline_term_id: params.offline_term_id,
-              page_index: params.page_index && params.page_index - 1 || 0,
-              page_size: params.page_size || state.page_size,
-              subject_id: params.subject_id,
-              grade_id: params.subject_id,
-              phone: params.phone,
-              username: params.username
-            }).then(res => {
+            get_students_by_offline_term(params).then(res => {
               if(res.data.res_code == 1){
-                  commit(types.QUERY_STUDENT_BY_OFFLINE_TERM, res.data.msg);
+                  commit(types.QUERY_STUDENT_BY_OFFLINE_TERM, res.data.data.data);
               }
             })
         },
@@ -226,11 +219,12 @@ const actions = {
     // mutations
 const mutations = {
     [types.OFFLINE_TERM_LIST_LOADED](state, list) {
-        for (var i = 0; i < list.length; i++) {
-            list[i].childData = [];
-            list[i].is_valid = list[i].state === 0?false:true;
+        state.page_conut = list.count
+        for (var i = 0; i < list.data.length; i++) {
+            list.data[i].childData = [];
+            // list[i].is_valid = list[i].state === 0?false:true;
         }
-        state.offline_term_list = list || state.offline_term_list;
+        state.offline_term_list = list.data || state.offline_term_list;
         state.showLoading = false;
     },
     [types.OFFLINE_TERM_VALID_UPDATED](state, param) {
@@ -258,9 +252,13 @@ const mutations = {
 
     },
     [types.OFFLINE_CURRICULUM_LIST_LOADED](state, params) {
+        let d = params.result;
+        d.map((t)=> {
+            t.type_text = t.type == 1 ? '讲座' : '实践'
+        })
         for (var i = 0; i < state.offline_term_list.length; i++) {
-            if (state.offline_term_list[i].id === params.offline_term_id) {
-                state.offline_term_list[i].childData = params.result;
+            if (state.offline_term_list[i].id === params.term_underline_id) {
+                state.offline_term_list[i].childData = d
                 break;
             }
         }
@@ -378,7 +376,7 @@ const mutations = {
     },
     [types.QUERY_STUDENT_BY_OFFLINE_TERM](state,params){
       state.showLoading = false;
-      state.offline_term_student = params.list;
+      state.offline_term_student = params;
       state.total_num = params.count;
     },
     [types.RECEIPT_LIST_LOADED](state,params){

@@ -1,7 +1,7 @@
 <template>
     <div class="manage-production-view">
         <screen :types="3" size-title1="证书总数" :size-num1="courseNums1" size-title2="已关联" :size-num2="courseNums2" btn-name="添加证书" :select1="selectList"
-                :select2="selectList" @selectChange1="selectChange1" @inputChange="inputChange" @handleClick="addOfflineSemesterHandler"/>
+                :select2="selectList" @selectChange1="selectChange1" @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" btnType/>
         <div class="card-houner">
             <Card class="card-houner-col" v-for="(item, index) in cardList1" :key="index">
                 <div class="card-houner-img">
@@ -10,7 +10,7 @@
                 </div>
                 <div class="card-houner-desc">
                     <Row class="houner-row-title">
-                        <div class="houner-title">全科医生临床能力合格证书</div>
+                        <div class="houner-title">{{item.name}}</div>
                     </Row>
                     <Row class="houner-row-content">
                         <div>关联产品 3 <span style="margin: 0 4px;">|</span> 已颁发 17</div>
@@ -24,6 +24,9 @@
                 </div>
             </Card>
         </div>
+        <div v-if="isHouner">
+          暂无证书
+        </div>
         <!--<Row class="pager" type="flex" justify="end" align="middle">-->
             <!--<Page :current="curPage" :page-size="20" @on-change="handleCurrentChange" :total="total"/>-->
         <!--</Row>-->
@@ -36,7 +39,7 @@
   import {MPop} from "../../components/MessagePop";
   import api from "../../api/modules/config";
   import {set_user_student_mrzx} from "../../api/modules/student";
-  import {send_interview_msg} from "../../api/modules/exam";
+  import {send_interview_msg,get_houner_list} from "../../api/modules/exam";
   import {Dialog} from "../dialogs";
   import {ADD_PRODUCTION, EDIT_PROTOCOL} from "../dialogs/types";
   import {Config} from "../../config/base";
@@ -59,7 +62,7 @@
           searchData: ""
         },
         cityList: "",
-        cardList1: [1, 2, 3, 4, 5],
+        cardList1: {},
         selectList: [
           {
             value: "all",
@@ -78,6 +81,7 @@
         courseNums2: 99,
         cardImg1: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222115758.jpeg",
         cardImg2: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222121345.jpeg",
+        isHouner:false
       };
     },
     methods: {
@@ -187,6 +191,16 @@
       // page_size: 20,
       // state: [0, 1, 2, 3]
       // });
+        get_houner_list().then(res=>{ 
+          if (res.data.res_code == 1) {
+            if (res.data.data.length == 0) {
+                this.isHouner = true
+            }else{
+                this.cardList1 = res.data.data
+            }
+          }
+          // console.log(res);
+        })
     },
     watch: {
       // isLoading(val) {
@@ -269,6 +283,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-align: left;
     }
     .ml10{
         margin-left: 10px;

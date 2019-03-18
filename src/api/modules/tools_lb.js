@@ -22,3 +22,11 @@ export function add_lb(lbData){
 export function delete_lb(lbData) {
   return api.post('api/tools_lb/remove_lb', lbData)
 }
+
+export function get_all_bl(){
+    return api.post('/platform/banner/getBannerListAdmin',{
+        position:1,
+        page_size:2,
+        page_num:1
+    })
+}

@@ -3,8 +3,9 @@
  */
 import api from './config'
 
-export function get_curriculum_data_center(project_id) {
-    return api.post('api/tools_data_center/get_curriculum_data_center',{project_id:project_id});
+export function get_curriculum_data_center(param, page) {
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('/product/data/get_list',{product_id:id, page_size: page.page_size, page_num: page.page_num});
 }
 
 export function get_public_data_center(project_id) {
@@ -12,13 +13,18 @@ export function get_public_data_center(project_id) {
 }
 
 export function add_data_center(param) {
-    return api.post('api/tools_data_center/add_data_center',{
-        name:param.name,
-        download_url:param.download_url,
-        type:param.type,
-        grade_id:param.grade_id,
-        subject_id:param.subject_id,
-        project_id:param.project_id
+    return api.post('product/data/add',{
+        // name:param.name,
+        // download_url:param.download_url,
+        // type:param.type,
+        // grade_id:param.grade_id,
+        // subject_id:param.subject_id,
+        // project_id:param.project_id
+
+        title: param.name,
+        curriculum_id: param.subject_id,
+        attachment_url: param.download_url,
+        // state: 1
     });
 }
 

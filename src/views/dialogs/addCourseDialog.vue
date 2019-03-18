@@ -17,7 +17,7 @@
                                 </FormItem>
                                 <FormItem label="科室">
                                     <Select v-model="form.department_id" placeholder="请选择科室">
-                                        <Option v-for="item in detpysList" :key="item.code" :label="item.name" :value="item.code"></Option>
+                                        <Option v-for="item in detpysList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="年级">
@@ -237,12 +237,15 @@
       this.stateName = this.payload.state
       this.getListTeacher()
       this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
-
-      // if (this.query_teacher_list.length === 0) this.get_teacher_list();
+        console.log(this.payload,'payload')
+        let d = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_old_list,[])
+        if(this.payload.state == 0) this.form = d[this.payload.index]
+        this.form.img_default = d[this.payload.index].img_url
+        // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
       // this.get_grade_list();
-      // this.checkPayload();
+      this.checkPayload();
       // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
     watch: {
@@ -346,14 +349,13 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
-        console.log(this.form);
         // this.form.img_url_arr = {
         //   'default': this.form.img_default,
         //   '3_8': this.form.img_3_8
         // };
         // this.form.project_id = this.project_id;
         // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        var vm = this;
+        // var vm = this;
         this.form._fn = function () {
           vm.handleClose();
           vm.showPop('保存成功！', 1000);
@@ -365,8 +367,23 @@
         //   }
         //   this.form.pre_curriculum_ids = preList;
         // }
-        if (this.stateName == 1) this.add_online_curriculum(this.form);
-        else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
+        this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
+        if (this.stateName == 1) {
+            this.add_online_curriculum(this.form)
+            // this.$emit('submit')
+            var vm = this;
+            vm.$store.dispatch('get_online_curriculum_list', {
+                // project_id: v,
+                page: this.payload.page,
+                keyword: this.payload.keyword
+            })
+            this.addCourseDialogVisible = false
+        }
+        else {
+            console.log(this.form,'forms')
+            this.form.page = this.payload.page
+            this.edit_online_curriculum({data: this.form});
+        }
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},
@@ -473,12 +490,20 @@
           this.teacherList = res.data
         })
         postData('components/getDepts').then((res) => {
-          console.log(res.data,'...')
           this.detpysList = res.data
         })
         postData('components/getGrades').then((res) => {
           this.gradesList = res.data
         })
+      },
+      getName(arr){
+          arr.forEach((item, index) => {
+              item.list.forEach(it => {
+                  if(item.id == it.id){
+                      this.form[item.name] = it.name
+                  }
+              })
+          })
       }
     }
   }

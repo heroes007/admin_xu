@@ -10,7 +10,7 @@
                    </FormItem>
                    <FormItem label="绑定课程" >
                         <Select v-model="form.subject_id" placeholder="请选择绑定课程">
-                            <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                            <Option v-for="item in curricumList" :key="item.id" :label="item.title" :value="item.id"></Option>
                         </Select>
                     </FormItem>
                     <!-- <FormItem label="学科" v-if='payload === 0'>
@@ -23,10 +23,17 @@
                                     <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                 </Select>
                            </FormItem> -->
-                    <FormItem label="上传附件" >
-                        <file-uploader :filters="dataFilters" maxFileCount="1"
+                    <FormItem label="上传附件" v-if="isupdata">
+                        <!-- <file-uploader :filters="dataFilters" maxFileCount="1"
                                     :maxFileSize="30000"  @uploadComplete="uploadComplete"
-                                    bucket="dscj-static-file" :dir='getDir()'/>
+                                    bucket="dscj-static-file" :dir='getDir()'/> -->
+                            <upload-btn bucket="dscj-app"  @uploadcomplete="uploadComplete" type="doc/pdf/zip"/>
+                   </FormItem>
+                   <FormItem  label="上传附件" v-else>
+                       <div style="display:flex">
+                           <p style="text-align:left">{{this.form.url_name}}</p>
+                           <Button style="margin:0 auto" type="error" @click="delUrl">删除</Button>
+                       </div>
                    </FormItem>
                     <FormItem class="btn-content" :label-width='0'>
                         <Button type="primary" class="sub-btn" @click="saveHandler">完成</Button>
@@ -43,11 +50,13 @@ import { RemoveModal } from './mixins'
 import UploadPanel from '../../components/UploadPanel'
 import Uploader from '../../components/Upload'
 import uploadPanel from '../../components/UploadPanel'
-import { get_category_by_id } from '../../api/modules/tools_task'
+import { get_category_by_id,save_datalist } from '../../api/modules/tools_task'
 import { Config } from '../../config/base'
 import { doTimeFormat } from '../../components/Util'
 import { mapState, mapActions } from 'vuex'
 import { MPop } from '../../components/MessagePop'
+import UploadImgs  from '../../components/UploadButton'
+import UploadBtn from '../../components/UploadButton'
 export default {
     mixins: [RemoveModal,MPop],
     props: {
@@ -59,14 +68,17 @@ export default {
     components: {
         'base-input': BaseInput,
         'file-uploader': Uploader,
-        uploadPanel
+        uploadPanel,
+        UploadImgs,
+        'upload-btn': UploadBtn
     },
     computed:{
          ...mapState({
             projectId:state => state.project.select_project_id,
             query_grade_list: state => state.grade.grade_list,
             query_subject_list: state => state.subject.subject_list,
-            course_download_data_list: state => state.download_data
+            course_download_data_list: state => state.download_data,
+            curricumList: state => state.task.curricum_list
             }),
         dataFilters(){
             var str = ['doc','pdf','zip'];
@@ -82,9 +94,11 @@ export default {
                 subject_id:null,
                 grade_id: null,
                 download_url:'',
+                url_name:'',
                 type:0
             },
-            loadingInstance: null
+            loadingInstance: null,
+            isupdata:true
         }
     },
     methods: {
@@ -93,17 +107,30 @@ export default {
             if(this.payload === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
             return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
          },
-        uploadComplete(id,result) {
-            this.form.download_url = result.url;
+        uploadComplete(val) {
+            if (val.url) {
+                this.form.download_url = val.url;
+                this.form.url_name = val.name
+                this.isupdata = false
+            }
         },
         saveHandler() {
-        //    if(this.payload === 0) this.add_public_download_data(this.form);
-        //    else this.add_course_download_data(this.form);
-          console.log(this.course_download_data_list);
-
+           if(this.payload === 0) this.add_public_download_data(this.form);
+           else this.add_course_download_data(this.form);
+        //     console.log(this.course_download_data_list);
+        //     save_datalist(this.form).then(res => {
+        //         if (res.data.res_code === 1) {
+        //             this.addDownloadDataDialog = false;
+        //         }
+        //     })
         },
         handleClose() {
             this.addDownloadDataDialog = false;
+        },
+        delUrl(){
+            this.form.download_url = '';
+            this.form.url_name = '';
+            this.isupdata = true;
         }
     },
     mounted() {

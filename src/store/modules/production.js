@@ -12,7 +12,7 @@ import {
   change_certificate,
   delete_certificate,
   add_certificate,
-  edit_certificate
+  edit_certificate,
 } from '../../api/modules/tools_product'
 
 
@@ -23,6 +23,8 @@ const state = {
   isLoading: false,
   pre_curriculum_change_guard: null,
   cur_production_id: 0,
+  add_product_state: false,
+  edit_product_state: false,
   stateList: [{id: 3, name: '首页推荐'}, {id: 0, name: '编辑中'}, {id: 1, name: '正常'}, {id: 2, name: '不可购买'}],
   examineTypeList: [{id: 0, name: '笔试和面试'}, {id: 1, name: '只面试'}, {id: 2, name: '只笔试'}, {id: 3, name: '免笔试面试'}],
 }
@@ -61,15 +63,17 @@ const actions = {
     })
   },
   add_production({commit}, param) {
+    commit('add_product_states',false)
     commit(types.PRODUCTION_SHOW_LOADING);
     add_product(param).then(res => {
       if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_ADDED, {result: res.data.msg, data: param})
-        if(param.certificate.length){
-          change_certificate(param.certificate, res.data.msg).then(res => {
-            console.log(res.data)
-          })
-        }
+        commit('add_product_states',true)
+        // commit(types.PRODUCTION_ADDED, {result: res.data.msg, data: param})
+        // if(param.certificate.length){
+          // change_certificate(param.certificate, res.data.msg).then(res => {
+          //   console.log(res.data)
+          // })
+        // }
         if (param._fn)
           param._fn();
       }
@@ -77,14 +81,16 @@ const actions = {
   },
   update_production({commit}, param) {
     commit(types.PRODUCTION_SHOW_LOADING);
-    update_product(param.product_id, param).then(res => {
+    commit('edit_product_states',false)
+    update_product(param).then(res => {
       if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_UPDATED, param)
-        if(param.certificate.length){
-          change_certificate(param.certificate, param.product_id).then(res => {
-            console.log(res.data)
-          })
-        }
+        commit('edit_product_states',true)
+        // commit(types.PRODUCTION_UPDATED, param)
+        // if(param.certificate.length){
+        //   change_certificate(param.certificate, param.product_id).then(res => {
+        //     console.log(res.data)
+        //   })
+        // }
         if (param._fn)
           param._fn();
       }
@@ -169,6 +175,12 @@ const actions = {
 }
 // mutations
 const mutations = {
+  add_product_states(state,param){
+    state.add_product_state = param
+  },
+  edit_product_states(state,param){
+    state.edit_product_state = param
+  },
   [types.PRODUCTION_CLEAR](state) {
     state.production_list = [];
   },

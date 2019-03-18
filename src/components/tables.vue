@@ -144,6 +144,7 @@
     },
     mounted() {
       this.handleColumns(this.column)
+      this.handleTableData(this.tableData)
     }
   }
 </script>

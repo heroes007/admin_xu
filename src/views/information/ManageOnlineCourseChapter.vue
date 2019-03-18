@@ -1,7 +1,7 @@
 <template>
     <div class='manage-online-course-chapter'>
         <!--<header-component :show-add='false'/>-->
-        <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle"/>
+        <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle" :btnType="true"/>
         <!--<Row class='course-name' type='flex' justify='space-between' align='middle'>-->
         <!--<div><h2>课程：{{curriculumName}}</h2></div>-->
         <!--<div><Button type='text' @click='backClickHandler'>返回</Button></div>-->
@@ -15,24 +15,23 @@
                                 <!--<div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>-->
                                 <div style="display: flex;align-items: center">
                                     <span class="row-title">第{{index + 1}}章</span>
-                                    <Input v-model="item.group_name" @on-change="editorNote(item, index)" @on-blur="outInput(index)"
-                                           @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
+                                    <Input v-model="item.group_name" @on-change="editorNote(item, index)" 
+                                         @on-blur="outInput(index)" @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
                                 </div>
                                 <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
                                 <div style="margin-right: 25px;">
                                     <Button type='text' @click="addVideo(item)">添加视频</Button>
                                     <Button type='text' @click="addTest(item)">添加测验</Button>
-                                    <Button v-if='showListState[index] == 0' type="text"  @click="toggleListShow(index)">展开</Button>
+                                    <Button v-if='showListState[index] == 0' type="text"  @click="toggleListShow(index,item)">展开</Button>
                                     <Button v-else-if='showListState[index] == 1' type="text"  @click="toggleListShow(index)">收起</Button>
                                 </div>
                             </Row>
                         </div>
                         <data-list @edit='editHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler'
                                    @delete='deleteHandler' class='data-list light-header'
-                                   :table-data='item.classList' :header-data='dataHeader'
-                                   :column-formatter='listColumnFormatter'
-                                   :column-formatter-data='listColumnFormatterData' :is-stripe='false'
-                                   v-show='showListState[index] == 1 && item.classList.length > 0'></data-list>
+                                   :table-data='item.children' :header-data='dataHeader'
+                                   :is-stripe='false'
+                                    v-if='showListState[index] == 1 && item.hasOwnProperty("children") && item.children.length > 0'></data-list>
                         <!--<Row class='chapter-btns' type='flex' justify='space-between' align='middle'-->
                              <!--v-if='showListState[index] == 1 || (index == chapterList.length - 1 && !newChapterData.showAddChapter)'>-->
                             <!--<div>-->
@@ -74,7 +73,7 @@
                         <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                             <div style="display: flex;align-items: center">
                                 <span class="row-title">第{{chapterList.length + 1}}章</span>
-                                <Input v-model="newChapterData.group_name"  @on-blur="outInput(0)" placeholder="请输入章节名称"
+                                <Input v-model="newChapterData.group_name"   @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
                                        @on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>
                             </div>
                             <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
@@ -131,27 +130,25 @@
         return [
           {label: '排序', width: 90, sort: true},
           {
-            prop: '', label: '小节名称', mixColumn: true, mixFunc: (function (data) {
-              return data.video_title ? data.video_title : '' + data.video_test_title ? data.video_test_title : '';
-            })
+            prop: 'group_name', label: '小节名称'
           },
-          {
-            prop: '',
-            label: '观看权限',
-            width: 200,
-            mixColumn: true,
-            useFormatter: true,
-            mixprop: 'mix_role',
-            mixFunc: (function (data) {
-              var roles;
-              if (data.type === 0) {
-                roles = data.video_role;
-              } else if (data.type === 1) {
-                roles = data.video_test_role;
-              }
-              return roles;
-            })
-          },
+          // {
+          //   prop: '',
+          //   label: '观看权限',
+          //   width: 200,
+          //   mixColumn: true,
+          //   useFormatter: true,
+          //   mixprop: 'mix_role',
+          //   mixFunc: (function (data) {
+          //     var roles;
+          //     if (data.type === 0) {
+          //       roles = data.video_role;
+          //     } else if (data.type === 1) {
+          //       roles = data.video_test_role;
+          //     }
+          //     return roles;
+          //   })
+          // },
           {prop: 'create_time', label: '创建时间', width: 200},
           {
             label: '操作', width: 350, groupBtn: [{text: '编辑', param: 'edit'},
@@ -179,7 +176,7 @@
         return this.$store.state.online_curriculum.showChapterLoading;
       },
       curriculumName() {
-        var curriculumList = this.$store.state.online_curriculum.online_curriculum_list;
+         var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
         if (Array.isArray(curriculumList) && curriculumList.length > 0) {
           var curriculumId = this.$route.params.id;
           for (var i = 0; i < curriculumList.length; i++) {
@@ -189,14 +186,19 @@
         return '';
       },
       chapterList() {
-        var curriculumList = this.$store.state.online_curriculum.online_curriculum_list;
+          var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
         if (Array.isArray(curriculumList) && curriculumList.length > 0) {
           var curriculumId = this.$route.params.id;
           for (var i = 0; i < curriculumList.length; i++) {
-            if (curriculumList[i].curriculum_id == curriculumId) return doSortFormatCatalogList(curriculumList[i].chapterList);
+            if (curriculumList[i].curriculum_id == curriculumId) {
+              // curriculumList[i].children = []
+                // console.log(doSortFormatCatalogList(curriculumList[i].chapterList),'logggggggggg');
+                // return doSortFormatCatalogList(curriculumList[i].chapterList);
+            }
           }
         }
-        return [];
+        console.log(curriculumList,'curriculumList')
+        return curriculumList || [];
       },
       curriculumList() {
         return this.$store.state.online_curriculum.online_curriculum_list;
@@ -227,6 +229,21 @@
       }
     },
     methods: {
+      saveChapter2(t,i){
+
+      },
+      saveChapter(t,i){
+        let d = {}
+        d.curriculum_id = +this.$route.params.id
+        if(i === true){
+          d.group_name = t.group_name
+        }else{
+         d = t
+         delete d.duration
+         delete d.video_url
+        }
+        this.$store.dispatch('add_online_curriculum_video',d)
+      },
       handleClick(val) {
         this.newChapterData.showAddChapter = true;
       },
@@ -244,14 +261,13 @@
       },
       editorNote(val, nums) {
         let d = {
-          curriculum_id: val.curriculum_id,
-          group_orderby: val.group_orderby,
+          id: val.id,
           group_name: val.group_name
         }
         updateVideoGroupName(d).then((res) => {
-          // if(res.data.res_code === 1) {
+          if(res.data.res_code === 1) {
           // this.$Message.success(res.data.msg);
-          // }
+          }
         })
       },
       openModal(modal, row, type) {
@@ -264,7 +280,8 @@
         });
       },
       editHandler(index, row) {
-        if (row.type === 0) this.openModal(VIDEO_MANAGE, row, 1)
+        console.log({y: 1111,...row},'{y: 1111,...row}')
+        if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
         else if (row.type === 1) this.openModal(ADD_QUESTION, row, 2)
       },
       moveHandler(row, type) {
@@ -289,24 +306,22 @@
             content: '<p>您已修改小节排序，是否放弃保存</p>',
             onOk: () => {
               this.resetOrder();
-              this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
+              this.showDeleteConfirm(row.id);
             },
           });
-        } else this.showDeleteConfirm(row.curriculum_id, row.catalog_id);
+        } else this.showDeleteConfirm(row.id);
       },
-      showDeleteConfirm(curriculum_id, catalog_id) {
+      showDeleteConfirm(d) {
         this.$Modal.confirm({
           title: '提示',
           content: '<p>是否确定删除该小节？</p>',
           onOk: () => {
-            this.$store.dispatch('delete_online_curriculum_catalog', {
-              curriculum_id: curriculum_id,
-              catalog_id: catalog_id
-            })
+            this.$store.dispatch('delete_online_curriculum_catalog',d)
           },
         });
       },
-      toggleListShow(index) {
+      toggleListShow(index,t) {
+        console.log(t,'ttt');
         this.showListState[index] = 1 - this.showListState[index];
       },
       addChapterHandler() {
@@ -326,8 +341,9 @@
       initChapter() {
         this.newChapterData.showAddChapter = false;
         this.dirty = false;
-        if (this.chapterList.length === 0) this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_id: this.$route.params.id})
-        else this.setChapterShowState();
+        this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: parseInt(this.$route.params.id)})
+        // if (this.chapterList.length === 0) this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: parseInt(this.$route.params.id)})
+        // else this.setChapterShowState();
         this.isInited = true;
       },
       setChapterShowState() {
@@ -346,46 +362,52 @@
       },
       addVideo(item) {
         if (!item) {
-          if (this.newChapterData.group_name) {
-            this.handleSelModal(VIDEO_MANAGE, {
-              curriculum_id: parseInt(this.$route.params.id),
-              group_name: this.newChapterData.group_name,
-              group_orderby: this.newChapterData.group_orderby,
-              orderby: 1
-            })
-          } else this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
+          // if (this.newChapterData.group_name) {
+          //   this.handleSelModal(VIDEO_MANAGE, {
+          //     curriculum_id: parseInt(this.$route.params.id),
+          //     group_name: this.newChapterData.group_name,
+          //     group_orderby: this.newChapterData.group_orderby,
+          //     orderby: 1,
+          //     parent_id: parseInt(this.$route.params.id)
+          //   })
+          // } else 
+          this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
           this.handleSelModal(VIDEO_MANAGE, {
             curriculum_id: item.curriculum_id,
+            parent_id: item.id,
             group_name: item.group_name,
             group_orderby: item.group_orderby,
-            orderby: item.classList[item.classList.length - 1].orderby + 1
+            orderby: item.orderby + 1
           });
         }
       },
       addTest(item) {
         if (!item) {
-          if (this.newChapterData.group_name) {
-            this.handleSelModal(ADD_QUESTION, {
-              curriculum_id: parseInt(this.$route.params.id),
-              group_name: this.newChapterData.group_name,
-              group_orderby: this.newChapterData.group_orderby,
-              orderby: 1
-            })
-          } else this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
+          // if (this.newChapterData.group_name) {
+          //   this.handleSelModal(ADD_QUESTION, {
+          //     curriculum_id: parseInt(this.$route.params.id),
+          //     group_name: this.newChapterData.group_name,
+          //     group_orderby: this.newChapterData.group_orderby,
+          //     orderby: 1
+          //   })
+          // } else 
+          this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
           this.handleSelModal(ADD_QUESTION, {
-            curriculum_id: item.curriculum_id,
+            curriculum_catalog_id: item.id,
             group_name: item.group_name,
             group_orderby: item.group_orderby,
-            orderby: item.classList[item.classList.length - 1].orderby + 1
+            orderby: item.orderby + 1
           });
         }
       },
       getLists() {
-        if (this.$store.state.online_curriculum.online_curriculum_list.length === 0) this.$store.dispatch('get_online_curriculum_list', {project_id: this.$store.state.project.select_project_id});
-        else this.initChapter();
-        this.$store.dispatch('get_role_list');
+        //   console.log(this.$store.state.online_curriculum.online_curriculum_list,'this.$store.state.online_curriculum.online_curriculum_list')
+        // if (this.$store.state.online_curriculum.online_curriculum_list.length === 0) this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.$store.state.project.select_project_id});
+        // else 
+        this.initChapter();
+        // this.$store.dispatch('get_role_list');
       }
     },
     mounted() {

@@ -8,32 +8,32 @@
             <div class='head-img'>
                 <img :src='userHeader'>
             </div>
-            <div class="head-title">浙江医院全科医生临床能力提升计划</div>
+            <div class="head-title">{{detail.title}}</div>
             <div class="head-list">
                 <div>
-                    <span class="w80">实际售价:</span><span>实际售价</span>
+                    <span class="w80">实际售价:</span><span>{{detail.price}}</span>
                 </div>
                 <div>
-                    <span class="w80"><span>原</span><span>价:</span></span><span>实际售价</span>
+                    <span class="w80"><span>原</span><span>价:</span></span><span>{{detail.original_price}}</span>
                 </div>
                 <div>
-                    <span class="w80">阅读人数:</span><span>实际售价</span>
+                    <span class="w80">阅读人数:</span><span>{{detail.view_num}}</span>
                 </div>
                 <div>
-                    <span class="w80">购买人数:</span><span>实际售价</span>
+                    <span class="w80">购买人数:</span><span>{{detail.pay_number}}</span>
                 </div>
                 <div>
-                    <span class="w80">结业人数:</span><span>实际售价</span>
+                    <span class="w80">结业人数:</span><span>{{detail.honour}}</span>
                 </div>
                 <div style="margin-top: 30px;">
-                    <span class="w80">创建人名:</span><span>实际售价</span>
+                    <span class="w80">创建人名:</span><span>{{detail.username}}</span>
                 </div>
                 <div>
-                    <span class="w80">创建时间:</span><span>实际售价</span>
+                    <span class="w80">创建时间:</span><span>{{detail.create_time}}</span>
                 </div>
             </div>
             <div class="head-btn">
-                <Button type="default" ghost class="btn-content" style="top: 10%;">编辑</Button>
+                <Button type="default" @click="edit" ghost class="btn-content" style="top: 10%;">编辑</Button>
                 <Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>
                 <Button type="default" ghost class="btn-content" style="top: 50%;" @click="handleDelete">注销</Button>
             </div>
@@ -44,15 +44,28 @@
 <script>
   import api from '../api/modules/config'
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-
+  import postData from '../api/postData.js'
+  import {Dialog} from "../views/dialogs";
+  import { ADD_PRODUCTION } from "../views/dialogs/types";
+  import {mapState} from 'vuex'
   export default {
+    mixins: [Dialog],
     data() {
       return {
         use_router: true,
-        activeIndex: ''
+        activeIndex: '',
+        detail: ''
       }
     },
     methods: {
+      getList(){
+        postData('/product/product/get_detail',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id} ).then((res) => {
+            this.detail = res.data[0]
+        })
+      },
+      edit(){
+          this.handleSelModal(ADD_PRODUCTION,{type: 2,row: this.detail});
+      },
       openChange(name) {
       },
       selectItem(index) {
@@ -85,13 +98,18 @@
     watch: {
       $route() {
         this.initMenu();
+      },
+      productState(_new){
+        if(_new) this.getList()
       }
     },
     mounted() {
+      this.getList();
       this.initMenu();
       if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
     },
     computed: {
+      ...mapState({productState: state => state.production.edit_product_state}),
       userInfo() {
         return this.$store.state.auth.userInfo;
       },

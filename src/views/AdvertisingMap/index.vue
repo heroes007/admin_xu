@@ -1,11 +1,11 @@
 <template>
     <Row>
-        <Tabs value="tabName" @on-click="changeatub" >
+        <Tabs v-model="tabName" @on-click="changeatub" >
             <TabPane  v-if="permissionCode1" label="首页轮播" name="lb">
-                <lb ref="mychild"/>
+                <lb ref="HomePageBroadcast" :type=true />
             </TabPane>
             <TabPane v-if="permissionCode2" label="课程页轮播" name="news">
-                <lb ref="mychild"/>
+                <lb ref="CoursePageRotation" />
             </TabPane>
         </Tabs>
          <Button class="add-advert" type="primary" @click="addatub()">添加广告</Button>
@@ -23,7 +23,7 @@
                 permissionCode2: true,
                 permissionItem1: null,
                 permissionItem2: null,
-                tabName: 'lb'
+                tabName: ''
             }
         },
         methods: {
@@ -31,30 +31,19 @@
                 this[ 'permissionCode' + n ] = true
                 this['permissionItem' + n] = t
             },
-            handleAuth(){
-                console.log(this.$PERMISSIONS4,'this.$PERMISSIONS4');
-                if(this.$PERMISSIONS4&&this.$PERMISSIONS4.hasOwnProperty('child')){
-                    let d = this.$PERMISSIONS4.child;
-                    d.forEach(t => {
-                        let n = +t.permission_code.slice(2,4)
-                        console.log(t,n,'aaaaa');
-                        // this.setAuth(n,t)
-                    });
-                }
-            },
             changeatub(name){
-                this.tabName = name
+                 localStorage.setItem('AdvertisingMap',name)
             },
             addatub(){
                 if (this.tabName == "lb") {
-                    this.$refs.mychild.addLb()
+                    this.$refs.HomePageBroadcast.addLb()
                 }else{
-                    this.$refs.mychild.addNew()
+                    this.$refs.CoursePageRotation.addNew()
                 }
             }
         },
         mounted(){
-
+            if(localStorage.getItem('AdvertisingMap')) this.tabName = localStorage.getItem('AdvertisingMap')
         }
     }
 </script>

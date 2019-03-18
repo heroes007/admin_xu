@@ -32,7 +32,7 @@ export function doOfflineCurriculumTypeFormat(val) {
       return '实践';
   }
 }
-export function doSortFormatCatalogList(list) {
+export function doSortFormatCatalogList(list)   {
   if (list.length === 0)
     return [];
 
@@ -133,15 +133,15 @@ export const MenuList = [
       name: 'advertising-map',
       title: '广告图'
     }, 
-    {
-      name: 'manage-news',
-      title: '行业资讯'
-    }, 
-    {
-      name: 'notification-chat',
-      badge: true,
-      title: '通知管理',
-    }
+    // {
+    //   name: 'manage-news',
+    //   title: '行业资讯'
+    // }, 
+    // {
+    //   name: 'notification-chat',
+    //   badge: true,
+    //   title: '通知管理',
+    // }
    ]
   },
 

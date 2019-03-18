@@ -21,16 +21,15 @@
             </Col>
         </Row>
        </div>
-
          <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
 
 <script>
-  import FormModal from '../../../components/FormModal.vue'
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
   import seeMixin from '../seeMixin'
+  import FormModal from '../../../components/FormModal.vue'
   import FormModalMixin from '../FormModalMixin'
   import postData from 'src/api/postData'
   import UserMixins from '../Mixins/UserMixins'

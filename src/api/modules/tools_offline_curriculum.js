@@ -3,9 +3,8 @@
  */
 import api from './config'
 
-export function get_offline_curriculum_list(offline_term_id) {
-    return api.post('api/tools_offline_curriculum/get_offline_curriculum_list',{
-        offline_term_id:offline_term_id});
+export function get_offline_curriculum_list(d) {
+    return api.post('/product/curriculum_offline/term_curriculum_get_list',d);
 }
 
 export function add_offline_curriculum(data) {
@@ -38,14 +37,12 @@ export function update_offline_curriculum(data) {
 }
 
 export function delete_offline_curriculum(curriculum_id) {
-    return api.post('api/tools_offline_curriculum/delete_offline_curriculum',{
-        curriculum_id:curriculum_id});
+    return api.post('/product/curriculum_offline/term_curriculum_delete',{
+      curriculum_underline_term_id:curriculum_id});
 }
 
-export function get_offline_term_list(project_id,last_count) {
-    return api.post('api/tools_offline_curriculum/get_offline_term_list',{
-        project_id:project_id,
-        last_count:last_count});
+export function get_offline_term_list(d) {
+    return api.post('/product/curriculum_offline/term_get_list',d);
 }
 
 export function add_offline_term(project_id,data) {
@@ -72,20 +69,18 @@ export function update_offline_term(offline_term_id,data) {
 }
 
 export function select_add_term(select_term_id) {
-    return api.post('api/tools_offline_curriculum/select_add_term',{
+    return api.post('product/curriculum_offline/term_delete',{
         select_term_id:select_term_id});
 }
 
 
 export function delete_offline_term(offline_term_id) {
-    return api.post('api/tools_offline_curriculum/delete_offline_term',{
-        offline_term_id:offline_term_id});
+    return api.post('/product/curriculum_offline/term_delete',{
+      term_underline_id:offline_term_id});
 }
 
-export function get_offline_curriculum_detail(offline_curriculum_id){
-  return api.post('api/tools_offline_curriculum/get_offline_curriculum_detail', {
-    offline_curriculum_id: offline_curriculum_id
-  })
+export function get_offline_curriculum_detail(d){
+  return api.post('/product/curriculum_offline/term_curriculum_get_list', d)
 }
 
 export function get_student_offline_curriculum_list(user_id,project_id){
