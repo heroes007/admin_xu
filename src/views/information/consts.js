@@ -18,29 +18,29 @@ let d = [
   label: '作业名称',
   // minWidth: 80
   width:200
-}, 
+},
 {
   prop: 'curriculum_title',
   label: '绑定课程',
   // minWidth: 80
   width:100
-}, 
+},
 {
-  prop: 'type',
+  prop: 'course',
   label: '类型',
   // minWidth: 80
   width:50
-}, 
+},
 // {
 //   prop: 'create_time',
 //   label: '创建时间',
 //   width: 120
-// }, 
+// },
 // {
 //   prop: 'grade_id',
 //   label: '学段',
 //   width: 80
-// }, 
+// },
 // {
 //   prop: 'subject_id',
 //   label: '学科',
@@ -54,11 +54,11 @@ let d = [
       {
         text: '统计',
         param: 'statistics'
-      }, 
+      },
       {
         text: '批阅',
         param: 'marking'
-      }, 
+      },
       {
       text: '编辑',
       param: 'edit'
@@ -72,6 +72,6 @@ let d = [
 export const taskHeadData = (type) => {
     let d2 = copys.copy(d,[]);
     let d3 = copys.copy(d,[]);
-    // if(d2[3] !== item) d3.splice(3,0,item); 
+    // if(d2[3] !== item) d3.splice(3,0,item);
     return type ? d2 : d3
 }

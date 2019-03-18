@@ -24,9 +24,9 @@ const actions = {
     get_curriculum_donwload_data_list({ commit }, params)
     {
         commit(types.DOWNLOAD_SHOW_LOADING);
-        get_curriculum_data_center(params.project_id, params.page).then(res => {
+        get_curriculum_data_center(params.project_id, params.page, params.keyword).then(res => {
             if(res.data.res_code === 1)
-            {                
+            {
                 commit(types.CURRICULUM_DOWNLOAD_LIST_LOADED,res.data.data);
             }
         })
@@ -52,8 +52,8 @@ const actions = {
         add_data_center(params).then(res => {
             if(res.data.res_code === 1)
             {
-                commit(types.COURSE_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
-                params._fn(res.data.msg);
+                // commit(types.COURSE_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
+                // params._fn(res.data.msg);
             }
         })
     },
@@ -62,8 +62,8 @@ const actions = {
         add_data_center(params).then(res => {
             if(res.data.res_code === 1)
             {
-                commit(types.PUBLIC_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
-                params._fn();
+                // commit(types.PUBLIC_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
+                // params._fn();
             }
         })
     },

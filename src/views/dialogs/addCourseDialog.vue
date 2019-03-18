@@ -380,9 +380,9 @@
             this.addCourseDialogVisible = false
         }
         else {
-            console.log(this.form,'forms')
             this.form.page = this.payload.page
             this.edit_online_curriculum({data: this.form});
+            this.addCourseDialogVisible = false
         }
       },
       handleRemove(file, fileList) {},

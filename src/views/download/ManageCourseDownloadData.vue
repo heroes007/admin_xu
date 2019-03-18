@@ -1,9 +1,12 @@
 <template>
     <div class='manage-course-download-data'>
         <!-- <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/> -->
-        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="pageTotal" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler" :btnType="true"/>
-        <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg' @edit='addClickHandler2' :isStripe='false' :table-data='dataList'
-          :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'  :table-height='listHeight'></data-list>
+        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="pageTotal" btnName="添加资料" @inputChange="manageEdit"
+                @handleClick="addClickHandler" :btnType="true"/>
+        <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg'
+                   @edit='addClickHandler2' :isStripe='false' :table-data='dataList'
+                   :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'
+                   :table-height='listHeight'></data-list>
         <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -11,18 +14,18 @@
 <script>
   import BaseList from '../../components/BaseList'
   import Header from '../../components/ProjectHeader'
-  import { mapActions, mapState, mapGetters } from 'vuex'
-  import { Dialog } from '../dialogs'
-  import { ADD_DOWNLOAD_DATA } from '../dialogs/types'
-  import { doTimeFormat } from '../../components/Util'
-  import { Config } from '../../config/base'
+  import {mapActions, mapState, mapGetters} from 'vuex'
+  import {Dialog} from '../dialogs'
+  import {ADD_DOWNLOAD_DATA} from '../dialogs/types'
+  import {doTimeFormat} from '../../components/Util'
+  import {Config} from '../../config/base'
   import screen from '../../components/ScreenFrame'
   import pageMixin from '../mixins/pageMixins'
   import pageList from '../../components/Page'
 
   export default {
     mixins: [Dialog, pageMixin],
-    components: { 'header-component': Header, 'data-list': BaseList ,screen, pageList},
+    components: {'header-component': Header, 'data-list': BaseList, screen, pageList},
     data() {
       return {
         searchData: '',
@@ -37,7 +40,7 @@
           use_time: null,
           state: 1
         },
-        courseNums:12
+        courseNums: 12
       }
     },
     computed: {
@@ -47,12 +50,12 @@
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
         projectId: state => state.project.select_project_id,
       }),
-        pageTotal() {
-            return this.$store.state.download_data.total;
-        },
-        listHeight() {
-            return window.innerHeight - 60 - 50 - 70;
-        },
+      pageTotal() {
+        return this.$store.state.download_data.total;
+      },
+      listHeight() {
+        return window.innerHeight - 60 - 50 - 70;
+      },
       comboDataList() {
         // var r = [];
         // var v = []
@@ -94,7 +97,7 @@
             prop: 'title',
             label: '资料名称',
             align: 'left',
-            width: 500
+            width: 400
           },
           // {
           //   prop: 'download_url',
@@ -103,41 +106,42 @@
           // },
           {
             label: '绑定课程',
-            prop: 'curriculum_id',
-            useCombo: true,
-            comboListIndex: 0,
-            listLabel: 'title',
-            listValue: 'curriculum_id',
-            actionName: 'change_course_download_data_pre_curriculum'
+            prop: 'curriculum_title',
+            width: 300,
+            // useCombo: true,
+            // comboListIndex: 0,
+            // listLabel: 'title',
+            // listValue: 'curriculum_id',
+            // actionName: 'change_course_download_data_pre_curriculum'
           },
           {
             label: '操作',
             minwidth: 300,
             groupBtn: [
-            //   {
-            //   isSwitch: true,
-            //   switchKey: 'is_valid',
-            //   onText: '启用',
-            //   offText: '停用',
-            //   disableText: '失效',
-            //   actionName: 'change_public_download_data_valid'
-            // },
-            {
-              text: '下载',
-              prop:'attachment_url',
-              param: 'download',
-              // isIcon: true
-            },
-            {
-              text: '编辑',
-              param: 'edit',
-              // isIcon: true
-            },
-            {
-              text: '删除',
-              param: 'delete',
-              // isIcon: true
-            }
+              //   {
+              //   isSwitch: true,
+              //   switchKey: 'is_valid',
+              //   onText: '启用',
+              //   offText: '停用',
+              //   disableText: '失效',
+              //   actionName: 'change_public_download_data_valid'
+              // },
+              {
+                text: '下载',
+                prop: 'attachment_url',
+                param: 'download',
+                // isIcon: true
+              },
+              {
+                text: '编辑',
+                param: 'edit',
+                // isIcon: true
+              },
+              {
+                text: '删除',
+                param: 'delete',
+                // isIcon: true
+              }
             ]
           }
         ]
@@ -156,15 +160,16 @@
       // }
     },
     methods: {
-      ...mapActions([ 'get_online_curriculum_list', 'get_curriculum_donwload_data_list', 'delete_download_data' ]),
+      ...mapActions(['get_online_curriculum_list', 'get_curriculum_donwload_data_list', 'delete_download_data']),
       addClickHandler() {
-        this.handleSelModal(ADD_DOWNLOAD_DATA, 1);
+        this.handleSelModal(ADD_DOWNLOAD_DATA, {state: 1,project_id: this.projectId, page: {page_size: this.pageSize, page_num: this.current}});
       },
-      addClickHandler2() {
-        this.handleSelModal(ADD_DOWNLOAD_DATA, 0);
+      addClickHandler2(index, row) {
+        this.handleSelModal(ADD_DOWNLOAD_DATA, {state: 0,project_id: this.projectId, page: {page_size: this.pageSize, page_num: this.current}, form: row});
       },
-      manageEdit(){
-        console.log("课程资料搜索");
+      manageEdit(val) {
+        this.keyword = val
+        this.initData()
       },
       deleteHandler(index, row) {
         this.$Modal.confirm({
@@ -175,22 +180,23 @@
           },
         });
       },
-      downloadMsg(row){
+      downloadMsg(row) {
         window.open(this.dataList[row].attachment_url)
       },
-        initData(){
-            this.get_curriculum_donwload_data_list({
-                project_id: this.projectId,
-                page: {page_size: this.pageSize, page_num: this.current}
-            });
-        }
+      initData() {
+        this.get_curriculum_donwload_data_list({
+          project_id: this.projectId,
+          page: {page_size: this.pageSize, page_num: this.current},
+          keyword: this.keyword
+        });
+      }
     },
     mounted() {
       // setTimeout(()=>{
       //   console.log(this.dataList,'this.dataList');
       // },1000)
       // this.get_online_curriculum_list({project_id: this.projectId});
-        this.initData()
+      this.initData()
     }
   }
 </script>
@@ -198,7 +204,8 @@
     .manage-course-download-data {
         .data-list {
             .base-list-row {
-                height: 65px;
+                height: 60px;
+
                 &.invalid-row {
                     background-color: #FBFBFB;
                 }

@@ -1,5 +1,5 @@
 <template>
-<Modal :transfer=false :title="payload === 0?'编辑资料':'添加资料'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false"
+<Modal :transfer=false :title="payload.state === 0?'编辑资料':'添加资料'" v-model="addDownloadDataDialog" @on-cancel="handleRemoveModal(remove)" :mask-closable="false"
        :footer-hide="true" :styles="{top: '17.3%'}" width="645">
     <base-input @closedialog="handleClose">
         <Row slot="body">
@@ -27,7 +27,7 @@
                         <!-- <file-uploader :filters="dataFilters" maxFileCount="1"
                                     :maxFileSize="30000"  @uploadComplete="uploadComplete"
                                     bucket="dscj-static-file" :dir='getDir()'/> -->
-                            <upload-btn bucket="dscj-app"  @uploadcomplete="uploadComplete" type="doc/pdf/zip"/>
+                            <upload-btn bucket="dscj-app" @uploadcomplete="uploadComplete" type="doc/pdf/zip"/>
                    </FormItem>
                    <FormItem  label="上传附件" v-else>
                        <div style="display:flex">
@@ -57,6 +57,8 @@ import { mapState, mapActions } from 'vuex'
 import { MPop } from '../../components/MessagePop'
 import UploadImgs  from '../../components/UploadButton'
 import UploadBtn from '../../components/UploadButton'
+import postData from '../../api/postData'
+
 export default {
     mixins: [RemoveModal,MPop],
     props: {
@@ -102,9 +104,9 @@ export default {
         }
     },
     methods: {
-        ...mapActions([ 'add_course_download_data', 'add_public_download_data' ]),
+        ...mapActions([ 'add_course_download_data', 'add_public_download_data',  'get_curriculum_donwload_data_list']),
         getDir() {
-            if(this.payload === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
+            if(this.payload.state === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
             return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
          },
         uploadComplete(val) {
@@ -115,8 +117,26 @@ export default {
             }
         },
         saveHandler() {
-           if(this.payload === 0) this.add_public_download_data(this.form);
+           if(this.payload.state === 0) {
+             console.log(this.form)
+             postData('product/data/change', {
+               data_id: this.form.id,
+               title: this.form.name,
+               curriculum_id: this.form.curriculum_id,
+               attachment_url: this.form.download_url,
+               attachment_name: this.form.url_name
+             }).then(res => {
+
+             })
+           }
            else this.add_course_download_data(this.form);
+
+           this.addDownloadDataDialog = false
+           this.get_curriculum_donwload_data_list({
+             project_id: this.payload.projectId,
+             page: this.payload.page
+           })
+
         //     console.log(this.course_download_data_list);
         //     save_datalist(this.form).then(res => {
         //         if (res.data.res_code === 1) {
@@ -140,10 +160,22 @@ export default {
             vm.showPop('添加成功！',1000);
         };
         this.form.project_id = this.projectId;
-        this.form.type = this.payload;
+        this.form.type = this.state;
         if(this.form.type === 0){
             this.form.grade_id = 0;
             this.form.subject_id = 0;
+        }
+        if(this.payload.state == 0) {
+          console.log(this.payload, 'payload111')
+          this.form.subject_id = this.payload.form.curriculum_id
+          this.form.curriculum_id = this.payload.form.curriculum_id
+          this.form.name = this.payload.form.title
+          this.form.id = this.payload.form.id
+          if(this.payload.form.attachment_url){
+            this.form.download_url = this.payload.form.attachment_url;
+            this.form.url_name = this.payload.form.attachment_name
+            this.isupdata = false
+          }
         }
 
 

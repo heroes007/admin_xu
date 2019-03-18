@@ -13,7 +13,7 @@ export function get_category_list(page, keyword) {
         product_id:id,
         page_size: page.page_size,
         page_num: page.page_num,
-        keyword: keyword,
+        search: keyword,
     });
 }
 
@@ -23,7 +23,7 @@ export function create_category(params) {
         type:params.jurisdiction,
         curriculum_id:params.binding_course,
         description:params.uploading,
-        attachment_url:params.attachment_url?params.attachment_url:"www.laoshi123.com"
+        attachment_url:JSON.stringify(params.downList)
     });
 }
 
@@ -38,7 +38,7 @@ export function edit_category_by_id(homworkId,params) {
         type:params.jurisdiction,
         curriculum_id:params.binding_course,
         description:params.uploading,
-        attachment_url:params.attachment_url?params.attachment_url:"www.laoshi123.com"
+        attachment_url:JSON.stringify(params.downList)
     });
 }
 
