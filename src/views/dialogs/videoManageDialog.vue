@@ -1,6 +1,6 @@
 <template>
     <Modal :transfer=false v-model="videoManageDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
-           :mask-closable="false" :footer-hide="true" width="600" title="添加视频">
+           :mask-closable="false" :footer-hide="true" width="600" :title="video_edit?'编辑视频':'添加视频'">
         <base-input :baseInputWidth="560" @closedialog="handleClose">
             <Row slot="body">
                 <!-- <span class="dscj-webfont-remove-sign"></span> -->
@@ -8,7 +8,7 @@
                     <!--<TabPane label="视频设置">-->
                         <Form ref="form" :model="form" :label-width="80">
                             <FormItem label="小节名称">
-                                <Input v-model="form.title" placeholder="请输入小节名称"></Input>
+                                <Input v-model="form.group_name" placeholder="请输入小节名称"></Input>
                             </FormItem>
                             <!--<FormItem label="视频状态">-->
                             <!--<Select v-model="form.region" placeholder="请选择视频状态">-->
@@ -126,6 +126,7 @@
           type: 2
         },
         selectedVideo: null,
+        video_edit: false,
         loading: null
       }
     },
@@ -207,21 +208,22 @@
         this.videoManageDialog = false;
       },
       handleSubmit() {
-        if (this.form.video_roles.length === 0) {
-          this.$Modal.info({
-            title: '提示',
-            content: '<p>请选择观看权限</p>'
-          });
-          return;
-        }
+        // if (this.form.video_roles.length === 0) {
+        //   this.$Modal.info({
+        //     title: '提示',
+        //     content: '<p>请选择观看权限</p>'
+        //   });
+        //   return;
+        // }
         if (this.payload.video_id) {
+          console.log(this.form,'this.form')
+            this.form.curriculum_online_id = this.payload.curriculum_online_id
           this.$store.dispatch('edit_online_curriculum_video', this.form);
-          this.handleRemoveModal(this.remove)
+          // this.handleRemoveModal(this.remove)
         } else {
-          console.log(this.form,'zdfszgd');
-          console.log(this.payload,this.payload);
           this.form.duration = parseInt(this.form.duration*60)
           this.form.parent_id = this.payload.parent_id
+          this.form.curriculum_online_id = this.payload.curriculum_online_id
           // this.form.parent_id = this.payload
           this.$store.dispatch('add_online_curriculum_video', this.form);
           this.handleRemoveModal(this.remove)
@@ -250,9 +252,14 @@
     mounted() {
       // this.$store.dispatch('get_role_list');
       this.form.curriculum_id = this.payload.curriculum_id;
-      this.form.group_name = this.payload.group_name;
       this.form.group_orderby = this.payload.group_orderby;
       this.form.orderby = this.payload.orderby;
+      if(this.payload.hasOwnProperty('video_edit')&&this.payload.video_edit){
+       this.$nextTick(() => {
+          this.form = this.payload
+        this.video_edit = true
+       })
+      }
       var vm = this;
       this.form._fn = function () {
         vm.handleClose();
@@ -280,6 +287,7 @@
   }
 </script>
 <style scoped lang="scss">
+   /deep/ .upload-panel .img img { width: 160px;height: 148px; }
     .btns{
         display: flex;
         justify-content: center;

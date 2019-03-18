@@ -85,7 +85,7 @@ export function add_product(param) {
     description: param.description,
     url_arr: param.url_arr,
   }
-  if(param.unlock_type === 0) delete d.unlock_type
+  // if(param.unlock_type === 0) delete d.unlock_type
   return api.post('product/product/add', d);
 }
 
@@ -101,7 +101,7 @@ export function update_product(param) {
     description: param.description,
     url_arr: param.url_arr,
   }
-  if(param.unlock_type === 0) delete d.unlock_type
+  // if(param.unlock_type === 0) delete d.unlock_type
   return api.post('/product/product/change', d);
 }
 

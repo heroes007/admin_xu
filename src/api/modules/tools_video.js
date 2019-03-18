@@ -42,17 +42,8 @@ export function get_detail(video_id) {
     });
 }
 
-export function update_video(video_id,data) {
-    return api.post('api/tools_video/update_video',{
-        video_id:video_id,
-        title:data.title,
-        duration:data.duration,
-        video_roles:data.video_roles,
-        dir:data.dir,
-        filename:data.filename,
-        video_url:data.video_url,
-        format:data.format
-    });
+export function update_video(d) {
+    return api.post('/product/curriculum_online_catalog/change',d);
 }
 
 export function select_update_video(select_video_id,video_id,catalog_id) {

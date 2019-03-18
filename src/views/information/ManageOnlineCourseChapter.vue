@@ -1,24 +1,17 @@
 <template>
     <div class='manage-online-course-chapter'>
-        <!--<header-component :show-add='false'/>-->
         <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle" :btnType="true"/>
-        <!--<Row class='course-name' type='flex' justify='space-between' align='middle'>-->
-        <!--<div><h2>课程：{{curriculumName}}</h2></div>-->
-        <!--<div><Button type='text' @click='backClickHandler'>返回</Button></div>-->
-        <!--</Row>-->
         <div class='chapter-container'>
             <div class='scroll-wrap'>
                 <div class='chapter-list'>
                     <div class='chapter-item' v-for='(item,index) in chapterList'>
                         <div>
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
-                                <!--<div><span>第{{index + 1}}章</span><h3>{{item.group_name}}</h3></div>-->
                                 <div style="display: flex;align-items: center">
                                     <span class="row-title">第{{index + 1}}章</span>
                                     <Input v-model="item.group_name" @on-change="editorNote(item, index)" 
                                          @on-blur="outInput(index)" @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
                                 </div>
-                                <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
                                 <div style="margin-right: 25px;">
                                     <Button type='text' @click="addVideo(item)">添加视频</Button>
                                     <Button type='text' @click="addTest(item)">添加测验</Button>
@@ -32,51 +25,14 @@
                                    :table-data='item.children' :header-data='dataHeader'
                                    :is-stripe='false'
                                     v-if='showListState[index] == 1 && item.hasOwnProperty("children") && item.children.length > 0'></data-list>
-                        <!--<Row class='chapter-btns' type='flex' justify='space-between' align='middle'-->
-                             <!--v-if='showListState[index] == 1 || (index == chapterList.length - 1 && !newChapterData.showAddChapter)'>-->
-                            <!--<div>-->
-                                <!--<Button type='text' icon='plus'-->
-                                        <!--v-if='index == chapterList.length - 1 && !newChapterData.showAddChapter'-->
-                                        <!--@click.stop='addChapterHandler'>添加章节-->
-                                <!--</Button>-->
-                            <!--</div>-->
-                            <!--<Row type='flex' align='middle' v-if='showListState[index] == 1'>-->
-                                <!--<Button type='text' @click="addVideo(item)">添加视频</Button>-->
-                                <!--<div class='line'></div>-->
-                                <!--<Button type='text' @click="addTest(item)">添加测验</Button>-->
-                                <!--&lt;!&ndash;<div class='line'></div>-->
-                                <!--<Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>&ndash;&gt;-->
-                            <!--</Row>-->
-                        <!--</Row>-->
                     </div>
                     <div class='chapter-item' v-if='newChapterData.showAddChapter'>
-                        <!--<Row class='chapter-title' type='flex' justify='space-between' align='middle'>-->
-                            <!--<div>-->
-                                <!--<span>第{{chapterList.length + 1}}章</span>-->
-                                <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
-                            <!--</div>-->
-                            <!--<div>-->
-                                <!--<Icon type="ios-arrow-up"/>-->
-                            <!--</div>-->
-                        <!--</Row>-->
-                        <!--<Row class='chapter-btns' type='flex' justify='space-between' align='middle'>-->
-                            <!--<div>-->
-                                <!--<span class='warning'>请至少添加一个视频或测验，否则章节信息将无法保存成功。取消添加请点击返回。</span>-->
-                            <!--</div>-->
-                            <!--<Row type='flex' align='middle'>-->
-                                <!--<Button type='text' @click="addVideo()">添加视频</Button>-->
-                                <!--<Button type='text' @click="addTest()">添加测验</Button>-->
-                                <!--&lt;!&ndash;<div class='line'></div>-->
-                                <!--<Button type='text' @click="handleSelModal('video-manage')">添加问卷</Button>&ndash;&gt;-->
-                            <!--</Row>-->
-                        <!--</Row>-->
                         <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                             <div style="display: flex;align-items: center">
                                 <span class="row-title">第{{chapterList.length + 1}}章</span>
                                 <Input v-model="newChapterData.group_name"   @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
                                        @on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>
                             </div>
-                            <!--<input v-model="newChapterData.group_name" placeholder="请输入章节名称" @click.stop/>-->
                             <div style="margin-right: 25px;">
                                 <Button type='text' @click="addVideo()">添加视频</Button>
                                 <Button type='text' @click="addTest()">添加测验</Button>
@@ -235,6 +191,7 @@
       saveChapter(t,i){
         let d = {}
         d.curriculum_id = +this.$route.params.id
+        d.curriculum_online_id =  +this.$route.params.id
         if(i === true){
           d.group_name = t.group_name
         }else{
@@ -280,9 +237,11 @@
         });
       },
       editHandler(index, row) {
-        console.log({y: 1111,...row},'{y: 1111,...row}')
-        if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
-        else if (row.type === 1) this.openModal(ADD_QUESTION, row, 2)
+        if(row.type === 0) {
+          this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id})
+        }
+        // if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
+        // else if (row.type === 1) this.openModal(ADD_QUESTION, row, 2)
       },
       moveHandler(row, type) {
         this.dirty = true;
@@ -374,11 +333,13 @@
           this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
           this.handleSelModal(VIDEO_MANAGE, {
+            curriculum_online_id: +this.$route.params.id,
             curriculum_id: item.curriculum_id,
             parent_id: item.id,
             group_name: item.group_name,
             group_orderby: item.group_orderby,
-            orderby: item.orderby + 1
+            orderby: item.orderby + 1,
+            type: 0
           });
         }
       },
