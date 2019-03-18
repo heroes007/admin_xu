@@ -14,29 +14,34 @@ Vue.use(LoadingY)
 // this registers `store.state.route`
 sync(store, router)
 router.beforeEach((to, from, next) => {
-  if (store.state.auth.userInfo || to.name === 'login') {
+  let str = window.location.href
+  let s = str.slice(str.length-1);
+  if(s === '/') window.location.href = '/login'
+  else if (store.state.auth.userInfo || to.name === 'login') {
     next();
   } else {
-    postData('user/getUserPermission',{from:"web"}).then((res) => {
-      if(res.res_code === 1 && res.data){
-        localStorage.setItem('token',res.data.token)
-        localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(res.data.permissions)));
-        user_info().then((res) => {
-          if (res.data.res_code === 1) {
-            let d = res.data.data;
-            localStorage.setItem('organizationId',d.organization_id)
-            store.dispatch('set_user_info', d);
-            localStorage.setItem('PERSONALDETAILS',JSON.stringify(d))
-            next();
-          } else {
-            if (to.name !== 'login') next({ path: '/login' });
-            else next();
-          }
-        })
-      }else{
-        Message.warning('暂无权限');
-      }
-    })
+    if (to.name !== 'login') {
+      postData('user/getUserPermission',{from:"web"}).then((res) => {
+        if(res.res_code === 1 && res.data){
+          localStorage.setItem('token',res.data.token)
+          localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(res.data.permissions)));
+          user_info().then((res) => {
+            if (res.data.res_code === 1) {
+              let d = res.data.data;
+              localStorage.setItem('organizationId',d.organization_id)
+              store.dispatch('set_user_info', d);
+              localStorage.setItem('PERSONALDETAILS',JSON.stringify(d))
+              next();
+            } else {
+              if (to.name !== 'login') next({ path: '/login' });
+              else next();
+            }
+          })
+        }else{
+          Message.warning('暂无权限');
+        }
+      })
+    }
   }
 })
 export default router;

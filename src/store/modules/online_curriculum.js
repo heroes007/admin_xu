@@ -37,9 +37,9 @@ const actions = {
     },
     get_online_curriculum_chapter_list({commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_LOADING);
-        get_catalog(params.curriculum_online_id).then(res => {
-            console.log(res.data, 'res.data')
+        get_catalog(params).then(res => {
             if (res.data.res_code === 1) {
+                console.log(res.data.data,'res.data.data11');
                 commit(types.ONLINE_CURRICULUM_CHAPTER_LOADED, {
                     result: res.data.data,
                     curriculum_id: params.curriculum_online_id
@@ -110,18 +110,19 @@ const actions = {
     },
     edit_online_curriculum({dispatch, commit}, params) {
         commit(types.ONLINE_CURRICULUM_EDITING);
-        console.log(params,'params')
+        // console.log(params,'params')
         update_curriculum(params.data).then(res => {
             if (res.data.res_code === 1) {
+                console.log(params,'params');
                 dispatch('ONLINE_CURRICULUM_EDITED', params.data)
                 // params.data._fn();
             }
         })
     },
     ONLINE_CURRICULUM_EDITED({commit}, params) {
-        get_list(params.project_id, params.title).then(function (res) {
+        get_list(params.page).then(function (res) {
             if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_LIST_LOADED, res.data.msg);
+                commit(types.ONLINE_CURRICULUM_LIST_LOADED, res.data.data.data);
             }
         });
         commit('ONLINE_CURRICULUM_ORDERBY_CLOSE')
@@ -136,11 +137,10 @@ const actions = {
     },
     add_online_curriculum_video({commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
-        console.log(params, 'params111')
         add_video(params).then(res => {
             if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
-                params._fn();
+                // commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
+                // params._fn();
             }
         })
     },
@@ -164,9 +164,9 @@ const actions = {
     },
     delete_online_curriculum_catalog({commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
-        delete_catalog(params.catalog_id).then(res => {
+        delete_catalog(params).then(res => {
             if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params);
+                // commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params);
             }
         })
     },
@@ -195,7 +195,7 @@ const mutations = {
             state.online_curriculum_old_list.push(list[i]);
         }
         state.online_curriculum_list = list || state.list;
-        state.showMainLoading = true;
+        state.showMainLoading = false;
     },
     [types.ONLINE_CURRICULUM_PAGE_LOADED](state, page) {
         state.total = page.count
@@ -207,20 +207,17 @@ const mutations = {
         state.showChapterLoading = true;
     },
     [types.ONLINE_CURRICULUM_CHAPTER_LOADED](state, params) {
-        console.log(params, state.online_curriculum_list, 'aaaaaa')
-
         var i;
-
         for (i = 0; i < params.result.length; i++) {
             params.result[i].old_orderby = params.result[i].orderby;
         }
-
-        for (i = 0; i < state.online_curriculum_list.length; i++) {
-            if (state.online_curriculum_list[i].id == params.curriculum_id) {
-                state.online_curriculum_list[i].chapterList = params.result;
-                break;
-            }
-        }
+        state.online_curriculum_list = params.result
+        // for (i = 0; i < state.online_curriculum_list.length; i++) {
+        //     if (state.online_curriculum_list[i].id == params.curriculum_id) {
+        //         state.online_curriculum_list[i].chapterList = params.result;
+        //         break;
+        //     }
+        // }
         console.log(params, state.online_curriculum_list, 'bbbbbb')
 
         state.showChapterLoading = false;

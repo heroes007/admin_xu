@@ -238,13 +238,14 @@
       this.getListTeacher()
       this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
         console.log(this.payload,'payload')
-        if(this.payload.state == 0) this.form = this.$store.state.online_curriculum.online_curriculum_old_list[this.payload.index]
-
+        let d = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_old_list,[])
+        if(this.payload.state == 0) this.form = d[this.payload.index]
+        this.form.img_default = d[this.payload.index].img_url
         // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
       // this.get_grade_list();
-      // this.checkPayload();
+      this.checkPayload();
       // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
     watch: {
@@ -355,10 +356,10 @@
         // this.form.project_id = this.project_id;
         // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
         // var vm = this;
-        // this.form._fn = function () {
-        //   vm.handleClose();
-        //   vm.showPop('保存成功！', 1000);
-        // };
+        this.form._fn = function () {
+          vm.handleClose();
+          vm.showPop('保存成功！', 1000);
+        };
         // if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
         //   var preList = [];
         //   for (var i = 0; i < this.top_course_list.length; i++) {
@@ -380,6 +381,7 @@
         }
         else {
             console.log(this.form,'forms')
+            this.form.page = this.payload.page
             this.edit_online_curriculum({data: this.form});
         }
       },

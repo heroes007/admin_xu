@@ -279,10 +279,10 @@
         //     },
         //   });
         // } else {
-        new Promise((resolve, reject)=>{
-          this.$store.dispatch('add_online_curriculum_test', this.formInline1)
-          resolve()
-        }).then(res=>{
+        // new Promise((resolve, reject)=>{
+        //   this.$store.dispatch('add_online_curriculum_test', this.formInline1)
+        //   resolve()
+        // }).then(res=>{
           this.formInline2.result = [];
           for (var i = 0; i < this.formInline2.answerList.length; i++) {
             if (this.formInline2.answerList[i].answer) {
@@ -294,7 +294,10 @@
             body: this.formInline2.body,
             answerList: this.formInline2.answerList
           });
-
+          this.formInline2.curriculum_catalog_id = this.payload.curriculum_catalog_id
+          this.formInline2.title = this.formInline1.title;
+          this.formInline2.select_count = +this.formInline2.select_count
+          // console.log(this.formInline2,'this.formInline2',this.payload)
           if (this.formInline2.video_test_detail_id > 0) {
             update_test_detail(this.formInline2.video_test_detail_id, this.formInline2).then(res => {
               if (res.data.res_code === 1) {
@@ -307,6 +310,7 @@
                     break;
                   }
                 }
+                this.cancelSaveHandler()
                 this.$Modal.info({
                   title: '提示',
                   content: '保存成功。'
@@ -314,16 +318,17 @@
               }
             })
           } else {
-            add_test_detail(this.formInline1.video_test_id, this.formInline2).then(res => {
+            add_test_detail(this.formInline2).then(res => {
               if (res.data.res_code === 1) {
-                this.dataList.push({
-                  id: res.data.msg,
-                  content: this.formInline2.content,
-                  orderby: this.formInline2.orderby,
-                  result: this.formInline2.result,
-                  select_count: this.formInline2.select_count,
-                  video_test_id: this.formInline1.video_test_id
-                })
+                // this.dataList.push({
+                //   id: res.data.msg,
+                //   content: this.formInline2.content,
+                //   orderby: this.formInline2.orderby,
+                //   result: this.formInline2.result,
+                //   select_count: this.formInline2.select_count,
+                //   video_test_id: this.formInline1.video_test_id
+                // })
+                this.cancelSaveHandler()
                 this.$Modal.info({
                   title: '提示',
                   content: '添加成功。'
@@ -331,8 +336,8 @@
               }
             })
           }
-          this.cancelSaveHandler()
-        })
+          // this.cancelSaveHandler()
+        // })
 
         // }
       },

@@ -207,7 +207,6 @@
         this.videoManageDialog = false;
       },
       handleSubmit() {
-          this.form.duration = parseInt(this.form.duration)
         if (this.form.video_roles.length === 0) {
           this.$Modal.info({
             title: '提示',
@@ -219,6 +218,11 @@
           this.$store.dispatch('edit_online_curriculum_video', this.form);
           this.handleRemoveModal(this.remove)
         } else {
+          console.log(this.form,'zdfszgd');
+          console.log(this.payload,this.payload);
+          this.form.duration = parseInt(this.form.duration*60)
+          this.form.parent_id = this.payload.parent_id
+          // this.form.parent_id = this.payload
           this.$store.dispatch('add_online_curriculum_video', this.form);
           this.handleRemoveModal(this.remove)
         }
@@ -244,7 +248,7 @@
       }
     },
     mounted() {
-      this.$store.dispatch('get_role_list');
+      // this.$store.dispatch('get_role_list');
       this.form.curriculum_id = this.payload.curriculum_id;
       this.form.group_name = this.payload.group_name;
       this.form.group_orderby = this.payload.group_orderby;
@@ -254,23 +258,24 @@
         vm.handleClose();
         vm.showPop('保存成功！', 1000);
       }
-      if (this.payload.video_id) {
-        get_detail(this.payload.video_id).then(res => {
-          if (res.data.res_code === 1) {
-            this.form.video_id = this.payload.video_id;
-            this.form.title = res.data.msg.video[0].title;
-            this.form.duration = res.data.msg.video[0].duration;
-            this.form.video_roles = res.data.msg.video_role ? res.data.msg.video_role : [];
-          }
-        })
-        get_video_source(this.payload.video_id, 720).then(res => {
-          if (res.data.res_code === 1) {
-            this.form.video_url = res.data.msg;
-          }
-        })
-      } else {
-        this.form.format = 720;
-      }
+      console.log(this.payload,'payloadpayload');
+      // if (this.payload.video_id) {
+      //   get_detail(this.payload.video_id).then(res => {
+      //     if (res.data.res_code === 1) {
+      //       this.form.video_id = this.payload.video_id;
+      //       this.form.title = res.data.msg.video[0].title;
+      //       this.form.duration = res.data.msg.video[0].duration;
+      //       this.form.video_roles = res.data.msg.video_role ? res.data.msg.video_role : [];
+      //     }
+      //   })
+      //   get_video_source(this.payload.video_id, 720).then(res => {
+      //     if (res.data.res_code === 1) {
+      //       this.form.video_url = res.data.msg;
+      //     }
+      //   })
+      // } else {
+      //   this.form.format = 720;
+      // }
     }
   }
 </script>
