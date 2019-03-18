@@ -127,7 +127,6 @@
             }).then(res =>  {
               res.data.data.forEach(item => {
                 item.isState = item.mark_state == 1 ? '已批阅' : '未批阅'
-                // this.columns1[7].operation[0][2] = item.mark_state == 0 ? false : true
               })
                 this.list = res.data.data
                 this.total = res.data.total
