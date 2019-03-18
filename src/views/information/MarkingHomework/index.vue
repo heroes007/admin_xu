@@ -17,6 +17,7 @@
   import postData from '../../../api/postData'
   import pageMixin from '../../mixins/pageMixins'
   import pageList from '../../../components/Page'
+  import {mapState} from 'vuex'
 
   export default {
     mixins: [Dialog, pageMixin],
@@ -87,6 +88,14 @@
             ]
         }
     },
+    computed:{
+      ...mapState(['taskState'])
+    },
+    watch: {
+      taskState() {
+        this.initData()
+      }
+    },
     methods: {
         selectChange1(val){
         console.log(val)
@@ -127,8 +136,6 @@
             }).then(res =>  {
               res.data.data.forEach(item => {
                 item.isState = item.mark_state == 1 ? '已批阅' : '未批阅'
-                item.stateText = item.mark_state == 1 ? true : false;
-                // this.columns1[7].operation[0][2] = item.mark_state == 0 ? false : true
               })
                 this.list = res.data.data
                 this.total = res.data.total

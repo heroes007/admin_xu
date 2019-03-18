@@ -32,26 +32,27 @@
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
                             <Col class="head-form">
                                 <img :src="studata.stuimg" alt="">
-                                <p>{{studata.stuname}}</p>
+                                <p>{{payload.row.realname}}</p>
                             </Col>
                             <Col class="body-form">
-                                <p>{{studata.stuwork}}</p>
-                                <Col class="download-from">
-                                    <img class="file-icon" src="../../../static/icon/文件icon.png" alt="">
-                                    <a href="">{{studata.stuurl}}</a>
-                                    <img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">
-                                </Col>
+                                <p>{{payload.row.answer}}</p>
+                                <!--<Col class="download-from">-->
+                                    <!--<img class="file-icon" src="../../../static/icon/文件icon.png" alt="">-->
+                                    <!--<a href="">{{studata.stuurl}}</a>-->
+                                    <!--<img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">-->
+                                <!--</Col>-->
+                                <down-loading :formData="downList"/>
                             </Col>
                             <Col class="show-from" v-for="(item, index) in studata.teacherTail" :key="index">
                                 <Row class="show-from-line1">
                                     <p class="tail-title">导师评语：</p>
-                                    <p class="tail-number">{{item.contnumber}}分</p>
+                                    <p class="tail-number">{{item.score}}分</p>
                                 </Row>
                                 <Row class="show-from-line2">
-                                    <p class="tail-detail">{{item.contdetail}}</p>
+                                    <p class="tail-detail">{{item.comment}}</p>
                                 </Row>
                                 <Row class="show-from-line3">
-                                    <p class="tail-time">{{item.conttime}}</p>
+                                    <p class="tail-time">{{item.update_time}}</p>
                                 </Row>
                             </Col>
                     </Form>
@@ -85,15 +86,10 @@
     data() {
       return {
         readInput: '',
-          numInput:'',
+        numInput: null,
         addCourseDialogVisible: true,
         videoManageDialog: true,
-        downList: [
-            {
-                name: '百度',
-                url: 'https://www.baidu.com/img/bd_logo1.png?where=super'
-            }
-        ],
+        downList: [],
         form: {
           title: '',
           teacher_id: '',
@@ -163,13 +159,18 @@
       // this.get_grade_list();
       // this.checkPayload();
         // this.get_curriculum_donwload_data_list({project_id: this.project_id});
+      this.$store.commit('get_task_state', false)
 
-        console.log(this.payload)
-        // this.downList = this.payload.
-        postData('product/homework/mark_get_list',{
+      postData('product/homework/mark_get_list',{
             student_homework_id: this.payload.row.id
         }).then(res => {
             console.log(res,'home')
+            this.studata.teacherTail = res.data
+        })
+        this.downList = JSON.parse(this.payload.row.attachment_url)
+        this.downList.forEach(item => {
+          item.name = item.attachment_name
+          item.url = item.attachment_url
         })
     },
     watch: {
@@ -241,13 +242,16 @@
         'get_curriculum_donwload_data_list'
       ]),
         saveSubmit(){
-            console.log(this.payload.row, '111');
             postData('product/homework/mark_add',{
-              student_homework_id: this.payload.row.student_id,
+              student_homework_id: this.payload.row.id,
               score: this.numInput,
               comment: this.readInput,
           }).then(res => {
-              console.log(res.data)
+              if(res.res_code == 1) {
+                this.addCourseDialogVisible = false
+                // this.$emit('addTure', res.res_code)
+                this.$store.commit('get_task_state', true)
+              }
           })
         },
       getDir() {

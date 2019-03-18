@@ -350,11 +350,10 @@
         this.formInline2.orderby = this.dataList.length > 0 ? this.dataList[this.dataList.length - 1].orderby + 1 : 1;
       },
       getList(){
-        
+
       }
     },
     mounted() {
-      console.log(this.payload,'ss');
       // this.$store.dispatch('get_role_list');
       this.formInline1.curriculum_id = this.payload.curriculum_id;
       this.formInline1.group_name = this.payload.group_name;
