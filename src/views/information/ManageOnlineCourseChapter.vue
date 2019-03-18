@@ -280,6 +280,7 @@
         });
       },
       editHandler(index, row) {
+        console.log({y: 1111,...row},'{y: 1111,...row}')
         if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
         else if (row.type === 1) this.openModal(ADD_QUESTION, row, 2)
       },

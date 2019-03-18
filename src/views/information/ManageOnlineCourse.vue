@@ -5,7 +5,6 @@
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler'
                    @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList' :header-data='dataHeader'
                    :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :table-height='listHeight'>
-            <!--<page-list slot="pager" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>-->
         </data-list>
         <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
         <!--<save-order v-if='dirty' @saveOrder='saveOrderHandler' @cancelChange='resetCurriculumOrder'/>-->

@@ -1,7 +1,7 @@
 <template>
    <div>
         <screen :types="9"  @handleBack="handleBack" :title="screenTitle"/>
-        <screen :types="1" size-title1="提交作业人数" :size-num1="23" btn-name="上传批阅" :select1="selectList" 
+        <screen :types="1" size-title1="提交作业人数" :size-num1=count btn-name="上传批阅" :select1="selectList"
                     @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
    </div>
@@ -13,6 +13,7 @@
   import * as types from '../../dialogs/types';
   import { Dialog } from '../../dialogs/index';
   import {get_read_over} from '../../../api/modules/tools_task';
+  import postData from '../../../api/postData'
 
   export default {
     mixins: [Dialog],
@@ -22,6 +23,8 @@
         return{
             selectList: [],
             screenTitle: '',
+            search: '',
+            count: null,
             columns1: [
             {
                 title: '用户名',
@@ -97,7 +100,8 @@
             console.log(row,rowIndex);
         },
         inputChange(val){
-            console.log(val)
+            this.search = val
+            this.getList()
         },
         handleClick(){
             console.log('open modal')
@@ -109,6 +113,17 @@
             this.list.map((it) => {
                 it.state1 = it.state ? '已批阅' : '未批阅'
             })
+        },
+        getList(){
+            postData('product/homework/student_homework_get_list',{
+                homework_id: parseInt(this.$route.params.id),
+                search: this.search,
+                page_size: 12,
+                page_num: 1
+            }).then(res =>  {
+                this.list = res.data.data
+                this.count = res.data.count
+            })
         }
     },
     mounted() {
@@ -116,10 +131,12 @@
         if(localStorage.getItem('MarkingHomework')){
             this.screenTitle = JSON.parse(localStorage.getItem('MarkingHomework')).name
         }
-        get_read_over().then(res=>{
-            console.log(res);
-            this.list = res.data.data.data
-        })
+        // get_read_over().then(res=>{
+        //     console.log(res);
+        //     this.list = res.data.data.data
+        // })
+        // console.log(this.$route.params.id,'$route')
+       this.getList()
     }
   }
 </script>

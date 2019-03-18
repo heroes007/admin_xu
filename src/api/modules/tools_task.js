@@ -7,9 +7,14 @@ import api from './config'
 //     return api.post('api/tools_task/get_category_list',{project_id:project_id});
 // }
 
-export function get_category_list() {
+export function get_category_list(page, keyword) {
     let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
-    return api.post('/product/homework/get_list',{product_id:id,page_size:10,page_num:1});
+    return api.post('/product/homework/get_list',{
+        product_id:id,
+        page_size: page.page_size,
+        page_num: page.page_num,
+        keyword: keyword,
+    });
 }
 
 export function create_category(params) {

@@ -17,6 +17,7 @@ import {
 const state = {
     task_category_list: [],
     showLoading: false,
+    total: null,
     activityTypeList: [{
         id: 1,
         name: '手动发送'
@@ -40,17 +41,14 @@ var catch_cid = ''
 
 // actions
 const actions = {
-        get_task_category_list({
-            commit
-        }, params) {
+        get_task_category_list({ commit }, params) {
             commit(types.TASK_SHOW_LOADING);
-            let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
-            get_category_list(params.project_id).then(res => {
+            get_category_list(params.page, params.keyword).then(res => {
                 if (res.data.res_code === 1) {
-                    commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data.data);
+                    commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data);
                 }
             }),
-            get_curriculumlist_online(v).then(res => {
+            get_curriculumlist_online().then(res => {
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CURRICUMLIST,{
                         result:res.data.data.data
@@ -106,9 +104,7 @@ const actions = {
                 }
             })
         },
-        get_task_list({
-            commit
-        }, params) {
+        get_task_list({ commit }, params) {
             commit(types.TASK_SHOW_LOADING);
             catch_cid = params.task_category_id
             // get_tasklist_by_cid(params.task_category_id).then(res => {
@@ -180,6 +176,8 @@ const mutations = {
         state.showLoading = true;
     },
     [types.TASK_CATEGORY_LIST_LOADED](state, params) {
+        console.log(params,'aaaaaaaaaaaa')
+        state.total = params.count
         // let first = {
         //     id:0,
         //     name:"未选择",
@@ -192,15 +190,15 @@ const mutations = {
         // }
         // params.unshift(first);
 
-        for (let i = 0; i < params.length; i++) {
-            if (params[i].type == "online") {
-                params[i].type = "线上课"
+        for (let i = 0; i < params.data.length; i++) {
+            if (params.data[i].type == "online") {
+                params.data[i].type = "线上课"
             }else{
-                params[i].type = "线下课"
+                params.data[i].type = "线下课"
             }
         }
 
-        state.task_category_list = params || state.task_category_list;
+        state.task_category_list = params.data || state.task_category_list;
         state.showLoading = false;
     },
     [types.TASK_CATEGORY_ADDED](state, params) {

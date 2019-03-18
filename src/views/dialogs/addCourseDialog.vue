@@ -500,12 +500,10 @@
           arr.forEach((item, index) => {
               item.list.forEach(it => {
                   if(item.id == it.id){
-                      console.log(item, it, '00000')
                       this.form[item.name] = it.name
                   }
               })
           })
-          console.log(this.form,'form')
       }
     }
   }

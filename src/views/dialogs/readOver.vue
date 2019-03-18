@@ -8,23 +8,24 @@
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
                             <Col class="head-form">
                                 <img :src="studata.stuimg" alt="">
-                                <p>{{studata.stuname}}</p>
+                                <p>{{payload.row.realname}}</p>
                             </Col>
                             <Col class="body-form">
-                                <p>{{studata.stuwork}}</p>
-                                <Col class="download-from">
-                                    <img class="file-icon" src="../../../static/icon/文件icon.png" alt="">
-                                    <a href="">{{studata.stuurl}}</a>
-                                    <img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">
-                                </Col>
+                                <p>{{payload.row.answer}}</p>
+                                <!--<Col class="download-from">-->
+                                    <!--<img class="file-icon" src="../../../static/icon/文件icon.png" alt="">-->
+                                    <!--<a href="">{{studata.stuurl}}</a>-->
+                                    <!--<img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">-->
+                                <!--</Col>-->
+                                <down-loading :formData="downList"/>
                             </Col>
                             <Col class="input-form">
-                                <Input type="textarea" size="small" placeholder="请输入批阅内容"></Input>
+                                <Input v-model="readInput" type="textarea" size="small" placeholder="请输入批阅内容"/>
                             </Col>
                             <FormItem class="number-from" label="评分" :label-width="40">
-                                <Input style="width:150px"  placeholder="满分100分"></Input>
+                                <InputNumber v-model="numInput" style="width:150px" :max="100" :min="0"  placeholder="满分100分"></InputNumber>
                             </FormItem>
-                            <Button type="primary" class="save-from">保存</Button>
+                            <Button type="primary" class="save-from" @click="saveSubmit">保存</Button>
                     </Form>
                 </Row>
                 <Row class="body-top" v-if="payload.type==2">
@@ -72,6 +73,8 @@
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'
   import { MPop } from '../../components/MessagePop'
+  import downLoading from '../../components/DownLoading'
+  import postData from '../../api/postData'
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -81,8 +84,16 @@
     },
     data() {
       return {
+        readInput: '',
+          numInput:'',
         addCourseDialogVisible: true,
         videoManageDialog: true,
+        downList: [
+            {
+                name: '百度',
+                url: 'https://www.baidu.com/img/bd_logo1.png?where=super'
+            }
+        ],
         form: {
           title: '',
           teacher_id: '',
@@ -146,12 +157,20 @@
       }
     },
     mounted() {
-      if (this.query_teacher_list.length === 0) this.get_teacher_list();
-      this.get_role_list();
-      this.get_subject_list();
-      this.get_grade_list();
-      this.checkPayload();
-      this.get_curriculum_donwload_data_list({project_id: this.project_id});
+      // if (this.query_teacher_list.length === 0) this.get_teacher_list();
+      // this.get_role_list();
+      // this.get_subject_list();
+      // this.get_grade_list();
+      // this.checkPayload();
+        // this.get_curriculum_donwload_data_list({project_id: this.project_id});
+
+        console.log(this.payload)
+        // this.downList = this.payload.
+        postData('product/homework/mark_get_list',{
+            student_homework_id: this.payload.row.id
+        }).then(res => {
+            console.log(res,'home')
+        })
     },
     watch: {
       query_subject_list(val) {
@@ -206,7 +225,8 @@
       'base-input': BaseInput,
       'upload-button': UploadButton,
       'upload-panel': UploadPanel,
-      'file-uploader': Uploader
+      'file-uploader': Uploader,
+      'down-loading': downLoading
     },
     methods: {
       ...mapActions([
@@ -220,6 +240,16 @@
         'add_course_download_data',
         'get_curriculum_donwload_data_list'
       ]),
+        saveSubmit(){
+            console.log(this.payload.row, '111');
+            postData('product/homework/mark_add',{
+              student_homework_id: this.payload.row.student_id,
+              score: this.numInput,
+              comment: this.readInput,
+          }).then(res => {
+              console.log(res.data)
+          })
+        },
       getDir() {
         return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
       },
@@ -355,7 +385,6 @@
                     this.checked_top_courses.push(this.query_replace_online_course_list[j]._index);
                   }
                 }
-
               }
             }
           });
