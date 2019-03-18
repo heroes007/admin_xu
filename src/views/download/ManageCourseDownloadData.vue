@@ -1,9 +1,10 @@
 <template>
     <div class='manage-course-download-data'>
         <!-- <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/> -->
-        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="courseNums" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler" :btnType="true"/>
+        <screen :types="2" sizeTitle1="资料总数" :sizeNum1="pageTotal" btnName="添加资料" @inputChange="manageEdit" @handleClick="addClickHandler" :btnType="true"/>
         <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg' @edit='addClickHandler2' :isStripe='false' :table-data='dataList'
-          :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'></data-list>
+          :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'  :table-height='listHeight'></data-list>
+        <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
@@ -16,9 +17,12 @@
   import { doTimeFormat } from '../../components/Util'
   import { Config } from '../../config/base'
   import screen from '../../components/ScreenFrame'
+  import pageMixin from '../mixins/pageMixins'
+  import pageList from '../../components/Page'
+
   export default {
-    mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList ,screen},
+    mixins: [Dialog, pageMixin],
+    components: { 'header-component': Header, 'data-list': BaseList ,screen, pageList},
     data() {
       return {
         searchData: '',
@@ -43,6 +47,12 @@
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
         projectId: state => state.project.select_project_id,
       }),
+        pageTotal() {
+            return this.$store.state.download_data.total;
+        },
+        listHeight() {
+            return window.innerHeight - 60 - 50 - 70;
+        },
       comboDataList() {
         // var r = [];
         // var v = []
@@ -167,14 +177,20 @@
       },
       downloadMsg(row){
         window.open(this.dataList[row].attachment_url)
-      }
+      },
+        initData(){
+            this.get_curriculum_donwload_data_list({
+                project_id: this.projectId,
+                page: {page_size: this.pageSize, page_num: this.current}
+            });
+        }
     },
     mounted() {
       // setTimeout(()=>{
       //   console.log(this.dataList,'this.dataList');
       // },1000)
       // this.get_online_curriculum_list({project_id: this.projectId});
-      this.get_curriculum_donwload_data_list({project_id: this.projectId});
+        this.initData()
     }
   }
 </script>

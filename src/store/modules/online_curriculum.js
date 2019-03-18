@@ -38,7 +38,6 @@ const actions = {
     get_online_curriculum_chapter_list({commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_LOADING);
         get_catalog(params.curriculum_online_id).then(res => {
-            console.log(res.data, 'res.data')
             if (res.data.res_code === 1) {
                 commit(types.ONLINE_CURRICULUM_CHAPTER_LOADED, {
                     result: res.data.data,
@@ -207,7 +206,6 @@ const mutations = {
         state.showChapterLoading = true;
     },
     [types.ONLINE_CURRICULUM_CHAPTER_LOADED](state, params) {
-        console.log(params, state.online_curriculum_list, 'aaaaaa')
 
         var i;
 
@@ -221,7 +219,6 @@ const mutations = {
                 break;
             }
         }
-        console.log(params, state.online_curriculum_list, 'bbbbbb')
 
         state.showChapterLoading = false;
     },

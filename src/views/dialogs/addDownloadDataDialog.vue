@@ -115,15 +115,14 @@ export default {
             }
         },
         saveHandler() {
-            
-        //    if(this.payload === 0) this.add_public_download_data(this.form);
-        //    else this.add_course_download_data(this.form);
+           if(this.payload === 0) this.add_public_download_data(this.form);
+           else this.add_course_download_data(this.form);
         //     console.log(this.course_download_data_list);
-            save_datalist(this.form).then(res => {
-                if (res.data.res_code === 1) {
-                    this.addDownloadDataDialog = false;
-                }
-            })
+        //     save_datalist(this.form).then(res => {
+        //         if (res.data.res_code === 1) {
+        //             this.addDownloadDataDialog = false;
+        //         }
+        //     })
         },
         handleClose() {
             this.addDownloadDataDialog = false;

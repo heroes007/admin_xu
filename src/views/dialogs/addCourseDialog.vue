@@ -237,8 +237,10 @@
       this.stateName = this.payload.state
       this.getListTeacher()
       this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
-        console.log(this.payload,'payload')
-        if(this.payload.state == 0) this.form = this.$store.state.online_curriculum.online_curriculum_old_list[this.payload.index]
+        if(this.payload.state == 0) {
+          console.log(this.$store.state.online_curriculum.online_curriculum_old_list[this.payload.index],'this.$store.state.online_curriculum.online_curriculum_old_list[this.payload.index]')
+          this.form = this.$store.state.online_curriculum.online_curriculum_old_list[this.payload.index]
+        }
 
         // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
@@ -498,12 +500,10 @@
           arr.forEach((item, index) => {
               item.list.forEach(it => {
                   if(item.id == it.id){
-                      console.log(item, it, '00000')
                       this.form[item.name] = it.name
                   }
               })
           })
-          console.log(this.form,'form')
       }
     }
   }
