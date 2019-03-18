@@ -159,8 +159,9 @@
       // this.get_grade_list();
       // this.checkPayload();
         // this.get_curriculum_donwload_data_list({project_id: this.project_id});
+      this.$store.commit('get_task_state', false)
 
-        postData('product/homework/mark_get_list',{
+      postData('product/homework/mark_get_list',{
             student_homework_id: this.payload.row.id
         }).then(res => {
             console.log(res,'home')
@@ -242,13 +243,14 @@
       ]),
         saveSubmit(){
             postData('product/homework/mark_add',{
-              student_homework_id: this.payload.row.student_id,
+              student_homework_id: this.payload.row.id,
               score: this.numInput,
               comment: this.readInput,
           }).then(res => {
               if(res.res_code == 1) {
                 this.addCourseDialogVisible = false
                 // this.$emit('addTure', res.res_code)
+                this.$store.commit('get_task_state', true)
               }
           })
         },

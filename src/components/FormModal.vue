@@ -52,7 +52,7 @@
                     </FormItem>
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
-                        <div class="form-message" ref="inputStyle" contentEditable="true"></div>
+                        <div class="form-message" ref="inputStyle" contentEditable="true" v-html="descriptionHtml"></div>
                         <div ref="divStyle" style="display: flex;margin-top: 15px;">
                             <Dropdown trigger="click" @on-click="handleDrop">
                                 <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
@@ -143,6 +143,7 @@
     },
     data (){
       return{
+        descriptionHtml: '',
         iconFont,iconColor,iconCopy,
         exchangeContentShow: false,
         exchangeContentList: [],
@@ -197,8 +198,12 @@
           this.formItem = this.detailData
           if(this.formItem.upload) this.downList = this.formItem.upload
           else this.downList = []
-          if(this.formItem.uploading) this.$refs.inputStyle[0].innerHTML = this.formItem.uploading
-          else this.$refs.inputStyle[0].innerHTML = ''
+          if(this.formItem.uploading) {
+            this.formItem.uploading.replace('form-message')
+            this.descriptionHtml = this.formItem.uploading
+          }
+          else this.descriptionHtml = ''
+          // else this.$refs.inputStyle[0].innerHTML = ''
           if(this.formItem.hasOwnProperty('img_url')){
             this.img_url = this.formItem.img_url
           }else this.img_url = ''

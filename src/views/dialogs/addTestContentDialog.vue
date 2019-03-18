@@ -351,6 +351,7 @@
       }
     },
     mounted() {
+      console.log(this.payload)
       this.$store.dispatch('get_role_list');
       this.formInline1.curriculum_id = this.payload.curriculum_id;
       this.formInline1.group_name = this.payload.group_name;

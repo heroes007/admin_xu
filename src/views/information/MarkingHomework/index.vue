@@ -17,6 +17,7 @@
   import postData from '../../../api/postData'
   import pageMixin from '../../mixins/pageMixins'
   import pageList from '../../../components/Page'
+  import {mapState} from 'vuex'
 
   export default {
     mixins: [Dialog, pageMixin],
@@ -61,7 +62,7 @@
                 width: 260,
                 slot: 'operation',
                 operation_btn_hide: true,
-                operation: [['查看','operation1',false], ['批阅','operation2']],
+                operation: [['查看','operation1',true], ['批阅','operation2']],
             }],
             list: [
                 // {
@@ -86,6 +87,14 @@
                 // }
             ]
         }
+    },
+    computed:{
+      ...mapState(['taskState'])
+    },
+    watch: {
+      taskState() {
+        this.initData()
+      }
     },
     methods: {
         selectChange1(val){

@@ -29,11 +29,13 @@ import production_group from './modules/production_group'
 import device from './modules/device'
 import news from './modules/news'
 
+import main from './main'
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
+  ...main,
   modules: {
     hello,
     subject,

@@ -136,8 +136,8 @@
                         </Col>
                     </Row>
                     <Row class="btns">
-                        {{this.result_msg1}}
-                        <Button type="text" @click="dialogIndex = 1" class="pre-btn">上一步</Button>
+                        <!-- {{this.result_msg1}}
+                        <Button type="text" @click="dialogIndex = 1" class="pre-btn">上一步</Button> -->
                         <Button type="primary" class="public-btn" @click="handleSubmit">保存</Button>
                     </Row>
                 </Row>
@@ -237,10 +237,11 @@
       this.stateName = this.payload.state
       this.getListTeacher()
       this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
-        console.log(this.payload,'payload')
-        let d = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_old_list,[])
-        if(this.payload.state == 0) this.form = d[this.payload.index]
+      let d = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[])
+      if(this.payload.state == 0){
+        this.form = d[this.payload.index]
         this.form.img_default = d[this.payload.index].img_url
+      }
         // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
@@ -355,7 +356,7 @@
         // };
         // this.form.project_id = this.project_id;
         // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        // var vm = this;
+        var vm = this;
         this.form._fn = function () {
           vm.handleClose();
           vm.showPop('保存成功！', 1000);
@@ -368,19 +369,11 @@
         //   this.form.pre_curriculum_ids = preList;
         // }
         this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
+        this.form.page = this.payload.page
         if (this.stateName == 1) {
             this.add_online_curriculum(this.form)
-            // this.$emit('submit')
-            var vm = this;
-            vm.$store.dispatch('get_online_curriculum_list', {
-                // project_id: v,
-                page: this.payload.page,
-                keyword: this.payload.keyword
-            })
-            this.addCourseDialogVisible = false
         }
         else {
-            this.form.page = this.payload.page
             this.edit_online_curriculum({data: this.form});
             this.addCourseDialogVisible = false
         }
@@ -509,6 +502,7 @@
   }
 </script>
 <style scoped lang="scss">
+/deep/ .upload-panel .img img { height: 250px; }
 /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
 /deep/.ivu-modal-header-inner{
 font-family: PingFangSC-Regular;
