@@ -15,7 +15,7 @@
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
                     </div>
                </Poptip>
-              <Button type="text" v-else-if="column.operation_btn_hide&&t[2] ? row.state : true" size="small"
+              <Button type="text" v-else-if="handleBtnShow(column,row,t)" size="small"
                       style="margin-right: 5px" @click="show(row,index,t[1])">
                 {{handleBtnText(t,row,column)}}
               </Button>
@@ -80,6 +80,9 @@
       }
     },
     methods: {
+      handleBtnShow(c,r,t){ 
+        return c.operation_btn_hide&&t[2] ? r.mark_state : true
+      },
       radioChange(r, c) {
         this.datas.map((t, k) => {
           t.state = false
@@ -118,6 +121,7 @@
         this.$emit('table-swtich', row)
       },
       handleBtnText(t, r, c) {
+        console.log(t,r,c,'sdfga')
         // operation_state -- 处理 兑换码
         if (Array.isArray(t[0])) {
           if (c.operation_state && t[0][0] == '立即失效') return c.operation_state && r.state ? t[0][0] : c.operation_state && r.state === 0 ? t[0][1] : t[0]

@@ -270,7 +270,10 @@
         font-size: 18px;
         letter-spacing: 0;
         text-align: left;
-        margin:15px 0
+        margin:15px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     /deep/ .ivu-page{
       position: absolute;

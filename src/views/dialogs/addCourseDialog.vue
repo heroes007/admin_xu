@@ -375,6 +375,7 @@
         }
         else {
             this.edit_online_curriculum({data: this.form});
+            this.addCourseDialogVisible = false
         }
       },
       handleRemove(file, fileList) {},

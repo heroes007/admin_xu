@@ -51,7 +51,7 @@
                                   :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!--可插入输入框-->
-                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload">
+                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
                         <div class="form-message" ref="inputStyle" contentEditable="true"></div>
                         <div ref="divStyle" style="display: flex;margin-top: 15px;">
                             <Dropdown trigger="click" @on-click="handleDrop">
@@ -61,7 +61,7 @@
                                 </DropdownMenu>
                             </Dropdown>
                             <Dropdown trigger="click" @on-click="handleDrop1">
-                                <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a >
+                                <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a>
                                 <DropdownMenu slot="list">
                                     <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
                                         <span class="drop-box" :style="{backgroundColor: item.color}"/>
@@ -69,7 +69,7 @@
                                     </DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
+                            <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
                             <upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
                         </div>
                         <down-loading :formData="downList"/>
@@ -195,7 +195,10 @@
         this.ModalState(_new)
         this.$nextTick(() => {
           this.formItem = this.detailData
-          console.log(this.formItem,'gg')
+          if(this.formItem.upload) this.downList = this.formItem.upload
+          else this.downList = []
+          if(this.formItem.uploading) this.$refs.inputStyle[0].innerHTML = this.formItem.uploading
+          else this.$refs.inputStyle[0].innerHTML = ''
           if(this.formItem.hasOwnProperty('img_url')){
             this.img_url = this.formItem.img_url
           }else this.img_url = ''
@@ -329,7 +332,7 @@
       addImg(val){
         var img = new Image()
         img.src = val.url
-        img.width = 100
+        img.style.width = '100%'
         img.style.display = 'block'
         this.$refs.inputStyle[0].appendChild(img)
       },
@@ -341,7 +344,7 @@
       handleDrop1(val){
         this.$refs.inputStyle[0].style.color = val
       }
-    }
+    },
   }
 </script>
 <style lang="less" scoped>

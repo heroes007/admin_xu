@@ -99,7 +99,7 @@
                         <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
                             <Button  class="btn-orange" @click="handleSubmit('form')">提交</Button>
-                        </div> 
+                        </div>
                         <Button v-if="nextStep == 0 || nextStep == 1" class="btn-orange btn-center" @click="handleNextStep(form)">下一步</Button>
                     </Form>
                 </Row>
@@ -286,7 +286,7 @@ export default {
         addImg(val){
             var img = new Image()
             img.src = val.url
-            img.width = 100
+            img.style.width = '100%'
             img.style.display = 'block'
             this.$refs.inputStyl.appendChild(img)
         },
@@ -376,7 +376,7 @@ export default {
                 this.form.imgList.shift('upload-btn')
                 var arrObj = {
                     default: this.form.imgList,
-                    video:  this.form.video_url 
+                    video:  this.form.video_url
                 }
                 this.form.state = this.formState;
                 this.form.organization_id = this.organizationId;
@@ -386,7 +386,7 @@ export default {
                 this.form.original_price = Number(this.form.price).toFixed(2)
                 if(this.payload)  this.update_production(this.form);
                 else this.add_production(this.form);
-                
+
         //    }
         // })
       }
@@ -501,6 +501,7 @@ export default {
     overflow-y: auto;
     font-size: 16px;
     margin-left: 10px;
+    text-align: left;
 }
 .up-img{
     margin-right: 10px;
