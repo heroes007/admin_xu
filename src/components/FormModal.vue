@@ -6,7 +6,7 @@
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!img_url" class="modal-upload-flie">
-                        <img class="upload-flie-img" src="/static/icon/upload.png"/>
+                        <img class="upload-flie-img" src="/src/assets/icons/icon/upload.png"/>
                         <p>点击上传</p >
                     </div>
                     <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
@@ -90,12 +90,12 @@
   import ExchangeContent from './ExchangeContent'
   import uploadBtn from '../components/UploadButton'
   import downLoading from './DownLoading'
-  import iconFont from '../../static/icon/font.png'
-  import iconColor from '../../static/icon/color.png'
-  import iconCopy from '../../static/icon/photo.png'
-  import iconFontCopy from '../../static/icon/font_copy.png'
-  import iconColorCopy from '../../static/icon/color_copy.png'
-  import iconCopyCopy from '../../static/icon/photo_copy.png'
+  import iconFont from '../assets/icons/icon/font.png'
+  import iconColor from '../assets/icons/icon/color.png'
+  import iconCopy from '../assets/icons/icon/photo.png'
+  import iconFontCopy from '../assets/icons/icon/font_copy.png'
+  import iconColorCopy from '../assets/icons/icon/color_copy.png'
+  import iconCopyCopy from '../assets/icons/icon/photo_copy.png'
 
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },

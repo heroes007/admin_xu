@@ -61,10 +61,11 @@
             },{
                 title: '真实姓名',
                 key: 'realname',
-            },{
-                title: '性别',
-                slot: 'sex',
             },
+              // {
+              //   title: '性别',
+              //   slot: 'sex',
+              // },
             {
                 title: '管理权限',
                 key: 'role_name',

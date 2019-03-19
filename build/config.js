@@ -10,7 +10,6 @@ module.exports = {
         port: 8001
     },
     prod:{
-        publicPath:'/'
-    //   publicPath:'//file.laoshi123.com/dskj_dscj_xg/'
+        publicPath:'https://sfile.tl100.com/met_admin/dist/'
     }
 }

@@ -33,10 +33,10 @@
      </div>
      <div class="personal-detail">
           <div class="personal-detail-img-list">
-            <img class="detail-data1-img"  :src="detailData.head_img_url" />
-            <img class="detail-data1-img-auth" v-if="detailData.authentication" src="/static/icon/authentication.png" />
+            <img class="detail-data1-img" :src="detailData.head_img_url" />
+            <img class="detail-data1-img-auth" v-if="detailData.authentication" src="/src/assets/icons/icon/authentication.png" />
             <div class="learning-statistics" v-if="detailData.learningStatistics">
-                <img src="/static/icon/learning-statistics.png"/>
+                <img src="/src/assets/icons/icon/learning-statistics.png"/>
                 <p>学习统计</p>
             </div>
           </div>
@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import female from '../../static/icon/sex/female.png'
-import male from '../../static/icon/sex/male.png'
+import female from '../assets/icons/icon/sex/female.png'
+import male from '../assets/icons/icon/sex/male.png'
 export default {
     props:{
         title: {

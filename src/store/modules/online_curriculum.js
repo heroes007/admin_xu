@@ -39,7 +39,6 @@ const actions = {
         commit(types.ONLINE_CURRICULUM_CHAPTER_LOADING);
         get_catalog(params).then(res => {
             if (res.data.res_code === 1) {
-                console.log(res.data.data,'res.data.data11');
                 commit(types.ONLINE_CURRICULUM_CHAPTER_LOADED, {
                     result: res.data.data,
                     curriculum_id: params.curriculum_online_id
@@ -162,11 +161,13 @@ const actions = {
             }
         })
     },
-    delete_online_curriculum_catalog({commit}, params) {
+    delete_online_curriculum_catalog({dispatch, commit}, params) {
+        console.log(params, 'params')
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
-        delete_catalog(params).then(res => {
+        delete_catalog(params.id).then(res => {
             if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params);
+                commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params.id);
+                dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
             }
         })
     },

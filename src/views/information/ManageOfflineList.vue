@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <Card class="card">
-            <img class="card-img" src="../../../static/icon/addIcon.png" alt="">
+            <img class="card-img" src="../../assets/icons/icon/addIcon.png" alt="">
             <div class="card-add" @click="handleTabAdd">添加主题</div>
         </Card>
         <Card class="card" v-for="(t ,index) in list" :key="index">
@@ -30,7 +30,7 @@
   import formModal from '../../components/FormModal'
   import postData from '../../api/postData'
   import postMixins from '../mixins/postMixins.js'
-  export default { 
+  export default {
     name: "ManageOfflineList",
     mixins: [postMixins],
     data() {

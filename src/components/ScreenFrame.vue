@@ -1,7 +1,7 @@
 <template>
     <div class="screen" :style="(types == 4 || types == 8 || types == 9) ? backgroundColor:''">
         <div v-if="types == 6 || types == 7 || types == 8 || types == 9" class="back" @click="handleBack">
-            <img class="back-img" src="../../static/icon/back.png" alt="">
+            <img class="back-img" src="../assets/icons/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list">

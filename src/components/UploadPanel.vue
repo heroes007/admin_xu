@@ -4,7 +4,7 @@
         <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
             <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
             <!--<Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />-->
-            <img class="md-cloud-upload" src="../../static/icon/upload.png" alt="">
+            <img class="md-cloud-upload" src="../assets/icons/icon/upload.png" alt="">
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
         </Row>
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
