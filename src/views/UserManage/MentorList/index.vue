@@ -67,7 +67,7 @@
               // },
             {
                 title: '管理权限',
-                key: 'role_id',
+                key: 'role_name',
                 align: 'left',
             },
             {
@@ -90,23 +90,13 @@
                 slot: 'operation',
                 operation: [],
             }],
-            list: [
-                {
-                    "user_id": 13186,
-                    "nickname": "150****1134",
-                    sex: "男",
-                    "realname": "王晓东",
-                    "phone": "15022211134",
-                    "from_domain": '正常',
-                    "create_time": "2019/01/12 21:34",
-                    "action": "action",
-                    admin: '超级管理员',
-                    company: "北京大学人民医院"
-                }
-            ],
+            list: [],
             operationList: [['查看','operation1'], ['编辑','operation2'], ['删除','operation3']],
             formList: [
                 { type: 'input', name: '真实姓名',  field: 'realname'},
+                { type: 'select', name: '所属机构', field: 'organization_id' ,
+                    selectList: [], selectField: [ 'id','title' ]
+                },
                 { type: 'input', name: '导师账号',  field: 'username' },
                 { type: 'password', name: '账号密码',  field: 'password' },
                 { type: 'select', name: '管理权限', field: 'role_id' ,
@@ -115,6 +105,7 @@
             ],
             rules:{
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
+                organization_id: [{ required: true, message: '请选择机构' } ],
                 username: [{ required: true, validator: validateUsername3 }],
                 password: [{ required: true, validator: validatePass }],
                 role_id: [{ required: true, message: '请选择管理权限'} ],
@@ -125,24 +116,22 @@
         see(row,rowIndex){
             this.detailShow = true;
             this.tableRowData = row;
-            console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){
-          console.log(row, 'row')
-            this.modalTitle = '修改导师'
+            this.modalTitle = '编辑导师'
             this.show = true
             this.tableRow = {
               realname: row.realname,
               username: row.username,
               password: row.password,
-              role_id: row.role_id,
-              id: row.id
+              role_id: this.list[rowIndex].role_id,
+              id: row.id,
+              organization_id: row.organization_id
             }
+            this.setOrganization()
         },
         deletes(row,rowIndex){
-            // console.log(row,rowIndex);
            this.fromAddAndEdit('/user/removeDeptTeacher',{id: row.id})
-
         },
         selectChange1(val){
           this.organization_id = val
@@ -152,11 +141,18 @@
           this.keyword = val
           this.getList()
         },
+        setOrganization(){
+             if(this.organizationList){
+                if(this.role_id == 1){
+                    this.formList[1].selectList = this.organizationList
+                }else if(this.formList[1].field == 'organization_id') this.formList.splice(1,1);
+            }
+        },
         handleClick(){
             this.modalTitle = '添加导师'
             this.show = true
             this.tableRow = {}
-            console.log('open modal')
+            this.setOrganization()
         },
         getList(){
             let d = {
@@ -167,17 +163,17 @@
             }
             postData('user/getDeptTeacherList', d).then((res) => {
                   this.list = res.data.list
+                  this.list.map((t) => {
+                      t.role_name = this.$config.status(t.role_id )
+                  })
                   this.total = res.data.count
             })
         },
         handleSubmit(val){
-          val.organization_id = Number(localStorage.getItem('organizationId'))
-          if(this.modalTitle == '添加导师') {
-            this.fromAddAndEdit('/user/addDeptTeacher',val)
-          }
-          else {
-            this.fromAddAndEdit('/user/modifyDeptTeacher',val)
-          }
+          let d = val
+          if(this.role_id != 1) d.organization_id = +localStorage.getItem('organizationId')
+          if(this.modalTitle == '添加导师') this.fromAddAndEdit('/user/addDeptTeacher',d)
+          else this.fromAddAndEdit('/user/modifyDeptTeacher',d)
         }
     },
     mounted() {
@@ -186,6 +182,8 @@
         postData('/user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
           this.selectList = res.data.list
         })
+        this.organizationList = null
+        if(this.role_id == 1)  this.getOrganization()
     }
   }
 </script>

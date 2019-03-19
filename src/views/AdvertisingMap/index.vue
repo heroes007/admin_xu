@@ -1,6 +1,6 @@
 <template>
-    <Row>
-        <Tabs v-model="tabName" @on-click="changeatub" >
+    <Row class="advertising-map">
+        <Tabs v-model="tabName" @on-click="changeatub" class="tab-name">
             <TabPane  v-if="permissionCode1" label="首页轮播" name="lb">
                 <lb ref="HomePageBroadcast" :type=true />
             </TabPane>
@@ -48,7 +48,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .add-advert{
         width: 130px;
         height: 36px;
@@ -62,5 +62,15 @@
         position: absolute;
         top:12px;
         right: 18px;
+    }
+    .tab-name, /deep/.ivu-tabs-content, .advertising-map{
+      height: 100% !important;
+    }
+    /deep/ .ivu-page{
+        position: absolute;
+        bottom: 60px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
     }
 </style>

@@ -60,11 +60,15 @@
             keyword: '',
             formList: [
                 { type: 'input', name: '讲师姓名',  field: 'name'},
+                { type: 'select', name: '所属机构', field: 'organization_id' ,
+                    selectList: [], selectField: [ 'id','title' ]
+                },
                 { type: 'textarea', name: '讲师介绍',  field: 'description' }
             ],
             rules:{
                 name: [{ required: true, message: '请输入讲师姓名', trigger: 'blur' } ],
-                description: [{ required: true, message: '请输入讲师介绍', trigger: 'blur' } ]
+                description: [{ required: true, message: '请输入讲师介绍', trigger: 'blur' } ],
+                organization_id: [{ required: true, message: '请选择机构' } ],
             },
             operationList: null,
             list: [
@@ -86,7 +90,7 @@
             this.modalTitle = '编辑讲师'
             this.show = true
             this.tableRow = t
-            console.log(t,'edit')
+            this.setOrganization()
         },
         deletes(t){
             postData('user/removeTeacher', {id: t.id}).then((res) => {
@@ -97,15 +101,24 @@
             this.keyword = val;
             this.getList()
         },
+        setOrganization(){
+             if(this.organizationList){
+                if(this.role_id == 1){
+                    this.formList[1].selectList = this.organizationList
+                }else if(this.formList[1].field == 'organization_id') this.formList.splice(1,1);
+            }
+        },
         handleClick(){
             this.modalTitle = '添加讲师'
             this.show = true
             this.tableRow = {}
-            console.log('open modal')
+            this.setOrganization()
         },
         handleSubmit(val){
-           if(this.modalTitle === '添加讲师') this.fromAddAndEdit('user/addTeacher',val)
-           else this.fromAddAndEdit('user/modifyTeacher',val)
+           let d = val
+           if(this.role_id != 1) d.organization_id = +localStorage.getItem('organizationId')
+           if(this.modalTitle === '添加讲师') this.fromAddAndEdit('user/addTeacher',d)
+           else this.fromAddAndEdit('user/modifyTeacher',d)
         },
         getList(){
             let d = {
@@ -122,6 +135,8 @@
     mounted() {
        this.getList()
        if(this.permissionItem5) this.handleAuth(this.permissionItem5)
+       this.organizationList = null
+       if(this.role_id == 1)  this.getOrganization()
     }
   }
 </script>

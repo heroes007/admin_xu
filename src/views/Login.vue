@@ -66,7 +66,6 @@
             doLogin() {
                 this.isLogining = true;
                 login_pwd(this.name, this.password).then((res) => {
-                  console.log(res)
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
                         let d = res.data.data;

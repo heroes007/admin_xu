@@ -29,7 +29,7 @@
         <!-- </Row> -->
         <Tables :is-serial=true @operation1="edit" @operation2="batchDownload" :column="columns1" :table-data="list" />
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page  @on-change="handleCurrentChange" :current="current" :page-size="pageSize" show-sizer :total="total">
+            <Page  @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total">
             </Page>
         </Row>
     </div>
@@ -189,6 +189,10 @@
 </script>
 
 <style scoped lang="scss">
+     .manage-student-view{
+         height: 100% !important;
+         position: relative;
+     }
      /deep/.img>img{height: 250px !important;}
      /deep/ .ivu-modal-body{
          padding: 50px;

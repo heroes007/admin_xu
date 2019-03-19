@@ -2,7 +2,9 @@ import postData from 'src/api/postData'
 export default {
     data() {
         return {
-            btnType: false
+            btnType: false,
+            organizationList: null,
+            role_id: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
         }
     },
     methods: {
@@ -20,6 +22,12 @@ export default {
                 this.getList()
               }
           })
+        },
+        //获取机构
+        getOrganization(){
+            postData('/components/getOrganization').then((res) => {
+                this.organizationList = res.data
+            })
         },
         // 处理权限
         handleAuth(d){
