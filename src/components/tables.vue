@@ -135,7 +135,9 @@
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                 arr.push(`${item.name}: 九划医疗`)
               } else {
-                if (x == 'role_id') string[x] = this.$config.status(string[x])
+                // if (x == 'role_id'){
+                //   string['role_name'] = this.$config.status(string[x])
+                // }
                 str = item.name + ':' + ' ' + string[x]
                 arr.push(str)
               }

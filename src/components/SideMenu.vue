@@ -220,14 +220,16 @@
         }
     },
     mounted() {
-       this.$nextTick(() => {
+      //  this.$nextTick(() => {
           this.handleMenuList()
           if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
           let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
           this.activeIndex = menuActive
-          this.$refs.side_menu.updateOpened();
-          this.$refs.side_menu.updateActiveName();
-       })
+          this.$nextTick(() => {
+             this.$refs.side_menu.updateOpened();
+             this.$refs.side_menu.updateActiveName();
+          })
+      //  })
 
       // this.setSubmenuTitleIconMouse()
       // if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');

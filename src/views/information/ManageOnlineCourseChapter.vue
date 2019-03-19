@@ -9,12 +9,12 @@
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                                 <div style="display: flex;align-items: center">
                                     <span class="row-title">第{{index + 1}}章</span>
-                                    <Input v-model="item.group_name" @on-change="editorNote(item, index)" 
+                                    <Input v-model="item.group_name" @on-change="editorNote(item, index)"
                                          @on-blur="outInput(index)" @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
                                 </div>
                                 <div style="margin-right: 25px;">
                                     <Button type='text' @click="addVideo(item)">添加视频</Button>
-                                    <Button type='text' @click="addTest(item)">添加测验</Button>
+                                    <Button type='text' @click="addTest(item, index)">添加测验</Button>
                                     <Button v-if='showListState[index] == 0' type="text"  @click="toggleListShow(index,item)">展开</Button>
                                     <Button v-else-if='showListState[index] == 1' type="text"  @click="toggleListShow(index)">收起</Button>
                                 </div>
@@ -107,7 +107,8 @@
           // },
           {prop: 'create_time', label: '创建时间', width: 200},
           {
-            label: '操作', width: 350, groupBtn: [{text: '编辑', param: 'edit'},
+            label: '操作', width: 350, groupBtn: [
+              {text: '编辑', param: 'edit'},
               {text: '上移', param: 'moveUp' },
               {text: '下移', param: 'moveDown' },
               {text: '删除', param: 'delete' }]
@@ -153,7 +154,7 @@
             }
           }
         }
-        console.log(curriculumList,'curriculumList')
+        console.log(curriculumList,'curriculumListcurriculumList')
         return curriculumList || [];
       },
       curriculumList() {
@@ -236,9 +237,20 @@
           ...item
         });
       },
-      editHandler(index, row) {
+      editHandler(i, row) {
         if(row.type === 0) {
           this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id, curriculum_online_id: parseInt(this.$route.params.id)})
+        }else{
+          this.handleSelModal(ADD_QUESTION, {
+            curriculum_online_id: parseInt(this.$route.params.id),
+            curriculum_catalog_id: row.id,
+            group_name: row.group_name,
+            group_orderby: row.id,
+            orderby: row.orderby + 1,
+            curriculum_id: row.curriculum_id,
+            list_index: i,
+            isEdit: true
+          });
         }
         // if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
         // else if (row.type === 1) this.openModal(ADD_QUESTION, row, 2)
@@ -329,9 +341,10 @@
           //     orderby: 1,
           //     parent_id: parseInt(this.$route.params.id)
           //   })
-          // } else 
+          // } else
           this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
+          console.log(item.id)
           this.handleSelModal(VIDEO_MANAGE, {
             curriculum_online_id: +this.$route.params.id,
             curriculum_id: item.curriculum_id,
@@ -343,7 +356,7 @@
           });
         }
       },
-      addTest(item) {
+      addTest(item, index) {
         if (!item) {
           // if (this.newChapterData.group_name) {
           //   this.handleSelModal(ADD_QUESTION, {
@@ -352,22 +365,24 @@
           //     group_orderby: this.newChapterData.group_orderby,
           //     orderby: 1
           //   })
-          // } else 
+          // } else
           this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
           this.handleSelModal(ADD_QUESTION, {
             curriculum_online_id: parseInt(this.$route.params.id),
             curriculum_catalog_id: item.id,
             group_name: item.group_name,
-            group_orderby: item.group_orderby,
-            orderby: item.orderby + 1
+            group_orderby: item.id,
+            orderby: item.orderby + 1,
+            curriculum_id: item.curriculum_id,
+            list_index: index
           });
         }
       },
       getLists() {
         //   console.log(this.$store.state.online_curriculum.online_curriculum_list,'this.$store.state.online_curriculum.online_curriculum_list')
         // if (this.$store.state.online_curriculum.online_curriculum_list.length === 0) this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.$store.state.project.select_project_id});
-        // else 
+        // else
         this.initChapter();
         // this.$store.dispatch('get_role_list');
       }

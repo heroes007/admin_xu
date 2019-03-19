@@ -166,7 +166,7 @@ const actions = {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
         delete_catalog(params).then(res => {
             if (res.data.res_code === 1) {
-                // commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params);
+                commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params);
             }
         })
     },
