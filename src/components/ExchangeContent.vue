@@ -8,7 +8,7 @@
        <div class="exchange-main">
           <div class="exchange-list" v-for="(t,i) in list" :key="i" @click="handleClick(t)">
             <span class="exchange-item">{{t.name}}</span>
-            <img v-if="t.show" class="exchange-img" src="/src/assets/icons/icon/tick.png" />
+            <img v-if="t.show" class="exchange-img" src="../assets/icons/icon/tick.png" />
           </div>
        </div>
         <div class="foot-btn">

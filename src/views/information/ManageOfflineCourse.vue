@@ -6,7 +6,7 @@
         <screen :btn-type="true" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
                    @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
-                @add-off-line-courses="addOffLineCourses"   :header-data='dataHeader' :is-stripe='false'></data-list>
+                   @add-off-line-courses="addOffLineCourses" :header-data='dataHeader' :is-stripe='false'></data-list>
          <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
