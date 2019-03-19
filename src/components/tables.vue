@@ -80,7 +80,7 @@
       }
     },
     methods: {
-      handleBtnShow(c,r,t){ 
+      handleBtnShow(c,r,t){
         return c.operation_btn_hide&&t[2] ? r.mark_state : true
       },
       radioChange(r, c) {
