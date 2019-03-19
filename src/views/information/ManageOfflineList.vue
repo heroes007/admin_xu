@@ -1,8 +1,8 @@
 <template>
     <div class="content">
-        <Card class="card">
+        <Card class="card" @click.native="handleTabAdd">
             <img class="card-img" src="../../assets/icons/icon/addIcon.png" alt="">
-            <div class="card-add" @click="handleTabAdd">添加主题</div>
+            <div class="card-add">添加主题</div>
         </Card>
         <Card class="card" v-for="(t ,index) in list" :key="index">
             <div class="card-row">

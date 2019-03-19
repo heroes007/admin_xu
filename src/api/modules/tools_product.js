@@ -91,6 +91,7 @@ export function add_product(param) {
 
 export function update_product(param) {
   let d = {
+    organization_id: param.organization_id,
     product_id: param.product_id,
     title:param.title,
     original_price: parseFloat(param.original_price),
