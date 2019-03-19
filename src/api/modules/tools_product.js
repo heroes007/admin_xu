@@ -75,7 +75,7 @@ export function get_certificate_user(user_id) {
 
 export function add_product(param) {
   let d = {
-    organization_id: +localStorage.getItem('organizationId'),
+    organization_id: param.organization_id,
     title:param.title,
     original_price: parseFloat(param.original_price),
     price: parseFloat(param.price),

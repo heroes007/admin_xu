@@ -2,7 +2,7 @@
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
 
-        <FormModal :detail-data="tableRow" :modal-text="true" :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate='rules'/>
+        <FormModal :detail-data="tableRow" :modal-text="modalText" :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate='rules'/>
 
         <screen :btn-type="btnType" :select-type1="selectType1" :types="2" size-title1="导师总数" :size-num1="total" btn-name="添加导师" :select1="selectList"
                @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
@@ -46,6 +46,7 @@
     data (){
         return{
             modalTitle: '',
+            modalText:'获得所属机构后台发布产品及动态等操作权限',
             tableRow: {},
             tableRowData: {},
             selectType1: false,

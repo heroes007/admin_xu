@@ -36,6 +36,7 @@
 </template>
 
 <script>
+  import postData from 'src/api/postData'
   export default {
     data() {
       return {
@@ -71,6 +72,10 @@
       //筛选选项
       selectList: {
         type: Array,
+      },
+      seeUrl: {
+        type: String,
+        default: ''
       }
     },
     watch: {
@@ -104,8 +109,18 @@
       },
       show(row, rowIndex, params) {
         row = this.datas[rowIndex]
-        if (this.selectList) row.list = this.getArray(this.selectList, row)
-        this.$emit(params, row, rowIndex)
+        if(this.seeUrl){
+           postData(this.seeUrl, {id: row.organization_id}).then((res) => {
+            if(res){
+              row = {...row, ...res.data[0]}
+              if (this.selectList) row.list = this.getArray(this.selectList, res.data[0].admin[0])
+              this.$emit(params, row, rowIndex)
+            }
+          })
+        }else{
+          if (this.selectList) row.list = this.getArray(this.selectList, row)
+          this.$emit(params, row, rowIndex)
+        }
       },
       handleColumns(c) {
         if (this.isSerial) c.unshift({title: '序号', key: 'serial_number'})
@@ -135,9 +150,6 @@
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                 arr.push(`${item.name}: 九划医疗`)
               } else {
-                // if (x == 'role_id'){
-                //   string['role_name'] = this.$config.status(string[x])
-                // }
                 str = item.name + ':' + ' ' + string[x]
                 arr.push(str)
               }

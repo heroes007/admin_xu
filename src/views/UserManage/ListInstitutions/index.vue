@@ -2,12 +2,13 @@
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
 
-        <FormModal :modal-text="true" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
+        <FormModal :modal-text="modalText" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" />
 
         <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick" />
 
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="institution"/>
+        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" 
+       see-url='user/getDeptDetail'  :select-list="institution"/>
 
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
@@ -45,6 +46,7 @@
             tableRow: {},
             tableRowData: {},
             keyword: '',
+            modalText: '获得所属机构后台所有操作权限',
             selectList:[
                 {
                     value:'all',
@@ -106,9 +108,10 @@
     },
     methods: {
         see(row,rowIndex){
+          console.log(row,'row')
+          this.tableRowData = row;
+          this.tableRowData.mechanismName = row.title
           this.detailShow = true;
-          this.tableRowData = this.list[rowIndex]
-          this.tableRowData.mechanismName = this.list[rowIndex].title;
         },
         edit(row,rowIndex){
              postData('user/getDeptDetail', {id: row.organization_id}).then((res) => {
@@ -141,11 +144,6 @@
             postData('user/getDeptAdminList', d).then((res) => {
               this.list = res.data.list
               this.total = res.data.count
-              this.list.forEach((item, index) => {
-                postData('user/getDeptDetail', {id: item.organization_id}).then((res) => {
-                  this.list[index] = {...this.list[index], ...res.data[0], ...res.data[0].admin[0]}
-                })
-              })
             })
         },
         handleSubmit(val) {
