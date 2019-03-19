@@ -118,10 +118,32 @@
         modalAccessory: false,
         accessoryImg: '',
         accessoryVideo: '',
-        accessoryName: ''
+        accessoryName: '',
+        section_id: null
       }
     },
     watch: {
+      chapterList(list) {
+        list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr.forEach(item => {
+          item.title = JSON.parse(item.content).body
+        })
+        this.dataList = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr
+        this.section_id = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].id
+        console.log(list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1]), 'ididid'
+        // this.dataList = list
+
+        //   if (Array.isArray(list)) {
+      //     if (list.length === 0) {
+      //       this.newChapterData.showAddChapter = true;
+      //       this.newChapterData.group_orderby = 1;
+      //     } else {
+      //       this.newChapterData.showAddChapter = false;
+      //       this.newChapterData.group_orderby = list[list.length - 1].group_orderby + 1;
+      //       this.newChapterData.group_name = '';
+      //     }
+      //     this.setChapterShowState();
+      //   }
+      },
       selectTestDetailId(val) {
         if (val !== 0) {
           var detail;
@@ -185,7 +207,7 @@
       dataHeader() {
         return [
           {label: '排序', width: 90, sort: true},
-          {prop: 'content', label: '题干名称'},
+          {prop: 'title', label: '题干名称'},
           {width: 200, label: '操作', groupBtn: [{text: '编辑', param: 'edit'}, {text: '删除', param: 'delete'}]}
         ]
       },
@@ -199,7 +221,21 @@
       },
       newVideoTestId() {
         return this.$store.state.online_curriculum.newVideoTestId;
-      }
+      },
+      chapterList() {
+        var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
+        if (Array.isArray(curriculumList) && curriculumList.length > 0) {
+          var curriculumId = this.payload.curriculum_online_id;
+          for (var i = 0; i < curriculumList.length; i++) {
+            if (curriculumList[i].curriculum_id == curriculumId) {
+              // curriculumList[i].children = []
+              // console.log(doSortFormatCatalogList(curriculumList[i].chapterList),'logggggggggg');
+              // return doSortFormatCatalogList(curriculumList[i].chapterList);
+            }
+          }
+        }
+        return curriculumList || [];
+      },
     },
     methods: {
       uploadImg(val){
@@ -283,6 +319,10 @@
         //   this.$store.dispatch('add_online_curriculum_test', this.formInline1)
         //   resolve()
         // }).then(res=>{
+
+        // if(this.dataList.length) this.formInline2.section_id = this.section_id
+        //   else this.formInline2.section_id = this.payload.group_orderby;
+
           this.formInline2.result = [];
           for (var i = 0; i < this.formInline2.answerList.length; i++) {
             if (this.formInline2.answerList[i].answer) {
@@ -297,28 +337,33 @@
           this.formInline2.curriculum_catalog_id = this.payload.curriculum_catalog_id
           this.formInline2.title = this.formInline1.title;
           this.formInline2.select_count = +this.formInline2.select_count
+          this.formInline2.curriculum_id = this.payload.curriculum_id
           // console.log(this.formInline2,'this.formInline2',this.payload)
           if (this.formInline2.video_test_detail_id > 0) {
-            update_test_detail(this.formInline2.video_test_detail_id, this.formInline2).then(res => {
-              if (res.data.res_code === 1) {
-                for (var i = 0; i < this.dataList.length; i++) {
-                  if (this.dataList[i].id === this.formInline2.video_test_detail_id) {
-                    this.dataList[i].content = this.formInline2.content;
-                    this.dataList[i].orderby = this.formInline2.orderby;
-                    this.dataList[i].result = this.formInline2.result;
-                    this.dataList[i].select_count = this.formInline2.select_count;
-                    break;
-                  }
-                }
-                this.cancelSaveHandler()
-                this.$Modal.info({
-                  title: '提示',
-                  content: '保存成功。'
-                });
-              }
-            })
+            // update_test_detail(this.formInline2.video_test_detail_id, {...this.formInline2, ...{section_id:this.section_id}}).then(res => {
+            //   if (res.data.res_code === 1) {
+            //     for (var i = 0; i < this.dataList.length; i++) {
+            //       if (this.dataList[i].id === this.formInline2.video_test_detail_id) {
+            //         this.dataList[i].content = this.formInline2.content;
+            //         this.dataList[i].orderby = this.formInline2.orderby;
+            //         this.dataList[i].result = this.formInline2.result;
+            //         this.dataList[i].select_count = this.formInline2.select_count;
+            //         break;
+            //       }
+            //     }
+            //     this.cancelSaveHandler()
+            //     this.$Modal.info({
+            //       title: '提示',
+            //       content: '保存成功。'
+            //     });
+            //   }
+            // })
+            console.log('ppp')
           } else {
-            add_test_detail(this.formInline2).then(res => {
+            let formChapter
+            if(this.dataList.length) formChapter = {...this.formInline2, ...{section_id:this.section_id}}
+            else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby}}
+            add_test_detail(formChapter).then(res => {
               if (res.data.res_code === 1) {
                 // this.dataList.push({
                 //   id: res.data.msg,
@@ -329,6 +374,22 @@
                 //   video_test_id: this.formInline1.video_test_id
                 // })
                 this.cancelSaveHandler()
+                this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
+                // var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
+                // if (Array.isArray(curriculumList) && curriculumList.length > 0) {
+                //   var curriculumId = this.payload.curriculum_online_id;
+                //   for (var i = 0; i < curriculumList.length; i++) {
+                //     if (curriculumList[i].curriculum_id == curriculumId) {
+                //       // curriculumList[i].children = []
+                //       // console.log(doSortFormatCatalogList(curriculumList[i].chapterList),'logggggggggg');
+                //       // return doSortFormatCatalogList(curriculumList[i].chapterList);
+                //     }
+                //   }
+                // }
+                // console.log(this.$store.state.online_curriculum.online_curriculum_list, 'qwe')
+
+                  // console.log(curriculumList[this.payload.list_index].children,'0.0.0.0');
+
                 this.$Modal.info({
                   title: '提示',
                   content: '添加成功。'
@@ -351,12 +412,13 @@
       }
     },
     mounted() {
-      console.log(this.payload)
+      console.log(this.payload,'payload')
       this.$store.dispatch('get_role_list');
       this.formInline1.curriculum_id = this.payload.curriculum_id;
       this.formInline1.group_name = this.payload.group_name;
       this.formInline1.group_orderby = this.payload.group_orderby;
       this.formInline1.orderby = this.payload.orderby;
+      // this.formInline2.group_orderby = this.payload.group_orderby;
       this.formInline2.select_count = 4;
       if (this.payload.video_test_id) {
         this.formInline1.video_test_id = this.payload.video_test_id;
