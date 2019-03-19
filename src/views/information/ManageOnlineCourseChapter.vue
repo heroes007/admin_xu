@@ -237,7 +237,6 @@
         });
       },
       editHandler(index, row) {
-        console.log(row,'row')
         if(row.type === 0) {
           this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id, curriculum_online_id: parseInt(this.$route.params.id)})
         }
