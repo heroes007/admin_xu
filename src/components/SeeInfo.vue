@@ -34,9 +34,9 @@
      <div class="personal-detail">
           <div class="personal-detail-img-list">
             <img class="detail-data1-img" :src="detailData.head_img_url" />
-            <img class="detail-data1-img-auth" v-if="detailData.authentication" src="/src/assets/icons/icon/authentication.png" />
+            <img class="detail-data1-img-auth" v-if="detailData.authentication" src="../assets/icons/icon/authentication.png" />
             <div class="learning-statistics" v-if="detailData.learningStatistics">
-                <img src="/src/assets/icons/icon/learning-statistics.png"/>
+                <img src="../assets/icons/icon/learning-statistics.png"/>
                 <p>学习统计</p>
             </div>
           </div>

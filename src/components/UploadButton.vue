@@ -1,7 +1,7 @@
 <template>
     <div contentEditable="false">
         <div v-if="imgtypes">
-            <img class="uploadImg" src="/src/assets/icons/icon/upload.png" @click='handleStartUploadFile'/>
+            <img class="uploadImg" src="../assets/icons/icon/upload.png" @click='handleStartUploadFile'/>
             <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
         </div>
         <div v-else class='el-upload__inner' contentEditable="false">

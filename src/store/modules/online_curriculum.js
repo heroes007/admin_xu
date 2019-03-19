@@ -162,7 +162,6 @@ const actions = {
         })
     },
     delete_online_curriculum_catalog({dispatch, commit}, params) {
-        console.log(params, 'params')
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
         delete_catalog(params.id).then(res => {
             if (res.data.res_code === 1) {

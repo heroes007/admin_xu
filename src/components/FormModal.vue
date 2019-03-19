@@ -6,7 +6,7 @@
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!img_url" class="modal-upload-flie">
-                        <img class="upload-flie-img" src="/src/assets/icons/icon/upload.png"/>
+                        <img class="upload-flie-img" src="../assets/icons/icon/upload.png"/>
                         <p>点击上传</p >
                     </div>
                     <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
