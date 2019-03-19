@@ -351,6 +351,7 @@
         this.formInline2.title = this.formInline1.title;
         this.formInline2.select_count = +this.formInline2.select_count
         this.formInline2.curriculum_id = this.payload.curriculum_id
+        this.formInline2.curriculum_online_id = this.payload.curriculum_online_id
 
         if (this.formInline2.video_test_detail_id > 0) {
           update_test_detail(this.formInline2).then(res => {
@@ -365,6 +366,7 @@
           })
         } else {
           let formChapter
+          console.log(this.section_id, this.payload, '123123')
           if (this.section_id) formChapter = {...this.formInline2, ...{section_id: this.section_id}}
           else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby}}
           add_test_detail(formChapter).then(res => {
