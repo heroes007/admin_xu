@@ -239,10 +239,8 @@ export default {
             this.form.video_url = arrObj.video
             this.form.product_id = d.id
             this.form.organization_id = d.organization_id
-            // if(this.$refs.inputStyl) this.$refs.inputStyl.appendChild(d.description)
             this.descriptionHtml = d.description.replace('class="form-message"','')
             // this.form.organization_id = this.organization_id
-                console.log(this.descriptionHtml,'this.descriptionHtml');
         }
         var vm = this;
         // this.form.project_id = this.projectId;
