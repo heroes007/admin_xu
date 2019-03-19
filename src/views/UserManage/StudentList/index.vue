@@ -167,7 +167,6 @@
               pay_state: this.pay_state
             }
             postData('user/getStudentList', d).then((res) => {
-              console.log(res,'resss')
                   this.list = res.data.list
                   this.total = res.data.count
                   this.allNum = localStorage.getItem('organizationId') == 1 ? res.data.all_student : res.data.count

@@ -249,6 +249,7 @@
     /deep/ .ivu-icon-ios-settings{
          position: relative;
          top: -2px;
+         margin-right: 5px;
      }
     /deep/ .ivu-menu-vertical .ivu-menu-submenu-title-icon{
       position: absolute;
@@ -257,7 +258,7 @@
       clear: both;
     }
     /deep/ .sub-item-title{
-      padding-left: 100px !important;
+      padding-left: 112px !important;
     }
     /deep/ .ivu-menu {
         background-color: #333;

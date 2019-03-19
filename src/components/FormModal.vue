@@ -76,7 +76,7 @@
                     </FormItem>
                 </div>
             </Form>
-            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p >
+            <p v-if="modalText" class="modal-text">* {{modalText}}</p >
             <div class="foot-btn">
                 <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
@@ -100,6 +100,10 @@
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },
     props:{
+      modalFalse: {
+        type: Boolean,
+        default: false
+      },
       showModal: {
         type: Boolean,
         default: false
@@ -118,8 +122,8 @@
         default: () => {}
       },
       modalText: {
-        type: Boolean,
-        default: false
+        type: String,
+        default: ''
       },
       // [
       //     { type: 'input', name: '真实姓名',  field: 'realname'},
@@ -279,11 +283,10 @@
         if(this.formItem.hasOwnProperty('password')){
           if(this.copyFormItem.password === this.formItem.password){
             delete this.formItem.password
-            console.log(this.formItem,'sss')
           }
         }
         this.$emit('from-submit', this.formItem)
-        this.closeModal()
+        if(!this.modalFalse) this.closeModal()
       },
       handleSubmit(name){
         this.$refs[name].validate((valid) => {

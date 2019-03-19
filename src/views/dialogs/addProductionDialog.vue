@@ -355,6 +355,7 @@ export default {
               content: '实际售价不能高于原价！'
             });
           }else{
+           console.log(this.form.state,this.form.organization_id,'fff')
             this.formState = this.form.state
             this.organizationId = this.form.organization_id
             this.fromLabelWidth = 0;

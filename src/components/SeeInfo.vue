@@ -7,19 +7,19 @@
                  <h1>{{detailData.mechanismName}}</h1>
                  <div class="detail-data1-text">
                      <div class="detail-data1-num1">
-                         <p class="text1">{{detailData.num1}}</p>
+                         <p class="text1">{{detailData.tutor_count}}</p>
                          <p class="text2">导师人数</p>
                      </div>
                      <div class="detail-data1-num">
-                         <p class="text1">{{detailData.num2}}</p>
+                         <p class="text1">{{detailData.student_count}}</p>
                          <p class="text2">学员总数</p>
                      </div>
-                      <div class="detail-data1-num">
+                      <!-- <div class="detail-data1-num">
                          <p class="text1">{{detailData.num3}}</p>
                          <p class="text2">付费学员</p>
-                     </div>
+                     </div> -->
                       <div class="detail-data1-num">
-                         <p class="text1">{{detailData.num4}}</p>
+                         <p class="text1">{{detailData.product_count}}</p>
                          <p class="text2">上线产品</p>
                      </div>
                  </div>
