@@ -12,11 +12,7 @@
                             </Col>
                             <Col class="body-form">
                                 <p>{{payload.row.answer}}</p>
-                                <!--<Col class="download-from">-->
-                                    <!--<img class="file-icon" src="../../../static/icon/文件icon.png" alt="">-->
-                                    <!--<a href="">{{studata.stuurl}}</a>-->
-                                    <!--<img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">-->
-                                <!--</Col>-->
+
                                 <down-loading :formData="downList"/>
                             </Col>
                             <Col class="input-form">
@@ -36,11 +32,6 @@
                             </Col>
                             <Col class="body-form">
                                 <p>{{payload.row.answer}}</p>
-                                <!--<Col class="download-from">-->
-                                    <!--<img class="file-icon" src="../../../static/icon/文件icon.png" alt="">-->
-                                    <!--<a href="">{{studata.stuurl}}</a>-->
-                                    <!--<img class="download-icon" src="../../../static/icon/下载icon/下载.png" alt="">-->
-                                <!--</Col>-->
                                 <down-loading :formData="downList"/>
                             </Col>
                             <Col class="show-from" v-for="(item, index) in studata.teacherTail" :key="index">
