@@ -182,7 +182,7 @@ export default {
             formItemLabelWidth:121,
             // certificate: [],
             paneItem: '',
-            disabled2: true,
+            disabled2: false,
             disabled1: false,
             description: '',
             fontList:[
@@ -238,10 +238,9 @@ export default {
             this.form.imgList = [...this.form.imgList,...arrObj.default]
             this.form.video_url = arrObj.video
             this.form.product_id = d.id
-            // if(this.$refs.inputStyl) this.$refs.inputStyl.appendChild(d.description)
+            this.form.organization_id = d.organization_id
             this.descriptionHtml = d.description.replace('class="form-message"','')
             // this.form.organization_id = this.organization_id
-                console.log(this.descriptionHtml,'this.descriptionHtml');
         }
         var vm = this;
         // this.form.project_id = this.projectId;
@@ -378,6 +377,7 @@ export default {
                 }
                 this.form.state = this.formState;
                 this.form.organization_id = this.organizationId;
+                 console.log(this.form.state,this.form.organization_id,'fff')
                 this.form.url_arr = JSON.stringify(arrObj);
                 if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
                 this.form.price = Number(this.form.price).toFixed(2)

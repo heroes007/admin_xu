@@ -180,9 +180,12 @@
       logout() {
         api.post('user/logout', {from: 'web'}).then((res) => {
           if (res.data.res_code === 1) {
+            // login_user
+            let d = localStorage.getItem('login_user')
             localStorage.clear() 
-            this.$localStorage.set('token', '');
+            // this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
+            localStorage.setItem('login_user', d)
             // this.$localStorage.remove('organizationId');
             // this.$localStorage.remove('menuOpenName');
             // localStorage.removeItem('menuActiveIndex');
@@ -220,24 +223,15 @@
         }
     },
     mounted() {
-      //  this.$nextTick(() => {
-          this.handleMenuList()
-          if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
-          let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
-          this.activeIndex = menuActive
-          this.$nextTick(() => {
-             this.$refs.side_menu.updateOpened();
-             this.$refs.side_menu.updateActiveName();
-          })
-      //  })
-
-      // this.setSubmenuTitleIconMouse()
-      // if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
-      // this.get_unread_list();
-      // if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
-      // this.$nextTick(() => {
-      //   this.$refs.side_menu.updateOpened();
-      // })
+      this.handleMenuList()
+      if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
+      let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
+      this.activeIndex = menuActive
+      if(this.$route.name ==='user-manage') this.activeIndex = 'user-manage'
+      this.$nextTick(() => {
+          this.$refs.side_menu.updateOpened();
+          this.$refs.side_menu.updateActiveName();
+      })
     }
   }
 </script>
