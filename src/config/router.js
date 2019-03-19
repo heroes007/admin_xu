@@ -12,7 +12,6 @@ import VueRouter from 'vue-router';
 // import ProjectList from '../components/ProjectList';
 // import ManageRecruit from '../views/information/ManageRecruit';
 // import MyInterview from '../views/mine/MyInterview';
-// import ManageNews from '../views/news/ManageNews';
 // import StatisticsData from '../views/statistics/StatisticsData';
 // import FromPageData from '../views/statistics/FromPageData';
 // import TeamGrouping from '../views/team/TeamGrouping';
@@ -40,13 +39,22 @@ const ManageNews = () => import('../views/news/ManageNews')
 const ProjectList = () => import('../components/ProjectList');
 const ManagRedeemCode = () => import('../views/code/ManageRedeemCode');
 
+const UserManage = () => import('../views/UserManage/index')
+const ProductManage = () => import('../views/ProductManage/index')
+const SystemManage = () => import('../views/SystemManage/index')
+const OpenProduct = () => import('../views/ProductManage/OpenProduct/index')
+const MainProduct = () => import('../views/ProductManage/MainProduct/index')
+const ExchangeCode = () => import('../views/ExchangeCode/index')
+const UsageRecord = () => import('../views/ExchangeCode/UsageRecord/index')
+const MarkingHomework = () => import('../views/information/MarkingHomework/index')
+const AdvertisingMap = () => import('../views/AdvertisingMap/index')
 Vue.use(VueRouter);
 
 // 页面路由
 const routes = [
   {
     path:'',
-    redirect:'/dashboard/manage-student'
+    redirect:'/login'
   },
   // {
   //   path:'/project',
@@ -75,7 +83,48 @@ const routes = [
     children:[
       {
         path:'',
-        redirect:'/dashboard/manage-production'
+        redirect:'user-manage'
+      },
+      {
+        path: 'user-manage',
+        name: 'user-manage',
+        component: UserManage
+      },
+      {
+        path: 'product-manage',
+        name: 'product-manage',
+        component: ProductManage
+      },
+      // {
+      //   path: 'system-manage',
+      //   name: 'system-manage',
+      //   component: SystemManage
+      // },
+      {
+        path: 'exchange-code',
+        name: 'exchange-code',
+        component: ExchangeCode
+      },
+      // 兑换码使用记录
+      {
+        path: ':id/usage-record',
+        name: 'usage-record',
+        component: UsageRecord
+      },
+      {
+        name:'advertising-map',
+        path:'advertising-map',
+        component:AdvertisingMap
+      },
+      {
+        name: 'manage-news',
+        path: 'manage-news',
+        component: ManageNews
+      },
+      {
+        name:'notification-chat',
+        path:'notification-chat',
+        component:ManageNotification
       },
       // {
       //   name:'add-homework',
@@ -92,11 +141,11 @@ const routes = [
       //   path:'grade-homework',
       //   component:GradeHomework
       // },
-      {
-        name:'manage-student',
-        path:'manage-student',
-        component:ManageStudent
-      },
+      // {
+      //   name:'manage-student',
+      //   path:'manage-student',
+      //   component:ManageStudent
+      // },
       // {
       //   name:'add-student',
       //   path:'add-student',
@@ -107,76 +156,71 @@ const routes = [
       //   path:'add-homework/:id',
       //   component:AddHomework
       // },
-      {
-        name:'manage-user',
-        path:'manage-user',
-        component:ManageUser
-      },
-      {
-        name:'manage-lb',
-        path:'manage-lb',
-        component:ManageLb
-      },
-      {
-        name:'online-course',
-        path:'online-course',
-        component:ManageOnlineCourse
-      },
-      {
-        name:'online-course-chapter',
-        path:'online-course-chapter/:id',
-        component:ManageOnlineCourseChapter
-      },
-      {
-        name:'offline-course',
-        path:'offline-course',
-        component:ManageOfflineCourse
-      },
-      {
-        name:'offline-course-manage-signup',
-        path:'offline-course-manage-signup/:id',
-        component:ManageOfflineCourseSignup
-      },
-      {
-        name:'task',
-        path:'task',
-        component:ManageTask
-      },
-      {
-        name:'manage-my-assignment',
-        path:'manage-my-assignment',
-        component:MyAssignment
-      },
-      {
-        name:'notification-chat',
-        path:'notification-chat',
-        component:ManageNotification
-      },
-      {
-        name:'redeem-code',
-        path:'redeem-code',
-        component:ManagRedeemCode
-      },
-      {
-        name:'course-download-data',
-        path:'course-download-data',
-        component:ManageCourseDownloadData
-      },
-      {
-        name:'public-download-data',
-        path:'public-download-data',
-        component:ManagePublicDownloadData
-      },
+      // {
+      //   name:'manage-user',
+      //   path:'manage-user',
+      //   component:ManageUser
+      // },
+      // {
+      //   name:'manage-lb',
+      //   path:'manage-lb',
+      //   component:ManageLb
+      // },
+      // {
+      //   name:'online-course',
+      //   path:'online-course',
+      //   component:ManageOnlineCourse
+      // },
+      // {
+      //   name:'online-course-chapter',
+      //   path:'online-course-chapter/:id',
+      //   component:ManageOnlineCourseChapter
+      // },
+      // {
+      //   name:'offline-course',
+      //   path:'offline-course',
+      //   component:ManageOfflineCourse
+      // },
+      // {
+      //   name:'offline-course-manage-signup',
+      //   path:'offline-course-manage-signup/:id',
+      //   component:ManageOfflineCourseSignup
+      // },
+      // {
+      //   name:'task',
+      //   path:'task',
+      //   component:ManageTask
+      // },
+      // {
+      //   name:'manage-my-assignment',
+      //   path:'manage-my-assignment',
+      //   component:MyAssignment
+      // },
+      // {
+      //   name:'redeem-code',
+      //   path:'redeem-code',
+      //   component:ManagRedeemCode
+      // },
+      // {
+      //   name:'course-download-data',
+      //   path:'course-download-data',
+      //   component:ManageCourseDownloadData
+      // },
+      // {
+      //   name:'public-download-data',
+      //   path:'public-download-data',
+      //   component:ManagePublicDownloadData
+      // },
       // {
       //   name: 'manage-app',
       //   path: 'manage-app',
       //   component: ManageApp
       // },
-      {
-        name: 'manage-project',
-        path: 'manage-project',
-        component: ProjectList
-      },
+      // {
+      //   name: 'manage-project',
+      //   path: 'manage-project',
+      //   component: ProjectList
+      // },
       // {
       //   name: 'manage-recruit',
       //   path: 'manage-recruit',
@@ -187,26 +231,21 @@ const routes = [
       //   path: 'manage-my-interview',
       //   component: MyInterview
       // },
-      {
-        name: 'manage-production',
-        path: 'manage-production',
-        component: ManageProduction
-      },
-      {
-        name: 'manage-production-curriculum',
-        path: 'manage-production-curriculum/:id',
-        component: ManageProductionCurriculum
-      },
-      {
-        name: 'manage-production-group',
-        path: 'manage-production-group',
-        component: ManageProductionGroup
-      },
-      {
-        name: 'manage-news',
-        path: 'manage-news',
-        component: ManageNews
-      },
+      // {
+      //   name: 'manage-production',
+      //   path: 'manage-production',
+      //   component: ManageProduction
+      // },
+      // {
+      //   name: 'manage-production-curriculum',
+      //   path: 'manage-production-curriculum/:id',
+      //   component: ManageProductionCurriculum
+      // },
+      // {
+      //   name: 'manage-production-group',
+      //   path: 'manage-production-group',
+      //   component: ManageProductionGroup
+      // },
       // {
       //   name: 'statistics-data',
       //   path: 'statistics-data',
@@ -217,6 +256,35 @@ const routes = [
       //   path: 'from-page-data',
       //   component: FromPageData
       // }
+    ]
+  },
+  {
+    path: '/product',
+    name: 'main-product',
+    component: MainProduct,
+    redirect: '/product/open-product',
+    children: [
+      {
+        path: 'open-product',
+        name: 'open-product',
+        component: OpenProduct,
+      },
+      {
+        path: 'open-product/online-course-chapter/:id',
+        name: 'online-course-chapter',
+        component: ManageOnlineCourseChapter
+      },
+      // 作业--批阅作业
+      {
+        path: 'open-product/:id/marking-homework',
+        name: 'marking-homework',
+        component: MarkingHomework
+      },
+      {
+        name:'offline-course',
+        path:'open-product/offline-course',
+        component:ManageOfflineCourse
+      },
     ]
   },
   {

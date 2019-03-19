@@ -80,21 +80,10 @@ export function get_student_online_curriculum(params) {
     })
 }
 export function get_students_by_offline_term(params) {
-    return api.post('/api/tools_student/get_students_by_offline_term', {
-        offline_term_id: params.offline_term_id,
-        page_index: params.page_index,
-        page_size: params.page_size,
-        subject_id: params.subject_id,
-        grade_id: params.subject_id,
-        phone: params.phone,
-        username: params.username
-    })
+    return api.post('/product/curriculum_offline/subject_join_student_get_list', params)
 }
 export function send_student_offline_curriculum(params){
-  return api.post('/api/tools_student/send_student_offline_curriculum', {
-    offline_term_id: params.offline_term_id,
-    user_id: params.user_id
-  })
+  return api.post('/product/curriculum_offline/term_send', params)
 }
 
 export function clear_online_curriculum_record(project_id,to_user_id){

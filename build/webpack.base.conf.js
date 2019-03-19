@@ -7,8 +7,7 @@ function pathResolve(relPath) {
 
 module.exports = {
   entry: {
-    app: './src/main.js',
-    //vendor: ['vue', 'vuex', 'vue-router', 'element-ui', 'vuex-router-sync', 'axios']
+    app: './src/main.js'
   },
   output: {
     path: config.base.path

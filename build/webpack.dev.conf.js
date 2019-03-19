@@ -58,9 +58,6 @@ module.exports = merge(baseWebpackConfig, {
   // devtool: "cheap-eval-source-map",
   plugins: [
     new VueLoaderPlugin(),
-    // new webpack.DefinePlugin({
-    //   'process.env.NODE_ENV': JSON.stringify('development')
-    // }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(), // 模块热替换 
     // new webpack.NoEmitOnErrorsPlugin(), // 编译过程中，跳过错误

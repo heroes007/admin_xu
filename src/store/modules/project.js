@@ -5,7 +5,7 @@ import {
 } from '../../api/modules/tools_project'
 import Vue from 'vue';
 
-let id = localStorage.getItem('lastSelectedProject') ? +localStorage.getItem('lastSelectedProject') : 1
+let id = localStorage.getItem('organizationId') ? +localStorage.getItem('organizationId') : 1
 const state = {
     select_project_id: id,
     project_list: [],
@@ -32,22 +32,25 @@ const getters = {
 }
 
 const actions = {
-    get_project_list({
-        commit
-    }, payload) {
-        commit(types.PROJECT_LIST_LOADING, true);
-        if (state.project_list.length === 0) {
-            get_project_list().then(res => {
-                if (res.data.res_code === 1 && res.data.msg.length > 0) {
-                    commit(types.QUERY_PROJECT_LIST, {
-                        data: res.data.msg,
-                        callback: payload ? payload.callback : null
-                    })
-                }
-            })
-        } else {
-            commit(types.PROJECT_LIST_LOADING, false)
-        }
+    // get_project_list({
+    //     commit
+    // }, payload) {
+    //     commit(types.PROJECT_LIST_LOADING, true);
+    //     if (state.project_list.length === 0) {
+    //         get_project_list().then(res => {
+    //             if (res.data.res_code === 1) {
+    //                 commit(types.QUERY_PROJECT_LIST, {
+    //                     data: res.data.data,
+    //                     callback: payload ? payload.callback : null
+    //                 })
+    //             }
+    //         })
+    //     } else {
+    //         commit(types.PROJECT_LIST_LOADING, false)
+    //     }
+    // },
+    get_project_list({}){
+
     },
     change_selected_project_id({
         commit
@@ -79,7 +82,7 @@ const mutations = {
         state.project_list = payload.data;
         if (payload.callback) payload.callback(state.select_project_id);
         state.isLoading = false;
-        Vue.localStorage.set('lastSelectedProject', payload.data[0].id)
+        Vue.localStorage.set('organizationId', payload.data[0].id)
     },
     [types.CHANGE_SELECTED_PROEJCT_ID](state, payload) {
         state.select_project_id = payload;

@@ -1,24 +1,33 @@
 <template>
-    <Modal :transfer=false :title="dialogIndex == 1 ? '基础信息' : '前置课程'" :footer-hide="true"
-           v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="800"
-           :mask-closable="false">
+    <Modal :transfer=false :title="stateName == 1 ? '添加课程' : '编辑课程'" :footer-hide="true" :styles="{top: '60px'}"
+           v-model="addCourseDialogVisible" @on-cancel="handleRemoveModal(remove)" size="auto" width="654" :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form ref="form" :model="form" class="add-course-form" :label-position="labelPosition">
-                        <Row>
-                            <Col :span="11">
+                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
+                        <!--<Row>-->
+                            <Col>
                                 <FormItem label="课程名称">
                                     <Input v-model="form.title" placeholder="请输入课程名称"></Input>
                                 </FormItem>
                                 <FormItem label="课程讲师">
                                     <Select v-model="form.teacher_id" placeholder="请选择观讲师">
-                                        <Option v-for="item in query_teacher_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                        <Option v-for="item in teacherList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="学段">
+                                <FormItem label="科室">
+                                    <Select v-model="form.department_id" placeholder="请选择科室">
+                                        <Option v-for="item in detpysList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem label="年级">
                                     <Select v-model="form.grade_id" placeholder="请选择学段">
-                                        <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                        <Option v-for="item in gradesList" :key="item.id" :label="item.name" :value="item.id"></Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem label="解锁方式">
+                                    <Select v-model="form.unlock_type" placeholder="请选择解锁方式">
+                                        <Option v-for="item in clearList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
                                 <FormItem label="课程状态">
@@ -26,8 +35,20 @@
                                         <Option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
+                               <FormItem label="课程介绍">
+                                    <Input type="textarea" :rows="7" placeholder="请输入课程介绍" v-model="form.description"></Input>
+                                </FormItem>
+                                <FormItem label="展示封面">
+                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
+                                        <span slot="file-require">只能上传 jpg/png 文件，且图片比例为16:9，建议尺寸768*432px</span>
+                                    </upload-panel>
+                                </FormItem>
+                                <FormItem class="btns">
+                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
+                                    <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
+                                </FormItem>
                             </Col>
-                            <Col :span="11" :offset="2">
+                            <!--<Col :span="11" :offset="2">
                                 <FormItem label="开课时间">
                                     <DatePicker v-model="selectDateRange" type="daterange" placeholder="选择日期范围" :transfer="true"></DatePicker>
                                 </FormItem>
@@ -51,9 +72,9 @@
                                         <Button type='text' v-if='newData.show' @click='cancelAddData'>取消</Button>
                                     </Row>
                                 </FormItem>
-                            </Col>
-                        </Row>
-                        <Row>
+                            </Col>-->
+                        <!--</Row>-->
+                        <!--<Row>
                             <div class='add-download-data' v-if='newData.show'>
                                 <Row type='flex' align='middle'>
                                     <Col :span='4'>资料名称：</Col>
@@ -63,15 +84,10 @@
                                 </Row>
                                 <file-uploader :filters="dataFilters" maxFileCount="1" :maxFileSize="10000" @uploadComplete="uploadComplete" bucket="dscj-static-file" :dir="getDir()"/>
                             </div>
-                        </Row>
-                        <Row>
-                            <Col :span="11">
-                                <FormItem label="展示图片">
-                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                                    </upload-panel>
-                                </FormItem>
-                            </Col>
+
+                        </Row>-->
+                       <!-- <Row>
+
                             <Col :span="11" :offset="2">
                                 <FormItem label="文字图片">
                                     <upload-panel ref="upload_panel" :resourse="form.img_3_8" :upload-config="uploadConfig" @uploadcomplete="handle38UploadComplete">
@@ -79,18 +95,13 @@
                                     </upload-panel>
                                 </FormItem>
                             </Col>
-                        </Row>
-                        <Row class="course-description">
+                        </Row>-->
+                        <!--<Row class="course-description">
                             <FormItem label="课程简介">
                                 <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
                             </FormItem>
-                        </Row>
-                        <Row>
-                            <FormItem class="btns">
-                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
-                                <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
-                            </FormItem>
-                        </Row>
+                        </Row>-->
+
                     </Form>
                 </Row>
                 <Row v-if="dialogIndex==2">
@@ -125,8 +136,8 @@
                         </Col>
                     </Row>
                     <Row class="btns">
-                        {{this.result_msg1}}
-                        <Button type="text" @click="dialogIndex = 1" class="pre-btn">上一步</Button>
+                        <!-- {{this.result_msg1}}
+                        <Button type="text" @click="dialogIndex = 1" class="pre-btn">上一步</Button> -->
                         <Button type="primary" class="public-btn" @click="handleSubmit">保存</Button>
                     </Row>
                 </Row>
@@ -147,6 +158,7 @@
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'
   import { MPop } from '../../components/MessagePop'
+  import postData from '../../api/postData'
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -158,6 +170,7 @@
       return {
         addCourseDialogVisible: true,
         videoManageDialog: true,
+        stateName: 1,
         form: {
           title: '',
           teacher_id: '',
@@ -174,6 +187,7 @@
           curriculum_roles: [0],
           pre_curriculum_ids: [],
           data_center_id: 0,
+          unlock_type: 0
         },
         newData: {
           show: false,
@@ -183,7 +197,7 @@
           project_id: 1
         },
         dialogIndex: 1,
-        labelPosition: 'top',
+        labelPosition: 'left',
         panelOptions: {
           panelHeight: 158
         },
@@ -199,16 +213,41 @@
           type: 1
         },
         resourse1: '',
-        resourse2: ''
+        resourse2: '',
+        teacherList: [],
+        detpysList: [],
+        gradesList: [],
+        clearList: [
+          {
+            id: 0,
+            name: '不限'
+          },
+          {
+            id: 2,
+            name: '按章节解锁'
+          },
+          {
+            id: 3,
+            name: '按视频解锁'
+          }
+        ]
       }
     },
     mounted() {
-      if (this.query_teacher_list.length === 0) this.get_teacher_list();
-      this.get_role_list();
-      this.get_subject_list();
-      this.get_grade_list();
+      this.stateName = this.payload.state
+      this.getListTeacher()
+      this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
+      let d = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[])
+      if(this.payload.state == 0){
+        this.form = d[this.payload.index]
+        this.form.img_default = d[this.payload.index].img_url
+      }
+        // if (this.query_teacher_list.length === 0) this.get_teacher_list();
+      // this.get_role_list();
+      // this.get_subject_list();
+      // this.get_grade_list();
       this.checkPayload();
-      this.get_curriculum_donwload_data_list({project_id: this.project_id});
+      // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
     watch: {
       query_subject_list(val) {
@@ -311,26 +350,33 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
-        this.form.img_url_arr = {
-          'default': this.form.img_default,
-          '3_8': this.form.img_3_8
-        };
-        this.form.project_id = this.project_id;
-        this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
+        // this.form.img_url_arr = {
+        //   'default': this.form.img_default,
+        //   '3_8': this.form.img_3_8
+        // };
+        // this.form.project_id = this.project_id;
+        // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
         var vm = this;
         this.form._fn = function () {
           vm.handleClose();
           vm.showPop('保存成功！', 1000);
         };
-        if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
-          var preList = [];
-          for (var i = 0; i < this.top_course_list.length; i++) {
-            preList.push(this.top_course_list[i].curriculum_id);
-          }
-          this.form.pre_curriculum_ids = preList;
+        // if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
+        //   var preList = [];
+        //   for (var i = 0; i < this.top_course_list.length; i++) {
+        //     preList.push(this.top_course_list[i].curriculum_id);
+        //   }
+        //   this.form.pre_curriculum_ids = preList;
+        // }
+        this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
+        this.form.page = this.payload.page
+        if (this.stateName == 1) {
+            this.add_online_curriculum(this.form)
         }
-        if (!this.payload) this.add_online_curriculum(this.form);
-        else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
+        else {
+            this.edit_online_curriculum({data: this.form});
+            this.addCourseDialogVisible = false
+        }
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},
@@ -431,16 +477,55 @@
       },
       handle38UploadComplete(url) {
         this.form.img_3_8 = url;
+      },
+      getListTeacher() {
+        postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
+          this.teacherList = res.data
+        })
+        postData('components/getDepts').then((res) => {
+          this.detpysList = res.data
+        })
+        postData('components/getGrades').then((res) => {
+          this.gradesList = res.data
+        })
+      },
+      getName(arr){
+          arr.forEach((item, index) => {
+              item.list.forEach(it => {
+                  if(item.id == it.id){
+                      this.form[item.name] = it.name
+                  }
+              })
+          })
       }
     }
   }
 </script>
 <style scoped lang="scss">
+/deep/ .upload-panel .img img { height: 250px; }
+/deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
+/deep/.ivu-modal-header-inner{
+font-family: PingFangSC-Regular;
+font-size: 20px !important;
+color: #474C63 !important;
+letter-spacing: 0;
+}
+/deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
+/deep/ .ivu-form-item{margin-bottom: 15px;}
+/deeep/.upload-panel .upload-space{
+  height: 250px !important;
+}
     /deep/ .ivu-modal-body {
         padding: 30px 50px;
     }
     .btns {
         text-align: center;
+
+        /deep/ .ivu-form-item-content{
+            display: flex;
+            justify-content: center;
+            margin: 0 !important;
+        }
 
         .next-btn {
             width: 170px;

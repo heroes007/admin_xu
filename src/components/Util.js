@@ -32,7 +32,7 @@ export function doOfflineCurriculumTypeFormat(val) {
       return '实践';
   }
 }
-export function doSortFormatCatalogList(list) {
+export function doSortFormatCatalogList(list)   {
   if (list.length === 0)
     return [];
 
@@ -110,84 +110,121 @@ export function reunitPrice(val) {
 
 export const MenuList = [
   {
-    name: 'manage-project',
-    title: '机构管理',
-    icon: '01.organ_gray'
-  },
-  {
-    name: 'manage-user',
-    icon: '02.user_gray',
+    name: 'user-manage',
     title: '用户管理',
-    checkItem: 'admin'
+    icon:'md-person',
   },
   {
-    name: '2',
-    icon: '03.student_gray',
-    title: '学员管理',
-    check: 'student',
-    list:[{
-      name: 'manage-student',
-      title: '学员管理',
-    },
-    {
-        name: 'redeem-code',
-        title: '兑换码管理'
-    },
-    {
-        name: 'manage-my-assignment',
-        title: '批阅任务作业',
-        badge: true
-      }]
-
+    name: 'product-manage',
+    title: '培训管理',
+    icon:'md-easel',
   },
   {
-    name: ['manage-production', 'manage-production-curriculum'],
-    title: '产品信息',
-    icon: '04.product_gray',
-    checkItem: 'product-information'
+    name: 'exchange-code',
+    title: '产品兑换',
+    icon:'md-clipboard',
   },
   {
-    name: '4',
-    title: '课程管理',
-    icon: '05.class_gray',
-    check: 'manager',
-    list: [{
-      check: true,
-      name: ['online-course', 'online-course-chapter'],
-      title: '线上课'
-    },
-      {
-        check: true,
-        name: ['offline-course', 'offline-course-manage-signup'],
-        title: '线下课'
-      }, {
-        name: 'task',
-        title: '任务包'
-      },
-      {
-        name: 'course-download-data',
-        title: '课程资料'
-      }, {
-        name: 'public-download-data',
-        title: '推荐资料'
-      }]
-  },
-  {
-    name: '5',
+    name: 'system-manage',
     title: '平台管理',
-    icon: '06.terrace_gray',
-    check:'platform',
-    list: [{
-      name: 'manage-lb',
+    icon: 'ios-settings',
+    list: [
+    {
+      name: 'advertising-map',
       title: '广告图'
-    }, {
-      name: 'manage-news',
-      title: '行业资讯'
-    }, {
-      name: 'notification-chat',
-      title: '通知管理',
-    }]
+    }, 
+    // {
+    //   name: 'manage-news',
+    //   title: '行业资讯'
+    // }, 
+    // {
+    //   name: 'notification-chat',
+    //   badge: true,
+    //   title: '通知管理',
+    // }
+   ]
   },
+
+
+  // {
+  //   name: 'manage-project',
+  //   title: '机构管理',
+  //   icon: '01.organ_gray'
+  // },
+  // {
+  //   name: 'manage-user',
+  //   icon: '02.user_gray',
+  //   title: '用户管理',
+  //   checkItem: 'admin'
+  // },
+  // {
+  //   name: '2',
+  //   icon: '03.student_gray',
+  //   title: '学员管理',
+  //   check: 'student',
+  //   list:[{
+  //     name: 'manage-student',
+  //     title: '学员管理',
+  //   },
+  //   {
+  //       name: 'redeem-code',
+  //       title: '兑换码管理'
+  //   },
+  //   {
+  //       name: 'manage-my-assignment',
+  //       title: '批阅任务作业',
+  //       badge: true
+  //     }]
+  //
+  // },
+  // {
+  //   name: ['manage-production', 'manage-production-curriculum'],
+  //   title: '产品信息',
+  //   icon: '04.product_gray',
+  //   checkItem: 'product-information'
+  // },
+  // {
+  //   name: '4',
+  //   title: '课程管理',
+  //   icon: '05.class_gray',
+  //   check: 'manager',
+  //   list: [{
+  //     check: true,
+  //     name: ['online-course', 'online-course-chapter'],
+  //     title: '线上课'
+  //   },
+  //     {
+  //       check: true,
+  //       name: ['offline-course', 'offline-course-manage-signup'],
+  //       title: '线下课'
+  //     }, {
+  //       name: 'task',
+  //       title: '任务包'
+  //     },
+  //     {
+  //       name: 'course-download-data',
+  //       title: '课程资料'
+  //     }, {
+  //       name: 'public-download-data',
+  //       title: '推荐资料'
+  //     }]
+  // },
+  // {
+  //   name: '5',
+  //   title: '平台管理',
+  //   icon: '06.terrace_gray',
+  //   check:'platform',
+  //   list: [{
+  //     name: 'manage-lb',
+  //     title: '广告图'
+  //   }, {
+  //     name: 'manage-news',
+  //     title: '行业资讯'
+  //   }, {
+  //     name: 'notification-chat',
+  //     title: '通知管理',
+  //   }]
+  // },
   // {
   //   name: '1',
   //   title: '超级管理员',

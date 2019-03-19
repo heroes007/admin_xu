@@ -35,7 +35,10 @@ import addProductionGroupDialog from './addProductionGroupDialog.vue';
 import selectProductionDialog from './selectProductionDialog.vue';
 import addNewsDialog from './addNewsDialog.vue';
 import editProtocol from './editProtocol.vue';
-import addCertificateDialog from './addCertificateDialog.vue'
+import addCertificateDialog from './addCertificateDialog.vue';
+import addHouner from './addHouner.vue';
+import sendHouner from './sendHouner.vue';
+import readOver from './readOver.vue';
 
 import store from '../../store';
 
@@ -160,6 +163,15 @@ export var Dialog = {
                     break;
                 case 'edit-protocol':
                     inits(editProtocol);
+                    break;
+                case 'add-houner':
+                    inits(addHouner);
+                    break;
+                case 'send-houner':
+                    inits(sendHouner);
+                    break;
+                case 'read-over':
+                    inits(readOver);
                     break;
             }
         }

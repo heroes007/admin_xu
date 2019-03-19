@@ -1,6 +1,6 @@
 <template>
     <div class='manage-student-view'>
-        <header-component title='学员管理' @reRenderList="reRenderList" :showAdd='true' addText='创建学员' @addClick='addStudentHandler' />
+        <!-- <header-component title='学员管理' @reRenderList="reRenderList" :showAdd='true' addText='创建学员' @addClick='addStudentHandler' /> -->
         <Row>
             <Form :inline="true" :model="formInline" :label-width="40" class="find-by-term">
                 <FormItem label="类型">
@@ -80,6 +80,7 @@
   import { doDateFormat, doTimeFormat } from "../../components/Util";
   import { ADD_STUDENT, QUERY_STUDENT_COURSE, QUERY_STUDENT_OFFLINE_COURSE, QUERY_STUDENT_TASK, STUDENT_INFO_DETAIL } from '../dialogs/types'
   import {Config} from '../../config/base'
+import { all } from 'q';
 
   export default {
     mixins: [Dialog],
@@ -288,8 +289,9 @@
     },
     computed: {
       tableHeight(){
-        let w = document.documentElement.offsetHeight;
-        return w > 821 ? w - 356 : w - 436;
+        let h = document.documentElement.offsetHeight;
+        let w = document.documentElement.offsetWidth;
+        return w > 1485 ? h - 356 : h - 436;
       },
       list() {
         return this.$store.state.student.student_list;
@@ -620,7 +622,7 @@
             .data-form {
                 width: 550px;
                 background-color: #ffffff;
-                border: 1px solid #EBEBEC;
+                // border: 1px solid #EBEBEC;
                 border-radius: 6px;
                 padding: 20px 0;
 

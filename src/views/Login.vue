@@ -4,17 +4,17 @@
             <div class="login-left"></div>
             <div class='login-right'>
                 <div class='logo'>
-                    <img src='../../static/img/logo_copy.png'>
+                    <img src='/static/img/logo_copy.png'>
                 </div>
                 <h1 class="login-title">九划医疗后台管理系统</h1>
                 <div class='data-input'>
                     <div class="elRow">
-                        <img class="input-img" src='../../static/img/head.png'>
+                        <img class="input-img" src='/static/img/head.png'>
                         <span class="input-span">|</span>
                         <input  class="el-input" placeholder="输入用户名" v-model="name" />
                     </div>
                     <div class="elRow">
-                        <img class="input-img" src='../../static/img/lock.png'>
+                        <img class="input-img" src='/static/img/lock.png'>
                         <span class="input-span">|</span>
                         <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/>
                     </div>
@@ -40,6 +40,7 @@
     import { login_pwd, user_info } from '../api/modules/auth';
     import { Base64 } from 'js-base64';
     import { mapState, mapActions } from 'vuex';
+    import Vue from 'vue'
     export default {
         components: {  EllipsisAni  },
         data() {
@@ -48,39 +49,36 @@
                 password: '',
                 remember: true,
                 isLogining: false,
-                loginViewStyl: {}
+                loginViewStyl: {},
+                projectData: []
             }
         },
         computed: {
-            ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
+            ...mapState({ isLoading: state => state.project.isLoading })
         },
         watch: {
             isLoading(val) {
-            this.$config.IsLoading(val);
+               this.$config.IsLoading(val);
             }
         },
         methods: {
              ...mapActions([ "get_project_list", "change_selected_project_id", "clear_store" ]),
             doLogin() {
                 this.isLogining = true;
-                let vm = this;
-                login_pwd(this.name, this.password, 1).then((res) => {
+                login_pwd(this.name, this.password).then((res) => {
+                  console.log(res)
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
-                        user_info().then((res) => {
-                            if (res.data.res_code === 1) {
-                                let roleArr = res.data.msg.role_arr
-                               if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {
-                                    vm.$store.dispatch('set_user_info', res.data.msg);
-                                    this.get_project_list();
-                                    vm.$router.replace({ path: 'dashboard' });
-                                }else vm.$Message.warning('权限错误，请重新登录');
-                            }
-                        })
+                        let d = res.data.data;
+                        localStorage.setItem('organizationId',d.userInfo[0].organization_id)
+                        this.$store.dispatch('set_user_info', d.userInfo[0]);
+                        localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
+                        this.$router.push({ path: 'dashboard' });
+                        localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
+                        localStorage.setItem('token',d.token)
                         this.remember ? this.$localStorage.set('login_user', Base64.encode('天涯'+JSON.stringify({name:this.name,pass:this.password}))) : this.$localStorage.remove('login_user');
-                        this.$localStorage.set('token', res.data.token);
                     } else {
-                        vm.$Message.warning(res.data.msg);
+                        this.$Message.warning(res.data.msg);
                         this.isLogining = false;
                     }
                 });
@@ -98,6 +96,7 @@
             }else this.setUser({name:'',pass:''})
             let hei = document.documentElement.clientHeight * .555;
             this.loginViewStyl = { 'width' :  (hei > 480 ? hei : 480) * 2 + 'px'}
+            this.get_project_list();
         }
     }
 
@@ -173,6 +172,16 @@
                     .input-span{
                         margin-right: 10px;
                         color: #EEE
+                    }
+                    /deep/ .ivu-select-single .ivu-select-selection{
+                        width: 100%;
+                        height: 48px;
+                    }
+                    /deep/ .ivu-select-selection{
+                        border:none
+                    }
+                    /deep/ .ivu-select-visible .ivu-select-selection{
+                        box-shadow: none
                     }
                     .el-input {
                         width: 100%;

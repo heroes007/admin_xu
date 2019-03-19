@@ -1,11 +1,13 @@
 <template>
     <div class='manage-notification'>
-        <header-component :type="0" :showAdd="activeName == tabName ? true : false" addText="添加通知" title="通知管理" @addClick="createNotificationHandler()"/>
-        <Tabs v-model="activeName" @on-click="handleClick" value='notification'>
-            <TabPane class='notification-content' label="通知" name="notification">
+        <!-- <header-component :type="0" :showAdd="activeName == tabName ? true : false" addText="添加通知" title="通知管理" @addClick="createNotificationHandler()"/> -->
+        <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
+        <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
+        <!-- <Tabs v-model="activeName" @on-click="handleClick" value='notification'> -->
+            <!-- <TabPane class='notification-content' label="通知" name="notification"> -->
                 <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter' @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
-            </TabPane>
-            <TabPane class='message-content' label="私信" name="chat" disabled>
+            <!-- </TabPane> -->
+            <!-- <TabPane class='message-content' label="私信" name="chat" disabled>
                 <Row class='message-content-container' type='flex' align='top'>
                     <Col :span='10'>
                         <Row class='group_header' type='flex'>
@@ -31,8 +33,8 @@
                         <Button class='btn-submit' type='primary' @click='sendMsg'>发送</Button>
                     </Col>
                 </Row>
-            </TabPane>
-        </Tabs>
+            </TabPane> -->
+        <!-- </Tabs> -->
     </div>
 </template>
 
@@ -46,16 +48,28 @@
     import { Config } from '../../config/base'
     import { send_by_project_id } from '../../api/modules/tools_sys_msg'
     import defaultHeader from '../../assets/img/side-menu/default-header.jpg'
+    import FormModal from '../../components/FormModal'
+    import FormModalMixin from '../UserManage/FormModalMixin'
     // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
+    import screen from '../../components/ScreenFrame'
     export default {
-        mixins: [Dialog],
-        components: { 'header-component': Header, 'data-list': BaseList },
+        mixins: [Dialog,FormModalMixin],
+        components: { 'header-component': Header, 'data-list': BaseList,screen,FormModal },
         data() {
             return {
                 messageContent: '',
                 activeName: 'notification',
                 noSelect:true,
-                tabName: 'notification'
+                tabName: 'notification',
+                tableRow: {},
+                modalTitle: '创建通知',
+                show: false,
+                formList: [
+                    { type: 'upload',name:'通知', field: 'uploading' }
+                ],
+                rules:{
+                    uploading: [{ required: true, message: '请输入课程介绍'} ],
+                },
             }
         },
         computed: {
@@ -75,10 +89,16 @@
                 return this.notificationLoading || this.messageLoading;
             },
             notificationHeader() {
-                return [{
-                    prop: 'id',
-                    label: 'ID',
-                    width: 80
+                return [
+                //     {
+                //     prop: 'id',
+                //     label: 'ID',
+                //     width: 80
+                // },
+                {
+                    label:"序号",
+                    width: 80,
+                    sort:true
                 },
                 {
                     prop: 'content',
@@ -90,19 +110,27 @@
                 },
                 {
                     prop: 'create_time',
-                    label: '创建时间',
+                    label: '发送时间',
+                    width: 120
+                },
+                {
+                    prop: 'create_time',
+                    label: '创建人',
                     width: 120
                 },
                 {
                     prop: '',
                     label: '操作',
-                    groupBtn: [{
-                        text: '编辑',
-                        param: 'edit'
-                    }, {
+                    groupBtn: [
+                    {
                         text: '发送',
                         param: 'send'
-                    }, {
+                    }, 
+                     {
+                        text: '编辑',
+                        param: 'edit'
+                    }, 
+                    {
                         text: '删除',
                         param: 'delete'
                     }]
@@ -158,14 +186,14 @@
             }
         },
         watch: {
-            isLoading(val) {
-               if (val) {
-                   this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-                    setTimeout(() => {
-                        this.loadingInstance.close()
-                    }, Config.base_timeout);
-                }else if(this.loadingInstance) this.loadingInstance.close()
-            },
+            // isLoading(val) {
+            //    if (val) {
+            //        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
+            //         setTimeout(() => {
+            //             this.loadingInstance.close()
+            //         }, Config.base_timeout);
+            //     }else if(this.loadingInstance) this.loadingInstance.close()
+            // },
             messageList(val) {
                 this.updateWrapper();
             },
@@ -184,7 +212,8 @@
                 }, 100)
             },
             createNotificationHandler() {
-                this.handleSelModal(ADD_NOTIFICATION);
+                // this.handleSelModal(ADD_NOTIFICATION);
+                this.show = true
             },
             sendHandler(index, row) {
               this.$Modal.confirm({
@@ -329,5 +358,9 @@
     /deep/ .ivu-table-cell div{
         /*justify-content: space-around;*/
         justify-content: center;
+    }
+    /deep/ .form-message{
+        width: 580px;
+        height: 500px;
     }
 </style>

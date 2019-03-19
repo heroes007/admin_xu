@@ -17,13 +17,13 @@ const actions = {
     get_teacher_list ({ commit }) {
         if(!state.showLoading && state.teacher_list.length === 0)
         {
-                    commit(types.TEACHER_LIST_LOADING);
-        get_list().then(function (res) {
-            if(res.data.res_code === 1)
-            {
-                commit(types.TEACHER_LIST_LOADED,res.data.msg);
-            }
-        });
+                    // commit(types.TEACHER_LIST_LOADING);
+        // get_list().then(function (res) {
+        //     if(res.data.res_code === 1)
+        //     {
+        //         commit(types.TEACHER_LIST_LOADED,res.data.msg);
+        //     }
+        // });
         }
     },
     add_teacher({ commit },params) {

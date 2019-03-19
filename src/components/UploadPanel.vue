@@ -1,8 +1,10 @@
 <template>
     <Row class="upload-panel">
+        <Icon class="icon-colse" v-if="close&&!is_show" type="md-close-circle" @click="closeModal" />
         <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
             <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
-            <Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />
+            <!--<Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />-->
+            <img class="md-cloud-upload" src="../../static/icon/upload.png" alt="">
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
         </Row>
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
@@ -27,19 +29,12 @@
 
 <script>
     import VueCropper from 'vue-cropperjs'
-    import {
-        get_sign
-    } from '../api/modules/ali_oss'
+    import { get_sign } from '../api/modules/ali_oss'
     import axios from 'axios'
+    import { get_video_source } from '../api/modules/tools_video'
     const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
     const ossHostVideo = 'http://dscj-video.oss-cn-beijing.aliyuncs.com/';
     const ossHostApp = 'http://dscj-static-file.oss-cn-qingdao.aliyuncs.com/';
-    import {
-        Loading
-    } from 'element-ui';
-    import {
-        get_video_source
-    } from '../api/modules/tools_video'
     export default {
         props: {
             panelOptions: {
@@ -47,7 +42,7 @@
                 default: function () {
                     return {
                         panelWidth: '100%',
-                        panelHeight: 200
+                        panelHeight: 250
                     }
                 }
             },
@@ -61,7 +56,11 @@
                     }
                 }
             },
-            resourse: {}
+            resourse: {},
+            close: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {
@@ -107,7 +106,12 @@
                     this.handleGetassignKey(blob);
                 })
             },
-
+            closeModal(){
+                this.is_show = true;
+                // this.resourse_url = '';
+                // this.resultUrl = ''
+                this.$emit('uploadcomplete', "");
+            },
             //通过插件显示图片
             handleChangeMedia(e) {
                  this.fullscreenLoading = this.$LoadingY({message: "",show: true})
@@ -268,12 +272,12 @@
                     .then(res => {
                         if (res.data.res_code == 1) {
                             const formData = new FormData();
-                            this.resourse_url = res.data.msg.filename;
-                            formData.append('key', res.data.msg.filename);
-                            formData.append('OSSAccessKeyId', res.data.msg.accessKeyID);
+                            this.resourse_url = res.data.data.filename;
+                            formData.append('key', res.data.data.filename);
+                            formData.append('OSSAccessKeyId', res.data.data.accessKeyID);
                             formData.append('success_action_status', '200');
-                            formData.append('signature', res.data.msg.sign);
-                            formData.append('policy', res.data.msg.policyBase64);
+                            formData.append('signature', res.data.data.sign);
+                            formData.append('policy', res.data.data.policyBase64);
                             formData.append('file', file_item);
                             switch (this.uploadConfig.type) {
                                 case 0:
@@ -300,8 +304,15 @@
     }
 </script>
 <style lang="scss" scoped>
+    .icon-colse{
+        position: absolute;
+        z-index: 1000;
+        right: 0;
+        color: white;
+        font-size: 20px;
+    }
     /deep/ .md-cloud-upload{
-        margin-top: 40px;
+        margin-top: 70px;
     }
     .upload-panel {
         .file-require {
@@ -337,7 +348,7 @@
         }
 
         .upload-space {
-            height: 200px;
+            height: 250px;
             background: #F6F6F6;
             border: 1px solid #CCCCCC;
             display: block;

@@ -1,7 +1,12 @@
 <template>
-    <div>
-        <div class='el-upload__inner'>
-            <Button type='primary' @click='handleStartUploadFile'>{{text}} </Button>
+    <div contentEditable="false">
+        <div v-if="imgtypes">
+            <img class="uploadImg" src="/static/icon/upload.png"  @click='handleStartUploadFile'/>
+            <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
+        </div>
+        <div v-else class='el-upload__inner' contentEditable="false">
+            <img v-if="iconType" :src="iconType"  @click='handleStartUploadFile' style="cursor: pointer"/>
+            <Button v-else type='primary' @click='handleStartUploadFile'>{{text}} </Button>
             <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
         </div>
     </div>
@@ -10,6 +15,7 @@
     import { get_sign } from '../api/modules/ali_oss'
     import { Config } from '../config/base'
     import axios from 'axios'
+
     export default{
         data(){
             return{
@@ -18,6 +24,10 @@
             }
         },
         props:{
+            imgtypes: {
+                type: Number,
+                default: 0
+            },
             type:{
                 type:String,
                 default:'*'
@@ -37,6 +47,10 @@
             host:{
                 type:String,
                 default:Config.ossHost
+            },
+            iconType: {
+              type:String,
+              default: ''
             }
         },
         methods: {
@@ -50,12 +64,13 @@
             },
             handleUploadFile(formData, url, headers) {
                 // TODO 上传到OSS上
+                let vm = this;
                 axios({
                     method: 'POST',
                     url: url,
-                    data: formData
+                    data: formData,
                 }).then(res => {
-                    this.resultUrl = url + '/' + this.resultUrl;
+                  this.resultUrl = url + '/' + this.resultUrl;
                     this.$emit('uploadcomplete',{name: this.fileName, url: this.resultUrl});
                     var f = this.$refs.input;
                     if(f.value){
@@ -72,18 +87,16 @@
                 get_sign(fileItem.type, date, this.bucket, this.dir, fileItem.name, 'POST').then(res => {
                     if (res.data.res_code == 1) {
                         const formData = new FormData();
-                        this.resultUrl = res.data.msg.filename;
-                        formData.append('key', res.data.msg.filename);
-                        formData.append('OSSAccessKeyId', res.data.msg.accessKeyID);
+                        this.resultUrl = res.data.data.filename;
+                        formData.append('key', res.data.data.filename);
+                        formData.append('OSSAccessKeyId', res.data.data.accessKeyID);
                         formData.append('success_action_status', '200');
-                        formData.append('signature', res.data.msg.sign);
-                        formData.append('policy', res.data.msg.policyBase64);
+                        formData.append('signature', res.data.data.sign);
+                        formData.append('policy', res.data.data.policyBase64);
                         formData.append('file', fileItem);
                         this.handleUploadFile(
                                 formData,
-                                encodeURI(
-                                       this.host
-                                )
+                                encodeURI(this.host)
                         );
                     }
                 })
@@ -93,5 +106,12 @@
 
         }
     }
-
 </script>
+<style scoped>
+.uploadImg{
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+}
+</style>
+

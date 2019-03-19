@@ -28,14 +28,8 @@ export function update_video_test(video_test_id,data) {
     });
 }
 
-export function add_test_detail(video_test_id,data) {
-    return api.post('api/tools_video_test/add_test_detail',{
-        content:data.content,
-        result:data.result,
-        video_test_id:video_test_id,
-        select_count:data.select_count,
-        orderby:data.orderby
-    });
+export function add_test_detail(data) {
+    return api.post('/product/curriculum_online_catalog/add_test',data);
 }
 
 export function update_test_detail(test_detail_id,data) {
@@ -55,7 +49,7 @@ export function get_test_detail_list(video_test_id) {
 }
 
 export function delete_test_detail(test_detail_id) {
-    return api.post('api/tools_video_test/delete_test_detail',{
+    return api.post('/product/curriculum_online_catalog/delete',{
         test_detail_id:test_detail_id
     });
 }

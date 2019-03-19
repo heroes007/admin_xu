@@ -1,62 +1,32 @@
 <template>
-    <Modal :transfer=false v-model="addOfflineSemesterDialog" @on-cancel="handleRemoveModal(remove)" size="auto"
-           :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" :closable="true">
+    <Modal :transfer=false v-model="addOfflineSemesterDialog" :title="payload.type == 2 ? '编辑学期' : '添加学期'" @on-cancel="handleRemoveModal(remove)" size="auto"
+           :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" style="border-radius:6px !important" :closable="true">
+          
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
-                <Tabs type="line">
-                    <TabPane :label="payload.type == 2 ? '编辑学期' : '添加学期'">
-                        <Form ref="myForm1" :rules="rules1" :model="form1" :label-width="120">
-                            <FormItem label="学期名称" prop="name1" required>
-                                <Input v-model="form1.name1" placeholder="请输入学期名称"></Input>
-                            </FormItem>
-                            <FormItem label="学期阶段" prop="level1" required>
-                                <Select v-model="form1.level1" placeholder="请选择学期阶段">
-                                    <Option label="一阶" :value="0"></Option>
-                                    <Option label="二阶" :value="1"></Option>
-                                </Select>
-                            </FormItem>
-                            <FormItem label="开课日期" prop="stage1" required>
-                                <DatePicker v-model="form1.stage1" type="datetimerange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
-                            </FormItem>
-                            <FormItem label="截止报名日期">
-                                <DatePicker v-model="form1.signupDeadline" type="date" placeholder="选择日期" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
-                            </FormItem>
-                            <FormItem label="学期描述" class="semester-description" prop="description1" required>
-                                <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description1"></Input>
-                            </FormItem>
-                            <div style="text-align: center">
-                                <Button type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
-                            </div>
-                        </Form>
-                    </TabPane>
-                    <TabPane label="复制学期" v-if="payload.type == 1">
-                        <Form ref="myForm2" :rules="rules2" :model="form2" :label-width="120">
-                            <FormItem label="选择学期" prop="semester" required>
-                                <Select v-model="form2.semester" placeholder="请选择学期" @on-change="handleSelectItem">
-                                    <Option v-for="(item,index) in offline_term_list1" :key="item.id" :label="item.name" :value="index"></Option>
-                                </Select>
-                            </FormItem>
-                            <FormItem label="学期名称">
-                                <Input v-model="form2.name2" placeholder="请输入学期名称"></Input>
-                            </FormItem>
-                            <FormItem label="学期阶段">
-                                <Select v-model="form2.level2" placeholder="请选择学期阶段">
-                                    <Option label="一阶" value="0"></Option>
-                                    <Option label="二阶" value="1"></Option>
-                                </Select>
-                            </FormItem>
-                            <FormItem label="开课日期">
-                                <DatePicker v-model="form2.stage2" type="datetimerange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
-                            </FormItem>
-                            <FormItem label="学期描述" class="semester-description">
-                                <Input type="textarea" :rows="8" placeholder="请输入学期描述" v-model="form2.description2" style="resize: none"></Input>
-                            </FormItem>
-                            <div style="text-align: center">
-                                <Button type="primary" class="sub-btn" @click="handleSave('myForm2')">保存</Button>
-                            </div>
-                        </Form>
-                    </TabPane>
-                </Tabs>
+                <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="120">
+                    <FormItem label="学期名称" prop="title" required>
+                        <Input v-model="form1.title" placeholder="请输入学期名称"></Input>
+                    </FormItem>
+                    <!-- <FormItem label="学期阶段" prop="level1" required>
+                        <Select v-model="form1.level1" placeholder="请选择学期阶段">
+                            <Option label="一阶" :value="0"></Option>
+                            <Option label="二阶" :value="1"></Option>
+                        </Select>
+                    </FormItem> -->
+                    <FormItem label="开课日期" prop="stage1" required>
+                        <DatePicker v-model="form1.stage1" type="daterange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
+                    </FormItem>
+                    <FormItem label="报名截止">
+                        <DatePicker v-model="form1.register_end_time" type="date" placeholder="选择日期" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
+                    </FormItem>
+                    <FormItem label="学期描述" class="semester-description" prop="description" required>
+                        <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
+                    </FormItem>
+                    <div style="text-align: center">
+                        <Button style="margin: 40px 227px" type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
+                    </div>
+                </Form>
             </Row>
         </base-input>
     </Modal>
@@ -70,7 +40,7 @@
   import { mapActions, mapState } from 'vuex'
   import dateFormat from '../../config/dateFormat'
   import { MPop } from '../../components/MessagePop'
-
+  import postData from '../../api/postData.js'
   export default {
     mixins: [RemoveModal, MPop],
     props: {
@@ -79,20 +49,15 @@
       },
       payload: {}
     },
-    components: {
-      'base-input': BaseInput,
-      'upload-button': UploadButton,
-      'upload-panel': UploadPanel
-    },
+    components: { 'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel },
     data() {
       return {
         addOfflineSemesterDialog: true,
         form1: {
-          name1: this.payload.row && this.payload.row.name || '',
-          stage1: this.payload.row && [this.payload.row.start_time, this.payload.row.end_time] || [],
-          level1: this.payload.row && this.payload.row.level || 0,
-          description1: this.payload.row && this.payload.row.description || '',
-          signupDeadline: this.payload.row && this.payload.row.ex_time || null,
+          title: this.payload.row && this.payload.row.title || '',
+          stage1: this.payload.row && [this.payload.row.start_time, this.payload.row.register_end_time] || [],
+          description: this.payload.row && this.payload.row.description || '',
+          register_end_time: this.payload.row && this.payload.row.register_end_time || null,
           state: this.payload.row && this.payload.row.state || 0
         },
         form2: {
@@ -103,7 +68,7 @@
           semester: ''
         },
         rules1: {
-          name1: [{
+          title: [{
             required: true,
             message: '请输入学期名称',
             trigger: 'blur'
@@ -120,7 +85,7 @@
             message: '请选择学期阶段',
             trigger: 'change'
           }],
-          description1: [{
+          description: [{
             required: true,
             message: '请输入学期描述内容',
             trigger: 'blur'
@@ -158,18 +123,13 @@
       }
     },
     methods: {
-      ...mapActions([
-        'add_offline_term',
-        'edit_offline_term',
-        'get_subject_list',
-        'get_offline_term_list'
-      ]),
+      ...mapActions([ 'add_offline_term', 'edit_offline_term', 'get_subject_list', 'get_offline_term_list' ]),
       handleClose() {
         this.addOfflineSemesterDialog = false;
       },
       handleSelectItem(idx) {
         this.form2.name2 = this.offline_term_list1[idx].name;
-        this.form2.stage2 = [this.offline_term_list1[idx].start_time, this.offline_term_list1[idx].end_time];
+        this.form2.stage2 = [this.offline_term_list1[idx].start_time, this.offline_term_list1[idx].register_end_time];
         this.form2.level2 = this.offline_term_list1[idx].level || '';
         this.form2.description2 = this.offline_term_list1[idx].description || '';
       },
@@ -183,7 +143,7 @@
               level: vm.form2.level2,
               description: vm.form2.description2,
               start_time: dateFormat(vm.form2.stage2[0]),
-              end_time: dateFormat(vm.form2.stage2[1]),
+              register_end_time: dateFormat(vm.form2.stage2[1]),
               callback() {
                 vm.handleClose();
                 vm.showPop('添加成功！', 1000);
@@ -195,73 +155,42 @@
         });
       },
       handleSubmit(formName) {
-        var vm = this;
-        if (vm.payload.type == 1) {
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              if (formName == 'myForm2') {
-                this.add_offline_term({
-                  project_id: 1,
-                  name: vm.form2.name2,
-                  level: vm.form2.level2,
-                  description: vm.form2.description2,
-                  start_time: dateFormat(vm.form2.stage1[0]),
-                  end_time: dateFormat(vm.form2.stage1[1]),
-                  callback() {
-                    vm.handleClose();
-                    vm.showPop('添加成功！', 1000);
+        let vm = this;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+           let obj = vm.payload.type == 1 ? {subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id} : {term_underline_id: vm.payload.row.id}
+           let url = vm.payload.type == 1 ? 'product/curriculum_offline/term_add' : '/product/curriculum_offline/term_change'
+            let d = {
+              ...obj,
+              title: vm.form1.title,
+              description: vm.form1.description,
+              start_time: dateFormat(vm.form1.stage1[0]),
+              end_time: dateFormat(vm.form1.stage1[1]),
+              register_end_time: dateFormat(vm.form1.register_end_time),
+            }
+            postData(url, d).then((res) => {
+                if(res.res_code == 1){
+                  this.$Message.success(res.msg);
+                  this.addOfflineSemesterDialog = false;
+                    let d = {
+                    subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+                    page_size: vm.payload.page_size,
+                    page_num:  vm.payload.page_num
                   }
-                })
-                return;
-              }
-              this.add_offline_term({
-                project_id: 1,
-                name: vm.form1.name1,
-                level: vm.form1.level1,
-                description: vm.form1.description1,
-                start_time: dateFormat(vm.form1.stage1[0]),
-                end_time: dateFormat(vm.form1.stage1[1]),
-                ex_time: dateFormat(vm.form1.signupDeadline),
-                callback() {
-                  vm.handleClose();
-                  vm.showPop('添加成功！', 1000);
+                  this.$store.dispatch('get_offline_term_list', d);
                 }
-              })
-            } else {
-              return false;
-            }
-          });
-        } else {
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              this.edit_offline_term({
-                offline_term_id: vm.payload.row.id,
-                name: vm.form1.name1,
-                level: vm.form1.level1,
-                description: vm.form1.description1,
-                start_time: dateFormat(vm.form1.stage1[0]),
-                end_time: dateFormat(vm.form1.stage1[1]),
-                ex_time: dateFormat(vm.form1.signupDeadline),
-                state: vm.form1.state,
-                callback() {
-                  vm.handleClose();
-                  vm.showPop('修改成功！', 1000);
-                }
-              })
-            } else {
-              return false;
-            }
-          });
-        }
+            })
+          }
+        });
       },
       changeDeadlineHandler() {
-        if (this.form1.stage1 && this.form1.stage1.length > 0 && this.form1.signupDeadline) {
-          if (new Date(this.form1.signupDeadline.getTime() - this.form1.stage1[0]).getTime() > (0)) {
+        if (this.form1.stage1 && this.form1.stage1.length > 0 && this.form1.register_end_time) {
+          if (new Date(this.form1.register_end_time.getTime() - this.form1.stage1[0]).getTime() > (0)) {
             this.$Modal.warning({
               title: '提示',
               content: '截止日期需小于开课日期！'
             });
-            this.form1.signupDeadline = this.payload.row && this.payload.row.ex_time || null
+            this.form1.register_end_time = this.payload.row && this.payload.row.register_end_time || null
           }
         }
       }
@@ -289,6 +218,15 @@
     /deep/ textarea.ivu-input{
         resize: none;
     }
+    /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
+    /deep/.ivu-modal-header-inner{
+    font-family: PingFangSC-Regular;
+    font-size: 20px !important;
+    color: #474C63 !important;
+    letter-spacing: 0;
+    }
+    /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
+    /deep/ .ivu-form-item{margin-bottom: 15px;}
     #add-offline-semester-container {
         @import "base.scss";
         input,

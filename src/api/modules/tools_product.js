@@ -74,35 +74,35 @@ export function get_certificate_user(user_id) {
 }
 
 export function add_product(param) {
-  return api.post('/api/tools_product/add_product', {
-    project_id: param.project_id,
-    code: param.code,
-    title: param.title,
-    price: param.price,
-    original_price: param.original_price,
+  let d = {
+    organization_id: +localStorage.getItem('organizationId'),
+    title:param.title,
+    original_price: parseFloat(param.original_price),
+    price: parseFloat(param.price),
+    unlock_type: param.unlock_type,
+    state: param.state,
     short_description: param.short_description,
     description: param.description,
-    img_url_arr: param.img_url_arr,
-    h5_url: param.h5_url,
-    curriculum_id: param.curriculum_id,
-    examine_type: param.examine_type
-  });
+    url_arr: param.url_arr,
+  }
+  // if(param.unlock_type === 0) delete d.unlock_type
+  return api.post('product/product/add', d);
 }
 
-export function update_product(product_id, param) {
-  return api.post('/api/tools_product/update_product', {
-    product_id: product_id,
-    title: param.title,
-    code: param.code,
-    price: param.price,
-    original_price: param.original_price,
+export function update_product(param) {
+  let d = {
+    product_id: param.product_id,
+    title:param.title,
+    original_price: parseFloat(param.original_price),
+    price: parseFloat(param.price),
+    unlock_type: param.unlock_type,
+    state: param.state,
     short_description: param.short_description,
     description: param.description,
-    img_url_arr: param.img_url_arr,
-    h5_url: param.h5_url,
-    curriculum_id: param.curriculum_id,
-    examine_type: param.examine_type
-  });
+    url_arr: param.url_arr,
+  }
+  // if(param.unlock_type === 0) delete d.unlock_type
+  return api.post('/product/product/change', d);
 }
 
 export function switch_product(product_id, state) {

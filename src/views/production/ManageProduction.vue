@@ -1,178 +1,165 @@
 <template>
     <div class='manage-production-view'>
-        <header-component title='产品信息' :type='1' :showAdd='true' addText='新建产品' @addClick='addProductionHandler' @addCert="addCertificate"></header-component>
-        <Row>
-            <Form :inline="true" :model="formInline" class="find-by-term">
-                <FormItem label="产品名称" :label-width="80">
-                    <Input v-model="formInline.searchData" placeholder="请输入搜索内容"></Input>
-                </FormItem>
-                <FormItem>
-                    <Button type="primary" @click="search">查询</Button>
-                </FormItem>
-                <FormItem>
-                    <Button type="primary" @click="clearSearch">清除</Button>
-                </FormItem>
-            </Form>
+        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="培训总数" :size-num1="total" btn-name="添加培训" :select1="selectList" :select2="selectList2"
+                @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
+          <div class="lecturer-list">
+           <Row :gutter="20">
+            <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
+                <div class="manage-production-col">
+                    <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     <p>ID:</p>
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>{{t.id}}</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <!-- -1下架 0未上架 1测试 2上架 3推荐 -->
+                        <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.stateText}}</div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 class="product-title">{{t.title}}</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price">¥{{t.price}}</Col>
+                     <Col span="4" class="al-left cad-btn-relprice">¥{{t.original_price}}</Col>
+                     <Col span="16" class="al-right cad-btn-people">{{t.join_number}}人报名</Col>
+                  </Row>
+                </div>
+            </Col>
         </Row>
-        <data-list class='data-list light-header' @editProtocol='editProtocol' @edit='editHandler'
-                   @detail='showCourseDetailHandler' @delete='deleteHandler'
-                   :table-data='dataList' :header-data='dataHeader' :column-formatter='listColumnFormatter'
-                   :column-formatter-data='listColumnFormatterData'
-                   :comboIsSelect='true' :columnComboData='columnComboData' :comboModelList='comboDataList'>
-        </data-list>
-        <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page :current="curPage" :page-size='20' @on-change="handleCurrentChange" :total="total"/>
-        </Row>
+       </div>
+         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
-<script>
-  import Header from "../../components/Header";
-  import BaseList from "../../components/BaseList";
-  import BackToTop from "../../components/BackToTop";
-  import {MPop} from "../../components/MessagePop";
-  import api from "../../api/modules/config";
-  import {set_user_student_mrzx} from "../../api/modules/student";
-  import {send_interview_msg} from "../../api/modules/exam";
-  import {Dialog} from "../dialogs";
-  import {ADD_PRODUCTION, EDIT_PROTOCOL} from "../dialogs/types";
-  import {Config} from "../../config/base";
-  import {mapState, mapActions, mapGetters} from "vuex";
-  import {doDateFormat, doTimeFormat, reunitPrice} from "../../components/Util";
-  import tableHeadData from './consts'
 
+<script>
+  import screen from '../../components/ScreenFrame'
+  import postData from '../../api/postData'
+  import pageList from '../../components/Page'
+  import pageMixin from '../mixins/pageMixins'
+   import {Dialog} from "../dialogs";
+  import { ADD_PRODUCTION } from "../dialogs/types";
+  import {mapState} from 'vuex'
   export default {
-    mixins: [Dialog, MPop],
-    components: {"header-component": Header, "data-list": BaseList},
+    mixins: [pageMixin, Dialog],
+    components: { screen, pageList },
     data() {
       return {
-        loadingInstance: null,
         curPage: 1,
-        formInline: {
-          searchData: ""
-        },
-      };
+        cardList: [],
+        search: '',
+        selectList: [],
+        selectList2: [{id: '',title:'全部'},{id: '-1',title:'下架'},{id: '0',title:'未上架'},{id: '1',title:'测试'},{id: '2',title:'上架'},{id: '3',title:'推荐'}],
+        courseNums:12,
+        organization_id: localStorage.getItem('organization_id'),
+        state: ''
+      }
+    },
+    watch:{
+      productState(_new){
+        if(_new) this.getList()
+      }
+    },
+    computed:{
+      ...mapState({productState: state => state.production.add_product_state})
     },
     methods: {
-      ...mapActions(["get_production_list", "change_production_vailid", "delete_production", "get_production_group_list"]),
-      addProductionHandler() {
-        this.handleSelModal(ADD_PRODUCTION);
+      handleCardClass(t){
+        return (t === 2 || t === 3) ? 'card-main-list1' : 'card-main-list0'
       },
-      addCertificate(){
-
+      selectChange1(val){
+       this.organization_id = val;
+       this.getList()
       },
-      editHandler(index, row) {
-        this.handleSelModal(ADD_PRODUCTION, row);
+      selectChange2(val){
+        this.state = val
+        this.getList()
       },
-      editProtocol(index, row) {
-        this.handleSelModal(EDIT_PROTOCOL, row.id);
+      inputChange(val){
+        this.search = val;
+        this.getList()
       },
-      showCourseDetailHandler(index, row) {
-        this.$router.push({
-          name: "manage-production-curriculum",
-          params: {id: row.id}
+      handleClick(){
+         this.handleSelModal(ADD_PRODUCTION);
+      },
+      handleJump(t){
+        localStorage.setItem('PRODUCTINFO',JSON.stringify(t))
+        let routeData = this.$router.resolve({
+          query: '',
+          params: '',
+          name: "open-product",
         });
-      },
-      deleteHandler(index, row) {
-        let vm = this;
-        this.$Modal.confirm({
-          title: '提示',
-          content: '是否确认删除该产品?',
-          onOk: () => {
-            this.delete_production({
-              id: row.id,
-              _fn: function () {
-                vm.showPop('删除成功！');
-              }
-            });
-          }
-        });
-      },
-      clearSearch() {
-        this.formInline.searchData = "";
-        this.curPage = 1;
-        var data = this.getData();
-      },
-      search() {
-        this.curPage = 1;
-        var data = this.getData();
+        window.open(routeData.href, "_blank")
       },
       handleCurrentChange(val) {
         this.curPage = val;
         var data = this.getData();
       },
-      getData() {
-        var data = {
-          project_id: this.projectId,
-          page_index: this.curPage - 1,
-          page_size: 20,
-          title: this.formInline.searchData
-        };
-        this.get_production_list(data);
+      getDeptAdminList(){
+         postData('user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
+          this.selectList = res.data.list
+        })
+      },
+      getList(){
+        let organization_id = this.organization_id !== 1 ? this.organization_id : ''
+        let d = {
+          organization_id,
+          state: this.state,
+          search: this.search,
+          page_size: this.pageSize,
+          page_num: this.current,
+        }
+        postData('product/product/get_list',d).then((res) => {
+         this.cardList = res.data.data
+         this.cardList.map((t) => {
+           t.stateText = this.$config.setProductState(t.state)
+         })
+         this.total = res.data.count
+        })
       }
     },
     mounted() {
-      this.getData();
-      this.get_production_group_list({
-        page_index: 0,
-        page_size: 20,
-        state: [0, 1, 2, 3]
-      });
-    },
-    watch: {
-      isLoading(val) {
-        if (val) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-          setTimeout(() => {
-            this.loadingInstance.close()
-          }, Config.base_timeout);
-        } else if (this.loadingInstance) this.loadingInstance.close()
-      }
-    },
-    computed: {
-      ...mapState({
-        isLoading: state => state.production.isLoading,
-        dataList: state => state.production.production_list,
-        total: state => state.production.total,
-        projectId: state => state.project.select_project_id,
-        productionGroupList: state => state.production_group.production_group_list,
-        stateList: state => state.production.stateList
-      }),
-      ...mapGetters({
-        projectType: "select_project_type"
-      }),
-      comboDataList() {
-        var r = [];
-        for (var i = 0; i < this.dataList.length; i++) {
-          r.push(this.dataList[i].state);
-        }
-        return r;
-      },
-      columnComboData() {
-        return [this.stateList];
-      },
-      dataHeader() {
-        return tableHeadData(this.projectType)
-      },
-      listColumnFormatter() {
-        return [{
-          columnName: "price",
-          doFormat: reunitPrice
-        }, {
-          columnName: "original_price",
-          doFormat: reunitPrice
-        }, {
-          columnName: "belong_specials",
-          dataIndex: 0
-        }];
-      },
-      listColumnFormatterData() {
-        return [this.productionGroupList];
-      }
+      this.getList()
+      this.getDeptAdminList()
     }
   };
 </script>
 <style lang="scss" scoped>
+  .lecturer-list{
+      margin: 20px;
+  }
+  .manage-production-col{
+    background: #fff;
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+   .card-main-list0{
+     color: #9397AD;
+   }
+   .card-main-list1{
+     color: #474C63;
+   }
+   .card-state-color3{
+    background: #FF9600;
+   }
+   .card-state-color2{
+    background: #74C818;
+   }
+   .card-state-color1{
+    background: #4098FF;
+   }
+   .card-state-color0{
+    background: #9397AD;
+   }
+    .card-state-color-1{
+        background: #9397AD;
+    }
     .manage-production-view {
+      background: #f0f0f7;
+      height: 100%;
+      position: relative;
         .base-list-container {
             .base-list-row {
                 height: 60px;
@@ -238,5 +225,61 @@
                 }
             }
         }
+        .al-left{
+          text-align: left;
+        }
+        .al-right{
+          text-align: right;
+        }
+        .cad-top-left{
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          letter-spacing: 0;
+        }
+        .cad-top-right{
+          width: 50px;
+          height: 20px;
+          float: right;
+          font-family: PingFangSC-Medium;
+          font-size: 14px;
+          color: #FFFFFF;
+          letter-spacing: 0;
+          text-align: center;
+          border-radius: 20px;
+        }
+        .cad-btm-price{
+          font-family: PingFangSC-Medium;
+          font-size: 16px;
+          color: #F54802;
+          letter-spacing: 0;
+        }
+        .cad-btn-relprice{
+          font-family: PingFangSC-Regular;
+          font-size: 16px;
+          letter-spacing: 0;
+          text-decoration: line-through;
+        }
+        .cad-btn-people{
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          letter-spacing: 0;
+        }
+    }
+    .product-title{
+        font-family: PingFangSC-Medium;
+        font-size: 18px;
+        letter-spacing: 0;
+        text-align: left;
+        margin:15px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /deep/ .ivu-page{
+      position: absolute;
+      bottom: 50px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
     }
 </style>

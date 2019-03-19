@@ -3,20 +3,43 @@
  */
 import api from './config'
 
-export function get_category_list(project_id) {
-    return api.post('api/tools_task/get_category_list',{project_id:project_id});
+// export function get_category_list(project_id) {
+//     return api.post('api/tools_task/get_category_list',{project_id:project_id});
+// }
+
+export function get_category_list(page, keyword) {
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('/product/homework/get_list',{
+        product_id:id,
+        page_size: page.page_size,
+        page_num: page.page_num,
+        search: keyword,
+    });
 }
 
-export function create_category(project_id,params) {
-    return api.post('api/tools_task/create_category',{project_id:project_id,name:params.name,type:params.type});
+export function create_category(params) {
+    return api.post('/product/homework/add',{
+        title:params.realname,
+        type:params.jurisdiction,
+        curriculum_id:params.binding_course,
+        description:params.uploading,
+        attachment_url:JSON.stringify(params.downList)
+    });
 }
 
 export function get_category_by_id(category_id) {
     return api.post('api/tools_task/get_category_by_id',{cid:category_id});
 }
 
-export function edit_category_by_id(category_id,params) {
-    return api.post('api/tools_task/edit_category_by_id',{cid:category_id,name:params.name});
+export function edit_category_by_id(homworkId,params) {
+    return api.post('/product/homework/change',{
+        homework_id:homworkId,
+        title:params.realname,
+        type:params.jurisdiction,
+        curriculum_id:params.binding_course,
+        description:params.uploading,
+        attachment_url:JSON.stringify(params.downList)
+    });
 }
 
 export function delete_category_by_id(category_id) {
@@ -24,7 +47,7 @@ export function delete_category_by_id(category_id) {
 }
 
 export function get_tasklist_by_cid(category_id) {
-    return api.post('api/tools_task/get_tasklist_by_cid',{cid:category_id});
+    return api.post('api/tools_task/get_tasklist_by_cid',{cid:12});
 }
 
 export function create_task(category_id,params) {
@@ -65,8 +88,8 @@ export function edit_task(task_id,params) {
     });
 }
 
-export function delete_task_by_id(task_id, is_del_ut) {
-    return api.post('api/tools_task/delete_task_by_id',{task_id:task_id, is_del_ut:is_del_ut});
+export function delete_task_by_id(homework_id) {
+    return api.post('/product/homework/delete',{homework_id});
 }
 
 export function get_userlist_by_tid(task_id,project_id,grade_id,subject_id,page_size,page_index,phone,username,realname,userid) {
@@ -105,4 +128,32 @@ export function get_student_task_list(project_id,user_id) {
 
 export function get_student_work_list(project_id,user_id) {
     return api.post('api/tools_task/get_student_work_list',{project_id:project_id,user_id:user_id});
+}
+
+export function get_curriculumlist_online(params) {
+    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    return api.post('/product/curriculum_online/get_list',{
+        product_id:id,
+        page_size:998,
+        page_num:1,
+    });
+}
+
+export function get_read_over(params) {
+    let id = JSON.parse(localStorage.getItem('MarkingHomework')).id
+    return api.post('/product/homework/student_homework_get_list',{
+        homework_id: id,
+        search: "",
+        page_size: 3,
+        page_num: 1,
+    });
+}
+
+export function save_datalist(params) {
+    return api.post('/product/data/add',{
+        title: params.name,
+        curriculum_id: params.subject_id,
+        attachment_url: params.download_url,
+        state: 1
+    })
 }

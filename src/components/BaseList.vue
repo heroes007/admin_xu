@@ -9,7 +9,7 @@
             </div>
         </Row>
         <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName"
-               :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+               :highlight-row='canSelect' :show-header='showHeader'
                :columns="headerData" :data="tableData" :height="tableHeight" @on-expand="rowExpandHandler"
                @on-row-click='rowClickHandler'>
             <template slot-scope="{ column, row, index }" slot="badge">
@@ -53,15 +53,15 @@
                 </Button>
                 <Select :transfer='true' v-if='column.useCombo&&columnComboData&&comboDataList'
                         v-model="comboDataList[index]" :multiple='!comboIsSelect' placeholder="请选择"
-                     @on-open-change="selectOpenChange(row,column.comboListIndex)"  @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
+                        @on-open-change="selectOpenChange(row,column.comboListIndex)"
+                        @on-change='comboChangeHandler(row,index,column.actionName,column.prop)'
                         :disabled="column.disabledFunc?column.disabledFunc(row):false">
-                    <Option v-for="(c,k) in selectList[column.comboListIndex]" :key="k"
+                    <Option v-for="(c,k) in columnComboData[column.comboListIndex]" :key="k"
                             :label="c[column.listLabel]" :value="c[column.listValue]"></Option>
                 </Select>
                 <DatePicker v-if='column.useTimePicker&&comboDataList' v-model="comboDataList[index]" type="datetime"
-                            placeholder="选择日期时间"
-                            @on-change='changeTimeSelect(row,index,column.actionName,column.prop,column.param)'
-                            :transfer="true">
+                            placeholder="选择日期时间" :transfer="true"
+                            @on-change='changeTimeSelect(row,index,column.actionName,column.prop,column.param)'>
                 </DatePicker>
                 <span v-if='column.useMark'>
                   <Icon type="md-checkmark" v-if='row[column.prop] === 1'/>
@@ -76,7 +76,7 @@
                                 @click="handleBtnClick(index,row,btn.param)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
                                 :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
-                            <Icon  class="btn-icon" :type='btn.text' v-if='btn.isIcon' />
+                            <Icon class="btn-icon" :type='btn.text' v-if='btn.isIcon'/>
                             <span v-if='!btn.isIcon'>{{btn.canDisabled?btn.disabeldFunc(row)?btn.disabledText:btn.text:btn.text}}</span>
                         </Button>
                         <Switch :value='row[btn.switchKey]' :disabled="checkSwitchDisabled(row,btn.disabledFuc)"
@@ -85,8 +85,10 @@
                             <span slot="open">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.onText}}</span>
                             <span slot="close">{{checkSwitchDisabled(row,btn.disabledFuc)?btn.disableText:btn.offText}}</span>
                         </Switch>
-                        <Checkbox v-model='row[btn.switchKey]' @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
-                            v-if='btn.useCheckBox'>{{btn.text}}</Checkbox>
+                        <Checkbox v-model='row[btn.switchKey]'
+                                  @on-change='changeSwitchValue(row,btn.switchKey,btn.actionName,btn.param)'
+                                  v-if='btn.useCheckBox'>{{btn.text}}
+                        </Checkbox>
                     </div>
                 </div>
             </template>
@@ -96,13 +98,14 @@
 </template>
 <script>
   import baseList from './BaseList.vue'
+
   export default {
     name: 'baseList',
     data() {
       return {
         dataChange: false,
         comboDataList: null,
-        selectList: this.columnComboData 
+        selectList: this.columnComboData
       }
     },
     props: {
@@ -121,7 +124,7 @@
       columnFormatter: {
         type: Array
       },
-      columnFormatterData: { type: Array },
+      columnFormatterData: {type: Array},
       columnComboData: {
         type: Array
       },
@@ -244,7 +247,7 @@
         }
       }
     },
-    computed:{
+    computed: {
       //  selectList(){
       //    return JSON.parse(JSON.stringify(this.columnComboData))
       //  }
@@ -258,9 +261,12 @@
         return this.rowClassName
       },
       handleHeaderData() {
+        if(this.headerData[1].label == '资料名称'){
+          // console.log(this.headerData,'123123')
+        }
         this.headerData.map((it) => {
           it.title = it.label
-          it.align = 'center'
+          it.align && it.align == 'left' ? it.align = 'left' : it.align = 'center'
           if (it.prop) it.key = it.prop || ''
           if (it.minwidth) it.minWidth = it.minwidth
           if (!it.isFree && it.groupBtn) {
@@ -272,7 +278,7 @@
           if (it.sort) {
             it.type = 'index'
             it.title = this.getHeaderLabel(it)
-            it.width = 65
+            it.width = 100
           }
           if (it.useCombo && it.key === 'pre_curriculum') it.width = 300
           if (it.isFree || !it.groupBtn && !it.selection && !it.sort && !it.listExpand && !it.badge) {
@@ -310,22 +316,35 @@
               t.key = t.prop
             })
             it.render = (h, params) => {
-              return h(baseList, {
-                props: {
-                  tableData: params.row.childData,
-                  headerData: it.childHeader,
-                  isStripe: false,
-                  parentData: params.row,
-                  columnFormatter: it.listColumnFormatter
-                },
-                on: {
-                  childBtnClick: (param, index, parentData) => {
-                    this.$nextTick(() => {
-                      this.childBtnClickHandler(param, index, parentData)
-                    })
+              return h('div', {style:{display:'flex',justifyContent:'center',flexDirection: 'column',flexWrap: 'nowrap'}},[
+                h(baseList, {
+                  props: {
+                    tableData: params.row.childData,
+                    headerData: it.childHeader,
+                    isStripe: false,
+                    parentData: params.row,
+                    columnFormatter: it.listColumnFormatter
+                  },
+                  on: {
+                    childBtnClick: (param, index, parentData) => {
+                      this.$nextTick(() => {
+                        this.childBtnClickHandler(param, index, parentData)
+                      })
+                    }
                   }
-                }
-              })
+                }),
+                h('div',{style:{display:'flex',justifyContent:'center',flexWrap: 'nowrap',alignItems: 'center', color: '#4098FF',marginTop: '10px' }},[
+                  h('Icon',{props: { type: 'md-add', size: 30},
+                  on: {
+                        click: () => {  this.$emit('add-off-line-courses', params.row) }
+                  }}),
+                  h('span',{
+                      on: {
+                          click: () => {  this.$emit('add-off-line-courses', params.row) }
+                      }
+                    },'添加课程')
+                 ])
+              ]);
             }
           }
         })
@@ -343,16 +362,16 @@
       showBadgeCount(propname, row) {
         return row[propname];
       },
-      selectOpenChange(row,index){
-           this.selectList = this.$config.copy(this.columnComboData,[])
-           let list = this.selectList[index]
-           if(row && row.title &&  list && list.length > 0){
-              list.map((it,k) => {
-               if(it.title === row.title){
-                 list.splice(k,1)
-               }
-              })
-           }
+      selectOpenChange(row, index) {
+        this.selectList = this.$config.copy(this.columnComboData, [])
+        let list = this.selectList[index]
+        if (row && row.title && list && list.length > 0) {
+          list.map((it, k) => {
+            if (it.title === row.title) {
+              list.splice(k, 1)
+            }
+          })
+        }
       },
       comboChangeHandler(row, index, actionName, key) {
         if (actionName) {
@@ -428,7 +447,7 @@
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {
               if (this.columnFormatter[i].doFormat) {
-                if (this.columnFormatter[i].doFormat(row[propname]).length > 0) return this.columnFormatter[i].doFormat(row[propname]);
+                if (this.columnFormatter[i].doFormat(row[propname])&&this.columnFormatter[i].doFormat(row[propname]).length > 0) return this.columnFormatter[i].doFormat(row[propname]);
               } else {
                 for (var j = 0; j < this.columnFormatterData[this.columnFormatter[i].dataIndex].length; j++) {
                   if (row[propname] instanceof Array) {
@@ -502,6 +521,11 @@
 </script>
 
 <style lang='scss' scoped>
+    /deep/ td.ivu-table-expanded-cell{ padding: 0; padding-bottom: 10px;}
+    /deep/ .ivu-icon-md-add{ margin-right: 5px; }
+    /deep/ .ivu-table{
+        font-size: 16px !important;
+    }
     /deep/ .ivu-icon-ios-trash-outline {
         font-size: 18px
     }
@@ -532,6 +556,13 @@
         outline: none
     }
 
+    /deep/ .ivu-btn-text {
+        font-family: PingFangSC-Medium;
+        font-size: 16px;
+        color: #4098FF;
+        letter-spacing: 0;
+    }
+
     /deep/ .ivu-table-cell-ellipsis > div {
         display: inline-block;
         width: 100%;
@@ -548,7 +579,7 @@
     }
 
     /deep/ th, td > .ivu-table-cell > div > span {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     /deep/ .ivu-table th {
@@ -556,7 +587,7 @@
     }
 
     /deep/ .ivu-tooltip-rel {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     .base-list-container {
@@ -594,7 +625,7 @@
                         .cell {
                             background-color: #ffffff;
                             font-weight: 400;
-                            font-size: 14px;
+                            /*font-size: 14px;*/
                             color: #757575;
                             letter-spacing: 0;
                         }
@@ -605,7 +636,7 @@
 
         .base-list-row {
             .cell {
-                font-size: 14px;
+                /*font-size: 14px;*/
                 color: #141111;
                 letter-spacing: 0;
 
@@ -617,7 +648,7 @@
                     margin: 0;
 
                     span {
-                        font-size: 14px;
+                        /*font-size: 14px;*/
                         color: #141111;
 
                         i {
