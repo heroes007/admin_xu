@@ -1,7 +1,7 @@
 {
-  "name": "dscj-admin-xg-server",
+  "name": "medical_education_training_admin",
   "version": "1.0.0",
-  "description": "学管后台服务端",
+  "description": "九划医疗后台管理",
   "author": "lesonli <307771861@qq.com>",
   "private": true,
   "scripts": {

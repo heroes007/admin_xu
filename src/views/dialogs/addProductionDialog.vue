@@ -20,14 +20,14 @@
                                 <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
                         </FormItem>
-                        <FormItem v-show="organizationList&&nextStep == 0" label="机构" required>
+                        <FormItem v-if="organizationList&&nextStep == 0" label="机构" required>
                             <Select v-model="form.organization_id" placeholder="请选择机构">
                                 <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
                         </FormItem>
                         <!-- organizationList -->
                         <FormItem v-show="nextStep == 0" label="产品状态" required>
-                            <Select v-model="form.state" placeholder="推荐/已上架/已下架/测试中">
+                            <Select v-model="form.state" placeholder="下架/测试/上架" @on-change="changeState">
                                 <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
                         </FormItem>
@@ -55,6 +55,7 @@
                                     <Row :gutter="10" class="upload-img-row">
                                         <Col class="upload-img-col" span="8" v-for="(t,i) in form.imgList" :key="i">
                                             <div class="upload-img-main">
+                                                <Icon @click="deleteImgList(i)" class="upload-img-main-icon" v-if="t !== 'upload-btn'" type="ios-close-circle" />
                                                 <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="dscj-app" @uploadcomplete="uploadcomplete" />
                                                 <img v-else class="upload-img-item"  :src="t" />
                                             </div>
@@ -70,6 +71,7 @@
                                 </FormItem>
                             </TabPane>
                         </Tabs>
+                        <FormItem v-show="nextStep == 0"> <p class="upload-img-text">* 支持jpg/png/mp4/mov/avi文件；图片可上传1～5张，建议尺寸475*250px；视频可上传1个，且大小不超过2m</p></FormItem>
 
                          <!--可插入输入框-->
                         <FormItem v-if="nextStep == 2" label=""  class="upload">
@@ -91,13 +93,13 @@
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
-                                <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
+                                <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
                             </div>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
                             <Button  class="btn-orange" @click="handleSubmit('form')">提交</Button>
-                        </div> 
+                        </div>
                         <Button v-if="nextStep == 0 || nextStep == 1" class="btn-orange btn-center" @click="handleNextStep(form)">下一步</Button>
                     </Form>
                 </Row>
@@ -144,11 +146,11 @@ export default {
             states: '',
             selectList1: [{id: 0,title:'不限'},{id: 1,title:'按课程'},{id: 2,title:'按章节'},{id: 3,title:'按视频'}],
             show: false,
-            selectList2: [{id: -1,title:'下架'},{id: 0,title:'未上架'},{id: 1,title:'测试'},{id: 2,title:'上架'},{id: 3,title:'推荐'}],
+            selectList2: [{id: -1,title:'下架'},{id: 1,title:'测试'},{id: 2,title:'上架'}],
             form: {
                 unlock_type: '',
                 product_id: '',
-                state: '',
+                state: null,
                 title:'',
                 price:0,
                 original_price:0,
@@ -159,11 +161,8 @@ export default {
                 curriculum_id:null,
                 imgList: ['upload-btn'],
                 video_url:'',
-                original_price:'',
-                price:'',
                 organization_id: null,
                 _fn:null,
-                description: ''
             },
             descriptionHtml: '',
             nextStep: 0,
@@ -217,7 +216,9 @@ export default {
             ],
             color: '',
             paneItem: 'displayImg',
-            organizationList: null
+            organizationList: null,
+            formState: null,
+            organizationId: null
         }
     },
     mounted() {
@@ -228,8 +229,8 @@ export default {
         if(this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2){
             let d = this.payload.row
             this.form.title = d.title;
-            this.form.original_price = (d.price).toString();
-            this.form.price = (d.original_price).toString();
+            this.form.original_price = (d.original_price).toString();
+            this.form.price = (d.price).toString();
             this.form.short_description = d.short_description;
             this.form.unlock_type = d.unlock_type;
             this.form.state = d.state;
@@ -238,8 +239,8 @@ export default {
             this.form.video_url = arrObj.video
             this.form.product_id = d.id
             // if(this.$refs.inputStyl) this.$refs.inputStyl.appendChild(d.description)
-            this.descriptionHtml = d.description.replace('form-message')
-            this.form.organization_id = this.organization_id
+            this.descriptionHtml = d.description.replace('class="form-message"','')
+            // this.form.organization_id = this.organization_id
                 console.log(this.descriptionHtml,'this.descriptionHtml');
         }
         var vm = this;
@@ -268,17 +269,22 @@ export default {
         overImg(val){
 
         },
+        changeState(v){
+            this.form.state = v
+        },
         getOrganization(){
             postData('/components/getOrganization').then((res) => {
                 this.organizationList = res.data
             })
         },
+        deleteImgList(i){
+            this.form.imgList.splice(i,1)
+        },
         addImg(val){
             var img = new Image()
             img.src = val.url
-            img.width = 100
+            img.style.width = '100%'
             img.style.display = 'block'
-            console.log(this.$refs.inputStyl,'this.$refs.inputStyl')
             this.$refs.inputStyl.appendChild(img)
         },
         handleDrop(val){
@@ -349,9 +355,8 @@ export default {
               content: '实际售价不能高于原价！'
             });
           }else{
-            this.fromLabelWidth = 0;
-            this.formItemLabelWidth = 0
-            console.log(this.form,'this.form')
+            this.formState = this.form.state
+            this.organizationId = this.form.organization_id
             this.fromLabelWidth = 0;
             this.formItemLabelWidth = 0
             this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
@@ -368,15 +373,17 @@ export default {
                 this.form.imgList.shift('upload-btn')
                 var arrObj = {
                     default: this.form.imgList,
-                    video:  this.form.video_url 
+                    video:  this.form.video_url
                 }
+                this.form.state = this.formState;
+                this.form.organization_id = this.organizationId;
                 this.form.url_arr = JSON.stringify(arrObj);
                 if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
-                this.form.price = Number(this.form.original_price).toFixed(2)
-                this.form.original_price = Number(this.form.price).toFixed(2)
+                this.form.price = Number(this.form.price).toFixed(2)
+                this.form.original_price = Number(this.form.original_price).toFixed(2)
                 if(this.payload)  this.update_production(this.form);
                 else this.add_production(this.form);
-                
+
         //    }
         // })
       }
@@ -403,6 +410,12 @@ export default {
 .upload-img-row{
     margin: 10px 0px 0px 0px !important;
 }
+.upload-img-text{
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #F54802;
+    text-align: left;
+}
 .upload-img-main{
    width: 100%;
    height: 100%;
@@ -410,6 +423,15 @@ export default {
    display: flex;
    align-items: center;
    justify-content: center;
+   position: relative;
+}
+.upload-img-main-icon{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 20;
+    font-size: 20px;
+    color: #fff
 }
 .upload-img-item{
     width: 100%;
@@ -476,6 +498,7 @@ export default {
     overflow-y: auto;
     font-size: 16px;
     margin-left: 10px;
+    text-align: left;
 }
 .up-img{
     margin-right: 10px;

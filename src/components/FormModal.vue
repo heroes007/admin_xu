@@ -32,12 +32,12 @@
                     </FormItem>
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
                     <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name" :prop="t.field">
-                        <Select class="exchange-content-select" v-model="formItem[t.field]" @on-open-change="exchangeContentOpen">
+                        <Select class="exchange-content-select" v-model="formItem[t.field]" @on-open-change="exchangeContentOpen" :placeholder="'请选择'+t.name">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
-                        <Select v-model="formItem[t.field]">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
@@ -51,11 +51,11 @@
                                   :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!--可插入输入框-->
-                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload">
-                        <div class="form-message" ref="inputStyle" contentEditable="true"></div>
+                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
+                        <div class="form-message" ref="inputStyle" contentEditable="true" v-html="descriptionHtml"></div>
                         <div ref="divStyle" style="display: flex;margin-top: 15px;">
                             <Dropdown trigger="click" @on-click="handleDrop">
-                                <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
+                                <a href=" "><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
                                 <DropdownMenu slot="list">
                                     <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
                                 </DropdownMenu>
@@ -69,14 +69,14 @@
                                     </DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
+                            <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
                             <upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
                         </div>
                         <down-loading :formData="downList"/>
                     </FormItem>
                 </div>
             </Form>
-            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p>
+            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p >
             <div class="foot-btn">
                 <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
@@ -143,6 +143,7 @@
     },
     data (){
       return{
+        descriptionHtml: '',
         iconFont,iconColor,iconCopy,
         exchangeContentShow: false,
         exchangeContentList: [],
@@ -195,7 +196,14 @@
         this.ModalState(_new)
         this.$nextTick(() => {
           this.formItem = this.detailData
-          console.log(this.formItem,'gg')
+          if(this.formItem.upload) this.downList = this.formItem.upload
+          else this.downList = []
+          if(this.formItem.uploading) {
+            this.descriptionHtml = this.formItem.uploading
+            this.descriptionHtml = this.descriptionHtml.replace('class="form-message"','')
+          }
+          else this.descriptionHtml = ''
+          // else this.$refs.inputStyle[0].innerHTML = ''
           if(this.formItem.hasOwnProperty('img_url')){
             this.img_url = this.formItem.img_url
           }else this.img_url = ''
@@ -329,7 +337,7 @@
       addImg(val){
         var img = new Image()
         img.src = val.url
-        img.width = 100
+        img.style.width = '100%'
         img.style.display = 'block'
         this.$refs.inputStyle[0].appendChild(img)
       },
@@ -341,7 +349,7 @@
       handleDrop1(val){
         this.$refs.inputStyle[0].style.color = val
       }
-    }
+    },
   }
 </script>
 <style lang="less" scoped>

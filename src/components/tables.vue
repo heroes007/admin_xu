@@ -15,7 +15,7 @@
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
                     </div>
                </Poptip>
-              <Button type="text" v-else-if="column.operation_btn_hide&&t[2] ? row.state : true" size="small"
+              <Button type="text" v-else-if="handleBtnShow(column,row,t)" size="small"
                       style="margin-right: 5px" @click="show(row,index,t[1])">
                 {{handleBtnText(t,row,column)}}
               </Button>
@@ -80,6 +80,9 @@
       }
     },
     methods: {
+      handleBtnShow(c,r,t){
+        return c.operation_btn_hide&&t[2] ? r.mark_state : true
+      },
       radioChange(r, c) {
         this.datas.map((t, k) => {
           t.state = false
@@ -132,7 +135,9 @@
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                 arr.push(`${item.name}: 九划医疗`)
               } else {
-                if (x == 'role_id') string[x] = this.$config.status(string[x])
+                // if (x == 'role_id'){
+                //   string['role_name'] = this.$config.status(string[x])
+                // }
                 str = item.name + ':' + ' ' + string[x]
                 arr.push(str)
               }

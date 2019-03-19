@@ -99,23 +99,21 @@ const actions = {
         add_curriculum(params).then(res => {
             if (res.data.res_code === 1) {
                 commit(types.ONLINE_CURRICULUM_ADDED, {data: params, result: res.data.msg});
-                // get_list(project_id).then(function (res) {
-                //     if (res.data.res_code === 1) {
-                //         commit(types.ONLINE_CURRICULUM_LIST_LOADED, res.data.msg);
-                //     }
-                // });
-                // params._fn();
+                get_list(params.page).then(function (res) {
+                    if (res.data.res_code === 1) {
+                        commit(types.ONLINE_CURRICULUM_LIST_LOADED, res.data.data.data);
+                    }
+                });
+                params._fn();
             }
         })
     },
     edit_online_curriculum({dispatch, commit}, params) {
         commit(types.ONLINE_CURRICULUM_EDITING);
-        // console.log(params,'params')
+        params.data._fn();
         update_curriculum(params.data).then(res => {
             if (res.data.res_code === 1) {
-                console.log(params,'params');
                 dispatch('ONLINE_CURRICULUM_EDITED', params.data)
-                // params.data._fn();
             }
         })
     },
@@ -135,10 +133,11 @@ const actions = {
             }
         })
     },
-    add_online_curriculum_video({commit}, params) {
+    add_online_curriculum_video({dispatch,commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
         add_video(params).then(res => {
             if (res.data.res_code === 1) {
+                dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
                 // commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
                 // params._fn();
             }
@@ -153,12 +152,13 @@ const actions = {
             }
         })
     },
-    edit_online_curriculum_video({commit}, params) {
+    edit_online_curriculum_video({dispatch,commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
+        console.log(params,'params');
         update_video(params).then(res => {
             if (res.data.res_code === 1) {
-                // commit(types.ONLINE_CURRICULUM_VIDEO_EDITED, params);
-                // params._fn();
+                dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
+                params._fn();
             }
         })
     },
@@ -166,7 +166,7 @@ const actions = {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
         delete_catalog(params).then(res => {
             if (res.data.res_code === 1) {
-                // commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params);
+                commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params);
             }
         })
     },

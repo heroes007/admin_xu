@@ -4,45 +4,28 @@
            :mask-closable="false">
         <base-input @closedialog="handleClose">
             <Row slot="body">
-                <Row class="body-top" v-if="payload.type==1">
+                <Row class="body-top">
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
                             <Col>
                                 <FormItem label="证书名称">
-                                    <Input v-model="form.title" placeholder="请输入课程名称"></Input>
+                                    <Input v-model="form.name" placeholder="请输入课程名称"></Input>
+                                </FormItem>
+                                <FormItem v-show="organizationList&&organizationList.length>0" label="机构">
+                                  <Select v-model="form.organization_id" placeholder="请选择机构">
+                                     <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
+                                  </Select>
                                 </FormItem>
                                <FormItem label="证书描述">
-                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
+                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.detail"></Input>
                                 </FormItem>
                                 <FormItem label="证书照片">
-                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
+                                    <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                         <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
                                     </upload-panel>
                                 </FormItem>
                                 <FormItem class="btns">
-                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
-                                    <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
-                                </FormItem>
-                            </Col>
-                    </Form>
-                </Row>
-                <Row class="body-top" v-if="payload.type==2">
-                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
-                            <Col>
-                                <FormItem label="证书名称">
-                                    <Input v-model="form.title" placeholder="请输入课程名称"></Input>
-                                </FormItem>
-                               <FormItem label="证书描述">
-                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
-                                </FormItem>
-                                <FormItem label="证书照片">
-                                    <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                                    </upload-panel>
-                                </FormItem>
-                                <FormItem class="btns">
-                                <!--<Button type="primary" class="next-btn" @click="handleNextStep(2)">下一步</Button>-->
-                                    <Button type="error" class="next-btn" style="width: 120px;" @click="handleDelete">删除证书</Button>
-                                    <Button type="primary" class="next-btn" style="margin-left: 40px;" @click="handleSubmit">保存</Button>
+                                    <Button v-if="payload.type==2" type="error" class="next-btn" style="width: 120px;" @click="handleDelete">删除证书</Button>
+                                    <Button type="primary" class="next-btn" :style="payload.type==2 ? btnStyl : ''" @click="handleSubmit">保存</Button>
                                 </FormItem>
                             </Col>
                     </Form>
@@ -64,6 +47,7 @@
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'
   import { MPop } from '../../components/MessagePop'
+  import postData from 'src/api/postData';
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -76,21 +60,10 @@
         addCourseDialogVisible: true,
         videoManageDialog: true,
         form: {
-          title: '',
-          teacher_id: '',
-          start_time: new Date(),
-          end_time: new Date(),
-          subject_id: 0,
-          grade_id: 0,
-          state: 0,
-          img_default: '',
-          img_3_8: '',
-          img_url_arr: null,
-          description: '',
-          orderby: 0,
-          curriculum_roles: [0],
-          pre_curriculum_ids: [],
-          data_center_id: 0,
+          organization_id: '',
+          detail: '',
+          name:'',
+          img_url: ''
         },
         newData: {
           show: false,
@@ -116,33 +89,17 @@
           type: 1
         },
         resourse1: '',
-        resourse2: ''
+        resourse2: '',
+        organizationList: null,
+        btnStyl: 'margin-left: 40px;'
       }
     },
     mounted() {
-      if (this.query_teacher_list.length === 0) this.get_teacher_list();
-      this.get_role_list();
-      this.get_subject_list();
-      this.get_grade_list();
-      this.checkPayload();
-      this.get_curriculum_donwload_data_list({project_id: this.project_id});
-    },
-    watch: {
-      query_subject_list(val) {
-        this.checkPayload();
-      },
-      query_grade_list(val) {
-        this.checkPayload();
-      },
-      query_teacher_list(val) {
-        this.checkPayload();
-      },
-      query_teacher_roles(val) {
-        this.checkPayload();
-      },
-      query_online_course_list(val) {
-        this.checkPayload();
-      }
+        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1){
+            this.getOrganization()
+        }
+        this.$store.commit('set_houner_state', false)
+        if(this.payload.hasOwnProperty('row')) this.form = this.payload.row
     },
     computed: {
       ...mapState({
@@ -190,12 +147,16 @@
         'get_grade_list',
         'get_online_curriculum_list',
         'add_online_curriculum',
-        'edit_online_curriculum',
         'add_course_download_data',
         'get_curriculum_donwload_data_list'
       ]),
       getDir() {
         return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
+      },
+      getOrganization(){
+          postData('/components/getOrganization').then((res) => {
+              this.organizationList = res.data
+          })
       },
       selectCurriculumData(id) {
         this.form.data_center_id = id;
@@ -228,30 +189,28 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleDelete(){
-        this.$Message.info('证书使用中，请先解除关联。')
-        this.$Message.info('删除证书后所有统计数据不可查看，是否确认删除 （确认、取消）')
+        let d = this.payload.row;
+        if(d.state) this.$Message.info('证书使用中，请先解除关联。')
+        else{
+           this.$Modal.confirm({
+                title: '提示',
+                content: '<p>删除证书后所有统计数据不可查看，是否确认删除</p>',
+                onOk: () => {
+                    postData('/product/remove_honour_certificate', {id: d.id}).then((res) => {
+                       this.addCourseDialogVisible = false;
+                       this.$store.commit('set_houner_state', true)
+                    })
+                },
+                onCancel: () => {}
+            });
+        }
       },
       handleSubmit() {
-        this.form.img_url_arr = {
-          'default': this.form.img_default,
-          '3_8': this.form.img_3_8
-        };
-        this.form.project_id = this.project_id;
-        this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        var vm = this;
-        this.form._fn = function () {
-          vm.handleClose();
-          vm.showPop('保存成功！', 1000);
-        };
-        if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
-          var preList = [];
-          for (var i = 0; i < this.top_course_list.length; i++) {
-            preList.push(this.top_course_list[i].curriculum_id);
-          }
-          this.form.pre_curriculum_ids = preList;
-        }
-        if (!this.payload) this.add_online_curriculum(this.form);
-        else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
+        let url = this.payload.hasOwnProperty('row') ? '/product/modify_honour_certificate' : '/product/add_new_honour_certificate';
+        postData(url,this.form).then((res) => {
+          this.addCourseDialogVisible = false;
+          this.$store.commit('set_houner_state', true)
+        })
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},
@@ -291,67 +250,8 @@
         //取消全选状态
         this.checkAll = [];
       },
-      checkPayload() {
-        if (this.payload
-          && this.query_teacher_list.length != 0
-          && this.query_teacher_roles.length != 0
-          && this.query_subject_list.length != 0
-          && this.query_grade_list.length != 0
-          && this.query_online_course_list.length != 0
-          && !this.loadingInstance
-          && !this.form.title) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-          setTimeout(() => {
-            this.loadingInstance.close();
-          }, Config.base_timeout);
-          get_detail(this.payload.curriculum_id).then(res => {
-            if (res.data.res_code === 1) {
-              this.form.title = res.data.msg.curriculum[0].title;
-              this.form.teacher_id = res.data.msg.curriculum[0].teacher_id;
-              this.form.start_time = new Date(res.data.msg.curriculum[0].start_time);
-              this.form.end_time = new Date(res.data.msg.curriculum[0].end_time);
-              this.form.subject_id = res.data.msg.curriculum[0].subject_id;
-              this.form.grade_id = res.data.msg.curriculum[0].grade_id;
-              this.form.state = res.data.msg.curriculum[0].state;
-              this.form.data_center_id = res.data.msg.data_center_id;
-              var imgList = JSON.parse(res.data.msg.curriculum[0].img_url_arr);
-              this.form.img_default = imgList.default;
-              this.form.img_3_8 = imgList['3_8'];
-              this.form.description = cleanHtmlLabel(res.data.msg.curriculum[0].description);
-              this.form.orderby = res.data.msg.curriculum[0].orderby;
-              this.form.curriculum_roles = res.data.msg.curriculum_role ? res.data.msg.curriculum_role : [0];
-              this.form.pre_curriculum_ids = res.data.msg.pre_curriculum;
-              if (this.loadingInstance) this.loadingInstance.close();
-              this.top_course_list = [];
-              this.checked_top_courses = [];
-              this.unchecked_top_courses = [];
-              for (var i = 0; i < this.form.pre_curriculum_ids.length; i++) {
-                for (var j = 0; j < this.query_replace_online_course_list.length; j++) {
-                  if (this.query_replace_online_course_list[j].curriculum_id === this.form.pre_curriculum_ids[i]) {
-                    this.top_course_list.push(this.query_replace_online_course_list[j]);
-                    this.unchecked_top_courses.push(this.query_replace_online_course_list[j]._index);
-                    this.checked_top_courses.push(this.query_replace_online_course_list[j]._index);
-                  }
-                }
-
-              }
-            }
-          });
-        }
-        // this.top_course_list = _.difference(this.top_course_list, this.checked_top_courses);
-        // //取消已制定状态
-        // this.checked_top_courses = [];
-        // //取消未指定选定状态
-        // this.unchecked_top_courses = [];
-        // //取消全选状态
-        // this.checkAll = [];
-
-      },
       handleDefaultUploadComplete(url) {
-        this.form.img_default = url;
-      },
-      handle38UploadComplete(url) {
-        this.form.img_3_8 = url;
+        this.form.img_url = url;
       }
     }
   }

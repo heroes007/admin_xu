@@ -112,7 +112,6 @@
       if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
       this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
       postData('components/getOrganization').then((res) => {
-        console.log(res,'res')
         this.select = [...this.select, ...res.data]
       })
     },

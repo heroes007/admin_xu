@@ -192,6 +192,7 @@
         methods: {
             ...mapActions(['delete_task']),
             addTaskCategory() {
+                this.tableRow = {}
                 this.show = true
                 this.modalTitle = "添加作业"
                 let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
@@ -201,7 +202,9 @@
                 //  console.log(this.dataList);
             },
             manageEdit(v) {
-                this.showClose = v;
+                // this.showClose = v;
+              this.keyword = v
+              this.initData()
             },
             reRenderListHandler(v) {
                 if (this.$store.state.project.project_list.length > 0) {
@@ -225,7 +228,9 @@
                 console.log(row, '统计');
             },
             marking(index, row) {
-                this.$router.replace({path: `/product/open-product/${row.id}/marking-homework/`})
+                this.$router.push({
+                  path: `open-product/${row.id}/marking-homework`
+                })
                 localStorage.setItem('MarkingHomework', JSON.stringify(row))
             },
             editHandler(index, row) {
@@ -236,12 +241,13 @@
                 this.formList[2].selectList = this.curricumList
                 this.tableRow.realname = row.title
                 this.tableRow.uploading = row.description
+                this.tableRow.jurisdiction = row.type
+                this.tableRow.binding_course = row.curriculum_id
+                this.tableRow.upload = row.attachment_url ? JSON.parse(row.attachment_url) : row.attachment_url
                 this.$store.dispatch("change_homework_id", row.id)
-                // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
+              // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
             },
             deleteHandler(index, row) {
-                console.log(row);
-
                 var vm = this;
                 this.$Modal.confirm({
                     title: '提示',
@@ -291,12 +297,16 @@
             saveHomework(val) {
                 if (this.modalTitle == "添加作业") {
                     this.$store.dispatch('add_task_category', val);
+                  this.initData()
+
                 } else {
                     this.$store.dispatch('edit_task_category', val);
+                  this.initData()
+
                 }
             },
             initData() {
-                this.$store.dispatch('get_task_category_list', {
+              this.$store.dispatch('get_task_category_list', {
                     page: {page_size: this.pageSize, page_num: this.current},
                     keyword: this.keyword
                 })
@@ -308,10 +318,9 @@
             // var vm = this;
             this.initData()
             // curricumList
-            postData('product/curriculum_online/pulldown_get_list', {
-                product_id: JSON.parse(localStorage.getItem('MarkingHomework')).id,
+          postData('product/curriculum_online/pulldown_get_list', {
+                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
             }).then(res => {
-                console.log(res, 'ppppp')
                 this.curricumList = res.data
             })
             // if (this.$store.state.project.project_list.length === 0) {

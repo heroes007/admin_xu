@@ -54,7 +54,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path:'',
-    redirect:'/dashboard/user-manage'
+    redirect:'/login'
   },
   // {
   //   path:'/project',

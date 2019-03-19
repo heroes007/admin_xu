@@ -1,9 +1,10 @@
 <template>
    <div>
         <screen :types="9"  @handleBack="handleBack" :title="screenTitle"/>
-        <screen :types="1" size-title1="提交作业人数" :size-num1=count btn-name="上传批阅" :select1="selectList"
+        <screen :types="1" size-title1="提交作业人数" :size-num1=total btn-name="上传批阅" :select1="selectList"
                     @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
+       <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
 
@@ -14,11 +15,14 @@
   import { Dialog } from '../../dialogs/index';
   import {get_read_over} from '../../../api/modules/tools_task';
   import postData from '../../../api/postData'
+  import pageMixin from '../../mixins/pageMixins'
+  import pageList from '../../../components/Page'
+  import {mapState} from 'vuex'
 
   export default {
-    mixins: [Dialog],
+    mixins: [Dialog, pageMixin],
     name: "MarkingHomework",
-    components: { Tables, screen },
+    components: { Tables, screen, pageList },
     data (){
         return{
             selectList: [],
@@ -28,25 +32,25 @@
             columns1: [
             {
                 title: '用户名',
-                key: 'nickname',
+                key: 'username',
                 align: 'left',
             },{
                 title: '真实姓名',
                 key: 'realname',
             },{
                 title: '科室',
-                key: 'sex',
+                key: 'department_name',
             },
             {
                 title: '年级',
-                key: 'phone',
+                key: 'grade_name',
                 align: 'left',
             },
-                {
+            {
                 title: '状态',
-                key: 'state1',
-                slot: 'state-item',
-                stateKey: 'state'
+                key: 'isState',
+                // slot: 'state-item',
+                // stateKey: 'state'
             },
                 {
                 title: '提交作业时间',
@@ -84,6 +88,14 @@
             ]
         }
     },
+    computed:{
+      ...mapState(['taskState'])
+    },
+    watch: {
+      taskState() {
+        this.initData()
+      }
+    },
     methods: {
         selectChange1(val){
         console.log(val)
@@ -101,28 +113,32 @@
         },
         inputChange(val){
             this.search = val
-            this.getList()
+            this.initData()
         },
         handleClick(){
             console.log('open modal')
         },
         handleBack(){
             this.$router.replace({path:'/product/open-product'})
+            // this.$router.replace({name: 'open-product'});
         },
         handleList(){
-            this.list.map((it) => {
-                it.state1 = it.state ? '已批阅' : '未批阅'
-            })
+            // this.list.map((it) => {
+            //     it.state1 = it.state ? '已批阅' : '未批阅'
+            // })
         },
-        getList(){
+      initData(){
             postData('product/homework/student_homework_get_list',{
                 homework_id: parseInt(this.$route.params.id),
                 search: this.search,
-                page_size: 12,
-                page_num: 1
+                page_size: this.pageSize,
+                page_num: this.current
             }).then(res =>  {
+              res.data.data.forEach(item => {
+                item.isState = item.mark_state == 1 ? '已批阅' : '未批阅'
+              })
                 this.list = res.data.data
-                this.count = res.data.count
+                this.total = res.data.total
             })
         }
     },
@@ -136,7 +152,7 @@
         //     this.list = res.data.data.data
         // })
         // console.log(this.$route.params.id,'$route')
-       this.getList()
+       this.initData()
     }
   }
 </script>

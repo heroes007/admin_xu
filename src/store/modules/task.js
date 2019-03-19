@@ -71,10 +71,10 @@ const actions = {
             commit(types.TASK_SHOW_LOADING);
             create_category(params).then(res => {
                 if (res.data.res_code === 1) {
-                    commit(types.TASK_CATEGORY_ADDED, {
-                        result: res.data.msg,
-                        data: params
-                    });
+                    // commit(types.TASK_CATEGORY_ADDED, {
+                    //     result: res.data.msg,
+                    //     data: params
+                    // });
                     // window.location.reload()
                 }else{
                     alert(res.msg)
@@ -87,9 +87,9 @@ const actions = {
             commit(types.TASK_SHOW_LOADING);
             edit_category_by_id(state.homworkId, params).then(res => {
                 if (res.data.res_code === 1) {
-                    commit(types.TASK_CATEGORY_EDITED, params);
+                    // commit(types.TASK_CATEGORY_EDITED, params);
                     // params._fn();
-                    window.location.reload()
+                    // window.location.reload()
                 }
             })
         },
@@ -137,8 +137,8 @@ const actions = {
             commit(types.TASK_SHOW_LOADING);
 
             edit_task(params.task_id, params).then(res => {
-             
-                
+
+
                 if (res.data.res_code === 1) {
                     commit(types.TASK_EDITED, params);
                     params.callback.call();
@@ -149,8 +149,8 @@ const actions = {
             commit
         }, params) {
             commit(types.TASK_SHOW_LOADING);
-            delete_task_by_id(params).then(res => {    
-                // console.log(res);            
+            delete_task_by_id(params).then(res => {
+                // console.log(res);
                 if (res.data.res_code === 1) {
                     commit(types.TASK_DELETED, params);
                 }
@@ -176,7 +176,6 @@ const mutations = {
         state.showLoading = true;
     },
     [types.TASK_CATEGORY_LIST_LOADED](state, params) {
-        console.log(params,'aaaaaaaaaaaa')
         state.total = params.count
         // let first = {
         //     id:0,
@@ -192,9 +191,9 @@ const mutations = {
 
         for (let i = 0; i < params.data.length; i++) {
             if (params.data[i].type == "online") {
-                params.data[i].type = "线上课"
+                params.data[i].course = "线上课"
             }else{
-                params.data[i].type = "线下课"
+                params.data[i].course = "线下课"
             }
         }
 
@@ -214,11 +213,13 @@ const mutations = {
         state.showLoading = false;
     },
     [types.TASK_CATEGORY_EDITED](state, params) {
+        console.log(params)
         for (var i = 0; i < state.task_category_list.length; i++) {
             if (state.task_category_list[i].id === state.homworkId) {
                 state.task_category_list[i].title = params.realname;
-                state.task_category_list[i].curriculum_title = params.binding_course;
-                state.task_category_list[i].type = params.jurisdiction;
+                state.task_category_list[i].curriculum_id = params.binding_course;
+                state.task_category_list[i].type   = params.jurisdiction == 'online' ? '线上课' : '线下课';
+              // state.task_category_list[i].type = params.jurisdiction;
                 break;
             }
         }
@@ -277,7 +278,7 @@ const mutations = {
     },
     [types.TASK_DELETED](state, params) {
         console.log(state.task_category_list);
-        
+
         for (var i = 0; i < state.task_category_list.length; i++) {
             if (state.task_category_list[i].id === params) {
                 // for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {

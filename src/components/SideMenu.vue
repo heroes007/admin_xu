@@ -28,7 +28,7 @@
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
         <Row class="menu-list">
             <Col>
-                <Menu ref="SideMenu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
+                <Menu ref="side_menu" class="slider-menu" @on-open-change="openChange" @on-select="selectItem"
                       :active-name='activeIndex' :open-names="menuOpenName">
                     <div v-for="(it,index) in menuList" :key="index">
                         <Submenu  v-if="it&&it.list" :name="it.name">
@@ -96,7 +96,7 @@
     },
     watch: {
       $route() {
-        this.initMenu();
+        // this.initMenu();
         //  if((this.activeIndex === 'manage-production') || (this.activeIndex === 'manage-production-curriculum')){
         //    this.selectItem(this.activeIndex)
         //  }
@@ -169,10 +169,10 @@
         //   if(!it.icon.includes('_gray')) it.icon = it.icon + '_gray';
         //   if(it.name === index) it.icon = it.icon.split('_')[0];
         // })
-        if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
-        this.name = index
+        // if((index === 'manage-production') || (index === 'manage-production-curriculum')) this.menuList[3].icon = '04.product'
+        // this.name = index
         this.$router.push({name: index});
-        // this.activeIndex = index
+        this.activeIndex = index
       },
       initMenu() {
         // this.activeIndex = this.$route.name;
@@ -180,13 +180,14 @@
       logout() {
         api.post('user/logout', {from: 'web'}).then((res) => {
           if (res.data.res_code === 1) {
+            localStorage.clear() 
             this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
-            this.$localStorage.remove('organizationId');
-            this.$localStorage.remove('menuOpenName');
-            localStorage.removeItem('menuActiveIndex');
-            localStorage.removeItem('PERMISSIONS');
-            localStorage.removeItem('menuActiveIndex');
+            // this.$localStorage.remove('organizationId');
+            // this.$localStorage.remove('menuOpenName');
+            // localStorage.removeItem('menuActiveIndex');
+            // localStorage.removeItem('PERMISSIONS');
+            // localStorage.removeItem('menuActiveIndex');
             // localStorage.removeItem('login_user');
           }
         });
@@ -213,24 +214,29 @@
                 let num = +t.permission_code.slice(0,2)
                 if(num !== 3) this.menuList.push(MenuList[num - 1])
               });
-              if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
+              // if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
             }
           }
         }
     },
     mounted() {
-       this.$nextTick(() => {
-        this.handleMenuList()
-        console.log(this.menuList,'this.menuList')
-       })
-      this.setSubmenuTitleIconMouse()
-      let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
-      this.selectItem(menuActive)
+      //  this.$nextTick(() => {
+          this.handleMenuList()
+          if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
+          let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
+          this.activeIndex = menuActive
+          this.$nextTick(() => {
+             this.$refs.side_menu.updateOpened();
+             this.$refs.side_menu.updateActiveName();
+          })
+      //  })
+
+      // this.setSubmenuTitleIconMouse()
       // if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
       // this.get_unread_list();
-      if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
+      // if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
       // this.$nextTick(() => {
-      //   this.$refs.SideMenu.updateOpened();
+      //   this.$refs.side_menu.updateOpened();
       // })
     }
   }

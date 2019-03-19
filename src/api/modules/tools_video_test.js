@@ -32,13 +32,13 @@ export function add_test_detail(data) {
     return api.post('/product/curriculum_online_catalog/add_test',data);
 }
 
-export function update_test_detail(test_detail_id,data) {
-    return api.post('api/tools_video_test/update_test_detail',{
-        content:data.content,
-        result:data.result,
-        test_detail_id:test_detail_id,
-        select_count:data.select_count,
-        orderby:data.orderby
+export function update_test_detail(data) {
+    return api.post('product/curriculum_online_catalog/change_video_test',{
+      title: data.title,
+      video_test_detail_id: data.video_test_detail_id,
+      content: data.content,
+      select_count: data.select_count,
+      result: data.result
     });
 }
 

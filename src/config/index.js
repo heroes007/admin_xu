@@ -14,10 +14,7 @@ Vue.use(LoadingY)
 // this registers `store.state.route`
 sync(store, router)
 router.beforeEach((to, from, next) => {
-  let str = window.location.href
-  let s = str.slice(str.length-1);
-  if(s === '/') window.location.href = '/login'
-  else if (store.state.auth.userInfo || to.name === 'login') {
+  if (store.state.auth.userInfo || to.name === 'login') {
     next();
   } else {
     if (to.name !== 'login') {

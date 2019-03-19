@@ -15,6 +15,7 @@
     import { get_sign } from '../api/modules/ali_oss'
     import { Config } from '../config/base'
     import axios from 'axios'
+
     export default{
         data(){
             return{
