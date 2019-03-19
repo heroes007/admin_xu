@@ -87,7 +87,13 @@
           title: '提示',
           content: '注销后将永久删除，确认是否注销',
           onOk: () => {
-            this.$Message.info('Clicked ok');
+            console.log(this.detail)
+            postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
+              if(res.res_code == 1) {
+                this.$Message.info('删除产品');
+                window.close()
+              }
+            })
           },
           onCancel: () => {
             this.$Message.info('Clicked cancel');

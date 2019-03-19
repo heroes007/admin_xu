@@ -11,7 +11,7 @@
                <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
                     <Button type="text">查看</Button>
                     <div class="poptip-main" slot="content">
-                      <img class="poptip-img" src="../../static/mn.jpeg"/>
+                      <img class="poptip-img" src="../assets/icons/mn.jpeg"/>
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
                     </div>
                </Poptip>
@@ -197,7 +197,7 @@
     }
 
     /deep/ .ivu-radio-checked .ivu-radio-inner {
-        background-image: url('../../static/icon/tick.png');
+        background-image: url('../assets/icons/icon/tick.png');
         background-repeat: no-repeat;
         background-size: 16px 16px;
         background-position: 1.5px 1.5px;

@@ -14,8 +14,8 @@
                         <p>绑定课程：{{t.curriculum_count}}个</p>
                     </div>
                     <div class="lecturer-item-btn">
-                       <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="/static/icon/write.jpg" />
-                       <img v-if="lectureesItem3" @click="deletes(t)" src="/static/icon/delete.jpg" />
+                       <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="/src/assets/icons/icon/write.jpg" />
+                       <img v-if="lectureesItem3" @click="deletes(t)" src="/src/assets/icons/icon/delete.jpg" />
                     </div>
                 </div>
             </Col>
@@ -190,6 +190,6 @@
 }
 /deep/ .ivu-col-span-6{margin-bottom: 20px;}
 /deep/ .ivu-page {
-    
+
 }
 </style>

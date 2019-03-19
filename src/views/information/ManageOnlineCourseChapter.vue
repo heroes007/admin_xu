@@ -236,24 +236,15 @@
         });
       },
       editHandler(i, row) {
-        console.log(row, i, 'item, row')
         if(row.type === 0) {
           this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id, curriculum_online_id: parseInt(this.$route.params.id)})
         }else{
           this.handleSelModal(ADD_QUESTION, {
             curriculum_online_id: parseInt(this.$route.params.id),
-            // curriculum_catalog_id: row.id,
-            // group_name: row.group_name,
-            // group_orderby: row.id,
-            // orderby: row.orderby + 1,
-            // curriculum_id: row.curriculum_id,
-            // list_index: i,
             isEdit: true,
             section_id: row.id
           });
         }
-        // if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
-        // else if (row.type === 1) this.openModal(ADD_QUESTION, row, 2)
       },
       moveHandler(row, type) {
         this.dirty = true;
@@ -271,6 +262,7 @@
         this.moveHandler(row, 1)
       },
       deleteHandler(index, row) {
+        console.log(row, 'row');
         if (this.dirty) {
           this.$Modal.confirm({
             title: '提示',
@@ -283,11 +275,15 @@
         } else this.showDeleteConfirm(row.id);
       },
       showDeleteConfirm(d) {
+        var val = {
+          id: d,
+          curriculum_online_id: parseInt(this.$route.params.id)
+        }
         this.$Modal.confirm({
           title: '提示',
           content: '<p>是否确定删除该小节？</p>',
           onOk: () => {
-            this.$store.dispatch('delete_online_curriculum_catalog',d)
+            this.$store.dispatch('delete_online_curriculum_catalog',val)
           },
         });
       },

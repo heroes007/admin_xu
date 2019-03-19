@@ -21,7 +21,7 @@
                     <FormItem label="题干名称">
                         <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body" class="input-text"></Input>
                         <div class="route-link" ref="formInput">
-                            <div class="route-data" v-for="(item, index) in accessoryList" :key="index">
+                            <div class="route-data" v-for="(item, index) in formInline2.attachment" :key="index">
                                 <span style="cursor: pointer" @click="handleModel(item)">{{item.name}}</span>
                             </div>
                         </div>
@@ -111,7 +111,9 @@
           orderby: 1,
           answerList: [],
           result: [],
-          content: ''
+          content: '',
+          textTitle: '',
+          attachment: []
         },
         dataList: [],
         isEdit: false,
@@ -125,16 +127,24 @@
     },
     watch: {
       chapterList(list) {
-        list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr.forEach(item => {
-          item.title = JSON.parse(item.content).body
-        })
-        this.dataList = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr
-        this.section_id = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].id
-        // console.log(list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1], 'ididid')
-        // console.log(list, this.payload.list_index,'list123')
         if(this.payload.isEdit){
-          this.formInline1.title = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].group_name
+          setTimeout(() => {
+            postData('product/curriculum_online_catalog/get_video_test', {section_id: this.payload.section_id}).then(res => {
+              this.dataList = res.data
+            })
+          },500)
+        }else{
+          list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr.forEach(item => {
+            item.title = JSON.parse(item.content).body
+          })
+          this.dataList = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr
+          this.section_id = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].id
+          if(this.payload.isEdit){
+            this.formInline1.title = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].group_name
+          }
         }
+
+
         // this.dataList = list
 
         //   if (Array.isArray(list)) {
@@ -212,7 +222,7 @@
       dataHeader() {
         return [
           {label: '排序', width: 90, sort: true},
-          {prop: 'title', label: '题干名称'},
+          {prop: 'group_name', label: '题干名称'},
           {width: 200, label: '操作', groupBtn: [{text: '编辑', param: 'edit'}, {text: '删除', param: 'delete'}]}
         ]
       },
@@ -244,7 +254,8 @@
     },
     methods: {
       uploadImg(val){
-        this.accessoryList.push(val)
+        this.formInline2.attachment.push(val)
+        console.log(this.formInline2.attachment)
       },
       handleModel(item){
         console.log(item.name.split('.')[item.name.split('.').length-1])
@@ -289,14 +300,19 @@
           title: '提示',
           content: '<p>是否确定删除该题目？</p>',
           onOk: () => {
-            delete_test_detail(row.id).then(res => {
-              if (res.data.res_code === 1) {
-                this.dataList.splice(index, 1);
-                this.$Modal.info({
-                  title: '提示',
-                  content: '删除成功。'
-                });
-                this.clearDetail();
+            // delete_test_detail(row.id).then(res => {
+            //   if (res.data.res_code === 1) {
+            //     this.dataList.splice(index, 1);
+            //     this.$Modal.info({
+            //       title: '提示',
+            //       content: '删除成功。'
+            //     });
+            //     this.clearDetail();
+            //   }
+            // })
+            postData('product/curriculum_online_catalog/delete_video_test', {video_test_detail_id: row.id}).then(res => {
+              if(res.res_code == 1){
+                console.log(index, row)
               }
             })
           },
@@ -339,10 +355,12 @@
             body: this.formInline2.body,
             answerList: this.formInline2.answerList
           });
+          this.formInline2.test_title = this.formInline2.title
           this.formInline2.curriculum_catalog_id = this.payload.curriculum_catalog_id
           this.formInline2.title = this.formInline1.title;
           this.formInline2.select_count = +this.formInline2.select_count
           this.formInline2.curriculum_id = this.payload.curriculum_id
+          this.formInline2.attachment = JSON.stringify(this.formInline2.attachment)
 
           if (this.formInline2.video_test_detail_id > 0) {
             update_test_detail(this.formInline2).then(res => {
@@ -388,11 +406,14 @@
       }
     },
     mounted() {
-      console.log(this.payload, 'payload')
       if(this.payload.isEdit) {
+        // this.formInline1.title =
         this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
         postData('product/curriculum_online_catalog/get_video_test', {section_id: this.payload.section_id}).then(res => {
-          console.log(res, 'resresresres')
+          this.dataList = res.data.forEach(item => {
+            item.attachment = JSON.parse(item.attachment)
+          })
+          console.log(res.data,'res')
         })
       }
       // console.log(this.payload,'payload')

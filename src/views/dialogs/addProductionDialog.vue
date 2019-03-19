@@ -121,12 +121,12 @@ import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
 import UploadImgs  from '../../components/UploadButton'
 import UploadBtn from '../../components/UploadButton'
-import iconFont from '../../../static/icon/font.png'
-import iconColor from '../../../static/icon/color.png'
-import iconCopy from '../../../static/icon/photo.png'
-import iconFontCopy from '../../../static/icon/font_copy.png'
-import iconColorCopy from '../../../static/icon/color_copy.png'
-import iconCopyCopy from '../../../static/icon/photo_copy.png'
+import iconFont from '../../assets/icons/icon/font.png'
+import iconColor from '../../assets/icons/icon/color.png'
+import iconCopy from '../../assets/icons/icon/photo.png'
+import iconFontCopy from '../../assets/icons/icon/font_copy.png'
+import iconColorCopy from '../../assets/icons/icon/color_copy.png'
+import iconCopyCopy from '../../assets/icons/icon/photo_copy.png'
 import postData from '../../api/postData';
 
 export default {
