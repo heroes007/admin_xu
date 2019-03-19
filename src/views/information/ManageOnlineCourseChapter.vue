@@ -149,12 +149,10 @@
           for (var i = 0; i < curriculumList.length; i++) {
             if (curriculumList[i].curriculum_id == curriculumId) {
               // curriculumList[i].children = []
-                // console.log(doSortFormatCatalogList(curriculumList[i].chapterList),'logggggggggg');
                 // return doSortFormatCatalogList(curriculumList[i].chapterList);
             }
           }
         }
-        console.log(curriculumList,'curriculumListcurriculumList')
         return curriculumList || [];
       },
       curriculumList() {
@@ -237,20 +235,21 @@
           ...item
         });
       },
-      editHandler(i, row, index) {
-        console.log(i,row, index, 'row')
+      editHandler(i, row) {
+        console.log(row, i, 'item, row')
         if(row.type === 0) {
           this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id, curriculum_online_id: parseInt(this.$route.params.id)})
         }else{
           this.handleSelModal(ADD_QUESTION, {
             curriculum_online_id: parseInt(this.$route.params.id),
-            curriculum_catalog_id: row.id,
-            group_name: row.group_name,
-            group_orderby: row.id,
-            orderby: row.orderby + 1,
-            curriculum_id: row.curriculum_id,
-            list_index: i,
-            isEdit: true
+            // curriculum_catalog_id: row.id,
+            // group_name: row.group_name,
+            // group_orderby: row.id,
+            // orderby: row.orderby + 1,
+            // curriculum_id: row.curriculum_id,
+            // list_index: i,
+            isEdit: true,
+            section_id: row.id
           });
         }
         // if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
@@ -293,7 +292,6 @@
         });
       },
       toggleListShow(index,t) {
-        console.log(t,'ttt');
         this.showListState[index] = 1 - this.showListState[index];
       },
       addChapterHandler() {
@@ -345,7 +343,6 @@
           // } else
           this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
-          console.log(item.id)
           this.handleSelModal(VIDEO_MANAGE, {
             curriculum_online_id: +this.$route.params.id,
             curriculum_id: item.curriculum_id,
@@ -358,6 +355,7 @@
         }
       },
       addTest(item, index) {
+        // console.log(item, index, 'add')
         if (!item) {
           // if (this.newChapterData.group_name) {
           //   this.handleSelModal(ADD_QUESTION, {
@@ -376,7 +374,9 @@
             group_orderby: item.id,
             orderby: item.orderby + 1,
             curriculum_id: item.curriculum_id,
-            list_index: index
+            list_index: index,
+            section_id: item.id,
+            curriculum_data: item
           });
         }
       },

@@ -127,7 +127,7 @@
             console.log(row,rowIndex,'see',this.detailShow);
         },
         edit(row,rowIndex){
-          console.log(row)
+          console.log(row, 'row')
             this.modalTitle = '修改导师'
             this.show = true
             this.tableRow = {

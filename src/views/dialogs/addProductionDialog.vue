@@ -161,11 +161,8 @@ export default {
                 curriculum_id:null,
                 imgList: ['upload-btn'],
                 video_url:'',
-                original_price:'',
-                price:'',
                 organization_id: null,
                 _fn:null,
-                description: ''
             },
             descriptionHtml: '',
             nextStep: 0,
@@ -232,8 +229,8 @@ export default {
         if(this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2){
             let d = this.payload.row
             this.form.title = d.title;
-            this.form.original_price = (d.price).toString();
-            this.form.price = (d.original_price).toString();
+            this.form.original_price = (d.original_price).toString();
+            this.form.price = (d.price).toString();
             this.form.short_description = d.short_description;
             this.form.unlock_type = d.unlock_type;
             this.form.state = d.state;
@@ -382,8 +379,8 @@ export default {
                 this.form.organization_id = this.organizationId;
                 this.form.url_arr = JSON.stringify(arrObj);
                 if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
-                this.form.price = Number(this.form.original_price).toFixed(2)
-                this.form.original_price = Number(this.form.price).toFixed(2)
+                this.form.price = Number(this.form.price).toFixed(2)
+                this.form.original_price = Number(this.form.original_price).toFixed(2)
                 if(this.payload)  this.update_production(this.form);
                 else this.add_production(this.form);
 

@@ -113,7 +113,7 @@
         },
         inputChange(val){
             this.search = val
-            this.getList()
+            this.initData()
         },
         handleClick(){
             console.log('open modal')

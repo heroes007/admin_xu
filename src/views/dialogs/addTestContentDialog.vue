@@ -77,6 +77,7 @@
   import { get_detail, get_test_detail_list, add_test_detail, update_test_detail, delete_test_detail } from '../../api/modules/tools_video_test'
   import { RemoveModal } from './mixins'
   import { MPop } from '../../components/MessagePop'
+  import postData from '../../api/postData'
 
   export default {
     mixins: [RemoveModal, MPop],
@@ -129,8 +130,8 @@
         })
         this.dataList = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr
         this.section_id = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].id
-        console.log(list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1], 'ididid')
-        console.log(list, this.payload.list_index,'list123')
+        // console.log(list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1], 'ididid')
+        // console.log(list, this.payload.list_index,'list123')
         if(this.payload.isEdit){
           this.formInline1.title = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].group_name
         }
@@ -342,57 +343,26 @@
           this.formInline2.title = this.formInline1.title;
           this.formInline2.select_count = +this.formInline2.select_count
           this.formInline2.curriculum_id = this.payload.curriculum_id
-          // console.log(this.formInline2,'this.formInline2',this.payload)
+
           if (this.formInline2.video_test_detail_id > 0) {
-            // update_test_detail(this.formInline2.video_test_detail_id, {...this.formInline2, ...{section_id:this.section_id}}).then(res => {
-            //   if (res.data.res_code === 1) {
-            //     for (var i = 0; i < this.dataList.length; i++) {
-            //       if (this.dataList[i].id === this.formInline2.video_test_detail_id) {
-            //         this.dataList[i].content = this.formInline2.content;
-            //         this.dataList[i].orderby = this.formInline2.orderby;
-            //         this.dataList[i].result = this.formInline2.result;
-            //         this.dataList[i].select_count = this.formInline2.select_count;
-            //         break;
-            //       }
-            //     }
-            //     this.cancelSaveHandler()
-            //     this.$Modal.info({
-            //       title: '提示',
-            //       content: '保存成功。'
-            //     });
-            //   }
-            // })
+            update_test_detail(this.formInline2).then(res => {
+              if (res.data.res_code === 1) {
+                this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
+                this.cancelSaveHandler()
+                this.$Modal.info({
+                  title: '提示',
+                  content: '保存成功。'
+                });
+              }
+            })
           } else {
             let formChapter
             if(this.dataList.length) formChapter = {...this.formInline2, ...{section_id:this.section_id}}
             else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby}}
             add_test_detail(formChapter).then(res => {
               if (res.data.res_code === 1) {
-                // this.dataList.push({
-                //   id: res.data.msg,
-                //   content: this.formInline2.content,
-                //   orderby: this.formInline2.orderby,
-                //   result: this.formInline2.result,
-                //   select_count: this.formInline2.select_count,
-                //   video_test_id: this.formInline1.video_test_id
-                // })
                 this.cancelSaveHandler()
                 this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
-                // var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
-                // if (Array.isArray(curriculumList) && curriculumList.length > 0) {
-                //   var curriculumId = this.payload.curriculum_online_id;
-                //   for (var i = 0; i < curriculumList.length; i++) {
-                //     if (curriculumList[i].curriculum_id == curriculumId) {
-                //       // curriculumList[i].children = []
-                //       // console.log(doSortFormatCatalogList(curriculumList[i].chapterList),'logggggggggg');
-                //       // return doSortFormatCatalogList(curriculumList[i].chapterList);
-                //     }
-                //   }
-                // }
-                // console.log(this.$store.state.online_curriculum.online_curriculum_list, 'qwe')
-
-                  // console.log(curriculumList[this.payload.list_index].children,'0.0.0.0');
-
                 this.$Modal.info({
                   title: '提示',
                   content: '添加成功。'
@@ -418,11 +388,14 @@
       }
     },
     mounted() {
+      console.log(this.payload, 'payload')
       if(this.payload.isEdit) {
-        console.log(this.payload,'payload1111')
         this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
+        postData('product/curriculum_online_catalog/get_video_test', {section_id: this.payload.section_id}).then(res => {
+          console.log(res, 'resresresres')
+        })
       }
-      console.log(this.payload,'payload')
+      // console.log(this.payload,'payload')
       this.$store.dispatch('get_role_list');
       this.formInline1.curriculum_id = this.payload.curriculum_id;
       this.formInline1.group_name = this.payload.group_name;

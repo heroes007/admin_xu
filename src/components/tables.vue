@@ -80,7 +80,7 @@
       }
     },
     methods: {
-      handleBtnShow(c,r,t){ 
+      handleBtnShow(c,r,t){
         return c.operation_btn_hide&&t[2] ? r.mark_state : true
       },
       radioChange(r, c) {
@@ -121,7 +121,6 @@
         this.$emit('table-swtich', row)
       },
       handleBtnText(t, r, c) {
-        console.log(t,r,c,'sdfga')
         // operation_state -- 处理 兑换码
         if (Array.isArray(t[0])) {
           if (c.operation_state && t[0][0] == '立即失效') return c.operation_state && r.state ? t[0][0] : c.operation_state && r.state === 0 ? t[0][1] : t[0]
