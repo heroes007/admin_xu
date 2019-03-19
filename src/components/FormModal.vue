@@ -55,13 +55,13 @@
                         <div class="form-message" ref="inputStyle" contentEditable="true" v-html="descriptionHtml"></div>
                         <div ref="divStyle" style="display: flex;margin-top: 15px;">
                             <Dropdown trigger="click" @on-click="handleDrop">
-                                <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
+                                <a href=" "><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
                                 <DropdownMenu slot="list">
                                     <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                             <Dropdown trigger="click" @on-click="handleDrop1">
-                                <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a>
+                                <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a >
                                 <DropdownMenu slot="list">
                                     <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
                                         <span class="drop-box" :style="{backgroundColor: item.color}"/>
@@ -76,7 +76,7 @@
                     </FormItem>
                 </div>
             </Form>
-            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p>
+            <p v-if="modalText" class="modal-text">* 获得九划后台所有操作权限</p >
             <div class="foot-btn">
                 <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
@@ -199,8 +199,8 @@
           if(this.formItem.upload) this.downList = this.formItem.upload
           else this.downList = []
           if(this.formItem.uploading) {
-            this.formItem.uploading.replace('form-message')
             this.descriptionHtml = this.formItem.uploading
+            this.descriptionHtml = this.descriptionHtml.replace('class="form-message"','')
           }
           else this.descriptionHtml = ''
           // else this.$refs.inputStyle[0].innerHTML = ''

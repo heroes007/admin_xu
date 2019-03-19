@@ -215,13 +215,17 @@
         //   });
         //   return;
         // }
+        this.form._fn =  () =>{
+          this.handleClose();
+          this.showPop('保存成功！', 1000);
+        }
+        let d = this.form.duration
+        this.form.duration = +(parseFloat(d)).toFixed(2)
         if (this.payload.video_id) {
-          console.log(this.form,'this.form')
-            this.form.curriculum_online_id = this.payload.curriculum_online_id
+          this.form.curriculum_online_id = this.payload.curriculum_online_id
           this.$store.dispatch('edit_online_curriculum_video', this.form);
           // this.handleRemoveModal(this.remove)
         } else {
-          this.form.duration = parseInt(this.form.duration*60)
           this.form.parent_id = this.payload.parent_id
           this.form.curriculum_online_id = this.payload.curriculum_online_id
           // this.form.parent_id = this.payload
@@ -256,16 +260,10 @@
       this.form.orderby = this.payload.orderby;
       if(this.payload.hasOwnProperty('video_edit')&&this.payload.video_edit){
        this.$nextTick(() => {
-          this.form = this.payload
+        this.form = this.payload
         this.video_edit = true
        })
       }
-      var vm = this;
-      this.form._fn = function () {
-        vm.handleClose();
-        vm.showPop('保存成功！', 1000);
-      }
-      console.log(this.payload,'payloadpayload');
       // if (this.payload.video_id) {
       //   get_detail(this.payload.video_id).then(res => {
       //     if (res.data.res_code === 1) {
@@ -287,7 +285,7 @@
   }
 </script>
 <style scoped lang="scss">
-   /deep/ .upload-panel .img img { width: 160px;height: 148px; }
+  /deep/ .upload-panel .img img { width: 160px;height: 148px; }
     .btns{
         display: flex;
         justify-content: center;

@@ -129,7 +129,11 @@
         })
         this.dataList = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].test_arr
         this.section_id = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].id
-        console.log(list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1]), 'ididid'
+        console.log(list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1], 'ididid')
+        console.log(list, this.payload.list_index,'list123')
+        if(this.payload.isEdit){
+          this.formInline1.title = list[this.payload.list_index].children[list[this.payload.list_index].children.length - 1].group_name
+        }
         // this.dataList = list
 
         //   if (Array.isArray(list)) {
@@ -358,7 +362,6 @@
             //     });
             //   }
             // })
-            console.log('ppp')
           } else {
             let formChapter
             if(this.dataList.length) formChapter = {...this.formInline2, ...{section_id:this.section_id}}
@@ -409,9 +412,16 @@
         this.setSelectCount(0);
         this.setSelectCount(4);
         this.formInline2.orderby = this.dataList.length > 0 ? this.dataList[this.dataList.length - 1].orderby + 1 : 1;
+      },
+      getList(){
+
       }
     },
     mounted() {
+      if(this.payload.isEdit) {
+        console.log(this.payload,'payload1111')
+        this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
+      }
       console.log(this.payload,'payload')
       this.$store.dispatch('get_role_list');
       this.formInline1.curriculum_id = this.payload.curriculum_id;

@@ -237,9 +237,21 @@
           ...item
         });
       },
-      editHandler(index, row) {
+      editHandler(i, row, index) {
+        console.log(i,row, index, 'row')
         if(row.type === 0) {
-          this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id})
+          this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id, curriculum_online_id: parseInt(this.$route.params.id)})
+        }else{
+          this.handleSelModal(ADD_QUESTION, {
+            curriculum_online_id: parseInt(this.$route.params.id),
+            curriculum_catalog_id: row.id,
+            group_name: row.group_name,
+            group_orderby: row.id,
+            orderby: row.orderby + 1,
+            curriculum_id: row.curriculum_id,
+            list_index: i,
+            isEdit: true
+          });
         }
         // if (row.type === 0) this.openModal(VIDEO_MANAGE, {y: 1111,...row}, 1)
         // else if (row.type === 1) this.openModal(ADD_QUESTION, row, 2)
@@ -358,12 +370,12 @@
           this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
           this.handleSelModal(ADD_QUESTION, {
+            curriculum_online_id: parseInt(this.$route.params.id),
             curriculum_catalog_id: item.id,
             group_name: item.group_name,
             group_orderby: item.id,
             orderby: item.orderby + 1,
             curriculum_id: item.curriculum_id,
-            curriculum_online_id: parseInt(this.$route.params.id),
             list_index: index
           });
         }
