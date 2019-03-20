@@ -1,7 +1,7 @@
 
 let setData = (type) =>{
-  const MECH = {name: '所属机构', title: 'role_id'}
-  const AUTH = {name: '管理权限', title: 'role_id'}
+  const MECH = {name: '所属机构', title: 'title'}
+  const AUTH = {name: '管理权限', title: 'role_name'}
   let d = type == 1 ? [MECH] : type == 2 ? [AUTH] : type == 3 ? [MECH,AUTH] : [{name: '科室', title: 'department_name'},{name: '年级', title: 'grade_name'}]
   return [
     {name: '用户ID', title: 'username'},

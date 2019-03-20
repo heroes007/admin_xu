@@ -97,7 +97,7 @@
             prop: 'title',
             label: '资料名称',
             align: 'left',
-            width: 400
+            width: 400,
           },
           // {
           //   prop: 'download_url',
@@ -108,6 +108,7 @@
             label: '绑定课程',
             prop: 'curriculum_title',
             width: 300,
+            align: 'left'
             // useCombo: true,
             // comboListIndex: 0,
             // listLabel: 'title',

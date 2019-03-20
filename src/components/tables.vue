@@ -143,6 +143,8 @@
         } else return t[0]
       },
       getArray(name, string) {
+        // console.log(string,'gg')
+        string.role_name = this.$config.status(string.role_id)
         let arr = [], str
         name.forEach((item, index) => {
           for (var x in string) {
@@ -150,7 +152,7 @@
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                 arr.push(`${item.name}: 九划医疗`)
               } else {
-                str = item.name + ':' + ' ' + string[x]
+                str = item.name + ':' + ' ' + (string[x] ? string[x] : '—')
                 arr.push(str)
               }
             }

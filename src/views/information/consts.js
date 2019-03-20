@@ -17,13 +17,15 @@ let d = [
   prop: 'title',
   label: '作业名称',
   // minWidth: 80
-  width:200
+  width:200,
+  align: 'left'
 },
 {
   prop: 'curriculum_title',
   label: '绑定课程',
   // minWidth: 80
-  width:100
+  width:100,
+  align: 'left'
 },
 {
   prop: 'course',

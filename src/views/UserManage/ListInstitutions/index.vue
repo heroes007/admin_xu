@@ -108,7 +108,9 @@
     },
     methods: {
         see(row,rowIndex){
-          console.log(row,'row')
+            // console.log(row,'rr')
+            // phone
+        //   if(!row.list.hasOwnProperty('phone')) this.tableRowData.phone 
           this.tableRowData = row;
           this.tableRowData.mechanismName = row.title
           this.detailShow = true;

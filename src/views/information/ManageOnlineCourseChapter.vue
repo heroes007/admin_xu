@@ -8,7 +8,7 @@
                         <div>
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                                 <div style="display: flex;align-items: center">
-                                    <span class="row-title">第{{index + 1}}章</span>
+                                    <span class="row-title">第{{setIndex(index + 1)}}章</span>
                                     <Input v-model="item.group_name" @on-change="editorNote(item, index)"
                                          @on-blur="outInput(index)" @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
                                 </div>
@@ -85,7 +85,7 @@
       },
       dataHeader() {
         return [
-          {label: '顺序', width: 90, sort: true},
+          {label: '顺序', width: 130, prop: 'node_number'},
           {prop: 'group_name', label: '小节名称', align: 'left'},
           // {
           //   prop: '',
@@ -145,13 +145,15 @@
           var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
         if (Array.isArray(curriculumList) && curriculumList.length > 0) {
           var curriculumId = this.$route.params.id;
-          for (var i = 0; i < curriculumList.length; i++) {
-            if (curriculumList[i].curriculum_id == curriculumId) {
-              // curriculumList[i].children = []
-                // return doSortFormatCatalogList(curriculumList[i].chapterList);
+          curriculumList.map((t,i) => {
+            if(t.children&&t.children.length>0){
+              t.children.map((m,k) => {
+               m.node_number = '第'+this.setIndex(k+1)+'节'
+              })
             }
-          }
+          })
         }
+        console.log(curriculumList);
         return curriculumList || [];
       },
       curriculumList() {
@@ -185,6 +187,9 @@
     methods: {
       saveChapter2(t,i){
 
+      },
+      setIndex(n){
+        return this.$config.ArabiaToSimplifiedChinese(n)
       },
       saveChapter(t,i){
         let d = {}

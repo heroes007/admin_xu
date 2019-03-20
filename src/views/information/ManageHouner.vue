@@ -19,7 +19,7 @@
                         <div><a @click="unrelation(item)" v-if="item.state">取消关联</a><a @click="relation(item)" v-else>关联</a></div>
                         <div class="ml10"><a @click="hadleChange(item)">编辑</a></div>
                         <!-- <div v-if="item == 2" class="ml10"><a>统计</a></div> -->
-                        <div v-if="role.role_id !=4" class="ml10"><a @click="sendOfflineCourseHandler()">发证</a></div>
+                        <div v-if="role.role_id !=4&&item.state" class="ml10"><a @click="sendOfflineCourseHandler(item)">发证</a></div>
                     </Row>
                 </div>
             </Card>
@@ -91,7 +91,7 @@
       hadleChange(row) {
         this.handleSelModal(types.ADD_HOUNER, {type: 2,row})
       },
-      sendOfflineCourseHandler(index, row) {
+      sendOfflineCourseHandler(row) {
         this.handleSelModal(types.SEND_HOUNER, {row: row});
       },
       handleJump() {
