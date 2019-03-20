@@ -32,7 +32,8 @@
                    <FormItem  label="上传附件" v-else>
                        <div style="display:flex">
                            <p style="text-align:left">{{this.form.url_name}}</p>
-                           <Button style="margin:0 auto" type="error" @click="delUrl">删除</Button>
+                           <!--<Button style="margin:0 auto" type="error" @click="delUrl">删除</Button>-->
+                           <Icon style="margin-left:60px;" size="24" color="#ff5c33" type="ios-trash-outline"  @click="delUrl"/>
                        </div>
                    </FormItem>
                     <FormItem class="btn-content" :label-width='0'>

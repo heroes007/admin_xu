@@ -87,12 +87,13 @@
                     {
                         type: 'select',
                         name: '作业类型',
+                        disable: false,
                         field: 'jurisdiction',
                         selectList: [{id: 'online', name: '线上作业'}, {id: 'underline', name: '线下作业'}],
                         selectField: ['id', 'name']
                     },
                     {
-                        type: 'select', name: '绑定课程', field: 'binding_course',
+                        type: 'select', name: '绑定课程', field: 'binding_course', disable: false,
                         selectList: [], selectField: ['id', 'title']
                     },
                     {type: 'upload', name: '作业描述', field: 'uploading'}
@@ -194,6 +195,8 @@
             addTaskCategory() {
                 this.tableRow = {}
                 this.show = true
+                this.formList[1].disable = false
+                this.formList[2].disable = false
                 this.modalTitle = "添加作业"
                 let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
                 this.$store.dispatch('get_curriculumlist_list', {product_id: v})
@@ -235,6 +238,8 @@
             },
             editHandler(index, row) {
                 this.show = true;
+                this.formList[1].disable = true
+                this.formList[2].disable = true
                 this.modalTitle = '编辑作业';
                 let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
                 this.$store.dispatch('get_curriculumlist_list', {product_id: v})
@@ -244,7 +249,7 @@
                 this.tableRow.jurisdiction = row.type
                 this.tableRow.binding_course = row.curriculum_id
                 this.tableRow.upload = row.attachment_url ? JSON.parse(row.attachment_url) : row.attachment_url
-                this.$store.dispatch("change_homework_id", row.id)
+                    this.$store.dispatch("change_homework_id", row.id)
               // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
             },
             deleteHandler(index, row) {

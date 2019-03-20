@@ -3,7 +3,7 @@ export default {
     return {
       current: 1,
       total: null,
-      pageSize: 12
+      pageSize: 16
     }
   },
   methods: {

@@ -1,8 +1,8 @@
 <template>
    <div>
         <screen :types="9"  @handleBack="handleBack" :title="screenTitle"/>
-        <screen :types="1" size-title1="提交作业人数" :size-num1=total btn-name="上传批阅" :select1="selectList"
-                    @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :types="11" size-title1="提交作业人数" :size-num1="total" btn-name="上传批阅" :select2="selectList" :select-type2="true"
+                    @selectChange2="selectChange1"  @inputChange="inputChange" @handleClick="handleClick" />
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
@@ -25,7 +25,10 @@
     components: { Tables, screen, pageList },
     data (){
         return{
-            selectList: [],
+            selectList: [
+              {title: '未批阅', id:'0'},
+              {title: '已批阅', id:'1'},
+            ],
             screenTitle: '',
             search: '',
             count: null,
@@ -98,7 +101,7 @@
     },
     methods: {
         selectChange1(val){
-        console.log(val)
+
         },
         see(row,rowIndex){
             // console.log(row,rowIndex,'see');
@@ -138,14 +141,14 @@
                 item.isState = item.mark_state == 1 ? '已批阅' : '未批阅'
               })
                 this.list = res.data.data
-                this.total = res.data.total
+                this.total = res.data.count
             })
         }
     },
     mounted() {
         this.handleList()
         if(localStorage.getItem('MarkingHomework')){
-            this.screenTitle = JSON.parse(localStorage.getItem('MarkingHomework')).name
+            this.screenTitle = JSON.parse(localStorage.getItem('MarkingHomework')).title
         }
         // get_read_over().then(res=>{
         //     console.log(res);
@@ -158,4 +161,9 @@
 </script>
 
 <style scoped>
+    /deep/ .all-size{
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
 </style>

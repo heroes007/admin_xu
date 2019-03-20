@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table :columns="columns" :data="datas">
+        <Table :columns="columns" :data="datas" >
             <template slot-scope="{ column, row, index }" slot="operation">
                 <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
                     <span slot="open">启用</span>

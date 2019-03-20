@@ -37,7 +37,7 @@
                         </Select>
                     </FormItem>
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
-                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
@@ -215,6 +215,7 @@
             this.formItem.password = this.formItem.password.slice(0,6)
           }
           this.copyFormItem = this.$config.copy(this.formItem,{});
+          if(!_new) this.$refs.formValidate.resetFields()
         })
       },
       detailData(_new){
@@ -222,7 +223,7 @@
       },
       formList(_new){
         this.formList = _new
-      }
+      },
     },
     methods: {
       handleDateType(t){

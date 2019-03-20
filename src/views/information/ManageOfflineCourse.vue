@@ -4,9 +4,10 @@
         <LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>
         <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
         <screen :btn-type="true" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
-        <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler' @childBtnClick='childBtnClickHandler'
-                   @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester' @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList'
-                   @add-off-line-courses="addOffLineCourses" :header-data='dataHeader' :is-stripe='false'></data-list>
+        <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
+                   @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
+                   @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList' @add-off-line-courses="addOffLineCourses"
+                   :header-data='dataHeader' :is-stripe='false'></data-list>
          <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
@@ -183,6 +184,11 @@
               label: '类型',
               width: 100
             },
+              {
+                prop: 'teacher_name',
+                label: '讲师',
+                width: 100
+              },
              {
               prop: 'start_time',
               label: '开课时间',
@@ -192,11 +198,6 @@
               prop: 'end_time',
               label: '结课时间',
               width: 150
-            },
-             {
-              prop: 'teacher_name',
-              label: '导师',
-              width: 100
             },
              {
               label: '操作',

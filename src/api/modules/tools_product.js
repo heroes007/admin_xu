@@ -131,3 +131,13 @@ export function set_pre_curriculums(product_id, curriculum_id, pre_curriculum_id
 export function delete_curriculum(product_id, curriculum_id) {
   return api.post('/api/tools_product/delete_curriculum', {product_id: product_id, curriculum_id: curriculum_id});
 }
+
+export function get_project_list(data) {
+  return api.post('product/product/get_list', {
+    organization_id: data.organization_id,
+    state: data.state,
+    search: data.search,
+    page_size: data.page_size,
+    page_num: data.page_num,
+  })
+}

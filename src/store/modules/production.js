@@ -13,12 +13,14 @@ import {
   delete_certificate,
   add_certificate,
   edit_certificate,
+  get_project_list
 } from '../../api/modules/tools_product'
 
 
 const state = {
   certificate_list: [],
   production_list: [],
+  production_data_list: [],
   total: 0,
   isLoading: false,
   pre_curriculum_change_guard: null,
@@ -31,6 +33,12 @@ const state = {
 
 // actions
 const actions = {
+  get_production_data_list ({commit}, param) {
+    get_project_list(param).then(res => {
+      console.log(res, 'resresresres')
+    })
+  },
+
   get_production_list({commit}, param) {
     commit(types.PRODUCTION_SHOW_LOADING);
     get_list(param).then(res => {

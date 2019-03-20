@@ -18,12 +18,12 @@
                     <!--&lt;!&ndash;<Button @click="handleEditTest" class="edit-test-btn" v-if='isEdit'>编辑测验</Button>&ndash;&gt;-->
                     <!--&lt;!&ndash;</FormItem>&ndash;&gt;-->
                 <!--</Form>-->
-                <Form :inline="true" :model="formInline2" class="row2-test-form" :rules="rulesList" >
+                <Form :inline="true" :model="formInline2" class="row2-test-form" :rules="rulesList" ref="formValidate">
                     <FormItem label="测验名称" class="form-title" prop="title">
                         <Input class="formInput" v-model="formInline2.title" placeholder="请输入测验的名称"
                                :disabled='isEdit'></Input>
                     </FormItem>
-                    <FormItem label="题干名称" prop="name">
+                    <FormItem label="题干名称" prop="body">
                         <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body"
                                class="input-text"></Input>
                         <div class="route-link" ref="formInput">
@@ -36,7 +36,7 @@
                             <uploadBtn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
                         </div>
                     </FormItem>
-                    <FormItem label="选项数量" prop="select">
+                    <FormItem label="选项数量" prop="select_count">
                         <Select v-model="formInline2.select_count" placeholder="选项数量" style="width: 260px;">
                             <Option label="2" value="2"></Option>
                             <Option label="3" value="3"></Option>
@@ -48,7 +48,7 @@
                     <!--<FormItem label="排列序号">-->
                     <!--<InputNumber v-model="formInline2.orderby" :min="1"></InputNumber>-->
                     <!--</FormItem>-->
-                    <FormItem v-for='(item, index) in answerList' :key="item.id" prop="result">
+                    <FormItem v-for='(item, index) in answerList' :key="item.id" prop="desc">
                         <div class="answer">
                             <div class="answer-title"><span v-if="index == 0">选项结果</span></div>
                             <Checkbox class="answer-checkbox" v-model="item.answer">{{item.name}}</Checkbox>
@@ -58,7 +58,10 @@
                     <!-- <span style="clear: left"></span> -->
                     <FormItem class="save-test-item">
                         <!--<Button @click="cancelSaveHandler" class="cancel-test-item-btn">取消</Button>-->
-                        <Button type="primary" @click="saveTestDetailHandler" class="save-test-item-btn">保存</Button>
+                        <div class="save-btn">
+                            <Button type="primary" @click="saveTestDetailHandler" class="save-test-item-btn">保存</Button>
+                            <Button  @click="clearDetail" class="clear-btn" >清空</Button>
+                        </div>
                     </FormItem>
                     <Row class="quetion-list">
                         <data-list @edit='editHandler' @delete='deleteHandler' class='data-list light-header'
@@ -141,12 +144,12 @@
           title: [
             { required: true, message: '请输入测验名称',  trigger: 'blur' }
           ],
-          name: [
+          body: [
             { required: true, message: '请输入题干名称',  trigger: 'blur' }
           ],
-          select: [
-            { required: true, message: '请设置选项',  trigger: 'blur' }
-          ]
+          select_count: [
+            { required: true, message: '请设置选项数量',  trigger: 'blur' }
+          ],
         }
       }
     },
@@ -161,11 +164,11 @@
               break;
             }
           }
-          console.log(detail, 'detail')
           var detailData = JSON.parse(detail.content);
           this.formInline2.body = detailData.body;
           this.formInline2.attachment = detail.attachment
-          this.setSelectCount(detail.select_count);
+          this.formInline2.select_count = detail.select_count.toString()
+          // this.setSelectCount(detail.select_count);
           this.formInline2.orderby = detail.orderby;
           for (i = 0; i < detailData.answerList.length; i++) {
             this.formInline2.answerList[i].answer = detailData.answerList[i].answer;
@@ -252,7 +255,7 @@
         this.formInline2.attachment.push(val)
       },
       handleModel(item) {
-        if (item.name.split('.')[item.name.split('.').length - 1] == 'jpg' || item.name.split('.')[item.name.split('.').length - 1] == 'png') {
+        if (item.name.split('.')[item.name.split('.').length - 1] == 'jpg' || item.name.split('.')[item.name.split('.').length - 1] == 'png' || item.name.split('.')[item.name.split('.').length - 1] == 'jpeg') {
           this.accessoryImg = item.url
         } else {
           this.accessoryVideo = item.url
@@ -318,68 +321,70 @@
         this.clearDetail();
       },
       saveTestDetailHandler() {
-        this.formInline2.result = [];
-        for (var i = 0; i < this.formInline2.answerList.length; i++) {
-          if (this.formInline2.answerList[i].answer) {
-            this.formInline2.result.push(i);
-          }
-        }
-        this.formInline2.result = JSON.stringify(this.formInline2.result);
-        this.formInline2.content = JSON.stringify({
-          body: this.formInline2.body,
-          answerList: this.formInline2.answerList
-        });
-        this.formInline2.attachment = JSON.stringify(this.formInline2.attachment)
-        this.formInline2.test_title = this.formInline2.body
-        this.formInline2.curriculum_catalog_id = this.payload.curriculum_catalog_id
-        // this.formInline2.title = this.formInline1.title;
-        this.formInline2.select_count = +this.formInline2.select_count
-        this.formInline2.curriculum_online_id = this.payload.curriculum_online_id
+        this.$refs.formValidate.validate((valid) => {
+          if(valid){
+            console.log(123);
+            this.formInline2.result = [];
+            for (var i = 0; i < this.formInline2.answerList.length; i++) {
+              if (this.formInline2.answerList[i].answer) {
+                this.formInline2.result.push(i);
+              }
+            }
+            this.formInline2.result = JSON.stringify(this.formInline2.result);
+            this.formInline2.content = JSON.stringify({
+              body: this.formInline2.body,
+              answerList: this.formInline2.answerList
+            });
+            this.formInline2.attachment = JSON.stringify(this.formInline2.attachment)
+            this.formInline2.test_title = this.formInline2.body
+            this.formInline2.curriculum_catalog_id = this.payload.curriculum_catalog_id
+            // this.formInline2.title = this.formInline1.title;
+            this.formInline2.select_count = +this.formInline2.select_count
+            this.formInline2.curriculum_online_id = this.payload.curriculum_online_id
 
-        if (this.formInline2.video_test_detail_id > 0) {
-          update_test_detail({...this.formInline2, ...{section_id: this.section_id},}).then(res => {
-            if (res.data.res_code === 1) {
-              postData('product/curriculum_online_catalog/get_video_test', {section_id: this.section_id}).then(res => {
-                console.log(res, 'qqqqq')
-                if(res.res_code == 1){
-                  res.data.forEach(item => {
-                    item.attachment = JSON.parse(item.attachment)
+            if (this.formInline2.video_test_detail_id > 0) {
+              update_test_detail({...this.formInline2, ...{section_id: this.section_id},}).then(res => {
+                if (res.data.res_code === 1) {
+                  postData('product/curriculum_online_catalog/get_video_test', {section_id: this.section_id}).then(res => {
+                    console.log(res, 'qqqqq')
+                    if(res.res_code == 1){
+                      res.data.forEach(item => {
+                        item.attachment = JSON.parse(item.attachment)
+                      })
+                      this.dataList = res.data
+                      this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
+                    }
                   })
-                  this.dataList = res.data
-                  this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
+                  this.cancelSaveHandler()
+                  this.$Modal.info({
+                    title: '提示',
+                    content: '保存成功。'
+                  });
                 }
               })
-              this.cancelSaveHandler()
-              this.$Modal.info({
-                title: '提示',
-                content: '保存成功。'
-              });
-            }
-          })
-        } else {
-          let formChapter
-          this.formInline2.curriculum_id = this.payload.curriculum_online_id
-          if (this.section_id) formChapter = {...this.formInline2, ...{section_id: this.section_id}}
-          else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby}}
-          add_test_detail(formChapter).then(res => {
-            if (res.data.res_code === 1) {
-              if (res.data.data.section_id) this.section_id = res.data.data.section_id
-              this.cancelSaveHandler()
-              this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
-              postData('product/curriculum_online_catalog/get_video_test', {section_id: this.section_id}).then(res => {
-                this.dataList = res.data
+            } else {
+              let formChapter
+              this.formInline2.curriculum_id = this.payload.curriculum_online_id
+              if (this.section_id) formChapter = {...this.formInline2, ...{section_id: this.section_id}}
+              else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby}}
+              add_test_detail(formChapter).then(res => {
+                if (res.data.res_code === 1) {
+                  if (res.data.data.section_id) this.section_id = res.data.data.section_id
+                  this.cancelSaveHandler()
+                  this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: this.payload.curriculum_online_id})
+                  postData('product/curriculum_online_catalog/get_video_test', {section_id: this.section_id}).then(res => {
+                    this.dataList = res.data
+                  })
+                  this.$Modal.info({
+                    title: '提示',
+                    content: '添加成功。'
+                  });
+                }
               })
-              this.$Modal.info({
-                title: '提示',
-                content: '添加成功。'
-              });
             }
-          })
-        }
-        // this.cancelSaveHandler()
-        // })
-
-        // }
+            this.cancelSaveHandler()
+          }
+        })
       },
       clearDetail() {
         this.formInline2.video_test_detail_id = 0;
@@ -541,5 +546,13 @@
 
     .maxw {
         max-width: 100%;
+    }
+
+    .save-btn{
+        display: flex;
+
+        .clear-btn{
+            margin-left: 40px;
+        }
     }
 </style>

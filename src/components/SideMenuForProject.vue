@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="head-btn">
-                <Button type="default" @click="edit" ghost class="btn-content" style="top: 10%;">编辑</Button>
-                <Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>
-                <Button type="default" ghost class="btn-content" style="top: 50%;" @click="handleDelete">注销</Button>
+                <Button type="default" @click="edit" ghost class="btn-content" style="top: 20%;">编辑</Button>
+                <!--<Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>-->
+                <Button type="default" ghost class="btn-content" style="top: 40%;" @click="handleDelete">注销</Button>
             </div>
         </div>
     </div>
