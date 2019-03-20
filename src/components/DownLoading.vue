@@ -45,6 +45,7 @@
         height: 40px;
         width: 350px;
         margin: 10px;
+        background-color: #fff;
     }
     .content-title{
         display: inline-block;
@@ -53,9 +54,10 @@
         color: #474C63;
         letter-spacing: 0;
         margin-left: 15px;
-        width: 260px;
+        width: 250px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        text-align: left;
     }
 </style>

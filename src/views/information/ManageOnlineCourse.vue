@@ -194,7 +194,8 @@
         this.$router.push({
           name: 'online-course-chapter',
           params: {
-            id: this.dataList[index].id
+            id: this.dataList[index].id,
+            title: this.dataList[index].title
           }
         });
       },

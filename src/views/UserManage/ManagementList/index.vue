@@ -48,10 +48,11 @@
             },{
                 title: '真实姓名',
                 key: 'realname',
-            },{
-                title: '性别',
-                slot: 'sex',
             },
+            //   {
+            //     title: '性别',
+            //     slot: 'sex',
+            // },
             {
                 title: '手机号',
                 key: 'phone',

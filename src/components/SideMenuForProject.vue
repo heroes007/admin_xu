@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="head-btn">
-                <Button type="default" @click="edit" ghost class="btn-content" style="top: 10%;">编辑</Button>
-                <Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>
-                <Button type="default" ghost class="btn-content" style="top: 50%;" @click="handleDelete">注销</Button>
+                <Button type="default" @click="edit" ghost class="btn-content" style="top: 20%;">编辑</Button>
+                <!--<Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>-->
+                <Button type="default" ghost class="btn-content" style="top: 40%;" @click="handleDelete">注销</Button>
             </div>
         </div>
     </div>
@@ -87,7 +87,6 @@
           title: '提示',
           content: '注销后将永久删除，确认是否注销',
           onOk: () => {
-            console.log(this.detail)
             postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
               if(res.res_code == 1) {
                 this.$Message.info('删除产品');

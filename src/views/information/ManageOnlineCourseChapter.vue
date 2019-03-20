@@ -13,10 +13,11 @@
                                          @on-blur="outInput(index)" @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
                                 </div>
                                 <div style="margin-right: 25px;">
-                                    <Button type='text' @click="addVideo(item)">添加视频</Button>
-                                    <Button type='text' @click="addTest(item, index)">添加测验</Button>
                                     <Button v-if='showListState[index] == 0' type="text"  @click="toggleListShow(index,item)">展开</Button>
                                     <Button v-else-if='showListState[index] == 1' type="text"  @click="toggleListShow(index)">收起</Button>
+                                    <Button type='text' @click="addVideo(item)">添加视频</Button>
+                                    <Button type='text' @click="addTest(item, index)">添加测验</Button>
+                                    <Button type="text" @click="deleteText(item, index)">删除</Button>
                                 </div>
                             </Row>
                         </div>
@@ -52,6 +53,7 @@
   import screen from '../../components/ScreenFrame'
   import BaseList from '../../components/BaseList'
   import SaveOrder from '../../components/SaveOrder'
+  import postData from '../../api/postData'
   import {doTimeFormat} from '../../components/Util'
   import {Dialog} from '../dialogs'
   import {VIDEO_MANAGE, ADD_QUESTION} from '../dialogs/types'
@@ -74,7 +76,7 @@
         isInited: false,
         isChapterInited: false,
         curriculumItem: {},
-        screenTitle: '这是一个作业名称',
+        screenTitle: '',
       }
     },
     computed: {
@@ -83,10 +85,8 @@
       },
       dataHeader() {
         return [
-          {label: '排序', width: 90, sort: true},
-          {
-            prop: 'group_name', label: '小节名称'
-          },
+          {label: '顺序', width: 90, sort: true},
+          {prop: 'group_name', label: '小节名称', align: 'left'},
           // {
           //   prop: '',
           //   label: '观看权限',
@@ -104,9 +104,9 @@
           //     return roles;
           //   })
           // },
-          {prop: 'create_time', label: '创建时间', width: 200},
+          // {prop: 'create_time', label: '创建时间', width: 200},
           {
-            label: '操作', width: 350, groupBtn: [
+            label: '操作', width: 450, groupBtn: [
               {text: '编辑', param: 'edit'},
               {text: '上移', param: 'moveUp' },
               {text: '下移', param: 'moveDown' },
@@ -293,6 +293,7 @@
         this.$router.replace({name: 'open-product'});
       },
       initChapter() {
+        this.screenTitle = this.$route.params.title
         this.newChapterData.showAddChapter = false;
         this.dirty = false;
         this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: parseInt(this.$route.params.id)})
@@ -357,6 +358,15 @@
           });
         }
       },
+      //删除测验
+      deleteText(item, index){
+        console.log(item,index, 'item')
+        postData('product/curriculum_online_catalog/delete', {curriculum_catalog_id: item.id}).then(res => {
+          if(res.res_code == 1){
+            this.getLists()
+          }
+        })
+      },
       editHandler(i, row) {
         if(row.type === 0) {
           this.handleSelModal(VIDEO_MANAGE,{...row,video_edit: true,curriculum_catalog_id: row.id, curriculum_online_id: parseInt(this.$route.params.id)})
@@ -378,6 +388,9 @@
 
 </script>
 <style scoped lang='scss'>
+    /deep/ .ivu-table-header{
+        display: none;
+    }
     /deep/ .ivu-input {
         border: none;
         background-color: #FBFBFB;

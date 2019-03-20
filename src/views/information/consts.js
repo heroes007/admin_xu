@@ -51,10 +51,10 @@ let d = [
     width: 250,
     align:"center",
     groupBtn: [
-      {
-        text: '统计',
-        param: 'statistics'
-      },
+      // {
+      //   text: '统计',
+      //   param: 'statistics'
+      // },
       {
         text: '批阅',
         param: 'marking'
