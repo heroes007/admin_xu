@@ -146,12 +146,13 @@
         } else return t[0]
       },
       getArray(name, string) {
+        console.log(string,'string')
         let arr = [], str
         name.forEach((item, index) => {
           for (var x in string) {
             if (x == item.title) {
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
-                arr.push(`${item.name}: 九划医疗`)
+                arr.push(`${item.name}: ${string.realname}`)
               } else {
                 str = item.name + ':' + ' ' + string[x]
                 arr.push(str)

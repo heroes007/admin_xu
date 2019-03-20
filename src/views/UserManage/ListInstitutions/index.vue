@@ -108,7 +108,7 @@
     },
     methods: {
         see(row,rowIndex){
-          console.log(row,'row')
+          // console.log(row,'row')
           this.tableRowData = row;
           this.tableRowData.mechanismName = row.title
           this.detailShow = true;

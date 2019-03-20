@@ -73,3 +73,7 @@ export function new_version_unlock_curriculum_video_test(to_user_id,curriculum_i
         curriculum_id:curriculum_id,
         product_id:product_id});
 }
+
+export function change_curriculum_list(id, direction) {
+    return api.post('product/curriculum_online_catalog/move', {catalog_id: id, direction})
+}

@@ -73,7 +73,7 @@
                          v-if='btn.showFunc?btn.showFunc(row):true'>
                         <Button :type="btn.canDisabled?'text':'text'"
                                 :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
-                                @click="handleBtnClick(index,row,btn.param)"
+                                @click="handleBtnClick(index,row,btn.param,orderNum)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
                                 :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
                             <Icon class="btn-icon" :type='btn.text' v-if='btn.isIcon'/>
@@ -156,6 +156,9 @@
         type: Number,
         default: 1
       },
+      orderNum: {
+        type: Number
+      }
     },
     created() {
       this.handleHeaderData()
@@ -404,10 +407,11 @@
       childBtnClickHandler(param, index, parentData) {
         this.$emit('childBtnClick', param, index, parentData);
       },
-      handleBtnClick(index, row, param) {
+      handleBtnClick(index, row, param, i) {
         if (this.parentData) this.$emit('childBtnClick', param, index, this.parentData);
         else {
-          this.$emit(param, index, row);
+          if(param == 'moveUp' || 'moveDown') this.$emit(param, index, row, i);
+          else this.$emit(param, index, row);
         }
       },
       formatter(row, propname) {

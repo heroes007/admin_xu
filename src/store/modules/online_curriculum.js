@@ -5,7 +5,8 @@ import {
     set_curriculum_orderby,
     add_curriculum,
     delete_curriculum,
-    update_curriculum
+    update_curriculum,
+    change_curriculum_list
 } from '../../api/modules/tools_curriculum'
 import {get_catalog, set_catalog_orderby, delete_catalog} from '../../api/modules/tools_curriculum_catalog'
 import {add_video, update_video, select_add_video} from '../../api/modules/tools_video'
@@ -34,6 +35,13 @@ const actions = {
                 commit(types.ONLINE_CURRICULUM_PAGE_LOADED, res.data.data);
             }
         });
+    },
+    change_online_curriculum_list({commit}, param) {
+      change_curriculum_list(param.id, param.direction).then(res => {
+          if(res.data.res_code == 1) {
+              commit(types.CHANGE_CURRICULUM_LIST, param)
+          }
+      })
     },
     get_online_curriculum_chapter_list({commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_LOADING);
@@ -455,6 +463,10 @@ const mutations = {
             }
         }
         state.showChapterLoading = false;
+    },
+    [types.CHANGE_CURRICULUM_LIST](state, params) {
+        if(params.direction) state.online_curriculum_list[params.index].children[params.i + 1] = state.online_curriculum_list[params.index].children.splice(params.i, 1, state.online_curriculum_list[params.index].children[params.i + 1])[0]
+        else state.online_curriculum_list[params.index].children[params.i - 1] = state.online_curriculum_list[params.index].children.splice(params.i, 1, state.online_curriculum_list[params.index].children[params.i - 1])[0]
     }
 }
 

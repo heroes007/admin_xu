@@ -112,12 +112,12 @@ export const MenuList = [
   {
     name: 'user-manage',
     title: '用户管理',
-    icon:'md-person',
+    icon:'logo-octocat',
   },
   {
     name: 'product-manage',
     title: '培训管理',
-    icon:'md-easel',
+    icon:'md-school',
   },
   {
     name: 'exchange-code',
@@ -127,16 +127,16 @@ export const MenuList = [
   {
     name: 'system-manage',
     title: '平台管理',
-    icon: 'ios-settings',
+    icon: 'md-planet',
     list: [
     {
       name: 'advertising-map',
       title: '广告图'
-    }, 
+    },
     // {
     //   name: 'manage-news',
     //   title: '行业资讯'
-    // }, 
+    // },
     // {
     //   name: 'notification-chat',
     //   badge: true,

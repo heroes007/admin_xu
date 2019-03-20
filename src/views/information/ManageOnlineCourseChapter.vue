@@ -22,7 +22,7 @@
                             </Row>
                         </div>
                         <data-list @edit='editHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler'
-                                   @delete='deleteHandler' class='data-list light-header'
+                                   @delete='deleteHandler' class='data-list light-header' :order-num="index"
                                    :table-data='item.children' :header-data='dataHeader' :is-stripe='false'
                                     v-if='showListState[index] == 1 && item.hasOwnProperty("children") && item.children.length > 0'></data-list>
                     </div>
@@ -243,14 +243,28 @@
           group_orderby: row.group_orderby
         });
       },
-      moveUpHandler(index, row) {
-        this.moveHandler(row, 0)
+      moveUpHandler(i, row, index) {
+        console.log(index, 'index');
+        if(i == 0){
+          this.$Modal.info({
+            title: '提示',
+            content: '无法上移'
+          });
+        }else{
+          this.$store.dispatch('change_online_curriculum_list', {id: row.id, i, direction: 0, index})
+        }
       },
-      moveDownHandler(index, row) {
-        this.moveHandler(row, 1)
+      moveDownHandler(i, row, index) {
+        if(i == this.chapterList[index].children.length){
+          this.$Modal.info({
+            title: '提示',
+            content: '无法下移'
+          });
+        }else{
+          this.$store.dispatch('change_online_curriculum_list', {id: row.id, i, direction: 1, index})
+        }
       },
       deleteHandler(index, row) {
-        console.log(row, 'row');
         if (this.dirty) {
           this.$Modal.confirm({
             title: '提示',
