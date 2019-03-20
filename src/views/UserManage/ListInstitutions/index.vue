@@ -7,7 +7,7 @@
 
         <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick" />
 
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" 
+        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list"
        see-url='user/getDeptDetail'  :select-list="institution"/>
 
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -20,8 +20,8 @@
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
   import details from './const'
-  import seeMixin from '../seeMixin'
-  import FormModalMixin from '../FormModalMixin'
+  import seeMixin from '../Mixins/seeMixin'
+  import FormModalMixin from '../Mixins/FormModalMixin'
   import jurisdictionList from '../jurisdictionList'
   import postData from 'src/api/postData'
   import { mapState } from 'vuex'

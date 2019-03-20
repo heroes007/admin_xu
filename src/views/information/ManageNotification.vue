@@ -49,7 +49,7 @@
     import { send_by_project_id } from '../../api/modules/tools_sys_msg'
     import defaultHeader from '../../assets/img/side-menu/default-header.jpg'
     import FormModal from '../../components/FormModal'
-    import FormModalMixin from '../UserManage/FormModalMixin'
+    import FormModalMixin from '../UserManage/Mixins/FormModalMixin'
     // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
     import screen from '../../components/ScreenFrame'
     export default {
@@ -125,11 +125,11 @@
                     {
                         text: '发送',
                         param: 'send'
-                    }, 
+                    },
                      {
                         text: '编辑',
                         param: 'edit'
-                    }, 
+                    },
                     {
                         text: '删除',
                         param: 'delete'

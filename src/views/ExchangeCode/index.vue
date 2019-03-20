@@ -13,7 +13,7 @@
   import FormModal from '../../components/FormModal.vue'
   import screen from '../../components/ScreenFrame'
   import { mapState } from 'vuex'
-  import FormModalMixin from '../UserManage/FormModalMixin'
+  import FormModalMixin from '../UserManage/Mixins/FormModalMixin'
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen },

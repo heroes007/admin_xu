@@ -347,13 +347,13 @@
           this.handleSelModal(ADD_QUESTION, {
             curriculum_online_id: parseInt(this.$route.params.id),
             curriculum_data: item,
-            group_name: item.group_name,
+            group_orderby: item.id,
             section_id: '',
             // curriculum_catalog_id: item.id,
-            // group_orderby: item.id,
-            // orderby: item.orderby + 1,
             // curriculum_id: item.curriculum_id,
+            // orderby: item.orderby + 1,
             // list_index: index,
+            // group_name: item.group_name,
           });
         }
       },
