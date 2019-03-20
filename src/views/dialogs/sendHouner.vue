@@ -2,17 +2,14 @@
     <Modal title="颁发证书" :transfer=false :width=700 :show-close="false" v-model="sendOfflineCourse"
            @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
-            <Row slot="header" class='search-bar' type='flex' justify='center' align='middle'>
-                <Input placeholder="请输入用户名" v-model="searchData">
-                    <Select v-model="searchType" slot="prepend" placeholder="请选择">
-                        <!-- <Option label="ID" value="id"></Option> -->
-                        <Option label="昵称" value="nickname"></Option>.
-                        <Option label="手机号" value="phone"></Option>
-                    </Select>
-                    <Button slot="append" type='text' @click='searchStudent'>搜索</Button>
-                </Input>
+            <Row  slot="header" class='search-bar' type='flex' align='middle'>
+                <Select v-model="searchType" placeholder="请选择" style="width: 165px;margin-left: 20px;">
+                    <Option label="已完成培训" value="nickname"></Option>.
+                    <Option label="未完成培训" value="phone"></Option>
+                </Select>
+                <Input placeholder="请输入用户名" v-model="searchData"> </Input>
             </Row>
-            <Row slot="body">
+           <Row slot="body">
                 <Table class="table" ref="table" :data="queryOfflineUserList" @on-select-all="handleSelectedAll"
                        :columns="courseColumns" style="width: 100%" @on-selection-change="handleSelectionChange">
                 </Table>
@@ -198,6 +195,19 @@
   }
 </script>
 <style lang="scss" scoped>
+    /deep/ .ivu-input-wrapper{
+      margin-left: 15px;
+    }
+    /deep/ .ivu-input{
+       border-radius: 18px !important
+    }
+    /deep/ .ivu-select-selection{
+        border-radius: 18px
+    }
+    .search-bar{
+      height: 60px;
+      background: #F0F0F7;
+    }
     /deep/ th, /deep/ .ivu-table-cell > span {
         font-size: 14px !important
     }
@@ -217,8 +227,13 @@
         outline: none;
         color: #fff;
     }
-    /deep/ .ivu-input-group-prepend {
-        width: 20%
+    /deep/.ivu-select {
+       width: 160px;
+       height: 36px;
+       border-radius: 18px;
+    }
+    /deep/ .ivu-input-wrapper{
+       width: 349px;
     }
     /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
     /deep/.ivu-modal-header-inner{
@@ -232,7 +247,8 @@
     .btns {
         padding-top: 20px;
         padding-bottom: 20px;
-
+        display: flex;
+        justify-content: center;
         .send-btn {
             background: #3DAAFF;
             border: 1px solid #3DAAFF;
@@ -248,6 +264,6 @@
         margin-top: 20px;
     }
     /deep/ .ivu-modal-body {
-        padding: 16px 0px 0px 0px;
+        padding: 0;
     }
 </style>

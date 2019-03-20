@@ -4,10 +4,10 @@
             <img class="back-img" src="../assets/icons/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
-        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list">
+        <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list" placeholder="请选择机构">
             <Option v-for="(item,i) in select" :value="item.id " :key="i">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list">
+        <Select v-if="types == 4 || types == 5 || types == 10 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
@@ -105,6 +105,10 @@
       codeName: {
          type: String,
          default: ''
+      },
+      select2Placeholder:{
+         type: String,
+         default: '请选择'
       },
     },
     mounted() {

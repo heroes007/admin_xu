@@ -42,7 +42,7 @@
         {
           prop: 'title',
           label: '课程名称',
-          minWidth: 200,
+          minWidth: 160,
           align: 'left'
         },
         {
@@ -58,19 +58,19 @@
         {
           prop: 'grade_name',
           label: '年级',
-          width: 80
+          width: 120
         },
          {
           prop: 'state',
           label: '状态',
-          width: 80
+          width: 120
         }, {
           prop: 'create_time',
           label: '创建时间',
           width: 120
         }, {
           label: '操作',
-          width: 350,
+          width: 320,
           align: 'center',
             groupBtn: [{
             text: '添加章节',

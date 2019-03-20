@@ -105,12 +105,13 @@
           }, {
             prop: '',
             label: '开课日期',
-            width: 320,
+            width: 260,
             mixColumn: true,
             mixFunc: (function (data) {
               var open_date = doTimeFormat(data.start_time);
               var end_date = doTimeFormat(data.end_time);
-              return open_date + '至' + end_date;
+              let d = end_date ? '至' + end_date : ''
+              return open_date + d;
             })
           },
           {
@@ -125,7 +126,7 @@
           // },
           {
             label: '操作',
-            width: 350,
+            width: 260,
             groupBtn: [
               //   {
               //   text: '查看',
@@ -223,7 +224,7 @@
         this.$router.replace({name: 'open-product'})
       },
       getLecturerList(){
-        postData('/components/getTeachers', {organization_id: +localStorage.getItem('organizationId')}).then((res) => {
+        postData('/components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
           if(res.res_code === 1)  this.formList[3].selectList = res.data
         })
       },
@@ -262,11 +263,19 @@
       },
       //复制
       copyItem(index, row){
-       postData('/product/curriculum_offline/term_copy',{...this.dataList[index], term_underline_id:row.id}).then((res) => {
-         if(res.res_code === 1){
-           this.getList()
-         }
-       })
+         this.$Modal.confirm({
+            title: '提示',
+            content: '是否复制学期',
+            onOk: () => {
+                postData('/product/curriculum_offline/term_copy',{...this.dataList[index], term_underline_id:row.id}).then((res) => {
+                if(res.res_code === 1){
+                  this.getList()
+                  this.$Message.warning(res.msg);
+                }
+              })
+            },
+            onCancel: () => {}
+        });
       },
       sendOfflineCourseHandler(index, row) {
         this.handleSelModal(types.SEND_OFFLINE_COURSE, {row: row});

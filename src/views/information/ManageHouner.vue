@@ -5,7 +5,7 @@
         <div class="card-houner">
             <Card class="card-houner-col" v-for="(item, index) in cardList1" :key="index">
                 <div class="card-houner-img">
-                    <img class="houner-image" :src="cardImg1" alt="">
+                    <img class="houner-image" :src="item.img_url" alt="">
                     <div class="houner-image-title" v-if="item.state">已关联</div>
                 </div>
                 <div class="card-houner-desc">
@@ -18,8 +18,8 @@
                     <Row class="houner-row-btn" style="display: flex;">
                         <div><a @click="unrelation(item)" v-if="item.state">取消关联</a><a @click="relation(item)" v-else>关联</a></div>
                         <div class="ml10"><a @click="hadleChange(item)">编辑</a></div>
-                        <div v-if="item == 2" class="ml10"><a>统计</a></div>
-                        <div v-if="item == 2" class="ml10"><a @click="sendOfflineCourseHandler()">发证</a></div>
+                        <!-- <div v-if="item == 2" class="ml10"><a>统计</a></div> -->
+                        <div v-if="role.role_id !=4" class="ml10"><a @click="sendOfflineCourseHandler()">发证</a></div>
                     </Row>
                 </div>
             </Card>
@@ -50,6 +50,7 @@
       return {
         model1: "",
         model2: "",
+        role: JSON.parse(localStorage.getItem('PERSONALDETAILS')),
         loadingInstance: null,
         formInline: {
           searchData: ""

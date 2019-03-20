@@ -310,7 +310,7 @@
           if (it.listExpand) {
             it.slot = 'listExpand'
             it.type = 'expand'
-            it.width = 50
+            it.width = 120
             it.childHeader.map((t) => {
               t.title = t.label
               t.key = t.prop
@@ -521,6 +521,16 @@
 </script>
 
 <style lang='scss' scoped>
+    /deep/ .ivu-table-cell-expand>.ivu-icon-ios-arrow-forward{
+      display: none;
+    }
+    /deep/ .ivu-table-cell-expand{transform: none}
+     /deep/ .ivu-table-cell-expand::after{
+      content: '展开'
+     }
+     /deep/.ivu-table-cell-expand-expanded::after{
+      content: '收起'
+     }
     /deep/ td.ivu-table-expanded-cell{ padding: 0; padding-bottom: 10px;}
     /deep/ .ivu-icon-md-add{ margin-right: 5px; }
     /deep/ .ivu-table{
