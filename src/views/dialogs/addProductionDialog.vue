@@ -5,28 +5,28 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
-                    <Form ref="form" :model="form" :label-width="fromLabelWidth" class="add-task-form">
-                        <FormItem v-show="nextStep == 0" label="产品名称" required>
+                    <Form ref="form" :model="form" :rules="rules" :label-width="fromLabelWidth" class="add-task-form">
+                        <FormItem v-show="nextStep == 0" prop="title" label="产品名称" >
                             <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0"  label="原价" required>
-                            <Input placeholder="售价必须小于等于定价" v-model="form.original_price"></Input>
+                        <FormItem v-show="nextStep == 0" class="original_price"  prop="original_price" label="原价" >
+                            <InputNumber placeholder="售价必须小于等于定价" v-model="form.original_price"></InputNumber>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0" label="实际售价" required>
-                            <Input placeholder="0为免费，单位默认（元）" v-model="form.price"></Input>
+                        <FormItem v-show="nextStep == 0" prop="price" label="实际售价" >
+                            <InputNumber placeholder="0为免费，单位默认（元）" v-model="form.price"></InputNumber>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0" label="解锁方式" required>
+                        <FormItem v-show="nextStep == 0" prop="unlock_type" label="解锁方式" >
                             <Select v-model="form.unlock_type" placeholder="不限/按课程/按章节/按视频">
                                 <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
                         </FormItem>
-                        <FormItem v-if="organizationList&&nextStep == 0" label="机构" required>
-                            <Select v-model="form.organization_id" placeholder="请选择机构">
+                        <FormItem v-show="organizationList&&nextStep == 0" prop="organization_id" label="所属机构" >
+                            <Select v-model="form.organization_id" placeholder="请选择所属机构">
                                 <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
                         </FormItem>
                         <!-- organizationList -->
-                        <FormItem v-show="nextStep == 0" label="产品状态" required>
+                        <FormItem v-show="nextStep == 0" prop="state" label="产品状态" >
                             <Select v-model="form.state" placeholder="下架/测试/上架" @on-change="changeState">
                                 <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
@@ -46,7 +46,7 @@
                         <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
                         <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
                         </FormItem>-->
-                        <FormItem v-show="nextStep == 0" label="产品介绍" required>
+                        <FormItem v-show="nextStep == 0" prop="short_description" label="产品介绍" >
                             <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
                         </FormItem>
                         <Tabs v-model="paneItem" v-show="nextStep == 0">
@@ -64,7 +64,7 @@
                                 </FormItem>
                             </TabPane>
                             <TabPane label="展示视频" :disabled="disabled2" name="displayVideo">
-                                <FormItem label="展示视频" v-show="nextStep == 0">
+                                <FormItem label="展示视频" v-show="nextStep == 0" required>
                                     <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
                                         <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
                                     </upload-panel>
@@ -74,7 +74,7 @@
                         <FormItem v-show="nextStep == 0"> <p class="upload-img-text">* 支持jpg/png/mp4/mov/avi文件；图片可上传1～5张，建议尺寸475*250px；视频可上传1个，且大小不超过2m</p></FormItem>
 
                          <!--可插入输入框-->
-                        <FormItem v-if="nextStep == 2" label=""  class="upload">
+                        <FormItem v-show="nextStep == 2" label=""  class="upload">
                             <div class="form-message" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div>
                             <!-- <div v-if="descriptionHtml" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div> -->
                             <div ref="divStyle" style="display: flex;margin-top: 15px;margin-left: 10px">
@@ -100,7 +100,7 @@
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
                             <Button  class="btn-orange" @click="handleSubmit('form')">提交</Button>
                         </div>
-                        <Button v-if="nextStep == 0 || nextStep == 1" class="btn-orange btn-center" @click="handleNextStep(form)">下一步</Button>
+                        <Button v-if="nextStep == 0 || nextStep == 1" class="btn-orange btn-center" @click="handleNextStep('form')">下一步</Button>
                     </Form>
                 </Row>
             </Row>
@@ -163,6 +163,7 @@ export default {
                 video_url:'',
                 organization_id: null,
                 _fn:null,
+                duration: 0
             },
             descriptionHtml: '',
             nextStep: 0,
@@ -218,7 +219,16 @@ export default {
             paneItem: 'displayImg',
             organizationList: null,
             formState: null,
-            organizationId: null
+            organizationId: null,
+            rules:{
+                organization_id: { required: true,message: '请选择所属机构'},
+                title: {required: true,message: '请选择产品名称', trigger: 'blur' },
+                original_price: {required: true,message: '请输入原价'},
+                price: {required: true,message: '请输入实际售价'},
+                unlock_type: {required: true,message: '请选择解锁方式'},
+                state: {required: true,message: '请选择产品状态'},
+                short_description: {required: true,message: '请输入产品介绍', trigger: 'blur' },
+            }
         }
     },
     mounted() {
@@ -229,8 +239,8 @@ export default {
         if(this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2){
             let d = this.payload.row
             this.form.title = d.title;
-            this.form.original_price = (d.original_price).toString();
-            this.form.price = (d.price).toString();
+            this.form.original_price = d.original_price;
+            this.form.price = d.price;
             this.form.short_description = d.short_description;
             this.form.unlock_type = d.unlock_type;
             this.form.state = d.state;
@@ -278,6 +288,7 @@ export default {
         },
         deleteImgList(i){
             this.form.imgList.splice(i,1)
+            if(this.form.imgList.length === 1) this.disabled2 = false
         },
         addImg(val){
             var img = new Image()
@@ -347,20 +358,25 @@ export default {
             this.form.description = '';
             this.addProductionDialog = false;
         },
-        handleNextStep(formName) {
-          if(Number(this.form.price) > Number(this.form.original_price)){
-            this.$Modal.info({
-              title: '提示',
-              content: '实际售价不能高于原价！'
-            });
-          }else{
-           console.log(this.form.state,this.form.organization_id,'fff')
-            this.formState = this.form.state
-            this.organizationId = this.form.organization_id
-            this.fromLabelWidth = 0;
-            this.formItemLabelWidth = 0
-            this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
-          }
+        handleNextStep(name) {
+           this.$refs[name].validate((valid) => {
+                if(Number(this.form.price) > Number(this.form.original_price)){
+                    this.$Modal.info({
+                    title: '提示',
+                    content: '实际售价不能高于原价！'
+                    });
+                }else{
+                    if(this.form.imgList.length>1 || this.form.video_url){
+                        this.formState = this.form.state
+                        this.organizationId = this.form.organization_id
+                        this.fromLabelWidth = 0;
+                        this.formItemLabelWidth = 0
+                        this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
+                    }else{
+                         this.$Message.warning('请上传展示图片或展示视频');
+                    }
+                }
+           })
         },
         handlePreStep() {
             this.fromLabelWidth = 121
@@ -368,30 +384,34 @@ export default {
             this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
         },
         handleSubmit(name) {
-            //  this.$refs[name].validate((valid) => {
-            //   if (valid) {
+             this.$refs[name].validate((valid) => {
+              if (valid) {
                 this.form.imgList.shift('upload-btn')
-                var arrObj = {
+                let arrObj = {
                     default: this.form.imgList,
                     video:  this.form.video_url
                 }
-                this.form.state = this.formState;
-                this.form.organization_id = this.organizationId;
-                 console.log(this.form.state,this.form.organization_id,'fff')
-                this.form.url_arr = JSON.stringify(arrObj);
-                if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
-                this.form.price = Number(this.form.price).toFixed(2)
-                this.form.original_price = Number(this.form.original_price).toFixed(2)
-                if(this.payload)  this.update_production(this.form);
-                else this.add_production(this.form);
-
-        //    }
-        // })
+                if(this.form.imgList.length>0 || this.form.video_url){
+                      this.form.state = this.formState;
+                      this.form.organization_id = this.organizationId;
+                      this.form.url_arr = JSON.stringify(arrObj);
+                      if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
+                      this.form.price = Number.isInteger(this.form.price)? this.form.price : Number(this.form.price).toFixed(2)
+                      this.form.original_price = Number.isInteger(this.form.original_price) ? this.form.original_price : Number(this.form.original_price).toFixed(2)
+                     if(this.payload)  this.update_production(this.form);
+                     else this.add_production(this.form);
+                }else{
+                    this.form.imgList.push('upload-btn')
+                    this.$Message.warning('请上传展示图片或展示视频');
+                }
+           }
+        })
       }
     }
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .original_price>.ivu-form-item-label{ letter-spacing: 9px; }
 /deep/ .ivu-select-selected-value, /deep/ .ivu-select-item{ letter-spacing: normal; }
 /deep/ .ivu-btn{display: inline-block !important;}
 /deep/.ivu-switch-large { width: 75px }
@@ -402,7 +422,7 @@ export default {
 /deep/ .ivu-modal-header-inner { color:#474C63 !important; }
 /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
 /deep/ .ivu-modal-content {border-radius: 6px !important;}
-/deep/ .ivu-form-item {margin-bottom: 15px;}
+// /deep/ .ivu-form-item {margin-bottom: 15px;}
 /deep/ .ivu-input {border-radius: 4px !important;}
 .upload-img-col{
     height: 130px;

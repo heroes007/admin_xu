@@ -39,7 +39,7 @@
   import postData from '../../api/postData'
   import pageList from '../../components/Page'
   import pageMixin from '../mixins/pageMixins'
-   import {Dialog} from "../dialogs";
+  import {Dialog} from "../dialogs";
   import { ADD_PRODUCTION } from "../dialogs/types";
   import {mapState} from 'vuex'
   export default {
@@ -60,10 +60,13 @@
     watch:{
       productState(_new){
         if(_new) this.getList()
+      },
+      editProductState(_new){
+        if(_new) this.getList()
       }
     },
     computed:{
-      ...mapState({productState: state => state.production.add_product_state})
+      ...mapState({productState: state => state.production.add_product_state,editProductState: state => state.production.edit_product_state}),
     },
     methods: {
       handleCardClass(t){
@@ -111,12 +114,14 @@
           page_size: this.pageSize,
           page_num: this.current,
         }
+        console.log(d,'ddd');
         postData('product/product/get_list',d).then((res) => {
          this.cardList = res.data.data
          this.cardList.map((t) => {
            t.stateText = this.$config.setProductState(t.state)
          })
          this.total = res.data.count
+         this.$store.commit('add_product_states',false)
         })
       }
     },

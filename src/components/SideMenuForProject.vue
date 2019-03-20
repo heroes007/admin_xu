@@ -6,7 +6,7 @@
         </Row>
         <div class="elRow">
             <div class='head-img'>
-                <img :src='userHeader'>
+                <img :src='detailImg'>
             </div>
             <div class="head-title">{{detail.title}}</div>
             <div class="head-list">
@@ -54,13 +54,19 @@
       return {
         use_router: true,
         activeIndex: '',
-        detail: ''
+        detail: '',
+        detailImg: '',
+        detailVideo: ''
       }
     },
     methods: {
       getList(){
         postData('/product/product/get_detail',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id} ).then((res) => {
             this.detail = res.data[0]
+            let d = JSON.parse(this.detail.url_arr);
+            this.detailImg = d.default
+            console.log(this.detail);
+            // if(d.default) this.detailVideo = d.video
         })
       },
       edit(){
@@ -87,7 +93,6 @@
           title: '提示',
           content: '注销后将永久删除，确认是否注销',
           onOk: () => {
-            console.log(this.detail)
             postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
               if(res.res_code == 1) {
                 this.$Message.info('删除产品');

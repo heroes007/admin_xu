@@ -1,7 +1,7 @@
 <template>
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <FormModal :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
+        <FormModal :modal-false="true"  :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
 
         <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="total" btn-name="添加讲师" placehodle="搜索讲师姓名" @inputChange="inputChange" @handleClick="handleClick"/>
         <div class="lecturer-list">
