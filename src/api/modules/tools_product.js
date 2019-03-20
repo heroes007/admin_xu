@@ -77,13 +77,14 @@ export function add_product(param) {
   let d = {
     organization_id: param.organization_id,
     title:param.title,
-    original_price: parseFloat(param.original_price),
-    price: parseFloat(param.price),
+    original_price: +param.original_price,
+    price: +param.price,
     unlock_type: param.unlock_type,
     state: param.state,
     short_description: param.short_description,
     description: param.description,
     url_arr: param.url_arr,
+    duration: 0
   }
   // if(param.unlock_type === 0) delete d.unlock_type
   return api.post('product/product/add', d);
@@ -94,13 +95,14 @@ export function update_product(param) {
     organization_id: param.organization_id,
     product_id: param.product_id,
     title:param.title,
-    original_price: parseFloat(param.original_price),
-    price: parseFloat(param.price),
+    original_price: +param.original_price,
+    price: +param.price,
     unlock_type: param.unlock_type,
     state: param.state,
     short_description: param.short_description,
     description: param.description,
     url_arr: param.url_arr,
+    duration: 0
   }
   // if(param.unlock_type === 0) delete d.unlock_type
   return api.post('/product/product/change', d);

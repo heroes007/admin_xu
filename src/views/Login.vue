@@ -91,6 +91,7 @@
         mounted() {
             if(this.$localStorage.get('login_user')){
               let user = Base64.decode(this.$localStorage.get('login_user'))
+              console.log(user,'ttt');
               let u = JSON.parse(user)
               this.setUser(u)
             }else this.setUser({name:'',pass:''})

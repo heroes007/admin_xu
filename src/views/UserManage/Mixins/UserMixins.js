@@ -21,7 +21,6 @@ export default {
                 if(res.msg === '修改成功'||res.msg === '添加成功') this.$Message.success(res.msg);
                 this.getList()
               }
-              this.show = false
           })
         },
         //获取机构
