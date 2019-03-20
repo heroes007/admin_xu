@@ -232,7 +232,6 @@
         console.log(val);
       },
       handleColor(){
-        // console.log(this.$refs.color[0].$el.children[0])
         // this.$refs.color[0].$el.children[0].children[0].click()
       },
       handleDateShow(t){
