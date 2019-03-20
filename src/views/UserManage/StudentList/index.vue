@@ -17,7 +17,7 @@
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
   import details from './const'
-  import seeMixin from '../seeMixin'
+  import seeMixin from '../Mixins/seeMixin'
   import UserMixins from '../Mixins/UserMixins'
   import postData from 'src/api/postData'
   import pageList from '../../../components/Page'

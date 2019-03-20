@@ -28,9 +28,9 @@
 <script>
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
-  import seeMixin from '../seeMixin'
+  import seeMixin from '../Mixins/seeMixin'
   import FormModal from '../../../components/FormModal.vue'
-  import FormModalMixin from '../FormModalMixin'
+  import FormModalMixin from '../Mixins/FormModalMixin'
   import postData from 'src/api/postData'
   import UserMixins from '../Mixins/UserMixins'
   import pageList from '../../../components/Page'

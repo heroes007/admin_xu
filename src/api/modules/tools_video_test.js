@@ -38,7 +38,10 @@ export function update_test_detail(data) {
       video_test_detail_id: data.video_test_detail_id,
       content: data.content,
       select_count: data.select_count,
-      result: data.result
+      result: data.result,
+      test_title: data.test_title,
+      catalog_id:data.catalog_id,
+      section_id:data.section_id
     });
 }
 

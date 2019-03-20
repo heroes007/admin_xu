@@ -49,7 +49,7 @@
     import {taskHeadData} from './consts'
     import screen from '../../components/ScreenFrame'
     import FormModal from '../../components/FormModal'
-    import FormModalMixin from '../UserManage/FormModalMixin'
+    import FormModalMixin from '../UserManage/Mixins/FormModalMixin'
     import Editor from '../../components/Editor'
     import Uploader from '../../components/Upload'
     import pageMixin from '../mixins/pageMixins'

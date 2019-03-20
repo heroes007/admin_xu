@@ -72,7 +72,7 @@
   import {doDateFormat, doTimeFormat, reunitPrice} from '../../components/Util'
   import screen from '../../components/ScreenFrame'
   import FormModal from '../../components/FormModal'
-  import FormModalMixin from '../UserManage/FormModalMixin'
+  import FormModalMixin from '../UserManage/Mixins/FormModalMixin'
   export default {
     mixins: [Dialog, MPop,FormModalMixin],
     data() {
@@ -163,29 +163,29 @@
           label: '序号',
           width: 90,
           sort: true
-        }, 
+        },
         {
           prop: 'title',
           label: '新闻标题'
-        }, 
+        },
         {
           prop: 'count',
           label: '浏览量',
           width: 100
-        }, 
+        },
         {
           prop: 'create_time',
           label: '状态',
-        }, 
+        },
         {
           prop: 'create_time',
           label: '发布时间',
           width: 160
-        }, 
+        },
          {
           prop: 'create_time',
           label: '发布人',
-        }, 
+        },
         {
           label: '操作',
           width: 320,
@@ -197,7 +197,7 @@
         //     offText: '停用',
         //     disableText: '失效',
         //     actionName: 'change_news_valid'
-        //   }, 
+        //   },
             {
             text: '下架',
             param: 'edit'

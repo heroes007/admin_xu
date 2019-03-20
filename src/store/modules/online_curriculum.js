@@ -218,8 +218,6 @@ const mutations = {
         //         break;
         //     }
         // }
-        console.log(params, state.online_curriculum_list, 'bbbbbb')
-
         state.showChapterLoading = false;
     },
     [types.ONLINE_CURRICULUM_CHANGE_ORDERBY](state, params) {
