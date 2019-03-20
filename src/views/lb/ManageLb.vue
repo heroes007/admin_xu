@@ -10,8 +10,9 @@
                         <Input v-model="lbData.name" placeholder="请输入广告名称"></Input>
                     </FormItem>
                      <FormItem label="显示位置">
-                         <Input v-if="adutplace == '首页广告'" placeholder="首页广告" disabled></Input>
-                         <Input v-else placeholder="课程广告" disabled></Input>
+                         <Input placeholder="首页轮播/课程页轮播" disabled></Input>
+                         <!-- <Input v-if="adutplace == '首页广告'" placeholder="首页广告" disabled></Input> -->
+                         <!-- <Input v-else placeholder="课程广告" disabled></Input> -->
                     </FormItem>
                      <FormItem label="跳转页面">
                         <Input v-model="lbData.redirect_url" placeholder="请输入跳转页面"></Input>
@@ -189,6 +190,10 @@
 </script>
 
 <style scoped lang="scss">
+     /deep/ .ivu-input[disabled]{
+          background-color: #F0F0F7;
+          color: #474C63
+     }
      .manage-student-view{
          height: 100% !important;
          position: relative;

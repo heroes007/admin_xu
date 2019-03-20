@@ -32,6 +32,7 @@
   import UploadPanel from '../../components/UploadPanel'
   import {RemoveModal} from './mixins'
   import {send_student_offline_curriculum} from '../../api/modules/tools_student'
+import { all } from 'q';
 
   let tooltips = {ellipsis: true, tooltip: true}
 
@@ -116,7 +117,8 @@
       },
       handleQueryList() {
         this.$store.dispatch('get_students_by_offline_term', {
-          subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+          product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+          term_id: this.payload.row.id,
           page_num: this.pageIndex,
           page_size: this.pageSize,
         })
@@ -141,16 +143,13 @@
         var list = [];
         if (this.multipleSelection && this.multipleSelection.length > 0) {
           this.multipleSelection.map(item => {
-            list.push(item.id)
+            list.push(item.student_id)
           });
         }
         if (list.length > 0) {
-          send_student_offline_curriculum({term_underline_id: this.payload.row.id, student_id_arr: JSON.stringify(list)}).then(res => {
+          send_student_offline_curriculum({term_id:this.payload.row.id,term_underline_id: this.payload.row.id, student_id_arr: JSON.stringify(list)}).then(res => {
             if (res.data.res_code == 1) {
-              this.$Modal.info({
-                title: '提示',
-                content: '线下课发送成功!',
-              });
+              this.$Message.warning('线下课发送成功!');
               this.handleQueryList();
             }
           })

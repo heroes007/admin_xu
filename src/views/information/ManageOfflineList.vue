@@ -95,6 +95,14 @@
 </script>
 
 <style scoped lang="scss">
+    /deep/ .card-content-details{
+        height: 65px;
+        overflow:hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        text-overflow:ellipsis;
+    }
     .content {
         display: flex;
         flex-wrap: wrap;
@@ -181,6 +189,10 @@
                 color: #474C63;
                 letter-spacing: 0;
                 text-align: justify;
+                overflow:hidden;
+                word-break:keep-all;
+                white-space:nowrap;
+                text-overflow:ellipsis;
             }
 
             .card-content-details {
