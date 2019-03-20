@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table :columns="columns" :data="datas" >
+        <Table :columns="columns" :data="datas" :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
                 <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
                     <span slot="open">启用</span>
@@ -76,6 +76,9 @@
       seeUrl: {
         type: String,
         default: ''
+      },
+      tabelHeight: {
+        type: Number
       }
     },
     watch: {

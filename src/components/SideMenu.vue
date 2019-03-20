@@ -20,6 +20,9 @@
                 </div>
             </Poptip>
         </Row>
+        <Row>
+            <Tooltip content="">123</Tooltip>
+        </Row>
         <Row class='user-name' v-if="userInfo.name">
             <Tooltip :content="userInfo.name" placement="right" theme="light">
                 <p><span>{{ userInfo.name }}</span></p >
@@ -182,7 +185,7 @@
           if (res.data.res_code === 1) {
             // login_user
             let d = localStorage.getItem('login_user')
-            localStorage.clear() 
+            localStorage.clear()
             // this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
             localStorage.setItem('login_user', d)

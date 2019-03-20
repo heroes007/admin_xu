@@ -3,7 +3,7 @@
         <screen :types="9"  @handleBack="handleBack" :title="screenTitle"/>
         <screen :types="11" size-title1="提交作业人数" :size-num1="total" btn-name="上传批阅" :select2="selectList" :select-type2="true"
                     @selectChange2="selectChange1"  @inputChange="inputChange" @handleClick="handleClick" />
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" />
+        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :tabel-height="tabelHeight"/>
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
@@ -29,6 +29,7 @@
               {title: '未批阅', id:'0'},
               {title: '已批阅', id:'1'},
             ],
+            mark_state: '',
             screenTitle: '',
             search: '',
             count: null,
@@ -92,7 +93,10 @@
         }
     },
     computed:{
-      ...mapState(['taskState'])
+      ...mapState(['taskState']),
+      tabelHeight() {
+        return window.innerHeight - 60 - 50 - 70;
+      }
     },
     watch: {
       taskState() {
@@ -101,7 +105,8 @@
     },
     methods: {
         selectChange1(val){
-
+          this.mark_state = val;
+          this.initData()
         },
         see(row,rowIndex){
             // console.log(row,rowIndex,'see');
@@ -135,7 +140,8 @@
                 homework_id: parseInt(this.$route.params.id),
                 search: this.search,
                 page_size: this.pageSize,
-                page_num: this.current
+                page_num: this.current,
+                mark_state: this.mark_state
             }).then(res =>  {
               res.data.data.forEach(item => {
                 item.isState = item.mark_state == 1 ? '已批阅' : '未批阅'

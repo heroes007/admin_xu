@@ -18,7 +18,10 @@ export default {
         fromAddAndEdit(url,d){
             postData(url, d).then((res) => {
               if(res){
-                if(res.msg === '修改成功'||res.msg === '添加成功') this.$Message.success(res.msg);
+                if(res.msg === '修改成功'||res.msg === '添加成功') {
+                  this.$Message.success(res.msg);
+                  this.show = false
+                }
                 this.getList()
               }
           })
