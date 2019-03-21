@@ -265,7 +265,6 @@
         this.form = d
         this.form.img_default = d.img_url
       }
-      console.log(this.form,'fff');
       // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
