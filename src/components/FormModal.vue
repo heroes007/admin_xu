@@ -3,7 +3,7 @@
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList" @close="exchangeContentClose" @selectChecked="exchangeContentChecked" />
         <Modal v-model="show" :title="title" :width="645" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
             <div v-if="uploadFlie" class="upload-flie">
-                <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData"
+                    <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData" accept="image/jpeg,image/png,image/jpg,image/bmp"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!img_url" class="modal-upload-flie">
                         <img class="upload-flie-img" src="../assets/icons/icon/upload.png"/>
@@ -93,9 +93,7 @@
   import iconFont from '../assets/icons/icon/font.png'
   import iconColor from '../assets/icons/icon/color.png'
   import iconCopy from '../assets/icons/icon/photo.png'
-  import iconFontCopy from '../assets/icons/icon/font_copy.png'
-  import iconColorCopy from '../assets/icons/icon/color_copy.png'
-  import iconCopyCopy from '../assets/icons/icon/photo_copy.png'
+
 
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },

@@ -56,7 +56,7 @@
                                         <Col class="upload-img-col" span="8" v-for="(t,i) in form.imgList" :key="i">
                                             <div class="upload-img-main">
                                                 <Icon @click="deleteImgList(i)" class="upload-img-main-icon" v-if="t !== 'upload-btn'" type="ios-close-circle" />
-                                                <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="dscj-app" @uploadcomplete="uploadcomplete" />
+                                                <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="dscj-app" @uploadcomplete="uploadcomplete" type="image/jpeg,image/png,image/jpg,image/bmp"/>
                                                 <img v-else class="upload-img-item"  :src="t" />
                                             </div>
                                         </Col>

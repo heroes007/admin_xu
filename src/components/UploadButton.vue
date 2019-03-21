@@ -51,7 +51,10 @@
             iconType: {
               type:String,
               default: ''
-            }
+            },
+          uploadType: {
+              type: Number
+          }
         },
         methods: {
             handleStartUploadFile() {
@@ -60,8 +63,53 @@
             handleUploadChange(event) {
                 var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
                 this.fileName = filename;
-                this.handleGetassignKey(event.target.files[0]);
+                // if(this.handleCheckMedia(event))  this.handleGetassignKey(event.target.files[0]);
+              this.handleGetassignKey(event.target.files[0]);
             },
+          // handleCheckMedia(event) {
+          //   var _type = this.uploadType;
+          //   switch (_type) {
+          //     case 0:
+          //       this.type = event.target.files[0].type;
+          //       return true;
+          //     case 1:
+          //       if (!(event.target.files[0].type.indexOf('image') < 0)) {
+          //         this.type = 'image';
+          //         return true;
+          //       } else {
+          //         this.$Message.warning('只能上传图片！');
+          //         if(this.fullscreenLoading) this.fullscreenLoading.close()
+          //         return false;
+          //       }
+          //     case 2:
+          //       if (!(event.target.files[0].type.indexOf('video') < 0)) {
+          //         this.type = 'video';
+          //         return true;
+          //       } else {
+          //         this.$Message.warning('只能上传视频！');
+          //         if(this.fullscreenLoading) this.fullscreenLoading.close()
+          //         return false;
+          //       }
+          //     case 3:
+          //       if (!(event.target.files[0].name.indexOf('.apk') < 0)) {
+          //         this.type = 'apk';
+          //         return true;
+          //       } else {
+          //         this.$Message.warning('请上传apk后缀文件,请重试');
+          //         if(this.fullscreenLoading) this.fullscreenLoading.close()
+          //         return false;
+          //       }
+          //     case 4:
+          //       if (!(event.target.files[0].type.indexOf('video') < 0)) {
+          //         this.type = 'video';
+          //         return true;
+          //       } else {
+          //         this.$Message.warning('只能上传视频！');
+          //         if(this.fullscreenLoading) this.fullscreenLoading.close()
+          //         return false;
+          //       }
+          //   }
+          // },
             handleUploadFile(formData, url, headers) {
                 // TODO 上传到OSS上
                 let vm = this;
