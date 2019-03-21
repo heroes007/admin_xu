@@ -20,11 +20,11 @@
                     <div class="card-end-time">创建时间：{{t.create_time}}</div>
                     <Button class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
                     <Button class="card-end-btn r48" type="text" ghost @click="handleSee(t)">查看</Button>
+                    <Button class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
                 </div>
-            </Card>
-
-            <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit"/>
+        </Card>
         </div>
+        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit"/>
     </div>
 </template>
 
@@ -89,6 +89,9 @@
           postData('product/curriculum_offline/subject_get_list',d).then((res) => {
               this.list = res.data;
           })
+      },
+      handleDelete(t){
+          postData('/product/curriculum_offline_subject/delete',{subject_id: t.id}).then((res) => {})
       }
     },
     mounted() {
@@ -111,6 +114,8 @@
         display: flex;
         flex-wrap: wrap;
         padding: 15px;
+        height: 100%;
+        overflow-y: auto;
         /*justify-content: center;*/
 
         .card {
@@ -180,6 +185,9 @@
             }
 
             .r48 {
+                right: 98px;
+            }
+            .r58 {
                 right: 48px;
             }
         }

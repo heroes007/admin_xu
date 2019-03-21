@@ -1,13 +1,11 @@
 <template>
     <div class='manage-online-course'>
-       <!--<header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/> -->
-        <screen :types="1" sizeTitle1="线上课总数" :sizeNum1="pageTotal" btnName="添加课程" @inputChange="inputChange" @handleClick="handleClick" :btn-type="true"/>
+        <screen :types="1" sizeTitle1="线上课总数" placehodle="搜索线上课程" :sizeNum1="pageTotal" btnName="添加课程" @inputChange="inputChange" @handleClick="handleClick" :btn-type="true"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler'
                    @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList' :header-data='dataHeader'
                    :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :table-height='listHeight'>
         </data-list>
         <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
-        <!--<save-order v-if='dirty' @saveOrder='saveOrderHandler' @cancelChange='resetCurriculumOrder'/>-->
     </div>
 </template>
 
