@@ -130,7 +130,7 @@ export default {
              postData('product/data/change', {
                data_id: this.form.id,
                title: this.form.name,
-               curriculum_id: this.form.curriculum_id,
+               curriculum_id: this.form.subject_id,
                attachment_url: this.form.download_url,
                attachment_name: this.form.url_name,
              }).then(res => {

@@ -63,6 +63,7 @@
                     this.item1 = false;
                     this.item2 = false;
                     this.item3 = true;
+                    this.pane3 = true;
                     this.item4 = false;
                     this.item5 = false;
                     this.online = localStorage.getItem('onlinePane')

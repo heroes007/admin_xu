@@ -37,7 +37,7 @@
                         </Select>
                     </FormItem>
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
-                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name"  @on-change="selectChangeItem" :disabled="t.disable">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
@@ -76,7 +76,7 @@
                     </FormItem>
                 </div>
             </Form>
-            <p v-if="modalText" class="modal-text">* {{modalText}}</p >
+            <p v-if="modalText2" class="modal-text">* {{modalText2}}</p >
             <div class="foot-btn">
                 <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
@@ -190,10 +190,14 @@
             color: '#00f'
           },
         ],
-        color: ''
+        color: '',
+        modalText2: ''
       }
     },
     watch:{
+      modalText(_new){
+        this.modalText2 = _new
+      },
       showModal(_new){
         this.ModalState(_new)
         this.$nextTick(() => {
@@ -213,6 +217,7 @@
             this.formItem.password = this.formItem.password.slice(0,6)
           }
           this.copyFormItem = this.$config.copy(this.formItem,{});
+          this.modalText2 = this.modalText;
           if(!_new) this.$refs.formValidate.resetFields()
         })
       },
@@ -226,6 +231,12 @@
     methods: {
       handleDateType(t){
         return t.type.includes('time') ? 'yyyy/MM/dd HH:mm' : 'yyyy/MM/dd'
+      },
+      selectChangeItem(v){
+        if(this.modalText2){
+          if(v == 3) this.modalText2 = '获得所属机构后台所有操作权限'
+          if(v == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
+        }
       },
       overImg(val){
         console.log(val);

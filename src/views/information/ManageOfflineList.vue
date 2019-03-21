@@ -8,7 +8,7 @@
             <Card class="card" v-for="(t ,index) in list" :key="index">
                 <div class="card-row">
                     <div class="card-title-state">开课中</div>
-                    <div class="card-title-num">已开课<span style="color: #4098FF;margin: 0 5px;">4</span>期</div>
+                    <div class="card-title-num">已开课<span style="color: #4098FF;margin: 0 5px;">{{t.term_num}}</span>期</div>
                 </div>
                 <div class="mt14">
                     <div class="card-content-title">{{t.title}}</div>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-row mt20">
                     <div class="card-end-time">创建时间：{{t.create_time}}</div>
-                    <Button class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
+                    <Button class="card-end-btn r0"  type="text" ghost @click="handleEdit(t)">编辑</Button>
                     <Button class="card-end-btn r48" type="text" ghost @click="handleSee(t)">查看</Button>
                     <Button class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
                 </div>
@@ -51,7 +51,8 @@
         show: false,
         detailData:{},
         product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
-        windowHight:''
+        windowHight:'',
+        role: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
       }
     },
     components: {formModal},

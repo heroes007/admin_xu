@@ -100,7 +100,7 @@
                 },
                 { type: 'input', name: '导师账号',  field: 'username' },
                 { type: 'password', name: '账号密码',  field: 'password' },
-                { type: 'select', name: '管理权限', field: 'role_id' ,
+                { type: 'select', name: '管理权限', field: 'role_id',
                     selectList: [ ...jurisdictionList ], selectField: [ 'id','name' ]
                 }
             ],

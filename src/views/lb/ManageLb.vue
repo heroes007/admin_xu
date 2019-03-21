@@ -13,6 +13,13 @@
                          <Input v-if="adutplace == '首页轮播'" placeholder="首页轮播" disabled></Input>
                          <Input v-else placeholder="课程页轮播" disabled></Input>
                     </FormItem>
+                      <FormItem class="form-item-state"  label="状态" prop="state">
+                     <Select v-model="lbData.state"  placeholder="请选择状态">
+                        <Option :value="1" >上线</Option>
+                        <Option :value="-1" >下架</Option>
+                        <Option :value="0" >测试</Option>
+                    </Select>
+                      </FormItem>
                      <FormItem label="跳转页面" prop="redirect_url">
                         <Input v-model="lbData.redirect_url" placeholder="请输入跳转页面"></Input>
                     </FormItem>
@@ -122,7 +129,8 @@
                 adutplace:'首页轮播',
                 rules: {
                     name: { required: true, message: '请输入广告名称', trigger: 'blur'},
-                    redirect_url: { required: true, message: '请输入跳转页面', trigger: 'blur' }
+                    redirect_url: { required: true, message: '请输入跳转页面', trigger: 'blur' },
+                    state: { required: true, message: '请选择状态'},
                 }
             }
         },
@@ -147,6 +155,7 @@
             },
             setSubmit(){
                  this.lbData.position = this.type ? 1 : 2;
+                //  this.lbData.state = +this.lbData.state;
                  let url = this.isEdit ? '/platform/banner/modifyBanner' : '/platform/banner/addBanner'
                  postData(url,this.lbData).then((res) => {
                      if(res.res_code == 1){
@@ -192,7 +201,7 @@
                     if(this.list.length>0){
                        this.list.map((t) => {
                            t.position_name = t.position == 2 ? '课程页轮播' : '首页轮播'
-                           t.state_name = t.state ? '上线中' : '已下线'
+                           t.state_name = t.state == 1 ? '上线' : t.state == -1 ? '下架' : '测试'
                        })
                     }
                     this.total = res.data.count
@@ -207,6 +216,9 @@
 </script>
 
 <style scoped lang="scss">
+     /deep/ .form-item-state>.ivu-form-item-label{
+         letter-spacing: 9px;
+     }
      /deep/ .ivu-input-disabled::-webkit-input-placeholder{
          color: #474C63
      }
