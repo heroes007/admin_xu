@@ -2,38 +2,17 @@
     <div class='manage-task'>
         <FormModal :detail-data="tableRow" @from-submit="saveHomework" :show-modal='show' :form-list="formList"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" uploadBtn>
-            <!--<div slot="form-other">-->
-            <!--<Form >-->
-            <!--<FormItem label="作业描述">-->
-            <!--<text-editor ref='content_editor' :content='contentData' />-->
-            <!--</FormItem>-->
-            <!--<FormItem  label="上传附件" >-->
-            <!--<file-uploader :filters="dataFilters" maxFileCount="1"-->
-            <!--:maxFileSize="30000"  @uploadComplete="uploadComplete"-->
-            <!--bucket="dscj-static-file" :dir='getDir()'/>-->
-            <!--</FormItem>-->
-            <!--</Form>-->
-            <!--</div>-->
         </FormModal>
 
-        <!-- <header-component title="任务包" :type='3' :showAdd='true' @addTaskCategory='addTaskCategory' @reRenderList="reRenderListHandler" @manageEdit="manageEdit" /> -->
         <screen :types="2" sizeTitle1="作业总数" :sizeNum1="courseNums" btnName="添加作业" @inputChange="manageEdit"
                 @handleClick="addTaskCategory" :btnType="true"/>
-        <!-- <div class="category-list">
-            <category-item v-for='(item, index) in categoryList' :key="index" :showClose="showClose" :name='item.name' :cid='item.id' :type='item.type'
-                           :selected='getSelected(item.id, item.type)' @select='changeCategory(item)'/>
-        </div>
-        <div class="create-panel">
-            <Button @click="addTask()">创建</Button>
-        </div> -->
 
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler'
                    class='data-list light-header' :table-data='dataList' :table-height='listHeight'
                    @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
                    @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
-        <!--<div class='manage-online-course'></div>-->
-        <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
 
+        <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
@@ -90,11 +69,11 @@
                         disable: false,
                         field: 'jurisdiction',
                         selectList: [{id: 'online', name: '线上作业'}, {id: 'underline', name: '线下作业'}],
-                        selectField: ['id', 'name']
+                        selectField: ['id', 'name'], selectChange: true
                     },
                     {
                         type: 'select', name: '绑定课程', field: 'binding_course', disable: false,
-                        selectList: [], selectField: ['id', 'title']
+                        selectList: [], selectField: ['id', 'title'], change: true, line: 1
                     },
                     {type: 'upload', name: '作业描述', field: 'uploading'}
                 ],
@@ -193,6 +172,7 @@
         methods: {
             ...mapActions(['delete_task']),
             addTaskCategory() {
+                this.getListLine()
                 this.tableRow = {}
                 this.show = true
                 this.formList[1].disable = false
@@ -238,6 +218,8 @@
             },
             editHandler(index, row) {
                 this.show = true;
+                if(row.type == "underline") this.formList[2].line = 0
+                else this.formList[2].line = 1
                 this.formList[1].disable = true
                 this.formList[2].disable = true
                 this.modalTitle = '编辑作业';
@@ -249,7 +231,7 @@
                 this.tableRow.jurisdiction = row.type
                 this.tableRow.binding_course = row.curriculum_id
                 this.tableRow.upload = row.attachment_url ? JSON.parse(row.attachment_url) : row.attachment_url
-                    this.$store.dispatch("change_homework_id", row.id)
+                this.$store.dispatch("change_homework_id", row.id)
               // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
             },
             deleteHandler(index, row) {
@@ -315,6 +297,19 @@
                     page: {page_size: this.pageSize, page_num: this.current},
                     keyword: this.keyword
                 })
+            },
+            getListLine(){
+              postData('product/curriculum_online/pulldown_get_list', {
+                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+              }).then(res => {
+                this.curricumList[0] = res.data
+              })
+              postData('product/curriculum_online/pulldown_get_offline_list', {
+                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+              }).then(res => {
+                this.curricumList[1] = res.data
+              })
+              console.log(this.curricumList,'this.curricumList')
             }
         },
         mounted() {
@@ -323,11 +318,7 @@
             // var vm = this;
             this.initData()
             // curricumList
-          postData('product/curriculum_online/pulldown_get_list', {
-                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
-            }).then(res => {
-                this.curricumList = res.data
-            })
+            this.getListLine()
             // if (this.$store.state.project.project_list.length === 0) {
             //   this.$store.dispatch('get_project_list', {
             //     callback(v) {
