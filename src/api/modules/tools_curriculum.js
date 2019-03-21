@@ -17,7 +17,6 @@ export function get_list(page, keyword) {
 }
 
 export function add_curriculum(data) {
-    console.log(data,'datas')
     let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
     return api.post('product/curriculum_online/add', {
       product_id: id,
@@ -41,7 +40,8 @@ export function update_curriculum(data) {
         grade_id: data.grade_id,
         state: data.state,
         description: data.description,
-        img_url: data.img_url
+        img_url: data.img_url,
+        unlock_type: data.unlock_type,
     });
 }
 

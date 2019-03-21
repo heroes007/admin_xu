@@ -167,7 +167,6 @@ export default {
             this.form.subject_id = 0;
         }
         if(this.payload.state == 0) {
-          console.log(this.payload, 'payload111')
           this.form.subject_id = this.payload.form.curriculum_id
           this.form.curriculum_id = this.payload.form.curriculum_id
           this.form.name = this.payload.form.title
@@ -177,6 +176,7 @@ export default {
             this.form.url_name = this.payload.form.attachment_name
             this.isupdata = false
           }
+          console.log(this.form, 'form')
         }
 
 

@@ -4,7 +4,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100" :rules="ruleValidate" ref="formRule">
+                    <Form class="add-course-form" :label-position="labelPosition" :label-width="100" :rules="ruleValidate" ref="form" :model="form">
                         <!--<Row>-->
                             <Col>
                                 <FormItem label="课程名称" prop="title">
@@ -38,7 +38,7 @@
                                <FormItem label="课程介绍" prop="description">
                                     <Input type="textarea" :rows="7" placeholder="请输入课程介绍" v-model="form.description"></Input>
                                 </FormItem>
-                                <FormItem label="展示封面">
+                                <FormItem ref="upload" label="展示封面" required>
                                     <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                         <span slot="file-require">只能上传 jpg/png 文件，且图片比例为16:9，建议尺寸768*432px</span>
                                     </upload-panel>
@@ -178,7 +178,7 @@
           end_time: new Date(),
           subject_id: 0,
           grade_id: 0,
-          state: 0,
+          state: this.payload.row.state || 0,
           img_default: '',
           img_3_8: '',
           img_url_arr: null,
@@ -187,7 +187,7 @@
           curriculum_roles: [0],
           pre_curriculum_ids: [],
           data_center_id: 0,
-          unlock_type: 0
+          unlock_type: this.payload.row.unlock_type || 0
         },
         newData: {
           show: false,
@@ -236,19 +236,19 @@
             { required: true, message: '请输入课程名称', trigger: 'blur' }
           ],
           teacher_id:[
-            { required: true, message: '请选择课程讲师', trigger: 'blur' }
+            { required: true, message: '请选择课程讲师' }
           ],
           department_id:[
-            { required: true, message: '请选择科室', trigger: 'blur' }
+            { required: true, message: '请选择科室' }
           ],
           grade_id:[
-            { required: true, message: '请选择年级', trigger: 'blur' }
+            { required: true, message: '请选择年级' }
           ],
           unlock_type:[
-            { required: true, message: '请选择解锁方式', trigger: 'blur' }
+            { required: true, message: '请选择解锁方式' }
           ],
           state:[
-            { required: true, message: '请选择课程状态', trigger: 'blur' }
+            { required: true, message: '请选择课程状态' }
           ],
           description:[
             { required: true, message: '请输入课程介绍', trigger: 'blur' }
@@ -259,13 +259,14 @@
     mounted() {
       this.stateName = this.payload.state
       this.getListTeacher()
-      this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
-      let d = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[])
-      if(this.payload.state == 0){
-        this.form = d[this.payload.index]
-        this.form.img_default = d[this.payload.index].img_url
+      // this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
+      let d = this.payload.row
+      if(this.payload.modify === 0){
+        this.form = d
+        this.form.img_default = d.img_url
       }
-        // if (this.query_teacher_list.length === 0) this.get_teacher_list();
+      console.log(this.form,'fff');
+      // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
       // this.get_grade_list();
@@ -373,24 +374,29 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
-        this.$refs.formRule.validate((valid) => {
-          if(valid) {
-            var vm = this;
-            this.form._fn = function () {
-              vm.handleClose();
-              vm.showPop('保存成功！', 1000);
-            };
-            this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
-            this.form.page = this.payload.page
-            if (this.stateName == 1) {
-              this.add_online_curriculum(this.form)
+          this.$refs.form.validate((valid) => {
+            if(valid) {
+              if(this.form.img_default){
+                var vm = this;
+                this.form._fn = function () {
+                  vm.handleClose();
+                  vm.showPop('保存成功！', 1000);
+                };
+                this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
+                this.form.page = this.payload.page
+                if (this.stateName == 1) {
+                  this.add_online_curriculum(this.form)
+                }
+                else {
+                  this.edit_online_curriculum({data: this.form});
+                  this.addCourseDialogVisible = false
+                }
+              }else{
+                this.$Message.info('请上传展示封面')
+              }
             }
-            else {
-              this.edit_online_curriculum({data: this.form});
-              this.addCourseDialogVisible = false
-            }
-          }
-        })
+          })
+
         // this.form.img_url_arr = {
         //   'default': this.form.img_default,
         //   '3_8': this.form.img_3_8

@@ -230,7 +230,7 @@
       getName(){
         if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) {
           this.userNameAll = JSON.parse(localStorage.getItem('PERSONALDETAILS')).name
-          if(this.userNameAll.length > 10) {
+          if(this.userNameAll && this.userNameAll.length > 10) {
             this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
           }
         }else{

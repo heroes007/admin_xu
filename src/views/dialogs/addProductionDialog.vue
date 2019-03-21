@@ -396,8 +396,8 @@ export default {
                       this.form.organization_id = this.organizationId;
                       this.form.url_arr = JSON.stringify(arrObj);
                       if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
-                      this.form.price = Number.isInteger(this.form.price)? this.form.price : Number(this.form.price).toFixed(2)
-                      this.form.original_price = Number.isInteger(this.form.original_price) ? this.form.original_price : Number(this.form.original_price).toFixed(2)
+                      this.form.price = Number.isInteger(this.form.price)? this.form.price : +(Number(this.form.price).toFixed(2))
+                      this.form.original_price = Number.isInteger(this.form.original_price) ? this.form.original_price : +(Number(this.form.original_price).toFixed(2))
                      if(this.payload)  this.update_production(this.form);
                      else this.add_production(this.form);
                 }else{

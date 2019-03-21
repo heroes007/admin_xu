@@ -263,4 +263,7 @@
             }
         }
     }
+    /deep/ .ivu-table td.demo-table-info-column{
+        color: #F54802;
+    }
 </style>

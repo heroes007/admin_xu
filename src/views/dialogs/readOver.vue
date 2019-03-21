@@ -12,7 +12,6 @@
                             </Col>
                             <Col class="body-form">
                                 <p>{{payload.row.answer}}</p>
-
                                 <down-loading :formData="downList"/>
                             </Col>
                             <Col class="input-form">
@@ -144,6 +143,7 @@
       }
     },
     mounted() {
+      // console.log(this.payload, 'payload')
       // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
@@ -487,7 +487,7 @@ letter-spacing: 0;
     }
     .body-form{
         // width: 594px;
-        height: 147px;
+        /*height: 147px;*/
         background: #F0F0F7;
         border-radius: 4px;
         margin: 0 auto;
