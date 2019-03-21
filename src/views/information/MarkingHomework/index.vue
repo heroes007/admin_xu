@@ -2,7 +2,7 @@
    <div>
         <screen :types="9"  @handleBack="handleBack" :title="screenTitle"/>
         <screen :types="11" size-title1="提交作业人数" :size-num1="total" btn-name="上传批阅" :select2="selectList" :select-type2="true"
-                    @selectChange2="selectChange1"  @inputChange="inputChange" @handleClick="handleClick" />
+                    @selectChange2="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :tabel-height="tabelHeight"/>
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
@@ -26,6 +26,7 @@
     data (){
         return{
             selectList: [
+              {title: '全部', id: ''},
               {title: '未批阅', id:'0'},
               {title: '已批阅', id:'1'},
             ],

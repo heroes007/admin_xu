@@ -36,8 +36,13 @@
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :label="t.name" :prop="t.field">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
+                            <Option v-for="(m,i) in t.line == 1 ? t.selectList[0] : t.selectList[1]" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
+                        </Select>
+                    </FormItem>
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
-                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name"  @on-change="selectChangeItem" :disabled="t.disable">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"  @on-change="selectChange">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
@@ -221,6 +226,9 @@
           if(!_new) this.$refs.formValidate.resetFields()
         })
       },
+      show(val){
+        if(!val) this.$refs.formValidate.resetFields()
+      },
       detailData(_new){
         this.formItem = _new
       },
@@ -229,14 +237,16 @@
       },
     },
     methods: {
+      selectChange(val){
+        if(val == 'online') this.formList[2].line = 1
+        else if(val == 'underline') this.formList[2].line = 0
+        if(this.modalText2){
+          if(val == 3) this.modalText2 = '获得所属机构后台所有操作权限'
+          if(val == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
+        }
+      },
       handleDateType(t){
         return t.type.includes('time') ? 'yyyy/MM/dd HH:mm' : 'yyyy/MM/dd'
-      },
-      selectChangeItem(v){
-        if(this.modalText2){
-          if(v == 3) this.modalText2 = '获得所属机构后台所有操作权限'
-          if(v == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
-        }
       },
       overImg(val){
         console.log(val);
