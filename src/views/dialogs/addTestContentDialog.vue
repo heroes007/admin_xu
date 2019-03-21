@@ -28,7 +28,8 @@
                                class="input-text"></Input>
                         <div class="route-link" ref="formInput">
                             <div class="route-data" v-for="(item, index) in formInline2.attachment" :key="index">
-                                <span style="cursor: pointer" @click="handleModel(item)">{{item.name}}</span>
+                                <span class="titleFile" @click="handleModel(item)">{{item.name}}</span>
+                                <Icon size="22" type="ios-trash-outline" @click="deleteFile(index)"/>
                             </div>
                         </div>
                         <div class="upload-list">
@@ -60,7 +61,7 @@
                         <!--<Button @click="cancelSaveHandler" class="cancel-test-item-btn">取消</Button>-->
                         <div class="save-btn">
                             <Button type="primary" @click="saveTestDetailHandler" class="save-test-item-btn">保存</Button>
-                            <Button  @click="clearDetail" class="clear-btn" >清空</Button>
+                            <!--<Button  @click="clearDetail" class="clear-btn" >清空</Button>-->
                         </div>
                     </FormItem>
                     <Row class="quetion-list">
@@ -251,6 +252,9 @@
       },
     },
     methods: {
+      deleteFile(index) {
+        this.formInline2.attachment.splice(index, 1)
+      },
       uploadImg(val) {
         this.formInline2.attachment.push(val)
       },
@@ -536,6 +540,9 @@
         .route-data {
             color: #4098ff;
             margin: 0 10px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
         }
     }
 
@@ -554,5 +561,12 @@
         .clear-btn{
             margin-left: 40px;
         }
+    }
+    .titleFile{
+        cursor: pointer;
+        width: calc(100% - 40px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 </style>

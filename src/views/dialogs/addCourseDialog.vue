@@ -4,38 +4,38 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
+                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100" :rules="ruleValidate" ref="formRule">
                         <!--<Row>-->
                             <Col>
-                                <FormItem label="课程名称">
+                                <FormItem label="课程名称" prop="title">
                                     <Input v-model="form.title" placeholder="请输入课程名称"></Input>
                                 </FormItem>
-                                <FormItem label="课程讲师">
+                                <FormItem label="课程讲师" prop="teacher_id">
                                     <Select v-model="form.teacher_id" placeholder="请选择观讲师">
                                         <Option v-for="item in teacherList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="科室">
+                                <FormItem label="科室" prop="department_id">
                                     <Select v-model="form.department_id" placeholder="请选择科室">
                                         <Option v-for="item in detpysList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="年级">
+                                <FormItem label="年级" prop="grade_id">
                                     <Select v-model="form.grade_id" placeholder="请选择学段">
                                         <Option v-for="item in gradesList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="解锁方式">
+                                <FormItem label="解锁方式" prop="unlock_type">
                                     <Select v-model="form.unlock_type" placeholder="请选择解锁方式">
                                         <Option v-for="item in clearList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="课程状态">
+                                <FormItem label="课程状态" prop="state">
                                     <Select v-model="form.state" placeholder="请选择课程状态">
                                         <Option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                               <FormItem label="课程介绍">
+                               <FormItem label="课程介绍" prop="description">
                                     <Input type="textarea" :rows="7" placeholder="请输入课程介绍" v-model="form.description"></Input>
                                 </FormItem>
                                 <FormItem label="展示封面">
@@ -230,7 +230,30 @@
             id: 3,
             name: '按视频解锁'
           }
-        ]
+        ],
+        ruleValidate:{
+          title: [
+            { required: true, message: '请输入课程名称', trigger: 'blur' }
+          ],
+          teacher_id:[
+            { required: true, message: '请选择课程讲师', trigger: 'blur' }
+          ],
+          department_id:[
+            { required: true, message: '请选择科室', trigger: 'blur' }
+          ],
+          grade_id:[
+            { required: true, message: '请选择年级', trigger: 'blur' }
+          ],
+          unlock_type:[
+            { required: true, message: '请选择解锁方式', trigger: 'blur' }
+          ],
+          state:[
+            { required: true, message: '请选择课程状态', trigger: 'blur' }
+          ],
+          description:[
+            { required: true, message: '请输入课程介绍', trigger: 'blur' }
+          ]
+        }
       }
     },
     mounted() {
@@ -350,17 +373,31 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
+        this.$refs.formRule.validate((valid) => {
+          if(valid) {
+            var vm = this;
+            this.form._fn = function () {
+              vm.handleClose();
+              vm.showPop('保存成功！', 1000);
+            };
+            this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
+            this.form.page = this.payload.page
+            if (this.stateName == 1) {
+              this.add_online_curriculum(this.form)
+            }
+            else {
+              this.edit_online_curriculum({data: this.form});
+              this.addCourseDialogVisible = false
+            }
+          }
+        })
         // this.form.img_url_arr = {
         //   'default': this.form.img_default,
         //   '3_8': this.form.img_3_8
         // };
         // this.form.project_id = this.project_id;
         // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        var vm = this;
-        this.form._fn = function () {
-          vm.handleClose();
-          vm.showPop('保存成功！', 1000);
-        };
+
         // if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
         //   var preList = [];
         //   for (var i = 0; i < this.top_course_list.length; i++) {
@@ -368,15 +405,6 @@
         //   }
         //   this.form.pre_curriculum_ids = preList;
         // }
-        this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
-        this.form.page = this.payload.page
-        if (this.stateName == 1) {
-            this.add_online_curriculum(this.form)
-        }
-        else {
-            this.edit_online_curriculum({data: this.form});
-            this.addCourseDialogVisible = false
-        }
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},
@@ -502,6 +530,7 @@
   }
 </script>
 <style scoped lang="scss">
+    /deep/ .ivu-form-item-error-tip{padding: 0;}
 /deep/ .upload-panel .img img { height: 250px; }
 /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
 /deep/.ivu-modal-header-inner{

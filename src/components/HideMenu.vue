@@ -1,12 +1,14 @@
 <template>
-  <div class="hide-menu-main">
+  <div class="hide-menu-main" :style="widthStyle">
       <img class="hide-menu-img" src="../assets/img/logo-white1.jpg" />
   </div>
 </template>
 
 <script>
+    import hideMenuMixins from '../views/ProductManage/MainProduct/hideMenuMixins'
   export default {
     props: ['text', 'hide'],
+    mixins: [hideMenuMixins],
     mounted: function () {
       document.title = this.text;
     }
