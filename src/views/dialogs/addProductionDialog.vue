@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Modal :transfer=false :title="!payload? '添加培训' : '编辑培训'" :footer-hide=true :width="654"
+    <Modal :transfer=false :title="!payload? '添加培训' : '编辑培训'" :footer-hide=true :width="654" :mask-closable="false"
     v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" >
         <base-input @closedialog="handleClose">
             <Row slot="body">

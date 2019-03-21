@@ -187,7 +187,8 @@
         this.handleSelModal(ADD_COURSE, {
             page: {page_size: this.pageSize, page_num: this.current},
             keyword: this.keyword,
-            state: 1
+            state: 1,
+            modify: 1
         });
       },
       editChapterHandler(index) {

@@ -260,8 +260,8 @@
       this.stateName = this.payload.state
       this.getListTeacher()
       // this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
-      let d = this.payload.row
       if(this.payload.modify === 0){
+        let d = this.payload.row
         this.form = d
         this.form.img_default = d.img_url
       }
@@ -269,26 +269,26 @@
       // this.get_role_list();
       // this.get_subject_list();
       // this.get_grade_list();
-      this.checkPayload();
+      // this.checkPayload();
       // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
-    watch: {
-      query_subject_list(val) {
-        this.checkPayload();
-      },
-      query_grade_list(val) {
-        this.checkPayload();
-      },
-      query_teacher_list(val) {
-        this.checkPayload();
-      },
-      query_teacher_roles(val) {
-        this.checkPayload();
-      },
-      query_online_course_list(val) {
-        this.checkPayload();
-      }
-    },
+    // watch: {
+    //   query_subject_list(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_grade_list(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_teacher_list(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_teacher_roles(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_online_course_list(val) {
+    //     this.checkPayload();
+    //   }
+    // },
     computed: {
       ...mapState({
         query_subject_list: state => state.subject.subject_list,
