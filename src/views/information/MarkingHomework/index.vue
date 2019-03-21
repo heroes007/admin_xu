@@ -68,28 +68,8 @@
                 operation_btn_hide: true,
                 operation: [['查看','operation1',true], ['批阅','operation2']],
             }],
-            list: [
-                // {
-                //     "user_id": 13186,
-                //     "nickname": "150****1134",
-                //     "sex": "呼吸内科",
-                //     "realname": "王晓东",
-                //     "phone": "住培一年级",
-                //     "from_domain": '正常',
-                //     "create_time": "2019/01/12 21:34",
-                //     "state1": 0
-                // },
-                //  {
-                //     "user_id": 13186,
-                //     "nickname": "150****1134",
-                //     "sex": "呼吸内科",
-                //     "realname": "王晓东",
-                //     "phone": "住培一年级",
-                //     "from_domain": '正常',
-                //     "create_time": "2019/01/12 21:34",
-                //     "state1": 1 //1--已批阅 0 -- 未批阅
-                // }
-            ]
+            list: [],
+            listStyle: {}
         }
     },
     computed:{
@@ -145,6 +125,9 @@
             }).then(res =>  {
               res.data.data.forEach(item => {
                 item.isState = item.mark_state == 1 ? '已批阅' : '未批阅'
+              })
+              res.data.data.forEach(item => {
+                if(item.mark_state == 0) item.cellClassName =  {isState: 'demo-table-info-column'}
               })
                 this.list = res.data.data
                 this.total = res.data.count

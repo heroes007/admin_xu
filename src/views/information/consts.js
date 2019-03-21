@@ -59,7 +59,7 @@ let d = [
       // },
       {
         text: '批阅',
-        param: 'marking'
+        param: 'marking',
       },
       {
       text: '编辑',

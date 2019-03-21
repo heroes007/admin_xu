@@ -4,41 +4,41 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
+                    <Form class="add-course-form" :label-position="labelPosition" :label-width="100" :rules="ruleValidate" ref="form" :model="form">
                         <!--<Row>-->
                             <Col>
-                                <FormItem label="课程名称">
+                                <FormItem label="课程名称" prop="title">
                                     <Input v-model="form.title" placeholder="请输入课程名称"></Input>
                                 </FormItem>
-                                <FormItem label="课程讲师">
+                                <FormItem label="课程讲师" prop="teacher_id">
                                     <Select v-model="form.teacher_id" placeholder="请选择观讲师">
                                         <Option v-for="item in teacherList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="科室">
+                                <FormItem label="科室" prop="department_id">
                                     <Select v-model="form.department_id" placeholder="请选择科室">
                                         <Option v-for="item in detpysList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="年级">
+                                <FormItem label="年级" prop="grade_id">
                                     <Select v-model="form.grade_id" placeholder="请选择学段">
                                         <Option v-for="item in gradesList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="解锁方式">
+                                <FormItem label="解锁方式" prop="unlock_type">
                                     <Select v-model="form.unlock_type" placeholder="请选择解锁方式">
                                         <Option v-for="item in clearList" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                                <FormItem label="课程状态">
+                                <FormItem label="课程状态" prop="state">
                                     <Select v-model="form.state" placeholder="请选择课程状态">
                                         <Option v-for="item in query_state_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                     </Select>
                                 </FormItem>
-                               <FormItem label="课程介绍">
+                               <FormItem label="课程介绍" prop="description">
                                     <Input type="textarea" :rows="7" placeholder="请输入课程介绍" v-model="form.description"></Input>
                                 </FormItem>
-                                <FormItem label="展示封面">
+                                <FormItem ref="upload" label="展示封面" required>
                                     <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                         <span slot="file-require">只能上传 jpg/png 文件，且图片比例为16:9，建议尺寸768*432px</span>
                                     </upload-panel>
@@ -178,7 +178,7 @@
           end_time: new Date(),
           subject_id: 0,
           grade_id: 0,
-          state: this.payload.row.state || 0,
+          state: this.payload.hasOwnProperty('row')&&this.payload.row.state || 0,
           img_default: '',
           img_3_8: '',
           img_url_arr: null,
@@ -187,7 +187,7 @@
           curriculum_roles: [0],
           pre_curriculum_ids: [],
           data_center_id: 0,
-          unlock_type: this.payload.row.unlock_type || 0
+          unlock_type: this.payload.hasOwnProperty('row')&&this.payload.row.unlock_type || 0
         },
         newData: {
           show: false,
@@ -230,7 +230,30 @@
             id: 3,
             name: '按视频解锁'
           }
-        ]
+        ],
+        ruleValidate:{
+          title: [
+            { required: true, message: '请输入课程名称', trigger: 'blur' }
+          ],
+          teacher_id:[
+            { required: true, message: '请选择课程讲师' }
+          ],
+          department_id:[
+            { required: true, message: '请选择科室' }
+          ],
+          grade_id:[
+            { required: true, message: '请选择年级' }
+          ],
+          unlock_type:[
+            { required: true, message: '请选择解锁方式' }
+          ],
+          state:[
+            { required: true, message: '请选择课程状态' }
+          ],
+          description:[
+            { required: true, message: '请输入课程介绍', trigger: 'blur' }
+          ]
+        }
       }
     },
     mounted() {
@@ -242,31 +265,30 @@
         this.form = d
         this.form.img_default = d.img_url
       }
-      console.log(this.form,'fff');
-        // if (this.query_teacher_list.length === 0) this.get_teacher_list();
+      // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();
       // this.get_grade_list();
-      this.checkPayload();
+      // this.checkPayload();
       // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
-    watch: {
-      query_subject_list(val) {
-        this.checkPayload();
-      },
-      query_grade_list(val) {
-        this.checkPayload();
-      },
-      query_teacher_list(val) {
-        this.checkPayload();
-      },
-      query_teacher_roles(val) {
-        this.checkPayload();
-      },
-      query_online_course_list(val) {
-        this.checkPayload();
-      }
-    },
+    // watch: {
+    //   query_subject_list(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_grade_list(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_teacher_list(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_teacher_roles(val) {
+    //     this.checkPayload();
+    //   },
+    //   query_online_course_list(val) {
+    //     this.checkPayload();
+    //   }
+    // },
     computed: {
       ...mapState({
         query_subject_list: state => state.subject.subject_list,
@@ -351,17 +373,36 @@
         if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
       },
       handleSubmit() {
+          this.$refs.form.validate((valid) => {
+            if(valid) {
+              if(this.form.img_default){
+                var vm = this;
+                this.form._fn = function () {
+                  vm.handleClose();
+                  vm.showPop('保存成功！', 1000);
+                };
+                this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
+                this.form.page = this.payload.page
+                if (this.stateName == 1) {
+                  this.add_online_curriculum(this.form)
+                }
+                else {
+                  this.edit_online_curriculum({data: this.form});
+                  this.addCourseDialogVisible = false
+                }
+              }else{
+                this.$Message.info('请上传展示封面')
+              }
+            }
+          })
+
         // this.form.img_url_arr = {
         //   'default': this.form.img_default,
         //   '3_8': this.form.img_3_8
         // };
         // this.form.project_id = this.project_id;
         // this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        var vm = this;
-        this.form._fn = function () {
-          vm.handleClose();
-          vm.showPop('保存成功！', 1000);
-        };
+
         // if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
         //   var preList = [];
         //   for (var i = 0; i < this.top_course_list.length; i++) {
@@ -369,15 +410,6 @@
         //   }
         //   this.form.pre_curriculum_ids = preList;
         // }
-        this.getName([{list: this.teacherList, id:this.form.teacher_id, name:'teacher_name'}, {list:this.detpysList, id: this.form.department_id, name: 'department_name'}, {list: this.gradesList, id:this.form.grade_id, name:'grade_name'}])
-        this.form.page = this.payload.page
-        if (this.stateName == 1) {
-            this.add_online_curriculum(this.form)
-        }
-        else {
-            this.edit_online_curriculum({data: this.form});
-            this.addCourseDialogVisible = false
-        }
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},
@@ -503,6 +535,7 @@
   }
 </script>
 <style scoped lang="scss">
+    /deep/ .ivu-form-item-error-tip{padding: 0;}
 /deep/ .upload-panel .img img { height: 250px; }
 /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
 /deep/.ivu-modal-header-inner{

@@ -94,6 +94,7 @@
           params: '',
           name: "open-product",
         });
+        localStorage.setItem('onlinePane','product1')
         window.open(routeData.href, "_blank")
       },
       handleCurrentChange(val) {

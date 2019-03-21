@@ -2,7 +2,7 @@
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
             <Col  v-if="menushow" class='menu-bar'><side-menu/></Col>
-            <Col  v-if="!menushow"><HideMenu /></Col>
+            <Col  v-if="!menushow" ><HideMenu /></Col>
             <Col class='sub-view' :style="viewStyl">
                 <div class="hide-menu-btn" @click="hideMenu"><Icon class="hide-icon" :type="hideIcon" /></div>
                 <router-view />
@@ -20,7 +20,7 @@
 
     export default{
         mixins: [hideMenuMixins],
-        components:{ 'side-menu':SideMenu, HideMenu }
+        components:{ 'side-menu':SideMenu, HideMenu },
     }
 </script>
 <style lang="scss">

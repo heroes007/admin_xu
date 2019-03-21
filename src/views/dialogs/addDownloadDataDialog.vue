@@ -193,6 +193,7 @@ export default {
             this.form.url_name = this.payload.form.attachment_name
             this.isupdata = false
           }
+          console.log(this.form, 'form')
         }
     }
 }
