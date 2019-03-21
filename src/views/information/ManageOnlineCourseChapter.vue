@@ -407,6 +407,9 @@
 
 </script>
 <style scoped lang='scss'>
+    /deep/ .ivu-table td,/deep/ .ivu-table tr{
+      background: #f0f0f6
+    }
     /deep/ .ivu-table-header{
         display: none;
     }

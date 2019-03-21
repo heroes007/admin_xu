@@ -153,7 +153,6 @@
   import {RemoveModal} from './mixins'
   import UploadPanel from '../../components/UploadPanel'
   import { mapActions, mapState } from 'vuex';
-  import { get_detail } from '../../api/modules/tools_curriculum'
   import { cleanHtmlLabel } from '../../components/Util'
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'
@@ -269,26 +268,8 @@
       // this.get_role_list();
       // this.get_subject_list();
       // this.get_grade_list();
-      // this.checkPayload();
       // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
-    // watch: {
-    //   query_subject_list(val) {
-    //     this.checkPayload();
-    //   },
-    //   query_grade_list(val) {
-    //     this.checkPayload();
-    //   },
-    //   query_teacher_list(val) {
-    //     this.checkPayload();
-    //   },
-    //   query_teacher_roles(val) {
-    //     this.checkPayload();
-    //   },
-    //   query_online_course_list(val) {
-    //     this.checkPayload();
-    //   }
-    // },
     computed: {
       ...mapState({
         query_subject_list: state => state.subject.subject_list,
@@ -448,62 +429,6 @@
         this.unchecked_top_courses = [];
         //取消全选状态
         this.checkAll = [];
-      },
-      checkPayload() {
-        if (this.payload
-          && this.query_teacher_list.length != 0
-          && this.query_teacher_roles.length != 0
-          && this.query_subject_list.length != 0
-          && this.query_grade_list.length != 0
-          && this.query_online_course_list.length != 0
-          && !this.loadingInstance
-          && !this.form.title) {
-          this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-          setTimeout(() => {
-            this.loadingInstance.close();
-          }, Config.base_timeout);
-          get_detail(this.payload.curriculum_id).then(res => {
-            if (res.data.res_code === 1) {
-              this.form.title = res.data.msg.curriculum[0].title;
-              this.form.teacher_id = res.data.msg.curriculum[0].teacher_id;
-              this.form.start_time = new Date(res.data.msg.curriculum[0].start_time);
-              this.form.end_time = new Date(res.data.msg.curriculum[0].end_time);
-              this.form.subject_id = res.data.msg.curriculum[0].subject_id;
-              this.form.grade_id = res.data.msg.curriculum[0].grade_id;
-              this.form.state = res.data.msg.curriculum[0].state;
-              this.form.data_center_id = res.data.msg.data_center_id;
-              var imgList = JSON.parse(res.data.msg.curriculum[0].img_url_arr);
-              this.form.img_default = imgList.default;
-              this.form.img_3_8 = imgList['3_8'];
-              this.form.description = cleanHtmlLabel(res.data.msg.curriculum[0].description);
-              this.form.orderby = res.data.msg.curriculum[0].orderby;
-              this.form.curriculum_roles = res.data.msg.curriculum_role ? res.data.msg.curriculum_role : [0];
-              this.form.pre_curriculum_ids = res.data.msg.pre_curriculum;
-              if (this.loadingInstance) this.loadingInstance.close();
-              this.top_course_list = [];
-              this.checked_top_courses = [];
-              this.unchecked_top_courses = [];
-              for (var i = 0; i < this.form.pre_curriculum_ids.length; i++) {
-                for (var j = 0; j < this.query_replace_online_course_list.length; j++) {
-                  if (this.query_replace_online_course_list[j].curriculum_id === this.form.pre_curriculum_ids[i]) {
-                    this.top_course_list.push(this.query_replace_online_course_list[j]);
-                    this.unchecked_top_courses.push(this.query_replace_online_course_list[j]._index);
-                    this.checked_top_courses.push(this.query_replace_online_course_list[j]._index);
-                  }
-                }
-
-              }
-            }
-          });
-        }
-        // this.top_course_list = _.difference(this.top_course_list, this.checked_top_courses);
-        // //取消已制定状态
-        // this.checked_top_courses = [];
-        // //取消未指定选定状态
-        // this.unchecked_top_courses = [];
-        // //取消全选状态
-        // this.checkAll = [];
-
       },
       handleDefaultUploadComplete(url) {
         this.form.img_default = url;
