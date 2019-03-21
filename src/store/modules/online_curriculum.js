@@ -9,7 +9,7 @@ import {
     change_curriculum_list
 } from '../../api/modules/tools_curriculum'
 import {get_catalog, set_catalog_orderby, delete_catalog} from '../../api/modules/tools_curriculum_catalog'
-import {add_video, update_video, select_add_video} from '../../api/modules/tools_video'
+import {add_video, update_video, select_add_video, add_chapter} from '../../api/modules/tools_video'
 import {add_video_test, update_video_test} from '../../api/modules/tools_video_test'
 
 const state = {
@@ -143,6 +143,16 @@ const actions = {
     add_online_curriculum_video({dispatch,commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
         add_video(params).then(res => {
+            if (res.data.res_code === 1) {
+                dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
+                // commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
+                // params._fn();
+            }
+        })
+    },
+    add_online_curriculum_chapter({dispatch,commit}, params) {
+        commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
+        add_chapter(params).then(res => {
             if (res.data.res_code === 1) {
                 dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
                 // commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});

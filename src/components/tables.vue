@@ -116,6 +116,7 @@
            postData(this.seeUrl, {id: row.organization_id}).then((res) => {
             if(res){
               row = {...row, ...res.data[0]}
+              row.head_img_url = res.data[0].admin[0].head_img_url
               if (this.selectList) row.list = this.getArray(this.selectList, res.data[0].admin[0])
               this.$emit(params, row, rowIndex)
             }
@@ -133,6 +134,7 @@
           if (!t.hasOwnProperty('align')) t.align = 'center'
           t.tooltip = true
         })
+        console.log(c,'cc')
         this.columns = c
       },
       change(row) {
@@ -146,7 +148,8 @@
         } else return t[0]
       },
       getArray(name, string) {
-        console.log(string,'string')
+        // console.log(string,'gg')
+        string.role_name = this.$config.status(string.role_id)
         let arr = [], str
         name.forEach((item, index) => {
           for (var x in string) {
@@ -154,7 +157,7 @@
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                 arr.push(`${item.name}: ${string.realname}`)
               } else {
-                str = item.name + ':' + ' ' + string[x]
+                str = item.name + ':' + ' ' + (string[x] ? string[x] : '—')
                 arr.push(str)
               }
             }

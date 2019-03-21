@@ -64,8 +64,7 @@
         postData('/product/product/get_detail',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id} ).then((res) => {
             this.detail = res.data[0]
             let d = JSON.parse(this.detail.url_arr);
-            this.detailImg = d.default
-            console.log(this.detail);
+            this.detailImg = d.default[0]
             // if(d.default) this.detailVideo = d.video
         })
       },

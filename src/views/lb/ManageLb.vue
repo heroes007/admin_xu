@@ -5,25 +5,24 @@
                 <div slot="header" class="modal-header">
                     <div>添加广告图</div>
                 </div>
-                <Form :model="lbData" :label-width="80">
-                    <FormItem label="广告名称">
+                <Form ref="lbForm" :model="lbData" :label-width="80" :rules="rules">
+                    <FormItem label="广告名称" prop="name">
                         <Input v-model="lbData.name" placeholder="请输入广告名称"></Input>
                     </FormItem>
-                     <FormItem label="显示位置">
-                         <Input placeholder="首页轮播/课程页轮播" disabled></Input>
-                         <!-- <Input v-if="adutplace == '首页广告'" placeholder="首页广告" disabled></Input> -->
-                         <!-- <Input v-else placeholder="课程广告" disabled></Input> -->
+                     <FormItem label="显示位置" >
+                         <Input v-if="adutplace == '首页轮播'" placeholder="首页轮播" disabled></Input>
+                         <Input v-else placeholder="课程页轮播" disabled></Input>
                     </FormItem>
-                     <FormItem label="跳转页面">
+                     <FormItem label="跳转页面" prop="redirect_url">
                         <Input v-model="lbData.redirect_url" placeholder="请输入跳转页面"></Input>
                     </FormItem>
-                     <FormItem label="上传广告">
+                     <FormItem label="上传广告" required>
                          <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                 <span slot="file-require">* 只能上传 jpg/png 文件，建议尺寸1400*360px</span>
                          </UploadPanel>
                     </FormItem>
                      <Row class='user-data' type='flex' justify='center' align='middle'>
-                            <Button style="margin-top:60px" type="primary" @click='submit'>保存</Button>
+                            <Button style="margin-top:60px" type="primary" @click='submit("lbForm")'>保存</Button>
                      </Row>
                 </Form>
             </Modal>
@@ -95,15 +94,18 @@
                 columns1:[
                   {
                     title: '广告名称',
-                    key: 'name'
+                    key: 'name',
+                    align: 'left',
+                    minWidth: 200
                   },
                   {
                     title: '显示位置',
-                    key: 'position'
+                    key: 'position_name',
+                    minWidth: 100
                   },
                   {
                     title: '状态',
-                    key: 'state'
+                    key: 'state_name'
                   },
                   {
                       title:'创建人',
@@ -118,7 +120,11 @@
                   },
                 ],
                 list:[],
-                adutplace:'首页广告'
+                adutplace:'首页轮播',
+                rules: {
+                    name: { required: true, message: '请输入广告名称', trigger: 'blur'},
+                    redirect_url: { required: true, message: '请输入跳转页面', trigger: 'blur' }
+                }
             }
         },
         methods: {
@@ -138,6 +144,7 @@
             close(){
                 this.lbData = this.lbData2;
                 this.showModal = false
+                this.$refs.lbForm.resetFields()
             },
             setSubmit(){
                  this.lbData.position = this.type ? 1 : 2;
@@ -145,13 +152,18 @@
                  postData(url,this.lbData).then((res) => {
                      if(res.res_code == 1){
                         this.$Message.warning(res.msg);
+                        this.close()
                         this.getList()
                      }
                  })
-                  this.close()
             },
-            submit(){
-               this.setSubmit()
+            submit(name){
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        if(this.lbData.img_url)  this.setSubmit() 
+                        else  this.$Message.warning('请上传广告');
+                    }
+                })
             },
             handleCurrentChange(v){
                 this.current = vl;
@@ -160,12 +172,12 @@
             addLb() {
                 this.showModal = true;
                 this.isEdit = false
-                this.adutplace = '首页广告';
+                this.adutplace = '首页轮播';
             },
             addNew() {
                 this.showModal = true;
                 this.isEdit = false
-                this.adutplace = '课程广告';
+                this.adutplace = '课程页轮播';
             },
             handleDefaultUploadComplete(url) {
                 this.lbData.img_url = url;
@@ -178,6 +190,12 @@
                 }
                 postData('/platform/banner/getBannerListAdmin', d).then((res) => {
                     this.list = res.data.list
+                    if(this.list.length>0){
+                       this.list.map((t) => {
+                           t.position_name = t.position == 2 ? '课程页轮播' : '首页轮播'
+                           t.state_name = t.state ? '上线中' : '已下线'
+                       })
+                    }
                     this.total = res.data.count
                 })
             },
@@ -190,6 +208,9 @@
 </script>
 
 <style scoped lang="scss">
+     /deep/ .ivu-input-disabled::-webkit-input-placeholder{
+         color: #474C63
+     }
      /deep/ .ivu-input[disabled]{
           background-color: #F0F0F7;
           color: #474C63
@@ -270,10 +291,6 @@
     /deep/ .ivu-table-cell{
         font-size: 16px;
         color: #657180;
-        text-align: center;
-    }
-    /deep/ .ivu-table th{
-        text-align: center;
     }
     /deep/ .ivu-select-single .ivu-select-selection .ivu-select-selected-value{
         font-size: 14px;

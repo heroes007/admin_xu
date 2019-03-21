@@ -202,12 +202,12 @@
       },
       editCourseHandler(index,row) {
         this.handleSelModal(ADD_COURSE, {
-          page: {page_size: this.pageSize, page_num: this.current},
-          keyword: this.keyword,
-          state: 0,
-          index,
-          row,
-          modify: 0
+              page: {page_size: this.pageSize, page_num: this.current},
+              keyword: this.keyword,
+              state: 0,
+              index,
+              row,
+              modify: 0
         });
       },
       reRenderListHandler(v) {

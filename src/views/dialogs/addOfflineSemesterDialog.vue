@@ -8,13 +8,7 @@
                     <FormItem label="学期名称" prop="title" required>
                         <Input v-model="form1.title" placeholder="请输入学期名称"></Input>
                     </FormItem>
-                    <!-- <FormItem label="学期阶段" prop="level1" required>
-                        <Select v-model="form1.level1" placeholder="请选择学期阶段">
-                            <Option label="一阶" :value="0"></Option>
-                            <Option label="二阶" :value="1"></Option>
-                        </Select>
-                    </FormItem> -->
-                    <FormItem label="开课日期" prop="stage1" required>
+                    <FormItem label="开课日期" prop="stage1">
                         <DatePicker v-model="form1.stage1" type="daterange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
                     </FormItem>
                     <FormItem label="报名截止">
@@ -76,14 +70,7 @@
           stage1: [{
             type: 'array',
             required: true,
-            message: '请选择时间范围',
-            trigger: 'change'
-          }],
-          level1: [{
-            required: true,
-            type: 'number',
-            message: '请选择学期阶段',
-            trigger: 'change'
+            fields: { 0: {type: 'date', required: true, message: '请输入开课日期'},1: {type: 'date', required: true, message: '请输入结课日期'}} 
           }],
           description: [{
             required: true,
@@ -121,6 +108,9 @@
         }
         return {}
       }
+    },
+    mounted(){
+      console.log(this.form1.stage1,'ss');
     },
     methods: {
       ...mapActions([ 'add_offline_term', 'edit_offline_term', 'get_subject_list', 'get_offline_term_list' ]),
@@ -226,7 +216,7 @@
     letter-spacing: 0;
     }
     /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
-    /deep/ .ivu-form-item{margin-bottom: 15px;}
+    /deep/ .ivu-form-item{margin-bottom: 22px;}
     #add-offline-semester-container {
         @import "base.scss";
         input,

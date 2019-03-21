@@ -3,19 +3,19 @@
            @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
             <Row  slot="header" class='search-bar' type='flex' align='middle'>
-                <Select v-model="searchType" placeholder="请选择" style="width: 165px;margin-left: 20px;">
-                    <Option label="已完成培训" value="nickname"></Option>.
-                    <Option label="未完成培训" value="phone"></Option>
-                </Select>
-                <Input placeholder="请输入用户名" v-model="searchData"> </Input>
+                <!-- <Select @on-change="searchType" v-model="complete_state" placeholder="请选择" style="width: 165px;margin-left: 20px;">
+                    <Option label="已完成培训" value="1"></Option>
+                    <Option label="未完成培训" value="0"></Option>
+                </Select> -->
+                <Input @on-change="search"  placeholder="请输入用户名" v-model="keyword"> <Icon type="ios-search" slot="prefix" /> </Input>
             </Row>
            <Row slot="body">
-                <Table class="table" ref="table" :data="queryOfflineUserList" @on-select-all="handleSelectedAll"
+                <Table class="table" ref="table" :data="list" @on-select-all="handleSelectedAll"
                        :columns="courseColumns" style="width: 100%" @on-selection-change="handleSelectionChange">
                 </Table>
                 <Row class="course-page">
-                    <Page @on-change="handleCurrentChange" :current="curPage"
-                       size="small" :page-size="pageSize" :total="totalNum"></Page>
+                    <Page @on-change="handleCurrentChange" :current="current"
+                       size="small" :page-size="pageSize" :total="total"></Page>
                 </Row>
                 <Row class="btns">
                     <Button class="send-btn" @click="handleSendTask">发送</Button>
@@ -30,6 +30,7 @@
   import UploadPanel from '../../components/UploadPanel'
   import {RemoveModal} from './mixins'
   import {send_student_offline_curriculum} from '../../api/modules/tools_student'
+  import postData from 'src/api/postData'
 
   let tooltips = {ellipsis: true, tooltip: true}
 
@@ -46,18 +47,24 @@
       return {
         sendOfflineCourse: true,
         multipleSelection: [],
-        searchType: 'phone',
         searchData: '',
         curPage: 1,
         checked: false,
+        current: 1,
+        total: null,
+        pageSize: 12,
+        list: [],
+        complete_state: '1',
+        keyword: '',
         courseColumns: [
           {
             title: '用户名',
-            key: 'user_id'
+            key: 'username',
+             ...tooltips
           },
           {
             title: '姓名',
-            key: 'nickname',
+            key: 'realname',
             ...tooltips
           },
           {
@@ -67,62 +74,50 @@
           },
           {
             title: '科室',
-            key: 'subject_name'
+            key: 'department_name'
           },
           {
             title: '班级',
             key: 'grade_name',
           },
-          {
-            title: '完成率',
-            key: 'grade_name',
-          },
+          // {
+          //   title: '完成率',
+          //   key: 'complete_rate',
+          // },
           {
             type: 'selection'
           }
         ]
       }
     },
-    computed: {
-      queryOfflineUserList() {
-        let _d = this.$store.state.offline_curriculum.offline_term_student
-        _d.map((it) => {
-          it.subject_name = this.handleTableToName(this.$store.state.subject.subject_list, it.subject_id)
-          it.grade_name = this.handleTableToName(this.$store.state.grade.grade_list, it.grade_id)
-        })
-        return _d
-      },
-      pageSize() {
-        return this.$store.state.offline_curriculum.page_size
-      },
-      pageIndex() {
-        return this.$store.state.offline_curriculum.page_index
-      },
-      totalNum() {
-        return this.$store.state.offline_curriculum.total_num
-      }
-    },
     mounted() {
-      this.handleQueryList();
+      this.getList()
     },
     methods: {
-      handleTableToName(d, v) {
-        var name = ''
-        d.map(item => {
-        //   if (item.id == v) name = item.name
-        })
-        return name;
-      },
-      handleQueryList() {
-        this.$store.dispatch('get_students_by_offline_term', {
-        //   offline_term_id: this.payload.row.id,
-          page_index: this.pageIndex,
+      getList(){
+        let d = {
+          product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
           page_size: this.pageSize,
-          subject_id: '',
-          grade_id: '',
-          phone: '',
-          username: ''
+          page_num: this.current,
+          keyword: this.keyword,
+          honour_id: this.payload.row.id,
+          complete_state: +this.complete_state
+        };
+        postData('product/get_product_students',d).then((res) => {
+          this.list = res.data.list
+          this.list.map((t) => {
+            t._disabled = t.state ? true : false
+            t._checked = t.state ? true : false
+          })
+          this.total = res.data.count
         })
+      },
+      search(){
+        this.getList()
+      },
+      searchType(v){
+        this.complete_state = v;
+        this.getList()
       },
       handleSelectedAll(val) {
         this.multipleSelection = val
@@ -134,67 +129,40 @@
         this.multipleSelection = val;
       },
       handleCurrentChange(val) {
-        this.$store.dispatch('get_students_by_offline_term', {
-          offline_term_id: this.payload.row.id,
-          page_index: val,
-          page_size: this.pageSize,
-          subject_id: '',
-          grade_id: '',
-          phone: '',
-          username: ''
-        })
+        this.current = val;
+        this.getList()
       },
       handleSendTask() {
         var list = [];
         if (this.multipleSelection && this.multipleSelection.length > 0) {
           this.multipleSelection.map(item => {
-            list.push(item.user_id)
+            list.push(item.id)
           });
         }
         if (list.length > 0) {
-          send_student_offline_curriculum({offline_term_id: this.payload.row.id, user_id: list}).then(res => {
-            if (res.data.res_code == 1) {
+          let d = {
+            product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+            honour_id: this.payload.row.id,
+            user_ids: list
+          }
+          postData('/product/issue_honour_to_user',d).then((res) => {
+            if (res) {
               this.$Modal.info({
                 title: '提示',
-                content: '线下课发送成功!',
+                content: '证书颁发成功!',
               });
-              this.handleQueryList();
+              this.getList()
             }
           })
         } else {
           this.$Message.warning('请选择要发送线下课的学生!');
         }
-      },
-      searchStudent() {
-        var phone = '';
-        var username = '';
-        var id = '';
-        switch (this.searchType) {
-          case 'phone':
-            phone = this.searchData;
-            break;
-          case 'nickname':
-            username = this.searchData;
-            break;
-          case 'id':
-            id = this.searchData;
-            break;
-        }
-        this.$store.dispatch('get_students_by_offline_term', {
-          offline_term_id: this.payload.row.id,
-          page_index: 0,
-          page_size: this.pageSize,
-          subject_id: this.payload.row.subject_id,
-          grade_id: this.payload.row.grade_id,
-          phone: phone,
-          username: username,
-          userid: id
-        })
       }
     }
   }
 </script>
 <style lang="scss" scoped>
+    /deep/ .ivu-select-selected-value{padding-left: 15px;}
     /deep/ .ivu-input-wrapper{
       margin-left: 15px;
     }
@@ -233,7 +201,7 @@
        border-radius: 18px;
     }
     /deep/ .ivu-input-wrapper{
-       width: 349px;
+       width: 670px;
     }
     /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
     /deep/.ivu-modal-header-inner{

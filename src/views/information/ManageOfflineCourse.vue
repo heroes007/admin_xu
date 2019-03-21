@@ -92,7 +92,7 @@
             prop: 'title',
             label: '学期名称',
             align: 'left',
-            minWidth: 100
+            minWidth: 200
           },
           {
             prop: 'curriculum_num',
@@ -175,29 +175,36 @@
             listExpand: true,
             width: 90,
             listExpandBtn: true,
-            childHeader: [{
+            childHeader: [
+            {
+              prop: '',
+              label: '',
+              width: 100,
+              className: 'prop_key_0'
+            },{
               prop: 'title',
               label: '课程名称',
+              align: 'left'
             },
              {
               prop: 'type_text',
               label: '类型',
-              width: 100
+              width: 120
             },
               {
                 prop: 'teacher_name',
                 label: '讲师',
-                width: 100
+                width: 180
               },
              {
               prop: 'start_time',
               label: '开课时间',
-              width: 150
+              width: 180
             },
              {
               prop: 'end_time',
               label: '结课时间',
-              width: 150
+              width: 180
             },
              {
               label: '操作',
@@ -266,7 +273,7 @@
       copyItem(index, row){
          this.$Modal.confirm({
             title: '提示',
-            content: '是否复制学期',
+            content: '确定你要复制该学期？',
             onOk: () => {
                 postData('/product/curriculum_offline/term_copy',{...this.dataList[index], term_underline_id:row.id}).then((res) => {
                 if(res.res_code === 1){
@@ -317,7 +324,7 @@
         } else {
           this.$Modal.confirm({
             title: '提示',
-            content: '<p>您删除该学期?</p >',
+            content: '<p>确定您要删除该学期?</p >',
             onOk: () => {
               vm.delete_offline_term({ index, row });
             },
@@ -375,5 +382,8 @@
         font-size: 16px;
         color: #4098FF;
         letter-spacing: 0;
+    }
+    /deep/.prop_key_0>.ivu-table-cell>span{
+      display: none
     }
 </style>

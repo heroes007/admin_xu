@@ -8,7 +8,7 @@
                         <div>
                             <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                                 <div style="display: flex;align-items: center">
-                                    <span class="row-title">第{{index + 1}}章</span>
+                                    <span class="row-title">第{{setIndex(index + 1)}}章</span>
                                     <Input v-model="item.group_name" @on-change="editorNote(item, index)"
                                          @on-blur="outInput(index)" @on-focus="showDataState(index)" class="textInput" style="width: 300px;"/>
                                 </div>
@@ -26,21 +26,21 @@
                                    :table-data='item.children' :header-data='dataHeader' :is-stripe='false'
                                     v-if='showListState[index] == 1 && item.hasOwnProperty("children") && item.children.length > 0'></data-list>
                     </div>
-                    <!--<div class='chapter-item' v-if='newChapterData.showAddChapter'>-->
-                        <!--<Row class='chapter-title' type='flex' justify='space-between' align='middle'>-->
-                            <!--<div style="display: flex;align-items: center">-->
-                                <!--<span class="row-title">第{{chapterList.length + 1}}章</span>-->
-                                <!--<Input v-model="newChapterData.group_name"   @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"-->
-                                       <!--@on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>-->
-                            <!--</div>-->
+                    <div class='chapter-item' v-if='newChapterData.showAddChapter'>
+                        <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
+                            <div style="display: flex;align-items: center">
+                                <span class="row-title">第{{chapterList.length + 1}}章</span>
+                                <Input v-model="newChapterData.group_name"  @on-enter="saveChapter(newChapterData,true)"  @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
+                                       @on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>
+                            </div>
                             <!--<div style="margin-right: 25px;">-->
                                 <!--<Button type='text' @click="addVideo()">添加视频</Button>-->
                                 <!--<Button type='text' @click="addTest()">添加测验</Button>-->
                                 <!--&lt;!&ndash;<Button v-if='showListState[0] == 0' type="text"  @click="toggleListShow(0)">展开</Button>&ndash;&gt;-->
                                 <!--&lt;!&ndash;<Button v-else-if='showListState[0] == 1' type="text"  @click="toggleListShow(0)">收起</Button>&ndash;&gt;-->
                             <!--</div>-->
-                        <!--</Row>-->
-                    <!--</div>-->
+                        </Row>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
       },
       dataHeader() {
         return [
-          {label: '顺序', width: 90, sort: true},
+          {label: '顺序', width: 130, prop: 'node_number'},
           {prop: 'group_name', label: '小节名称', align: 'left'},
           // {
           //   prop: '',
@@ -145,13 +145,15 @@
           var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
         if (Array.isArray(curriculumList) && curriculumList.length > 0) {
           var curriculumId = this.$route.params.id;
-          for (var i = 0; i < curriculumList.length; i++) {
-            if (curriculumList[i].curriculum_id == curriculumId) {
-              // curriculumList[i].children = []
-                // return doSortFormatCatalogList(curriculumList[i].chapterList);
+          curriculumList.map((t,i) => {
+            if(t.children&&t.children.length>0){
+              t.children.map((m,k) => {
+               m.node_number = '第'+this.setIndex(k+1)+'节'
+              })
             }
-          }
+          })
         }
+        console.log(curriculumList);
         return curriculumList || [];
       },
       curriculumList() {
@@ -186,6 +188,9 @@
       saveChapter2(t,i){
 
       },
+      setIndex(n){
+        return this.$config.ArabiaToSimplifiedChinese(n)
+      },
       saveChapter(t,i){
         let d = {}
         d.curriculum_id = +this.$route.params.id
@@ -197,7 +202,7 @@
          delete d.duration
          delete d.video_url
         }
-        this.$store.dispatch('add_online_curriculum_video',d)
+        this.$store.dispatch('add_online_curriculum_chapter',d)
       },
       handleClick(val) {
         this.newChapterData.showAddChapter = true;

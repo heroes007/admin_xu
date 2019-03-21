@@ -85,14 +85,7 @@ import { all } from 'q';
     },
     computed: {
       queryOfflineUserList() {
-        let _d = this.$store.state.offline_curriculum.offline_term_student
-        // if(_d&&_d.length>0){
-        //   _d.map((it) => {
-        //   it.subject_name = this.handleTableToName(this.$store.state.subject.subject_list, it.subject_id)
-        //   it.grade_name = this.handleTableToName(this.$store.state.grade.grade_list, it.grade_id)
-        // })
-        // }
-        return _d
+        return this.$store.state.offline_curriculum.offline_term_student
       },
       pageSize() {
         return this.$store.state.offline_curriculum.page_size

@@ -40,7 +40,7 @@ const state = {
     total_num: 0,
     receipt_list:[],
     receipt_total:0,
-    page_conut: 0,
+    page_conut: 0
 }
 var cached = {};
 
@@ -177,7 +177,7 @@ const actions = {
             commit(types.OFFLINE_TERM_LIST_LOADING);
             get_students_by_offline_term(params).then(res => {
               if(res.data.res_code == 1){
-                  commit(types.QUERY_STUDENT_BY_OFFLINE_TERM, res.data.data.data);
+                  commit(types.QUERY_STUDENT_BY_OFFLINE_TERM, res.data.data);
               }
             })
         },
@@ -375,8 +375,21 @@ const mutations = {
         payload.callback();
     },
     [types.QUERY_STUDENT_BY_OFFLINE_TERM](state,params){
+        let d = params.data,m = params.data_added;
+        if(d&&d.length>0){
+            d.map((it) => {
+             if(Array.isArray(m)&&m.length>0){
+                m.forEach(t => {
+                    if(it.student_id == t.student_id){
+                      it._disabled = true
+                      it._checked = true
+                    }
+                });
+             }
+           })
+        }
       state.showLoading = false;
-      state.offline_term_student = params;
+      state.offline_term_student = d;
       state.total_num = params.count;
     },
     [types.RECEIPT_LIST_LOADED](state,params){
