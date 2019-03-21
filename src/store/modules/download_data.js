@@ -47,11 +47,13 @@ const actions = {
             if(res.data.res_code === 1) commit(types.DOWNLOAD_DATA_VALID_UPDATED, params)
         })
     },
-    add_course_download_data({ commit }, params) {
+    add_course_download_data({ dispatch,commit }, params) {
         commit(types.DOWNLOAD_SHOW_LOADING);
         add_data_center(params).then(res => {
-            if(res.data.res_code === 1)
-            {
+            if(res.data.res_code === 1){
+                dispatch('get_curriculum_donwload_data_list', {  project_id: params.projectId,
+                    page: params.page})
+                    params._fn()
                 // commit(types.COURSE_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
                 // params._fn(res.data.msg);
             }

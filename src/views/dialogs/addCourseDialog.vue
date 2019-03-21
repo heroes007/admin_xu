@@ -178,7 +178,7 @@
           end_time: new Date(),
           subject_id: 0,
           grade_id: 0,
-          state: 0,
+          state: this.payload.row.state || 0,
           img_default: '',
           img_3_8: '',
           img_url_arr: null,
@@ -187,7 +187,7 @@
           curriculum_roles: [0],
           pre_curriculum_ids: [],
           data_center_id: 0,
-          unlock_type: 0
+          unlock_type: this.payload.row.unlock_type || 0
         },
         newData: {
           show: false,
@@ -236,12 +236,13 @@
     mounted() {
       this.stateName = this.payload.state
       this.getListTeacher()
-      this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
-      let d = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[])
-      if(this.payload.state == 0){
-        this.form = d[this.payload.index]
-        this.form.img_default = d[this.payload.index].img_url
+      // this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
+      let d = this.payload.row
+      if(this.payload.modify === 0){
+        this.form = d
+        this.form.img_default = d.img_url
       }
+      console.log(this.form,'fff');
         // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
       // this.get_subject_list();

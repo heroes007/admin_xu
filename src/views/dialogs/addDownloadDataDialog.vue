@@ -4,11 +4,11 @@
     <base-input @closedialog="handleClose">
         <Row slot="body">
             <Row class="body-top" v-if="true">
-                <Form ref="form" :model="form" :label-width="70" class="add-teacher-form">
-                    <FormItem label="资料名称">
-                        <Input v-model="form.name" placeholder="请输入分类名称"></Input>
+                <Form ref="formData" :model="form" :rules="rules" :label-width="80" class="add-teacher-form">
+                    <FormItem label="资料名称" prop="name">
+                        <Input v-model="form.name" placeholder="请输入资料名称"></Input>
                    </FormItem>
-                   <FormItem label="绑定课程" >
+                   <FormItem label="绑定课程" prop="subject_id" >
                         <Select v-model="form.subject_id" placeholder="请选择绑定课程">
                             <Option v-for="item in curricumList" :key="item.id" :label="item.title" :value="item.id"></Option>
                         </Select>
@@ -23,13 +23,13 @@
                                     <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
                                 </Select>
                            </FormItem> -->
-                    <FormItem label="上传附件" v-if="isupdata">
+                    <FormItem label="上传附件" v-if="isupdata" required>
                         <!-- <file-uploader :filters="dataFilters" maxFileCount="1"
                                     :maxFileSize="30000"  @uploadComplete="uploadComplete"
                                     bucket="dscj-static-file" :dir='getDir()'/> -->
                             <upload-btn bucket="dscj-app" @uploadcomplete="uploadComplete" type="doc/pdf/zip"/>
                    </FormItem>
-                   <FormItem  label="上传附件" v-else>
+                   <FormItem  label="上传附件" required v-else>
                        <div style="display:flex">
                            <p style="text-align:left">{{this.form.url_name}}</p>
                            <!--<Button style="margin:0 auto" type="error" @click="delUrl">删除</Button>-->
@@ -37,7 +37,7 @@
                        </div>
                    </FormItem>
                     <FormItem class="btn-content" :label-width='0'>
-                        <Button type="primary" class="sub-btn" @click="saveHandler">完成</Button>
+                        <Button type="primary" class="sub-btn" @click="saveHandler('formData')">完成</Button>
                    </FormItem>
                 </Form>
             </Row>
@@ -81,7 +81,6 @@ export default {
             query_grade_list: state => state.grade.grade_list,
             query_subject_list: state => state.subject.subject_list,
             course_download_data_list: state => state.download_data,
-            curricumList: state => state.task.curricum_list
             }),
         dataFilters(){
             var str = ['doc','pdf','zip'];
@@ -91,6 +90,7 @@ export default {
     data() {
         return {
             addDownloadDataDialog: true,
+            curricumList: [],
             form: {
                 project_id:1,
                 name:'',
@@ -101,7 +101,11 @@ export default {
                 type:0
             },
             loadingInstance: null,
-            isupdata:true
+            isupdata:true,
+            rules: {
+                name: { required: true, message: '请输入资料名称', trigger: 'blur'},
+                subject_id: { required: true, message: '请选择绑定课程'}
+            }
         }
     },
     methods: {
@@ -117,33 +121,40 @@ export default {
                 this.isupdata = false
             }
         },
-        saveHandler() {
-           if(this.payload.state === 0) {
-             console.log(this.form)
+        handleSubmit(){
+            this.form._fn = () => {
+                this.addDownloadDataDialog = false
+                 this.$Message.success('添加成功');
+            }
+            if(this.payload.state === 0) {
              postData('product/data/change', {
                data_id: this.form.id,
                title: this.form.name,
                curriculum_id: this.form.curriculum_id,
                attachment_url: this.form.download_url,
-               attachment_name: this.form.url_name
+               attachment_name: this.form.url_name,
              }).then(res => {
-
+                 if(res){
+                    this.get_curriculum_donwload_data_list({
+                        project_id: this.payload.projectId,
+                        page: this.payload.page
+                    })
+                    this.addDownloadDataDialog = false
+                 }
              })
+           }else {
+                this.form.project_id = this.payload.projectId
+                this.form.page = this.payload.page
+                this.add_course_download_data(this.form);
            }
-           else this.add_course_download_data(this.form);
-
-           this.addDownloadDataDialog = false
-           this.get_curriculum_donwload_data_list({
-             project_id: this.payload.projectId,
-             page: this.payload.page
-           })
-
-        //     console.log(this.course_download_data_list);
-        //     save_datalist(this.form).then(res => {
-        //         if (res.data.res_code === 1) {
-        //             this.addDownloadDataDialog = false;
-        //         }
-        //     })
+        },
+        saveHandler(name) {
+            this.$refs[name].validate((valid) => {
+                if (valid) {
+                    if(this.form.url_name) this.handleSubmit()
+                    else  this.$Message.warning('请上传附件');
+                }
+            })
         },
         handleClose() {
             this.addDownloadDataDialog = false;
@@ -152,9 +163,15 @@ export default {
             this.form.download_url = '';
             this.form.url_name = '';
             this.isupdata = true;
+        },
+        getMyselflist(){
+            postData('/product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+               if(res) this.curricumList = res.data
+            })
         }
     },
     mounted() {
+        this.getMyselflist()
         var vm = this;
         this.form._fn = function() {
             vm.handleClose();
@@ -167,7 +184,6 @@ export default {
             this.form.subject_id = 0;
         }
         if(this.payload.state == 0) {
-          console.log(this.payload, 'payload111')
           this.form.subject_id = this.payload.form.curriculum_id
           this.form.curriculum_id = this.payload.form.curriculum_id
           this.form.name = this.payload.form.title
@@ -178,8 +194,6 @@ export default {
             this.isupdata = false
           }
         }
-
-
     }
 }
 </script>

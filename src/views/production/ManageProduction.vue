@@ -51,7 +51,7 @@
         cardList: [],
         search: '',
         selectList: [],
-        selectList2: [{id: '',title:'全部'},{id: '-1',title:'下架'},{id: '0',title:'未上架'},{id: '1',title:'测试'},{id: '2',title:'上架'},{id: '3',title:'推荐'}],
+        selectList2: [{id: '',title:'全部'},{id: '3',title:'推荐'},{id: '2',title:'上架'},{id: '-1',title:'下架'},{id: '1',title:'测试'}],
         courseNums:12,
         organization_id: localStorage.getItem('organization_id'),
         state: ''

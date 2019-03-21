@@ -20,11 +20,15 @@
                 </div>
             </Poptip>
         </Row>
-        <Row class='user-name' v-if="userInfo.name">
-            <Tooltip :content="userInfo.name" placement="right" theme="light">
-                <p><span>{{ userInfo.name }}</span></p >
-            </Tooltip>
+        <Row class='user-name'>
+            <Tooltip v-if="userName" :content="userNameAll">{{userName}}</Tooltip>
+            <div v-else>{{userNameAll}}</div>
         </Row>
+        <!--<Row class='user-name' v-if="userInfo.name">-->
+            <!--<Tooltip :content="userInfo.name" placement="right" theme="light">-->
+                <!--<p><span>{{ userInfo.name }}</span></p >-->
+            <!--</Tooltip>-->
+        <!--</Row>-->
         <!-- <Row class='user-name' type='flex' justify='center' align='middle'> {{userInfo.nickname}}</Row> -->
         <Row class="menu-list">
             <Col>
@@ -75,6 +79,8 @@
         iconImg: '../../static/img/menu/',
         png: '.png',
         name:'',
+        userName: '',
+        userNameAll: ''
       }
     },
     computed: {
@@ -182,7 +188,7 @@
           if (res.data.res_code === 1) {
             // login_user
             let d = localStorage.getItem('login_user')
-            localStorage.clear() 
+            localStorage.clear()
             // this.$localStorage.set('token', '');
             this.$router.push({path: '/login'});
             localStorage.setItem('login_user', d)
@@ -220,7 +226,26 @@
               // if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
             }
           }
+        },
+      getName(){
+        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) {
+          this.userNameAll = JSON.parse(localStorage.getItem('PERSONALDETAILS')).name
+          if(this.userNameAll&&this.userNameAll.length > 10) {
+            this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
+          }
+        }else{
+          postData('components/getOrganization').then(res => {
+            res.data.forEach(item => {
+              if(item.id == JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id) {
+                this.userNameAll = item.title + JSON.parse(localStorage.getItem('PERSONALDETAILS')).name
+                if(this.userNameAll.length > 10) {
+                  this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
+                }
+              }
+            })
+          })
         }
+      }
     },
     mounted() {
       this.handleMenuList()
@@ -232,6 +257,7 @@
           this.$refs.side_menu.updateOpened();
           this.$refs.side_menu.updateActiveName();
       })
+      this.getName()
     }
   }
 </script>

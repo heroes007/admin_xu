@@ -3,10 +3,10 @@
            @on-cancel="handleRemoveModal(remove)" :mask-closable="false" :footer-hide="true">
         <base-input @closedialog="handleClose">
             <Row  slot="header" class='search-bar' type='flex' align='middle'>
-                <Select @on-change="searchType" v-model="complete_state" placeholder="请选择" style="width: 165px;margin-left: 20px;">
+                <!-- <Select @on-change="searchType" v-model="complete_state" placeholder="请选择" style="width: 165px;margin-left: 20px;">
                     <Option label="已完成培训" value="1"></Option>
                     <Option label="未完成培训" value="0"></Option>
-                </Select>
+                </Select> -->
                 <Input @on-change="search"  placeholder="请输入用户名" v-model="keyword"> <Icon type="ios-search" slot="prefix" /> </Input>
             </Row>
            <Row slot="body">
@@ -80,10 +80,10 @@
             title: '班级',
             key: 'grade_name',
           },
-          {
-            title: '完成率',
-            key: 'complete_rate',
-          },
+          // {
+          //   title: '完成率',
+          //   key: 'complete_rate',
+          // },
           {
             type: 'selection'
           }
@@ -107,6 +107,7 @@
           this.list = res.data.list
           this.list.map((t) => {
             t._disabled = t.state ? true : false
+            t._checked = t.state ? true : false
           })
           this.total = res.data.count
         })
@@ -200,7 +201,7 @@
        border-radius: 18px;
     }
     /deep/ .ivu-input-wrapper{
-       width: 349px;
+       width: 670px;
     }
     /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
     /deep/.ivu-modal-header-inner{

@@ -382,6 +382,7 @@ const mutations = {
                 m.forEach(t => {
                     if(it.student_id == t.student_id){
                       it._disabled = true
+                      it._checked = true
                     }
                 });
              }

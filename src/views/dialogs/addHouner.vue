@@ -5,27 +5,27 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
-                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
+                    <Form ref="formHouner" class="add-course-form" :model="form" :rules="rules" :label-position="labelPosition" :label-width="100">
                             <Col>
-                                <FormItem label="证书名称">
-                                    <Input v-model="form.name" placeholder="请输入课程名称"></Input>
+                                <FormItem label="证书名称" prop="name">
+                                    <Input v-model="form.name" placeholder="请输入证书名称"></Input>
                                 </FormItem>
-                                <FormItem v-show="organizationList&&organizationList.length>0" label="机构">
-                                  <Select v-model="form.organization_id" placeholder="请选择机构">
+                                <FormItem v-show="organizationList&&organizationList.length>0" label="所属机构" prop="organization_id">
+                                  <Select v-model="form.organization_id" placeholder="请选择所属机构">
                                      <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
                                   </Select>
                                 </FormItem>
                                <FormItem label="证书描述">
                                     <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.detail"></Input>
                                 </FormItem>
-                                <FormItem label="证书照片">
+                                <FormItem label="证书照片" required>
                                     <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
                                         <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
                                     </upload-panel>
                                 </FormItem>
                                 <FormItem class="btns">
                                     <Button v-if="payload.type==2" type="error" class="next-btn" style="width: 120px;" @click="handleDelete">删除证书</Button>
-                                    <Button type="primary" class="next-btn" :style="payload.type==2 ? btnStyl : ''" @click="handleSubmit">保存</Button>
+                                    <Button type="primary" class="next-btn" :style="payload.type==2 ? btnStyl : ''" @click="handleSubmit('formHouner')">保存</Button>
                                 </FormItem>
                             </Col>
                     </Form>
@@ -91,7 +91,11 @@
         resourse1: '',
         resourse2: '',
         organizationList: null,
-        btnStyl: 'margin-left: 40px;'
+        btnStyl: 'margin-left: 40px;',
+        rules: {
+          name: { required: true, message: '请输入证书名称'},
+          organization_id: { required: true, message: '请选择所属机构' }
+        }
       }
     },
     mounted() {
@@ -205,11 +209,17 @@
             });
         }
       },
-      handleSubmit() {
-        let url = this.payload.hasOwnProperty('row') ? '/product/modify_honour_certificate' : '/product/add_new_honour_certificate';
-        postData(url,this.form).then((res) => {
-          this.addCourseDialogVisible = false;
-          this.$store.commit('set_houner_state', true)
+      handleSubmit(name) {
+         this.$refs[name].validate((valid) => {
+          if (valid) {
+            if(this.form.img_url){
+              let url = this.payload.hasOwnProperty('row') ? '/product/modify_honour_certificate' : '/product/add_new_honour_certificate';
+              postData(url,this.form).then((res) => {
+                this.addCourseDialogVisible = false;
+                this.$store.commit('set_houner_state', true)
+              })
+            }else this.$Message.warning('请上传证书照片');
+          }
         })
       },
       handleRemove(file, fileList) {},
@@ -265,7 +275,7 @@ color: #474C63 !important;
 letter-spacing: 0;
 }
 /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
-/deep/ .ivu-form-item{margin-bottom: 15px;}
+/deep/ .ivu-form-item{margin-bottom: 20px;}
 /deeep/.upload-panel .upload-space{
   height: 250px !important;
 }

@@ -5,10 +5,11 @@ import {
     set_curriculum_orderby,
     add_curriculum,
     delete_curriculum,
-    update_curriculum
+    update_curriculum,
+    change_curriculum_list
 } from '../../api/modules/tools_curriculum'
 import {get_catalog, set_catalog_orderby, delete_catalog} from '../../api/modules/tools_curriculum_catalog'
-import {add_video, update_video, select_add_video} from '../../api/modules/tools_video'
+import {add_video, update_video, select_add_video, add_chapter} from '../../api/modules/tools_video'
 import {add_video_test, update_video_test} from '../../api/modules/tools_video_test'
 
 const state = {
@@ -34,6 +35,13 @@ const actions = {
                 commit(types.ONLINE_CURRICULUM_PAGE_LOADED, res.data.data);
             }
         });
+    },
+    change_online_curriculum_list({commit}, param) {
+      change_curriculum_list(param.id, param.direction).then(res => {
+          if(res.data.res_code == 1) {
+              commit(types.CHANGE_CURRICULUM_LIST, param)
+          }
+      })
     },
     get_online_curriculum_chapter_list({commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_LOADING);
@@ -135,6 +143,16 @@ const actions = {
     add_online_curriculum_video({dispatch,commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
         add_video(params).then(res => {
+            if (res.data.res_code === 1) {
+                dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
+                // commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
+                // params._fn();
+            }
+        })
+    },
+    add_online_curriculum_chapter({dispatch,commit}, params) {
+        commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
+        add_chapter(params).then(res => {
             if (res.data.res_code === 1) {
                 dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
                 // commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
@@ -455,6 +473,10 @@ const mutations = {
             }
         }
         state.showChapterLoading = false;
+    },
+    [types.CHANGE_CURRICULUM_LIST](state, params) {
+        if(params.direction) state.online_curriculum_list[params.index].children[params.i + 1] = state.online_curriculum_list[params.index].children.splice(params.i, 1, state.online_curriculum_list[params.index].children[params.i + 1])[0]
+        else state.online_curriculum_list[params.index].children[params.i - 1] = state.online_curriculum_list[params.index].children.splice(params.i, 1, state.online_curriculum_list[params.index].children[params.i - 1])[0]
     }
 }
 

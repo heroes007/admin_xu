@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table :columns="columns" :data="datas" >
+        <Table :columns="columns" :data="datas" :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
                 <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
                     <span slot="open">启用</span>
@@ -76,6 +76,9 @@
       seeUrl: {
         type: String,
         default: ''
+      },
+      tabelHeight: {
+        type: Number
       }
     },
     watch: {
@@ -113,6 +116,7 @@
            postData(this.seeUrl, {id: row.organization_id}).then((res) => {
             if(res){
               row = {...row, ...res.data[0]}
+              row.head_img_url = res.data[0].admin[0].head_img_url
               if (this.selectList) row.list = this.getArray(this.selectList, res.data[0].admin[0])
               this.$emit(params, row, rowIndex)
             }
@@ -130,6 +134,7 @@
           if (!t.hasOwnProperty('align')) t.align = 'center'
           t.tooltip = true
         })
+        console.log(c,'cc')
         this.columns = c
       },
       change(row) {
@@ -150,7 +155,7 @@
           for (var x in string) {
             if (x == item.title) {
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
-                arr.push(`${item.name}: 九划医疗`)
+                arr.push(`${item.name}: ${string.realname}`)
               } else {
                 str = item.name + ':' + ' ' + (string[x] ? string[x] : '—')
                 arr.push(str)

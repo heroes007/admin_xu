@@ -22,25 +22,25 @@
                             </Row>
                         </div>
                         <data-list @edit='editHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler'
-                                   @delete='deleteHandler' class='data-list light-header'
+                                   @delete='deleteHandler' class='data-list light-header' :order-num="index"
                                    :table-data='item.children' :header-data='dataHeader' :is-stripe='false'
                                     v-if='showListState[index] == 1 && item.hasOwnProperty("children") && item.children.length > 0'></data-list>
                     </div>
-                    <!--<div class='chapter-item' v-if='newChapterData.showAddChapter'>-->
-                        <!--<Row class='chapter-title' type='flex' justify='space-between' align='middle'>-->
-                            <!--<div style="display: flex;align-items: center">-->
-                                <!--<span class="row-title">第{{chapterList.length + 1}}章</span>-->
-                                <!--<Input v-model="newChapterData.group_name"   @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"-->
-                                       <!--@on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>-->
-                            <!--</div>-->
+                    <div class='chapter-item' v-if='newChapterData.showAddChapter'>
+                        <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
+                            <div style="display: flex;align-items: center">
+                                <span class="row-title">第{{chapterList.length + 1}}章</span>
+                                <Input v-model="newChapterData.group_name"  @on-enter="saveChapter(newChapterData,true)"  @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
+                                       @on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>
+                            </div>
                             <!--<div style="margin-right: 25px;">-->
                                 <!--<Button type='text' @click="addVideo()">添加视频</Button>-->
                                 <!--<Button type='text' @click="addTest()">添加测验</Button>-->
                                 <!--&lt;!&ndash;<Button v-if='showListState[0] == 0' type="text"  @click="toggleListShow(0)">展开</Button>&ndash;&gt;-->
                                 <!--&lt;!&ndash;<Button v-else-if='showListState[0] == 1' type="text"  @click="toggleListShow(0)">收起</Button>&ndash;&gt;-->
                             <!--</div>-->
-                        <!--</Row>-->
-                    <!--</div>-->
+                        </Row>
+                    </div>
                 </div>
             </div>
         </div>
@@ -202,7 +202,7 @@
          delete d.duration
          delete d.video_url
         }
-        this.$store.dispatch('add_online_curriculum_video',d)
+        this.$store.dispatch('add_online_curriculum_chapter',d)
       },
       handleClick(val) {
         this.newChapterData.showAddChapter = true;
@@ -248,14 +248,28 @@
           group_orderby: row.group_orderby
         });
       },
-      moveUpHandler(index, row) {
-        this.moveHandler(row, 0)
+      moveUpHandler(i, row, index) {
+        console.log(index, 'index');
+        if(i == 0){
+          this.$Modal.info({
+            title: '提示',
+            content: '无法上移'
+          });
+        }else{
+          this.$store.dispatch('change_online_curriculum_list', {id: row.id, i, direction: 0, index})
+        }
       },
-      moveDownHandler(index, row) {
-        this.moveHandler(row, 1)
+      moveDownHandler(i, row, index) {
+        if(i == this.chapterList[index].children.length){
+          this.$Modal.info({
+            title: '提示',
+            content: '无法下移'
+          });
+        }else{
+          this.$store.dispatch('change_online_curriculum_list', {id: row.id, i, direction: 1, index})
+        }
       },
       deleteHandler(index, row) {
-        console.log(row, 'row');
         if (this.dirty) {
           this.$Modal.confirm({
             title: '提示',
