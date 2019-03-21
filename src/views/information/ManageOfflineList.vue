@@ -1,28 +1,29 @@
 <template>
-    <div class="content">
-        <Card class="card" @click.native="handleTabAdd">
-            <img class="card-img" src="../../assets/icons/icon/addIcon.png" alt="">
-            <div class="card-add">添加主题</div>
-        </Card>
-        <Card class="card" v-for="(t ,index) in list" :key="index">
-            <div class="card-row">
-                <div class="card-title-state">开课中</div>
-                <div class="card-title-num">已开课<span style="color: #4098FF;margin: 0 5px;">4</span>期</div>
-            </div>
-            <div class="mt14">
-                <div class="card-content-title">{{t.title}}</div>
-                <div class="card-content-details">
-                   {{t.description}}
+    <div :style="`height: ${windowHight}px`" class="box">
+        <div class="content">
+            <Card class="card" @click.native="handleTabAdd">
+                <img class="card-img" src="../../assets/icons/icon/addIcon.png" alt="">
+                <div class="card-add">添加主题</div>
+            </Card>
+            <Card class="card" v-for="(t ,index) in list" :key="index">
+                <div class="card-row">
+                    <div class="card-title-state">开课中</div>
+                    <div class="card-title-num">已开课<span style="color: #4098FF;margin: 0 5px;">4</span>期</div>
                 </div>
-            </div>
-            <div class="card-row mt20">
-                <div class="card-end-time">创建时间：{{t.create_time}}</div>
-                <Button class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
-                <Button class="card-end-btn r48" type="text" ghost @click="handleSee(t)">查看</Button>
-                <Button class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
-            </div>
+                <div class="mt14">
+                    <div class="card-content-title">{{t.title}}</div>
+                    <div class="card-content-details">
+                        {{t.description}}
+                    </div>
+                </div>
+                <div class="card-row mt20">
+                    <div class="card-end-time">创建时间：{{t.create_time}}</div>
+                    <Button class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
+                    <Button class="card-end-btn r48" type="text" ghost @click="handleSee(t)">查看</Button>
+                    <Button class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
+                </div>
         </Card>
-
+        </div>
         <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit"/>
     </div>
 </template>
@@ -49,7 +50,8 @@
         },
         show: false,
         detailData:{},
-        product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+        product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+        windowHight:''
       }
     },
     components: {formModal},
@@ -94,6 +96,7 @@
     },
     mounted() {
        this.getList()
+       this.windowHight = window.innerHeight - 60
     },
   }
 </script>
@@ -218,5 +221,9 @@
 
     .mt20 {
         margin-top: 20px;
+    }
+    .box{
+        overflow: hidden;
+        overflow-y: auto;
     }
 </style>

@@ -259,8 +259,8 @@
       this.stateName = this.payload.state
       this.getListTeacher()
       // this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
-      let d = this.payload.row
       if(this.payload.modify === 0){
+        let d = this.payload.row
         this.form = d
         this.form.img_default = d.img_url
       }

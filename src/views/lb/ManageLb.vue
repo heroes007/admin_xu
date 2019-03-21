@@ -29,8 +29,7 @@
         <!-- </Row> -->
         <Tables :is-serial=true @operation1="edit" @operation2="batchDownload" :column="columns1" :table-data="list" />
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page  @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total">
-            </Page>
+            <Page  @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>
         </Row>
     </div>
 </template>
@@ -160,7 +159,7 @@
             submit(name){
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        if(this.lbData.img_url)  this.setSubmit() 
+                        if(this.lbData.img_url)  this.setSubmit()
                         else  this.$Message.warning('请上传广告');
                     }
                 })
