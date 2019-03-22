@@ -148,7 +148,7 @@
           curriculumList.map((t,i) => {
             if(t.children&&t.children.length>0){
               t.children.map((m,k) => {
-               m.node_number = '第'+this.setIndex(k+1)+'节'
+               m.node_number = '第'+(k+1)+'节'
               })
             }
           })
@@ -408,9 +408,6 @@
 
 </script>
 <style scoped lang='scss'>
-    /deep/ .ivu-table td,/deep/ .ivu-table tr{
-      background: #f0f0f6
-    }
     /deep/ .ivu-table-header{
         display: none;
     }

@@ -41,19 +41,24 @@
                             <Option v-for="(m,i) in t.line == 1 ? t.selectList[0] : t.selectList[1]" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field">
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field" :class="t.clas ? t.clas: ''">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"  @on-change="selectChange">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}</Option>
                         </Select>
                     </FormItem>
+                    <!-- date datetime -->
+                     <FormItem v-if="t.type == 'date'" :label="t.name" :prop="t.field">
+                        <DatePicker class="form-item-date" type="date" v-model="formItem[t.field]"
+                               :placeholder="handlePlaceholder(t)" ></DatePicker>
+                    </FormItem>
                     <!-- switch-datetimerange-->
-                    <FormItem v-if="(t.type==='switch') || (t.type.includes('date'))" :label="t.name" :prop="handleField(t,1)">
+                    <FormItem v-if="(t.type==='switch')" :label="t.name" :prop="handleField(t,1)">
                         <Switch class="form-item-swtich" size="large" v-if="t.switchList&&t.switchList.length>0" v-model="formItem[handleField(t,0)]" @on-change="switchChange" >
                             <span slot="open">{{t.switchList[0]}}</span>
                             <span slot="close">{{t.switchList[1]}}</span>
                         </Switch>
                         <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)" :format="handleDateType(t)" v-model="formItem[handleField(t,1)]"
-                                    :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
+                                 :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput" >
@@ -107,6 +112,10 @@
         default: false
       },
       showModal: {
+        type: Boolean,
+        default: false
+      },
+      dateTimes: {
         type: Boolean,
         default: false
       },
@@ -200,7 +209,7 @@
         this.ModalState(_new)
         this.$nextTick(() => {
           if(_new){
-            this.formItem = this.$config.copy(this.detailData,{})
+            this.formItem = this.dateTimes ? this.detailData : this.$config.copy(this.detailData,{})
             if(this.formItem.upload) this.downList = this.formItem.upload
             else this.downList = []
             if(this.formItem.uploading) {
@@ -215,17 +224,18 @@
             }
             this.copyFormItem = this.$config.copy(this.formItem,{});
             this.modalText2 = this.modalText;
-          }else this.$refs.formValidate.resetFields()
+          }
+          else this.$refs.formValidate.resetFields()
         })
       },
       show(val){
         if(!val) {
-          this.$refs.formValidate.resetFields()
+          // this.$refs.formValidate.resetFields()
           if(this.$refs.inputStyle) this.$refs.inputStyle[0].innerHTML = ''
         }
       },
       detailData(_new){
-        this.formItem = _new
+        this.detailData = _new
       },
       formList(_new){
         this.formList = _new
@@ -263,7 +273,7 @@
       },
       closeModal(){
         this.show = false;
-        this.formItem = {};
+        // this.formItem = {};
         console.log('closeModal')
         this.$refs.formValidate.resetFields();
         this.$emit("close");
@@ -301,7 +311,7 @@
           }
         }
         let d = this.$config.copy(this.formItem,{})
-        this.$emit('from-submit',d)
+        this.$emit('from-submit',this.formItem)
         if(!this.modalFalse) this.closeModal()
       },
       handleSubmit(name){

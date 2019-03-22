@@ -1,6 +1,6 @@
 <template>
     <div class='manage-offline-course'>
-        <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
+        <FormModal date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
         <LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>
         <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
         <screen :btn-type="true" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
@@ -69,8 +69,8 @@
         ],
         rules:{
             title: [{ required: true, message: '请输入课程名称', trigger: 'blur' } ],
-            start_time: [{ required: true, message: '请输入开课时间'} ],
-            end_time: [{ required: true, message: '请输入结课时间'}],
+            start_time: [{ type: 'date', required: true, message: '请输入开课时间'} ],
+            end_time: [{  type: 'date', required: true, message: '请输入结课时间'}],
             teacher_id: [{required: true, message: '请选择课程讲师'}],
             type: [{required: true, message: '请选择课程类型'}],
         },
@@ -242,12 +242,14 @@
       addOffLineCourses(row, type, index){
         this.term_row = row
         this.modalTitle = type ? '编辑课程' : '添加课程'
-        this.tableRow = type ? this.$config.copy(row.childData[index],{}) : {}
+        this.tableRow = {}
+        if(type){
+          let d = row.childData[index];
+          this.tableRow = this.$config.copy(d)
+        }
         this.show = true
       },
       handleSubmit(v){
-        // curriculum_underline_term_id
-        console.log(this.tableRow,'this.this.tableRow')
         let d1 = this.modalTitle === '添加课程' ? { term_underline_id: this.term_row.id} : {curriculum_underline_term_id: this.tableRow.id}
         let url = this.modalTitle === '添加课程' ? '/product/curriculum_offline/term_curriculum_add' : '/product/curriculum_offline/term_curriculum_change'
         postData(url,{...d1,...v}).then((res) => {

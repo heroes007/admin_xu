@@ -56,7 +56,7 @@
         state: null,
         formList: [
           { type: 'input', name: '文章标题',  field: 'title'},
-          { type: 'select', name: '状态', field: 'state', disable: false,
+          { type: 'select', name: '状态', field: 'state', disable: false,clas: 'manage-news-state',
             selectList: [{state: 1, title: '上架'},{state: 0 , title: '测试'}, {state: -1, title: '下架'}],selectField:['state', 'title']},
           { type: 'textarea', name:'文章摘要', field:  'description'},
           { type: 'upload', name: '文章正文', field: 'uploading' },
@@ -162,5 +162,10 @@
         right: 0;
         bottom: 0;
         margin: 0 auto;
+    }
+    /deep/.manage-news-state{
+      /deep/.ivu-form-item-label{
+      letter-spacing: 9px !important;
+     }
     }
 </style>

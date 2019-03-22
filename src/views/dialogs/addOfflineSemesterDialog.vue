@@ -9,10 +9,10 @@
                         <Input v-model="form1.title" placeholder="请输入学期名称"></Input>
                     </FormItem>
                     <FormItem label="开课日期" prop="stage1">
-                        <DatePicker v-model="form1.stage1" type="daterange" placeholder="请选择时间范围" :transfer="true"></DatePicker>
+                        <DatePicker v-model="form1.stage1" type="daterange" format="yyyy/MM/dd" placeholder="请选择时间范围" :transfer="true"></DatePicker>
                     </FormItem>
                     <FormItem label="报名截止">
-                        <DatePicker v-model="form1.register_end_time" type="date" placeholder="选择日期" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
+                        <DatePicker v-model="form1.register_end_time" type="date" format="yyyy/MM/dd" placeholder="选择日期" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
                     </FormItem>
                     <FormItem label="学期描述" class="semester-description" prop="description" required>
                         <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
@@ -110,7 +110,7 @@
       }
     },
     mounted(){
-      console.log(this.form1.stage1,'ss');
+      console.log(this.form1.register_end_time,'ss');
     },
     methods: {
       ...mapActions([ 'add_offline_term', 'edit_offline_term', 'get_subject_list', 'get_offline_term_list' ]),
