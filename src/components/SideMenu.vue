@@ -110,7 +110,6 @@
     },
     methods: {
       // openChangeMenu(name){
-      //   console.log(name)
       // },
       // selectItemMenu(index){
       //   console.log(index)
