@@ -223,10 +223,11 @@
           }
           this.copyFormItem = this.$config.copy(this.formItem,{});
           this.modalText2 = this.modalText;
-          if(!_new) this.$refs.formValidate.resetFields()
+          // if(!_new) this.$refs.formValidate.resetFields()
         })
       },
       show(val){
+        console.log(val);
         if(!val) this.$refs.formValidate.resetFields()
       },
       detailData(_new){
