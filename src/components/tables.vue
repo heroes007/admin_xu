@@ -111,7 +111,6 @@
         this.datas = d
       },
       show(row, rowIndex, params) {
-        row = this.datas[rowIndex]
         if(this.seeUrl){
            postData(this.seeUrl, {id: row.organization_id}).then((res) => {
             if(res){
@@ -134,7 +133,6 @@
           if (!t.hasOwnProperty('align')) t.align = 'center'
           t.tooltip = true
         })
-        console.log(c,'cc')
         this.columns = c
       },
       change(row) {
@@ -148,7 +146,6 @@
         } else return t[0]
       },
       getArray(name, string) {
-        // console.log(string,'gg')
         string.role_name = this.$config.status(string.role_id)
         let arr = [], str
         name.forEach((item, index) => {

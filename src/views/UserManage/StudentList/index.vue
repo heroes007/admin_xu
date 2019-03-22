@@ -1,9 +1,10 @@
 <template>
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-
-       <screen :paying-student="payingStudent" :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5" :size-title1="title1" :size-num1="allNum" btn-name="添加导师" :select1="selectList" @moneyStudent="moneyStudent"
-             select2Placeholder="请选择年级"  :select2="selectList1" :size-title2="title2" :size-num2="titleTotal"   @selectChange1="selectChange1" @selectChange2="selectChange2"  @inputChange="inputChange" @handleClick="handleClick" />
+         <screen :paying-student="payingStudent" :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5"
+             :size-title1="title1" :size-num1="allNum" btn-name="添加导师" :select1="selectList" @moneyStudent="moneyStudent"
+             select2Placeholder="请选择年级"  :select2="selectList1" :size-title2="title2" :size-num2="titleTotal" 
+          @selectChange1="selectChange1" @selectChange2="selectChange2"  @inputChange="inputChange" @handleClick="handleClick" />
 
         <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="student"/>
 
