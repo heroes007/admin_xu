@@ -7,7 +7,7 @@
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
                    @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
                    @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList' @add-off-line-courses="addOffLineCourses"
-                   :header-data='dataHeader' :is-stripe='false'></data-list>
+                   :header-data='dataHeader' :is-stripe='false' :table-height='listHeight'></data-list>
          <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
@@ -75,6 +75,7 @@
             type: [{required: true, message: '请选择课程类型'}],
         },
         term_row: null,
+        listHeight: null
       }
     },
     computed: {
@@ -375,6 +376,7 @@
     mounted() {
      this.getList()
      this.getLecturerList()
+     this.listHeight = window.innerHeight - 130
     }
   }
 </script>

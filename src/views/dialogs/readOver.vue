@@ -242,6 +242,7 @@
                 this.addCourseDialogVisible = false
                 // this.$emit('addTure', res.res_code)
                 this.$store.commit('get_task_state', true)
+                this.$Message.info('批阅成功');
               }
           })
         },

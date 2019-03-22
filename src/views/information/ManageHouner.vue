@@ -1,6 +1,6 @@
 <template>
     <div class="manage-production-view">
-        <screen :types="3" size-title1="证书总数" :size-num1="courseNums1" size-title2="已关联" :size-num2="courseNums2" btn-name="添加证书" 
+        <screen :types="3" size-title1="证书总数" :size-num1="courseNums1" size-title2="已关联" :size-num2="courseNums2" btn-name="添加证书"
             selectType1   @selectChange1="selectChange1" @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" btnType/>
         <div class="card-houner">
             <Card class="card-houner-col" v-for="(item, index) in cardList1" :key="index">
@@ -57,8 +57,8 @@
         },
         cityList: "",
         cardList1: {},
-        courseNums1: 12,
-        courseNums2: 99,
+        courseNums1: null,
+        courseNums2: null,
         cardImg1: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222115758.jpeg",
         cardImg2: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222121345.jpeg",
         organizationId: '',
@@ -120,11 +120,14 @@
         let d = {organization_id: this.organizationId, product_id: +JSON.parse(localStorage.getItem('PRODUCTINFO')).id}
         postData('/product/get_honour_certificates',{keyword: this.keyword,...d}).then((res) => {
            this.cardList1 = res.data
+           this.courseNums1 = res.data.length
+           this.courseNums2 = res.is_contact
         })
       }
     },
     mounted() {
-     this.getList()
+      // this.organizationId = JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id
+      this.getList()
     }
   };
 </script>

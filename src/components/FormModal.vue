@@ -229,6 +229,7 @@
         })
       },
       show(val){
+        console.log(val);
         if(!val) {
           // this.$refs.formValidate.resetFields()
           if(this.$refs.inputStyle) this.$refs.inputStyle[0].innerHTML = ''

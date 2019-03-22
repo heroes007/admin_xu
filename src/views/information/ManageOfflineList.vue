@@ -92,7 +92,11 @@
           })
       },
       handleDelete(t){
-          postData('/product/curriculum_offline_subject/delete',{subject_id: t.id}).then((res) => {})
+          postData('/product/curriculum_offline_subject/delete',{subject_id: t.id}).then((res) => {
+            if(res.res_code == 1){
+              this.getList()
+            }
+          })
       }
     },
     mounted() {

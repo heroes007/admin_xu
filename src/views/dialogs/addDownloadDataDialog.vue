@@ -187,6 +187,7 @@ export default {
               })
             }else{
               postData('product/curriculum_online/pulldown_get_offline_list',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+                console.log(res)
                 if(res.res_code == 1) this.curricumList = res.data
               })
             }
