@@ -262,6 +262,9 @@
   }
 </script>
 <style lang="scss" scoped>
+    /deep/.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after{
+      background: #292929 ;
+    }
     .sub-item-title {
         padding-top: 14px !important;
         padding-bottom: 14px !important;
