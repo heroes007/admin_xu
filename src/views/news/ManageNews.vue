@@ -1,6 +1,6 @@
 <template>
     <div class='manage-production-view'>
-        <screen :types="10" btnType title="行业资讯" btnName="创建文章" @handleClick="addNewsHandler" style="background:#ffffff"/>
+        <screen :types="10" selectType2 :select2="selectList2" btnType @selectChange2="selectChange2" title="行业资讯" btnName="创建文章" @handleClick="addNewsHandler" style="background:#ffffff"/>
         <FormModal @from-submit="fromSubmit" :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :upload-btn="false" :rule-validate="rules" ></FormModal>
         <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="lowerShelf" @operation2="edit" @operation3="deletes"   :column="columns1" :table-data="list" />
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -21,6 +21,7 @@
     data() {
       return {
         tableRow: {},
+        selectList2: [{id: '',title:'全部'},{id: '1',title:'上架'},{id: '-1',title:'下架'},{id: '0',title:'测试'}],
         columns1: [
           {
             key: 'title',
@@ -52,6 +53,7 @@
           }],
         list: [],
         show: false,
+        state: null,
         formList: [
           { type: 'input', name: '文章标题',  field: 'title'},
           { type: 'select', name: '状态', field: 'state', disable: false,
@@ -101,7 +103,9 @@
         }
       },
       lowerShelf(row,rowIndex){
-        console.log(row,'lowerShelf');
+        postData('/platform/news/modifyNews',{id: row.id, state: -1 }).then((res) => {
+           if(res) this.getList()
+        })
       },
       edit(row,rowIndex){
         this.isAdd = false
@@ -109,6 +113,10 @@
         this.tableRow = row
         this.tableRow.uploading = row.content
         this.show = true
+      },
+      selectChange2(val){
+          this.state = val
+          this.getList()
       },
       deletes(row,rowIndex){
         this.$Modal.confirm({
@@ -122,14 +130,16 @@
         });
       },
       getList() {
+        let d1 = (this.state != null && this.state != '') ? +this.state : null
         let d = {
-          page_size: this.pageSize,
-          page_num: this.current
+            page_size: this.pageSize,
+            page_num: this.current,
+            state: d1
         }
         postData('/platform/news/getNewsListAdmin',d).then((res) => {
           this.list = res.data.list
           this.list.map((t) => {
-            t.state_name = t.state == 1 ? '上线' : t.state == -1 ? '下架' : '测试'
+            t.state_name = t.state == 1 ? '上架' : t.state == -1 ? '下架' : '测试'
           })
           this.total = res.data.count
         })

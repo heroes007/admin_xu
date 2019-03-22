@@ -237,7 +237,7 @@
         if(val == 'online') this.formList[2].line = 1
         else if(val == 'underline') this.formList[2].line = 0
         if(this.modalText2){
-          if(val == 3) this.modalText2 = '获得所属机构后台所有操作权限'
+          if(val == 3) this.modalText2 = '获得所属机构后台发布产品及动态等操作权限'
           if(val == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
         }
       },
