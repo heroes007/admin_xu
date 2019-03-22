@@ -3,7 +3,7 @@
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList" @close="exchangeContentClose" @selectChecked="exchangeContentChecked" />
         <Modal v-model="show" :title="title" :width="645" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
             <div v-if="uploadFlie" class="upload-flie">
-                    <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData" accept="image/jpeg,image/png,image/jpg,image/bmp"
+                <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData" accept="image/jpeg,image/png,image/jpg,image/bmp"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!img_url" class="modal-upload-flie">
                         <img class="upload-flie-img" src="../assets/icons/icon/upload.png"/>
@@ -17,7 +17,7 @@
                     <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
-                     <FormItem v-if="t.type==='password'" :label="t.name" :prop="t.field">
+                    <FormItem v-if="t.type==='password'" :label="t.name" :prop="t.field">
                         <Input type="password" v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <FormItem v-if="t.type==='inputTab'" :label="t.name" :prop="t.field">
@@ -53,7 +53,7 @@
                             <span slot="close">{{t.switchList[1]}}</span>
                         </Switch>
                         <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)" :format="handleDateType(t)" v-model="formItem[handleField(t,1)]"
-                                  :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
+                                    :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput" >
@@ -99,7 +99,6 @@
   import iconColor from '../assets/icons/icon/color.png'
   import iconCopy from '../assets/icons/icon/photo.png'
 
-
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },
     props:{
@@ -128,13 +127,6 @@
         type: String,
         default: ''
       },
-      // [
-      //     { type: 'input', name: '真实姓名',  field: 'realname'},
-      //     { type: 'select', name: '管理权限', field: 'jurisdiction' ,
-      //     selectList: [ { value: 'New York', label: 'New York'} ],
-      //     selectField: [ 'value','label' ]
-      //     }
-      // ]
       formList: {
         type: Array,
         default: []
@@ -196,7 +188,8 @@
           },
         ],
         color: '',
-        modalText2: ''
+        modalText2: '',
+        imgUrl: ''
       }
     },
     watch:{
@@ -226,7 +219,10 @@
         })
       },
       show(val){
-        if(!val) this.$refs.formValidate.resetFields()
+        if(!val) {
+          this.$refs.formValidate.resetFields()
+          if(this.$refs.inputStyle) this.$refs.inputStyle[0].innerHTML = ''
+        }
       },
       detailData(_new){
         this.formItem = _new
@@ -309,10 +305,11 @@
         if(!this.modalFalse) this.closeModal()
       },
       handleSubmit(name){
-        console.log(this.formItem, 'formItem')
+        let d = this.$refs.inputStyle[0].innerText || this.imgUrl
         this.$refs[name].validate((valid) => {
           if (valid) {
-            if(this.uploadFlie&&!this.img_url) this.$Message.warning('请上传头像');
+            if(this.formList.length === 3&&this.formList[2].type === 'upload'&&!d) this.$Message.warning('请输入文章正文');
+            else if(this.uploadFlie&&!this.img_url) this.$Message.warning('请上传头像');
             else if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
               if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
               else this.handleFormData()
@@ -365,6 +362,7 @@
         img.style.width = '100%'
         img.style.display = 'block'
         this.$refs.inputStyle[0].appendChild(img)
+        this.imgUrl = val.url
       },
       handleDrop(val){
         this.$refs.inputStyle[0].style.fontSize = val + 'px'
