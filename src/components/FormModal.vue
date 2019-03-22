@@ -99,7 +99,6 @@
   import iconColor from '../assets/icons/icon/color.png'
   import iconCopy from '../assets/icons/icon/photo.png'
 
-
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },
     props:{
@@ -128,13 +127,6 @@
         type: String,
         default: ''
       },
-      // [
-      //     { type: 'input', name: '真实姓名',  field: 'realname'},
-      //     { type: 'select', name: '管理权限', field: 'jurisdiction' ,
-      //     selectList: [ { value: 'New York', label: 'New York'} ],
-      //     selectField: [ 'value','label' ]
-      //     }
-      // ]
       formList: {
         type: Array,
         default: []
@@ -196,7 +188,8 @@
           },
         ],
         color: '',
-        modalText2: ''
+        modalText2: '',
+        imgUrl: ''
       }
     },
     watch:{
@@ -309,10 +302,11 @@
         if(!this.modalFalse) this.closeModal()
       },
       handleSubmit(name){
-        console.log(this.formItem, 'formItem')
+        let d = this.$refs.inputStyle[0].innerText || this.imgUrl
         this.$refs[name].validate((valid) => {
           if (valid) {
-            if(this.uploadFlie&&!this.img_url) this.$Message.warning('请上传头像');
+            if(this.formList.length === 3&&this.formList[2].type === 'upload'&&!d) this.$Message.warning('请输入文章正文');
+            else if(this.uploadFlie&&!this.img_url) this.$Message.warning('请上传头像');
             else if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
               if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
               else this.handleFormData()
@@ -365,6 +359,7 @@
         img.style.width = '100%'
         img.style.display = 'block'
         this.$refs.inputStyle[0].appendChild(img)
+        this.imgUrl = val.url
       },
       handleDrop(val){
         this.$refs.inputStyle[0].style.fontSize = val + 'px'
