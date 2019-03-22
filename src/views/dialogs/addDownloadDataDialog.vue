@@ -193,7 +193,6 @@ export default {
         }
     },
     mounted() {
-        this.typeChange(this.payload.form.type)
         this.getMyselflist()
         var vm = this;
         this.form._fn = function() {
@@ -207,6 +206,7 @@ export default {
             this.form.subject_id = 0;
         }
         if(this.payload.state == 0) {
+          this.typeChange(this.payload.form.type)
           this.form.subject_id = this.payload.form.curriculum_id
           this.form.curriculum_id = this.payload.form.curriculum_id
           this.form.name = this.payload.form.title
