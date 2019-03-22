@@ -282,7 +282,7 @@
     }
     /deep/ .ivu-page{
       position: absolute;
-      bottom: 50px;
+      bottom: 0px;
       left: 0;
       right: 0;
       margin: 0 auto;

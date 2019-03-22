@@ -306,7 +306,8 @@
             delete this.formItem.password
           }
         }
-        this.$emit('from-submit', this.formItem)
+        let d = this.$config.copy(this.formItem,{})
+        this.$emit('from-submit',d)
         if(!this.modalFalse) this.closeModal()
       },
       handleSubmit(name){
