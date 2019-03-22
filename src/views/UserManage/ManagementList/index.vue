@@ -87,7 +87,7 @@
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
                 username: [{ required: true, validator: validateUsername }],
                 password: [{ required: true, validator: validatePass }],
-                // jurisdiction: [{ required: true, message: '请选择管理权限'} ],
+                jurisdiction: [],
             },
             data1: null,
             keyword: '',
@@ -126,7 +126,12 @@
         handleClick(){
             this.modalTitle = '添加管理'
             this.show = true
-            this.tableRow = {}
+            this.tableRow = {
+                realname: '',
+                username: '',
+                password: '',
+                jurisdiction: ''
+            }
         },
         getList(){
             let d = {

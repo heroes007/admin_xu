@@ -31,7 +31,7 @@
                             <div style="display: flex;align-items: center">
                                 <span class="row-title">第{{chapterList.length + 1}}章</span>
                                 <Input v-model="newChapterData.group_name"  @on-enter="saveChapter(newChapterData,true)"  @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
-                                       @on-focus="showDataState(0)" class="textInput" style="width: 300px;"/>
+                                       @on-focus="showDataState(chapterList.length)" class="textInput" style="width: 300px;"/>
                             </div>
                             <!--<div style="margin-right: 25px;">-->
                                 <!--<Button type='text' @click="addVideo()">添加视频</Button>-->
@@ -202,7 +202,8 @@
          delete d.duration
          delete d.video_url
         }
-        this.$store.dispatch('add_online_curriculum_chapter',d)
+        if(d.group_name)  this.$store.dispatch('add_online_curriculum_chapter',d)
+        else  this.$Message.warning('请输入章节的名称');
       },
       handleClick(val) {
         this.newChapterData.showAddChapter = true;
@@ -330,7 +331,7 @@
         }
         if (this.showListState[this.chapterList.length - 1] == undefined) {
           for (i = 0; i < this.chapterList.length; i++) {
-            if (this.showListState[i] == undefined) this.$set(this.showListState, i, 1);
+            if (this.showListState[i] == undefined) this.$set(this.showListState, i, 0);
           }
         }
       },

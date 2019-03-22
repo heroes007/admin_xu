@@ -68,7 +68,7 @@
             rules:{
                 name: [{ required: true, message: '请输入讲师姓名', trigger: 'blur' } ],
                 description: [{ required: true, message: '请输入讲师介绍', trigger: 'blur' } ],
-                organization_id: [{ required: true, message: '请选择机构' } ],
+                organization_id: [{ required: true, message: '请选择所属机构' } ],
             },
             operationList: null,
             list: [

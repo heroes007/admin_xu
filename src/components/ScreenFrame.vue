@@ -13,7 +13,7 @@
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
-        <div v-if="types == 5 && radioType && isSuper" class="money-student" @click="moneyStudent">
+        <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
             <span class="money-student-content">付费学员</span>
         </div>
@@ -21,9 +21,9 @@
             <span class="all-content">{{sizeTitle1}}</span>
             <span class="all-num">{{sizeNum1}}</span>
         </div>
-        <div v-if="types ==3 || types ==5 || types ==8 && isSuper" class="money-size">
+        <div v-if="types ==3 || types ==5 || types ==8 && isSuper && sizeTitle2" class="money-size">
             <span class="all-content">{{sizeTitle2}}</span>
-            <span class="all-num">{{sizeNum2}}</span>
+            <span v-if='sizeNum2 >= 0' class="all-num">{{sizeNum2}}</span>
         </div>
         <div v-if="types == 6 || types == 7 || types == 9 || types == 10" class="title">
             <div>{{title}}</div>
@@ -57,6 +57,10 @@
       types: {
         type: Number,
         required: true,
+      },
+      payingStudent: {
+        type: Boolean,
+        default: false
       },
       // 控制 select
       selectType1: {
@@ -128,7 +132,7 @@
       // 付费学员返回事件，click触发，选中返回true
       moneyStudent(){
         this.iconColor = this.iconColor == '#9397AD' ? "#4098ff" : "#9397AD"
-        this.$emit('moneyStudent', this.iconColor == '#9397AD' ? 'YES' : 'NO')
+        this.$emit('moneyStudent', this.iconColor == '#9397AD' ? 'NO' : 'YES')
       },
       //一个下拉框，change触发，返回value
       selectChange1(val){
