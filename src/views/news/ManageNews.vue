@@ -54,14 +54,17 @@
         show: false,
         formList: [
           { type: 'input', name: '文章标题',  field: 'title'},
+          { type: 'select', name: '状态', field: 'state', disable: false,
+            selectList: [{state: 1, title: '上架'},{state: 0 , title: '测试'}, {state: -1, title: '下架'}],selectField:['state', 'title']},
           { type: 'textarea', name:'文章摘要', field:  'description'},
-          { type: 'upload', name: '文章正文', field: 'uploading' }
+          { type: 'upload', name: '文章正文', field: 'uploading' },
         ],
         modalTitle: '创建文章',
         tabelHeight: null,
         rules:{
           title: [{ required: true, message: '请输入文章标题', trigger: 'blur' } ],
           description: [{ required: true, message: '请输入文章摘要'}],
+          state: [{ required: true, message: '请选择产品状态'}],
           uploading: [],
         },
         isAdd: true
@@ -80,7 +83,8 @@
           postData('platform/news/addNews',{
             title: v.title,
             description: v.description,
-            content: v.uploading
+            content: v.uploading,
+            state: v.state,
           }).then(res => {
             if(res.res_code == 1) this.getList()
           })
@@ -89,6 +93,7 @@
             title: v.title,
             description: v.description,
             content: v.uploading,
+            state: v.state,
             id: v.id
           }).then(res => {
             if(res.res_code == 1) this.getList()

@@ -29,7 +29,8 @@ export function add_data_center(param) {
         title: param.name,
         curriculum_id: param.subject_id,
         attachment_url: param.download_url,
-        attachment_name: param.url_name
+        attachment_name: param.url_name,
+        type: param.type
         // state: 1
     });
 }

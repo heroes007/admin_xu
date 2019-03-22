@@ -8,6 +8,11 @@
                     <FormItem label="资料名称" prop="name">
                         <Input v-model="form.name" placeholder="请输入资料名称"></Input>
                    </FormItem>
+                    <FormItem label="资料类型" prop="type">
+                        <Select v-model="form.type" placeholder="请选择资料类型" @on-change="typeChange">
+                            <Option v-for="item in typeList" :key="item.state" :label="item.title" :value="item.state"></Option>
+                        </Select>
+                    </FormItem>
                    <FormItem label="绑定课程" prop="subject_id" >
                         <Select v-model="form.subject_id" placeholder="请选择绑定课程">
                             <Option v-for="item in curricumList" :key="item.id" :label="item.title" :value="item.id"></Option>
@@ -104,8 +109,13 @@ export default {
             isupdata:true,
             rules: {
                 name: { required: true, message: '请输入资料名称', trigger: 'blur'},
-                subject_id: { required: true, message: '请选择绑定课程'}
-            }
+                subject_id: { required: true, message: '请选择绑定课程'},
+                type: {required: true, message: '请选择资料类型'}
+            },
+            typeList: [
+              {state: 'online', title: '线上课'},
+              {state: 'underline', title: '线下课'},
+            ]
         }
     },
     methods: {
@@ -133,6 +143,7 @@ export default {
                curriculum_id: this.form.subject_id,
                attachment_url: this.form.download_url,
                attachment_name: this.form.url_name,
+               type: this.form.type
              }).then(res => {
                  if(res){
                     this.get_curriculum_donwload_data_list({
@@ -165,12 +176,24 @@ export default {
             this.isupdata = true;
         },
         getMyselflist(){
-            postData('/product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
-               if(res) this.curricumList = res.data
-            })
+            // postData('/product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+            //    if(res) this.curricumList = res.data
+            // })
+        },
+        typeChange(val){
+            if(val == 'online') {
+              postData('product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+                if(res.res_code == 1) this.curricumList = res.data
+              })
+            }else{
+              postData('product/curriculum_online/pulldown_get_offline_list',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+                if(res.res_code == 1) this.curricumList = res.data
+              })
+            }
         }
     },
     mounted() {
+        this.typeChange(this.payload.form.type)
         this.getMyselflist()
         var vm = this;
         this.form._fn = function() {
@@ -193,7 +216,6 @@ export default {
             this.form.url_name = this.payload.form.attachment_name
             this.isupdata = false
           }
-          console.log(this.form, 'form')
         }
     }
 }
