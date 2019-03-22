@@ -219,6 +219,7 @@
         })
       },
       show(val){
+        console.log(val);
         if(!val) {
           this.$refs.formValidate.resetFields()
           if(this.$refs.inputStyle) this.$refs.inputStyle[0].innerHTML = ''
@@ -305,7 +306,7 @@
         if(!this.modalFalse) this.closeModal()
       },
       handleSubmit(name){
-        let d = this.$refs.inputStyle[0].innerText || this.imgUrl
+        let d = this.$refs.inputStyle&&this.$refs.inputStyle[0].innerText || this.imgUrl
         this.$refs[name].validate((valid) => {
           if (valid) {
             if(this.formList.length === 3&&this.formList[2].type === 'upload'&&!d) this.$Message.warning('请输入文章正文');

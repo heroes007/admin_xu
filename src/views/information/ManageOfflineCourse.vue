@@ -7,7 +7,7 @@
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
                    @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
                    @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList' @add-off-line-courses="addOffLineCourses"
-                   :header-data='dataHeader' :is-stripe='false'></data-list>
+                   :header-data='dataHeader' :is-stripe='false' :table-height='listHeight'></data-list>
          <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
@@ -75,6 +75,7 @@
             type: [{required: true, message: '请选择课程类型'}],
         },
         term_row: null,
+        listHeight: null
       }
     },
     computed: {
@@ -247,16 +248,16 @@
       },
       handleSubmit(v){
         // curriculum_underline_term_id
-        console.log(this.tableRow,'this.this.tableRow')
-        let d1 = this.modalTitle === '添加课程' ? { term_underline_id: this.term_row.id} : {curriculum_underline_term_id: this.tableRow.id}
-        let url = this.modalTitle === '添加课程' ? '/product/curriculum_offline/term_curriculum_add' : '/product/curriculum_offline/term_curriculum_change'
-        postData(url,{...d1,...v}).then((res) => {
-          if(res.res_code === 1){
-            this.$Message.warning(res.msg);
-            this.rowExpandHandler(this.term_row)
-            this.closeModal2()
-          }
-        })
+        console.log(v,'this.this.tableRow')
+        // let d1 = this.modalTitle === '添加课程' ? { term_underline_id: this.term_row.id} : {curriculum_underline_term_id: this.tableRow.id}
+        // let url = this.modalTitle === '添加课程' ? '/product/curriculum_offline/term_curriculum_add' : '/product/curriculum_offline/term_curriculum_change'
+        // postData(url,{...d1,...v}).then((res) => {
+        //   if(res.res_code === 1){
+        //     this.$Message.warning(res.msg);
+        //     this.rowExpandHandler(this.term_row)
+        //     this.closeModal2()
+        //   }
+        // })
       },
       handleClick() {},
       inputChange(val){
@@ -373,6 +374,7 @@
     mounted() {
      this.getList()
      this.getLecturerList()
+     this.listHeight = window.innerHeight - 130
     }
   }
 </script>

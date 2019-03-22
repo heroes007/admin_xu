@@ -136,7 +136,8 @@
         },
         methods: {
             edit(row,index){
-              this.addLb()
+              this.adutplace = row.position == 1 ?  '首页轮播' : '课程页轮播'
+              this.showModal = true;
               this.lbData = row;
               this.isEdit = true
             },
