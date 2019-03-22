@@ -1,5 +1,5 @@
 export const validatePass = (rule, value, callback) => {
-    if (value === '')  callback(new Error('请输入账号密码'));
+    if (value == ''||value == undefined)  callback(new Error('请输入账号密码'));
     else {
         var filter=/^[a-zA-Z0-9]{6,12}$/; 
         if(filter.test(value))  callback();
@@ -7,7 +7,7 @@ export const validatePass = (rule, value, callback) => {
     }
 };
 export const validateUsername = (rule, value, callback) => {
-    if (value === '') callback(new Error('请输入管理账号'));
+    if (value == ''||value == undefined) callback(new Error('请输入管理账号'));
     else {
         var filter=/^[a-zA-Z0-9]{1,12}$/; 
         if(filter.test(value)) callback();
@@ -15,7 +15,7 @@ export const validateUsername = (rule, value, callback) => {
     }
 };
 export const validateUsername2 = (rule, value, callback) => {
-    if (value === '')  callback(new Error('请输入机构账号'));
+    if (value == ''||value == undefined) callback(new Error('请输入机构账号'));
     else {
         var filter=/^[a-zA-Z0-9]{1,12}$/; 
         if(filter.test(value))  callback();
@@ -23,7 +23,7 @@ export const validateUsername2 = (rule, value, callback) => {
     }
 };
 export const validateUsername3 = (rule, value, callback) => {
-    if (value === '') callback(new Error('请输入导师账号'));
+    if (value == ''||value == undefined) callback(new Error('请输入导师账号'));
     else {
         var filter=/^[a-zA-Z0-9]{1,12}$/; 
         if(filter.test(value)) callback();

@@ -206,24 +206,23 @@
       showModal(_new){
         this.ModalState(_new)
         this.$nextTick(() => {
-          this.formItem = this.detailData
-          if(this.formItem.upload) this.downList = this.formItem.upload
-          else this.downList = []
-          if(this.formItem.uploading) {
-            this.descriptionHtml = this.formItem.uploading
-            this.descriptionHtml = this.descriptionHtml.replace('class="form-message"','')
-          }
-          else this.descriptionHtml = ''
-          // else this.$refs.inputStyle[0].innerHTML = ''
-          if(this.formItem.hasOwnProperty('img_url')){
-            this.img_url = this.formItem.img_url
-          }else this.img_url = ''
-          if(this.formItem.hasOwnProperty('password')){
-            this.formItem.password = this.formItem.password.slice(0,6)
-          }
-          this.copyFormItem = this.$config.copy(this.formItem,{});
-          this.modalText2 = this.modalText;
-          if(!_new) this.$refs.formValidate.resetFields()
+          if(_new){
+            this.formItem = this.$config.copy(this.detailData,{})
+            if(this.formItem.upload) this.downList = this.formItem.upload
+            else this.downList = []
+            if(this.formItem.uploading) {
+              this.descriptionHtml = this.formItem.uploading
+              this.descriptionHtml = this.descriptionHtml.replace('class="form-message"','')
+            } else this.descriptionHtml = ''
+            if(this.formItem.hasOwnProperty('img_url')){
+              this.img_url = this.formItem.img_url
+            }else this.img_url = ''
+            if(this.formItem.hasOwnProperty('password')){
+              this.formItem.password = this.formItem.password.slice(0,6)
+            }
+            this.copyFormItem = this.$config.copy(this.formItem,{});
+            this.modalText2 = this.modalText;
+          }else this.$refs.formValidate.resetFields()
         })
       },
       show(val){
@@ -268,8 +267,10 @@
       },
       closeModal(){
         this.show = false;
+        this.formItem = {};
+        console.log('closeModal')
+        this.$refs.formValidate.resetFields();
         this.$emit("close");
-        this.formItem = {}
       },
       handleFormatError (file) {
         this.$Message.warning('请上传图片');
@@ -310,7 +311,8 @@
       handleSubmit(name){
         this.$refs[name].validate((valid) => {
           if (valid) {
-            if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
+            if(this.uploadFlie&&!this.img_url) this.$Message.warning('请上传头像');
+            else if(this.formList.length>4&&this.formList[4].type==='switch-datetimerange'){
               if(!this.formItem.isswitch&&!this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
               else this.handleFormData()
             }else this.handleFormData()
