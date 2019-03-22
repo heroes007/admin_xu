@@ -226,6 +226,7 @@
         })
       },
       show(val){
+        console.log(val);
         if(!val) this.$refs.formValidate.resetFields()
       },
       detailData(_new){

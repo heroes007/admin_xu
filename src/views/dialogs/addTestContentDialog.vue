@@ -167,7 +167,8 @@
           }
           var detailData = JSON.parse(detail.content);
           this.formInline2.body = detailData.body;
-          this.formInline2.attachment = detail.attachment
+          if(Array.isArray(detail.attachment)) this.formInline2.attachment = detail.attachment
+          else this.formInline2.attachment = JSON.parse(detail.attachment)
           this.formInline2.select_count = detail.select_count.toString()
           // this.setSelectCount(detail.select_count);
           this.formInline2.orderby = detail.orderby;
