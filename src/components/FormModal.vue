@@ -56,11 +56,11 @@
                                   :value="formItem[handleField(t,1)]"  :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!--可插入输入框-->
-                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
+                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput" >
                         <div class="form-message" ref="inputStyle" contentEditable="true" v-html="descriptionHtml"></div>
                         <div ref="divStyle" style="display: flex;margin-top: 15px;">
                             <Dropdown trigger="click" @on-click="handleDrop">
-                                <a href=" "><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
+                                <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
                                 <DropdownMenu slot="list">
                                     <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
                                 </DropdownMenu>
@@ -226,7 +226,6 @@
         })
       },
       show(val){
-        console.log(val);
         if(!val) this.$refs.formValidate.resetFields()
       },
       detailData(_new){
@@ -291,7 +290,6 @@
       },
       ModalState(_new){
         this.show = _new
-        // console.log(this.projectList);
       },
       handleBeforeUpload(file){
         this.handleGetassignKey(file);
@@ -311,6 +309,7 @@
         if(!this.modalFalse) this.closeModal()
       },
       handleSubmit(name){
+        console.log(this.formItem, 'formItem')
         this.$refs[name].validate((valid) => {
           if (valid) {
             if(this.uploadFlie&&!this.img_url) this.$Message.warning('请上传头像');
