@@ -11,8 +11,8 @@
                     <FormItem label="开课日期" prop="stage1">
                         <DatePicker v-model="form1.stage1" type="daterange" format="yyyy/MM/dd" placeholder="请选择时间范围" :transfer="true"></DatePicker>
                     </FormItem>
-                    <FormItem label="报名截止">
-                        <DatePicker v-model="form1.register_end_time" type="date" format="yyyy/MM/dd" placeholder="选择日期" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
+                    <FormItem label="报名截止" prop="register_end_time">
+                        <DatePicker v-model="form1.register_end_time" type="date" format="yyyy/MM/dd" placeholder="请选择报名截止" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
                     </FormItem>
                     <FormItem label="学期描述" class="semester-description" prop="description" required>
                         <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
@@ -76,7 +76,8 @@
             required: true,
             message: '请输入学期描述内容',
             trigger: 'blur'
-          }]
+          }],
+          register_end_time: [{type: 'date', required: true, message: '请选择报名截止'}],
         },
         rules2: {
           semester: [{

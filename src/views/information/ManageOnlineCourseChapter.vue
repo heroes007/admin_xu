@@ -29,7 +29,7 @@
                     <div class='chapter-item' v-if='newChapterData.showAddChapter'>
                         <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                             <div style="display: flex;align-items: center">
-                                <span class="row-title">第{{chapterList.length + 1}}章</span>
+                                <span class="row-title">第{{setIndex(chapterList.length + 1)}}章</span>
                                 <Input v-model="newChapterData.group_name"  @on-enter="saveChapter(newChapterData,true)"  @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
                                        @on-focus="showDataState(chapterList.length)" class="textInput" style="width: 300px;"/>
                             </div>
