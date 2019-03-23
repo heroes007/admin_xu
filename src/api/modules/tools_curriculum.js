@@ -40,7 +40,7 @@ export function update_curriculum(data) {
         grade_id: data.grade_id,
         state: data.state,
         description: data.description,
-        img_url: data.img_url,
+        img_url: data.img_default,
         unlock_type: data.unlock_type,
     });
 }
