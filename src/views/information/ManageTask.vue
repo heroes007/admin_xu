@@ -34,6 +34,7 @@
     import pageMixin from '../mixins/pageMixins'
     import pageList from '../../components/Page'
     import postData from '../../api/postData'
+import { async } from 'q';
 
     export default {
         mixins: [Dialog, FormModalMixin, pageMixin],
@@ -283,13 +284,15 @@
             },
             saveHomework(val) {
                 if (this.modalTitle == "添加作业") {
-                    this.$store.dispatch('add_task_category', val);
-                  this.initData()
-
+                 (async () => {
+                     await  this.$store.dispatch('add_task_category', val);
+                     await this.initData()
+                 })()
                 } else {
-                    this.$store.dispatch('edit_task_category', val);
-                  this.initData()
-
+                 (async () => {
+                     await  this.$store.dispatch('edit_task_category', val);
+                     await this.initData()
+                  })()
                 }
             },
             initData() {
