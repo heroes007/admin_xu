@@ -44,6 +44,7 @@ const actions = {
         get_task_category_list({ commit }, params) {
             commit(types.TASK_SHOW_LOADING);
             get_category_list(params.page, params.keyword).then(res => {
+                console.log(res, 'resresres')
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data);
                 }

@@ -1,7 +1,7 @@
 <template>
     <div class='manage-production-view'>
         <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="培训总数" :size-num1="total" btn-name="添加培训" :select1="selectList" :select2="selectList2"
-            select2Placeholder="请选择类型"  placehodle="搜索产品名称"  @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
+            select2Placeholder="请选择状态"  placehodle="搜索产品名称"  @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
           <div class="lecturer-list">
            <Row :gutter="20">
             <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">

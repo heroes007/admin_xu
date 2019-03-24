@@ -3,7 +3,7 @@
         <!-- selectType1   @selectChange1="selectChange1" -->
         <screen :types="3" size-title1="证书总数" :size-num1="courseNums1" size-title2="已关联" :size-num2="courseNums2" btn-name="添加证书"
            @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" btnType/>
-        <div class="card-houner">
+        <div class="card-houner" ref="box">
             <Card class="card-houner-col" v-for="(item, index) in cardList1" :key="index">
                 <div class="card-houner-img">
                     <img class="houner-image" :src="item.img_url" alt="">
@@ -129,6 +129,7 @@
     mounted() {
       // this.organizationId = JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id
       this.getList()
+      this.$refs.box.style.height = window.innerHeight - 130 + 'px'
     }
   };
 </script>
@@ -138,6 +139,8 @@
         flex-wrap: wrap;
         /*justify-content: space-around;*/
         padding: 20px;
+        overflow: hidden;
+        overflow-y: auto;
     }
     .card-houner-col{
         width: 442px;
@@ -181,6 +184,8 @@
     .card-houner-desc{
         margin-left: 10px;
         width: 60%;
+        /*overflow: hidden;*/
+        /*overflow-y: auto;*/
     }
     .houner-row-content{
         margin-top: 10px;
