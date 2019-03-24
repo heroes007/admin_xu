@@ -1,7 +1,8 @@
 <template>
     <div class="manage-production-view">
+        <!-- selectType1   @selectChange1="selectChange1" -->
         <screen :types="3" size-title1="证书总数" :size-num1="courseNums1" size-title2="已关联" :size-num2="courseNums2" btn-name="添加证书"
-            selectType1   @selectChange1="selectChange1" @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" btnType/>
+           @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" btnType/>
         <div class="card-houner">
             <Card class="card-houner-col" v-for="(item, index) in cardList1" :key="index">
                 <div class="card-houner-img">
@@ -61,7 +62,7 @@
         courseNums2: null,
         cardImg1: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222115758.jpeg",
         cardImg2: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222121345.jpeg",
-        organizationId: '',
+        organizationId: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id,
         keyword: ''
       };
     },
