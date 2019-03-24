@@ -4,7 +4,7 @@
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" uploadBtn>
         </FormModal>
 
-        <screen :types="2" sizeTitle1="作业总数" :sizeNum1="courseNums" btnName="添加作业" @inputChange="manageEdit"
+        <screen :types="2" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
                 @handleClick="addTaskCategory" :btnType="true"/>
 
         <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler'
