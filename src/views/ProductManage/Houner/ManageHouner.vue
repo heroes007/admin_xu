@@ -39,7 +39,7 @@
   import {ADD_PRODUCTION, EDIT_PROTOCOL} from "../../dialogs/types";
   import {Config} from "../../../config/base";
   import {doDateFormat, doTimeFormat, reunitPrice} from "../../../components/Util";
-  import tableHeadData from "../task/consts";
+  import tableHeadData from "../Task/consts";
   import screen from "../../../components/ScreenFrame";
   import * as types from '../../dialogs/types';
   import postData from '../../../api/postData'

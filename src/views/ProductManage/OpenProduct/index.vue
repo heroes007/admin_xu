@@ -23,9 +23,9 @@
 <script>
   import online from '../Online/ManageOnlineCourse'
   import offline from '../Offline/ManageOfflineList'
-  import task from '../task/ManageTask'
-  import course from '../course/ManageCourseDownloadData'
-  import houner from '../houner/ManageHouner'
+  import task from '../Task/ManageTask'
+  import course from '../Course/ManageCourseDownloadData'
+  import houner from '../Houner/ManageHouner'
 
   export default {
     name: "OpenProduct",

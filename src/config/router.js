@@ -14,7 +14,7 @@ const OpenProduct = () => import('../views/ProductManage/OpenProduct/index')
 const MainProduct = () => import('../views/ProductManage/MainProduct/index')
 const ExchangeCode = () => import('../views/SystemManage/ExchangeCode/index')
 const UsageRecord = () => import('../views/SystemManage/ExchangeCode/UsageRecord/index')
-const MarkingHomework = () => import('../views/ProductManage/task/MarkingHomework/index')
+const MarkingHomework = () => import('../views/ProductManage/Task/MarkingHomework/index')
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
 Vue.use(VueRouter);
 

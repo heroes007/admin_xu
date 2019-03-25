@@ -18,20 +18,7 @@
                             <Option v-for="item in curricumList" :key="item.id" :label="item.title" :value="item.id"></Option>
                         </Select>
                     </FormItem>
-                    <!-- <FormItem label="学科" v-if='payload === 0'>
-                                <Select v-model="form.subject_id" placeholder="请选择学科">
-                                    <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
-                                </Select>
-                           </FormItem>
-                    <FormItem label="学段" v-if='payload === 0'>
-                                <Select v-model="form.grade_id" placeholder="请选择学段">
-                                    <Option v-for="item in query_grade_list" :key="item.id" :label="item.name" :value="item.id"></Option>
-                                </Select>
-                           </FormItem> -->
                     <FormItem label="上传附件" v-if="isupdata" required>
-                        <!-- <file-uploader :filters="dataFilters" maxFileCount="1"
-                                    :maxFileSize="30000"  @uploadComplete="uploadComplete"
-                                    bucket="dscj-static-file" :dir='getDir()'/> -->
                             <upload-btn bucket="dscj-app" @uploadcomplete="uploadComplete" type="doc/pdf/zip"/>
                    </FormItem>
                    <FormItem  label="上传附件" required v-else>
