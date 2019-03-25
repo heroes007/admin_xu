@@ -2,13 +2,12 @@
     <div class='manage-notification'>
         <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-                <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
-                           @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
+            <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
+                       @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
     </div>
 </template>
 
 <script>
-    import Header from '../../../components/ProjectHeader'
     import BaseList from '../../../components/BaseList'
     import { mapActions, mapState, mapGetters } from 'vuex'
     import { Dialog } from '../../dialogs'
@@ -22,7 +21,7 @@
     import screen from '../../../components/ScreenFrame'
     export default {
         mixins: [Dialog,FormModalMixin],
-        components: { 'header-component': Header, 'data-list': BaseList,screen,FormModal },
+        components: { 'data-list': BaseList,screen,FormModal },
         data() {
             return {
                 messageContent: '',

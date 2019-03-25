@@ -218,6 +218,7 @@ export default {
         }
     },
     mounted() {
+      console.log(this.payload, 'payload')
         this.organizationList = null
         if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1){
             this.getOrganization()
@@ -391,7 +392,9 @@ export default {
                       if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
                       this.form.price = Number.isInteger(this.form.price)? this.form.price : +(Number(this.form.price).toFixed(2))
                       this.form.original_price = Number.isInteger(this.form.original_price) ? this.form.original_price : +(Number(this.form.original_price).toFixed(2))
-                     if(this.payload)  this.update_production(this.form);
+                     if(this.payload)  {
+                       this.update_production(this.form);
+                     }
                      else this.add_production(this.form);
                 }else{
                     this.form.imgList.push('upload-btn')

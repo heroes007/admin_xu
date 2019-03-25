@@ -18,8 +18,8 @@
                             </div>
                         </div>
                         <div class="upload-list">
-                            <div class="upload-title">* 只能上传 jpg/png/mp4/mov/avi 文件，且不超过2m</div>
-                            <uploadBtn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
+                            <div class="upload-title">* 只能上传 jpg/png/jpeg/mp4/mov/avi 文件，且不超过2m</div>
+                            <uploadBtn class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg" type="image/jpeg,image/png,image/jpg,video/mp4,video/avi,video/mov"/>
                         </div>
                     </FormItem>
                     <FormItem label="选项数量" prop="select_count">

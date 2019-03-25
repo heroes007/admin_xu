@@ -141,3 +141,8 @@ export function get_project_list(data) {
     page_num: data.page_num,
   })
 }
+
+
+export function get_product_info(id) {
+  return api.post('product/product/getProductDetailById', {product_id:id})
+}

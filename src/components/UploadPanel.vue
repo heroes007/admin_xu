@@ -15,7 +15,7 @@
         </Row>
         <span style="display: none">{{resultUrl}}</span>
         <Row class="video" v-if="type=='video'&&!is_show">
-            <video v-if="resourse_url||resultUrl" :src="resourse_url?resourse_url:resultUrl" controls="controls"/>
+            <video ref="vedioPlayer"  v-if="resourse_url||resultUrl" :src="resourse_url?resourse_url:resultUrl" controls="controls"/>
             <input v-if="resourse_url ? (!resourse_url) : (!resultUrl)" type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
         </Row>
         <div class="file-require">
@@ -256,12 +256,16 @@
                             break;
                     };
 
-                    this.$emit('getuploadfile', {
+                      setTimeout(()=>{
+                        let vedioTime = this.$refs.vedioPlayer.duration
+                        this.$emit('vedioTime',vedioTime)
+                      },500)
+                      this.$emit('getuploadfile', {
                         name: this.file_name,
                         url: result
-                    });
-                    this.$emit('uploadcomplete', result);
-                    if(this.fullscreenLoading) this.fullscreenLoading.close()
+                      });
+                      this.$emit('uploadcomplete', result);
+                      if(this.fullscreenLoading) this.fullscreenLoading.close()
                 });
             },
             // 从oss上获取assignKey;

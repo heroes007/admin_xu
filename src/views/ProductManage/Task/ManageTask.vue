@@ -17,11 +17,10 @@
 </template>
 
 <script>
-    import Header from '../../../components/ProjectHeader'
     import TaskCategoryItem from '../../../components/TaskCategoryItem.vue'
     import BaseList from '../../../components/BaseList'
     import {Dialog} from '../../dialogs'
-    import {ADD_TASK_CATEGORY, ADD_TASK, MANUL_ACTIVE} from '../../dialogs/types'
+    import { MANUL_ACTIVE} from '../../dialogs/types'
     import {doTimeFormat} from '../../../components/Util'
     import {mapActions, mapState} from 'vuex'
     import {Config} from '../../../config/base'
@@ -39,7 +38,6 @@ import { async } from 'q';
     export default {
         mixins: [Dialog, FormModalMixin, pageMixin],
         components: {
-            'header-component': Header,
             'data-list': BaseList,
             'category-item': TaskCategoryItem,
             screen,
@@ -242,17 +240,17 @@ import { async } from 'q';
                     },
                 });
             },
-            addTask() {
-                if (this.categoryList.length > 0) {
-                    this.handleSelModal(ADD_TASK, {
-                        separage: this.selectedCategory || this.categoryList[0].id,
-                        type: 1,
-                        selectedType: this.selectedType
-                    })
-                } else {
-                    this.$Modal.info({itle: '提示', content: '<p>请先添加分类！</p>'});
-                }
-            },
+            // addTask() {
+            //     if (this.categoryList.length > 0) {
+            //         this.handleSelModal(ADD_TASK, {
+            //             separage: this.selectedCategory || this.categoryList[0].id,
+            //             type: 1,
+            //             selectedType: this.selectedType
+            //         })
+            //     } else {
+            //         this.$Modal.info({itle: '提示', content: '<p>请先添加分类！</p>'});
+            //     }
+            // },
             deleteCourseHandler(index, row) {
             },
             doActiveHandler(index, row) {

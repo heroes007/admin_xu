@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import addCourseDialog from './addCourseDialog.vue';
-import videoManageDialog from './videoManageDialog.vue';
-import manulActiveDialog from './manulActiveDialog.vue';
-import sendOfflineCourse from './sendOfflineCourse.vue';
 import addDownloadDataDialog from './addDownloadDataDialog.vue';
 import addProductionDialog from './addProductionDialog.vue';
 import addQuestionDialog from './addTestContentDialog.vue';
+import addOfflineSemesterDialog from './addOfflineSemesterDialog'
 import addHouner from './addHouner.vue';
-import addOfflineSemesterDialog from './addOfflineSemesterDialog.vue';
+
+import videoManageDialog from './videoManageDialog.vue';
+import manulActiveDialog from './manulActiveDialog.vue';
+import sendOfflineCourse from './sendOfflineCourse.vue';
+
 import sendHouner from './sendHouner.vue';
 import readOver from './readOver.vue';
 import store from '../../store';
@@ -50,6 +52,9 @@ export var Dialog = {
                 case 'add-houner':
                     inits(addHouner);
                     break;
+                case 'add-offline-semester':
+                  inits(addOfflineSemesterDialog);
+                  break;
                 case 'send-houner':
                     inits(sendHouner);
                     break;

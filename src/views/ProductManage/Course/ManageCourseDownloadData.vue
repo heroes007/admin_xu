@@ -1,6 +1,5 @@
 <template>
     <div class='manage-course-download-data'>
-        <!-- <header-component title="课程资料" :type='0' :showAdd='true' addText='添加课程资料' @addClick='addClickHandler'/> -->
         <screen :types="2" sizeTitle1="资料总数" :sizeNum1="pageTotal" btnName="添加资料" @inputChange="manageEdit"
                 @handleClick="addClickHandler" :btnType="true"/>
         <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg'
@@ -13,7 +12,6 @@
 
 <script>
   import BaseList from '../../../components/BaseList'
-  import Header from '../../../components/ProjectHeader'
   import {mapActions, mapState, mapGetters} from 'vuex'
   import {Dialog} from '../../dialogs'
   import {ADD_DOWNLOAD_DATA} from '../../dialogs/types'
@@ -25,7 +23,7 @@
 
   export default {
     mixins: [Dialog, pageMixin],
-    components: {'header-component': Header, 'data-list': BaseList, screen, pageList},
+    components: {'data-list': BaseList, screen, pageList},
     data() {
       return {
         searchData: '',

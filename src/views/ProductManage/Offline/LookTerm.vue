@@ -31,24 +31,24 @@ export default {
             columns1: [
             {
                 title: '课程名称',
-                key: 'name',
-                align: 'left'
+              key: 'name',
+              align: 'left'
             },{
                 title: '类型',
                 key: 'num',
-            },{
+              },{
                 title: '讲师',
                 key: 'user_name',
-            },
-            {
+              },
+              {
                 title: '开课时间',
                 key: 'start_time',
-            },
-             {
+              },
+              {
                 title: '结课时间',
                 key: 'end_time',
-            },
-            {
+              },
+              {
                 title: '操作',
                 width: 150,
                 slot: 'operation',
@@ -81,7 +81,7 @@ export default {
             this.$emit("close")
         },
         edit(row,rowIndex){
-            this.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row })
+          // this.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row })
             //   this.get_offline_curriculum_detail({ index, row,
             //     callback() {
             //       vm.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 2, row, index, data: vm.offline_curriculum_detail1 });
