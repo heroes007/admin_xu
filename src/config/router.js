@@ -6,14 +6,14 @@ const NotFound = () => import('../views/notfound');
 const DashBoard = () => import('../views/DashBoard');
 const ManageOnlineCourseChapter = () => import('../views/ProductManage/Online/ManageOnlineCourseChapter');
 const ManageOfflineCourse = () => import('../views/ProductManage/Offline/ManageOfflineCourse');
-const ManageNotification = () => import('../views/information/ManageNotification');
+const ManageNotification = () => import('../views/SystemManage/inform/ManageNotification');
 const ManageNews = () => import('../views/SystemManage/news/ManageNews')
 const UserManage = () => import('../views/UserManage/index')
 const ProductManage = () => import('../views/ProductManage/index')
 const OpenProduct = () => import('../views/ProductManage/OpenProduct/index')
 const MainProduct = () => import('../views/ProductManage/MainProduct/index')
-const ExchangeCode = () => import('../views/ExchangeCode/index')
-const UsageRecord = () => import('../views/ExchangeCode/UsageRecord/index')
+const ExchangeCode = () => import('../views/SystemManage/ExchangeCode/index')
+const UsageRecord = () => import('../views/SystemManage/ExchangeCode/UsageRecord/index')
 const MarkingHomework = () => import('../views/ProductManage/task/MarkingHomework/index')
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
 Vue.use(VueRouter);

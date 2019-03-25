@@ -8,18 +8,18 @@
 </template>
 
 <script>
-    import Header from '../../components/ProjectHeader'
-    import BaseList from '../../components/BaseList'
+    import Header from '../../../components/ProjectHeader'
+    import BaseList from '../../../components/BaseList'
     import { mapActions, mapState, mapGetters } from 'vuex'
-    import { Dialog } from '../dialogs'
-    import { ADD_NOTIFICATION, } from '../dialogs/types'
-    import { doTimeFormat } from '../../components/Util'
-    import { Config } from '../../config/base'
-    import { send_by_project_id } from '../../api/modules/tools_sys_msg'
-    import defaultHeader from '../../assets/img/side-menu/default-header.jpg'
-    import FormModal from '../../components/FormModal'
-    import FormModalMixin from '../UserManage/Mixins/FormModalMixin'
-    import screen from '../../components/ScreenFrame'
+    import { Dialog } from '../../dialogs'
+    import { ADD_NOTIFICATION, } from '../../dialogs/types'
+    import { doTimeFormat } from '../../../components/Util'
+    import { Config } from '../../../config/base'
+    import { send_by_project_id } from '../../../api/modules/tools_sys_msg'
+    import defaultHeader from '../../../assets/img/side-menu/default-header.jpg'
+    import FormModal from '../../../components/FormModal'
+    import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
+    import screen from '../../../components/ScreenFrame'
     export default {
         mixins: [Dialog,FormModalMixin],
         components: { 'header-component': Header, 'data-list': BaseList,screen,FormModal },

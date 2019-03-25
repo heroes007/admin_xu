@@ -15,7 +15,7 @@
 </template>
 
 <script>
- import  Tables from '../../../../components/tables.vue'
+ import  Tables from '../../../../../components/tables.vue'
   export default {
     components: { Tables },
     props: {
@@ -34,7 +34,7 @@
             this.showContent = _new
         }
     },
-    data(){ 
+    data(){
         return {
             value:'',
             showContent: false,
@@ -165,7 +165,7 @@
     }
 }
 }
-.foot-btn{ 
+.foot-btn{
     display: flex; justify-content: center;
     padding-top: 30px;
     height: 106px;

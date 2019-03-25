@@ -1,15 +1,15 @@
 <template>
    <div>
        <SendCode title="发送兑换码" :show-modal="codeShow" :list="codeList" @close="codeClose" @selectChecked="codeChecked" />
-       <screen :types="8" size-title1="兑换码总数" :code-name="codeName" placehodle="搜索兑换码" :size-num1="23"  :select1="selectList" 
+       <screen :types="8" size-title1="兑换码总数" :code-name="codeName" placehodle="搜索兑换码" :size-num1="23"  :select1="selectList"
           size-title2="已使用"  :size-num2="17" @handleBack="handleBack"  @selectChange1="selectChange1"  @inputChange="inputChange" />
         <Tables :is-serial=true @operation1="see" @operation2="immediateFailure" :column="columns1" :table-data="list" />
    </div>
 </template>
 
 <script>
-  import Tables from '../../../components/tables.vue'
-  import screen from '../../../components/ScreenFrame'
+  import Tables from '../../../../components/tables.vue'
+  import screen from '../../../../components/ScreenFrame'
   import SendCode from './SendCode'
   export default {
     name: "UsageRecord",
@@ -81,7 +81,7 @@
                     "product": "浙江全科医生培训",
                     "num": 1001,
                     "create_time": "2019/01/13",
-                    "state": 0, // 1 -- 生效中 0 -- 已失效 
+                    "state": 0, // 1 -- 生效中 0 -- 已失效
                     use_state: 0, //1--已使用 0--未使用
                     isswitch: false,
                 }
