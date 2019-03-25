@@ -13,7 +13,8 @@ import {
   delete_certificate,
   add_certificate,
   edit_certificate,
-  get_project_list
+  get_project_list,
+  get_product_info
 } from '../../api/modules/tools_product'
 
 
@@ -93,6 +94,12 @@ const actions = {
     update_product(param).then(res => {
       if (res.data.res_code === 1) {
         commit('edit_product_states',true)
+        let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+        get_product_info(id).then(res => {
+          if(res.data.res_code == 1){
+            localStorage.setItem('PRODUCTINFO',JSON.stringify(res.data.data))
+          }
+        })
         // commit(types.PRODUCTION_UPDATED, param)
         // if(param.certificate.length){
         //   change_certificate(param.certificate, param.product_id).then(res => {

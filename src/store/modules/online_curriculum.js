@@ -20,7 +20,7 @@ const state = {
     showChapterLoading: false,
     showMainLoading: false,
     newVideoTestId: 0,
-    stateList: [{id: 1, name: '上线中'}, {id: 0, name: '未上线'}, {id: -1, name: '已下线'}]
+    stateList: [{id: 1, name: '上架'}, {id: 0, name: '测试'}, {id: -1, name: '下架'}]
 }
 let project_id = null
 

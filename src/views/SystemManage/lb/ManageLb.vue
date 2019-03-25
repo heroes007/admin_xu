@@ -41,7 +41,6 @@
     </div>
 </template>
 <script>
-    import Header from '../../../components/Header'
     import UploadBtn from '../../../components/UploadButton'
     import {Config} from '../../../config/base'
     import screen from '../../../components/ScreenFrame'
@@ -49,7 +48,7 @@
     import postData from '../../../api/postData.js'
     import UploadPanel from '../../../components/UploadPanel'
     export default{
-        components: { 'header-component': Header, 'btn-upload': UploadBtn , screen, Tables, UploadPanel},
+        components: { 'btn-upload': UploadBtn , screen, Tables, UploadPanel},
         props: {
             type: {
                 type: Boolean,

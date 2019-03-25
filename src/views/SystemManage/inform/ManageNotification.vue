@@ -8,7 +8,6 @@
 </template>
 
 <script>
-    import Header from '../../../components/ProjectHeader'
     import BaseList from '../../../components/BaseList'
     import { mapActions, mapState, mapGetters } from 'vuex'
     import { Dialog } from '../../dialogs'
@@ -22,7 +21,7 @@
     import screen from '../../../components/ScreenFrame'
     export default {
         mixins: [Dialog,FormModalMixin],
-        components: { 'header-component': Header, 'data-list': BaseList,screen,FormModal },
+        components: { 'data-list': BaseList,screen,FormModal },
         data() {
             return {
                 messageContent: '',

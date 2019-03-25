@@ -17,7 +17,6 @@
 </template>
 
 <script>
-    import Header from '../../../components/ProjectHeader'
     import TaskCategoryItem from '../../../components/TaskCategoryItem.vue'
     import BaseList from '../../../components/BaseList'
     import {Dialog} from '../../dialogs'
@@ -39,7 +38,6 @@ import { async } from 'q';
     export default {
         mixins: [Dialog, FormModalMixin, pageMixin],
         components: {
-            'header-component': Header,
             'data-list': BaseList,
             'category-item': TaskCategoryItem,
             screen,

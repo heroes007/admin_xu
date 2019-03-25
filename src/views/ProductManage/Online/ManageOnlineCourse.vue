@@ -10,7 +10,6 @@
 </template>
 
 <script>
-  import Header from '../../../components/ProjectHeader'
   import BaseList from '../../../components/BaseList'
   import SaveOrder from '../../../components/SaveOrder'
   import {doTimeFormat} from '../../../components/Util'
@@ -316,7 +315,6 @@
       this.initData();
     },
     components: {
-      'header-component': Header,
       'data-list': BaseList,
       'save-order': SaveOrder,
        screen, pageList

@@ -12,7 +12,6 @@
 </template>
 
 <script>
-  import Header from '../../../components/ProjectHeader'
   import BaseList from '../../../components/BaseList'
   import SaveOrder from '../../../components/SaveOrder'
   import screen from '../../../components/ScreenFrame'
@@ -27,7 +26,7 @@
   import FormModal from '../../../components/FormModal.vue'
   export default {
     mixins: [Dialog],
-    components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm, FormModal },
+    components: { 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm, FormModal },
     data() {
       return {
         show: false,

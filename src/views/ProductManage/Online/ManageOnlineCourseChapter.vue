@@ -49,7 +49,6 @@
 </template>
 
 <script>
-  import Header from '../../../components/ProjectHeader'
   import screen from '../../../components/ScreenFrame'
   import BaseList from '../../../components/BaseList'
   import SaveOrder from '../../../components/SaveOrder'
@@ -63,7 +62,7 @@
 
   export default {
     mixins: [Dialog],
-    components: {'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen},
+    components: {'data-list': BaseList, 'save-order': SaveOrder, screen},
     data() {
       return {
         dirty: false,
@@ -345,15 +344,6 @@
       },
       addVideo(item) {
         if (!item) {
-          // if (this.newChapterData.group_name) {
-          //   this.handleSelModal(VIDEO_MANAGE, {
-          //     curriculum_id: parseInt(this.$route.params.id),
-          //     group_name: this.newChapterData.group_name,
-          //     group_orderby: this.newChapterData.group_orderby,
-          //     orderby: 1,
-          //     parent_id: parseInt(this.$route.params.id)
-          //   })
-          // } else
           this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
           this.handleSelModal(VIDEO_MANAGE, {
