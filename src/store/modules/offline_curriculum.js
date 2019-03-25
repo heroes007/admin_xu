@@ -17,10 +17,6 @@ import {
     get_students_by_offline_term,
     send_student_offline_curriculum
 } from '../../api/modules/tools_student'
-import {
-    get_list,
-    update_receipt
-} from '../../api/modules/offline_term_receipt'
 import moment from 'moment'
 import dateFormat from '../../config/dateFormat'
 import lodash from 'lodash'
@@ -188,23 +184,6 @@ const actions = {
                 commit(types.SEND_STUDENT_ONLINE_CURRICULUM, res.data.msg);
             }
           })
-        },
-        get_offline_course_receipt_list({commit}, params) {
-            commit(types.OFFLINE_TERM_LIST_LOADING);
-          get_list(params.offline_term_id,params.phone,params.name).then(res => {
-            if(res.data.res_code == 1){
-                commit(types.RECEIPT_LIST_LOADED, res.data.msg);
-            }
-          })
-        },
-        update_offline_course_receipt({commit}, params) {
-            commit(types.OFFLINE_TERM_LIST_LOADING);
-            update_receipt(params.otr_id, params).then(res => {
-                if (res.data.res_code == 1) {
-                    commit(types.OFFLINE_COURSE_RECEIPT_EADITED, params);
-                    params.callback();
-                }
-            })
         },
         change_offline_term_valid({commit}, params) {
             // commit(types.OFFLINE_TERM_LIST_LOADING);

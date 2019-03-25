@@ -88,9 +88,6 @@
       }
     },
     computed: {
-      roleList() {
-        return this.$store.state.roles.role_list;
-      },
       projectList() {
         return this.$store.state.project.project_list;
       }

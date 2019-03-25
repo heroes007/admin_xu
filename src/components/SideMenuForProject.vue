@@ -109,7 +109,6 @@
     mounted() {
       this.getList();
       this.initMenu();
-      if (this.$store.state.roles.role_list.length === 0) this.$store.dispatch('get_role_list');
     },
     computed: {
       ...mapState({productState: state => state.production.edit_product_state}),

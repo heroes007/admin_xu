@@ -80,30 +80,10 @@
       }
     },
     computed: {
-      roleList() {
-        return this.$store.state.roles.role_list;
-      },
       dataHeader() {
         return [
           {label: '顺序', width: 130, prop: 'node_number'},
           {prop: 'group_name', label: '小节名称', align: 'left'},
-          // {
-          //   prop: '',
-          //   label: '观看权限',
-          //   width: 200,
-          //   mixColumn: true,
-          //   useFormatter: true,
-          //   mixprop: 'mix_role',
-          //   mixFunc: (function (data) {
-          //     var roles;
-          //     if (data.type === 0) {
-          //       roles = data.video_role;
-          //     } else if (data.type === 1) {
-          //       roles = data.video_test_role;
-          //     }
-          //     return roles;
-          //   })
-          // },
           // {prop: 'create_time', label: '创建时间', width: 200},
           {
             label: '操作', width: 450, groupBtn: [
@@ -124,9 +104,6 @@
             dataValue: 'name'
           },
         ]
-      },
-      listColumnFormatterData() {
-        return [this.roleList];
       },
       isLoading() {
         return this.$store.state.online_curriculum.showChapterLoading;
