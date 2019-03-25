@@ -2,7 +2,7 @@
    <div>
          <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
 
-        <screen :types="4" size-title1="兑换码总数" placehodle="搜索兑换码" :size-num1="23" btn-name="添加兑换码" :select1="selectList"
+        <screen btnType :types="4" size-title1="兑换码总数" placehodle="搜索兑换码" :size-num1="23" btn-name="添加兑换码" :select1="selectList"
                 size-title2="付费学员" :size-num2="14"   @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :is-serial=true @operation1="batchDownload" @operation2="edit" @operation3="useRecords" @operation4="immediateFailure"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
    </div>

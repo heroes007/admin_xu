@@ -21,7 +21,7 @@
     import TaskCategoryItem from '../../../components/TaskCategoryItem.vue'
     import BaseList from '../../../components/BaseList'
     import {Dialog} from '../../dialogs'
-    import {ADD_TASK_CATEGORY, ADD_TASK, NOTIFICATION, MANUL_ACTIVE} from '../../dialogs/types'
+    import {ADD_TASK_CATEGORY, ADD_TASK, MANUL_ACTIVE} from '../../dialogs/types'
     import {doTimeFormat} from '../../../components/Util'
     import {mapActions, mapState} from 'vuex'
     import {Config} from '../../../config/base'
