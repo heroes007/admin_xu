@@ -2,7 +2,6 @@
     <div class='manage-offline-course'>
         <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
         <LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>
-        <!--<header-component title="线下课" :type='2' :showAdd='true' @addOfflineSemester='addOfflineSemesterHandler' @reRenderList="reRenderListHandler"/>-->
         <screen :btn-type="true" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
                    @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'

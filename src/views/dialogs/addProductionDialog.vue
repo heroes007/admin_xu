@@ -31,21 +31,6 @@
                                 <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}</Option>
                             </Select>
                         </FormItem>
-                        <!--<FormItem v-show="nextStep == 0" label="荣誉证书" >
-                            <Select v-model="form.certificate" multiple >
-                                <Option v-for="(item, index) in certificate" :key="item.id" :value="item.id" :label="item.name"></Option>
-                            </Select>
-                        </FormItem>-->
-                        <!--<FormItem v-show="nextStep == 0" label="跳转配置">
-                            <Row class='row-container' type='flex' justify='start' align='middle'>
-                            <Switch  v-model="form.redirectType" size="large">
-                                <span slot="open">自定义</span><span slot="close">默认</span>
-                            </Switch>
-                            </Row>
-                        </FormItem>
-                        <FormItem v-if="nextStep == 0 && form.redirectType" label="跳转地址">
-                        <Input v-model="form.h5_url" placeholder="请输入跳转地址"></Input>
-                        </FormItem>-->
                         <FormItem v-show="nextStep == 0" prop="short_description" label="产品介绍" >
                             <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
                         </FormItem>

@@ -169,7 +169,6 @@
             this.show = true
             this.formList[3].disable = false
             this.tableRow = this.tableRow1
-            console.log('open modal')
         },
         handleList(){
             this.list.map((it) => {

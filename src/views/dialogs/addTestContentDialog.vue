@@ -3,21 +3,6 @@
            @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" width="800">
         <base-input @closedialog="handleClose">
             <Row slot="body">
-                <!--<Form :inline="true" :model="formInline1" class="row1-test-form" label-position="left">-->
-                    <!--<FormItem label="测验名称" class="form-title">-->
-                        <!--<Input class="formInput" v-model="formInline1.title" placeholder="请输入测验的名称"-->
-                               <!--:disabled='isEdit'></Input>-->
-                    <!--</FormItem>-->
-                    <!--&lt;!&ndash;<FormItem label="测验权限">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<Select v-model="formInline1.video_test_roles" placeholder="选择测验权限" :disabled='isEdit' multiple>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<Option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.role_id"></Option>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</Select>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</FormItem>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<FormItem class="save-test">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<Button type="primary" @click="handleSaveTest" class="save-test-btn" v-if='!isEdit'>保存测验</Button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<Button @click="handleEditTest" class="edit-test-btn" v-if='isEdit'>编辑测验</Button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</FormItem>&ndash;&gt;-->
-                <!--</Form>-->
                 <Form :inline="true" :model="formInline2" class="row2-test-form" :rules="rulesList" ref="formValidate">
                     <FormItem label="测验名称" class="form-title" prop="title">
                         <Input class="formInput" v-model="formInline2.title" placeholder="请输入测验的名称"

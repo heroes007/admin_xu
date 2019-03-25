@@ -48,60 +48,6 @@
                                     <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
                                 </FormItem>
                             </Col>
-                            <!--<Col :span="11" :offset="2">
-                                <FormItem label="开课时间">
-                                    <DatePicker v-model="selectDateRange" type="daterange" placeholder="选择日期范围" :transfer="true"></DatePicker>
-                                </FormItem>
-                                <FormItem label="操作权限（多选）">
-                                    <Select v-model="form.curriculum_roles" multiple placeholder="请选择权限">
-                                        <Option v-for="item in query_teacher_roles" :key="item.id" :label="item.role_name" :value="item.role_id"></Option>
-                                    </Select>
-                                </FormItem>
-                                <FormItem label="学科">
-                                    <Select v-model="form.subject_id" placeholder="请选择学科">
-                                        <Option v-for="item in query_subject_list" :key="item.id" :label="item.name" :value="item.id"></Option>
-                                    </Select>
-                                </FormItem>
-                                <FormItem label="课程资料">
-                                    <Select v-model="form.data_center_id" placeholder="请选择课程资料(没有请重新上传)">
-                                        <Option v-for="item in curriculum_data_list" :key="item.id" :label="item.name" :value="item.id"></Option>
-                                    </Select>
-                                    <Row type='flex' justify='end'>
-                                        <Button type='text' v-if='!newData.show' @click='showAddData'>新建资料</Button>
-                                        <Button class='save-data' type='text' v-if='newData.show' @click='saveData'>保存资料</Button>
-                                        <Button type='text' v-if='newData.show' @click='cancelAddData'>取消</Button>
-                                    </Row>
-                                </FormItem>
-                            </Col>-->
-                        <!--</Row>-->
-                        <!--<Row>
-                            <div class='add-download-data' v-if='newData.show'>
-                                <Row type='flex' align='middle'>
-                                    <Col :span='4'>资料名称：</Col>
-                                    <Col>
-                                        <Input v-model="newData.name" placeholder="请输入课程名称"></Input>
-                                    </Col>
-                                </Row>
-                                <file-uploader :filters="dataFilters" maxFileCount="1" :maxFileSize="10000" @uploadComplete="uploadComplete" bucket="dscj-static-file" :dir="getDir()"/>
-                            </div>
-
-                        </Row>-->
-                       <!-- <Row>
-
-                            <Col :span="11" :offset="2">
-                                <FormItem label="文字图片">
-                                    <upload-panel ref="upload_panel" :resourse="form.img_3_8" :upload-config="uploadConfig" @uploadcomplete="handle38UploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*180</span>
-                                    </upload-panel>
-                                </FormItem>
-                            </Col>
-                        </Row>-->
-                        <!--<Row class="course-description">
-                            <FormItem label="课程简介">
-                                <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.description"></Input>
-                            </FormItem>
-                        </Row>-->
-
                     </Form>
                 </Row>
                 <Row v-if="dialogIndex==2">

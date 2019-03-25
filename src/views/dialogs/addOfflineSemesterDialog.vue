@@ -1,7 +1,7 @@
 <template>
     <Modal :transfer=false v-model="addOfflineSemesterDialog" :title="payload.type == 2 ? '编辑学期' : '添加学期'" @on-cancel="handleRemoveModal(remove)" size="auto"
            :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" style="border-radius:6px !important" :closable="true">
-          
+
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
                 <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="120">
@@ -70,7 +70,7 @@
           stage1: [{
             type: 'array',
             required: true,
-            fields: { 0: {type: 'date', required: true, message: '请输入开课日期'},1: {type: 'date', required: true, message: '请输入结课日期'}} 
+            fields: { 0: {type: 'date', required: true, message: '请输入开课日期'},1: {type: 'date', required: true, message: '请输入结课日期'}}
           }],
           description: [{
             required: true,
@@ -109,9 +109,6 @@
         }
         return {}
       }
-    },
-    mounted(){
-      console.log(this.form1.register_end_time,'ss');
     },
     methods: {
       ...mapActions([ 'add_offline_term', 'edit_offline_term', 'get_subject_list', 'get_offline_term_list' ]),
