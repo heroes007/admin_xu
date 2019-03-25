@@ -25,29 +25,32 @@
         columns1: [
           {
             key: 'title',
-            title: '新闻标题'
+            title: '新闻标题',
+            minWidth: 200
           },
           {
             key: 'click_count',
             title: '浏览量',
-            width: 100
+            minWidth: 100
           },
           {
             key: 'state_name',
             title: '状态',
+            minWidth: 100
           },
           {
             key: 'create_time',
             title: '发布时间',
-            width: 160
+            minWidth: 100
           },
           {
             key: 'realname',
             title: '发布人',
+            minWidth: 100
           },
           {
             title: '操作',
-            width: 260,
+            minWidth: 260,
             slot: 'operation',
             operation: [['下架','operation1'],['编辑','operation2'],['删除','operation3']]
           }],

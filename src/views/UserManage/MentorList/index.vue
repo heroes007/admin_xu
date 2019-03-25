@@ -59,10 +59,12 @@
                 title: '用户名',
                 key: 'username',
                 align: 'left',
+                minWidth: 100
             },{
                 title: '真实姓名',
                 key: 'realname',
-            },
+                minWidth: 100
+              },
               // {
               //   title: '性别',
               //   slot: 'sex',
@@ -71,11 +73,13 @@
                 title: '管理权限',
                 key: 'role_name',
                 align: 'left',
+                minWidth: 100
             },
             {
                 title: '所属机构',
                 key: 'title',
-                align: 'left'
+                align: 'left',
+                minWidth: 100
             },
             // {
             //     title: '状态',
@@ -85,10 +89,11 @@
                 title: '最近登录时间',
                 key: 'create_time',
                 align: 'left',
-            },
+                minWidth: 100
+                },
             {
                 title: '操作',
-                width: 260,
+                minWidth: 260,
                 slot: 'operation',
                 operation: [],
             }],

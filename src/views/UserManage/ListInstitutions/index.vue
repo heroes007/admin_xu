@@ -61,14 +61,17 @@
             {
                 title: '机构名称',
                 key: 'title',
-                align: 'left'
+                align: 'left',
+                minWidth: 100
             },{
                 title: '导师人数',
                 key: 'tutor_count',
-            },
+                minWidth: 100
+              },
             {
                 title: '付费学员',
                 key: 'student_count',
+                minWidth: 100
             },
             // {
             //     title: '状态',
@@ -76,7 +79,7 @@
             // },
             {
                 title: '操作',
-                width: 260,
+                minWidth: 260,
                 slot: 'operation',
                 operation: [],
             }],

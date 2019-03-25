@@ -73,26 +73,32 @@
                 title: '用户名',
                 key: 'username',
                 align: 'left',
+                minWidth: 100
             },{
                 title: '真实姓名',
                 key: 'realname',
-            },{
+                minWidth: 100
+              },{
                 title: '性别',
                 slot: 'sex',
-            },
+                minWidth: 100
+              },
             {
                 title: '学科',
                 key: 'department_name',
                 align: 'left',
+                minWidth: 100
             },
             {
                 title: '年级',
                 key: 'grade_name',
                 align: 'left',
+                minWidth: 100
             },
             {
                 title: '状态',
-                slot: '_index'
+                slot: '_index',
+                minWidth: 100
             },
             // {
             //     title: '所属机构',
@@ -103,10 +109,11 @@
                 title: '最近登录时间',
                 key: 'last_time',
                 align: 'left',
+                minWidth: 100
             },
             {
                 title: '操作',
-                width: 260,
+                minWidth: 100,
                 slot: 'operation',
                 operation: [],
                 isSwitch: false,

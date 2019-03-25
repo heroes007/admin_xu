@@ -182,6 +182,7 @@
         font-size: 16px !important;
     }
     .input{
+        min-width: 230px;
         width: 300px;
         height: 36px;
         margin-left: 10px;
@@ -198,6 +199,7 @@
         font-size: 20px;
     }
     .money-student{
+        min-width: 130px;
         width: 130px;
         height: 36px;
         background-color: #fff;
@@ -224,8 +226,10 @@
     }
     .all-size{
         margin-left: 20px;
+        min-width: 96px;
     }
     .money-size{
+        min-width: 96px;
         border-left: 1px solid #CDCED3;
         margin-left: 12px;
         padding-left: 12px;

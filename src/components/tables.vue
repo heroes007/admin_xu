@@ -103,7 +103,7 @@
       },
       handleTableData(d) {
         d.map((t, k) => {
-          if (this.isSerial) t.serial_number = this.$config.addZero(k)
+          if (this.isSerial) t.serial_number = this.$config.addZero(k+1)
           if (t.hasOwnProperty('slot')) {
             if (t.operation.length > 0) this.btnList = t.operation
           }
@@ -126,7 +126,7 @@
         }
       },
       handleColumns(c) {
-        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number'})
+        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 80})
         if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
         if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
         c.map((t) => {
