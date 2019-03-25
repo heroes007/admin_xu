@@ -11,7 +11,7 @@
                                     <Input v-model="form.name" placeholder="请输入证书名称"></Input>
                                 </FormItem>
                                 <FormItem v-show="organizationList&&organizationList.length>0" label="所属机构" prop="organization_id">
-                                  <Select v-model="form.organization_id" placeholder="请选择所属机构">
+                                  <Select v-model="form.organization_id" placeholder="请选择所属机构" disabled>
                                      <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
                                   </Select>
                                 </FormItem>
@@ -104,6 +104,7 @@
         }
         this.$store.commit('set_houner_state', false)
         if(this.payload.hasOwnProperty('row')) this.form = this.payload.row
+        this.form.organization_id = JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id
     },
     computed: {
       ...mapState({
