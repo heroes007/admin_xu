@@ -225,8 +225,7 @@ import { async } from 'q';
             }
             this.copyFormItem = this.$config.copy(this.formItem,{});
             this.modalText2 = this.modalText;
-          }
-          // else this.$refs.formValidate.resetFields()
+          }else this.$refs.formValidate.resetFields()
         })
       },
       show(val){
