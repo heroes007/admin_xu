@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import hello from './modules/hello'
 import subject from './modules/subject'
 import period from './modules/period'
 import roles from './modules/roles'
@@ -37,7 +36,6 @@ const debug = process.env.NODE_ENV !== 'production'
 export default new Vuex.Store({
   ...main,
   modules: {
-    hello,
     subject,
     roles,
     student,

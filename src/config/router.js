@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-// import Home from '../views/Home';
 // import Project from '../views/ProjectPanel';
-// import Hello from '../views/hello';
 // import AddHomework from '../views/homework/AddHomework';
 // import ManageHomework from '../views/homework/ManageHomework';
 // import GradeHomework from '../views/homework/GradeHomework';
@@ -15,7 +13,6 @@ import VueRouter from 'vue-router';
 // import StatisticsData from '../views/statistics/StatisticsData';
 // import FromPageData from '../views/statistics/FromPageData';
 // import TeamGrouping from '../views/team/TeamGrouping';
-// import HolyWater from '../views/HolyWater';
 
 const Login = () => import('../views/Login');
 const NotFound = () => import('../views/notfound');
@@ -60,21 +57,6 @@ const routes = [
   //   path:'/project',
   //   name:'project',
   //   component:Project
-  // },
-  // {
-  //   path:'/home',
-  //   name:'home',
-  //   component:Home,
-  //   children:[
-  //     {
-  //       path:'',
-  //       redirect:'/home/hello'
-  //     },
-  //     {
-  //       path:'hello',
-  //       component:Hello
-  //     }
-  //   ]
   // },
   {
     path:'/dashboard',
@@ -292,11 +274,6 @@ const routes = [
     name: 'login',
     component: Login
   },
-  // {
-  //   path:'/team-grouping',
-  //   name:'team-grouping',
-  //   component: HolyWater
-  // },
   {
     path: '*',
     name: 'notfound',
