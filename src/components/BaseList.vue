@@ -12,6 +12,9 @@
                :highlight-row='canSelect' :show-header='showHeader'
                :columns="headerData" :data="tableData" :height="tableHeight" @on-expand="rowExpandHandler"
                @on-row-click='rowClickHandler'>
+             <template slot-scope="{ column, row, index }" slot="sort-index">
+               <span>{{$config.addZero(index+1)}}</span>
+            </template>
             <template slot-scope="{ column, row, index }" slot="badge">
                 <Badge class="mark" :count="+(showBadgeCount(column.prop,row))"></Badge>
             </template>
@@ -279,7 +282,7 @@
             it.tooltip = true
           }
           if (it.sort) {
-            it.type = 'index'
+            it.slot = 'sort-index'
             it.title = this.getHeaderLabel(it)
             it.width = 100
           }
