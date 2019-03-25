@@ -18,7 +18,6 @@
 <script>
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
   import {Dialog} from '../views/dialogs'
-  import {ADD_TASK_CATEGORY} from '../views/dialogs/types'
 
   export default {
     mixins: [Dialog],

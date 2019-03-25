@@ -1,7 +1,7 @@
 <template>
     <div class='manage-offline-course'>
-        <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules" />
-        <LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>
+        <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
+        <!--<LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>-->
         <screen :btn-type="true" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
                    @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
@@ -264,7 +264,7 @@
         })
       },
       handleClick() {},
-      inputChange(val){
+      inputChange(val) {
         console.log(val)
       },
       closeModal(){
@@ -337,7 +337,7 @@
         }
       },
       addOfflineCourse(index, row) {
-        this.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 1, row })
+        // this.handleSelModal(types.ADD_OFFLINE_COURSE, { type: 1, row })
       },
       childBtnClickHandler(param, index, row) {
         var vm = this;

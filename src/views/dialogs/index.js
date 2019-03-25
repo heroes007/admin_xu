@@ -3,11 +3,11 @@ import addCourseDialog from './addCourseDialog.vue';
 import addDownloadDataDialog from './addDownloadDataDialog.vue';
 import addProductionDialog from './addProductionDialog.vue';
 import addQuestionDialog from './addTestContentDialog.vue';
+import addOfflineSemesterDialog from './addOfflineSemesterDialog'
 import addHouner from './addHouner.vue';
 import videoManageDialog from './videoManageDialog.vue';
 import manulActiveDialog from './manulActiveDialog.vue';
 import sendOfflineCourse from './sendOfflineCourse.vue';
-import addOfflineSemesterDialog from './addOfflineSemesterDialog'
 import sendHouner from './sendHouner.vue';
 import readOver from './readOver.vue';
 import store from '../../store';

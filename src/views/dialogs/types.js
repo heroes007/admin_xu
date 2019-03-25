@@ -1,10 +1,7 @@
 export const ADD_COURSE = 'add-course';
-export const ADD_OFFLINE_COURSE = 'add-offline-course';
 export const ADD_OFFLINE_SEMESTER = 'add-offline-semester';
 export const ADD_QUESTION = 'add-question';
 export const VIDEO_MANAGE = 'video-manage';
-export const ADD_TASK_CATEGORY = 'add-task-category';
-export const ADD_TASK = 'add-task';
 export const MANUL_ACTIVE = 'manul-active';
 export const SEND_OFFLINE_COURSE = 'send-offline-course';
 export const ADD_NOTIFICATION = 'add-notification';

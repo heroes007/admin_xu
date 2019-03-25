@@ -2,8 +2,8 @@
     <div class='manage-notification'>
         <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-                <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
-                           @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
+            <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
+                       @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
     </div>
 </template>
 
