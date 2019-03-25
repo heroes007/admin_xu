@@ -52,7 +52,8 @@
             title: '操作',
             minWidth: 260,
             slot: 'operation',
-            operation: [['下架','operation1'],['编辑','operation2'],['删除','operation3']]
+            operation_state: true,
+            operation: [[['下架','上架'],'operation1',true],['编辑','operation2'],['删除','operation3']]
           }],
         list: [],
         show: false,
@@ -106,7 +107,10 @@
         }
       },
       lowerShelf(row,rowIndex){
-        postData('/platform/news/modifyNews',{id: row.id, state: -1 }).then((res) => {
+       this.setLowerShelf(row,rowIndex,-row.state)
+      },
+      setLowerShelf(row,rowIndex,type){
+        postData('/platform/news/modifyNews',{id: row.id, state: type}).then((res) => {
            if(res) this.getList()
         })
       },

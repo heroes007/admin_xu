@@ -6,8 +6,7 @@
 
 <script>
   import api from './api/modules/config'
-  import {logout} from './api/modules/auth';
-
+  
   export default {
     beforeCreate() {
       let vm = this;

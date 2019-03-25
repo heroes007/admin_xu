@@ -6,7 +6,8 @@
         </Row>
         <div class="elRow">
             <div class='head-img'>
-                <img :src='detailImg'>
+                <img class="" v-if="detailImg" :src='detailImg'>
+                <video v-if="detailVideo" :src="detailVideo"></video>
             </div>
             <div class="head-title">{{detail.title}}</div>
             <div class="head-list">
@@ -65,7 +66,7 @@
             this.detail = res.data[0]
             let d = JSON.parse(this.detail.url_arr);
             this.detailImg = d.default[0]
-            // if(d.default) this.detailVideo = d.video
+            if(d.default&&!this.detailImg) this.detailVideo = d.video
         })
       },
       edit(){
@@ -78,14 +79,6 @@
       },
       initMenu() {
         this.activeIndex = this.$route.name;
-      },
-      logout() {
-        api.post('api/user/logout', {from: 'web'}).then((res) => {
-          if (res.data.res_code === 1) {
-            this.$localStorage.set('token', '');
-            this.$router.push({path: '/login'});
-          }
-        });
       },
       handleDelete() {
         this.$Modal.confirm({
@@ -171,7 +164,7 @@
             height: 100px;
             margin-bottom: 18px;
 
-            img {
+            img, video {
                 width: 190px;
                 height: 100px;
             }

@@ -37,6 +37,7 @@ export default {
   addZero(data) {
     if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
   },
+  // 获取权限
   getAuth(v){
     let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
     let d1 = JSON.parse(d.slice(4))
@@ -177,14 +178,4 @@ export default {
   }
   return newchar;
  }
-  // setAuth(){
-  //   if(localStorage.getItem('PERMISSIONS')){
-  //   let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
-  //   let d1 = JSON.parse(d.slice(4))
-  //   d1.forEach(t => {
-  //       let num = +t.permission_code.slice(0,2); 
-  //       Vue.prototype['$PERMISSIONS' + num] = t
-  //   });
-  //   }
-  // },
 }

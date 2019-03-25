@@ -70,7 +70,6 @@ export default {
     computed:{
          ...mapState({
             projectId:state => state.project.select_project_id,
-            query_grade_list: state => state.grade.grade_list,
             query_subject_list: state => state.subject.subject_list,
             course_download_data_list: state => state.download_data,
             }),

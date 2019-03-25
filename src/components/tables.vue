@@ -140,7 +140,7 @@
       handleBtnText(t, r, c) {
         // operation_state -- 处理 兑换码
         if (Array.isArray(t[0])) {
-          if (c.operation_state && t[0][0] == '立即失效') return c.operation_state && r.state ? t[0][0] : c.operation_state && r.state === 0 ? t[0][1] : t[0]
+          if (c.operation_state ) return r.state == 1 ? t[0][0] : t[0][1]
           return c.operation_state && r.use_state ? t[0][0] : c.operation_state && r.use_state === 0 ? t[0][1] : t[0]
         } else return t[0]
       },

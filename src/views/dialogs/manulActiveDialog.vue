@@ -187,7 +187,6 @@
            let _d = this.$store.state.task.task_user_list
            _d.map((it) => {
                it.subject_name = this.handleTableToName(this.$store.state.subject.subject_list,it.subject_id)
-               it.grade_name = this.handleTableToName(this.$store.state.grade.grade_list,it.grade_id)
            })
            return _d
       },

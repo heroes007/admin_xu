@@ -3,11 +3,6 @@
  */
 import api from './config'
 
-export function logout(from) {
-    return api.post('api/user/logout',{
-        from: from
-    });
-}
 export function login_pwd(name,password) {
     return api.post('/user/login', {
         username: name,

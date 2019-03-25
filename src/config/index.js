@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import store from '../store';
 import router from './router';
-import { user_info, logout } from '../api/modules/auth';
+import { user_info } from '../api/modules/auth';
 import { sync } from 'vuex-router-sync';
 import { Message } from 'iview';
 import LoadingY from '../plug/index';

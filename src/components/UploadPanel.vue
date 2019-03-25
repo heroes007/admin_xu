@@ -15,8 +15,8 @@
         </Row>
         <span style="display: none">{{resultUrl}}</span>
         <Row class="video" v-if="type=='video'&&!is_show">
-            <video :src="resourse_url?resourse_url:resultUrl" controls="controls" autoplay/>
-            <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
+            <video v-if="resourse_url||resultUrl" :src="resourse_url?resourse_url:resultUrl" controls="controls"/>
+            <input v-if="resourse_url ? (!resourse_url) : (!resultUrl)" type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
         </Row>
         <div class="file-require">
             <slot name="file-require"></slot>

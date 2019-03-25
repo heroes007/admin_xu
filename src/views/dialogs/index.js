@@ -7,6 +7,7 @@ import addDownloadDataDialog from './addDownloadDataDialog.vue';
 import addProductionDialog from './addProductionDialog.vue';
 import addQuestionDialog from './addTestContentDialog.vue';
 import addHouner from './addHouner.vue';
+import addOfflineSemesterDialog from './addOfflineSemesterDialog.vue';
 import sendHouner from './sendHouner.vue';
 import readOver from './readOver.vue';
 import store from '../../store';
@@ -27,6 +28,9 @@ export var Dialog = {
                     break;
                 case 'add-question':
                     inits(addQuestionDialog);
+                    break;
+                case 'add-offline-semester':
+                    inits(addOfflineSemesterDialog);
                     break;
                 case 'video-manage':
                     inits(videoManageDialog);

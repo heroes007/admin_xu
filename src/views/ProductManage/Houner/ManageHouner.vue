@@ -34,7 +34,6 @@
   import {MPop} from "../../../components/MessagePop";
   import api from "../../../api/modules/config";
   import {set_user_student_mrzx} from "../../../api/modules/student";
-  import {send_interview_msg} from "../../../api/modules/exam";
   import {Dialog} from "../../dialogs";
   import {ADD_PRODUCTION} from "../../dialogs/types";
   import {Config} from "../../../config/base";

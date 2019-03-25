@@ -50,9 +50,11 @@
                             </TabPane>
                             <TabPane label="展示视频" :disabled="disabled2" name="displayVideo">
                                 <FormItem label="展示视频" v-show="nextStep == 0" required>
-                                    <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
+                                  <div class="upload-video-main">
+                                    <upload-panel close :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
                                         <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
                                     </upload-panel>
+                                  </div>
                                 </FormItem>
                             </TabPane>
                         </Tabs>
@@ -167,7 +169,7 @@ export default {
             fromLabelWidth:121,
             formItemLabelWidth:121,
             // certificate: [],
-            paneItem: '',
+            paneItem: 'displayImg',
             disabled2: false,
             disabled1: false,
             description: '',
@@ -201,7 +203,6 @@ export default {
             },
             ],
             color: '',
-            paneItem: 'displayImg',
             organizationList: null,
             formState: null,
             organizationId: null,
@@ -232,6 +233,8 @@ export default {
             let arrObj = JSON.parse(d.url_arr);
             this.form.imgList = [...this.form.imgList,...arrObj.default]
             this.form.video_url = arrObj.video
+            if(arrObj.video) this.setPane(true)
+            if(this.form.imgList.length>1) this.setPane(false)
             this.form.product_id = d.id
             this.form.organization_id = d.organization_id
             this.descriptionHtml = d.description.replace('class="form-message"','')
@@ -262,6 +265,11 @@ export default {
         ...mapActions([ 'add_production', 'update_production', 'get_certificate_list', 'change_certificate_list' ]),
         overImg(val){
 
+        },
+        setPane(b){
+            this.disabled2 = !b;
+            this.disabled1 = b;
+            this.paneItem = b ? 'displayVideo' : 'displayImg'
         },
         changeState(v){
             this.form.state = v
@@ -336,7 +344,7 @@ export default {
         },
         uploadCompleteHandler2(url){
             this.form.video_url = url;
-            this.disabled1 = true;
+            this.disabled1 =  url ? true : false;
             this.disabled2 = false;
         },
         handleClose() {
@@ -437,7 +445,8 @@ export default {
     top: 0px;
     z-index: 20;
     font-size: 20px;
-    color: #fff
+    color: #fff;
+    z-index: 9999;
 }
 .upload-img-item{
     width: 100%;
@@ -508,5 +517,8 @@ export default {
 }
 .up-img{
     margin-right: 10px;
+}
+.upload-video-main{
+    position: relative;
 }
 </style>

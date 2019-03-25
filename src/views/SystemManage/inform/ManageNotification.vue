@@ -48,7 +48,6 @@
                 studentList: state => state.message.student_list,
                 userInfo: state => state.auth.userInfo,
                 subjectList: state => state.subject.subject_list,
-                gradeList: state => state.grade.grade_list,
                 projectId: state => state.project.select_project_id,
                 doUpdate: state => state.message.select_msg_update
             }),
@@ -171,7 +170,7 @@
         },
         methods: {
             ...mapActions([ 'get_notification_list', 'delete_notification', 'get_project_list','get_message_student_list',
-            'get_private_msg_list', 'send_private_msg', 'add_private_msg', 'get_grade_list', 'get_subject_list' ]),
+            'get_private_msg_list', 'send_private_msg', 'add_private_msg', 'get_subject_list' ]),
             updateWrapper() {
                 var vm = this;
                 setTimeout(function () {
@@ -237,7 +236,6 @@
         },
         mounted() {
             this.get_notification_list();
-            this.get_grade_list();
             this.get_subject_list();
             var vm = this;
             if (this.$store.state.project.project_list.length === 0) {

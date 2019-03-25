@@ -127,7 +127,7 @@ import { async } from 'q';
                 ]
             },
             listColumnFormatterData() {
-                return [this.gradeList, this.subjectList, this.$store.state.task.activityTypeList, this.stateList];
+                return [[], this.subjectList, this.$store.state.task.activityTypeList, this.stateList];
             },
             dataList() {
                 if (!this.selectedCategory) return [];
@@ -141,9 +141,6 @@ import { async } from 'q';
             },
             subjectList() {
                 return this.$store.state.subject.subject_list;
-            },
-            gradeList() {
-                return this.$store.state.grade.grade_list;
             },
             ...mapState({
                 dataFilters() {
@@ -316,7 +313,6 @@ import { async } from 'q';
             }
         },
         mounted() {
-            this.$store.dispatch('get_grade_list');
             this.$store.dispatch('get_subject_list');
             // var vm = this;
             this.initData()

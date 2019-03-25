@@ -119,7 +119,7 @@
         }]
       },
       listColumnFormatterData() {
-        return [this.gradeList, this.subjectList, this.stateList];
+        return [[], this.subjectList, this.stateList];
       },
       dataList() {
         return this.$store.state.online_curriculum.online_curriculum_list;
@@ -132,9 +132,6 @@
       },
       stateList() {
         return this.$store.state.online_curriculum.stateList;
-      },
-      gradeList() {
-        return this.$store.state.grade.grade_list;
       },
       // isLoading() {
       //   return this.$store.state.online_curriculum.showMainLoading;
@@ -281,7 +278,6 @@
             page: {page_size: this.pageSize, page_num: this.current},
             keyword: this.keyword
           }).then(res => {
-            vm.$store.dispatch('get_grade_list')
             vm.$store.dispatch('get_subject_list')
           });
 
@@ -296,7 +292,6 @@
         //           // project_id: v,
         //           page: {page_size: this.pageSize, page_num: this.current}
         //         }).then(res => {
-        //           vm.$store.dispatch('get_grade_list')
         //           vm.$store.dispatch('get_subject_list')
         //         });
         //       }
@@ -306,7 +301,6 @@
         //   this.$store.dispatch('get_online_curriculum_list', {
         //     page: {page_size: this.pageSize, page_num: this.current}
         //   }).then(res => {
-        //     this.$store.dispatch('get_grade_list');
         //     this.$store.dispatch('get_subject_list');
         //   });
         // }
