@@ -259,7 +259,7 @@
                         console.log(v,'vvv2')
         postData(url,{...d1,...v}).then((res) => {
           if(res.res_code === 1){
-            this.$Message.warning(res.msg);
+            this.$Message.success(res.msg);
             this.rowExpandHandler(this.term_row)
             this.closeModal2()
           }
@@ -285,7 +285,7 @@
                 postData('/product/curriculum_offline/term_copy',{...this.dataList[index], term_underline_id:row.id}).then((res) => {
                 if(res.res_code === 1){
                   this.getList()
-                  this.$Message.warning(res.msg);
+                  this.$Message.success(res.msg);
                 }
               })
             },

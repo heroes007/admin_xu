@@ -111,11 +111,13 @@
                   },
                   {
                     title: '状态',
-                    key: 'state_name'
+                    key: 'state_name',
+                    minWidth: 100
                   },
                   {
                       title:'创建人',
-                      key:'man'
+                      key:'user_name',
+                      minWidth: 100
                   },
                   {
                     title: '操作',

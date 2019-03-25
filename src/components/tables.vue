@@ -125,7 +125,7 @@
         }
       },
       handleColumns(c) {
-        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number'})
+        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 80})
         if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
         if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
         c.map((t) => {

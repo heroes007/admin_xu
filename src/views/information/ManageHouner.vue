@@ -141,6 +141,7 @@
         padding: 20px;
         overflow: hidden;
         overflow-y: auto;
+        align-content: start;
     }
     .card-houner-col{
         width: 442px;

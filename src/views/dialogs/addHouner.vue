@@ -6,28 +6,28 @@
             <Row slot="body">
                 <Row class="body-top">
                     <Form ref="formHouner" class="add-course-form" :model="form" :rules="rules" :label-position="labelPosition" :label-width="100">
-                            <Col>
-                                <FormItem label="证书名称" prop="name">
-                                    <Input v-model="form.name" placeholder="请输入证书名称"></Input>
-                                </FormItem>
-                                <FormItem v-show="organizationList&&organizationList.length>0" label="所属机构" prop="organization_id">
-                                  <Select v-model="form.organization_id" placeholder="请选择所属机构">
-                                     <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
-                                  </Select>
-                                </FormItem>
-                               <FormItem label="证书描述">
-                                    <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.detail"></Input>
-                                </FormItem>
-                                <FormItem label="证书照片" required>
-                                    <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                        <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
-                                    </upload-panel>
-                                </FormItem>
-                                <FormItem class="btns">
-                                    <Button v-if="payload.type==2" type="error" class="next-btn" style="width: 120px;" @click="handleDelete">删除证书</Button>
-                                    <Button type="primary" class="next-btn" :style="payload.type==2 ? btnStyl : ''" @click="handleSubmit('formHouner')">保存</Button>
-                                </FormItem>
-                            </Col>
+                        <Col>
+                            <FormItem label="证书名称" prop="name">
+                                <Input v-model="form.name" placeholder="请输入证书名称"></Input>
+                            </FormItem>
+                            <FormItem v-show="organizationList&&organizationList.length>0" label="所属机构" prop="organization_id">
+                              <Select v-model="form.organization_id" placeholder="请选择所属机构" disabled>
+                                 <Option v-for="item in organizationList" :value="item.id" :key="item.id">{{item.title}}</Option>
+                              </Select>
+                            </FormItem>
+                            <FormItem label="证书描述">
+                                <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.detail"></Input>
+                            </FormItem>
+                            <FormItem label="证书照片" required>
+                                <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
+                                    <span slot="file-require">只能上传 jpg/png 文件，且图片480*270</span>
+                                </upload-panel>
+                            </FormItem>
+                            <FormItem class="btns">
+                                <Button v-if="payload.type==2" type="error" class="next-btn" style="width: 120px;" @click="handleDelete">删除证书</Button>
+                                <Button type="primary" class="next-btn" :style="payload.type==2 ? btnStyl : ''" @click="handleSubmit('formHouner')">保存</Button>
+                            </FormItem>
+                        </Col>
                     </Form>
                 </Row>
             </Row>
@@ -99,11 +99,10 @@
       }
     },
     mounted() {
-        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1){
-            this.getOrganization()
-        }
+        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) this.getOrganization()
         this.$store.commit('set_houner_state', false)
         if(this.payload.hasOwnProperty('row')) this.form = this.payload.row
+        this.form.organization_id = JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id
     },
     computed: {
       ...mapState({

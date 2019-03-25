@@ -10,28 +10,28 @@ let d = [
 {
   sort:true,
   label: '序号',
-  minWidth: 10,
-  width:10
+  minWidth: 50,
+  // width:10
 },
 {
   prop: 'title',
   label: '作业名称',
   // minWidth: 80
-  width:200,
+  minWidth:200,
   align: 'left'
 },
 {
   prop: 'curriculum_title',
   label: '绑定课程',
   // minWidth: 80
-  width:100,
+  minWidth:200,
   align: 'left'
 },
 {
   prop: 'course',
   label: '类型',
   // minWidth: 80
-  width:50
+  minWidth: 100
 },
 // {
 //   prop: 'create_time',
@@ -50,7 +50,7 @@ let d = [
 // },
   {
     label: '操作',
-    width: 250,
+    minWidth: 260,
     align:"center",
     groupBtn: [
       // {
