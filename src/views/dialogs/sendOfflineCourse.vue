@@ -32,7 +32,6 @@
   import UploadPanel from '../../components/UploadPanel'
   import {RemoveModal} from './mixins'
   import {send_student_offline_curriculum} from '../../api/modules/tools_student'
-import { all } from 'q';
 
   let tooltips = {ellipsis: true, tooltip: true}
 

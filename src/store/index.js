@@ -14,11 +14,9 @@ import auth from './modules/auth'
 import assignment from './modules/assignment'
 import notification from './modules/notification'
 import message from './modules/message'
-import redeem_code from './modules/redeem_code'
 import download_data from './modules/download_data'
 import platform_update from './modules/platform_update'
 import production from './modules/production'
-import production_group from './modules/production_group'
 import device from './modules/device'
 import news from './modules/news'
 
@@ -43,11 +41,9 @@ export default new Vuex.Store({
     assignment,
     notification,
     message,
-    redeem_code,
     download_data,
     platform_update,
     production,
-    production_group,
     device,
     news
   },
