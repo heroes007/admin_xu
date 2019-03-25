@@ -226,7 +226,7 @@ import { async } from 'q';
             this.copyFormItem = this.$config.copy(this.formItem,{});
             this.modalText2 = this.modalText;
           }
-          // else this.$refs.formValidate.resetFields()
+          else this.$refs.formValidate.resetFields()
         })
       },
       show(val){
@@ -440,8 +440,8 @@ import { async } from 'q';
     /deep/ .ivu-switch-large.ivu-switch-checked:after{left: 48px;}
     .form-item-other {padding-left: 30px;}
     .exchange-content-select /deep/ .ivu-select-dropdown{display: none !important;}
-    /deep/ .ivu-modal-wrap{ display: flex;align-items: center; }
-    /deep/ .ivu-modal{top: 0}
+    /*/deep/ .ivu-modal-wrap{ display: flex;align-items: center; }*/
+    /*/deep/ .ivu-modal{top: 0}*/
     .upload{
         /deep/ .ivu-input{height: 400px;}
         /deep/ .ivu-form-item-content{flex-direction: column}
