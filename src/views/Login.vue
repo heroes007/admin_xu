@@ -62,7 +62,7 @@
             }
         },
         methods: {
-             ...mapActions([ "get_project_list", "change_selected_project_id", "clear_store" ]),
+             ...mapActions([ "get_project_list", "change_selected_project_id" ]),
             doLogin() {
                 this.isLogining = true;
                 login_pwd(this.name, this.password).then((res) => {

@@ -14,7 +14,7 @@
                         <div class="houner-title">{{item.name}}</div>
                     </Row>
                     <Row class="houner-row-content">
-                        <div>关联产品 3 <span style="margin: 0 4px;">|</span> 已颁发 17</div>
+                        <div>关联产品 {{item.connect_count}} <span style="margin: 0 4px;">|</span> 已颁发 {{item.issue_count}}</div>
                     </Row>
                     <Row class="houner-row-btn" style="display: flex;">
                         <div><a @click="unrelation(item)" v-if="item.state">取消关联</a><a @click="relation(item)" v-else>关联</a></div>
@@ -33,7 +33,6 @@
 <script>
   import {MPop} from "../../../components/MessagePop";
   import api from "../../../api/modules/config";
-  import {set_user_student_mrzx} from "../../../api/modules/student";
   import {Dialog} from "../../dialogs";
   import {ADD_PRODUCTION} from "../../dialogs/types";
   import {Config} from "../../../config/base";
