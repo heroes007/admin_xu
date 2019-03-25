@@ -85,9 +85,6 @@
     },
     computed: {
       ...mapGetters({ unread_count: 'unread_message_count' }),
-      roleList() {
-        return this.$store.state.roles.role_list;
-      },
       userInfo() {
         return JSON.parse(localStorage.getItem('PERSONALDETAILS'))
       },
@@ -220,7 +217,7 @@
             if(d1&&d1.length>0){
               d1.forEach(t => {
                 let num = +t.permission_code.slice(0,2)
-                this.menuList.push(MenuList[num - 1])
+                if(num != 3)  this.menuList.push(MenuList[num - 1])
               });
               // if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
             }

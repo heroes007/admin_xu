@@ -167,7 +167,6 @@
         query_subject_list: state => state.subject.subject_list,
         query_state_list: state => state.online_curriculum.stateList,
         query_teacher_list: state => state.teacher.teacher_list,
-        query_teacher_roles: state => state.roles.role_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
         project_id: state => state.project.select_project_id,
         result_msg1: state => state.offline_curriculum.result_msg,

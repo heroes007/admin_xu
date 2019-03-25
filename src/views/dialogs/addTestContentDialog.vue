@@ -201,9 +201,6 @@
       selectCount() {
         return this.formInline2.select_count;
       },
-      roleList() {
-        return this.$store.state.roles.role_list;
-      },
       dataHeader() {
         return [
           {label: '排序', width: 90, sort: true},
