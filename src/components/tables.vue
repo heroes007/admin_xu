@@ -98,12 +98,11 @@
             t.state = true;
             this.$emit('radioChange', t)
           }
-
         })
       },
       handleTableData(d) {
         d.map((t, k) => {
-          if (this.isSerial) t.serial_number = this.$config.addZero(k)
+          if (this.isSerial) t.serial_number = this.$config.addZero(k+1)
           if (t.hasOwnProperty('slot')) {
             if (t.operation.length > 0) this.btnList = t.operation
           }

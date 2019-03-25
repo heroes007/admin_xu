@@ -30,7 +30,7 @@
                         <Row class='chapter-title' type='flex' justify='space-between' align='middle'>
                             <div style="display: flex;align-items: center">
                                 <span class="row-title">第{{setIndex(chapterList.length + 1)}}章</span>
-                                <Input v-model="newChapterData.group_name"  @on-enter="saveChapter(newChapterData,true)"  @on-blur="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
+                                <Input v-model="newChapterData.group_name"  @on-enter.stop="saveChapter(newChapterData,true,1)"  @on-blur.stop="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
                                        @on-focus="showDataState(chapterList.length)" class="textInput" style="width: 300px;"/>
                             </div>
                             <!--<div style="margin-right: 25px;">-->
@@ -77,6 +77,7 @@
         isChapterInited: false,
         curriculumItem: {},
         screenTitle: '',
+        isTrue: true,
       }
     },
     computed: {
@@ -191,7 +192,7 @@
       setIndex(n){
         return this.$config.ArabiaToSimplifiedChinese(n)
       },
-      saveChapter(t,i){
+      setChapter(t,i){
         let d = {}
         d.curriculum_id = +this.$route.params.id
         d.curriculum_online_id =  +this.$route.params.id
@@ -204,6 +205,13 @@
         }
         if(d.group_name)  this.$store.dispatch('add_online_curriculum_chapter',d)
         else  this.$Message.warning('请输入章节的名称');
+      },
+      saveChapter(t,i,type){
+        if(this.isTrue) this.setChapter(t,i);
+        if(type){
+         this.isTrue = false
+         setTimeout(() => { this.isTrue = true; },500)
+        }
       },
       handleClick(val) {
         this.newChapterData.showAddChapter = true;

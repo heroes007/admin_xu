@@ -49,7 +49,7 @@
                     <!-- date datetime -->
                      <FormItem v-if="t.type == 'date'" :label="t.name" :prop="t.field">
                         <DatePicker class="form-item-date" type="date" v-model="formItem[t.field]"
-                               :placeholder="handlePlaceholder(t)" ></DatePicker>
+                              :format="handleDateType(t)"  :placeholder="handlePlaceholder(t)" ></DatePicker>
                     </FormItem>
                     <!-- switch-datetimerange-->
                     <FormItem v-if="(t.type==='switch')" :label="t.name" :prop="handleField(t,1)">
@@ -103,6 +103,7 @@
   import iconFont from '../assets/icons/icon/font.png'
   import iconColor from '../assets/icons/icon/color.png'
   import iconCopy from '../assets/icons/icon/photo.png'
+import { async } from 'q';
 
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },
@@ -225,7 +226,7 @@
             this.copyFormItem = this.$config.copy(this.formItem,{});
             this.modalText2 = this.modalText;
           }
-          else this.$refs.formValidate.resetFields()
+          // else this.$refs.formValidate.resetFields()
         })
       },
       show(val){
@@ -275,7 +276,6 @@
       closeModal(){
         this.show = false;
         // this.formItem = {};
-        console.log('closeModal')
         this.$refs.formValidate.resetFields();
         this.$emit("close");
       },
@@ -312,8 +312,11 @@
           }
         }
         let d = this.$config.copy(this.formItem,{})
-        this.$emit('from-submit',this.formItem)
-        if(!this.modalFalse) this.closeModal()
+        let close = () => {  if(!this.modalFalse) this.closeModal() }
+        ( async () => {
+          await  this.$emit('from-submit',this.formItem)
+          await  close()
+        } )()
       },
       handleSubmit(name){
         let d = this.$refs.inputStyle&&this.$refs.inputStyle[0].innerText || this.imgUrl

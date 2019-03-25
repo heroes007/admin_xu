@@ -67,6 +67,26 @@ export default {
       default: return '不存在该身份'
     }
   },
+  // 为小于10的数字添加0
+  addZero (data) {
+    if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
+  },
+  // 格式化日期 为小于10日期 拼0
+  formatDateStr: function (year, month, day) {
+    return year + '-' + this.addZero(month) + ((day && this.addZero) ? '-' : '') + this.addZero(day)
+  },
+  // 格式化日期 YY-MM-DD HH:MM:SS
+  formatTime (times) {
+    return (times instanceof Date === true)
+      ? times.getFullYear() + '-' + this.addZero(times.getMonth() + 1) + '-' + this.addZero(times.getDate()) + ' ' + this.addZero(times.getHours()) +
+              ':' + this.addZero(times.getMinutes()) + ':' + this.addZero(times.getSeconds()) : times
+  },
+  // 格式化日期 YY-MM-DD
+  formatDate (times) {
+    return (times instanceof Date === true)
+      ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate())
+      : times
+  },
   setProductState(n){
     // -2删除 -1下架 0未上架 1测试 2上架 3推荐
     let stateText = ''

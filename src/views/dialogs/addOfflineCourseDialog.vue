@@ -76,6 +76,7 @@
         this.get_teacher_list();
       }
       if (this.payload.type == 2) {
+        console.log(this.payload.data,'this.payload')
         // this.rules.teacher_description[0].required = true;
         // this.rules.teacher_img_url[0].required = true;
         this.form = {
@@ -201,8 +202,8 @@
                 offline_term_id: this.payload.row.id,
                 title: this.form.name,
                 type: this.form.type,
-                start_time: dateFormat(this.form.start_time),
-                end_time: dateFormat(this.form.end_time),
+                start_time: this.form.start_time,
+                end_time: this.form.end_time,
                 teacher_id: this.form.teacher_id,
                 teacher_name: this.selectTeacherName,
                 // teacher_img_url: this.form.teacher_img_url,
@@ -230,8 +231,8 @@
                 offline_term_id: this.payload.row.id,
                 title: this.form.name,
                 type: this.form.type == '讲座' ? 1 : 2,
-                start_time: dateFormat(this.form.start_time),
-                end_time: dateFormat(this.form.end_time),
+                start_time: this.form.start_time,
+                end_time: this.form.end_time,
                 teacher_id: this.form.teacher_id,
                 teacher_name: this.selectTeacherName,
                 // teacher_img_url: this.form.teacher_img_url,
