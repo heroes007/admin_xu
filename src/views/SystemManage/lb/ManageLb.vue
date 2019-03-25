@@ -41,13 +41,13 @@
     </div>
 </template>
 <script>
-    import Header from '../../components/Header'
-    import UploadBtn from '../../components/UploadButton'
-    import {Config} from '../../config/base'
-    import screen from '../../components/ScreenFrame'
-    import Tables from '../../components/tables.vue'
-    import postData from '../../api/postData.js'
-    import UploadPanel from '../../components/UploadPanel'
+    import Header from '../../../components/Header'
+    import UploadBtn from '../../../components/UploadButton'
+    import {Config} from '../../../config/base'
+    import screen from '../../../components/ScreenFrame'
+    import Tables from '../../../components/tables.vue'
+    import postData from '../../../api/postData.js'
+    import UploadPanel from '../../../components/UploadPanel'
     export default{
         components: { 'header-component': Header, 'btn-upload': UploadBtn , screen, Tables, UploadPanel},
         props: {
@@ -162,7 +162,7 @@
                  let url = this.isEdit ? '/platform/banner/modifyBanner' : '/platform/banner/addBanner'
                  postData(url,this.lbData).then((res) => {
                      if(res.res_code == 1){
-                        this.$Message.warning(res.msg);
+                        this.$Message.success(res.msg);
                         this.close()
                         this.getList()
                      }

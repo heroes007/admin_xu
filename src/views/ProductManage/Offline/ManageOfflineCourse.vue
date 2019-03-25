@@ -13,19 +13,19 @@
 </template>
 
 <script>
-  import Header from '../../components/ProjectHeader'
-  import BaseList from '../../components/BaseList'
-  import SaveOrder from '../../components/SaveOrder'
-  import screen from '../../components/ScreenFrame'
-  import { doTimeFormat, doDateFormat, doOfflineCurriculumTypeFormat } from '../../components/Util'
-  import { Dialog } from '../dialogs';
-  import * as types from '../dialogs/types';
+  import Header from '../../../components/ProjectHeader'
+  import BaseList from '../../../components/BaseList'
+  import SaveOrder from '../../../components/SaveOrder'
+  import screen from '../../../components/ScreenFrame'
+  import { doTimeFormat, doDateFormat, doOfflineCurriculumTypeFormat } from '../../../components/Util'
+  import { Dialog } from '../../dialogs';
+  import * as types from '../../dialogs/types';
   import { mapActions, mapState } from 'vuex'
-  import { Config } from '../../config/base'
+  import { Config } from '../../../config/base'
   import LookTerm from './LookTerm'
-  import postData from '../../api/postData.js'
-  import { search_user } from '../../api/modules/tools_user';
-  import FormModal from '../../components/FormModal.vue'
+  import postData from '../../../api/postData.js'
+  import { search_user } from '../../../api/modules/tools_user';
+  import FormModal from '../../../components/FormModal.vue'
   export default {
     mixins: [Dialog],
     components: { 'header-component': Header, 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm, FormModal },

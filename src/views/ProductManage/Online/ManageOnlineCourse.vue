@@ -10,16 +10,16 @@
 </template>
 
 <script>
-  import Header from '../../components/ProjectHeader'
-  import BaseList from '../../components/BaseList'
-  import SaveOrder from '../../components/SaveOrder'
-  import {doTimeFormat} from '../../components/Util'
-  import {Dialog} from '../dialogs/index';
-  import {ADD_COURSE} from '../dialogs/types'
-  import {Config} from '../../config/base'
-  import screen from '../../components/ScreenFrame'
-  import pageMixin from '../mixins/pageMixins'
-  import pageList from '../../components/Page'
+  import Header from '../../../components/ProjectHeader'
+  import BaseList from '../../../components/BaseList'
+  import SaveOrder from '../../../components/SaveOrder'
+  import {doTimeFormat} from '../../../components/Util'
+  import {Dialog} from '../../dialogs';
+  import {ADD_COURSE} from '../../dialogs/types'
+  import {Config} from '../../../config/base'
+  import screen from '../../../components/ScreenFrame'
+  import pageMixin from '../../mixins/pageMixins'
+  import pageList from '../../../components/Page'
 
   export default {
     mixins: [Dialog, pageMixin],

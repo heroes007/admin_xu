@@ -19,10 +19,10 @@
 
 <script>
   import SideMenu from '../../../components/SideMenuForProject'
-  import online from '../../information/ManageOnlineCourse'
-  import offline from '../../information/ManageOfflineCourse'
-  import task from '../../information/ManageTask'
-  import course from '../../download/ManageCourseDownloadData'
+  import online from '../Online/ManageOnlineCourse'
+  import offline from '../Offline/ManageOfflineCourse'
+  import task from '../task/ManageTask'
+  import course from '../course/ManageCourseDownloadData'
   import HideMenu from '../../../components/HideMenu.vue'
   import hideMenuMixins from './hideMenuMixins'
 

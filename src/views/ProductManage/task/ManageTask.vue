@@ -17,23 +17,23 @@
 </template>
 
 <script>
-    import Header from '../../components/ProjectHeader'
-    import TaskCategoryItem from '../../components/TaskCategoryItem.vue'
-    import BaseList from '../../components/BaseList'
-    import {Dialog} from '../dialogs'
-    import {ADD_TASK_CATEGORY, ADD_TASK, NOTIFICATION, MANUL_ACTIVE} from '../dialogs/types'
-    import {doTimeFormat} from '../../components/Util'
+    import Header from '../../../components/ProjectHeader'
+    import TaskCategoryItem from '../../../components/TaskCategoryItem.vue'
+    import BaseList from '../../../components/BaseList'
+    import {Dialog} from '../../dialogs'
+    import {ADD_TASK_CATEGORY, ADD_TASK, NOTIFICATION, MANUL_ACTIVE} from '../../dialogs/types'
+    import {doTimeFormat} from '../../../components/Util'
     import {mapActions, mapState} from 'vuex'
-    import {Config} from '../../config/base'
+    import {Config} from '../../../config/base'
     import {taskHeadData} from './consts'
-    import screen from '../../components/ScreenFrame'
-    import FormModal from '../../components/FormModal'
-    import FormModalMixin from '../UserManage/Mixins/FormModalMixin'
-    import Editor from '../../components/Editor'
-    import Uploader from '../../components/Upload'
-    import pageMixin from '../mixins/pageMixins'
-    import pageList from '../../components/Page'
-    import postData from '../../api/postData'
+    import screen from '../../../components/ScreenFrame'
+    import FormModal from '../../../components/FormModal'
+    import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
+    import Editor from '../../../components/Editor'
+    import Uploader from '../../../components/Upload'
+    import pageMixin from '../../mixins/pageMixins'
+    import pageList from '../../../components/Page'
+    import postData from '../../../api/postData'
 import { async } from 'q';
 
     export default {

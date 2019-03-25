@@ -35,12 +35,12 @@
 </template>
 
 <script>
-  import screen from '../../components/ScreenFrame'
-  import postData from '../../api/postData'
-  import pageList from '../../components/Page'
-  import pageMixin from '../mixins/pageMixins'
-  import {Dialog} from "../dialogs";
-  import { ADD_PRODUCTION } from "../dialogs/types";
+  import screen from '../../../components/ScreenFrame'
+  import postData from '../../../api/postData'
+  import pageList from '../../../components/Page'
+  import pageMixin from '../../mixins/pageMixins'
+  import {Dialog} from "../../dialogs";
+  import { ADD_PRODUCTION } from "../../dialogs/types";
   import {mapState} from 'vuex'
   export default {
     mixins: [pageMixin, Dialog],

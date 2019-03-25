@@ -9,14 +9,14 @@
 </template>
 
 <script>
-  import Tables from '../../../components/tables.vue';
-  import screen from '../../../components/ScreenFrame';
-  import * as types from '../../dialogs/types';
-  import { Dialog } from '../../dialogs/index';
-  import {get_read_over} from '../../../api/modules/tools_task';
-  import postData from '../../../api/postData'
-  import pageMixin from '../../mixins/pageMixins'
-  import pageList from '../../../components/Page'
+  import Tables from '../../../../components/tables.vue';
+  import screen from '../../../../components/ScreenFrame';
+  import * as types from '../../../dialogs/types';
+  import { Dialog } from '../../../dialogs';
+  import {get_read_over} from '../../../../api/modules/tools_task';
+  import postData from '../../../../api/postData'
+  import pageMixin from '../../../mixins/pageMixins'
+  import pageList from '../../../../components/Page'
   import {mapState} from 'vuex'
 
   export default {

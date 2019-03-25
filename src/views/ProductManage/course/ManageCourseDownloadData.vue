@@ -12,16 +12,16 @@
 </template>
 
 <script>
-  import BaseList from '../../components/BaseList'
-  import Header from '../../components/ProjectHeader'
+  import BaseList from '../../../components/BaseList'
+  import Header from '../../../components/ProjectHeader'
   import {mapActions, mapState, mapGetters} from 'vuex'
-  import {Dialog} from '../dialogs'
-  import {ADD_DOWNLOAD_DATA} from '../dialogs/types'
-  import {doTimeFormat} from '../../components/Util'
-  import {Config} from '../../config/base'
-  import screen from '../../components/ScreenFrame'
-  import pageMixin from '../mixins/pageMixins'
-  import pageList from '../../components/Page'
+  import {Dialog} from '../../dialogs'
+  import {ADD_DOWNLOAD_DATA} from '../../dialogs/types'
+  import {doTimeFormat} from '../../../components/Util'
+  import {Config} from '../../../config/base'
+  import screen from '../../../components/ScreenFrame'
+  import pageMixin from '../../mixins/pageMixins'
+  import pageList from '../../../components/Page'
 
   export default {
     mixins: [Dialog, pageMixin],

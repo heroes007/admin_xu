@@ -2,7 +2,7 @@
     <div :style="`height: ${windowHight}px`" class="box">
         <div class="content">
             <Card class="card" @click.native="handleTabAdd">
-                <img class="card-img" src="../../assets/icons/icon/addIcon.png" alt="">
+                <img class="card-img" src="../../../assets/icons/icon/addIcon.png" alt="">
                 <div class="card-add">添加主题</div>
             </Card>
             <Card class="card" v-for="(t ,index) in list" :key="index">
@@ -29,9 +29,9 @@
 </template>
 
 <script>
-  import formModal from '../../components/FormModal'
-  import postData from '../../api/postData'
-  import postMixins from '../mixins/postMixins.js'
+  import formModal from '../../../components/FormModal'
+  import postData from '../../../api/postData'
+  import postMixins from '../../mixins/postMixins.js'
   export default {
     name: "ManageOfflineList",
     mixins: [postMixins],

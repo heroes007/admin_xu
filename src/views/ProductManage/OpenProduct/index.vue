@@ -21,11 +21,11 @@
 </template>
 
 <script>
-  import online from '../../information/ManageOnlineCourse'
-  import offline from '../../information/ManageOfflineList'
-  import task from '../../information/ManageTask'
-  import course from '../../download/ManageCourseDownloadData'
-  import houner from '../../information/ManageHouner'
+  import online from '../Online/ManageOnlineCourse'
+  import offline from '../Offline/ManageOfflineList'
+  import task from '../task/ManageTask'
+  import course from '../course/ManageCourseDownloadData'
+  import houner from '../houner/ManageHouner'
 
   export default {
     name: "OpenProduct",

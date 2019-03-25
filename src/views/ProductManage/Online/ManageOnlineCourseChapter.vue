@@ -49,17 +49,17 @@
 </template>
 
 <script>
-  import Header from '../../components/ProjectHeader'
-  import screen from '../../components/ScreenFrame'
-  import BaseList from '../../components/BaseList'
-  import SaveOrder from '../../components/SaveOrder'
-  import postData from '../../api/postData'
-  import {doTimeFormat} from '../../components/Util'
-  import {Dialog} from '../dialogs'
-  import {VIDEO_MANAGE, ADD_QUESTION} from '../dialogs/types'
-  import {Config} from '../../config/base'
-  import {doSortFormatCatalogList} from '../../components/Util'
-  import updateVideoGroupName from '../../api/modules/onlineCourseChapter'
+  import Header from '../../../components/ProjectHeader'
+  import screen from '../../../components/ScreenFrame'
+  import BaseList from '../../../components/BaseList'
+  import SaveOrder from '../../../components/SaveOrder'
+  import postData from '../../../api/postData'
+  import {doTimeFormat} from '../../../components/Util'
+  import {Dialog} from '../../dialogs'
+  import {VIDEO_MANAGE, ADD_QUESTION} from '../../dialogs/types'
+  import {Config} from '../../../config/base'
+  import {doSortFormatCatalogList} from '../../../components/Util'
+  import updateVideoGroupName from '../../../api/modules/onlineCourseChapter'
 
   export default {
     mixins: [Dialog],

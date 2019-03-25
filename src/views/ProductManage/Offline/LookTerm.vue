@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import Tables from  '../../components/tables'
-import { Dialog } from '../dialogs';
-import * as types from '../dialogs/types';
+import Tables from '../../../components/tables'
+import { Dialog } from '../../dialogs';
+import * as types from '../../dialogs/types';
 import { mapState, mapActions } from 'vuex'
 export default {
     mixins: [Dialog],

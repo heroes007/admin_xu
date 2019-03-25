@@ -1,40 +1,9 @@
 <template>
     <div class='manage-notification'>
-        <!-- <header-component :type="0" :showAdd="activeName == tabName ? true : false" addText="添加通知" title="通知管理" @addClick="createNotificationHandler()"/> -->
         <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-        <!-- <Tabs v-model="activeName" @on-click="handleClick" value='notification'> -->
-            <!-- <TabPane class='notification-content' label="通知" name="notification"> -->
-                <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter' @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
-            <!-- </TabPane> -->
-            <!-- <TabPane class='message-content' label="私信" name="chat" disabled>
-                <Row class='message-content-container' type='flex' align='top'>
-                    <Col :span='10'>
-                        <Row class='group_header' type='flex'>
-                            <Col class='active'>全部学员</Col>
-                            <Col>小组学员</Col>
-                        </Row>
-                        <data-list class='student-list' :can-select='true' :is-stripe='false' @rowClick='rowClickHandler' :table-data='studentList'
-                            :header-data='studentHeader' :show-header='false' :column-formatter='studentlistColumnFormatter' :column-formatter-data='studentlistColumnFormatterData' />
-                    </Col>
-                    <Col class='message-list' v-if='selectStudent'>
-                        <div class='message-wrap' ref="mwrapper">
-                            <div class='message-detail'>
-                                <div class='message-item' v-for='(item, index) in messageList'>
-                                    <Row class='time' type='flex' justify='center' align='middle' v-if='getTimeShow(item, index)'><span>{{getTimeStr(item.time)}}</span></Row>
-                                    <Row class='message-detail-content'>
-                                        <img :src='getHeadImg(item)' />
-                                        <p><span>{{item.from_user_id === selectStudent.user_id?selectStudent.realname:'我'}}：</span>{{item.content}}</p>
-                                    </Row>
-                                </div>
-                            </div>
-                        </div>
-                        <Input type="textarea" :autosize='false' placeholder="请输入内容" v-model="messageContent"></Input>
-                        <Button class='btn-submit' type='primary' @click='sendMsg'>发送</Button>
-                    </Col>
-                </Row>
-            </TabPane> -->
-        <!-- </Tabs> -->
+                <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
+                           @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
     </div>
 </template>
 
@@ -50,7 +19,6 @@
     import defaultHeader from '../../assets/img/side-menu/default-header.jpg'
     import FormModal from '../../components/FormModal'
     import FormModalMixin from '../UserManage/Mixins/FormModalMixin'
-    // const server = require('socket.io-client')('http://api2.laoshi123.com:4006');
     import screen from '../../components/ScreenFrame'
     export default {
         mixins: [Dialog,FormModalMixin],

@@ -31,18 +31,18 @@
     </div>
 </template>
 <script>
-  import {MPop} from "../../components/MessagePop";
-  import api from "../../api/modules/config";
-  import {set_user_student_mrzx} from "../../api/modules/student";
-  import {send_interview_msg} from "../../api/modules/exam";
-  import {Dialog} from "../dialogs";
-  import {ADD_PRODUCTION, EDIT_PROTOCOL} from "../dialogs/types";
-  import {Config} from "../../config/base";
-  import {doDateFormat, doTimeFormat, reunitPrice} from "../../components/Util";
-  import tableHeadData from "./consts";
-  import screen from "../../components/ScreenFrame";
-  import * as types from '../dialogs/types';
-  import postData from 'src/api/postData'
+  import {MPop} from "../../../components/MessagePop";
+  import api from "../../../api/modules/config";
+  import {set_user_student_mrzx} from "../../../api/modules/student";
+  import {send_interview_msg} from "../../../api/modules/exam";
+  import {Dialog} from "../../dialogs";
+  import {ADD_PRODUCTION, EDIT_PROTOCOL} from "../../dialogs/types";
+  import {Config} from "../../../config/base";
+  import {doDateFormat, doTimeFormat, reunitPrice} from "../../../components/Util";
+  import tableHeadData from "../task/consts";
+  import screen from "../../../components/ScreenFrame";
+  import * as types from '../../dialogs/types';
+  import postData from '../../../api/postData'
   import {mapState} from 'vuex'
   export default {
     mixins: [Dialog, MPop],
