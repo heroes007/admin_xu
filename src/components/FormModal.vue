@@ -103,7 +103,6 @@
   import iconFont from '../assets/icons/icon/font.png'
   import iconColor from '../assets/icons/icon/color.png'
   import iconCopy from '../assets/icons/icon/photo.png'
-import { async } from 'q';
 
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },

@@ -73,15 +73,15 @@ export default {
   },
   // 格式化日期 为小于10日期 拼0
   formatDateStr: function (year, month, day) {
-    return year + '-' + this.addZero(month) + ((day && this.addZero) ? '-' : '') + this.addZero(day)
+    return year + '/' + this.addZero(month) + ((day && this.addZero) ? '/' : '') + this.addZero(day)
   },
-  // 格式化日期 YY-MM-DD HH:MM:SS
+  // 格式化日期 YYYY/MM/DD HH:MM:SS
   formatTime (times) {
     return (times instanceof Date === true)
-      ? times.getFullYear() + '-' + this.addZero(times.getMonth() + 1) + '-' + this.addZero(times.getDate()) + ' ' + this.addZero(times.getHours()) +
+      ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate()) + ' ' + this.addZero(times.getHours()) +
               ':' + this.addZero(times.getMinutes()) + ':' + this.addZero(times.getSeconds()) : times
   },
-  // 格式化日期 YY-MM-DD
+  // 格式化日期 YYYY/MM/DD
   formatDate (times) {
     return (times instanceof Date === true)
       ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate())
