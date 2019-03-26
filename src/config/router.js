@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import iView from 'iview'
 
 const Login = () => import('../views/Login');
 const NotFound = () => import('../views/notfound');

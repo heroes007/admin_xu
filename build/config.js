@@ -10,7 +10,7 @@ module.exports = {
         port: 8001
     },
     prod:{
-        publicPath:'https://sfile.tl100.com/met_admin/dist/'
+        publicPath:'http://sfile.jiuhuatech.com/met_admin/dist/'
         // publicPath:'/'
     }
 }
