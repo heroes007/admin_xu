@@ -7,7 +7,6 @@ import addOfflineSemesterDialog from './addOfflineSemesterDialog'
 import addHouner from './addHouner.vue';
 
 import videoManageDialog from './videoManageDialog.vue';
-import manulActiveDialog from './manulActiveDialog.vue';
 import sendOfflineCourse from './sendOfflineCourse.vue';
 
 import sendHouner from './sendHouner.vue';
@@ -36,9 +35,6 @@ export var Dialog = {
                     break;
                 case 'video-manage':
                     inits(videoManageDialog);
-                    break;
-                case 'manul-active':
-                    inits(manulActiveDialog);
                     break;
                 case 'send-offline-course':
                     inits(sendOfflineCourse);

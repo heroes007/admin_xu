@@ -22,7 +22,6 @@
   import { Config } from '../../../config/base'
   import LookTerm from './LookTerm'
   import postData from '../../../api/postData.js'
-  import { search_user } from '../../../api/modules/tools_user';
   import FormModal from '../../../components/FormModal.vue'
   export default {
     mixins: [Dialog],

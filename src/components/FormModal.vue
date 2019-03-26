@@ -306,6 +306,7 @@
         if(this.downList&&this.downList.length>0) this.formItem.downList = this.downList
         if(this.formItem.hasOwnProperty('password')){
           if(this.copyFormItem.password === this.formItem.password){
+            console.log(this.copyFormItem.password,'pass',this.formItem.password);
             delete this.formItem.password
           }
         }

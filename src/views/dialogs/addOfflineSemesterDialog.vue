@@ -89,9 +89,6 @@
         }
       }
     },
-    mounted() {
-      this.get_subject_list();
-    },
     computed: {
       ...mapState({
         result_msg1: state => state.offline_curriculum.result_msg,
@@ -111,7 +108,7 @@
       }
     },
     methods: {
-      ...mapActions([ 'add_offline_term', 'edit_offline_term', 'get_subject_list', 'get_offline_term_list' ]),
+      ...mapActions([ 'add_offline_term', 'edit_offline_term','get_offline_term_list' ]),
       handleClose() {
         this.addOfflineSemesterDialog = false;
       },

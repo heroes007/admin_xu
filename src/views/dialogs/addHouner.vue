@@ -151,9 +151,7 @@
     },
     methods: {
       ...mapActions([
-        'get_teacher_list',
         'get_role_list',
-        'get_subject_list',
         'get_online_curriculum_list',
         'add_online_curriculum',
         'add_course_download_data',

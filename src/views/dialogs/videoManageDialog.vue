@@ -30,7 +30,6 @@
   import UploadButton from '../../components/UploadButton'
   import {RemoveModal} from './mixins'
   import UploadPanel from '../../components/UploadPanel'
-  import {get_detail, get_video_source} from '../../api/modules/tools_video'
   import {get_list} from '../../api/modules/tools_curriculum'
   import {get_catalog} from '../../api/modules/tools_curriculum_catalog'
   import {doSortFormatCatalogList} from '../../components/Util'
@@ -182,18 +181,6 @@
             }
           }
         })
-      },
-      handleSelect() {
-        if (!this.selectedVideo) {
-          this.$Modal.info({
-            title: '提示',
-            content: '<p>请选择一个已有视频</p>'
-          });
-          return;
-        }
-        this.form.title = this.selectedVideo.video_title;
-        this.form.video_id = this.selectedVideo.video_id;
-        this.$store.dispatch('select_online_curriculum_video', this.form);
       },
       uploadCompleteHandler(url) {
         this.form.video_url = url;

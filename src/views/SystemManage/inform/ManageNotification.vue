@@ -14,7 +14,6 @@
     import { ADD_NOTIFICATION, } from '../../dialogs/types'
     import { doTimeFormat } from '../../../components/Util'
     import { Config } from '../../../config/base'
-    import { send_by_project_id } from '../../../api/modules/tools_sys_msg'
     import defaultHeader from '../../../assets/img/side-menu/default-header.jpg'
     import FormModal from '../../../components/FormModal'
     import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
@@ -168,8 +167,8 @@
             }
         },
         methods: {
-            ...mapActions([ 'get_notification_list', 'delete_notification', 'get_project_list','get_message_student_list',
-            'get_private_msg_list', 'send_private_msg', 'add_private_msg', 'get_subject_list' ]),
+            ...mapActions(['get_project_list','get_message_student_list',
+            'get_private_msg_list', 'send_private_msg', 'add_private_msg' ]),
             updateWrapper() {
                 var vm = this;
                 setTimeout(function () {
@@ -186,7 +185,7 @@
                 title: '提示',
                 content: '确定要发送该通知吗!',
                 onOk: () => {
-                  send_by_project_id(this.projectId, row.id)
+
                 },
               });
             },
@@ -195,7 +194,7 @@
                 title: '提示',
                 content: '确定要删除该通知吗!',
                 onOk: () => {
-                  this.delete_notification(row.id);
+                    
                 },
               });
             },
@@ -234,8 +233,6 @@
             }
         },
         mounted() {
-            this.get_notification_list();
-            this.get_subject_list();
             var vm = this;
             if (this.$store.state.project.project_list.length === 0) {
                 this.get_project_list({

@@ -32,9 +32,6 @@
                 }else return this.$store.state.subject.msg;
             }
         },
-        mounted(){
-//            if(this.$store.state.subject.subject_list.length === 0)
-//                this.$store.dispatch('get_subject_list');
-        },
+        mounted(){},
     }
 </script>

@@ -276,33 +276,7 @@
             // project_id: v,
             page: {page_size: this.pageSize, page_num: this.current},
             keyword: this.keyword
-          }).then(res => {
-            vm.$store.dispatch('get_subject_list')
-          });
-
-        // if (this.$store.state.project.project_list.length === 0) {
-        //   // var loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-        //   this.$store.dispatch('get_project_list', {
-        //     callback(v) {
-        //       // loadingInstance && loadingInstance.close();
-        //       console.log(vm,'vm')
-        //       if (vm.dataList.length === 0) {
-        //         vm.$store.dispatch('get_online_curriculum_list', {
-        //           // project_id: v,
-        //           page: {page_size: this.pageSize, page_num: this.current}
-        //         }).then(res => {
-        //           vm.$store.dispatch('get_subject_list')
-        //         });
-        //       }
-        //     }
-        //   })
-        // } else {
-        //   this.$store.dispatch('get_online_curriculum_list', {
-        //     page: {page_size: this.pageSize, page_num: this.current}
-        //   }).then(res => {
-        //     this.$store.dispatch('get_subject_list');
-        //   });
-        // }
+          }).then(res => {});
       }
     },
     mounted() {
