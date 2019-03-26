@@ -61,10 +61,11 @@
                 this.$refs.input.click();
             },
             handleUploadChange(event) {
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
                 var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
                 this.fileName = filename;
                 // if(this.handleCheckMedia(event))  this.handleGetassignKey(event.target.files[0]);
-              this.handleGetassignKey(event.target.files[0]);
+                this.handleGetassignKey(event.target.files[0]);
             },
           // handleCheckMedia(event) {
           //   var _type = this.uploadType;
@@ -118,6 +119,7 @@
                     url: url,
                     data: formData,
                 }).then(res => {
+                  this.loadingInstance.close()
                   this.resultUrl = url + '/' + this.resultUrl;
                     this.$emit('uploadcomplete',{name: this.fileName, url: this.resultUrl});
                     var f = this.$refs.input;
@@ -150,12 +152,9 @@
                 })
             }
         },
-        mounted() {
-
-        }
     }
 </script>
-<style scoped>
+<style>
 .uploadImg{
   cursor: pointer;
   width: 60px;

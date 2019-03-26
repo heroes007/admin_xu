@@ -255,11 +255,12 @@
                             this.is_show = false;
                             break;
                     };
-
-                      setTimeout(()=>{
-                        let vedioTime = this.$refs.vedioPlayer.duration
-                        this.$emit('vedioTime',vedioTime)
-                      },500)
+                      if(this.type=='video'&&!this.is_show){
+                        setTimeout(()=>{
+                          let vedioTime = this.$refs.vedioPlayer.duration
+                          this.$emit('vedioTime',vedioTime)
+                        },500)
+                      }
                       this.$emit('getuploadfile', {
                         name: this.file_name,
                         url: result

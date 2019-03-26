@@ -33,7 +33,6 @@
     import pageMixin from '../../mixins/pageMixins'
     import pageList from '../../../components/Page'
     import postData from '../../../api/postData'
-import { async } from 'q';
 
     export default {
         mixins: [Dialog, FormModalMixin, pageMixin],
@@ -161,9 +160,7 @@ import { async } from 'q';
             //     this.dirty = false
             //   }
             // },
-            categoryList(val) {
-                if (val.length !== 0) this.checkInit();
-            }
+
         },
         methods: {
             ...mapActions(['delete_task']),
@@ -185,23 +182,9 @@ import { async } from 'q';
               this.keyword = v
               this.initData()
             },
-            reRenderListHandler(v) {
-                if (this.$store.state.project.project_list.length > 0) {
-                    this.$store.dispatch('get_task_category_list', {project_id: v})
-                    this.$store.dispatch('get_task_list', {task_category_id: this.selectCategory});
-                }
-            },
             getSelected(id, type) {
                 if (this.selectCategory === id) return true;
                 return false;
-            },
-            checkInit() {
-                if (!this.isInited) {
-                    this.selectCategory = this.categoryList[0].id;
-                    this.selectedType = this.categoryList[0].type;
-                    this.$store.dispatch('get_task_list', {task_category_id: this.selectCategory});
-                    this.isInited = true;
-                }
             },
             statistics(index, row) {
                 console.log(row, '统计');
@@ -256,20 +239,7 @@ import { async } from 'q';
             doActiveHandler(index, row) {
                 if (row.activity_type == 1) this.handleSelModal(MANUL_ACTIVE, {row})
             },
-            changeCategory(item) {
-                if (this.selectCategory !== item.id) {
-                    this.selectCategory = item.id;
-                    this.selectedType = item.type;
-                    for (var i = 0; i < this.categoryList.length; i++) {
-                        if (this.categoryList[i].id === this.selectCategory) {
-                            if (this.categoryList[i].task_list.length === 0) {
-                                this.$store.dispatch('get_task_list', {task_category_id: this.selectCategory});
-                            }
-                            break;
-                        }
-                    }
-                }
-            },
+
             uploadComplete(id, result) {
                 this.form.download_url = result.url;
             },
@@ -311,7 +281,7 @@ import { async } from 'q';
             }
         },
         mounted() {
-            this.$store.dispatch('get_subject_list');
+            // this.$store.dispatch('get_subject_list');
             // var vm = this;
             this.initData()
             // curricumList

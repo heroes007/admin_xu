@@ -6,45 +6,45 @@
             <Row  slot="body">
                 <Row class="body-top" v-if="payload.type==1">
                     <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
-                            <Col class="head-form">
-                                <img :src="studata.stuimg" alt="">
-                                <p>{{payload.row.realname}}</p>
-                            </Col>
-                            <Col class="body-form">
-                                <p>{{payload.row.answer}}</p>
-                                <down-loading :formData="downList"/>
-                            </Col>
-                            <Col class="input-form">
-                                <Input v-model="readInput" type="textarea" size="small" placeholder="请输入批阅内容"/>
-                            </Col>
-                            <FormItem class="number-from" label="评分" :label-width="40">
-                                <InputNumber v-model="numInput" style="width:150px" :max="100" :min="0"  placeholder="满分100分"></InputNumber>
-                            </FormItem>
-                            <Button type="primary" class="save-from" @click="saveSubmit">保存</Button>
+                        <Col class="head-form">
+                            <img :src="studata.stuimg" alt="">
+                            <p>{{payload.row.realname}}</p>
+                        </Col>
+                        <Col class="body-form">
+                            <p>{{payload.row.answer}}</p>
+                            <down-loading :formData="downList"/>
+                        </Col>
+                        <Col class="input-form">
+                            <Input v-model="readInput" type="textarea" size="small" placeholder="请输入批阅内容"/>
+                        </Col>
+                        <FormItem class="number-from" label="评分" :label-width="40">
+                            <InputNumber v-model="numInput" style="width:150px" :max="100" :min="0"  placeholder="满分100分"></InputNumber>
+                        </FormItem>
+                        <Button type="primary" class="save-from" @click="saveSubmit">保存</Button>
                     </Form>
                 </Row>
                 <Row class="body-top" v-if="payload.type==2">
-                    <Form  class="add-course-form" :label-position="labelPosition" :label-width="100">
-                            <Col class="head-form">
-                                <img :src="studata.stuimg" alt="">
-                                <p>{{payload.row.realname}}</p>
-                            </Col>
-                            <Col class="body-form">
-                                <p>{{payload.row.answer}}</p>
-                                <down-loading :formData="downList"/>
-                            </Col>
-                            <Col class="show-from" v-for="(item, index) in studata.teacherTail" :key="index">
-                                <Row class="show-from-line1">
-                                    <p class="tail-title">导师评语：</p>
-                                    <p class="tail-number">{{item.score}}分</p>
-                                </Row>
-                                <Row class="show-from-line2">
-                                    <p class="tail-detail">{{item.comment}}</p>
-                                </Row>
-                                <Row class="show-from-line3">
-                                    <p class="tail-time">{{item.update_time}}</p>
-                                </Row>
-                            </Col>
+                    <Form class="add-course-form" :label-position="labelPosition" :label-width="100">
+                        <Col class="head-form">
+                            <img :src="studata.stuimg" alt="">
+                            <p>{{payload.row.realname}}</p>
+                        </Col>
+                        <Col class="body-form">
+                            <p>{{payload.row.answer}}</p>
+                            <down-loading :formData="downList"/>
+                        </Col>
+                        <Col class="show-from" v-for="(item, index) in studata.teacherTail" :key="index">
+                            <Row class="show-from-line1">
+                                <p class="tail-title">导师评语：</p>
+                                <p class="tail-number">{{item.score}}分</p>
+                            </Row>
+                            <Row class="show-from-line2">
+                                <p class="tail-detail">{{item.comment}}</p>
+                            </Row>
+                            <Row class="show-from-line3">
+                                <p class="tail-time">{{item.update_time}}</p>
+                            </Row>
+                        </Col>
                     </Form>
                 </Row>
             </Row>
@@ -59,7 +59,6 @@
   import {RemoveModal} from './mixins'
   import UploadPanel from '../../components/UploadPanel'
   import { mapActions, mapState } from 'vuex';
-  import { get_detail } from '../../api/modules/tools_curriculum'
   import { cleanHtmlLabel } from '../../components/Util'
   import { Config } from '../../config/base'
   import { doTimeFormat } from '../../components/Util'

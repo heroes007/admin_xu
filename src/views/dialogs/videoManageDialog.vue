@@ -31,7 +31,6 @@
   import {RemoveModal} from './mixins'
   import UploadPanel from '../../components/UploadPanel'
   import {get_detail, get_video_source} from '../../api/modules/tools_video'
-  import {get_list} from '../../api/modules/tools_curriculum'
   import {get_catalog} from '../../api/modules/tools_curriculum_catalog'
   import {doSortFormatCatalogList} from '../../components/Util'
   import {Config} from '../../config/base'
@@ -105,21 +104,6 @@
               this.curriculumList[i].chapterList[j].isSelected = false;
           }
         }
-      },
-      changeProjectHandler(val) {
-        this.loading = this.$LoadingY({message: "加载中，请稍后", show: true})
-        setTimeout(() => {
-          this.loading.close();
-        }, Config.base_timeout);
-        get_list(val).then(res => {
-          if (res.data.res_code === 1) {
-            for (var i = 0; i < res.data.msg.length; i++) {
-              res.data.msg[i].chapterList = [];
-            }
-            this.curriculumList = res.data.msg;
-            if (this.loading) this.loading.close();
-          }
-        })
       },
       toggleCurriculum(index) {
         if (!index) return;

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import subject from './modules/subject'
-import student from './modules/student'
 import task from './modules/task'
 import user from './modules/user'
 import lb from './modules/lb'
@@ -31,7 +30,6 @@ export default new Vuex.Store({
   ...main,
   modules: {
     subject,
-    student,
     task,
     user,
     lb,

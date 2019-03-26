@@ -310,7 +310,6 @@
                   this.add_online_curriculum(this.form)
                 }
                 else {
-                  console.log(this.form.img_default,this.form,'this.form.img_default')
                   this.edit_online_curriculum({data: this.form});
                   this.addCourseDialogVisible = false
                 }

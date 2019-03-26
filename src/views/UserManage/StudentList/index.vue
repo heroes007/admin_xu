@@ -51,7 +51,7 @@
             selectList:[
             {
                 id:'all',
-                title:'全部机构'
+                title:'全部'
             }],
             selectList1: [
             {
@@ -95,6 +95,11 @@
                 align: 'left',
                 minWidth: 100
             },
+            // {
+            //     title: '所属机构',
+            //     key: 'organization_name',
+            //     minWidth: 200
+            // },
             {
                 title: '状态',
                 slot: '_index',
@@ -198,7 +203,7 @@
     },
     mounted() {
         this.getList()
-         if(this.permissionItem4) this.handleAuth(this.permissionItem4)
+        if(this.permissionItem4) this.handleAuth(this.permissionItem4)
         postData('/user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
           this.selectList = res.data.list
         })

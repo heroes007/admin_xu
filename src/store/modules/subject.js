@@ -1,7 +1,6 @@
 
 import * as types from '../types'
 import api from '../../api/modules/config'
-import { get_list } from '../../api/modules/subject'
 
 const state = {
     subject_list: [],

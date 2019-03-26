@@ -33,25 +33,17 @@
                                 <Input v-model="newChapterData.group_name"  @on-enter.stop="saveChapter(newChapterData,true,1)"  @on-blur.stop="saveChapter(newChapterData,true)" placeholder="请输入章节名称"
                                        @on-focus="showDataState(chapterList.length)" class="textInput" style="width: 300px;"/>
                             </div>
-                            <!--<div style="margin-right: 25px;">-->
-                                <!--<Button type='text' @click="addVideo()">添加视频</Button>-->
-                                <!--<Button type='text' @click="addTest()">添加测验</Button>-->
-                                <!--&lt;!&ndash;<Button v-if='showListState[0] == 0' type="text"  @click="toggleListShow(0)">展开</Button>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<Button v-else-if='showListState[0] == 1' type="text"  @click="toggleListShow(0)">收起</Button>&ndash;&gt;-->
-                            <!--</div>-->
                         </Row>
                     </div>
                 </div>
             </div>
         </div>
-        <save-order v-if='dirty' @saveOrder='saveOrderHandler' @cancelChange='resetOrder'/>
     </div>
 </template>
 
 <script>
   import screen from '../../../components/ScreenFrame'
   import BaseList from '../../../components/BaseList'
-  import SaveOrder from '../../../components/SaveOrder'
   import postData from '../../../api/postData'
   import {doTimeFormat} from '../../../components/Util'
   import {Dialog} from '../../dialogs'
@@ -62,7 +54,7 @@
 
   export default {
     mixins: [Dialog],
-    components: {'data-list': BaseList, 'save-order': SaveOrder, screen},
+    components: {'data-list': BaseList, screen},
     data() {
       return {
         dirty: false,
@@ -120,7 +112,7 @@
       },
       chapterList() {
           var curriculumList = this.$config.copy(this.$store.state.online_curriculum.online_curriculum_list,[]);
-        if (Array.isArray(curriculumList) && curriculumList.length > 0) {
+          if (Array.isArray(curriculumList) && curriculumList.length > 0) {
           var curriculumId = this.$route.params.id;
           curriculumList.map((t,i) => {
             if(t.children&&t.children.length>0){
@@ -130,7 +122,6 @@
             }
           })
         }
-        console.log(curriculumList);
         return curriculumList || [];
       },
       curriculumList() {
@@ -255,29 +246,11 @@
         }
       },
       deleteHandler(index, row) {
-        if (this.dirty) {
-          this.$Modal.confirm({
-            title: '提示',
-            content: '<p>您已修改小节排序，是否放弃保存</p>',
-            onOk: () => {
-              this.resetOrder();
-              this.showDeleteConfirm(row.id);
-            },
-          });
-        } else this.showDeleteConfirm(row.id);
-      },
-      showDeleteConfirm(d) {
         var val = {
-          id: d,
+          id: row.id,
           curriculum_online_id: parseInt(this.$route.params.id)
         }
-        this.$Modal.confirm({
-          title: '提示',
-          content: '<p>是否确定删除该小节？</p>',
-          onOk: () => {
-            this.$store.dispatch('delete_online_curriculum_catalog',val)
-          },
-        });
+        this.$store.dispatch('delete_online_curriculum_catalog',val)
       },
       toggleListShow(index,t) {
         this.showListState[index] = 1 - this.showListState[index];
@@ -287,14 +260,6 @@
       },
       saveOrderHandler() {
         this.$store.dispatch('save_online_curriculum_chapter_orderby', {curriculum_id: this.$route.params.id})
-      },
-      resetOrder() {
-        this.$store.dispatch('reset_online_curriculum_chapter_orderby', {curriculum_id: this.$route.params.id})
-        this.dirty = false;
-      },
-      backClickHandler() {
-        if (this.dirty) this.resetOrder();
-        this.$router.replace({name: 'open-product'});
       },
       initChapter() {
         this.screenTitle = this.$route.params.title
@@ -355,12 +320,26 @@
       },
       //删除测验
       deleteText(item, index){
-        console.log(item,index, 'item')
-        postData('product/curriculum_online_catalog/delete', {curriculum_catalog_id: item.id}).then(res => {
-          if(res.res_code == 1){
-            this.getLists()
-          }
-        })
+        console.log(item.children, 'children')
+        if(item.children.length){
+          this.$Modal.confirm({
+            title: '提示',
+            content: '是否删除该章节',
+            onOk: () => {
+              postData('product/curriculum_online_catalog/delete', {curriculum_catalog_id: item.id}).then(res => {
+                if(res.res_code == 1){
+                  this.getLists()
+                }
+              })
+            },
+          });
+        }else{
+          postData('product/curriculum_online_catalog/delete', {curriculum_catalog_id: item.id}).then(res => {
+            if(res.res_code == 1){
+              this.getLists()
+            }
+          })
+        }
       },
       editHandler(i, row) {
         if(row.type === 0) {

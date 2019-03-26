@@ -89,9 +89,6 @@
         }
       }
     },
-    mounted() {
-      this.get_subject_list();
-    },
     computed: {
       ...mapState({
         result_msg1: state => state.offline_curriculum.result_msg,

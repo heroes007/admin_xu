@@ -137,7 +137,7 @@
       // },
       listHeight() {
         return window.innerHeight - 60 - 50 - 70;
-      }
+      },
     },
     watch: {
       listColumnFormatterData(val) {},
@@ -170,9 +170,9 @@
       // }
     },
     methods: {
-        submit(){
-            this.initData()
-        },
+      submit(){
+        this.initData()
+      },
       inputChange(val){
         this.keyword = val
         this.initData()
@@ -230,19 +230,16 @@
         this.$store.dispatch('reset_online_curriculum_orderby');
         this.dirty = false;
       },
-      deleteCourseHandler(index) {
-        if (this.dirty) {
-          this.$Modal.confirm({
-            title: '提示',
-            content: '<p>您已修改课程排序，是否放弃保存</p>',
-            onOk: () => {
-              this.resetCurriculumOrder();
-              this.showDeleteConfirm(this.dataList[index].id);
-            },
-          });
-        } else {
-          this.showDeleteConfirm(this.dataList[index].id);
-        }
+      deleteCourseHandler(index, item) {
+        this.$Modal.confirm({
+          title: '提示',
+          content: '<p>是否确定删除该课程？</p>',
+          onOk: () => {
+            this.$store.dispatch('delete_online_curriculum', {
+              id: this.dataList[index].id
+            })
+          },
+        });
       },
       showDeleteConfirm(id) {
         this.$Modal.confirm({
@@ -254,9 +251,6 @@
             })
           },
         });
-      },
-      saveOrderHandler() {
-        this.$store.dispatch('save_online_curriculum_orderby');
       },
       addCourseHandler() {
         if (this.dirty) {
@@ -277,7 +271,7 @@
             page: {page_size: this.pageSize, page_num: this.current},
             keyword: this.keyword
           }).then(res => {
-            vm.$store.dispatch('get_subject_list')
+            // vm.$store.dispatch('get_subject_list')
           });
 
         // if (this.$store.state.project.project_list.length === 0) {
@@ -307,6 +301,7 @@
     },
     mounted() {
       this.initData();
+      this.$store.dispatch('get_online_curriculum_chapter_list', {curriculum_online_id: parseInt(this.$route.params.id)})
     },
     components: {
       'data-list': BaseList,

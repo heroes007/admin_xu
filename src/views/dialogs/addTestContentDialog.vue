@@ -8,9 +8,11 @@
                         <Input class="formInput" v-model="formInline2.title" placeholder="请输入测验的名称"
                                :disabled='isEdit'></Input>
                     </FormItem>
-                    <FormItem label="题干名称" prop="body">
+                    <FormItem label="题干名称" prop="body" style="text-align: left">
                         <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body"
                                class="input-text"></Input>
+                    </FormItem>
+                    <FormItem style="padding-left: 67px;">
                         <div class="route-link" ref="formInput">
                             <div class="route-data" v-for="(item, index) in formInline2.attachment" :key="index">
                                 <span class="titleFile" @click="handleModel(item)">{{item.name}}</span>
@@ -551,5 +553,8 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+    }
+    /deep/ .ivu-form-item-label{
+        padding: 10px 8px 10px 0
     }
 </style>

@@ -51,7 +51,6 @@
   import {RemoveModal} from './mixins'
   import UploadPanel from '../../components/UploadPanel'
   import {mapActions, mapState} from 'vuex';
-  import {get_detail} from '../../api/modules/tools_curriculum'
   import {cleanHtmlLabel} from '../../components/Util'
   import {Config} from '../../config/base'
   import {doTimeFormat} from '../../components/Util'

@@ -169,7 +169,7 @@
         },
         methods: {
             ...mapActions([ 'get_notification_list', 'delete_notification', 'get_project_list','get_message_student_list',
-            'get_private_msg_list', 'send_private_msg', 'add_private_msg', 'get_subject_list' ]),
+            'get_private_msg_list', 'send_private_msg', 'add_private_msg' ]),
             updateWrapper() {
                 var vm = this;
                 setTimeout(function () {
@@ -235,7 +235,7 @@
         },
         mounted() {
             this.get_notification_list();
-            this.get_subject_list();
+            // this.get_subject_list();
             var vm = this;
             if (this.$store.state.project.project_list.length === 0) {
                 this.get_project_list({
