@@ -1,6 +1,6 @@
 import * as types from '../types'
 import api from '../../api/modules/config'
-import { get_curriculum_data_center, get_public_data_center, add_data_center, delete_data_center, set_data_center_pre_curriculums, change_data_center_enable } from '../../api/modules/tools_data_center'
+import { get_curriculum_data_center, add_data_center, delete_data_center } from '../../api/modules/tools_data_center'
 
 const state = {
     course_download_data_list: [],
@@ -11,16 +11,6 @@ const state = {
 }
 
 const actions = {
-    get_public_donwload_data_list({ commit }, params)
-    {
-        commit(types.DOWNLOAD_SHOW_LOADING);
-        get_public_data_center(params.project_id).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.PUBLIC_DOWNLOAD_LIST_LOADED,res.data.msg);
-            }
-        })
-    },
     get_curriculum_donwload_data_list({ commit }, params)
     {
         commit(types.DOWNLOAD_SHOW_LOADING);
@@ -29,22 +19,6 @@ const actions = {
             {
                 commit(types.CURRICULUM_DOWNLOAD_LIST_LOADED,res.data.data);
             }
-        })
-    },
-    change_course_download_data_pre_curriculum({ commit }, params) {
-        if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length){ return }
-        commit(types.DOWNLOAD_SHOW_LOADING);
-        commit(types.SET_DOWNLOAD_CHANGE_PRE_GUARD,params.value);
-        set_data_center_pre_curriculums(params.id,params.value).then(res => {
-            if(res.data.res_code === 1){
-                commit(types.DOWNLOAD_CHANGE_PRE_CURRICULUM,params);
-            }
-        })
-    },
-    change_public_download_data_valid({ commit }, params) {
-        // commit(types.DOWNLOAD_SHOW_LOADING);
-        change_data_center_enable(params.id,params.value?1:0).then(res => {
-            if(res.data.res_code === 1) commit(types.DOWNLOAD_DATA_VALID_UPDATED, params)
         })
     },
     add_course_download_data({ dispatch,commit }, params) {
@@ -56,16 +30,6 @@ const actions = {
                     params._fn()
                 // commit(types.COURSE_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
                 // params._fn(res.data.msg);
-            }
-        })
-    },
-    add_public_download_data({ commit }, params) {
-        commit(types.DOWNLOAD_SHOW_LOADING);
-        add_data_center(params).then(res => {
-            if(res.data.res_code === 1)
-            {
-                // commit(types.PUBLIC_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
-                // params._fn();
             }
         })
     },

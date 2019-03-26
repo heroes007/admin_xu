@@ -104,7 +104,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([ 'add_course_download_data', 'add_public_download_data',  'get_curriculum_donwload_data_list']),
+        ...mapActions([ 'add_course_download_data',  'get_curriculum_donwload_data_list']),
         getDir() {
             if(this.payload.state === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
             return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());

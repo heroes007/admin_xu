@@ -17,9 +17,7 @@ import {
     get_students_by_offline_term,
     send_student_offline_curriculum
 } from '../../api/modules/tools_student'
-import moment from 'moment'
 import dateFormat from '../../config/dateFormat'
-import lodash from 'lodash'
 
 const state = {
     offline_term_list: [],
