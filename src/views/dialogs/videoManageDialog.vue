@@ -175,6 +175,7 @@
         this.form.format = 720;
       },
       vedioTime(val) {
+        console.log(val, 'val')
         this.form.duration = val
       }
     },
