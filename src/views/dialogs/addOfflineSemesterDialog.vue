@@ -92,7 +92,6 @@
     computed: {
       ...mapState({
         result_msg1: state => state.offline_curriculum.result_msg,
-        subject1: state => state.subject.subject_list,
         offline_term_list1: state => state.offline_curriculum.offline_term_list
       }),
       pickerOptions() {

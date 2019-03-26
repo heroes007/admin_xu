@@ -47,7 +47,7 @@
         iconColor: '#9397AD',
         backgroundColor: 'background: #fff',
         isSuper: false,
-        select: [{id: 'all', title:'全部机构'}]
+        select: [{id: 'all', title:'全部'}]
       }
     },
     props:{

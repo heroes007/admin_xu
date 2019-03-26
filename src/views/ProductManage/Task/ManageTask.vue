@@ -117,10 +117,7 @@
                 ]
             },
             listColumnFormatterData() {
-                return [[], this.subjectList, this.$store.state.task.activityTypeList, this.stateList];
-            },
-            subjectList() {
-                return this.$store.state.subject.subject_list;
+                return [[], [], this.$store.state.task.activityTypeList, this.stateList];
             },
             ...mapState({ dataList: state => state.task.task_category_list })
         },

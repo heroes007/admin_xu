@@ -105,21 +105,6 @@
           }
         }
       },
-      changeProjectHandler(val) {
-        this.loading = this.$LoadingY({message: "加载中，请稍后", show: true})
-        setTimeout(() => {
-          this.loading.close();
-        }, Config.base_timeout);
-        get_list(val).then(res => {
-          if (res.data.res_code === 1) {
-            for (var i = 0; i < res.data.msg.length; i++) {
-              res.data.msg[i].chapterList = [];
-            }
-            this.curriculumList = res.data.msg;
-            if (this.loading) this.loading.close();
-          }
-        })
-      },
       toggleCurriculum(index) {
         if (!index) return;
         var item = this.curriculumList[index];

@@ -51,7 +51,6 @@
   import {RemoveModal} from './mixins'
   import UploadPanel from '../../components/UploadPanel'
   import {mapActions, mapState} from 'vuex';
-  import {get_detail} from '../../api/modules/tools_curriculum'
   import {cleanHtmlLabel} from '../../components/Util'
   import {Config} from '../../config/base'
   import {doTimeFormat} from '../../components/Util'
@@ -115,7 +114,6 @@
     },
     computed: {
       ...mapState({
-        query_subject_list: state => state.subject.subject_list,
         query_state_list: state => state.online_curriculum.stateList,
         query_teacher_list: state => state.teacher.teacher_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,

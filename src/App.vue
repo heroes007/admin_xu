@@ -22,7 +22,9 @@
         .use(function (response) {
           if (response.data.res_code < 0) {
             let code = response.data.res_code;
-            if (code >= -999 && code <= -990) vm.$router.push({path: '/login'});
+            if (code >= -999 && code <= -990) {
+              vm.$router.push({path: '/login'});
+            }
             // else vm.$Message.warning(response.data.msg);
           }
           return response;

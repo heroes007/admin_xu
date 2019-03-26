@@ -215,7 +215,6 @@
     },
     computed: {
       ...mapState({
-        query_subject_list: state => state.subject.subject_list,
         query_state_list: state => state.online_curriculum.stateList,
         query_teacher_list: state => state.teacher.teacher_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
@@ -306,7 +305,6 @@
                   this.add_online_curriculum(this.form)
                 }
                 else {
-                  console.log(this.form.img_default,this.form,'this.form.img_default')
                   this.edit_online_curriculum({data: this.form});
                   this.addCourseDialogVisible = false
                 }
