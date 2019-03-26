@@ -94,6 +94,10 @@
             dataHeader() {
                 return taskHeadData
             },
+            dataList() {
+                if (!this.selectedCategory) return [];
+                return this.selectedCategory.task_list;
+            },
             listColumnFormatter() {
                 return [{
                     columnName: 'create_time',
