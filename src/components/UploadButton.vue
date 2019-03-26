@@ -34,7 +34,7 @@
             },
             bucket:{
                 type:String,
-                default:'dscj-img'
+                default:'jhyl-static-file'
             },
             dir:{
                 type:String,

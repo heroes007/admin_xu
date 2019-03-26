@@ -7,10 +7,10 @@
         <screen :types="2" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
                 @handleClick="addTaskCategory" :btnType="true"/>
 
-        <data-list @edit='editHandler' @delete='deleteHandler'
+        <!-- <data-list @edit='editHandler' @delete='deleteHandler'
                    class='data-list light-header' :table-data='dataList' :table-height='listHeight'
                    @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
-                   @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
+                   @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list> -->
 
         <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
@@ -93,10 +93,6 @@
             },
             dataHeader() {
                 return taskHeadData
-            },
-            dataList() {
-                if (!this.selectedCategory) return [];
-                return this.selectedCategory.task_list;
             },
             listColumnFormatter() {
                 return [{

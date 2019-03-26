@@ -92,7 +92,7 @@
         loadingInstance: null,
         // type: 1 -- 图片， 2 -- 视频
         uploadConfig: {
-          bucket: 'dscj-app',
+          bucket: 'jhyl-static-file',
           dir: 'user_task',
           type: 1
         },
