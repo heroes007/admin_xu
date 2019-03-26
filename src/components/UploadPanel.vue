@@ -32,9 +32,7 @@
     import { get_sign } from '../api/modules/ali_oss'
     import axios from 'axios'
     import { get_video_source } from '../api/modules/tools_video'
-    const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
-    const ossHostVideo = 'http://dscj-video.oss-cn-beijing.aliyuncs.com/';
-    const ossHostApp = 'http://dscj-static-file.oss-cn-qingdao.aliyuncs.com/';
+    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
     export default {
         props: {
             panelOptions: {
@@ -50,7 +48,7 @@
                 type: Object,
                 default: function () {
                     return {
-                        bucket: 'dscj-app',
+                        bucket: 'jhyl-static-file',
                         dir: 'user_task',
                         type: 1
                     }
@@ -286,19 +284,19 @@
                             formData.append('file', file_item);
                             switch (this.uploadConfig.type) {
                                 case 0:
-                                    this.handleUploadFile(formData, encodeURI(ossHostImage));
+                                    this.handleUploadFile(formData, encodeURI(ossHost));
                                     break;
                                 case 1:
-                                    this.handleUploadFile(formData, encodeURI(ossHostImage));
+                                    this.handleUploadFile(formData, encodeURI(ossHost));
                                     break;
                                 case 2:
-                                    this.handleUploadFile(formData, encodeURI(ossHostVideo), file_item);
+                                    this.handleUploadFile(formData, encodeURI(ossHost), file_item);
                                     break;
                                 case 3:
-                                    this.handleUploadFile(formData, encodeURI(ossHostApp));
+                                    this.handleUploadFile(formData, encodeURI(ossHost));
                                     break;
                                 case 4:
-                                    this.handleUploadFile(formData, encodeURI(ossHostApp));
+                                    this.handleUploadFile(formData, encodeURI(ossHost));
                                     break;
                             };
 

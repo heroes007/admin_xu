@@ -40,7 +40,7 @@
 
             },
             bucket: {
-                default: 'dscj-app'
+                default: 'jhyl-static-file'
             },
             dir: {
                 default: 'user_task'
@@ -132,7 +132,7 @@
                         this.$emit('uploadComplete', this.homeworkId, {
                             name: this.fileName,
                             size: this.fileSize,
-                            url: Config.ossStaticFileHost + this.ossFileName,
+                            url: Config.ossHost + this.ossFileName,
                             datetime: new Date()
                         })
                     }
@@ -155,7 +155,7 @@
                         this.handleUploadFile(
                             formData,
                             encodeURI(
-                                Config.ossDownloadDataHost,
+                                Config.ossHost,
                             )
                         );
                     }

@@ -88,7 +88,7 @@
                     name:''
                 },
                 uploadConfig: {
-                    bucket: 'dscj-app',
+                    bucket: 'jhyl-static-file',
                     dir: 'user_task',
                     type: 1
                 },

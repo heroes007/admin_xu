@@ -41,7 +41,7 @@
                                         <Col class="upload-img-col" span="8" v-for="(t,i) in form.imgList" :key="i">
                                             <div class="upload-img-main">
                                                 <Icon @click="deleteImgList(i)" class="upload-img-main-icon" v-if="t !== 'upload-btn'" type="ios-close-circle" />
-                                                <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="dscj-app" @uploadcomplete="uploadcomplete" type="image/jpeg,image/png,image/jpg,image/bmp"/>
+                                                <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="jhyl-static-file" @uploadcomplete="uploadcomplete" type="image/jpeg,image/png,image/jpg,image/bmp"/>
                                                 <img v-else class="upload-img-item"  :src="t" />
                                             </div>
                                         </Col>
@@ -80,7 +80,7 @@
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
-                                <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
+                                <upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
                             </div>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
@@ -155,12 +155,12 @@ export default {
             nextStep: 0,
             isInited: false,
             uploadConfig: {
-                bucket: 'dscj-app',
+                bucket: 'jhyl-static-file',
                 dir: 'production',
                 type: 1
             },
             uploaderConfig2:{
-                bucket:'dscj-static-file',
+                bucket:'jhyl-static-file',
                 dir:'video/production',
                 type:4
             },

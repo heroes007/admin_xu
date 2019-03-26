@@ -3,7 +3,7 @@
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList" @close="exchangeContentClose" @selectChecked="exchangeContentChecked" />
         <Modal v-model="show" :title="title" :width="645" @on-cancel="closeModal"  :mask-closable=false :footer-hide="true" >
             <div v-if="uploadFlie" class="upload-flie">
-                <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com/" :format="['jpg','jpeg','png']" :data="uploadData" accept="image/jpeg,image/png,image/jpg,image/bmp"
+                <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com" :format="['jpg','jpeg','png']" :data="uploadData" accept="image/jpeg,image/png,image/jpg,image/bmp"
                         :before-upload="handleBeforeUpload" :on-format-error="handleFormatError" >
                     <div v-if="!img_url" class="modal-upload-flie">
                         <img class="upload-flie-img" src="../assets/icons/icon/upload.png"/>
@@ -79,8 +79,8 @@
                                     </DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <upload-btn bucket="dscj-app" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
-                            <upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="dscj-app" @uploadcomplete="uploadImg"/>
+                            <upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
+                            <upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="jhyl-static-file" @uploadcomplete="uploadImg"/>
                         </div>
                         <down-loading :formData="downList"/>
                     </FormItem>
@@ -96,7 +96,7 @@
 <script>
   import { get_sign } from '../api/modules/ali_oss'
   import axios from 'axios'
-  const ossHostImage = 'http://dscj-app.oss-cn-qingdao.aliyuncs.com/';
+  const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
   import ExchangeContent from './ExchangeContent'
   import uploadBtn from '../components/UploadButton'
   import downLoading from './DownLoading'
@@ -162,7 +162,7 @@
         img_url: '',
         resourse_url: '',
         uploadConfig: {
-          bucket: 'dscj-app',
+          bucket: 'jhyl-static-file',
           dir: 'user_task',
           type: 1
         },
@@ -360,7 +360,7 @@
               formData.append('signature', res.data.data.sign);
               formData.append('policy', res.data.data.policyBase64);
               formData.append('file', file_item);
-              this.handleUploadFile(formData, encodeURI(ossHostImage));
+              this.handleUploadFile(formData, encodeURI(ossHost));
             }
           })
       },

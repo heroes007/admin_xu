@@ -68,7 +68,7 @@
         projectId: 0,
         curriculumList: [],
         uploaderConfig: {
-          bucket: 'dscj-video',
+          bucket: 'jhyl-static-file',
           dir: 'mspx',
           type: 2
         },
