@@ -7,7 +7,7 @@ export  default (url,data) => {
       return res.data
     }else{
       Message.warning(res.data.msg);
-      // return false
+      return url == 'user/getUserPermission' ? res.data : false
     }
   })
 }

@@ -114,7 +114,6 @@
     },
     computed: {
       ...mapState({
-        query_subject_list: state => state.subject.subject_list,
         query_state_list: state => state.online_curriculum.stateList,
         query_teacher_list: state => state.teacher.teacher_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
@@ -150,9 +149,7 @@
     },
     methods: {
       ...mapActions([
-        'get_teacher_list',
         'get_role_list',
-        'get_subject_list',
         'get_online_curriculum_list',
         'add_online_curriculum',
         'add_course_download_data',

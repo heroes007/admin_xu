@@ -43,7 +43,7 @@ import { RemoveModal } from './mixins'
 import UploadPanel from '../../components/UploadPanel'
 import Uploader from '../../components/Upload'
 import uploadPanel from '../../components/UploadPanel'
-import { get_category_by_id,save_datalist } from '../../api/modules/tools_task'
+import { save_datalist } from '../../api/modules/tools_task'
 import { Config } from '../../config/base'
 import { doTimeFormat } from '../../components/Util'
 import { mapState, mapActions } from 'vuex'
@@ -70,7 +70,6 @@ export default {
     computed:{
          ...mapState({
             projectId:state => state.project.select_project_id,
-            query_subject_list: state => state.subject.subject_list,
             course_download_data_list: state => state.download_data,
             }),
         dataFilters(){

@@ -114,6 +114,10 @@ export default {
     }
     return stateText
   },
+  // 设置导师的权限  只能查看产品
+  setAuthTutors(){
+    return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 3
+  },
   //阿拉伯数字转换为简写汉字
   ArabiaToSimplifiedChinese(Num) {
   for (let i = Num.length - 1; i >= 0; i--) {

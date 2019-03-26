@@ -92,7 +92,6 @@
     computed: {
       ...mapState({
         result_msg1: state => state.offline_curriculum.result_msg,
-        subject1: state => state.subject.subject_list,
         offline_term_list1: state => state.offline_curriculum.offline_term_list
       }),
       pickerOptions() {
@@ -108,7 +107,7 @@
       }
     },
     methods: {
-      ...mapActions([ 'add_offline_term', 'edit_offline_term', 'get_subject_list', 'get_offline_term_list' ]),
+      ...mapActions([ 'add_offline_term', 'edit_offline_term','get_offline_term_list' ]),
       handleClose() {
         this.addOfflineSemesterDialog = false;
       },

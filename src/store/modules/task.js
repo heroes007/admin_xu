@@ -6,11 +6,7 @@ import {
     create_category,
     edit_category_by_id,
     delete_category_by_id,
-    get_tasklist_by_cid,
-    create_task,
-    edit_task,
     delete_task_by_id,
-    get_userlist_by_tid,
     get_curriculumlist_online
 } from '../../api/modules/tools_task'
 
@@ -94,58 +90,6 @@ const actions = {
                 }
             })
         },
-        delete_task_category({
-            commit
-        }, params) {
-            commit(types.TASK_SHOW_LOADING);
-
-            delete_category_by_id(params.task_category_id).then(res => {
-                if (res.data.res_code === 1) {
-                    commit(types.TASK_CATEGORY_DELETED, params);
-                }
-            })
-        },
-        get_task_list({ commit }, params) {
-            commit(types.TASK_SHOW_LOADING);
-            catch_cid = params.task_category_id
-            // get_tasklist_by_cid(params.task_category_id).then(res => {
-            //     if (res.data.res_code === 1) {
-            //         commit(types.TASK_LIST_LOADED, {
-            //             task_category_id: params.task_category_id,
-            //             result: res.data.msg
-            //         });
-            //     }
-            // })
-        },
-        add_task({
-            commit
-        }, params) {
-            commit(types.TASK_SHOW_LOADING);
-            create_task(params.task_category_id, params).then(res => {
-                if (res.data.res_code === 1) {
-                    commit(types.TASK_ADDED, {
-                        data: params,
-                        result: res.data.msg
-                    });
-                    params.callback.call();
-
-                }
-            })
-        },
-        edit_task({
-            commit
-        }, params) {
-            commit(types.TASK_SHOW_LOADING);
-
-            edit_task(params.task_id, params).then(res => {
-
-
-                if (res.data.res_code === 1) {
-                    commit(types.TASK_EDITED, params);
-                    params.callback.call();
-                }
-            })
-        },
         delete_task({
             commit
         }, params) {
@@ -156,16 +100,6 @@ const actions = {
                     commit(types.TASK_DELETED, params);
                 }
             })
-        },
-        get_userlist_by_tid({commit,state}, params){
-          commit(types.TASK_SHOW_LOADING);
-          if(!state.catch_every_page[params.page_index]){
-            get_userlist_by_tid(params.task_id, params.project_id, params.grade_id, params.subject_id, params.page_size, params.page_index, params.phone, params.username, params.realname, params.userid).then(res => {
-              commit(types.TASK_USERLIST_TY_TID, {total: '', task_id: params.task_id, data: res.data.msg});
-            });
-          } else {
-            commit(types.TASK_USERLIST_TY_TID, state.catch_every_page[params.page_index]);
-          }
         },
         change_homework_id({commit},params){
             commit(types.TASK_CHANGE_HOMEID,params)

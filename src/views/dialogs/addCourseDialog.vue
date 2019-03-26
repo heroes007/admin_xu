@@ -210,14 +210,11 @@
         this.form = d
         this.form.img_default = d.img_url
       }
-      // if (this.query_teacher_list.length === 0) this.get_teacher_list();
       // this.get_role_list();
-      // this.get_subject_list();
       // this.get_curriculum_donwload_data_list({project_id: this.project_id});
     },
     computed: {
       ...mapState({
-        query_subject_list: state => state.subject.subject_list,
         query_state_list: state => state.online_curriculum.stateList,
         query_teacher_list: state => state.teacher.teacher_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
@@ -253,9 +250,7 @@
     },
     methods: {
       ...mapActions([
-        'get_teacher_list',
         'get_role_list',
-        'get_subject_list',
         'get_online_curriculum_list',
         'add_online_curriculum',
         'edit_online_curriculum',

@@ -182,7 +182,6 @@
       logout() {
         api.post('user/logout', {from: 'web'}).then((res) => {
           if (res.data.res_code === 1) {
-            // login_user
             let d = localStorage.getItem('login_user')
             localStorage.clear()
             // this.$localStorage.set('token', '');
@@ -193,7 +192,6 @@
             // localStorage.removeItem('menuActiveIndex');
             // localStorage.removeItem('PERMISSIONS');
             // localStorage.removeItem('menuActiveIndex');
-            // localStorage.removeItem('login_user');
           }
         });
       },

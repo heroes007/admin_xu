@@ -75,8 +75,6 @@
   import uploadBtn from '../../components/UploadButton'
   import BaseList from '../../components/BaseList'
   import {
-    get_detail,
-    get_test_detail_list,
     add_test_detail,
     update_test_detail,
     delete_test_detail
@@ -270,11 +268,6 @@
       },
       handleSubmit() {
       },
-      handleSaveTest() {
-        if (this.payload.video_test_id) this.$store.dispatch('edit_online_curriculum_test', this.formInline1)
-        else this.$store.dispatch('add_online_curriculum_test', this.formInline1)
-        this.isEdit = true;
-      },
       handleEditTest() {
         this.isEdit = !this.isEdit;
       },
@@ -403,33 +396,6 @@
           }
         })
       }
-      // console.log(this.payload,'payload')
-      // this.$store.dispatch('get_role_list');
-      // this.formInline1.curriculum_id = this.payload.curriculum_id;
-      // this.formInline1.group_name = this.payload.group_name;
-      // this.formInline1.group_orderby = this.payload.group_orderby;
-      // this.formInline1.orderby = this.payload.orderby;
-      // // this.formInline2.group_orderby = this.payload.group_orderby;
-      // this.formInline2.select_count = 4;
-      // if (this.payload.video_test_id) {
-      //   this.formInline1.video_test_id = this.payload.video_test_id;
-      //   this.isEdit = true;
-      //   get_detail(this.payload.video_test_id).then(res => {
-      //     if (res.data.res_code === 1) {
-      //       this.formInline1.video_test_id = this.payload.video_test_id;
-      //       this.formInline1.title = res.data.msg.video_test[0].title;
-      //       this.formInline1.video_test_roles = res.data.msg.role ? res.data.msg.role : [];
-      //     }
-      //   })
-      //   get_test_detail_list(this.payload.video_test_id).then(res => {
-      //     if (res.data.res_code === 1) {
-      //       this.dataList = res.data.msg;
-      //       this.clearDetail();
-      //     }
-      //   })
-      // } else {
-      //   this.formInline2.orderby = 1;
-      // }
     }
   }
 </script>

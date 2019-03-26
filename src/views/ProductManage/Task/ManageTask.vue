@@ -7,7 +7,7 @@
         <screen :types="2" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
                 @handleClick="addTaskCategory" :btnType="true"/>
 
-        <data-list @edit='editHandler' @delete='deleteHandler' @doActive='doActiveHandler'
+        <data-list @edit='editHandler' @delete='deleteHandler'
                    class='data-list light-header' :table-data='dataList' :table-height='listHeight'
                    @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
                    @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
@@ -17,14 +17,12 @@
 </template>
 
 <script>
-    import TaskCategoryItem from '../../../components/TaskCategoryItem.vue'
     import BaseList from '../../../components/BaseList'
     import {Dialog} from '../../dialogs'
-    import { MANUL_ACTIVE} from '../../dialogs/types'
     import {doTimeFormat} from '../../../components/Util'
     import {mapActions, mapState} from 'vuex'
     import {Config} from '../../../config/base'
-    import {taskHeadData} from './consts'
+    import taskHeadData from './consts'
     import screen from '../../../components/ScreenFrame'
     import FormModal from '../../../components/FormModal'
     import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
@@ -38,7 +36,6 @@
         mixins: [Dialog, FormModalMixin, pageMixin],
         components: {
             'data-list': BaseList,
-            'category-item': TaskCategoryItem,
             screen,
             FormModal,
             'text-editor': Editor,
@@ -94,12 +91,8 @@
             pageTotal() {
                 return this.$store.state.task.total;
             },
-            categoryList() {
-                return this.$store.state.task.task_category_list;
-            },
             dataHeader() {
-                let v = this.selectedCategory && this.selectedCategory.type
-                return taskHeadData(v)
+                return taskHeadData
             },
             listColumnFormatter() {
                 return [{
@@ -124,29 +117,9 @@
                 ]
             },
             listColumnFormatterData() {
-                return [[], this.subjectList, this.$store.state.task.activityTypeList, this.stateList];
+                return [[], [], this.$store.state.task.activityTypeList, this.stateList];
             },
-            dataList() {
-                if (!this.selectedCategory) return [];
-                return this.selectedCategory.task_list;
-            },
-            selectedCategory() {
-                for (var i = 0; i < this.categoryList.length; i++) {
-                    if (this.categoryList[i].id === this.selectCategory) return this.categoryList[i];
-                }
-                return undefined;
-            },
-            subjectList() {
-                return this.$store.state.subject.subject_list;
-            },
-            ...mapState({
-                dataFilters() {
-                    var str = ['doc', 'pdf', 'zip'];
-                    return str;
-                },
-                dataList: state => state.task.task_category_list,
-                // curricumList: state => state.task.curricum_list
-            })
+            ...mapState({ dataList: state => state.task.task_category_list })
         },
         watch: {
             // isLoading(val) {
@@ -160,7 +133,6 @@
             //     this.dirty = false
             //   }
             // },
-
         },
         methods: {
             ...mapActions(['delete_task']),
@@ -174,17 +146,11 @@
                 let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
                 this.$store.dispatch('get_curriculumlist_list', {product_id: v})
                 this.formList[2].selectList = this.curricumList
-                // this.handleSelModal(ADD_TASK_CATEGORY, { orderby: this.categoryList.length + 1 });
-                //  console.log(this.dataList);
             },
             manageEdit(v) {
                 // this.showClose = v;
               this.keyword = v
               this.initData()
-            },
-            getSelected(id, type) {
-                if (this.selectCategory === id) return true;
-                return false;
             },
             statistics(index, row) {
                 console.log(row, '统计');
@@ -211,7 +177,6 @@
                 this.tableRow.binding_course = row.curriculum_id
                 this.tableRow.upload = row.attachment_url ? JSON.parse(row.attachment_url) : row.attachment_url
                 this.$store.dispatch("change_homework_id", row.id)
-              // this.handleSelModal(ADD_TASK, { separage: this.selectedCategory, type: 2, index, row, selectedType: this.selectedType });
             },
             deleteHandler(index, row) {
                 var vm = this;
@@ -223,23 +188,8 @@
                     },
                 });
             },
-            // addTask() {
-            //     if (this.categoryList.length > 0) {
-            //         this.handleSelModal(ADD_TASK, {
-            //             separage: this.selectedCategory || this.categoryList[0].id,
-            //             type: 1,
-            //             selectedType: this.selectedType
-            //         })
-            //     } else {
-            //         this.$Modal.info({itle: '提示', content: '<p>请先添加分类！</p>'});
-            //     }
-            // },
             deleteCourseHandler(index, row) {
             },
-            doActiveHandler(index, row) {
-                if (row.activity_type == 1) this.handleSelModal(MANUL_ACTIVE, {row})
-            },
-
             uploadComplete(id, result) {
                 this.form.download_url = result.url;
             },
@@ -250,7 +200,7 @@
             saveHomework(val) {
                 if (this.modalTitle == "添加作业") {
                  (async () => {
-                     await  this.$store.dispatch('add_task_category', val);
+                     await this.$store.dispatch('add_task_category', val);
                      await this.initData()
                  })()
                 } else {
@@ -281,27 +231,8 @@
             }
         },
         mounted() {
-            // this.$store.dispatch('get_subject_list');
-            // var vm = this;
             this.initData()
-            // curricumList
             this.getListLine()
-            // if (this.$store.state.project.project_list.length === 0) {
-            //   this.$store.dispatch('get_project_list', {
-            //     callback(v) {
-            //       vm.$store.dispatch('get_task_category_list', { project_id: v })
-            //     }
-            //   });
-            // } else {
-            //   this.$store.dispatch('get_task_category_list', {
-            //     project_id: this.$store.state.project.select_project_id
-            //   })
-            // }
-            // if (this.categoryList.length === 0) {
-            //   this.$store.dispatch('get_task_category_list', {
-            //       project_id: this.$store.state.project.select_project_id
-            //   })
-            // } else this.checkInit();
         }
     }
 

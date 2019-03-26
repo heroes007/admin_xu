@@ -75,8 +75,11 @@
                         this.$router.push({ path: 'dashboard' });
                         localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
                         localStorage.setItem('token',d.token)
-                        this.$localStorage.set('login_user', Base64.encode(JSON.stringify({name:this.name})))
-                        // this.remember ? this.$localStorage.set('login_user', Base64.encode('天涯'+JSON.stringify({name:this.name,pass:this.password}))) : this.$localStorage.remove('login_user');
+                        let d1 = {
+                            name: this.name,
+                            pass: this.password
+                        }
+                        localStorage.setItem('login_user', Base64.encode(JSON.stringify(d1)))
                     } else {
                         this.$Message.warning(res.data.msg);
                         this.isLogining = false;
@@ -85,11 +88,11 @@
             },
             setUser({name,pass}){
               this.name = name
-            //   this.password = pass
+              this.password = pass
             }
         },
         mounted() {
-            if(this.$localStorage.get('login_user')){
+            if(localStorage.getItem('login_user')&&localStorage.getItem('login_user') != 'null'){
               let user = Base64.decode(this.$localStorage.get('login_user'))
               let u = JSON.parse(user)
               this.setUser(u)

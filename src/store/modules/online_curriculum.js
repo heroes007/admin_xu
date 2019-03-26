@@ -9,8 +9,7 @@ import {
     change_curriculum_list
 } from '../../api/modules/tools_curriculum'
 import {get_catalog, set_catalog_orderby, delete_catalog} from '../../api/modules/tools_curriculum_catalog'
-import {add_video, update_video, select_add_video, add_chapter} from '../../api/modules/tools_video'
-import {add_video_test, update_video_test} from '../../api/modules/tools_video_test'
+import {add_video, update_video, add_chapter} from '../../api/modules/tools_video'
 
 const state = {
     online_curriculum_list: [],
@@ -160,15 +159,6 @@ const actions = {
             }
         })
     },
-    select_online_curriculum_video({commit}, params) {
-        commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
-        select_add_video(params.video_id, params).then(res => {
-            if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
-                params._fn();
-            }
-        })
-    },
     edit_online_curriculum_video({dispatch,commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
         console.log(params,'params');
@@ -185,22 +175,6 @@ const actions = {
             if (res.data.res_code === 1) {
                 commit(types.ONLINE_CURRICULUM_CATALOG_DELETED, params.id);
                 dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
-            }
-        })
-    },
-    add_online_curriculum_test({commit}, params) {
-        commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
-        add_video_test(params.curriculum_id, params).then(res => {
-            if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_TEST_ADDED, {result: res.data.msg, data: params});
-            }
-        })
-    },
-    edit_online_curriculum_test({commit}, params) {
-        commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
-        update_video_test(params.video_test_id, params).then(res => {
-            if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_TEST_EDITED, params);
             }
         })
     }
