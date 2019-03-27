@@ -2,7 +2,7 @@
     <div class="manage-production-view">
         <!-- selectType1   @selectChange1="selectChange1" -->
         <screen :types="3" size-title1="证书总数" :size-num1="courseNums1" size-title2="已关联" :size-num2="courseNums2" btn-name="添加证书"
-           @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" btnType/>
+           @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" :btn-type="btnType"/>
         <div class="card-houner" ref="box">
             <Card class="card-houner-col" v-for="(item, index) in cardList1" :key="index">
                 <div class="card-houner-img">
@@ -16,11 +16,11 @@
                     <Row class="houner-row-content">
                         <div>关联产品 {{item.connect_count}} <span style="margin: 0 4px;">|</span> 已颁发 {{item.issue_count}}</div>
                     </Row>
-                    <Row class="houner-row-btn" style="display: flex;">
+                    <Row v-if="btnType" class="houner-row-btn" style="display: flex;">
                         <div><a @click="unrelation(item)" v-if="item.state">取消关联</a><a @click="relation(item)" v-else>关联</a></div>
                         <div class="ml10"><a @click="hadleChange(item)">编辑</a></div>
                         <!-- <div v-if="item == 2" class="ml10"><a>统计</a></div> -->
-                        <div v-if="role.role_id !=4&&item.state" class="ml10"><a @click="sendOfflineCourseHandler(item)">发证</a></div>
+                        <div v-if="item.state" class="ml10"><a @click="sendOfflineCourseHandler(item)">发证</a></div>
                     </Row>
                 </div>
             </Card>
@@ -40,15 +40,16 @@
   import screen from "../../../components/ScreenFrame";
   import * as types from '../../dialogs/types';
   import postData from '../../../api/postData'
+  import setAuthMixins from '../setAuthMixins'
+
   import {mapState} from 'vuex'
   export default {
-    mixins: [Dialog, MPop],
+    mixins: [Dialog, MPop, setAuthMixins],
     components: {screen},
     data() {
       return {
         model1: "",
         model2: "",
-        role: JSON.parse(localStorage.getItem('PERSONALDETAILS')),
         loadingInstance: null,
         formInline: {
           searchData: ""

@@ -40,7 +40,6 @@ const actions = {
         get_task_category_list({ commit }, params) {
             commit(types.TASK_SHOW_LOADING);
             get_category_list(params.page, params.keyword).then(res => {
-                console.log(res, 'resresres')
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data);
                 }
@@ -62,31 +61,21 @@ const actions = {
                 }
             })
         },
-        add_task_category({
-            commit
-        }, params) {
+        add_task_category({dispatch, commit }, params) {
             commit(types.TASK_SHOW_LOADING);
             create_category(params).then(res => {
                 if (res.data.res_code === 1) {
-                    // commit(types.TASK_CATEGORY_ADDED, {
-                    //     result: res.data.msg,
-                    //     data: params
-                    // });
-                    // window.location.reload()
-                }else{
-                    alert(res.msg)
+                    dispatch('get_task_category_list',params)
+                    params._fn();
                 }
             })
         },
-        edit_task_category({
-            commit
-        }, params) {
+        edit_task_category({dispatch, commit }, params) {
             commit(types.TASK_SHOW_LOADING);
             edit_category_by_id(state.homworkId, params).then(res => {
                 if (res.data.res_code === 1) {
-                    // commit(types.TASK_CATEGORY_EDITED, params);
-                    // params._fn();
-                    // window.location.reload()
+                    dispatch('get_task_category_list',params)
+                    params._fn();
                 }
             })
         },

@@ -130,7 +130,7 @@ export default {
                attachment_name: this.form.url_name,
                type: this.form.type
              }).then(res => {
-                 if(res){
+                 if(res.res_code == 1){
                     this.get_curriculum_donwload_data_list({
                         project_id: this.payload.projectId,
                         page: this.payload.page
@@ -162,7 +162,7 @@ export default {
         },
         getMyselflist(){
             // postData('/product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
-            //    if(res) this.curricumList = res.data
+            //    if(res.res_code == 1) this.curricumList = res.data
             // })
         },
         typeChange(val){

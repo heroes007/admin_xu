@@ -112,7 +112,7 @@
       show(row, rowIndex, params) {
         if(this.seeUrl){
            postData(this.seeUrl, {id: row.organization_id}).then((res) => {
-            if(res){
+            if(res.data){
               row = {...row, ...res.data[0]}
               row.head_img_url = res.data[0].admin[0].head_img_url
               if (this.selectList) row.list = this.getArray(this.selectList, res.data[0].admin[0])

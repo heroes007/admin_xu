@@ -1,7 +1,7 @@
 <template>
     <div class='manage-course-download-data'>
         <screen :types="2" sizeTitle1="资料总数" :sizeNum1="pageTotal" btnName="添加资料" @inputChange="manageEdit"
-                @handleClick="addClickHandler" :btnType="true"/>
+                @handleClick="addClickHandler" :btn-type="btnType"/>
         <data-list class='data-list light-header' @delete='deleteHandler' @download='downloadMsg'
                    @edit='addClickHandler2' :isStripe='false' :table-data='dataList'
                    :header-data='dataHeader' :columnComboData='columnComboData' :comboModelList='comboDataList'
@@ -20,9 +20,10 @@
   import screen from '../../../components/ScreenFrame'
   import pageMixin from '../../mixins/pageMixins'
   import pageList from '../../../components/Page'
+  import setAuthMixins from '../setAuthMixins'
 
   export default {
-    mixins: [Dialog, pageMixin],
+    mixins: [Dialog, pageMixin, setAuthMixins],
     components: {'data-list': BaseList, screen, pageList},
     data() {
       return {
@@ -85,6 +86,8 @@
         // return result;
       },
       dataHeader() {
+        let d = [ { text: '编辑', param: 'edit' }, { text: '删除', param: 'delete', }]
+        let btnList = this.btnType ? d : []
         return [
           {
             sort: true,
@@ -97,50 +100,22 @@
             align: 'left',
             width: 400,
           },
-          // {
-          //   prop: 'download_url',
-          //   label: '下载链接',
-          //   width: 700
-          // },
           {
             label: '绑定课程',
             prop: 'curriculum_title',
             width: 300,
             align: 'left'
-            // useCombo: true,
-            // comboListIndex: 0,
-            // listLabel: 'title',
-            // listValue: 'curriculum_id',
-            // actionName: 'change_course_download_data_pre_curriculum'
           },
           {
             label: '操作',
             minwidth: 300,
             groupBtn: [
-              //   {
-              //   isSwitch: true,
-              //   switchKey: 'is_valid',
-              //   onText: '启用',
-              //   offText: '停用',
-              //   disableText: '失效',
-              //   actionName: 'change_public_download_data_valid'
-              // },
               {
                 text: '下载',
                 prop: 'attachment_url',
                 param: 'download',
-                // isIcon: true
               },
-              {
-                text: '编辑',
-                param: 'edit',
-                // isIcon: true
-              },
-              {
-                text: '删除',
-                param: 'delete',
-                // isIcon: true
-              }
+              ...btnList
             ]
           }
         ]

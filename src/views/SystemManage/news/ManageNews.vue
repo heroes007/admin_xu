@@ -111,7 +111,7 @@
       },
       setLowerShelf(row,rowIndex,type){
         postData('/platform/news/modifyNews',{id: row.id, state: type}).then((res) => {
-           if(res) this.getList()
+           if(res.res_code == 1) this.getList()
         })
       },
       edit(row,rowIndex){
@@ -131,7 +131,7 @@
           content: '<p>是否确认删除该产品？</p >',
           onOk: () => {
             postData('/platform/news/removeNews',{id:row.id}).then((res)=> {
-              if(res) this.getList()
+              if(res.res_code == 1) this.getList()
             })
           },
         });

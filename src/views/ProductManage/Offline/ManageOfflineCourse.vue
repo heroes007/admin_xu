@@ -2,7 +2,7 @@
     <div class='manage-offline-course'>
         <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
         <!--<LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>-->
-        <screen :btn-type="true" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
+        <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
                    @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
                    @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList' @add-off-line-courses="addOffLineCourses"
@@ -23,8 +23,10 @@
   import LookTerm from './LookTerm'
   import postData from '../../../api/postData.js'
   import FormModal from '../../../components/FormModal.vue'
+  import setAuthMixins from '../setAuthMixins'
+
   export default {
-    mixins: [Dialog],
+    mixins: [Dialog, setAuthMixins],
     components: { 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm, FormModal },
     data() {
       return {
@@ -81,7 +83,14 @@
         page_conut: state => state.offline_curriculum.page_conut,
       }),
       dataHeader() {
-        return [
+        let d =  [
+              { text: '编辑', param: 'edit' },
+              { text: '复制', param: 'copy' },
+              { text: '发送', param: 'sendOfflineCourse' },
+              { text: '删除', param: 'delete', }];
+        let btnList2 = [{ text: '编辑', param: 'editCourse' }, { text: '删除', param: 'deleteCourse' }]
+        let btnList = this.btnType ? d : [{ text: '发送', param: 'sendOfflineCourse' }]
+        let data = [
           {
             sort: true,
             label: '序号',
@@ -118,61 +127,15 @@
             label: '报名截止日期',
             width: 150,
           },
-          // {
-          //   prop: 'create_time',
-          //   label: '创建时间',
-          //   width: 100
-          // },
           {
             label: '操作',
             width: 260,
-            groupBtn: [
-              //   {
-              //   text: '查看',
-              //   param: 'detail'
-              // },
-              {
-                text: '编辑',
-                param: 'edit'
-              },
-              {
-                text: '复制',
-                param: 'copy'
-              },
-              // {
-              //   text: '回执管理',
-              //   param: 'manageSignup'
-              // },
-              // {
-              //   //   text: '发送线下课',
-              //   //   param: 'sendOfflineCourse',
-              //   // hoverShow: true
-              //   isSwitch: true,
-              //   switchKey: 'is_valid',
-              //   onText: '启用',
-              //   offText: '停用',
-              //   actionName: 'change_offline_term_valid'
-              // },
-              {
-                text: '发送',
-                param: 'sendOfflineCourse',
-              },
-              //   {
-              //   text: '添加课程',
-              //   param: 'add',
-              //   // hoverShow: true
-              // },
-              {
-                text: '删除',
-                param: 'delete',
-                // hoverShow: true,
-                // isIcon: true,
-              }]
+            groupBtn: btnList
           },
           {
             listExpand: true,
             width: 90,
-            listExpandBtn: true,
+            listExpandBtn: this.btnType,
             childHeader: [
             {
               prop: '',
@@ -199,26 +162,16 @@
               label: '开课时间',
               width: 180
             },
-             {
+            {
               prop: 'end_time',
               label: '结课时间',
               width: 180
-            },
-             {
-              label: '操作',
-              width: 260,
-              groupBtn: [{
-                text: '编辑',
-                param: 'editCourse'
-              }, {
-                text: '删除',
-                param: 'deleteCourse',
-                // hoverShow: true,
-                // isIcon: true
-              }]
-            }]
+             }
+            ]
           }
         ]
+        if(this.btnType) data[7].childHeader.push({ label: '操作', width: 260,  groupBtn: btnList2 })
+        return data
       },
       dataList() {
         return this.$store.state.offline_curriculum.offline_term_list;
