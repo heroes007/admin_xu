@@ -14,9 +14,7 @@ export default {
                 this.widthStyle = '@keyframes myfirst { from {width: 260px;} to {width: 60px;} }'
             } else {
               this.widthStyle = '@keyframes myfirst { from {width: 60px;} to {width: 260px;} }'
-              // setTimeout(()=>{
-                  this.menushow = !this.menushow
-                // },1000)
+              this.menushow = !this.menushow
             }
             this.$nextTick(() => {
                 this.hideIcon = this.menushow ? 'ios-arrow-back' : 'ios-arrow-forward'

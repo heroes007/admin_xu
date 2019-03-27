@@ -120,9 +120,6 @@
             }
         }
     },
-    computed: {
-     ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
-    },
     methods: {
         batchDownload(row,rowIndex){
             console.log(row,rowIndex,'batchDownload');

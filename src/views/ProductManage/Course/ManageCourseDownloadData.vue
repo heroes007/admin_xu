@@ -39,6 +39,7 @@
           use_time: null,
           state: 1
         },
+        projectId: 1,
         courseNums: 12
       }
     },
@@ -46,7 +47,6 @@
       ...mapState({
         dataList: state => state.download_data.course_download_data_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
-        projectId: state => state.project.select_project_id,
       }),
       pageTotal() {
         return this.$store.state.download_data.total;
@@ -57,7 +57,6 @@
       comboDataList() {
 
       },
-
       columnComboData() {
         return [this.query_online_course_list];
       },

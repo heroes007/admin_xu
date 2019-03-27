@@ -41,7 +41,6 @@
         </div>
     </div>
 </template>
-
 <script>
   import api from '../api/modules/config'
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
@@ -122,53 +121,42 @@
       }
     }
   }
-
 </script>
 <style lang="scss" scoped>
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;
     }
-
     /deep/ .ivu-menu-item, .ivu-menu-item:hover {
         text-align: left;
         color: #3DAAFF !important;
     }
-
     /deep/ .ivu-menu-vertical.ivu-menu-light:after {
         content: none !important
     }
-
     /deep/ .ivu-menu-item-active {
         background-color: #333 !important;
     }
-
     /deep/ .ivu-menu-item-active:not(.ivu-menu-submenu):after {
         background-color: #333 !important;
     }
-
     .side-menu-for-project {
         padding: 27px 0;
         height: 100%;
-
         .logo {
             margin-bottom: 40px;
-
             img {
                 width: 120px;
             }
         }
-
         .head-img {
             height: 100px;
             margin-bottom: 18px;
-
             img, video {
                 width: 190px;
                 height: 100px;
             }
         }
-
         .setting {
             position: absolute;
             top: 74px;
@@ -183,7 +171,6 @@
             text-align: center;
             line-height: 26px;
             cursor: pointer;
-
             .hover-glow {
                 width: 34px;
                 height: 34px;
@@ -195,26 +182,22 @@
                 border: 0;
                 display: none;
             }
-
             &:hover {
                 .hover-glow {
                     display: block;
                 }
             }
         }
-
         .user-name {
             font-size: 14px;
             color: #FFFFFF;
             letter-spacing: 0;
             white-space: nowrap;
             padding: 0 35px;
-
             i {
                 color: #3DAAFF;
                 margin-right: 10px;
             }
-
             p {
                 display: -webkit-box;
                 white-space: normal;
@@ -222,31 +205,25 @@
                 overflow: hidden;
                 -webkit-line-clamp: 1;
             }
-
             margin-bottom: 50px;
         }
     }
-
     .logo {
         margin-bottom: 40px;
-
         .logo-img {
             width: 34px !important;
         }
-
         .logo-title {
             color: #fff;
             font-size: 18px;
             margin-left: 10px;
         }
     }
-
     .elRow {
         display: flex;
         flex-direction: column;
         padding: 35px;
         height: calc(100% - 100px);
-
         .head-title {
             font-family: PingFangSC-Medium;
             font-size: 16px;
@@ -255,40 +232,34 @@
             text-align: justify;
             line-height: 26px;
         }
-
         .head-list {
             font-family: PingFangSC-Regular;
             font-size: 14px;
             color: #FFFFFF;
             letter-spacing: 0;
             margin-top: 30px;
-
             div {
                 margin-bottom: 10px;
                 display: flex;
             }
         }
     }
-
     .w80 {
         display: flex;
         width: 60px;
         justify-content: space-between;
         margin-right: 6px;
     }
-
     .head-btn {
         position: relative;
         flex: 1;
         width: 170px;
         padding-bottom: 40px;
-
         .btn-content {
             position: relative;
             left: 0;
         }
     }
-
     /deep/ .ivu-btn {
         width: 190px;
         height: 40px;

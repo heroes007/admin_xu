@@ -116,7 +116,6 @@
       },
     },
     watch: {
-      listColumnFormatterData(val) {},
       // isLoading(val) {
       //   if (val) {
       //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
@@ -128,22 +127,6 @@
       //     this.dirty = false;
       //   }
       // },
-      projectId(v) {
-        this.$store.dispatch('get_online_curriculum_list', {
-          // project_id: v
-          page: {page_size: this.pageSize, page_num: this.current}
-        });
-      },
-      // dataList(v) {
-      //   var loadingInstance = null;
-      //   if (v) {
-      //     setTimeout(a => {
-      //       loadingInstance && loadingInstance.close();
-      //     }, Config.base_timeout)
-      //   } else {
-      //     loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-      //   }
-      // }
     },
     methods: {
       submit(){
@@ -179,14 +162,6 @@
               row,
               modify: 0
         });
-      },
-      reRenderListHandler(v) {
-        if (this.$store.state.project.project_list.length > 0) {
-          this.$store.dispatch('get_online_curriculum_list', {
-            page: {page_size: this.pageSize, page_num: this.current}
-            // project_id: v
-          });
-        }
       },
       moveUpHandler(index) {
         this.dirty = true;

@@ -1,7 +1,6 @@
 <template>
     <div class='manage-offline-course'>
         <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
-        <!--<LookTerm :show-modal="showModal" :detail-data="detailData" @close="closeModal"/>-->
         <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
                    @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
@@ -20,14 +19,13 @@
   import * as types from '../../dialogs/types';
   import { mapActions, mapState } from 'vuex'
   import { Config } from '../../../config/base'
-  import LookTerm from './LookTerm'
   import postData from '../../../api/postData.js'
   import FormModal from '../../../components/FormModal.vue'
   import setAuthMixins from '../setAuthMixins'
 
   export default {
     mixins: [Dialog, setAuthMixins],
-    components: { 'data-list': BaseList, 'save-order': SaveOrder, screen, LookTerm, FormModal },
+    components: { 'data-list': BaseList, 'save-order': SaveOrder, screen, FormModal },
     data() {
       return {
         show: false,
@@ -244,11 +242,6 @@
       },
       handleShowDialog() {
         this.handleSelModal(types.ADD_QUESTION);
-      },
-      reRenderListHandler(v) {
-        if (this.$store.state.project.project_list.length > 0) {
-          this.$store.dispatch('get_offline_term_list', { project_id: v, last_count: 0 });
-        }
       },
       editChapterHandler(index) {
         this.$router.push({ name: 'online-course-chapter', params: { id: '1' } })

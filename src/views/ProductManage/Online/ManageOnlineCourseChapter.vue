@@ -40,7 +40,6 @@
         </div>
     </div>
 </template>
-
 <script>
   import screen from '../../../components/ScreenFrame'
   import BaseList from '../../../components/BaseList'
@@ -52,7 +51,6 @@
   import {doSortFormatCatalogList} from '../../../components/Util'
   import updateVideoGroupName from '../../../api/modules/onlineCourseChapter'
   import setAuthMixins from '../setAuthMixins'
-
   export default {
     mixins: [Dialog, setAuthMixins],
     components: {'data-list': BaseList, screen},
@@ -156,7 +154,6 @@
     },
     methods: {
       saveChapter2(t,i){
-
       },
       setIndex(n){
         return this.$config.ArabiaToSimplifiedChinese(n)
@@ -297,7 +294,6 @@
           });
         }
       },
-
       // 测验操作
       addTest(item, index) {
         if (!item) {
@@ -356,7 +352,6 @@
       this.getLists()
     }
   }
-
 </script>
 <style scoped lang='scss'>
     /deep/ .ivu-table-header{
@@ -367,15 +362,12 @@
         background-color: #FBFBFB;
         font-size: 16px !important;
     }
-
     /deep/ .ivu-icon {
         font-size: 24px
     }
-
     /deep/ .ivu-btn-text:focus{
         box-shadow: none;
     }
-
     .textInput{
         margin-left: 40px;
         width: 300px;
@@ -389,15 +381,12 @@
         color: #474C63;
         letter-spacing: 0;
     }
-
     .manage-online-course-chapter {
         height: 100%;
-
         .course-name {
             height: 60px;
             background-color: #ffffff;
             padding: 0 40px;
-
             h2 {
                 font-size: 16px;
                 color: #141111;
@@ -405,23 +394,19 @@
                 font-weight: 400;
             }
         }
-
         .data-list {
             .base-list-row {
                 .handle-component {
                     margin-right: 30px;
-
                     + .handle-component {
                         margin-right: 2px;
                     }
-
                     &:last-child {
                         margin-left: 50px;
                     }
                 }
             }
         }
-
         .chapter-container {
             box-sizing: border-box;
             width: 100%;
@@ -429,7 +414,6 @@
             top: 0;
             z-index: 0;
             pointer-events: none;
-
             .scroll-wrap {
                 overflow-y: auto;
                 height: 100%;
@@ -437,7 +421,6 @@
                 pointer-events: auto;
             }
         }
-
         .chapter-list {
             .chapter-item {
                 .chapter-title {
@@ -445,15 +428,11 @@
                     background-color: #FBFBFB;
                     border: 1px solid #E5E5E5;
                     height: 60px;
-
-
                     /deep/ .ivu-btn-text{
                         border: none !important;
                         font-family: PingFangSC-Regular;
                         font-size: 16px;
                     }
-
-
                     span,
                     h3 {
                         font-size: 16px;
@@ -462,7 +441,6 @@
                         font-weight: 400;
                         display: inline-block;
                     }
-
                     input {
                         outline: 0;
                         font-size: 16px;
@@ -471,32 +449,26 @@
                         border: 0;
                         background-color: transparent;
                     }
-
                     i {
                         color: #cccccc;
                         cursor: pointer;
                     }
                 }
-
                 .chapter-btns {
                     margin-top: 25px;
                     padding: 0 40px;
-
                     .warning {
                         font-size: 14px;
                         color: #3DAAFF;
                     }
-
                     .el-button {
                         font-size: 14px;
                         color: #3B3B3B;
                         letter-spacing: 0;
-
                         &:hover {
                             color: #3DAAFF;
                         }
                     }
-
                     .line {
                         width: 1px;
                         background-color: #e5e5e5;
@@ -507,7 +479,6 @@
                 }
             }
         }
-
         .save-order {
             position: absolute;
             right: 100px;

@@ -86,11 +86,6 @@
 
       }
     },
-    computed: {
-      projectList() {
-        return this.$store.state.project.project_list;
-      }
-    },
     methods: {
       changeVideoSelect(item) {
         var i, j;

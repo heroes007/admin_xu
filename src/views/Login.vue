@@ -46,14 +46,6 @@
                 projectData: []
             }
         },
-        computed: {
-            ...mapState({ isLoading: state => state.project.isLoading })
-        },
-        watch: {
-            isLoading(val) {
-               this.$config.IsLoading(val);
-            }
-        },
         methods: {
             doLogin() {
                 this.isLogining = true;

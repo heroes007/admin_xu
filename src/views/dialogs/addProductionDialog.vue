@@ -238,7 +238,6 @@ export default {
             // this.form.organization_id = this.organization_id
         }
         var vm = this;
-        // this.form.project_id = this.projectId;
         this.form._fn = function(){
             vm.handleClose();
             vm.showPop('保存成功！');
@@ -246,7 +245,6 @@ export default {
     },
     computed: {
         ...mapState({
-            projectId:state => state.project.select_project_id,
             examineTypeList:state => state.production.examineTypeList,
             // certificate:state => state.production.certificate_list
         }),

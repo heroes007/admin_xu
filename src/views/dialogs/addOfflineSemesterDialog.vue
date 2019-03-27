@@ -1,7 +1,6 @@
 <template>
     <Modal :transfer=false v-model="addOfflineSemesterDialog" :title="payload.type == 2 ? '编辑学期' : '添加学期'" @on-cancel="handleRemoveModal(remove)" size="auto"
            :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" style="border-radius:6px !important" :closable="true">
-
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
                 <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="120">
@@ -25,7 +24,6 @@
         </base-input>
     </Modal>
 </template>
-
 <script>
   import BaseInput from '../../components/BaseInput'
   import UploadButton from '../../components/UploadButton'
@@ -160,7 +158,6 @@
     }
   }
 </script>
-
 <style scoped lang="scss">
     .sub-btn {
         width: 170px;
@@ -171,7 +168,6 @@
     /deep/ .ivu-modal-close .ivu-icon-ios-close, /deep/ .ivu-modal-close .ivu-icon-ios-close:hover {
         color: #999 !important;
     }
-
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
         color: #3DAAFF
     }
@@ -204,12 +200,10 @@
             z-index: 99999;
             font-size: 30px;
             cursor: pointer;
-
             &:before {
                 // color: #fff;
                 color: #757575;
             }
         }
     }
-
 </style>

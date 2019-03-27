@@ -15,8 +15,7 @@ const actions = {
     {
         commit(types.DOWNLOAD_SHOW_LOADING);
         get_curriculum_data_center(params.project_id, params.page, params.keyword).then(res => {
-            if(res.data.res_code === 1)
-            {
+            if(res.data.res_code === 1){
                 commit(types.CURRICULUM_DOWNLOAD_LIST_LOADED,res.data.data);
             }
         })
