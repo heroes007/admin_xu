@@ -82,33 +82,38 @@
                     </FormItem>
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
-                        <div class="form-message" ref="inputStyle" contentEditable="true"
-                             v-html="descriptionHtml"></div>
-                        <div ref="divStyle" class="form-editor">
-                            <Dropdown trigger="click" @on-click="handleDrop">
-                                <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img"
-                                                                  @mouseover="overImg"></a>
-                                <DropdownMenu slot="list">
-                                    <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">
-                                        {{item.name}}
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                            <Dropdown trigger="click" @on-click="handleDrop1">
-                                <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a>
-                                <DropdownMenu slot="list">
-                                    <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
-                                        <span class="drop-box" :style="{backgroundColor: item.color}"/>
-                                        <span>{{item.name}}</span>
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                            <upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg"
-                                        type="image/jpeg,image/png,image/jpg,image/bmp"/>
-                            <upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="jhyl-static-file"
+                        <!--<div class="form-message" ref="inputStyle" contentEditable="true"-->
+                             <!--v-html="descriptionHtml"></div>-->
+                        <!--<div ref="divStyle" class="form-editor">-->
+                            <!--<Dropdown trigger="click" @on-click="handleDrop">-->
+                                <!--<a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img"-->
+                                                                  <!--@mouseover="overImg"></a>-->
+                                <!--<DropdownMenu slot="list">-->
+                                    <!--<DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">-->
+                                        <!--{{item.name}}-->
+                                    <!--</DropdownItem>-->
+                                <!--</DropdownMenu>-->
+                            <!--</Dropdown>-->
+                            <!--<Dropdown trigger="click" @on-click="handleDrop1">-->
+                                <!--<a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a>-->
+                                <!--<DropdownMenu slot="list">-->
+                                    <!--<DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">-->
+                                        <!--<span class="drop-box" :style="{backgroundColor: item.color}"/>-->
+                                        <!--<span>{{item.name}}</span>-->
+                                    <!--</DropdownItem>-->
+                                <!--</DropdownMenu>-->
+                            <!--</Dropdown>-->
+                            <!--<upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg"-->
+                                        <!--type="image/jpeg,image/png,image/jpg,image/bmp"/>-->
+                            <!--<upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="jhyl-static-file"-->
+                                        <!--@uploadcomplete="uploadImg"/>-->
+                        <!--</div>-->
+                        <new-editor style="width: 470px;" @get-content="getContent" :content="content"/>
+                        <div style="display: flex">
+                            <down-loading :formData="downList"/>
+                            <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
                                         @uploadcomplete="uploadImg"/>
                         </div>
-                        <down-loading :formData="downList"/>
                     </FormItem>
                 </div>
             </Form>
@@ -178,6 +183,7 @@
         },
         data() {
             return {
+                content: '',
                 descriptionHtml: '',
                 iconFont, iconColor, iconCopy,
                 exchangeContentShow: false,
@@ -236,11 +242,13 @@
                 this.$nextTick(() => {
                     if (_new) {
                         this.formItem = this.dateTimes ? this.detailData : this.$config.copy(this.detailData, {})
+                        console.log(this.formItem, 'formItem')
                         if (this.formItem.upload) this.downList = this.formItem.upload
                         else this.downList = []
                         if (this.formItem.uploading) {
-                            this.descriptionHtml = this.formItem.uploading
-                            this.descriptionHtml = this.descriptionHtml.replace('class="form-message"', '')
+                            this.content = this.formItem.uploading
+                            // this.descriptionHtml = this.formItem.uploading
+                            // this.descriptionHtml = this.descriptionHtml.replace('class="form-message"', '')
                         } else this.descriptionHtml = ''
                         if (this.formItem.hasOwnProperty('img_url')) {
                             this.img_url = this.formItem.img_url
@@ -255,8 +263,7 @@
             },
             show(val) {
                 if (!val) {
-                    // this.$refs.formValidate.resetFields()
-                    if (this.$refs.inputStyle) this.$refs.inputStyle[0].innerHTML = ''
+                    if (this.content) this.content = ''
                 }
             },
             detailData(_new) {
@@ -267,6 +274,9 @@
             },
         },
         methods: {
+            getContent(val) {
+                this.content = val
+            },
             selectChange(val) {
                 if (val == 'online') this.formList[2].line = 1
                 else if (val == 'underline') this.formList[2].line = 0
@@ -324,13 +334,14 @@
             },
             handleFormData() {
                 if (this.uploadFlie) this.formItem.img_url = this.img_url
-                if (this.$refs.inputStyle) this.formItem.uploading = this.$refs.inputStyle[0].outerHTML
+                if (this.content) this.formItem.uploading = this.content
                 if (this.downList && this.downList.length > 0) this.formItem.downList = this.downList
                 if (this.formItem.hasOwnProperty('password')) {
                     if (this.copyFormItem.password === this.formItem.password) {
                         delete this.formItem.password
                     }
                 }
+                console.log(this.formItem, 'formItem')
                 let d = this.$config.copy(this.formItem, {})
                 let close = () => {
                     if (!this.modalFalse) this.closeModal()
@@ -535,7 +546,7 @@
     }
 
     .upload-img {
-        margin-left: 260px;
+        margin-top: 10px;
     }
 
     .form-message {

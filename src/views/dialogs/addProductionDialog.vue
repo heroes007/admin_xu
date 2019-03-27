@@ -62,26 +62,27 @@
 
                          <!--可插入输入框-->
                         <FormItem v-show="nextStep == 2" label=""  class="upload">
-                            <div class="form-message" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div>
+                            <!--<div class="form-message" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div>-->
                             <!-- <div v-if="descriptionHtml" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div> -->
-                            <div ref="divStyle" style="display: flex;margin-top: 15px;margin-left: 10px">
-                                <Dropdown trigger="click" @on-click="handleDrop">
-                                    <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
-                                    <DropdownMenu slot="list">
-                                        <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                                <Dropdown trigger="click" @on-click="handleDrop1">
-                                    <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a >
-                                    <DropdownMenu slot="list">
-                                        <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
-                                            <span class="drop-box" :style="{backgroundColor: item.color}"/>
-                                            <span>{{item.name}}</span>
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
-                                <upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>
-                            </div>
+                            <!--<div ref="divStyle" style="display: flex;margin-top: 15px;margin-left: 10px">-->
+                                <!--<Dropdown trigger="click" @on-click="handleDrop">-->
+                                    <!--<a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >-->
+                                    <!--<DropdownMenu slot="list">-->
+                                        <!--<DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>-->
+                                    <!--</DropdownMenu>-->
+                                <!--</Dropdown>-->
+                                <!--<Dropdown trigger="click" @on-click="handleDrop1">-->
+                                    <!--<a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a >-->
+                                    <!--<DropdownMenu slot="list">-->
+                                        <!--<DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">-->
+                                            <!--<span class="drop-box" :style="{backgroundColor: item.color}"/>-->
+                                            <!--<span>{{item.name}}</span>-->
+                                        <!--</DropdownItem>-->
+                                    <!--</DropdownMenu>-->
+                                <!--</Dropdown>-->
+                                <!--<upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>-->
+                            <!--</div>-->
+                            <new-editor style="width: 100%; height: 100%;" @get-content="getContent" :content="content"/>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
@@ -99,24 +100,20 @@
 import BaseInput from '../../components/BaseInput'
 import UploadPanel from '../../components/UploadPanel'
 import BaseList from '../../components/BaseList'
-import { Config } from '../../config/base'
 import { RemoveModal } from './mixins'
 import { mapActions, mapState, mapGetters } from 'vuex'
-import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
 import UploadImgs  from '../../components/UploadButton'
 import UploadBtn from '../../components/UploadButton'
 import iconFont from '../../assets/icons/icon/font.png'
 import iconColor from '../../assets/icons/icon/color.png'
 import iconCopy from '../../assets/icons/icon/photo.png'
-import iconFontCopy from '../../assets/icons/icon/font_copy.png'
-import iconColorCopy from '../../assets/icons/icon/color_copy.png'
-import iconCopyCopy from '../../assets/icons/icon/photo_copy.png'
 import postData from '../../api/postData';
+import newEditor from '../../components/NewEditor'
 
 export default {
     mixins: [RemoveModal,MPop],
-    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'data-list': BaseList, UploadImgs, 'upload-btn': UploadBtn },
+    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'data-list': BaseList, UploadImgs, 'upload-btn': UploadBtn, newEditor },
     props: {
         remove: {
             type: String
@@ -126,6 +123,7 @@ export default {
     data() {
         return {
             iconFont,iconColor,iconCopy,
+            content:'',
             addProductionDialog: true,
             unlock_type: '',
             states: '',
@@ -235,7 +233,8 @@ export default {
             if(this.form.imgList.length>1) this.setPane(false)
             this.form.product_id = d.id
             this.form.organization_id = d.organization_id
-            this.descriptionHtml = d.description.replace('class="form-message"','')
+            this.content = d.description
+            // this.descriptionHtml = d.description.replace('class="form-message"','')
             // this.form.organization_id = this.organization_id
         }
         var vm = this;
@@ -260,6 +259,9 @@ export default {
     },
     methods: {
         ...mapActions([ 'add_production', 'update_production',  'change_certificate_list' ]),
+        getContent(val) {
+            this.content = val
+        },
         overImg(val){
 
         },
@@ -300,43 +302,6 @@ export default {
             this.disabled1 = false
             if(this.form.imgList.length<6) this.form.imgList.push(v.url)
             else this.$Message.warning('最多上传5张图片');
-        },
-        displayVideoChage(){
-            if(this.form.displayImg){
-               this.$nextTick(() => {
-                   this.form.displayVideo = false
-               })
-               this.$Message.warning('已选择图片，就不能上传视频了');
-            }else{
-                this.form.img_url = ''
-                this.form.img_url2 = ''
-                this.form.img_url3 = ''
-                this.form.img_url4 = ''
-                this.form.img_url5 = ''
-            }
-        },
-        displayImgChage(){
-            if(this.form.displayVideo){
-                this.$nextTick(() => {
-                   this.form.displayImg = false
-               })
-               this.$Message.warning('已选择视频，就不能上传图片了');
-            }else if(this.form.video_url)  this.form.video_url = ''
-        },
-        uploadCompleteHandler1(url){
-            this.form.img_url = url;
-        },
-        uploadCompleteHandler2s(url){
-            this.form.img_url2 = url;
-        },
-        uploadCompleteHandler3(url){
-            this.form.img_url3 = url;
-        },
-        uploadCompleteHandler4(url){
-            this.form.img_url4 = url;
-        },
-        uploadCompleteHandler5(url){
-            this.form.img_url5 = url;
         },
         uploadCompleteHandler2(url){
             this.form.video_url = url;
@@ -384,7 +349,7 @@ export default {
                       this.form.state = this.formState;
                       this.form.organization_id = this.organizationId;
                       this.form.url_arr = JSON.stringify(arrObj);
-                      if(this.$refs.inputStyl) this.form.description = this.$refs.inputStyl.outerHTML
+                      if(this.content) this.form.description = this.content
                       this.form.price = Number.isInteger(this.form.price)? this.form.price : +(Number(this.form.price).toFixed(2))
                       this.form.original_price = Number.isInteger(this.form.original_price) ? this.form.original_price : +(Number(this.form.original_price).toFixed(2))
                      if(this.payload)  {

@@ -22,8 +22,13 @@
                     dir: 'user_task',
                     type: 1
                 },
-                content: '',
                 editor: ''
+            }
+        },
+        props: {
+            content: {
+                type: String,
+                default: '123'
             }
         },
         mounted() {
@@ -43,10 +48,17 @@
                 vm.handleGetassignKey(files[0], insert)
             }
             this.editor.customConfig.showLinkImg = false
-            this.editor.customConfig.onblur = function (html) {
+            this.editor.customConfig.onchange = function (html) {
                 vm.$emit('get-content', html)
             }
+            this.editor.customConfig.zIndex = 0
             this.editor.create()
+            this.editor.txt.html(this.content)
+        },
+        watch:{
+            content(val) {
+                this.editor.txt.html(val)
+            }
         },
         methods: {
             handleUploadFile(form_data, url, insert) {
@@ -91,6 +103,6 @@
 
 <style scoped>
     .box{
-        min-width: 600px;
+        min-width: 400px;
     }
 </style>
