@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import task from './modules/task'
-import lb from './modules/lb'
 import middlewares from './middlewares'
 import online_curriculum from './modules/online_curriculum'
 import offline_curriculum from './modules/offline_curriculum'
@@ -11,7 +10,6 @@ import message from './modules/message'
 import download_data from './modules/download_data'
 import production from './modules/production'
 import device from './modules/device'
-import news from './modules/news'
 
 import main from './main'
 Vue.use(Vuex)
@@ -22,7 +20,6 @@ export default new Vuex.Store({
   ...main,
   modules: {
     task,
-    lb,
     online_curriculum,
     offline_curriculum,
     project,
@@ -31,7 +28,6 @@ export default new Vuex.Store({
     download_data,
     production,
     device,
-    news
   },
   plugins: middlewares,
   strict: debug,

@@ -104,7 +104,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([ 'add_course_download_data', 'add_public_download_data',  'get_curriculum_donwload_data_list']),
+        ...mapActions([ 'add_course_download_data',  'get_curriculum_donwload_data_list']),
         getDir() {
             if(this.payload.state === 0) return 'datacenter/public/' + doTimeFormat(new Date().toString());
             return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
@@ -172,7 +172,6 @@ export default {
               })
             }else{
               postData('product/curriculum_online/pulldown_get_offline_list',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
-                console.log(res)
                 if(res.res_code == 1) this.curricumList = res.data
               })
             }
@@ -186,8 +185,7 @@ export default {
             vm.showPop('添加成功！',1000);
         };
         this.form.project_id = this.projectId;
-        this.form.type = this.state;
-        if(this.form.type === 0){
+        if(this.form.state === 0){
             this.form.grade_id = 0;
             this.form.subject_id = 0;
         }
@@ -197,6 +195,7 @@ export default {
           this.form.curriculum_id = this.payload.form.curriculum_id
           this.form.name = this.payload.form.title
           this.form.id = this.payload.form.id
+          this.form.type = this.payload.form.type
           if(this.payload.form.attachment_url){
             this.form.download_url = this.payload.form.attachment_url;
             this.form.url_name = this.payload.form.attachment_name

@@ -227,7 +227,6 @@
         });
       },
       moveUpHandler(i, row, index) {
-        console.log(index, 'index');
         if(i == 0){
           this.$Modal.info({
             title: '提示',
@@ -322,7 +321,6 @@
       },
       //删除测验
       deleteText(item, index){
-        console.log(item.children, 'children')
         if(item.children.length){
           this.$Modal.confirm({
             title: '提示',

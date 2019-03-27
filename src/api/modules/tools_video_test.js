@@ -17,7 +17,9 @@ export function update_test_detail(data) {
       result: data.result,
       test_title: data.test_title,
       catalog_id:data.catalog_id,
-      section_id:data.section_id
+      section_id:data.section_id,
+      answerList:data.answerList,
+      attachment:data.attachment
     });
 }
 

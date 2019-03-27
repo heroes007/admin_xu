@@ -203,10 +203,8 @@
       handleSubmit(v){
         let d1 = this.modalTitle === '添加课程' ? { term_underline_id: this.term_row.id} : {curriculum_underline_term_id: this.tableRow.id}
         let url = this.modalTitle === '添加课程' ? '/product/curriculum_offline/term_curriculum_add' : '/product/curriculum_offline/term_curriculum_change'
-                console.log(v,'vvv1')
         v.end_time = this.$config.formatDate( v.end_time )
         v.start_time = this.$config.formatDate( v.start_time )
-                        console.log(v,'vvv2')
         postData(url,{...d1,...v}).then((res) => {
           if(res.res_code === 1){
             this.$Message.success(res.msg);
@@ -217,7 +215,6 @@
       },
       handleClick() {},
       inputChange(val) {
-        console.log(val)
       },
       closeModal(){
         this.showModal = false;

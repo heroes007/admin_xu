@@ -8,9 +8,9 @@
                 @handleClick="addTaskCategory" :btn-type="btnType"/>
 
         <data-list @edit='editHandler' @delete='deleteHandler'
-                   class='data-list light-header' :table-data='dataList' :table-height='listHeight'
-                   @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
-                   @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
+                class='data-list light-header' :table-data='dataList' :table-height='listHeight'
+                @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
+                @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
 
         <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
@@ -236,7 +236,6 @@
               }).then(res => {
                 this.curricumList[1] = res.data
               })
-              console.log(this.curricumList,'this.curricumList')
             }
         },
         mounted() {

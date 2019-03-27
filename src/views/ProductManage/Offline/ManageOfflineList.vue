@@ -123,6 +123,7 @@
         padding: 15px;
         height: 100%;
         overflow-y: auto;
+        align-content: start;
         /*justify-content: center;*/
 
         .card {

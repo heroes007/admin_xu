@@ -102,7 +102,6 @@ import BaseList from '../../components/BaseList'
 import { Config } from '../../config/base'
 import { RemoveModal } from './mixins'
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { get_detail, get_product_certificate } from '../../api/modules/tools_product'
 import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
 import UploadImgs  from '../../components/UploadButton'
@@ -217,7 +216,6 @@ export default {
         }
     },
     mounted() {
-      console.log(this.payload, 'payload')
         this.organizationList = null
         if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1){
             this.getOrganization()
@@ -262,7 +260,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([ 'add_production', 'update_production', 'get_certificate_list', 'change_certificate_list' ]),
+        ...mapActions([ 'add_production', 'update_production',  'change_certificate_list' ]),
         overImg(val){
 
         },
@@ -291,7 +289,6 @@ export default {
             this.$refs.inputStyl.appendChild(img)
         },
         handleDrop(val){
-            console.log(this.$refs.inputStyl,'this.$refs.inputStyl');
             this.$refs.inputStyl.style.fontSize = val + 'px'
             if(val == 32) this.$refs.inputStyl.style.fontWeight = 'bold'
             else  this.$refs.inputStyl.style.fontWeight = 'normal'

@@ -1,8 +1,9 @@
 <template>
     <Row class="upload-panel">
-        <Icon class="icon-colse" v-if="close&&!is_show" type="md-close-circle" @click="closeModal" />
-        <Row class="upload-space" v-show="is_show" :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
-            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
+        <Icon class="icon-colse" v-if="close&&!is_show" type="md-close-circle" @click="closeModal"/>
+        <Row class="upload-space" v-show="is_show"
+             :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
+            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
             <!--<Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />-->
             <img class="md-cloud-upload" src="../assets/icons/icon/upload.png" alt="">
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -10,13 +11,15 @@
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
     </vue-cropper> -->
         <Row class="img" v-if="type=='image'&&!is_show">
-            <img :src="resourse_url?resourse_url:resultUrl" alt="" />
-            <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
+            <img :src="resourse_url?resourse_url:resultUrl" alt=""/>
+            <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
         </Row>
         <span style="display: none">{{resultUrl}}</span>
         <Row class="video" v-if="type=='video'&&!is_show">
-            <video ref="vedioPlayer"  v-if="resourse_url||resultUrl" :src="resourse_url?resourse_url:resultUrl" controls="controls"/>
-            <input v-if="resourse_url ? (!resourse_url) : (!resultUrl)" type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" />
+            <video ref="vedioPlayer" v-if="resourse_url||resultUrl" :src="resourse_url?resourse_url:resultUrl"
+                   controls="controls"/>
+            <input v-if="resourse_url ? (!resourse_url) : (!resultUrl)" type="file" accept="*"
+                   style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
         </Row>
         <div class="file-require">
             <slot name="file-require"></slot>
@@ -28,295 +31,213 @@
 </template>
 
 <script>
-    import VueCropper from 'vue-cropperjs'
-    import { get_sign } from '../api/modules/ali_oss'
-    import axios from 'axios'
-    import { get_video_source } from '../api/modules/tools_video'
-    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
-    export default {
-        props: {
-            panelOptions: {
-                type: Object,
-                default: function () {
-                    return {
-                        panelWidth: '100%',
-                        panelHeight: 250
-                    }
-                }
-            },
-            uploadConfig: {
-                type: Object,
-                default: function () {
-                    return {
-                        bucket: 'jhyl-static-file',
-                        dir: 'user_task',
-                        type: 1
-                    }
-                }
-            },
-            resourse: {},
-            close: {
-                type: Boolean,
-                default: false
-            }
-        },
-        data() {
-            return {
-                teacherManageDialog: true,
-                form: {
-                    teacher_name: '',
-                    teacher_description: '',
-                },
-                imgSrc: '',
-                file_name: '',
-                upload_address: '',
-                file_list: [],
-                show_file_name: false,
-                percentage: 0,
-                form_data: null,
-                is_show: true,
-                type: '',
-                resourse_url: '',
-                fullscreenLoading: null
-            }
-        },
-        computed: {
-            resultUrl() {
-                var result = this.resourse;
-                if (/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(this.resourse)) {
-                    this.type = 'image';
-                    this.is_show = false;
-                }
-                if (/\.(mp4|wav|mov)/.test(this.resourse)) {
-                    this.type = 'video';
-                    this.is_show = false;
-                    // if(result.indexOf('http') < 0)
-                    //     result = 'http://video.laoshi123.com/' + this.resourse;
-                }
-                return result;
-            }
-        },
-        methods: {
-            handleSave() {
-                //获取剪切后的图片对象并且上传到服务器
-                this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
-                    blob.name = this.file_name
-                    this.handleGetassignKey(blob);
-                })
-            },
-            closeModal(){
-                this.is_show = true;
-                // this.resourse_url = '';
-                // this.resultUrl = ''
-                this.$emit('uploadcomplete', "");
-            },
-            //通过插件显示图片
-            handleChangeMedia(e) {
-                 this.fullscreenLoading = this.$LoadingY({message: "",show: true})
-                // const file = e.target.files[0];
-                // if(this.isCropper){
-                //   this.is_show = false;
-                // }
-                // if (!file.type.includes('image/')) {
-                //     alert('Please select an image file');
-                //     return;
-                // }
-                //
-                // if (typeof FileReader === 'function') {
-                //     // FileReader H5的属性；
-                //     const reader = new FileReader();
-                //
-                //     reader.onload = (event) => {
-                //         this.imgSrc = event.target.result;
-                //         // rebuild cropperjs with the updated source
-                //         this.$refs.cropper.replace(event.target.result);
-                //     };
-                //
-                //     reader.readAsDataURL(file);
-                // } else {
-                //     alert('Sorry, FileReader API not supported');
-                // }
-                this.handleUploadChange(e);
-            },
-            // 获取图片名称
-            handleUploadChange(event) {
-                var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value
-                    .length);
-                this.show_file_name = true;
-                this.file_name = filename;
-                if (this.handleCheckMedia(event)) {
-                    this.handleGetassignKey(event.target.files[0]);
-                }
-            },
-            handleCheckMedia(event) {
-                // if (this.uploadConfig.type == 1) {
-                //     if (!(event.target.files[0].type.indexOf('image') < 0)) {
-                //         this.type = 'image';
-                //         return true;
-                //     } else {
-                //         alert('只能上传图片！');
-                //         return false;
-                //     }
-                // } else if (this.uploadConfig.type == 2) {
-                //     if (!(event.target.files[0].type.indexOf('video') < 0)) {
-                //         this.type = 'video';
-                //         return true;
-                //     } else {
-                //         alert('只能上传视频！');
-                //         return false;
-                //     }
-                // }
+  import VueCropper from 'vue-cropperjs'
+  import {get_sign} from '../api/modules/ali_oss'
+  import axios from 'axios'
+  import {get_video_source} from '../api/modules/tools_video'
+  const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
-                var _type = this.uploadConfig.type;
-                // debugger;
-                // console.log(event.target.files[0].type);
-                switch (_type) {
-                    case 0:
-                        this.type = event.target.files[0].type;
-                        return true;
-                    case 1:
-                        if (!(event.target.files[0].type.indexOf('image') < 0)) {
-                            this.type = 'image';
-                            return true;
-                        } else {
-                            this.$Message.warning('只能上传图片！');
-                            if(this.fullscreenLoading) this.fullscreenLoading.close()
-                            return false;
-                        }
-                    case 2:
-                        if (!(event.target.files[0].type.indexOf('video') < 0)) {
-                            this.type = 'video';
-                            return true;
-                        } else {
-                            this.$Message.warning('只能上传视频！');
-                            if(this.fullscreenLoading) this.fullscreenLoading.close()
-                            return false;
-                        }
-                    case 3:
-                        if (!(event.target.files[0].name.indexOf('.apk') < 0)) {
-                            this.type = 'apk';
-                            return true;
-                        } else {
-                            this.$Message.warning('请上传apk后缀文件,请重试');
-                            if(this.fullscreenLoading) this.fullscreenLoading.close()
-                            return false;
-                        }
-                    case 4:
-                        if (!(event.target.files[0].type.indexOf('video') < 0)) {
-                            this.type = 'video';
-                            return true;
-                        } else {
-                            this.$Message.warning('只能上传视频！');
-                            if(this.fullscreenLoading) this.fullscreenLoading.close()
-                            return false;
-                        }
-                }
-            },
-            // 上传到oss上
-            handleUploadFile(form_data, url, fileItem) {
-                var vm = this;
-                axios({
-                    method: 'POST',
-                    url: url,
-                    data: form_data,
-                    onUploadProgress: function (progressEvent) {
-                        var progress = Math.round(progressEvent.lengthComputable ? progressEvent.loaded *
-                            100 / progressEvent.total : 0);
-                        vm.percentage = progress;
-                    },
-                }).then(res => {
-                    var result;
-                    switch (this.uploadConfig.type) {
-                        case 0:
-                            result = url + this.resourse_url;
-                            this.resourse_url = url + this.resourse_url;
-                            break;
-                        case 1:
-                            result = url + this.resourse_url;
-                            // result = encodeURI(url + this.resourse_url).replace('dscj-app.oss-cn-qingdao.aliyuncs.com','file.laoshi123.com');
-                            this.resourse_url = url + this.resourse_url;
-                            this.is_show = false;
-                            break;
-                        case 2:
-                            result = 'http://video.laoshi123.com/' + this.resourse_url;
-                            this.resourse_url = URL.createObjectURL(fileItem);
-                            this.is_show = false;
-                            break;
-                        case 3:
-                            result = encodeURI(url + this.resourse_url).replace('dscj-static-file.oss-cn-qingdao.aliyuncs.com','file.laoshi123.com');
-                            this.resourse_url = url + this.resourse_url;
-                            this.is_show = false;
-                            break;
-                        case 4:
-                            result = encodeURI(url + this.resourse_url).replace('dscj-static-file.oss-cn-qingdao.aliyuncs.com','file.laoshi123.com');
-                            this.resourse_url = url + this.resourse_url;
-                            this.is_show = false;
-                            break;
-                    };
-                      if(this.type=='video'&&!this.is_show){
-                        setTimeout(()=>{
-                          let vedioTime = this.$refs.vedioPlayer.duration
-                          this.$emit('vedioTime',vedioTime)
-                        },500)
-                      }
-                      this.$emit('getuploadfile', {
-                        name: this.file_name,
-                        url: result
-                      });
-                      this.$emit('uploadcomplete', result);
-                      if(this.fullscreenLoading) this.fullscreenLoading.close()
-                });
-            },
-            // 从oss上获取assignKey;
-            handleGetassignKey(file_item) {
-                var date = new Date(); //dscj-app,user_task
-                date = date.toGMTString();
-                get_sign(file_item.type, date, this.uploadConfig.bucket, this.uploadConfig.dir, file_item.name, 'POST')
-                    .then(res => {
-                        if (res.data.res_code == 1) {
-                            const formData = new FormData();
-                            this.resourse_url = res.data.data.filename;
-                            formData.append('key', res.data.data.filename);
-                            formData.append('OSSAccessKeyId', res.data.data.accessKeyID);
-                            formData.append('success_action_status', '200');
-                            formData.append('signature', res.data.data.sign);
-                            formData.append('policy', res.data.data.policyBase64);
-                            formData.append('file', file_item);
-                            switch (this.uploadConfig.type) {
-                                case 0:
-                                    this.handleUploadFile(formData, encodeURI(ossHost));
-                                    break;
-                                case 1:
-                                    this.handleUploadFile(formData, encodeURI(ossHost));
-                                    break;
-                                case 2:
-                                    this.handleUploadFile(formData, encodeURI(ossHost), file_item);
-                                    break;
-                                case 3:
-                                    this.handleUploadFile(formData, encodeURI(ossHost));
-                                    break;
-                                case 4:
-                                    this.handleUploadFile(formData, encodeURI(ossHost));
-                                    break;
-                            };
-
-                        }
-                    })
-            },
+  export default {
+    props: {
+      panelOptions: {
+        type: Object,
+        default: function () {
+          return {
+            panelWidth: '100%',
+            panelHeight: 250
+          }
         }
+      },
+      uploadConfig: {
+        type: Object,
+        default: function () {
+          return {
+            bucket: 'jhyl-static-file',
+            dir: 'user_task',
+            type: 1
+          }
+        }
+      },
+      resourse: {},
+      close: {
+        type: Boolean,
+        default: false
+      }
+    },
+    data() {
+      return {
+        teacherManageDialog: true,
+        form: {
+          teacher_name: '',
+          teacher_description: '',
+        },
+        imgSrc: '',
+        file_name: '',
+        upload_address: '',
+        file_list: [],
+        show_file_name: false,
+        percentage: 0,
+        form_data: null,
+        is_show: true,
+        type: '',
+        resourse_url: '',
+        fullscreenLoading: null,
+        video_url: ''
+      }
+    },
+    computed: {
+      resultUrl() {
+        var result = this.resourse;
+        if (/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(this.resourse)) {
+          this.type = 'image';
+          this.is_show = false;
+        }
+        if (/\.(mp4|wav|mov)/.test(this.resourse)) {
+          this.type = 'video';
+          this.is_show = false;
+          // if(result.indexOf('http') < 0)
+          //     result = 'http://video.laoshi123.com/' + this.resourse;
+        }
+        return result;
+      }
+    },
+    methods: {
+      handleSave() {
+        //获取剪切后的图片对象并且上传到服务器
+        this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
+          blob.name = this.file_name
+          this.handleGetassignKey(blob);
+        })
+      },
+      closeModal() {
+        this.is_show = true;
+        // this.resourse_url = '';
+        // this.resultUrl = ''
+        this.$emit('uploadcomplete', "");
+      },
+      //通过插件显示图片
+      handleChangeMedia(e) {
+        this.fullscreenLoading = this.$LoadingY({message: "", show: true})
+        this.handleUploadChange(e);
+      },
+      // 获取图片名称
+      handleUploadChange(event) {
+        var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value
+          .length);
+        this.show_file_name = true;
+        this.file_name = filename;
+        if (this.handleCheckMedia(event)) {
+          this.handleGetassignKey(event.target.files[0]);
+        }
+      },
+      handleCheckMedia(event) {
+
+        var _type = this.uploadConfig.type;
+        switch (_type) {
+          case 0:
+            this.type = event.target.files[0].type;
+            return true;
+          case 1:
+            if (!(event.target.files[0].type.indexOf('image') < 0)) {
+              this.type = 'image';
+              return true;
+            } else {
+              this.$Message.warning('只能上传图片！');
+              if (this.fullscreenLoading) this.fullscreenLoading.close()
+              return false;
+            }
+          case 2:
+            if (!(event.target.files[0].type.indexOf('video') < 0)) {
+              this.type = 'video';
+              return true;
+            } else {
+              this.$Message.warning('只能上传视频！');
+              if (this.fullscreenLoading) this.fullscreenLoading.close()
+              return false;
+            }
+          case 3:
+            if (!(event.target.files[0].name.indexOf('.apk') < 0)) {
+              this.type = 'apk';
+              return true;
+            } else {
+              this.$Message.warning('请上传apk后缀文件,请重试');
+              if (this.fullscreenLoading) this.fullscreenLoading.close()
+              return false;
+            }
+          case 4:
+            if (!(event.target.files[0].type.indexOf('video') < 0)) {
+              this.type = 'video';
+              return true;
+            } else {
+              this.$Message.warning('只能上传视频！');
+              if (this.fullscreenLoading) this.fullscreenLoading.close()
+              return false;
+            }
+        }
+      },
+      // 上传到oss上
+      handleUploadFile(form_data, url, fileItem) {
+        var vm = this;
+        axios({
+          method: 'POST',
+          url: url,
+          data: form_data,
+          onUploadProgress: function (progressEvent) {
+            var progress = Math.round(progressEvent.lengthComputable ? progressEvent.loaded *
+              100 / progressEvent.total : 0);
+            vm.percentage = progress;
+          },
+        }).then(res => {
+          this.resourse_url = url + '/' + this.video_url
+          if (this.type == 'video') {
+            setTimeout(() => {
+              let vedioTime = this.$refs.vedioPlayer.duration
+              this.$emit('vedioTime', vedioTime)
+            }, 500)
+          }
+          this.$emit('getuploadfile', {
+            name: this.file_name,
+            url: this.resourse_url
+          });
+          this.$emit('uploadcomplete', this.resourse_url);
+          if (this.fullscreenLoading) this.fullscreenLoading.close()
+        });
+      },
+      // 从oss上获取assignKey;
+      handleGetassignKey(file_item) {
+        var date = new Date(); //dscj-app,user_task
+        date = date.toGMTString();
+        get_sign(file_item.type, date, this.uploadConfig.bucket, this.uploadConfig.dir, file_item.name, 'POST')
+          .then(res => {
+            if (res.data.res_code == 1) {
+              const formData = new FormData();
+              this.video_url = res.data.data.filename;
+              formData.append('key', res.data.data.filename);
+              formData.append('OSSAccessKeyId', res.data.data.accessKeyID);
+              formData.append('success_action_status', '200');
+              formData.append('signature', res.data.data.sign);
+              formData.append('policy', res.data.data.policyBase64);
+              formData.append('file', file_item);
+              this.handleUploadFile(formData, encodeURI(ossHost));
+            }
+          })
+      },
     }
+  }
 </script>
 <style lang="scss" scoped>
-    .icon-colse{
+    .icon-colse {
         position: absolute;
         z-index: 1000;
         right: 0;
         color: white;
         font-size: 20px;
     }
-    /deep/ .md-cloud-upload{
+
+    /deep/ .md-cloud-upload {
         margin-top: 70px;
     }
+
     .upload-panel {
         .file-require {
             font-size: 12px;
@@ -326,6 +247,7 @@
             text-align: left;
             margin-top: 10px;
         }
+
         .img {
             width: 100%;
             height: 100%;
@@ -334,17 +256,21 @@
             justify-content: center;
             border: 1px solid #d3d3d3;
             background: #fff;
+
             img {
                 width: 100%;
                 height: 100%;
             }
-            input{
+
+            input {
                 width: 100%;
                 height: 74% !important;
             }
         }
+
         .video {
             @extend .img;
+
             video {
                 width: 100%;
             }
@@ -356,12 +282,14 @@
             border: 1px solid #CCCCCC;
             display: block;
             text-align: center;
+
             .el-dragger__text {
                 font-size: 14px;
                 color: #757575;
                 letter-spacing: 0;
                 line-height: 14px;
                 margin-top: 20px;
+
                 em {
                     margin-left: 5px;
                     font-size: 14px;
@@ -377,6 +305,7 @@
                 margin-top: 40px;
             }
         }
+
         input[type=file] {
             width: 100%;
             height: 200px;
@@ -389,9 +318,11 @@
             opacity: 0;
             filter: alpha(opacity=0);
         }
+
         .uploaded-files-container {
             margin-top: 40px;
             text-align: left;
+
             .uploaded-file {
                 padding-left: 9px;
                 padding-right: 9px;
@@ -400,6 +331,7 @@
                 line-height: 30px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
+
                 span {
                     margin-right: 10px;
                 }

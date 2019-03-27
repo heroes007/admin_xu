@@ -44,7 +44,6 @@
     },
     computed: {
       ...mapState({
-        // isLoading: state => state.download_data.isLoading,
         dataList: state => state.download_data.course_download_data_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
         projectId: state => state.project.select_project_id,
@@ -56,34 +55,11 @@
         return window.innerHeight - 60 - 50 - 70;
       },
       comboDataList() {
-        // var r = [];
-        // var v = []
-        // for (var i = 0; i < this.dataList.length; i++) {
-        //   v = [];
-        //   for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
-        //     v.push(this.dataList[i].pre_curriculum[j]);
-        //   }
-        //   r.push(v);
-        // }
-        // return r;
+
       },
-      categoryList() {
-        return this.$store.state.task.task_category_list;
-      },
+
       columnComboData() {
         return [this.query_online_course_list];
-      },
-      columnComboModel() {
-        // var result = [];
-        // var value = []
-        // for (var i = 0; i < this.dataList.length; i++) {
-        //   value = [];
-        //   for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
-        //     value.push(this.dataList[i].pre_curriculum[j]);
-        //   }
-        //   result.push({data: value});
-        // }
-        // return result;
       },
       dataHeader() {
         let d = [ { text: '编辑', param: 'edit' }, { text: '删除', param: 'delete', }]
@@ -121,18 +97,6 @@
         ]
       }
     },
-    watch: {
-      // isLoading(val) {
-      //   if (val) {
-      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true});
-      //     setTimeout(() => {
-      //       this.loadingInstance.close();
-      //     }, Config.base_timeout);
-      //   } else {
-      //     if (this.loadingInstance) this.loadingInstance.close();
-      //   }
-      // }
-    },
     methods: {
       ...mapActions(['get_online_curriculum_list', 'get_curriculum_donwload_data_list', 'delete_download_data']),
       addClickHandler() {
@@ -166,10 +130,6 @@
       }
     },
     mounted() {
-      // setTimeout(()=>{
-      //   console.log(this.dataList,'this.dataList');
-      // },1000)
-      // this.get_online_curriculum_list({project_id: this.projectId});
       this.initData()
     }
   }
