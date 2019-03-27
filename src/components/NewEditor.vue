@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <div id="div"></div>
+        <div id="div" class="h100"></div>
     </div>
 </template>
 
@@ -103,5 +103,11 @@
 <style scoped>
     .box{
         min-width: 400px;
+    }
+    .h100{
+        height: 100%;
+    }
+    /deep/ .w-e-text-container{
+        height: calc(100% - 44px) !important;
     }
 </style>

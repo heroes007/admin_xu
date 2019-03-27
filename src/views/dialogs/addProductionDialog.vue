@@ -62,27 +62,7 @@
 
                          <!--可插入输入框-->
                         <FormItem v-show="nextStep == 2" label=""  class="upload">
-                            <!--<div class="form-message" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div>-->
-                            <!-- <div v-if="descriptionHtml" ref="inputStyl" contentEditable="true" v-html="descriptionHtml"></div> -->
-                            <!--<div ref="divStyle" style="display: flex;margin-top: 15px;margin-left: 10px">-->
-                                <!--<Dropdown trigger="click" @on-click="handleDrop">-->
-                                    <!--<a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >-->
-                                    <!--<DropdownMenu slot="list">-->
-                                        <!--<DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>-->
-                                    <!--</DropdownMenu>-->
-                                <!--</Dropdown>-->
-                                <!--<Dropdown trigger="click" @on-click="handleDrop1">-->
-                                    <!--<a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a >-->
-                                    <!--<DropdownMenu slot="list">-->
-                                        <!--<DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">-->
-                                            <!--<span class="drop-box" :style="{backgroundColor: item.color}"/>-->
-                                            <!--<span>{{item.name}}</span>-->
-                                        <!--</DropdownItem>-->
-                                    <!--</DropdownMenu>-->
-                                <!--</Dropdown>-->
-                                <!--<upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg,image/png,image/jpg,image/bmp"/>-->
-                            <!--</div>-->
-                            <new-editor style="width: 100%; height: 100%;" @get-content="getContent" :content="content"/>
+                            <new-editor style="width: 620px; height: 600px;" @get-content="getContent" :content="content"/>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
