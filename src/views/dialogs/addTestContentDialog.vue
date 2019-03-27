@@ -305,7 +305,6 @@
       saveTestDetailHandler() {
         this.$refs.formValidate.validate((valid) => {
           if(valid){
-            console.log(123);
             this.formInline2.result = [];
             for (var i = 0; i < this.formInline2.answerList.length; i++) {
               if (this.formInline2.answerList[i].answer) {
@@ -325,10 +324,9 @@
             this.formInline2.curriculum_online_id = this.payload.curriculum_online_id
 
             if (this.formInline2.video_test_detail_id > 0) {
-              update_test_detail({...this.formInline2, ...{section_id: this.section_id},}).then(res => {
+              update_test_detail({...this.formInline2, ...{section_id: this.section_id}}).then(res => {
                 if (res.data.res_code === 1) {
                   postData('product/curriculum_online_catalog/get_video_test', {section_id: this.section_id}).then(res => {
-                    console.log(res, 'qqqqq')
                     if(res.res_code == 1){
                       res.data.forEach(item => {
                         item.attachment = JSON.parse(item.attachment)

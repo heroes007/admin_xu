@@ -102,7 +102,6 @@ import BaseList from '../../components/BaseList'
 import { Config } from '../../config/base'
 import { RemoveModal } from './mixins'
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { get_detail, get_product_certificate } from '../../api/modules/tools_product'
 import dateFormat from '../../config/dateFormat'
 import { MPop } from '../../components/MessagePop'
 import UploadImgs  from '../../components/UploadButton'
@@ -262,7 +261,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([ 'add_production', 'update_production', 'get_certificate_list', 'change_certificate_list' ]),
+        ...mapActions([ 'add_production', 'update_production',  'change_certificate_list' ]),
         overImg(val){
 
         },

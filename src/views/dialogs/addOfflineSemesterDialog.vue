@@ -107,7 +107,7 @@
       }
     },
     methods: {
-      ...mapActions([ 'add_offline_term', 'edit_offline_term','get_offline_term_list' ]),
+      ...mapActions(['get_offline_term_list' ]),
       handleClose() {
         this.addOfflineSemesterDialog = false;
       },
@@ -116,27 +116,6 @@
         this.form2.stage2 = [this.offline_term_list1[idx].start_time, this.offline_term_list1[idx].register_end_time];
         this.form2.level2 = this.offline_term_list1[idx].level || '';
         this.form2.description2 = this.offline_term_list1[idx].description || '';
-      },
-      handleSave(formName) {
-        var vm = this;
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.add_offline_term({
-              project_id: 1,
-              name: vm.form2.name2,
-              level: vm.form2.level2,
-              description: vm.form2.description2,
-              start_time: dateFormat(vm.form2.stage2[0]),
-              register_end_time: dateFormat(vm.form2.stage2[1]),
-              callback() {
-                vm.handleClose();
-                vm.showPop('添加成功！', 1000);
-              }
-            })
-          } else {
-            return false;
-          }
-        });
       },
       handleSubmit(formName) {
         let vm = this;

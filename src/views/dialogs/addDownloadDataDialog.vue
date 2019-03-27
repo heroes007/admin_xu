@@ -186,8 +186,8 @@ export default {
             vm.showPop('添加成功！',1000);
         };
         this.form.project_id = this.projectId;
-        this.form.type = this.state;
-        if(this.form.type === 0){
+        // this.form.type = this.state;
+        if(this.form.state === 0){
             this.form.grade_id = 0;
             this.form.subject_id = 0;
         }
@@ -197,11 +197,13 @@ export default {
           this.form.curriculum_id = this.payload.form.curriculum_id
           this.form.name = this.payload.form.title
           this.form.id = this.payload.form.id
+          this.form.type = this.payload.form.type
           if(this.payload.form.attachment_url){
             this.form.download_url = this.payload.form.attachment_url;
             this.form.url_name = this.payload.form.attachment_name
             this.isupdata = false
           }
+          console.log(this.payload, 'payload')
         }
     }
 }

@@ -43,7 +43,6 @@
     },
     computed: {
       ...mapState({
-        // isLoading: state => state.download_data.isLoading,
         dataList: state => state.download_data.course_download_data_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
         projectId: state => state.project.select_project_id,
@@ -55,34 +54,11 @@
         return window.innerHeight - 60 - 50 - 70;
       },
       comboDataList() {
-        // var r = [];
-        // var v = []
-        // for (var i = 0; i < this.dataList.length; i++) {
-        //   v = [];
-        //   for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
-        //     v.push(this.dataList[i].pre_curriculum[j]);
-        //   }
-        //   r.push(v);
-        // }
-        // return r;
+
       },
-      categoryList() {
-        return this.$store.state.task.task_category_list;
-      },
+
       columnComboData() {
         return [this.query_online_course_list];
-      },
-      columnComboModel() {
-        // var result = [];
-        // var value = []
-        // for (var i = 0; i < this.dataList.length; i++) {
-        //   value = [];
-        //   for (var j = 0; j < this.dataList[i].pre_curriculum.length; j++) {
-        //     value.push(this.dataList[i].pre_curriculum[j]);
-        //   }
-        //   result.push({data: value});
-        // }
-        // return result;
       },
       dataHeader() {
         return [
@@ -97,34 +73,16 @@
             align: 'left',
             width: 400,
           },
-          // {
-          //   prop: 'download_url',
-          //   label: '下载链接',
-          //   width: 700
-          // },
           {
             label: '绑定课程',
             prop: 'curriculum_title',
             width: 300,
             align: 'left'
-            // useCombo: true,
-            // comboListIndex: 0,
-            // listLabel: 'title',
-            // listValue: 'curriculum_id',
-            // actionName: 'change_course_download_data_pre_curriculum'
           },
           {
             label: '操作',
             minwidth: 300,
             groupBtn: [
-              //   {
-              //   isSwitch: true,
-              //   switchKey: 'is_valid',
-              //   onText: '启用',
-              //   offText: '停用',
-              //   disableText: '失效',
-              //   actionName: 'change_public_download_data_valid'
-              // },
               {
                 text: '下载',
                 prop: 'attachment_url',
@@ -146,24 +104,13 @@
         ]
       }
     },
-    watch: {
-      // isLoading(val) {
-      //   if (val) {
-      //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true});
-      //     setTimeout(() => {
-      //       this.loadingInstance.close();
-      //     }, Config.base_timeout);
-      //   } else {
-      //     if (this.loadingInstance) this.loadingInstance.close();
-      //   }
-      // }
-    },
     methods: {
       ...mapActions(['get_online_curriculum_list', 'get_curriculum_donwload_data_list', 'delete_download_data']),
       addClickHandler() {
         this.handleSelModal(ADD_DOWNLOAD_DATA, {state: 1,project_id: this.projectId, page: {page_size: this.pageSize, page_num: this.current}});
       },
       addClickHandler2(index, row) {
+          console.log(row)
         this.handleSelModal(ADD_DOWNLOAD_DATA, {state: 0,project_id: this.projectId, page: {page_size: this.pageSize, page_num: this.current}, form: row});
       },
       manageEdit(val) {
@@ -191,10 +138,6 @@
       }
     },
     mounted() {
-      // setTimeout(()=>{
-      //   console.log(this.dataList,'this.dataList');
-      // },1000)
-      // this.get_online_curriculum_list({project_id: this.projectId});
       this.initData()
     }
   }
