@@ -70,7 +70,6 @@ export default {
             this.show = _new;
             if(_new) {
                 // this.$store.dispatch('get_offline_curriculum_list', { offline_term_id: this.detailData.id })
-                // console.log(this.offline_curriculum_list);
             }
         }
     },

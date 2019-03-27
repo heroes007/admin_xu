@@ -108,7 +108,6 @@
         },
         handleSubmit(){
            if(this.radioData){
-                console.log(this.radioData)
                 this.closeModal()
            }else  this.$Message.warning('请选择用户');
         }

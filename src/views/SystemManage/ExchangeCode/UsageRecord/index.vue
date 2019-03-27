@@ -96,7 +96,6 @@
             console.log(val);
         },
         see(row,rowIndex){
-            console.log(row,rowIndex,'see');
             if(!row.use_state){
                 this.codeShow = true
             }
@@ -114,7 +113,6 @@
             this.modalTitle = '添加学员'
             this.show = true
             this.tableRow = {}
-            console.log('open modal')
         },
         handleBack(){
              this.$router.replace({path: `/dashboard/exchange-code`})

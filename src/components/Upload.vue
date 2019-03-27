@@ -125,7 +125,6 @@
                         vm.percentage = progress;
                     },
                 }).then(res => {
-                  console.log(res,'0000000000')
                     if (res.statusText == 'OK') {
                         // this.showFileName = false;
                         this.percentage = 100;

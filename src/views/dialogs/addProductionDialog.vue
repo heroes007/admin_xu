@@ -216,7 +216,6 @@ export default {
         }
     },
     mounted() {
-      console.log(this.payload, 'payload')
         this.organizationList = null
         if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1){
             this.getOrganization()
@@ -290,7 +289,6 @@ export default {
             this.$refs.inputStyl.appendChild(img)
         },
         handleDrop(val){
-            console.log(this.$refs.inputStyl,'this.$refs.inputStyl');
             this.$refs.inputStyl.style.fontSize = val + 'px'
             if(val == 32) this.$refs.inputStyl.style.fontWeight = 'bold'
             else  this.$refs.inputStyl.style.fontWeight = 'normal'

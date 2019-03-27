@@ -40,7 +40,6 @@ const actions = {
         get_task_category_list({ commit }, params) {
             commit(types.TASK_SHOW_LOADING);
             get_category_list(params.page, params.keyword).then(res => {
-                console.log(res, 'resresres')
                 if (res.data.res_code === 1) {
                     commit(types.TASK_CATEGORY_LIST_LOADED, res.data.data);
                 }
@@ -148,7 +147,6 @@ const mutations = {
         state.showLoading = false;
     },
     [types.TASK_CATEGORY_EDITED](state, params) {
-        console.log(params)
         for (var i = 0; i < state.task_category_list.length; i++) {
             if (state.task_category_list[i].id === state.homworkId) {
                 state.task_category_list[i].title = params.realname;
@@ -212,8 +210,6 @@ const mutations = {
         state.showLoading = false;
     },
     [types.TASK_DELETED](state, params) {
-        console.log(state.task_category_list);
-
         for (var i = 0; i < state.task_category_list.length; i++) {
             if (state.task_category_list[i].id === params) {
                 // for (var j = 0; j < state.task_category_list[i].task_list.length; j++) {

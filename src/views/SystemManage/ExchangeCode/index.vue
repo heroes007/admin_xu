@@ -133,7 +133,6 @@
         },
         useRecords(row,rowIndex){
             this.$router.replace({path: `/dashboard/${row.id}/usage-record/`})
-            console.log(row,rowIndex,'useRecords');
             localStorage.setItem('useRecords',JSON.stringify(row))
         },
         immediateFailure(row,rowIndex){
@@ -150,7 +149,6 @@
                 jurisdiction: '',
                 effective_time: []
             }
-            console.log(row,rowIndex);
         },
         deletes(row,rowIndex){
             console.log(row,rowIndex);

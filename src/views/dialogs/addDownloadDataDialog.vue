@@ -172,7 +172,6 @@ export default {
               })
             }else{
               postData('product/curriculum_online/pulldown_get_offline_list',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
-                console.log(res)
                 if(res.res_code == 1) this.curricumList = res.data
               })
             }
@@ -186,7 +185,6 @@ export default {
             vm.showPop('添加成功！',1000);
         };
         this.form.project_id = this.projectId;
-        // this.form.type = this.state;
         if(this.form.state === 0){
             this.form.grade_id = 0;
             this.form.subject_id = 0;
@@ -203,7 +201,6 @@ export default {
             this.form.url_name = this.payload.form.attachment_name
             this.isupdata = false
           }
-          console.log(this.payload, 'payload')
         }
     }
 }

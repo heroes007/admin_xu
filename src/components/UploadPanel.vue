@@ -190,7 +190,6 @@
         }).then(res => {
           this.resourse_url = url + '/' + this.video_url
           if (this.type == 'video') {
-            console.log(2);
             setTimeout(() => {
               let vedioTime = this.$refs.vedioPlayer.duration
               this.$emit('vedioTime', vedioTime)

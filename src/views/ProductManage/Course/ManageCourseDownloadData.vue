@@ -110,7 +110,6 @@
         this.handleSelModal(ADD_DOWNLOAD_DATA, {state: 1,project_id: this.projectId, page: {page_size: this.pageSize, page_num: this.current}});
       },
       addClickHandler2(index, row) {
-          console.log(row)
         this.handleSelModal(ADD_DOWNLOAD_DATA, {state: 0,project_id: this.projectId, page: {page_size: this.pageSize, page_num: this.current}, form: row});
       },
       manageEdit(val) {

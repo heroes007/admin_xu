@@ -161,7 +161,6 @@ const actions = {
     },
     edit_online_curriculum_video({dispatch,commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_SHOW_LOADING);
-        console.log(params,'params');
         update_video(params).then(res => {
             if (res.data.res_code === 1) {
                 dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
@@ -359,7 +358,6 @@ const mutations = {
         state.showMainLoading = true;
     },
     [types.ONLINE_CURRICULUM_DELETED](state, id) {
-        console.log('aaaaa')
         for (var i = 0; i < state.online_curriculum_list.length; i++) {
             if (state.online_curriculum_list[i].id == id) {
                 state.online_curriculum_list.splice(i, 1);

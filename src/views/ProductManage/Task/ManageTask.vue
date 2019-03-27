@@ -227,7 +227,6 @@
               }).then(res => {
                 this.curricumList[1] = res.data
               })
-              console.log(this.curricumList,'this.curricumList')
             }
         },
         mounted() {
