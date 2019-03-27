@@ -63,7 +63,7 @@
                     <!--可插入输入框-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput" >
                         <div class="form-message" ref="inputStyle" contentEditable="true" v-html="descriptionHtml"></div>
-                        <div ref="divStyle" style="display: flex;margin-top: 15px;">
+                        <div ref="divStyle" class="form-editor">
                             <Dropdown trigger="click" @on-click="handleDrop">
                                 <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
                                 <DropdownMenu slot="list">
@@ -96,13 +96,13 @@
 <script>
   import { get_sign } from '../api/modules/ali_oss'
   import axios from 'axios'
-  const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
   import ExchangeContent from './ExchangeContent'
   import uploadBtn from '../components/UploadButton'
   import downLoading from './DownLoading'
   import iconFont from '../assets/icons/icon/font.png'
   import iconColor from '../assets/icons/icon/color.png'
   import iconCopy from '../assets/icons/icon/photo.png'
+  const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
   export default {
     components: { ExchangeContent, uploadBtn, downLoading },
@@ -469,5 +469,9 @@
     /deep/ .ivu-input[disabled]{
         font-family: PingFangSC-Regular;
         color: #474C63;
+    }
+    .form-editor{
+        display: flex;
+        margin-top: 15px;
     }
 </style>
