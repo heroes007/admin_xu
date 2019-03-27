@@ -5,25 +5,19 @@
              :size-title1="title1" :size-num1="allNum" btn-name="添加导师" :select1="selectList" @moneyStudent="moneyStudent"
              select2Placeholder="请选择年级"  :select2="selectList1" :size-title2="title2" :size-num2="titleTotal"
           @selectChange1="selectChange1" @selectChange2="selectChange2"  @inputChange="inputChange" @handleClick="handleClick" />
-
         <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="student"/>
-
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
-
    </div>
 </template>
-
 <script>
   import Tables from '../../../components/tables.vue'
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
-  import details from './const'
   import seeMixin from '../Mixins/seeMixin'
   import UserMixins from '../Mixins/UserMixins'
   import postData from 'src/api/postData'
   import pageList from '../../../components/Page'
   import pageMixin from '../../mixins/pageMixins'
-
   export default {
     name: "ManagementList",
     components: { Tables, screen, see, pageList },
@@ -48,11 +42,7 @@
             radioType: false,
             titleTotal: null,
             payingStudent: localStorage.getItem('organizationId') == 1,
-            selectList:[
-            {
-                id:'all',
-                title:'全部'
-            }],
+            selectList:[],
             selectList1: [
             {
               id: '',
@@ -105,11 +95,6 @@
                 slot: '_index',
                 minWidth: 100
             },
-            // {
-            //     title: '所属机构',
-            //     key: 'organization_name',
-            //     align: 'left'
-            // },
             {
                 title: '最近登录时间',
                 key: 'last_time',
@@ -127,28 +112,13 @@
             operationList: [['查看','operation1']],
             title2: '付费学员',
             title1: '学员总数',
-            list: [
-                {
-                    "user_id": 13186,
-                    "nickname": "150****1134",
-                    sex: "男",
-                    "realname": "王晓东",
-                    "phone": "15022211134",
-                    "from_domain": '正常',
-                    "create_time": "2019/01/12 21:34",
-                    "action": "action",
-                    admin: '超级管理员',
-                    company: "北京大学人民医院",
-                    switch_state: true //true --> 启用 false --> 禁用
-                }
-            ]
+            list: []
         }
     },
     methods: {
         see(row,rowIndex){
             this.detailShow = true;
             this.tableRowData = row;
-            console.log(row,rowIndex,'see',this.detailShow);
         },
         swtichChange(row){
              console.log(row);
@@ -165,7 +135,6 @@
           this.getList()
         },
         inputChange(val){
-            console.log(val)
           this.keyword = val
           this.getList()
         },
@@ -173,7 +142,6 @@
             this.modalTitle = '添加学员'
             this.show = true
             this.tableRow = {}
-            console.log('open modal')
         },
         radioChange(_new){
             console.log(_new)
@@ -195,9 +163,7 @@
                   this.list = res.data.list
                   this.total = res.data.count
                   this.titleTotal = v ? -1 : this.total
-                //   this.allNum = localStorage.getItem('organizationId') == 1 ? res.data.all_student : res.data.count
                   this.allNum = v ? this.total : localStorage.getItem('organizationId') == 1 ? res.data.all_student : res.data.count
-                //   if(this.allNum)
             })
         }
     },
@@ -210,6 +176,5 @@
     }
   }
 </script>
-
 <style scoped>
 </style>

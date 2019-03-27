@@ -3,10 +3,8 @@
         <router-view></router-view>
     </div>
 </template>
-
 <script>
   import api from './api/modules/config'
-  
   export default {
     beforeCreate() {
       let vm = this;
@@ -25,7 +23,6 @@
             if (code >= -999 && code <= -990) {
               vm.$router.push({path: '/login'});
             }
-            // else vm.$Message.warning(response.data.msg);
           }
           return response;
         }, function (error) {
@@ -35,16 +32,12 @@
   }
 </script>
 <style lang="scss">
-    html {
-        height: 100%;
-    }
-
+    html { height: 100%; }
     body {
         height: 100%;
         width: 100%;
         margin: 0;
     }
-
     #app {
         color: #2c3e50;
         width: 100%;
@@ -52,16 +45,7 @@
         padding: 0;
         font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
         text-align: center;
-
-        a {
-            text-decoration: none;
-        }
-
+        a { text-decoration: none; }
         overflow: hidden;
     }
-
-    .sub-header {
-        // margin: 20px;
-    }
-
 </style>

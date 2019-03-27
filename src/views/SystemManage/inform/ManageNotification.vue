@@ -48,7 +48,6 @@
                 projectId: state => state.project.select_project_id,
                 doUpdate: state => state.message.select_msg_update
             }),
-            ...mapGetters({ messageList: 'message_list', selectStudent: 'message_select_student' }),
             isLoading() {
                 return this.notificationLoading || this.messageLoading;
             },
@@ -158,16 +157,11 @@
             //         }, Config.base_timeout);
             //     }else if(this.loadingInstance) this.loadingInstance.close()
             // },
-            messageList(val) {
-                this.updateWrapper();
-            },
             doUpdate(val) {
                 this.updateWrapper();
             }
         },
         methods: {
-            ...mapActions(['get_project_list','get_message_student_list',
-            'get_private_msg_list', 'send_private_msg', 'add_private_msg' ]),
             updateWrapper() {
                 var vm = this;
                 setTimeout(function () {
@@ -203,18 +197,6 @@
             handleClick() {},
             rowClickHandler(row) {
                 this.messageContent = '';
-                this.get_private_msg_list(row.user_id);
-            },
-            getHeadImg(item) {
-                if (item.from_user_id === this.selectStudent.user_id) return this.selectStudent.head_img_url ? this.selectStudent.head_img_url : defaultHeader
-                else return this.userInfo.head_img_url ? this.userInfo.head_img_ur : defaultHeader;
-            },
-            getTimeShow(item, index) {
-                if (index === 0) return true;
-                else {
-                    if (new Date(item.time).getDate() === new Date(this.messageList[index - 1].time).getDate()) return false;
-                    return true;
-                }
             },
             getTimeStr(time) {
                 return doTimeFormat(time);
@@ -227,40 +209,12 @@
                   });
                 }
                 else {
-                    this.send_private_msg({ from_user_id: this.userInfo.user_id, to_user_id: this.selectStudent.user_id, content: this.messageContent });
+                   
                 }
             }
         },
         mounted() {
-            var vm = this;
-            if (this.$store.state.project.project_list.length === 0) {
-                this.get_project_list({
-                    callback(v) {
-                        vm.get_message_student_list(v);
-                    }
-                });
-            } else {
-                this.get_message_student_list(this.projectId);
-            }
-
-            // server.on('connect', () => {
-            //     console.log(server.id); // 'G5p5...'
-            // });
-            // server.on(this.userInfo.user_id, data => {
-            //     if(this.selectStudent)
-            //     {
-            //        if (data.from_user_id === this.selectStudent.user_id)
-            //             this.add_private_msg(data);
-            //     }
-            // });
-            // server.on('disconnect', res => {
-            //     console.log('disconnect')
-            //     server.disconnect();
-            //     server.close();
-            // });
-            // server.on('error', error => {
-            //     console.log(error);
-            // })
+            this.get_message_student_list(this.projectId);
         }
     }
 
@@ -317,7 +271,6 @@
         }
     }
     /deep/ .ivu-table-cell div{
-        /*justify-content: space-around;*/
         justify-content: center;
     }
     /deep/ .form-message{

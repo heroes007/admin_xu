@@ -1,7 +1,6 @@
 <template>
     <manage-production />
 </template>
-
 <script>
   import manageProduction from './production/ManageProduction'
   export default {
@@ -10,6 +9,3 @@
   }
 </script>
 
-<style scoped>
-
-</style>

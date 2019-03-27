@@ -3,7 +3,6 @@
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close"/>
         <FormModal :modal-false="true" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList"
                    @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
-
         <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="total" btn-name="添加讲师" placehodle="搜索讲师姓名"
                 @inputChange="inputChange" @handleClick="handleClick"/>
         <div class="lecturer-list">
@@ -16,8 +15,7 @@
                             <p>绑定课程：{{t.curriculum_count}}个</p>
                         </div>
                         <div class="lecturer-item-btn">
-                            <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon"
-                                 src="../../../assets/icons/icon/write.jpg"/>
+                            <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="../../../assets/icons/icon/write.jpg"/>
                             <img v-if="lectureesItem3" @click="deletes(t)" src="../../../assets/icons/icon/delete.jpg"/>
                         </div>
                     </div>
@@ -27,7 +25,6 @@
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
-
 <script>
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
@@ -38,7 +35,6 @@
   import UserMixins from '../Mixins/UserMixins'
   import pageList from '../../../components/Page'
   import pageMixin from '../../mixins/pageMixins'
-
   export default {
     name: "LecturerList",
     components: {FormModal, screen, see, pageList},
@@ -76,18 +72,7 @@
           organization_id: [{required: true, message: '请选择所属机构'}],
         },
         operationList: null,
-        list: [
-          {
-            img: 'static/mn.jpeg',
-            name: '王金金',
-            num: 5
-          },
-          {
-            img: 'static/mn.jpeg',
-            name: '王金金',
-            num: 6
-          }
-        ]
+        list: []
       }
     },
     methods: {
@@ -148,7 +133,6 @@
     }
   }
 </script>
-
 <style lang="less" scoped>
     .lecturer-list-item {
         background: #F0F0F7;
@@ -160,36 +144,30 @@
         flex-wrap: nowrap;
         align-items: center;
         position: relative;
-
         .lecturer-item-img {
             width: 59px;
             height: 60px;
             border-radius: 30px;
         }
-
         .lecturer-item-content {
             margin-left: 15.5px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-
             h2, p {
                 text-align: left;
                 color: #474C63;
             }
-
             h2 {
                 font-family: PingFangSC-Medium;
                 font-size: 18px;
                 margin-bottom: 15px;
             }
-
             p {
                 font-family: PingFangSC-Regular;
                 font-size: 14px;
             }
         }
-
         .lecturer-item-btn {
             position: absolute;
             right: 0;
@@ -201,32 +179,23 @@
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
             display: none;
-
             .lecturer-btn-icon {
                 margin-top: 20px;
                 margin-bottom: 30px;
             }
-
             img {
                 width: 17.5px;
                 height: 17.5px;
             }
         }
     }
-
     .lecturer-list-item:hover .lecturer-item-btn {
         display: block;
     }
-
     .lecturer-list {
         margin: 20px;
     }
-
     /deep/ .ivu-col-span-6 {
         margin-bottom: 20px;
-    }
-
-    /deep/ .ivu-page {
-
     }
 </style>

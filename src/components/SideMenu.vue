@@ -43,8 +43,7 @@
                                     <MenuItem class="sub-item-title" v-if="routeName != t.name[1]" :name="t.name[0]">{{t.title}}</MenuItem>
                                 </div> -->
                                 <MenuItem :name="t.name" class="sub-item-title">
-                                    <Badge v-if="t.name === 'notification-chat'" :count="unread_count"> {{t.title}}</Badge>
-                                    <span v-else>{{t.title}}</span>
+                                    <span >{{t.title}}</span>
                                 </MenuItem>
                             </div>
                         </Submenu>
@@ -84,7 +83,6 @@
       }
     },
     computed: {
-      ...mapGetters({ unread_count: 'unread_message_count' }),
       userInfo() {
         return JSON.parse(localStorage.getItem('PERSONALDETAILS'))
       },
@@ -136,7 +134,6 @@
       overImg(it) {
         it.icon = it.icon.split('_')[0];
       },
-      ...mapActions(['get_unread_list', 'add_unread_count']),
       checked(n) {
         return this.userInfo.role_arr.includes(n)
       },

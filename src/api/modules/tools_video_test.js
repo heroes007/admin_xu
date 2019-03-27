@@ -1,13 +1,7 @@
-/**
- * Created by zhaiyunzhi on 2017/1/3.
- */
 import api from './config'
-
-
 export function add_test_detail(data) {
     return api.post('/product/curriculum_online_catalog/add_test',data);
 }
-
 export function update_test_detail(data) {
     return api.post('product/curriculum_online_catalog/change_video_test',{
       title: data.title,
@@ -22,7 +16,6 @@ export function update_test_detail(data) {
       attachment:data.attachment
     });
 }
-
 export function delete_test_detail(test_detail_id) {
     return api.post('/product/curriculum_online_catalog/delete',{
         test_detail_id:test_detail_id

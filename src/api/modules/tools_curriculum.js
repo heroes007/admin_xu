@@ -1,8 +1,4 @@
-/**
- * Created by zhaiyunzhi on 2017/1/3.
- */
 import api from './config'
-
 export function get_list(page, keyword) {
     let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
     return api.post('product/curriculum_online/get_list',{
@@ -12,7 +8,6 @@ export function get_list(page, keyword) {
         keyword: keyword
     });
 }
-
 export function add_curriculum(data) {
     let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
     return api.post('product/curriculum_online/add', {
@@ -27,7 +22,6 @@ export function add_curriculum(data) {
       unlock_type: data.unlock_type
     })
 }
-
 export function update_curriculum(data) {
     return api.post('product/curriculum_online/change',{
         curriculum_online_id:data.id,
@@ -41,14 +35,10 @@ export function update_curriculum(data) {
         unlock_type: data.unlock_type,
     });
 }
-
-
 export function delete_curriculum(id,project_id) {
     return api.post('product/curriculum_online/delete',{
       curriculum_online_id:id});
 }
-
-
 export function change_curriculum_list(id, direction) {
     return api.post('product/curriculum_online_catalog/move', {catalog_id: id, direction})
 }

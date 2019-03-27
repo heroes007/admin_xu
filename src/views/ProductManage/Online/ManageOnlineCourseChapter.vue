@@ -259,9 +259,6 @@
       addChapterHandler() {
         this.newChapterData.showAddChapter = true;
       },
-      saveOrderHandler() {
-        this.$store.dispatch('save_online_curriculum_chapter_orderby', {curriculum_id: this.$route.params.id})
-      },
       initChapter() {
         this.screenTitle = this.$route.params.title
         this.newChapterData.showAddChapter = false;

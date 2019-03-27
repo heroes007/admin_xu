@@ -3,9 +3,7 @@
         <div class="login-view" :style="loginViewStyl">
             <div class="login-left"></div>
             <div class='login-right'>
-                <div class='logo'>
-                    <img src='../assets/icons/img/logo_copy.png'>
-                </div>
+                <div class='logo'><img src='../assets/icons/img/logo_copy.png'></div>
                 <h1 class="login-title">九划医疗后台管理系统</h1>
                 <div class='data-input'>
                     <div class="elRow">
@@ -18,10 +16,6 @@
                         <span class="input-span">|</span>
                         <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/>
                     </div>
-                    <!-- <div class='remember elRowJustifyLeft'>
-                        <Switch v-model="remember" />
-                        <span class="rememberMeText">记住我</span>
-                    </div> -->
                 </div>
                 <div class='submit'>
                     <Button class="Button login-btn" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
@@ -47,7 +41,6 @@
             return {
                 name: '',
                 password: '',
-                remember: true,
                 isLogining: false,
                 loginViewStyl: {},
                 projectData: []
@@ -62,7 +55,6 @@
             }
         },
         methods: {
-             ...mapActions([ "get_project_list", "change_selected_project_id" ]),
             doLogin() {
                 this.isLogining = true;
                 login_pwd(this.name, this.password).then((res) => {
@@ -75,10 +67,7 @@
                         this.$router.push({ path: 'dashboard' });
                         localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
                         localStorage.setItem('token',d.token)
-                        let d1 = {
-                            name: this.name,
-                            pass: this.password
-                        }
+                        let d1 = { name: this.name, pass: this.password }
                         localStorage.setItem('login_user', Base64.encode(JSON.stringify(d1)))
                     } else {
                         this.$Message.warning(res.data.msg);
@@ -99,7 +88,6 @@
             }else this.setUser({name:'',pass:''})
             let hei = document.documentElement.clientHeight * .555;
             this.loginViewStyl = { 'width' :  (hei > 480 ? hei : 480) * 2 + 'px'}
-            this.get_project_list();
         }
     }
 
@@ -116,7 +104,6 @@
         background-size: 100% 100%;
     }
     .login-view{
-        // width: 62.5%;
         height: 55.5%;
         display: flex;
         flex-wrap: nowrap;
@@ -208,15 +195,6 @@
                         :-ms-input-placeholder {
                             color: #99ABB4;
                         }
-                    }
-                }
-                .remember {
-                    margin-bottom: 0;
-                    margin-top: 13px;
-                    font-size: 14px;
-                    color: #858585;
-                    .rememberMeText {
-                        margin-left: 12px
                     }
                 }
             }

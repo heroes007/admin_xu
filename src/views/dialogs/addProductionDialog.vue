@@ -251,7 +251,6 @@ export default {
             examineTypeList:state => state.production.examineTypeList,
             // certificate:state => state.production.certificate_list
         }),
-        ...mapGetters({ projectType: 'select_project_type' }),
         selectSubject() {
             return this.form.subject_id;
         },
@@ -361,7 +360,7 @@ export default {
                         this.organizationId = this.form.organization_id
                         this.fromLabelWidth = 0;
                         this.formItemLabelWidth = 0
-                        this.nextStep = this.projectType === 1 ? ( this.nextStep === 0 ? 1 : 2 ) : 2
+                        this.nextStep = 2
                     }else{
                          this.$Message.warning('请上传展示图片或展示视频');
                     }
@@ -371,7 +370,7 @@ export default {
         handlePreStep() {
             this.fromLabelWidth = 121
             this.formItemLabelWidth = 121
-            this.nextStep = this.projectType !== 1 ? 0 : this.nextStep === 2 ? 1 : 0
+            this.nextStep = 0
         },
         handleSubmit(name) {
              this.$refs[name].validate((valid) => {

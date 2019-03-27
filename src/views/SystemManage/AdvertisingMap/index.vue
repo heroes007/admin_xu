@@ -11,7 +11,6 @@
          <Button class="add-advert" type="primary" @click="addatub()">添加广告</Button>
     </Row>
 </template>
-
 <script>
     import lb from '../lb/ManageLb'
     export default {
@@ -35,11 +34,8 @@
                  localStorage.setItem('AdvertisingMap',name)
             },
             addatub(){
-                if (this.tabName == "lb") {
-                    this.$refs.HomePageBroadcast.addLb()
-                }else{
-                    this.$refs.CoursePageRotation.addNew()
-                }
+                if (this.tabName == "lb") this.$refs.HomePageBroadcast.addLb()
+                else this.$refs.CoursePageRotation.addNew()
             }
         },
         mounted(){

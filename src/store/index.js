@@ -4,9 +4,7 @@ import task from './modules/task'
 import middlewares from './middlewares'
 import online_curriculum from './modules/online_curriculum'
 import offline_curriculum from './modules/offline_curriculum'
-import project from './modules/project'
 import auth from './modules/auth'
-import message from './modules/message'
 import download_data from './modules/download_data'
 import production from './modules/production'
 import device from './modules/device'
@@ -22,9 +20,7 @@ export default new Vuex.Store({
     task,
     online_curriculum,
     offline_curriculum,
-    project,
     auth,
-    message,
     download_data,
     production,
     device,

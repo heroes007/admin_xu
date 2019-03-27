@@ -6,7 +6,6 @@
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
-
 <script>
   import Tables from '../../../components/tables.vue'
   import screen from '../../../components/ScreenFrame'
@@ -76,7 +75,6 @@
         isAdd: true
       }
     },
-
     methods: {
       addNewsHandler() {
         this.tableRow = {}

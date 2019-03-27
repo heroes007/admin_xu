@@ -1,26 +1,19 @@
 <template>
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-
         <FormModal :modal-false="true"  :detail-data="tableRow" :modal-text="modalText" :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit"
                    :title="modalTitle" :rule-validate='rules'/>
-
         <screen :btn-type="btnType" :select-type1="selectType1" :types="2" size-title1="导师总数" :size-num1="total" btn-name="添加导师" :select1="selectList"
                @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
-
         <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="mentor"/>
-
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
-
    </div>
 </template>
-
 <script>
   import Tables from '../../../components/tables.vue'
   import FormModal from '../../../components/FormModal.vue'
   import screen from '../../../components/ScreenFrame'
   import see from '../../../components/SeeInfo.vue'
-  import details from './const'
   import seeMixin from '../Mixins/seeMixin'
   import FormModalMixin from '../Mixins/FormModalMixin'
   import jurisdictionList from '../jurisdictionList'
@@ -197,6 +190,3 @@
     }
   }
 </script>
-
-<style scoped>
-</style>

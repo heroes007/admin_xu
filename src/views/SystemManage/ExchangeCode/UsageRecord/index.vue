@@ -6,7 +6,6 @@
         <Tables :is-serial=true @operation1="see" @operation2="immediateFailure" :column="columns1" :table-data="list" />
    </div>
 </template>
-
 <script>
   import Tables from '../../../../components/tables.vue'
   import screen from '../../../../components/ScreenFrame'

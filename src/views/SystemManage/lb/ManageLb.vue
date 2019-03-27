@@ -1,39 +1,35 @@
-    <template>
+<template>
     <div class='manage-student-view'>
-        <!-- <Row class='sub-header' type='flex' justify='space-between' align='middle'> -->
-            <Modal v-model="showModal"  :mask-closable='false' :footer-hide="true" @on-cancel="close"  width="654">
-                <div slot="header" class="modal-header">
-                    <div>添加广告图</div>
-                </div>
-                <Form ref="lbForm" :model="lbData" :label-width="80" :rules="rules">
-                    <FormItem label="广告名称" prop="name">
-                        <Input v-model="lbData.name" placeholder="请输入广告名称"></Input>
+        <Modal v-model="showModal"  :mask-closable='false' :footer-hide="true" @on-cancel="close"  width="654">
+            <div slot="header" class="modal-header"><div>添加广告图</div></div>
+            <Form ref="lbForm" :model="lbData" :label-width="80" :rules="rules">
+                <FormItem label="广告名称" prop="name">
+                    <Input v-model="lbData.name" placeholder="请输入广告名称"></Input>
+                </FormItem>
+                    <FormItem label="显示位置" >
+                        <Input v-if="adutplace == '首页轮播'" placeholder="首页轮播" disabled></Input>
+                        <Input v-else placeholder="课程页轮播" disabled></Input>
+                </FormItem>
+                    <FormItem class="form-item-state"  label="状态" prop="state">
+                    <Select v-model="lbData.state"  placeholder="请选择状态">
+                    <Option :value="1" >上线</Option>
+                    <Option :value="-1" >下架</Option>
+                    <Option :value="0" >测试</Option>
+                </Select>
                     </FormItem>
-                     <FormItem label="显示位置" >
-                         <Input v-if="adutplace == '首页轮播'" placeholder="首页轮播" disabled></Input>
-                         <Input v-else placeholder="课程页轮播" disabled></Input>
-                    </FormItem>
-                      <FormItem class="form-item-state"  label="状态" prop="state">
-                     <Select v-model="lbData.state"  placeholder="请选择状态">
-                        <Option :value="1" >上线</Option>
-                        <Option :value="-1" >下架</Option>
-                        <Option :value="0" >测试</Option>
-                    </Select>
-                      </FormItem>
-                     <FormItem label="跳转页面" prop="redirect_url">
-                        <Input v-model="lbData.redirect_url" placeholder="请输入跳转页面"></Input>
-                    </FormItem>
-                     <FormItem label="上传广告" required>
-                         <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
-                                <span slot="file-require">* 只能上传 jpg/png 文件，建议尺寸1400*360px</span>
-                         </UploadPanel>
-                    </FormItem>
-                     <Row class='user-data' type='flex' justify='center' align='middle'>
-                            <Button style="margin-top:60px" type="primary" @click='submit("lbForm")'>保存</Button>
-                     </Row>
-                </Form>
-            </Modal>
-        <!-- </Row> -->
+                    <FormItem label="跳转页面" prop="redirect_url">
+                    <Input v-model="lbData.redirect_url" placeholder="请输入跳转页面"></Input>
+                </FormItem>
+                    <FormItem label="上传广告" required>
+                        <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
+                            <span slot="file-require">* 只能上传 jpg/png 文件，建议尺寸1400*360px</span>
+                        </UploadPanel>
+                </FormItem>
+                    <Row class='user-data' type='flex' justify='center' align='middle'>
+                        <Button style="margin-top:60px" type="primary" @click='submit("lbForm")'>保存</Button>
+                    </Row>
+            </Form>
+        </Modal>
         <Tables :is-serial=true @operation1="edit" @operation2="batchDownload" :column="columns1" :table-data="list" />
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page  @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>
@@ -58,15 +54,15 @@
         data(){
             return {
                 positionList:[
-                    {label:'点师成金APP首页轮播',value:'apphome'},
-                    {label:'点师成金APP首页广告',value:'apphomead'},
-                    {label:'官网首页',value:'web_home'},
-                    {label:'教资APP首页',value:'licence'},
-                    {label:'教资官网首页',value:'web_licence'}
+                    {label: '点师成金APP首页轮播',value: 'apphome'},
+                    {label: '点师成金APP首页广告',value: 'apphomead'},
+                    {label: '官网首页',value: 'web_home'},
+                    {label: '教资APP首页',value: 'licence'},
+                    {label: '教资官网首页',value: 'web_licence'}
                 ],
                 stateList:[
-                    {label:'上线中',value:1},
-                    {label:'已下线',value:0}
+                    {label: '上线中',value: 1},
+                    {label: '已下线',value: 0}
                 ],
                 current: 1,
                 total: null,
@@ -78,13 +74,13 @@
                     redirect_url: ''
                 },
                 lbData: {},
-                searchData:'',
+                searchData: '',
                 searchType:'phone',
                 showModal: false,
-                uploadData:{
-                    action:Config.ossHost,
-                    headers:{},
-                    multiple:false,
+                uploadData: {
+                    action: Config.ossHost,
+                    headers: {},
+                    multiple: false,
                     name:''
                 },
                 uploadConfig: {
@@ -157,7 +153,6 @@
             },
             setSubmit(){
                  this.lbData.position = this.type ? 1 : 2;
-                //  this.lbData.state = +this.lbData.state;
                  let url = this.isEdit ? '/platform/banner/modifyBanner' : '/platform/banner/addBanner'
                  postData(url,this.lbData).then((res) => {
                      if(res.res_code == 1){
@@ -216,7 +211,6 @@
         }
     }
 </script>
-
 <style scoped lang="scss">
      /deep/ .form-item-state>.ivu-form-item-label{
          letter-spacing: 9px;
@@ -257,12 +251,6 @@
         padding-top:10px;
     }
     .update-img>img { width: 120px !important}
-    // .ivu-input-wrapper{
-    //     width: calc(100% - 70px) !important;
-    // }
-    // .ivu-select{
-    //     width: calc(100% - 70px) !important;
-    // }
     .ivu-modal-header{
         background-color: #fff;
         border-radius: 6px 6px 0 0;
@@ -298,9 +286,6 @@
     .result{
         margin-top: 32px !important;
     }
-    // /deep/ .ivu-input-number{
-    //     width: calc(100% - 70px) !important;
-    // }
     /deep/ .ivu-table-cell{
         font-size: 16px;
         color: #657180;
@@ -314,13 +299,6 @@
     }
     /deep/ .ivu-input-number{
         width: calc(100% - 70px) !important;
-    }
-    .add-student-view .result .data-form {
-        // width: 550px;
-        // background-color: #ffffff;
-        // border: 1px solid #EBEBEC;
-        // border-radius: 6px;
-        // padding: 20px 0;
     }
     .add-student-view .result .data-form .user-data {
         margin-bottom: 15px;
@@ -347,16 +325,4 @@
     /deep/.ivu-modal-close .ivu-icon-ios-close{
         font-size: 48px !important;
     }
-    // /deep/.ivu-input{
-    //     width: 460px;
-    //     height: 34px;
-    //     background: #FFFFFF;
-    //     border: 1px solid #C8CCDD;
-    //     border-radius: 4px !important;
-    //     font-family: PingFangSC-Regular;
-    //     font-size: 16px !important;
-    //     color: #9397AD;
-    //     letter-spacing: 0;
-    //     padding-left: 15px;
-    // }
 </style>

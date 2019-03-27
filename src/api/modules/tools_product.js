@@ -1,6 +1,4 @@
 import api from './config'
-
-
 export function add_product(param) {
   let d = {
     organization_id: param.organization_id,
@@ -16,7 +14,6 @@ export function add_product(param) {
   }
   return api.post('product/product/add', d);
 }
-
 export function update_product(param) {
   let d = {
     organization_id: param.organization_id,
@@ -33,19 +30,6 @@ export function update_product(param) {
   }
   return api.post('/product/product/change', d);
 }
-
-
-export function get_project_list(data) {
-  return api.post('product/product/get_list', {
-    organization_id: data.organization_id,
-    state: data.state,
-    search: data.search,
-    page_size: data.page_size,
-    page_num: data.page_num,
-  })
-}
-
-
 export function get_product_info(id) {
   return api.post('product/product/getProductDetailById', {product_id:id})
 }

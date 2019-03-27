@@ -3,15 +3,12 @@
         <FormModal :detail-data="tableRow" @from-submit="saveHomework" :show-modal='show' :form-list="formList"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" uploadBtn>
         </FormModal>
-
         <screen :types="2" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
                 @handleClick="addTaskCategory" :btn-type="btnType"/>
-
         <data-list @edit='editHandler' @delete='deleteHandler'
                 class='data-list light-header' :table-data='dataList' :table-height='listHeight'
                 @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
                 @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
-
         <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -34,14 +31,7 @@
 
     export default {
         mixins: [Dialog, FormModalMixin, pageMixin, setAuthMixins],
-        components: {
-            'data-list': BaseList,
-            screen,
-            FormModal,
-            'text-editor': Editor,
-            'file-uploader': Uploader,
-            pageList
-        },
+        components: { 'data-list': BaseList,  screen, FormModal, 'text-editor': Editor, 'file-uploader': Uploader, pageList },
         data() {
             return {
                 curricumList: [],

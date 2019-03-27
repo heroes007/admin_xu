@@ -7,7 +7,6 @@
         <TabPane v-if='permissionCode5' label="讲师列表" name="item5"><LecturerList  v-if="pane5" :permission-item5="permissionItem5" /></TabPane>
     </Tabs>
 </template>
-
 <script>
   import Vue from 'vue'
   import ManagementList from './ManagementList/index'

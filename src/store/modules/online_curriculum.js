@@ -8,7 +8,7 @@ import {
     update_curriculum,
     change_curriculum_list
 } from '../../api/modules/tools_curriculum'
-import {get_catalog, set_catalog_orderby, delete_catalog} from '../../api/modules/tools_curriculum_catalog'
+import {get_catalog, delete_catalog} from '../../api/modules/tools_curriculum_catalog'
 import {add_video, update_video, add_chapter} from '../../api/modules/tools_video'
 
 const state = {
@@ -75,27 +75,6 @@ const actions = {
     },
     change_online_curriculum_chapter_orderby({commit}, params) {
         commit(types.ONLINE_CURRICULUM_CHAPTER_CHANGE_ORDERBY, params);
-    },
-    save_online_curriculum_chapter_orderby({commit}, param) {
-        commit(types.ONLINE_CURRICULUM_CHAPTER_ORDERBY_SAVING);
-        var params = [];
-        var curriculum_id = param.curriculum_id;
-        for (var i = 0; i < state.online_curriculum_list.length; i++) {
-            if (state.online_curriculum_list[i].curriculum_id == curriculum_id) {
-                for (var j = 0; j < state.online_curriculum_list[i].chapterList.length; j++) {
-                    params.push({
-                        catalog_id: state.online_curriculum_list[i].chapterList[j].catalog_id,
-                        orderby: state.online_curriculum_list[i].chapterList[j].orderby
-                    });
-                }
-                break;
-            }
-        }
-        set_catalog_orderby(params).then(res => {
-            if (res.data.res_code === 1) {
-                commit(types.ONLINE_CURRICULUM_CHAPTER_ORDERBY_SAVED, param);
-            }
-        })
     },
     reset_online_curriculum_chapter_orderby({commit}, params) {
         commit(types.ONLINE_CURRICULUM_RESET_CHAPTER_ORDERBY, params);

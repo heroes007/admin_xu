@@ -1,8 +1,8 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col  v-if="menushow" class='menu-bar'><side-menu/></Col>
-            <Col  v-if="!menushow" ><HideMenu /></Col>
+            <Col v-if="menushow" class='menu-bar'><side-menu/></Col>
+            <Col v-if="!menushow" ><HideMenu /></Col>
             <Col class='sub-view' :style="viewStyl">
                 <div class="hide-menu-btn" @click="hideMenu"><Icon class="hide-icon" :type="hideIcon" /></div>
                 <router-view />
@@ -14,10 +14,6 @@
     import SideMenu from '../components/SideMenu'
     import hideMenuMixins from './ProductManage/MainProduct/hideMenuMixins'
     import HideMenu from '../components/HideMenu'
-    import postData from 'src/api/postData'
-    import Vue from 'vue'
-    import { Base64 } from 'js-base64';
-
     export default{
         mixins: [hideMenuMixins],
         components:{ 'side-menu':SideMenu, HideMenu },
