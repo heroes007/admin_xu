@@ -71,14 +71,11 @@
     import BaseInput from '../../components/BaseInput'
     import uploadBtn from '../../components/UploadButton'
     import BaseList from '../../components/BaseList'
-    import {
-        add_test_detail,
-        update_test_detail,
-        delete_test_detail
-    } from '../../api/modules/tools_video_test'
+    import {add_test_detail, update_test_detail,} from '../../api/modules/tools_video_test'
     import {RemoveModal} from './mixins'
     import {MPop} from '../../components/MessagePop'
     import postData from '../../api/postData'
+    import newEditor from '../../components/NewEditor'
 
     export default {
         mixins: [RemoveModal, MPop],
@@ -91,7 +88,7 @@
         components: {
             'base-input': BaseInput,
             'data-list': BaseList,
-            uploadBtn
+            uploadBtn, newEditor
         },
         data() {
             return {

@@ -1,0 +1,96 @@
+<template>
+    <div class="box">
+        <div id="div"></div>
+    </div>
+</template>
+
+<script>
+    import axios from 'axios'
+    import E from 'wangeditor'
+    import {get_sign} from '../api/modules/ali_oss'
+    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
+
+    export default {
+        name: "NewEditor",
+        data() {
+            return {
+                resourse_url: '',
+                img_url: '',
+                host: 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com',
+                uploadConfig: {
+                    bucket: 'jhyl-static-file',
+                    dir: 'user_task',
+                    type: 1
+                },
+                content: '',
+                editor: ''
+            }
+        },
+        mounted() {
+            let vm = this
+            this.editor = new E('#div')
+            this.editor.customConfig.menus = [
+                'head',
+                'bold',
+                'underline',
+                'foreColor',
+                'image',
+                'justify',
+                'list',
+                'undo',
+            ]
+            this.editor.customConfig.customUploadImg = function (files, insert) {
+                vm.handleGetassignKey(files[0], insert)
+            }
+            this.editor.customConfig.showLinkImg = false
+            this.editor.customConfig.onblur = function (html) {
+                vm.$emit('get-content', html)
+            }
+            this.editor.create()
+        },
+        methods: {
+            handleUploadFile(form_data, url, insert) {
+                var vm = this;
+                axios({
+                    method: 'POST',
+                    url: url,
+                    data: form_data,
+                    onUploadProgress: function (progressEvent) {
+                        var progress = Math.round(progressEvent.lengthComputable ? progressEvent.loaded *
+                            100 / progressEvent.total : 0);
+                        vm.percentage = progress;
+                    },
+                }).then(res => {
+                    this.img_url = url + '/' + this.resourse_url;
+                    if(insert) {
+                        insert(this.img_url)
+                    }
+                });
+            },
+            handleGetassignKey(file_item, insert) {
+                var date = new Date();
+                date = date.toGMTString();
+                get_sign(file_item.type, date, this.uploadConfig.bucket, this.uploadConfig.dir, file_item.name, 'POST')
+                    .then(res => {
+                        if (res.data.res_code == 1) {
+                            const formData = new FormData();
+                            this.resourse_url = res.data.data.filename;
+                            formData.append('key', res.data.data.filename);
+                            formData.append('OSSAccessKeyId', res.data.data.accessKeyID);
+                            formData.append('success_action_status', '200');
+                            formData.append('signature', res.data.data.sign);
+                            formData.append('policy', res.data.data.policyBase64);
+                            formData.append('file', file_item);
+                            this.handleUploadFile(formData, encodeURI(ossHost), insert);
+                        }
+                    })
+            },
+        }
+    }
+</script>
+
+<style scoped>
+    .box{
+        min-width: 600px;
+    }
+</style>

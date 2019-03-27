@@ -110,7 +110,6 @@
                         </div>
                         <down-loading :formData="downList"/>
                     </FormItem>
-                    <div id="div"></div>
                 </div>
             </Form>
             <p v-if="modalText2" class="modal-text">* {{modalText2}}</p>
@@ -129,12 +128,10 @@
     import iconFont from '../assets/icons/icon/font.png'
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
-    import E from 'wangeditor'
-
-    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
+    import newEditor from './NewEditor'
 
     export default {
-        components: {ExchangeContent, uploadBtn, downLoading},
+        components: {ExchangeContent, uploadBtn, downLoading, newEditor},
         props: {
             modalFalse: {
                 type: Boolean,
@@ -228,9 +225,6 @@
                 ],
                 color: '',
                 modalText2: '',
-                imgUrl: '',
-                resultUrl: '',
-                host: 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com'
             }
         },
         watch: {
@@ -286,9 +280,6 @@
             },
             overImg(val) {
                 console.log(val);
-            },
-            handleColor() {
-                // this.$refs.color[0].$el.children[0].children[0].click()
             },
             handleDateShow(t) {
                 return t.type === 'switch-datetimerange' ? !this.formItem[this.handleField(t, 0)] : true
@@ -363,7 +354,7 @@
                 })
             },
             // 上传到oss上
-            handleUploadFile(form_data, url, insert) {
+            handleUploadFile(form_data, url) {
                 var vm = this;
                 axios({
                     method: 'POST',
@@ -376,9 +367,6 @@
                     },
                 }).then(res => {
                     this.img_url = url + '/' + this.resourse_url;
-                    if(insert) {
-                        insert(this.img_url)
-                    }
                 });
             },
             // 从oss上获取assignKey;
@@ -396,7 +384,7 @@
                             formData.append('signature', res.data.data.sign);
                             formData.append('policy', res.data.data.policyBase64);
                             formData.append('file', file_item);
-                            this.handleUploadFile(formData, encodeURI(ossHost), insert);
+                            this.handleUploadFile(formData, encodeURI(ossHost));
                         }
                     })
             },
@@ -421,29 +409,6 @@
                 this.$refs.inputStyle[0].style.color = val
             },
         },
-        mounted() {
-            // let vm = this
-            // var editor = new E('#div')
-            // editor.customConfig.menus = [
-            //     'head',
-            //     'bold',
-            //     'underline',
-            //     'foreColor',
-            //     'image',
-            //     'table',
-            //     'undo',
-            // ]
-            // // editor.customConfig.uploadImgServer = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com'
-            // editor.customConfig.customUploadImg = function (files, insert) {
-            //     // files 是 input 中选中的文件列表
-            //     // insert 是获取图片 url 后，插入到编辑器的方法
-            //
-            //     // 上传代码返回结果之后，将图片插入到编辑器中
-            //     vm.handleGetassignKey(files[0], insert)
-            // }
-            // editor.customConfig.showLinkImg = false
-            // editor.create()
-        }
     }
 </script>
 <style lang="less" scoped>
