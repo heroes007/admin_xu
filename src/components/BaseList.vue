@@ -338,7 +338,7 @@
                     }
                   }
                 }),
-                h('div',{style:{display:'flex',justifyContent:'center',flexWrap: 'nowrap',alignItems: 'center', color: '#4098FF',marginTop: '10px' }},[
+                it.listExpandBtn ? h('div',{style:{display:'flex',justifyContent:'center',flexWrap: 'nowrap',alignItems: 'center', color: '#4098FF',marginTop: '10px' }},[
                   h('Icon',{props: { type: 'md-add', size: 30},
                   on: {
                         click: () => {  this.$emit('add-off-line-courses', params.row) }
@@ -348,8 +348,9 @@
                           click: () => {  this.$emit('add-off-line-courses', params.row) }
                       }
                     },'添加课程')
-                 ])
+                 ]) : ''
               ]);
+
             }
           }
         })

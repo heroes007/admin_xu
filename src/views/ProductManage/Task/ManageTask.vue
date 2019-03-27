@@ -5,12 +5,12 @@
         </FormModal>
 
         <screen :types="2" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
-                @handleClick="addTaskCategory" :btnType="true"/>
+                @handleClick="addTaskCategory" :btn-type="btnType"/>
 
         <data-list @edit='editHandler' @delete='deleteHandler'
-               class='data-list light-header' :table-data='dataList' :table-height='listHeight'
-               @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
-               @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
+                class='data-list light-header' :table-data='dataList' :table-height='listHeight'
+                @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
+                @statistics="statistics" :column-formatter-data='listColumnFormatterData'></data-list>
 
         <page-list :current="current" :total="pageTotal" :page-size="pageSize" @page-list="pageList"/>
     </div>
@@ -22,7 +22,6 @@
     import {doTimeFormat} from '../../../components/Util'
     import {mapActions, mapState} from 'vuex'
     import {Config} from '../../../config/base'
-    import taskHeadData from './consts'
     import screen from '../../../components/ScreenFrame'
     import FormModal from '../../../components/FormModal'
     import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
@@ -31,9 +30,10 @@
     import pageMixin from '../../mixins/pageMixins'
     import pageList from '../../../components/Page'
     import postData from '../../../api/postData'
+    import setAuthMixins from '../setAuthMixins'
 
     export default {
-        mixins: [Dialog, FormModalMixin, pageMixin],
+        mixins: [Dialog, FormModalMixin, pageMixin, setAuthMixins],
         components: {
             'data-list': BaseList,
             screen,
@@ -92,7 +92,16 @@
                 return this.$store.state.task.total;
             },
             dataHeader() {
-                return taskHeadData
+                let btnList = this.btnType ? [{ text: '编辑',  param: 'edit' }, { text: '删除',  param: 'delete' }] : []
+                let arr = [
+                        { sort:true,  label: '序号', minWidth: 50, },
+                        { prop: 'title', label: '作业名称', minWidth:200, align: 'left' },
+                        { prop: 'curriculum_title', label: '绑定课程', minWidth:200,  align: 'left' },
+                        { prop: 'course', label: '类型', minWidth: 100 },
+                        { label: '操作', minWidth: 260, align:"center",
+                            groupBtn: [{  text: '批阅', param: 'marking' },...btnList]
+                        }]
+                return arr
             },
             listColumnFormatter() {
                 return [{
@@ -198,16 +207,16 @@
                 return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
             },
             saveHomework(val) {
+                val.page = {page_size: this.pageSize, page_num: this.current}
+                val.keyword = this.keyword;
+                val._fn = () => {
+                    this.show = false;
+                    this.$Message.success(this.modalTitle.slice(0,2)+'成功');
+                }
                 if (this.modalTitle == "添加作业") {
-                 (async () => {
-                     await this.$store.dispatch('add_task_category', val);
-                     await this.initData()
-                 })()
+                   this.$store.dispatch('add_task_category', val);
                 } else {
-                 (async () => {
-                     await  this.$store.dispatch('edit_task_category', val);
-                     await this.initData()
-                  })()
+                   this.$store.dispatch('edit_task_category', val);
                 }
             },
             initData() {

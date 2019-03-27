@@ -1,6 +1,6 @@
 <template>
     <div class='manage-online-course'>
-        <screen :types="1" sizeTitle1="线上课总数" placehodle="搜索线上课程" :sizeNum1="pageTotal" btnName="添加课程" @inputChange="inputChange" @handleClick="handleClick" :btn-type="true"/>
+        <screen :types="1" sizeTitle1="线上课总数" placehodle="搜索线上课程" :sizeNum1="pageTotal" btnName="添加课程" @inputChange="inputChange" @handleClick="handleClick" :btn-type="btnType"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler'
                    @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList' :header-data='dataHeader'
                    :column-formatter='listColumnFormatter' :column-formatter-data='listColumnFormatterData' :table-height='listHeight'>
@@ -19,9 +19,9 @@
   import screen from '../../../components/ScreenFrame'
   import pageMixin from '../../mixins/pageMixins'
   import pageList from '../../../components/Page'
-
+  import setAuthMixins from '../setAuthMixins'
   export default {
-    mixins: [Dialog, pageMixin],
+    mixins: [Dialog, pageMixin, setAuthMixins],
     data() {
       return {
         dirty: false,
@@ -31,6 +31,9 @@
     },
     computed: {
       dataHeader() {
+        let auth = this.btnType
+        let d = [{ text: '添加章节',  param: 'editChapter'  }, { text: '编辑课程', param: 'editCourse' },{ text: '删除', param: 'deleteCourse' }]
+        let btnList = auth ? d : [{ text: '查看',  param: 'editChapter'  }]
         return [{
           sort: true,
           label: '序号',
@@ -69,31 +72,7 @@
           label: '操作',
           width: 320,
           align: 'center',
-            groupBtn: [{
-            text: '添加章节',
-            param: 'editChapter'
-          }, {
-            text: '编辑课程',
-            param: 'editCourse',
-            // hoverShow: true
-          },
-          // {
-          //   text: 'md-arrow-dropup',
-          //   param: 'moveUp',
-          //   // hoverShow: true,
-          //   isIcon: true
-          // }, {
-          //   text: 'md-arrow-dropdown',
-          //   param: 'moveDown',
-          //   // hoverShow: true,
-          //   isIcon: true
-          // },
-          {
-            text: '删除',
-            param: 'deleteCourse',
-            // hoverShow: true,
-            // isIcon: true
-          }]
+            groupBtn: btnList
         }]
       },
       listColumnFormatter() {

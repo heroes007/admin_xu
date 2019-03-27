@@ -1,6 +1,6 @@
 <template>
     <div class='manage-online-course-chapter'>
-        <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle" :btnType="true"/>
+        <screen :types="6" btn-name="添加章节" @handleClick="handleClick" @handleBack="handleBack" :title="screenTitle" :btn-type="btnType"/>
         <div class='chapter-container'>
             <div class='scroll-wrap'>
                 <div class='chapter-list'>
@@ -15,9 +15,9 @@
                                 <div style="margin-right: 25px;">
                                     <Button v-if='showListState[index] == 0' type="text"  @click="toggleListShow(index,item)">展开</Button>
                                     <Button v-else-if='showListState[index] == 1' type="text"  @click="toggleListShow(index)">收起</Button>
-                                    <Button type='text' @click="addVideo(item)">添加视频</Button>
-                                    <Button type='text' @click="addTest(item, index)">添加测验</Button>
-                                    <Button type="text" @click="deleteText(item, index)">删除</Button>
+                                    <Button v-if="btnType" type='text' @click="addVideo(item)">添加视频</Button>
+                                    <Button v-if="btnType" type='text' @click="addTest(item, index)">添加测验</Button>
+                                    <Button v-if="btnType" type="text" @click="deleteText(item, index)">删除</Button>
                                 </div>
                             </Row>
                         </div>
@@ -51,9 +51,10 @@
   import {Config} from '../../../config/base'
   import {doSortFormatCatalogList} from '../../../components/Util'
   import updateVideoGroupName from '../../../api/modules/onlineCourseChapter'
+  import setAuthMixins from '../setAuthMixins'
 
   export default {
-    mixins: [Dialog],
+    mixins: [Dialog, setAuthMixins],
     components: {'data-list': BaseList, screen},
     data() {
       return {
@@ -73,18 +74,19 @@
     },
     computed: {
       dataHeader() {
-        return [
-          {label: '顺序', width: 130, prop: 'node_number'},
-          {prop: 'group_name', label: '小节名称', align: 'left'},
-          // {prop: 'create_time', label: '创建时间', width: 200},
-          {
-            label: '操作', width: 450, groupBtn: [
+        let d =           {
+            label: '操作', width: 450, groupBtn:[
               {text: '编辑', param: 'edit'},
               {text: '上移', param: 'moveUp' },
               {text: '下移', param: 'moveDown' },
               {text: '删除', param: 'delete' }]
-          }
+        };
+        let da = [
+          {label: '顺序', width: 130, prop: 'node_number'},
+          {prop: 'group_name', label: '小节名称', align: 'left'},
         ]
+        if(this.btnType) da.push(d)
+        return da
       },
       listColumnFormatter() {
         return [

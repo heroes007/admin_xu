@@ -1,7 +1,7 @@
 <template>
     <div :style="`height: ${windowHight}px`" class="box">
         <div class="content">
-            <Card class="card" @click.native="handleTabAdd">
+            <Card v-if="btnType" class="card" @click.native="handleTabAdd">
                 <img class="card-img" src="../../../assets/icons/icon/addIcon.png" alt="">
                 <div class="card-add">添加主题</div>
             </Card>
@@ -18,9 +18,9 @@
                 </div>
                 <div class="card-row mt20">
                     <div class="card-end-time">创建时间：{{t.create_time}}</div>
-                    <Button class="card-end-btn r0"  type="text" ghost @click="handleEdit(t)">编辑</Button>
-                    <Button class="card-end-btn r48" type="text" ghost @click="handleSee(t)">查看</Button>
-                    <Button class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
+                    <Button v-if="btnType" class="card-end-btn r0"  type="text" ghost @click="handleEdit(t)">编辑</Button>
+                    <Button class="card-end-btn"  :class="btnType ? 'r48' : 'r0'" type="text" ghost @click="handleSee(t)">查看</Button>
+                    <Button v-if="btnType" class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
                 </div>
         </Card>
         </div>
@@ -32,9 +32,11 @@
   import formModal from '../../../components/FormModal'
   import postData from '../../../api/postData'
   import postMixins from '../../mixins/postMixins.js'
+  import setAuthMixins from '../setAuthMixins'
+
   export default {
     name: "ManageOfflineList",
-    mixins: [postMixins],
+    mixins: [postMixins, setAuthMixins],
     data() {
       return {
         list: [],
