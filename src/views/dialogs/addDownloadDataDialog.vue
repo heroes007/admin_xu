@@ -160,11 +160,6 @@ export default {
             this.form.url_name = '';
             this.isupdata = true;
         },
-        getMyselflist(){
-            // postData('/product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
-            //    if(res) this.curricumList = res.data
-            // })
-        },
         typeChange(val){
             if(val == 'online') {
               postData('product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
@@ -178,7 +173,6 @@ export default {
         }
     },
     mounted() {
-        this.getMyselflist()
         var vm = this;
         this.form._fn = function() {
             vm.handleClose();
