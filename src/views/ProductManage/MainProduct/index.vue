@@ -1,12 +1,8 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col v-if="menushow" class='menu-bar'>
-                <SideMenu/>
-            </Col>
-            <Col v-if="!menushow">
-                <HideMenu/>
-            </Col>
+            <Col v-if="menushow" class='menu-bar'><SideMenu/></Col>
+            <Col v-if="!menushow"><HideMenu/></Col>
             <Col class='sub-view' :style="viewStyl">
                 <div class="hide-menu-btn" @click="hideMenu">
                     <Icon class="hide-icon" :type="hideIcon"/>
@@ -16,7 +12,6 @@
         </Row>
     </div>
 </template>
-
 <script>
   import SideMenu from '../../../components/SideMenuForProject'
   import online from '../Online/ManageOnlineCourse'
@@ -25,7 +20,6 @@
   import course from '../Course/ManageCourseDownloadData'
   import HideMenu from '../../../components/HideMenu.vue'
   import hideMenuMixins from './hideMenuMixins'
-
   export default {
     name: "MainProduct",
     components: {SideMenu, online, offline, task, course, HideMenu},
@@ -37,17 +31,14 @@
     body {
         background-color: #333333;
     }
-
     .dashboard-view {
         box-sizing: border-box;
         width: 100%;
         height: 100%;
         background-color: #ffffff;
-
         .col-container {
             height: 100%;
             flex-wrap: nowrap !important;
-
             .menu-bar {
                 height: 100%;
                 max-width: 260px;
@@ -57,13 +48,11 @@
                 box-shadow: 2px 0 10px 0 rgba(51, 51, 51, 0.06);
                 overflow-y: auto;
             }
-
             .sub-view {
                 background-color: #ffffff;
                 position: relative;
                 min-height: 100vh;
                 padding-bottom: 10px;
-
                 .hide-menu-btn {
                     z-index: 1000;
                     position: absolute;
@@ -80,7 +69,6 @@
                     border-bottom-right-radius: 2px;
                     display: flex;
                     align-items: center;
-
                     .hide-icon {
                         font-size: 14px;
                         color: #fff

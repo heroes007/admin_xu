@@ -9,7 +9,6 @@
     import E from 'wangeditor'
     import {get_sign} from '../api/modules/ali_oss'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
-
     export default {
         name: "NewEditor",
         data() {

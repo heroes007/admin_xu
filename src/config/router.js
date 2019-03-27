@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import iView from 'iview'
-
 const Login = () => import('../views/Login');
 const NotFound = () => import('../views/notfound');
 const DashBoard = () => import('../views/DashBoard');
@@ -18,7 +17,6 @@ const UsageRecord = () => import('../views/SystemManage/ExchangeCode/UsageRecord
 const MarkingHomework = () => import('../views/ProductManage/Task/MarkingHomework/index')
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
 Vue.use(VueRouter);
-
 // 页面路由
 const routes = [
   {
@@ -112,11 +110,9 @@ const routes = [
     component: NotFound
   }
 ];
-
 // 创建一个路由对象用于管理页面的路由
 const router = new VueRouter({
   mode: 'history',
   routes: routes
 });
-
 export default router;

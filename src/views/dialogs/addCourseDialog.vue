@@ -5,7 +5,6 @@
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
                     <Form class="add-course-form" :label-position="labelPosition" :label-width="100" :rules="ruleValidate" ref="form" :model="form">
-                        <!--<Row>-->
                             <Col>
                                 <FormItem label="课程名称" prop="title">
                                     <Input v-model="form.title" placeholder="请输入课程名称"></Input>

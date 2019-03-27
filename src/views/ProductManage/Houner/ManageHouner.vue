@@ -183,8 +183,6 @@
     .card-houner-desc{
         margin-left: 10px;
         width: 60%;
-        /*overflow: hidden;*/
-        /*overflow-y: auto;*/
     }
     .houner-row-content{
         margin-top: 10px;

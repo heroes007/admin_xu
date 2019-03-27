@@ -14,7 +14,6 @@
                       <p>{{t.id}}</p>
                     </Col>
                     <Col span="13" class="al-right" >
-                        <!-- -1下架 0未上架 1测试 2上架 3推荐 -->
                         <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.stateText}}</div>
                     </Col>
                   </Row>
@@ -33,7 +32,6 @@
          <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
-
 <script>
   import screen from '../../../components/ScreenFrame'
   import postData from '../../../api/postData'
@@ -170,16 +168,13 @@
                 height: 60px;
             }
         }
-
         .find-by-term {
             padding-top: 22px;
             text-align: left;
             margin-left: 20px;
-
             /deep/ .ivu-input {
                 width: 200px;
             }
-
             button {
                 background: #3DAAFF;
                 border: 1px solid #3DAAFF;
@@ -188,31 +183,24 @@
                 height: 36px;
             }
         }
-
         .data-container {
             background-color: #ffffff;
             margin: 0 20px 20px;
-
             .list {
                 .data-header {
                     height: 50px;
-
                     .Col {
                         line-height: 50px;
                     }
                 }
-
                 .data-item {
                     height: 40px;
                     border-top: 1px solid #cecece;
-
                     &.bg-gray {
                         background-color: #fbfbfb;
                     }
-
                     .Col {
                         line-height: 40px;
-
                         p {
                             margin: 0;
                             display: -webkit-box;
@@ -223,7 +211,6 @@
                         }
                     }
                 }
-
                 .pager {
                     margin: 30px 0;
                     padding-right: 40px;

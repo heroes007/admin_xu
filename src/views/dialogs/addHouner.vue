@@ -43,7 +43,6 @@
         </base-input>
     </Modal>
 </template>
-
 <script>
   import BaseInput from '../../components/BaseInput'
   import UploadButton from '../../components/UploadButton'
@@ -56,7 +55,6 @@
   import {doTimeFormat} from '../../components/Util'
   import {MPop} from '../../components/MessagePop'
   import postData from 'src/api/postData';
-
   export default {
     mixins: [RemoveModal, MPop],
     props: {
@@ -268,58 +266,46 @@
         background-color: #ffffff !important;
         padding: 22px 16px;
     }
-
     /deep/ .ivu-modal-header-inner {
         font-family: PingFangSC-Regular;
         font-size: 20px !important;
         color: #474C63 !important;
         letter-spacing: 0;
     }
-
     /deep/ .ivu-modal-close .ivu-icon-ios-close {
         color: #9397AD !important;
         font-size: 42px !important;
     }
-
     /deep/ .ivu-form-item {
         margin-bottom: 20px;
     }
-
     /deeep/ .upload-panel .upload-space {
         height: 250px !important;
     }
-
     /deep/ .ivu-modal-body {
         padding: 30px 50px;
     }
-
     .btns {
         text-align: center;
-
         .next-btn {
             width: 170px;
         }
     }
-
     .upload-field {
         border: none;
-
         /deep/ .file-name-field {
             margin-bottom: 10px;
         }
     }
-
     .course-list {
         height: 640px;
         overflow-y: auto;
         text-align: left;
     }
-
     .course-item {
         display: flex;
         flex-direction: column;
     }
-
     .course-option {
         text-overflow: ellipsis;
         overflow: hidden;
@@ -327,22 +313,18 @@
         font-size: 14px;
         line-height: 28px;
     }
-
     .btns {
         margin-top: 30px;
         position: relative;
-
         /deep/ .ivu-form-item-content {
             display: flex;
             justify-content: center;
         }
     }
-
     .pre-btn {
         position: absolute;
         left: 0;
     }
-
     .public-btn {
         width: 170px;
     }

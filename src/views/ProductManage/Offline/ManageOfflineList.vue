@@ -124,8 +124,6 @@
         height: 100%;
         overflow-y: auto;
         align-content: start;
-        /*justify-content: center;*/
-
         .card {
             width: 440px;
             height: 230px;
