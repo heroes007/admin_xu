@@ -21,12 +21,10 @@ const state = {
     newVideoTestId: 0,
     stateList: [{id: 1, name: '上架'}, {id: 0, name: '测试'}, {id: -1, name: '下架'}]
 }
-let project_id = null
 
 // actions
 const actions = {
     get_online_curriculum_list({commit}, param) {
-        // project_id = param.project_id
         commit(types.ONLINE_CURRICULUM_LIST_LOADING);
         get_list(param.page, param.keyword).then(function (res) {
             if (res.data.res_code === 1) {

@@ -117,7 +117,6 @@
         query_state_list: state => state.online_curriculum.stateList,
         query_teacher_list: state => state.teacher.teacher_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
-        project_id: state => state.project.select_project_id,
         result_msg1: state => state.offline_curriculum.result_msg,
         curriculum_data_list: state => state.download_data.course_download_data_list
       }),
@@ -166,12 +165,6 @@
       selectCurriculumData(id) {
         this.form.data_center_id = id;
         this.cancelAddData();
-      },
-      showAddData() {
-        this.newData.name = '';
-        this.newData.download_url = '';
-        this.newData.show = true;
-        this.form.project_id = this.project_id;
       },
       cancelAddData() {
         this.newData.show = false;

@@ -142,11 +142,7 @@
       }
     },
     mounted() {
-      // console.log(this.payload, 'payload')
-      // this.get_role_list();
-        // this.get_curriculum_donwload_data_list({project_id: this.project_id});
       this.$store.commit('get_task_state', false)
-
       postData('product/homework/mark_get_list',{
             student_homework_id: this.payload.row.id
         }).then(res => {
@@ -164,7 +160,6 @@
         query_state_list: state => state.online_curriculum.stateList,
         query_teacher_list: state => state.teacher.teacher_list,
         query_online_course_list: state => state.online_curriculum.online_curriculum_list,
-        project_id: state => state.project.select_project_id,
         result_msg1: state => state.offline_curriculum.result_msg,
         curriculum_data_list: state => state.download_data.course_download_data_list
       }),
@@ -225,12 +220,6 @@
         this.form.data_center_id = id;
         this.cancelAddData();
       },
-      showAddData() {
-        this.newData.name = '';
-        this.newData.download_url = '';
-        this.newData.show = true;
-        this.form.project_id = this.project_id;
-      },
       cancelAddData() {
         this.newData.show = false;
       },
@@ -246,32 +235,6 @@
       },
       handleClose() {
         this.addCourseDialogVisible = false;
-      },
-      handleNextStep(idx) {
-        this.dialogIndex = idx
-        if (this.query_online_course_list.length === 0) this.get_online_curriculum_list(this.project_id);
-      },
-      handleSubmit() {
-        this.form.img_url_arr = {
-          'default': this.form.img_default,
-          '3_8': this.form.img_3_8
-        };
-        this.form.project_id = this.project_id;
-        this.form.orderby = this.query_online_course_list.length ? this.query_online_course_list[this.query_online_course_list.length - 1].orderby + 1 : 1;
-        var vm = this;
-        this.form._fn = function () {
-          vm.handleClose();
-          vm.showPop('保存成功！', 1000);
-        };
-        if (this.top_course_list.length > 0 && this.checked_top_courses.length > 0) {
-          var preList = [];
-          for (var i = 0; i < this.top_course_list.length; i++) {
-            preList.push(this.top_course_list[i].curriculum_id);
-          }
-          this.form.pre_curriculum_ids = preList;
-        }
-        if (!this.payload) this.add_online_curriculum(this.form);
-        else this.edit_online_curriculum({curriculum_id: this.payload.curriculum_id, data: this.form});
       },
       handleRemove(file, fileList) {},
       handlePreview(file) {},

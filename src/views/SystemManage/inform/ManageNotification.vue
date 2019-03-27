@@ -45,7 +45,6 @@
                 notificationList: state => state.notification.notification_list,
                 studentList: state => state.message.student_list,
                 userInfo: state => state.auth.userInfo,
-                projectId: state => state.project.select_project_id,
                 doUpdate: state => state.message.select_msg_update
             }),
             isLoading() {
@@ -214,7 +213,7 @@
             }
         },
         mounted() {
-            this.get_message_student_list(this.projectId);
+            // this.get_message_student_list();
         }
     }
 

@@ -35,7 +35,7 @@ export function update_curriculum(data) {
         unlock_type: data.unlock_type,
     });
 }
-export function delete_curriculum(id,project_id) {
+export function delete_curriculum(id) {
     return api.post('product/curriculum_online/delete',{
       curriculum_online_id:id});
 }

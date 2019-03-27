@@ -69,7 +69,6 @@ export default {
     },
     computed:{
          ...mapState({
-            projectId:state => state.project.select_project_id,
             course_download_data_list: state => state.download_data,
             }),
         dataFilters(){
@@ -82,7 +81,6 @@ export default {
             addDownloadDataDialog: true,
             curricumList: [],
             form: {
-                project_id:1,
                 name:'',
                 subject_id:null,
                 grade_id: null,
@@ -178,7 +176,6 @@ export default {
             vm.handleClose();
             vm.showPop('添加成功！',1000);
         };
-        this.form.project_id = this.projectId;
         if(this.form.state === 0){
             this.form.grade_id = 0;
             this.form.subject_id = 0;

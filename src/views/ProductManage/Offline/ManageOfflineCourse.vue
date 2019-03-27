@@ -245,11 +245,6 @@
       handleShowDialog() {
         this.handleSelModal(types.ADD_QUESTION);
       },
-      reRenderListHandler(v) {
-        if (this.$store.state.project.project_list.length > 0) {
-          this.$store.dispatch('get_offline_term_list', { project_id: v, last_count: 0 });
-        }
-      },
       editChapterHandler(index) {
         this.$router.push({ name: 'online-course-chapter', params: { id: '1' } })
       },
