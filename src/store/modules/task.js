@@ -101,26 +101,9 @@ const mutations = {
     },
     [types.TASK_CATEGORY_LIST_LOADED](state, params) {
         state.total = params.count
-        // let first = {
-        //     id:0,
-        //     name:"未选择",
-        //     orderby:0,
-        //     task_list:[],
-        //     type:0
-        // }
-        // for (var i = 0; i < params.length; i++) {
-        //     params[i].task_list = [];
-        // }
-        // params.unshift(first);
-
         for (let i = 0; i < params.data.length; i++) {
-            if (params.data[i].type == "online") {
-                params.data[i].course = "线上课"
-            }else{
-                params.data[i].course = "线下课"
-            }
+            params.data[i].course = params.data[i].type == "online" ? '线上作业' : '线下作业'
         }
-
         state.task_category_list = params.data || state.task_category_list;
         state.showLoading = false;
     },
