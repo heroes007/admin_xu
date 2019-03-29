@@ -3,8 +3,8 @@
         <FormModal :detail-data="tableRow" @from-submit="saveHomework" :show-modal='show' :form-list="formList"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" uploadBtn>
         </FormModal>
-        <screen :types="2" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
-                @handleClick="addTaskCategory" :btn-type="btnType"/>
+        <screen selectType2 :select2="selectList" :types="4" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
+              @selectChange2="selectChange"  @handleClick="addTaskCategory" :btn-type="btnType"/>
         <data-list @edit='editHandler' @delete='deleteHandler'
                 class='data-list light-header' :table-data='dataList' :table-height='listHeight'
                 @marking="marking" :header-data='dataHeader' :column-formatter='listColumnFormatter'
@@ -36,6 +36,11 @@
             return {
                 curricumList: [],
                 dirty: false,
+                selectList: [
+                    {id: '', title:'全部作业'},
+                    {id: 'online', title:'线上作业'},
+                    {id: 'underline', title:'线下作业'}
+                ],
                 loadingInstance: null,
                 selectCategory: 12,
                 selectedType: 1,
@@ -46,6 +51,7 @@
                 modalTitle: '',
                 tableRow: {},
                 tableRowData: {},
+                type: '',
                 formList: [
                     {type: 'input', name: '作业名称', field: 'realname'},
                     {
@@ -213,8 +219,13 @@
             initData() {
               this.$store.dispatch('get_task_category_list', {
                     page: {page_size: this.pageSize, page_num: this.current},
-                    keyword: this.keyword
+                    keyword: this.keyword,
+                    type: this.type
                 })
+            },
+            selectChange(v){
+                this.type = v;
+                this.initData()
             },
             getListLine(){
               postData('product/curriculum_online/pulldown_get_list', {

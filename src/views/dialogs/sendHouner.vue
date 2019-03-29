@@ -4,8 +4,9 @@
         <base-input @closedialog="handleClose">
             <Row  slot="header" class='search-bar' type='flex' align='middle'>
                 <Select @on-change="searchType" v-model="complete_state" placeholder="请选择" style="width: 165px;margin-left: 20px;">
-                    <Option label="已完成培训" value="1"></Option>
-                    <Option label="未完成培训" value="0"></Option>
+                    <Option label="全部" value="''"></Option>
+                    <Option label="已完成培训" :value="1"></Option>
+                    <Option label="未完成培训" :value="0"></Option>
                 </Select>
                 <Input @on-change="search"  placeholder="请输入用户名" v-model="keyword"> <Icon type="ios-search" slot="prefix" /> </Input>
             </Row>
@@ -101,7 +102,7 @@
           page_num: this.current,
           keyword: this.keyword,
           honour_id: this.payload.row.id,
-          complete_state: this.complete_state ? +this.complete_state : ''
+          complete_state: this.complete_state
         };
         postData('product/get_product_students',d).then((res) => {
           this.list = res.data.list
