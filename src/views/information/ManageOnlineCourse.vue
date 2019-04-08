@@ -1,6 +1,7 @@
 <template>
     <div class='manage-online-course'>
-       <header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/> 
+      <!-- <header-component title="线上课" :type='1' :showAdd='true' @addCourse='addCourseHandler' @reRenderList="reRenderListHandler"/> -->
+      <screen :types="1" size-title1="线上课总数" :size-num1="12" btn-name="添加线上课" @handleClick="addCourseHandler" @reRenderList="reRenderListHandler"/>
         <data-list @editChapter='editChapterHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler'
                    @moveDown='moveDownHandler'
                    @deleteCourse='deleteCourseHandler' class='data-list light-header' :table-data='dataList'
@@ -19,6 +20,7 @@
   import {Dialog} from '../dialogs/index';
   import {ADD_COURSE} from '../dialogs/types'
   import {Config} from '../../config/base'
+  import screen from '../../components/ScreenFrame'
 
   export default {
     mixins: [Dialog],
@@ -275,7 +277,8 @@
     components: {
       'header-component': Header,
       'data-list': BaseList,
-      'save-order': SaveOrder
+      'save-order': SaveOrder,
+      screen
     }
   }
 

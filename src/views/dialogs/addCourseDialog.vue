@@ -5,8 +5,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form  :model="formLeft" class="add-course-form" :label-position="labelPosition" :label-width="100">
-                    
+                    <Form  :model="formLeft"  class="add-course-form" :label-position="labelPosition" :label-width="100">
                         <!--<Row>-->
                             <Col>
                                 <FormItem label="课程名称">

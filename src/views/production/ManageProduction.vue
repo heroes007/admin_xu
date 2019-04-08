@@ -1,7 +1,7 @@
 <template>
     <div class='manage-production-view'>
         <screen :types="4" size-title1="管理总数" :size-num1="23" btn-name="添加管理" :select1="selectList" :select2="selectList"
-                @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
+                @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="addProductionHandler" @addCert="addCertificate"/>
         <Row style="padding-top:20px;display:flex;flex-wrap:wrap;">
              <Card @click.native="handleJump" style="min-width:350px;min-height:127px;margin:20px;" v-for="(item, index) in cardList" :key="index">
                   <Row>
@@ -84,9 +84,9 @@
       inputChange(val){
         console.log(val)
       },
-      handleClick(){
-        console.log('open modal')
-      },
+      // handleClick(){
+      //   console.log('open modal')
+      // },
       handleJump(){
         let routeData = this.$router.resolve({
           query: '',
@@ -95,12 +95,12 @@
         });
         window.open(routeData.href, "_blank")
       },
-      // addProductionHandler() {
-      //   this.handleSelModal(ADD_PRODUCTION);
-      // },
-      // addCertificate(){
-      //
-      // },
+      addProductionHandler() {
+        this.handleSelModal(ADD_PRODUCTION);
+      },
+      addCertificate(){
+      
+      },
       // editHandler(index, row) {
       //   this.handleSelModal(ADD_PRODUCTION, row);
       // },
