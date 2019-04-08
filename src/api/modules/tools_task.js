@@ -1,11 +1,12 @@
 import api from './config'
-export function get_category_list(page, keyword) {
+export function get_category_list(page, keyword, type) {
     let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
     return api.post('/product/homework/get_list',{
         product_id:id,
         page_size: page.page_size,
         page_num: page.page_num,
         search: keyword,
+        type: type
     });
 }
 export function create_category(params) {
