@@ -42,11 +42,11 @@ const routes = [
         name: 'product-manage',
         component: ProductManage
       },
-      // {
-      //   path: 'exchange-code',
-      //   name: 'exchange-code',
-      //   component: ExchangeCode
-      // },
+      {
+        path: 'exchange-code',
+        name: 'exchange-code',
+        component: ExchangeCode
+      },
       // 兑换码使用记录
       // {
       //   path: ':id/usage-record',

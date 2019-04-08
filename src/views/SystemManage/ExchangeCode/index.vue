@@ -1,24 +1,28 @@
 <template>
     <div>
-        <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+        <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate='rules' @from-submit="fromSubmit" @change-list="changeList"/>
         <screen btnType :types="4" size-title1="兑换码总数" placehodle="搜索兑换码" :size-num1="23" btn-name="添加兑换码" :select1="selectList"
                 size-title2="付费学员" :size-num2="14"   @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
-        <Tables :is-serial=true @operation1="batchDownload" @operation2="edit" @operation3="useRecords" @operation4="immediateFailure"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
-   </div>
+        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="batchDownload" @operation2="edit" @operation3="useRecords" @operation4="immediateFailure"  @table-swtich="swtichChange" :column="columns1" :table-data="list" />
+        <!--<page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>-->
+    </div>
 </template>
 <script>
   import Tables from '../../../components/tables.vue'
   import FormModal from '../../../components/FormModal.vue'
   import screen from '../../../components/ScreenFrame'
-  import { mapState } from 'vuex'
   import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
+  import postData from '../../../api/postData'
+  import pageMixin from '../../mixins/pageMixins.js'
+
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen },
-    mixins: [FormModalMixin],
+    mixins: [FormModalMixin, pageMixin],
     data (){
         return{
             show: false,
+            tabelHeight: null,
             modalTitle: '',
             tableRow: {},
             tableRow1: {
@@ -34,45 +38,53 @@
             {
                 title: '兑换码名称',
                 key: 'realname',
+                minWidth: 100
             },{
                 title: '类型',
                 key: 'jurisdiction',
+                minWidth: 100
             },
             {
                 title: '兑换产品',
                 key: 'product',
                 align: 'left',
+                minWidth: 100
             },
             {
                 title: '数量',
                 key: 'num',
+                minWidth: 100
             },
              {
                 title: '已使用',
                 key: 'already_used',
+                 minWidth: 100
             },
             {
                 title: '生效时间',
                 key: 'create_time',
                 align: 'left',
+                minWidth: 100
             },
              {
                 title: '失效时间',
                 key: 'failure_time',
                 align: 'left',
+                 minWidth: 100
             },
             {
                 title: '状态',
                 key: 'state1',
                 slot: 'state-item',
-                stateKey: 'state'
+                stateKey: 'state',
+                minWidth: 100
             },
             {
                 title: '操作',
-                width: 420,
+                minWidth: 260,
                 slot: 'operation',
                 operation_state: true,
-                operation: [['批量下载','operation1'], ['编辑','operation2'], ['使用记录','operation3'], [['立即失效','立即生效'],'operation4']],
+                operation: [['查看','operation1'], ['编辑','operation2'], ['下载','operation3']]
             }],
             list: [
                 {
@@ -101,12 +113,12 @@
                 }
             ],
             formList: [
-                { type: 'input', name: '兑换姓名',  field: 'realname'},
-                { type: 'select', name: '兑换类型', field: 'jurisdiction' ,
-                    selectList: [ { id: 1, name: '培训1' }, { id: 2, name: '培训2' } ], selectField: [ 'id','name' ]
+                { type: 'input', name: '兑换码名称',  field: 'realname'},
+                { type: 'select', name: '选择机构', field: 'jurisdiction' ,selectChange: true,
+                    selectList: [], selectField: [ 'id','title' ]
                 },
-                { type: 'select', name: '兑换内容', field: 'content' , exchange_content: true,
-                    selectList: [ { id: 1, name: '浙江医院全科医生培训1' },{ id: 2, name: '浙江医院全科医生培训2' },{ id: 3, name: '浙江医院全科医生培训3' }], selectField: [ 'id','name' ]
+                { type: 'select', name: '兑换内容', field: 'content' , exchange_content: false,
+                    selectList: [], selectField: [ 'id','title' ]
                 },
                 { type: 'input-number', name: '兑换数量',  field: 'num', disable: false },
                 { type: 'switch-datetimerange', name: '有效时间',  field: ['isswitch','effective_time'], disable: false, switchList: ['永久','有效'] }
@@ -165,14 +177,60 @@
             this.list.map((it) => {
                 it.state1 = it.state ? '生效中' : '已失效'
             })
+        },
+        fromSubmit(val) {
+            let d = {
+                product_id: val.content,
+                title: val.realname,
+                code_count: val.num,
+                organization_id: val.jurisdiction,
+                state: val.isswitch ? 1 : 2,
+                effect_time: val.effective_time[0],
+                invalid_time: val.effective_time[1]
+            }
+            postData('code/addCode', d).then(res => {
+                console.log(res)
+            })
+            this.show = false
+        },
+        closeModal(){
+            this.show = false
+        },
+        getOrganization() {
+            postData('components/getOrganization').then(res => {
+                if(res.res_code == 1) this.formList[1].selectList = res.data
+            })
+        },
+        getProducts(val) {
+            if(val) {
+                postData('components/getProducts', {organization_id: val}).then(res => {
+                    if(res.res_code == 1) this.formList[2].selectList = res.data
+                })
+            }else {
+                postData('components/getProducts').then(res => {
+                    if(res.res_code == 1) this.formList[2].selectList = res.data
+                })
+            }
+        },
+        changeList(val) {
+            this.getProducts(val)
+        },
+        getList() {
+            let d = {
+                page_size: this.pageSize,
+                page_num: this.current,
+            }
+            postData('code/getCodeList', d).then(res => {
+
+            })
         }
     },
     mounted() {
+         this.getOrganization()
+         this.getProducts()
          this.handleList()
          this.tableRow = this.tableRow1
+         this.tabelHeight = window.innerHeight - 130
     }
   }
 </script>
-
-<style scoped>
-</style>

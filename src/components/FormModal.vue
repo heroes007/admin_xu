@@ -46,6 +46,15 @@
                             </Option>
                         </Select>
                     </FormItem>
+                    <FormItem v-else-if="t.type==='select'&&t.selectChange" :label="t.name" :prop="t.field"
+                              :class="t.clas ? t.clas: ''">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
+                                @on-change="selectChangeList">
+                            <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
+                                {{m[t.selectField[1]]}}
+                            </Option>
+                        </Select>
+                    </FormItem>
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :label="t.name"
                               :prop="t.field">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
@@ -69,7 +78,7 @@
                                     :format="handleDateType(t)" :placeholder="handlePlaceholder(t)"></DatePicker>
                     </FormItem>
                     <!-- switch-datetimerange-->
-                    <FormItem v-if="(t.type==='switch')" :label="t.name" :prop="handleField(t,1)">
+                    <FormItem v-if="(t.type==='switch-datetimerange')" :label="t.name" :prop="handleField(t,1)">
                         <Switch class="form-item-swtich" size="large" v-if="t.switchList&&t.switchList.length>0"
                                 v-model="formItem[handleField(t,0)]" @on-change="switchChange">
                             <span slot="open">{{t.switchList[0]}}</span>
@@ -80,34 +89,8 @@
                                     :value="formItem[handleField(t,1)]"
                                     :placeholder="handlePlaceholder(t)"></DatePicker>
                     </FormItem>
-                    <!--可插入输入框-->
+                    <!--富文本编辑器-->
                     <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
-                        <!--<div class="form-message" ref="inputStyle" contentEditable="true"-->
-                             <!--v-html="descriptionHtml"></div>-->
-                        <!--<div ref="divStyle" class="form-editor">-->
-                            <!--<Dropdown trigger="click" @on-click="handleDrop">-->
-                                <!--<a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img"-->
-                                                                  <!--@mouseover="overImg"></a>-->
-                                <!--<DropdownMenu slot="list">-->
-                                    <!--<DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">-->
-                                        <!--{{item.name}}-->
-                                    <!--</DropdownItem>-->
-                                <!--</DropdownMenu>-->
-                            <!--</Dropdown>-->
-                            <!--<Dropdown trigger="click" @on-click="handleDrop1">-->
-                                <!--<a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a>-->
-                                <!--<DropdownMenu slot="list">-->
-                                    <!--<DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">-->
-                                        <!--<span class="drop-box" :style="{backgroundColor: item.color}"/>-->
-                                        <!--<span>{{item.name}}</span>-->
-                                    <!--</DropdownItem>-->
-                                <!--</DropdownMenu>-->
-                            <!--</Dropdown>-->
-                            <!--<upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg"-->
-                                        <!--type="image/jpeg,image/png,image/jpg,image/bmp"/>-->
-                            <!--<upload-btn v-if="uploadBtn" class="upload-img" text="上传附件" bucket="jhyl-static-file"-->
-                                        <!--@uploadcomplete="uploadImg"/>-->
-                        <!--</div>-->
                         <new-editor style="width: 470px;" @get-content="getContent" :content="content"/>
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
@@ -134,6 +117,7 @@
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
     import newEditor from './NewEditor'
+    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com'
 
     export default {
         components: {ExchangeContent, uploadBtn, downLoading, newEditor},
@@ -242,7 +226,6 @@
                 this.$nextTick(() => {
                     if (_new) {
                         this.formItem = this.dateTimes ? this.detailData : this.$config.copy(this.detailData, {})
-                        console.log(this.formItem, 'formItem')
                         if (this.formItem.upload) this.downList = this.formItem.upload
                         else this.downList = []
                         if (this.formItem.uploading) {
@@ -284,6 +267,9 @@
                     if (val == 3) this.modalText2 = '获得所属机构后台发布产品及动态等操作权限'
                     if (val == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
                 }
+            },
+            selectChangeList(val) {
+              this.$emit('change-list', val)
             },
             handleDateType(t) {
                 return t.type.includes('time') ? 'yyyy/MM/dd HH:mm' : 'yyyy/MM/dd'
@@ -341,11 +327,16 @@
                         delete this.formItem.password
                     }
                 }
-                console.log(this.formItem, 'formItem')
                 let d = this.$config.copy(this.formItem, {})
                 let close = () => {
                     if (!this.modalFalse) this.closeModal()
                 }
+                // new Promise((resolve, reject) => {
+                //     this.$emit('from-submit', this.formItem)
+                //     resolve()
+                // }).then(() => {
+                //     close()
+                // })
                 (async () => {
                     await this.$emit('from-submit', this.formItem)
                     await close()
@@ -358,7 +349,7 @@
                         if (this.formList.length === 3 && this.formList[2].type === 'upload' && !d) this.$Message.warning('请输入文章正文');
                         else if (this.uploadFlie && !this.img_url) this.$Message.warning('请上传头像');
                         else if (this.formList.length > 4 && this.formList[4].type === 'switch-datetimerange') {
-                            if (!this.formItem.isswitch && !this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
+                            if (!this.formItem.isswitch && !this.formItem.effective_time[0]) this.$Message.info('请选择有效时间');
                             else this.handleFormData()
                         } else this.handleFormData()
                     }

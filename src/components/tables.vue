@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table highlight-row @on-row-click="rowClick" :columns="columns" :data="datas" :height="tabelHeight">
+        <Table highlight-row :columns="columns" :data="datas" :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
                 <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
                     <span slot="open">启用</span>
@@ -15,7 +15,7 @@
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p ></div>
                     </div>
                </Poptip>
-               <span v-else-if="handleBtnShow(column,row,t)">
+               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)" >
                  <Button type="text"  size="small"
                          style="margin-right: 5px" @click="show(row,index,t[1])">
                    {{handleBtnText(t,row,column)}}
@@ -91,25 +91,32 @@
         methods: {
             rowClick(row,i){
                 // row.operation_btn_show = true
-                // this.datas[i].operation_btn_show = true
-                this.$nextTick(() => {
-                    this.datas.map((t,k) => {
-                        t.operation_btn_show = false
-                    })
-                    let d = this.$config.copy(this.datas[i],{})
-                    d.operation_btn_show = true
-                    console.log(d.operation_btn_show, '1111' )
-                    this.datas.splice(i,1,d)
-                    this.$forceUpdate()
+                this.datas[i].operation_btn_show = true
+                // this.$nextTick(() => {
+                this.datas.map((t,k) => {
+                    t.operation_btn_show = false
                 })
+                let d = this.$config.copy(this.datas[i],{})
+                d.operation_btn_show = true
+                // this.datas.splice(i,1,d)
+                console.log(this.datas[i],i);
+                // })
+            },
+            handleBtnShowClass(c,r,t){
+                if (!c.hasOwnProperty('operation_btn_hide')){
+                    if(!r.operation_btn_show&&t[0] !== '查看') return 'operation_btn_show'
+                    return ''
+                }
+                return ''
             },
             handleBtnShow(c,r,t){
                 if (c.hasOwnProperty('operation_btn_hide')){
                     return c.operation_btn_hide&&t[2] ? r.mark_state : true
                 }else{
-                    if(!r.operation_btn_show&&t[0] == '查看') return true
-                    else if(r.operation_btn_show) return true
-                    else return false
+                    return true
+                    //  if(!r.operation_btn_show&&t[0] == '查看') return true
+                    // else if(r.operation_btn_show) return true
+                    // else return false
                 }
             },
             radioChange(r, c) {
@@ -191,6 +198,14 @@
     }
 </script>
 <style lang='less' scoped>
+    .operation_btn_show{
+        display: none;
+    }
+    /deep/ .ivu-table-row:hover{
+        .operation_btn_show{
+            display: inline-block;
+        }
+    }
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }
@@ -286,5 +301,8 @@
     }
     /deep/ .ivu-table td.demo-table-info-column{
         color: #F54802;
+    }
+    /deep/ .ivu-btn{
+        display: flex;
     }
 </style>
