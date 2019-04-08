@@ -17,7 +17,7 @@
   export default {
     data() {
       return {
-        host: Config.ossImgHost,
+        host: Config.ossHost,
         editor: null,
       }
     },

@@ -1,68 +1,34 @@
 import * as types from '../types'
 import api from '../../api/modules/config'
-import { get_curriculum_data_center, get_public_data_center, add_data_center, delete_data_center, set_data_center_pre_curriculums, change_data_center_enable } from '../../api/modules/tools_data_center'
+import { get_curriculum_data_center, add_data_center, delete_data_center } from '../../api/modules/tools_data_center'
 
 const state = {
     course_download_data_list: [],
     public_download_data_list:[],
     isLoading:false,
-    pre_curriculum_change_guard:null
+    pre_curriculum_change_guard:null,
+    total: null
 }
 
 const actions = {
-    get_public_donwload_data_list({ commit }, params)
-    {
-        commit(types.DOWNLOAD_SHOW_LOADING);
-        get_public_data_center(params.project_id).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.PUBLIC_DOWNLOAD_LIST_LOADED,res.data.msg);
-            }
-        })
-    },
     get_curriculum_donwload_data_list({ commit }, params)
     {
         commit(types.DOWNLOAD_SHOW_LOADING);
-        get_curriculum_data_center(params.project_id).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.CURRICULUM_DOWNLOAD_LIST_LOADED,res.data.msg);
-            }
-        })
-    },
-    change_course_download_data_pre_curriculum({ commit }, params) {
-        if(state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length){ return }
-        commit(types.DOWNLOAD_SHOW_LOADING);
-        commit(types.SET_DOWNLOAD_CHANGE_PRE_GUARD,params.value);
-        set_data_center_pre_curriculums(params.id,params.value).then(res => {
+        get_curriculum_data_center(params.project_id, params.page, params.keyword).then(res => {
             if(res.data.res_code === 1){
-                commit(types.DOWNLOAD_CHANGE_PRE_CURRICULUM,params);
+                commit(types.CURRICULUM_DOWNLOAD_LIST_LOADED,res.data.data);
             }
         })
     },
-    change_public_download_data_valid({ commit }, params) {
-        // commit(types.DOWNLOAD_SHOW_LOADING);
-        change_data_center_enable(params.id,params.value?1:0).then(res => {
-            if(res.data.res_code === 1) commit(types.DOWNLOAD_DATA_VALID_UPDATED, params)
-        })
-    },
-    add_course_download_data({ commit }, params) {
+    add_course_download_data({ dispatch,commit }, params) {
         commit(types.DOWNLOAD_SHOW_LOADING);
         add_data_center(params).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.COURSE_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
-                params._fn(res.data.msg);
-            }
-        })
-    },
-    add_public_download_data({ commit }, params) {
-        commit(types.DOWNLOAD_SHOW_LOADING);
-        add_data_center(params).then(res => {
-            if(res.data.res_code === 1)
-            {
-                commit(types.PUBLIC_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
-                params._fn();
+            if(res.data.res_code === 1){
+                dispatch('get_curriculum_donwload_data_list', {  project_id: params.projectId,
+                    page: params.page})
+                    params._fn()
+                // commit(types.COURSE_DOWNLOAD_DATA_ADDED, {id:res.data.msg,data:params})
+                // params._fn(res.data.msg);
             }
         })
     },
@@ -92,10 +58,12 @@ const mutations = {
         state.isLoading = false;
     },
     [types.CURRICULUM_DOWNLOAD_LIST_LOADED](state, param) {
-        for (var i = 0; i < param.length; i++) {
-            param[i].is_valid = param[i].state === 0?false:true;
-        }
-        state.course_download_data_list = param || state.course_download_data_list;
+        // for (var i = 0; i < param.length; i++) {
+        //     param[i].is_valid = param[i].state === 0?false:true;
+        // }
+        // state.course_download_data_list = param || state.course_download_data_list;
+        state.total = param.count
+        state.course_download_data_list = param.data;
         state.isLoading = false;
     },
     [types.DOWNLOAD_CHANGE_PRE_CURRICULUM](state, params) {
@@ -142,12 +110,13 @@ const mutations = {
     },
     [types.PUBLIC_DOWNLOAD_DATA_ADDED](state, param) {
        state.public_download_data_list.push({
-           id:param.id,
-           name:param.data.name,
-           download_url:param.data.download_url,
-           state:1,
-           grade_id:param.data.grade_id,
-           subject_id:param.data.subject_id
+           // id:param.id,
+           // name:param.data.name,
+           // download_url:param.data.download_url,
+           // state:1,
+           // grade_id:param.data.grade_id,
+           // subject_id:param.data.subject_id
+           title: param.title
        });
        state.isLoading = false;
     },

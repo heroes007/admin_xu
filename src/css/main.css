@@ -50,15 +50,17 @@ body { background-color: #fff; height: 100%; }
     font-size: 16px !important;
   }
 .ivu-modal-header-inner{
-    font-size: 16px !important;
+    font-size: 20px !important;
     text-align: center !important;
-    color: #fff !important
+    color: #474C63 !important;
+    font-weight: normal !important;
 }
 .ivu-modal-header{
-    background-color: #333 !important;
+    background-color: #fff !important;
+    padding: 21px 0px
 }
 .ivu-modal-close .ivu-icon-ios-close,.ivu-modal-close .ivu-icon-ios-close:hover{
-    color: #fff !important
+  color: #474C63!important
 }
 .ivu-input-number{
     width: 100% !important;
@@ -107,4 +109,35 @@ body { background-color: #fff; height: 100%; }
     width: 80px !important;
     margin-left: 22px  !important;
 }
-.ivu-tabs-bar{border: none !important;}
+.ivu-tabs-bar{
+    border: none !important;
+    margin-bottom: 0 !important;
+}
+.ivu-table th{
+  background: #fff !important;
+}
+.ivu-table{
+    font-size: 16px !important;
+}
+.ivu-btn{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 16px !important;
+}
+.ivu-modal-confirm-footer>.ivu-btn{
+    display: inline-block !important;
+}
+.ivu-btn-text{
+    display: inline-block !important;
+}
+textarea.ivu-input{
+    resize: none;
+}
+.ivu-modal-content{
+    border-radius: 10px !important;
+}
+.ivu-modal-header{
+    border-radius: 10px 10px 0 0 !important;
+}

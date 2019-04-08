@@ -1,75 +1,33 @@
 import * as types from '../types'
 import {
-  get_list,
   add_product,
   update_product,
-  switch_product,
-  get_curriculums,
-  add_curriculums,
-  set_pre_curriculums,
-  delete_curriculum,
-  get_certificate,
-  change_certificate,
-  delete_certificate,
-  add_certificate,
-  edit_certificate
+  get_product_info
 } from '../../api/modules/tools_product'
 
 
 const state = {
   certificate_list: [],
   production_list: [],
+  production_data_list: [],
   total: 0,
   isLoading: false,
   pre_curriculum_change_guard: null,
   cur_production_id: 0,
+  add_product_state: false,
+  edit_product_state: false,
   stateList: [{id: 3, name: '首页推荐'}, {id: 0, name: '编辑中'}, {id: 1, name: '正常'}, {id: 2, name: '不可购买'}],
   examineTypeList: [{id: 0, name: '笔试和面试'}, {id: 1, name: '只面试'}, {id: 2, name: '只笔试'}, {id: 3, name: '免笔试面试'}],
 }
 
 // actions
 const actions = {
-  get_production_list({commit}, param) {
-    commit(types.PRODUCTION_SHOW_LOADING);
-    get_list(param).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_LIST_LOADED, res.data.msg)
-      }
-      if (param.callback)
-        param.callback();
-    })
-  },
-  get_certificate_list({commit}) {
-    get_certificate().then(res => {
-      commit(types.PRODUCTION_CERTIGICATE, res.data);
-    })
-  },
-  change_production_vailid({commit}, param) {
-    commit(types.PRODUCTION_SHOW_LOADING);
-    switch_product(param.id, param.value ? 1 : 0).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_VALID_UPDATED, param)
-      }
-    })
-  },
-  change_production_state({commit}, param) {
-    commit(types.PRODUCTION_SHOW_LOADING);
-    switch_product(param.id, param.value).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_VALID_UPDATED, param)
-      }
-    })
-  },
   add_production({commit}, param) {
+    commit('add_product_states',false)
     commit(types.PRODUCTION_SHOW_LOADING);
     add_product(param).then(res => {
       if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_ADDED, {result: res.data.msg, data: param})
-        if(param.certificate.length){
-          change_certificate(param.certificate, res.data.msg).then(res => {
-            console.log(res.data)
-          })
-        }
+        commit('add_product_states',true)
         if (param._fn)
           param._fn();
       }
@@ -77,98 +35,30 @@ const actions = {
   },
   update_production({commit}, param) {
     commit(types.PRODUCTION_SHOW_LOADING);
-    update_product(param.product_id, param).then(res => {
+    commit('edit_product_states',false)
+    update_product(param).then(res => {
       if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_UPDATED, param)
-        if(param.certificate.length){
-          change_certificate(param.certificate, param.product_id).then(res => {
-            console.log(res.data)
-          })
-        }
+        commit('edit_product_states',true)
+        let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+        get_product_info(id).then(res => {
+          if(res.data.res_code == 1){
+            localStorage.setItem('PRODUCTINFO',JSON.stringify(res.data.data))
+          }
+        })
         if (param._fn)
           param._fn();
       }
     })
   },
-  delete_production({commit}, param) {
-    commit(types.PRODUCTION_SHOW_LOADING);
-    switch_product(param.id, -1).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_DELETED, param)
-        if (param._fn)
-          param._fn();
-      }
-    })
-  },
-  get_production_curriculums({commit}, param) {
-    commit(types.PRODUCTION_SHOW_LOADING);
-    get_curriculums(param).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_CURRICULUMS_LOADED, {result: res.data.msg, data: param})
-      }
-    })
-  },
-  add_production_curriculums({commit}, param) {
-    commit(types.PRODUCTION_SHOW_LOADING);
-    add_curriculums(param.id, param.curriculums).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_CURRICULUMS_ADDED, param)
-        if (param._fn)
-          param._fn();
-      }
-    })
-  },
-  delete_production_curriculums({commit}, param) {
-    commit(types.PRODUCTION_SHOW_LOADING);
-    delete_curriculum(param.id, param.curriculum_id).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_CURRICULUMS_DELETED, param);
-        if (param._fn)
-          param._fn();
-      }
-    })
-  },
-  change_production_curriculum_pre_curriculum({commit}, params) {
-    if (state.pre_curriculum_change_guard && params.value.length === state.pre_curriculum_change_guard.length) {
-      return;
-    }
-    commit(types.PRODUCTION_SHOW_LOADING);
-    commit(types.PRODUCTION_CHANGE_PRE_GUARD, params.value);
-    set_pre_curriculums(state.cur_production_id, params.id, params.value).then(res => {
-      if (res.data.res_code === 1) {
-        commit(types.PRODUCTION_CHANGE_PRE_CURRICULUM, params);
-      }
-    })
-  },
-  set_cur_production({commit}, param) {
-    commit(types.CUR_PRODUCTION_SETTED, param);
-  },
-  delete_certificate({commit}, param) {
-    delete_certificate(param.id).then(res => {
-      if(res.data.res_code === 1) {
-        commit(types.CERTIFICATE_DELETED,param);
-      }
-    })
-  },
-  add_certificate({commit}, param) {
-    add_certificate(param).then(res => {
-      if(res.data.res_code === 1){
-        commit(types.ADD_CERTIFICATE, param)
-        param._fn();
-      }
-    })
-  },
-  edit_certificate({commit}, param) {
-    edit_certificate(param).then(res => {
-      if(res.data.res_code === 1){
-        commit(types.CHANGE_CERTIFICATE, param)
-        param._fn();
-      }
-    })
-  }
 }
 // mutations
 const mutations = {
+  add_product_states(state,param){
+    state.add_product_state = param
+  },
+  edit_product_states(state,param){
+    state.edit_product_state = param
+  },
   [types.PRODUCTION_CLEAR](state) {
     state.production_list = [];
   },

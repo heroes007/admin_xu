@@ -9,9 +9,12 @@
             </div>
         </Row>
         <Table @on-selection-change='selectionChangeHandler' :row-class-name="tableRowClassName"
-               :highlight-row='canSelect' :show-header='showHeader' :stripe="isStripe"
+               :highlight-row='canSelect' :show-header='showHeader'
                :columns="headerData" :data="tableData" :height="tableHeight" @on-expand="rowExpandHandler"
                @on-row-click='rowClickHandler'>
+             <template slot-scope="{ column, row, index }" slot="sort-index">
+               <span>{{$config.addZero(index+1)}}</span>
+            </template>
             <template slot-scope="{ column, row, index }" slot="badge">
                 <Badge class="mark" :count="+(showBadgeCount(column.prop,row))"></Badge>
             </template>
@@ -73,7 +76,7 @@
                          v-if='btn.showFunc?btn.showFunc(row):true'>
                         <Button :type="btn.canDisabled?'text':'text'"
                                 :class="[{'hover-show':btn.hoverShow},btn.btnClass]"
-                                @click="handleBtnClick(index,row,btn.param)"
+                                @click="handleBtnClick(index,row,btn.param,orderNum)"
                                 v-if='!btn.isSwitch && !btn.useCheckBox && btn.disabledText || btn.text'
                                 :disabled="btn.canDisabled?btn.disabeldFunc(row):false">
                             <Icon class="btn-icon" :type='btn.text' v-if='btn.isIcon'/>
@@ -156,6 +159,9 @@
         type: Number,
         default: 1
       },
+      orderNum: {
+        type: Number
+      }
     },
     created() {
       this.handleHeaderData()
@@ -261,9 +267,11 @@
         return this.rowClassName
       },
       handleHeaderData() {
+        if(this.headerData[1].label == '资料名称'){
+        }
         this.headerData.map((it) => {
           it.title = it.label
-          it.align = 'center'
+          it.align && it.align == 'left' ? it.align = 'left' : it.align = 'center'
           if (it.prop) it.key = it.prop || ''
           if (it.minwidth) it.minWidth = it.minwidth
           if (!it.isFree && it.groupBtn) {
@@ -273,9 +281,9 @@
             it.tooltip = true
           }
           if (it.sort) {
-            it.type = 'index'
+            it.slot = 'sort-index'
             it.title = this.getHeaderLabel(it)
-            it.width = 65
+            it.width = 100
           }
           if (it.useCombo && it.key === 'pre_curriculum') it.width = 300
           if (it.isFree || !it.groupBtn && !it.selection && !it.sort && !it.listExpand && !it.badge) {
@@ -307,28 +315,42 @@
           if (it.listExpand) {
             it.slot = 'listExpand'
             it.type = 'expand'
-            it.width = 50
+            it.width = 120
             it.childHeader.map((t) => {
               t.title = t.label
               t.key = t.prop
             })
             it.render = (h, params) => {
-              return h(baseList, {
-                props: {
-                  tableData: params.row.childData,
-                  headerData: it.childHeader,
-                  isStripe: false,
-                  parentData: params.row,
-                  columnFormatter: it.listColumnFormatter
-                },
-                on: {
-                  childBtnClick: (param, index, parentData) => {
-                    this.$nextTick(() => {
-                      this.childBtnClickHandler(param, index, parentData)
-                    })
+              return h('div', {style:{display:'flex',justifyContent:'center',flexDirection: 'column',flexWrap: 'nowrap'}},[
+                h(baseList, {
+                  props: {
+                    tableData: params.row.childData,
+                    headerData: it.childHeader,
+                    isStripe: false,
+                    parentData: params.row,
+                    columnFormatter: it.listColumnFormatter
+                  },
+                  on: {
+                    childBtnClick: (param, index, parentData) => {
+                      this.$nextTick(() => {
+                        this.childBtnClickHandler(param, index, parentData)
+                      })
+                    }
                   }
-                }
-              })
+                }),
+                it.listExpandBtn ? h('div',{style:{display:'flex',justifyContent:'center',flexWrap: 'nowrap',alignItems: 'center', color: '#4098FF',marginTop: '10px' }},[
+                  h('Icon',{props: { type: 'md-add', size: 30},
+                  on: {
+                        click: () => {  this.$emit('add-off-line-courses', params.row) }
+                  }}),
+                  h('span',{
+                      on: {
+                          click: () => {  this.$emit('add-off-line-courses', params.row) }
+                      }
+                    },'添加课程')
+                 ]) : ''
+              ]);
+
             }
           }
         })
@@ -388,10 +410,11 @@
       childBtnClickHandler(param, index, parentData) {
         this.$emit('childBtnClick', param, index, parentData);
       },
-      handleBtnClick(index, row, param) {
+      handleBtnClick(index, row, param, i) {
         if (this.parentData) this.$emit('childBtnClick', param, index, this.parentData);
         else {
-          this.$emit(param, index, row);
+          if(param == 'moveUp' || 'moveDown') this.$emit(param, index, row, i);
+          else this.$emit(param, index, row);
         }
       },
       formatter(row, propname) {
@@ -431,7 +454,7 @@
           for (var i = 0; i < this.columnFormatter.length; i++) {
             if (this.columnFormatter[i].columnName == propname) {
               if (this.columnFormatter[i].doFormat) {
-                if (this.columnFormatter[i].doFormat(row[propname]).length > 0) return this.columnFormatter[i].doFormat(row[propname]);
+                if (this.columnFormatter[i].doFormat(row[propname])&&this.columnFormatter[i].doFormat(row[propname]).length > 0) return this.columnFormatter[i].doFormat(row[propname]);
               } else {
                 for (var j = 0; j < this.columnFormatterData[this.columnFormatter[i].dataIndex].length; j++) {
                   if (row[propname] instanceof Array) {
@@ -505,6 +528,21 @@
 </script>
 
 <style lang='scss' scoped>
+    /deep/ .ivu-table-cell-expand>.ivu-icon-ios-arrow-forward{
+      display: none;
+    }
+    /deep/ .ivu-table-cell-expand{transform: none}
+     /deep/ .ivu-table-cell-expand::after{
+      content: '展开'
+     }
+     /deep/.ivu-table-cell-expand-expanded::after{
+      content: '收起'
+     }
+    /deep/ td.ivu-table-expanded-cell{ padding: 0; padding-bottom: 10px;}
+    /deep/ .ivu-icon-md-add{ margin-right: 5px; }
+    /deep/ .ivu-table{
+        font-size: 16px !important;
+    }
     /deep/ .ivu-icon-ios-trash-outline {
         font-size: 18px
     }
@@ -535,6 +573,13 @@
         outline: none
     }
 
+    /deep/ .ivu-btn-text {
+        font-family: PingFangSC-Medium;
+        font-size: 16px;
+        color: #4098FF;
+        letter-spacing: 0;
+    }
+
     /deep/ .ivu-table-cell-ellipsis > div {
         display: inline-block;
         width: 100%;
@@ -551,7 +596,7 @@
     }
 
     /deep/ th, td > .ivu-table-cell > div > span {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     /deep/ .ivu-table th {
@@ -559,7 +604,7 @@
     }
 
     /deep/ .ivu-tooltip-rel {
-        font-size: 14px !important
+        /*font-size: 14px*/
     }
 
     .base-list-container {
@@ -597,7 +642,7 @@
                         .cell {
                             background-color: #ffffff;
                             font-weight: 400;
-                            font-size: 14px;
+                            /*font-size: 14px;*/
                             color: #757575;
                             letter-spacing: 0;
                         }
@@ -608,7 +653,7 @@
 
         .base-list-row {
             .cell {
-                font-size: 14px;
+                /*font-size: 14px;*/
                 color: #141111;
                 letter-spacing: 0;
 
@@ -620,7 +665,7 @@
                     margin: 0;
 
                     span {
-                        font-size: 14px;
+                        /*font-size: 14px;*/
                         color: #141111;
 
                         i {

@@ -1,0 +1,277 @@
+<template>
+    <div class='manage-production-view'>
+        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="培训总数" :size-num1="total" btn-name="添加培训" :select1="selectList" :select2="selectList2"
+            select2Placeholder="请选择状态"  placehodle="搜索产品名称"  @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
+          <div class="lecturer-list">
+           <Row :gutter="20">
+            <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
+                <div class="manage-production-col">
+                    <Row>
+                    <Col span="2" class="al-left cad-top-left" >
+                     <p>ID:</p>
+                    </Col>
+                    <Col span="9" class="al-left cad-top-left" >
+                      <p>{{t.id}}</p>
+                    </Col>
+                    <Col span="13" class="al-right" >
+                        <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.stateText}}</div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <h2 class="product-title">{{t.title}}</h2>
+                  </Row>
+                  <Row>
+                     <Col span="4" class="al-left cad-btm-price">¥{{t.price}}</Col>
+                     <Col span="4" class="al-left cad-btn-relprice">¥{{t.original_price}}</Col>
+                     <Col span="16" class="al-right cad-btn-people">{{t.join_number}}人报名</Col>
+                  </Row>
+                </div>
+            </Col>
+        </Row>
+       </div>
+         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+    </div>
+</template>
+<script>
+  import screen from '../../../components/ScreenFrame'
+  import postData from '../../../api/postData'
+  import pageList from '../../../components/Page'
+  import pageMixin from '../../mixins/pageMixins'
+  import {Dialog} from "../../dialogs";
+  import { ADD_PRODUCTION } from "../../dialogs/types";
+  import {mapState} from 'vuex'
+  export default {
+    mixins: [pageMixin, Dialog],
+    components: { screen, pageList },
+    data() {
+      return {
+        curPage: 1,
+        cardList: [],
+        search: '',
+        selectList: [],
+        selectList2: [{id: '',title:'全部'},{id: '3',title:'推荐'},{id: '2',title:'上架'},{id: '-1',title:'下架'},{id: '1',title:'测试'}],
+        courseNums:12,
+        organization_id: localStorage.getItem('organization_id'),
+        state: ''
+      }
+    },
+    watch:{
+      productState(_new){
+        if(_new) this.getList()
+      },
+      editProductState(_new){
+        if(_new) this.getList()
+      }
+    },
+    computed:{
+      ...mapState({productState: state => state.production.add_product_state,editProductState: state => state.production.edit_product_state}),
+    },
+    methods: {
+      handleCardClass(t){
+        return (t === 2 || t === 3) ? 'card-main-list1' : 'card-main-list0'
+      },
+      selectChange1(val){
+       this.organization_id = val;
+       this.getList()
+      },
+      selectChange2(val){
+        this.state = val
+        this.getList()
+      },
+      inputChange(val){
+        this.search = val;
+        this.getList()
+      },
+      handleClick(){
+         this.handleSelModal(ADD_PRODUCTION);
+      },
+      handleJump(t){
+        localStorage.setItem('PRODUCTINFO',JSON.stringify(t))
+        let routeData = this.$router.resolve({
+          query: '',
+          params: '',
+          name: "open-product",
+        });
+        localStorage.setItem('onlinePane','product1')
+        window.open(routeData.href, "_blank")
+      },
+      handleCurrentChange(val) {
+        this.curPage = val;
+        var data = this.getData();
+      },
+      getDeptAdminList(){
+         postData('user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
+          this.selectList = res.data.list
+        })
+      },
+      getList(){
+        let organization_id = this.organization_id !== 1 ? this.organization_id : ''
+        let d = {
+          organization_id,
+          state: this.state,
+          search: this.search,
+          page_size: this.pageSize,
+          page_num: this.current,
+        }
+        postData('product/product/get_list',d).then((res) => {
+         this.cardList = res.data.data
+         this.cardList.map((t) => {
+           t.stateText = this.$config.setProductState(t.state)
+         })
+         this.total = res.data.count
+         this.$store.commit('add_product_states',false)
+        })
+      }
+    },
+    mounted() {
+      this.getList()
+      this.getDeptAdminList()
+    }
+  };
+</script>
+<style lang="scss" scoped>
+  .lecturer-list{
+      margin: 20px;
+  }
+  .manage-production-col{
+    background: #fff;
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+   .card-main-list0{
+     color: #9397AD;
+   }
+   .card-main-list1{
+     color: #474C63;
+   }
+   .card-state-color3{
+    background: #FF9600;
+   }
+   .card-state-color2{
+    background: #74C818;
+   }
+   .card-state-color1{
+    background: #4098FF;
+   }
+   .card-state-color0{
+    background: #9397AD;
+   }
+    .card-state-color-1{
+        background: #9397AD;
+    }
+    .manage-production-view {
+      background: #f0f0f7;
+      height: 100%;
+      position: relative;
+        .base-list-container {
+            .base-list-row {
+                height: 60px;
+            }
+        }
+        .find-by-term {
+            padding-top: 22px;
+            text-align: left;
+            margin-left: 20px;
+            /deep/ .ivu-input {
+                width: 200px;
+            }
+            button {
+                background: #3DAAFF;
+                border: 1px solid #3DAAFF;
+                border-radius: 4px;
+                width: 100px;
+                height: 36px;
+            }
+        }
+        .data-container {
+            background-color: #ffffff;
+            margin: 0 20px 20px;
+            .list {
+                .data-header {
+                    height: 50px;
+                    .Col {
+                        line-height: 50px;
+                    }
+                }
+                .data-item {
+                    height: 40px;
+                    border-top: 1px solid #cecece;
+                    &.bg-gray {
+                        background-color: #fbfbfb;
+                    }
+                    .Col {
+                        line-height: 40px;
+                        p {
+                            margin: 0;
+                            display: -webkit-box;
+                            white-space: normal;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            -webkit-line-clamp: 1;
+                        }
+                    }
+                }
+                .pager {
+                    margin: 30px 0;
+                    padding-right: 40px;
+                }
+            }
+        }
+        .al-left{
+          text-align: left;
+        }
+        .al-right{
+          text-align: right;
+        }
+        .cad-top-left{
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          letter-spacing: 0;
+        }
+        .cad-top-right{
+          width: 50px;
+          height: 20px;
+          float: right;
+          font-family: PingFangSC-Medium;
+          font-size: 14px;
+          color: #FFFFFF;
+          letter-spacing: 0;
+          text-align: center;
+          border-radius: 20px;
+        }
+        .cad-btm-price{
+          font-family: PingFangSC-Medium;
+          font-size: 16px;
+          color: #F54802;
+          letter-spacing: 0;
+        }
+        .cad-btn-relprice{
+          font-family: PingFangSC-Regular;
+          font-size: 16px;
+          letter-spacing: 0;
+          text-decoration: line-through;
+        }
+        .cad-btn-people{
+          font-family: PingFangSC-Regular;
+          font-size: 14px;
+          letter-spacing: 0;
+        }
+    }
+    .product-title{
+        font-family: PingFangSC-Medium;
+        font-size: 18px;
+        letter-spacing: 0;
+        text-align: left;
+        margin:15px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /deep/ .ivu-page{
+      position: absolute;
+      bottom: 0px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+    }
+</style>

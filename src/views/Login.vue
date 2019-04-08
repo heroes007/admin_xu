@@ -3,25 +3,19 @@
         <div class="login-view" :style="loginViewStyl">
             <div class="login-left"></div>
             <div class='login-right'>
-                <div class='logo'>
-                    <img src='/static/img/logo_copy.png'>
-                </div>
-                <h1 class="login-title">九划医疗后台管理系统 --A</h1>
+                <div class='logo'><img src='../assets/icons/img/logo_copy.png'></div>
+                <h1 class="login-title">九划医疗后台管理系统</h1>
                 <div class='data-input'>
                     <div class="elRow">
-                        <img class="input-img" src='/static/img/head.png'>
+                        <img class="input-img" src='../assets/icons/img/head.png'>
                         <span class="input-span">|</span>
                         <input  class="el-input" placeholder="输入用户名" v-model="name" />
                     </div>
                     <div class="elRow">
-                        <img class="input-img" src='/static/img/lock.png'>
+                        <img class="input-img" src='../assets/icons/img/lock.png'>
                         <span class="input-span">|</span>
                         <input class="el-input" type='password' placeholder="输入密码" v-model="password" @keyup.enter="doLogin"/>
                     </div>
-                    <!-- <div class='remember elRowJustifyLeft'>
-                        <Switch v-model="remember" />
-                        <span class="rememberMeText">记住我</span>
-                    </div> -->
                 </div>
                 <div class='submit'>
                     <Button class="Button login-btn" :class='{isLogining:isLogining}' :disabled='isLogining' @click='doLogin' long>
@@ -40,47 +34,35 @@
     import { login_pwd, user_info } from '../api/modules/auth';
     import { Base64 } from 'js-base64';
     import { mapState, mapActions } from 'vuex';
+    import Vue from 'vue'
     export default {
         components: {  EllipsisAni  },
         data() {
             return {
                 name: '',
                 password: '',
-                remember: true,
                 isLogining: false,
-                loginViewStyl: {}
-            }
-        },
-        computed: {
-            ...mapState({ projectList: state => state.project.project_list, isLoading: state => state.project.isLoading })
-        },
-        watch: {
-            isLoading(val) {
-            this.$config.IsLoading(val);
+                loginViewStyl: {},
+                projectData: []
             }
         },
         methods: {
-             ...mapActions([ "get_project_list", "change_selected_project_id", "clear_store" ]),
             doLogin() {
                 this.isLogining = true;
-                let vm = this;
-                login_pwd(this.name, this.password, 1).then((res) => {
+                login_pwd(this.name, this.password).then((res) => {
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
-                        user_info().then((res) => {
-                            if (res.data.res_code === 1) {
-                                let roleArr = res.data.msg.role_arr
-                               if (roleArr.includes(1) || roleArr.includes(7) || roleArr.includes(8) || roleArr.includes(9)) {
-                                    vm.$store.dispatch('set_user_info', res.data.msg);
-                                    this.get_project_list();
-                                    vm.$router.replace({ path: 'dashboard' });
-                                }else vm.$Message.warning('权限错误，请重新登录');
-                            }
-                        })
-                        this.remember ? this.$localStorage.set('login_user', Base64.encode('天涯'+JSON.stringify({name:this.name,pass:this.password}))) : this.$localStorage.remove('login_user');
-                        this.$localStorage.set('token', res.data.token);
+                        let d = res.data.data;
+                        localStorage.setItem('organizationId',d.userInfo[0].organization_id)
+                        this.$store.dispatch('set_user_info', d.userInfo[0]);
+                        localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
+                        this.$router.push({ path: 'dashboard' });
+                        localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
+                        localStorage.setItem('token',d.token)
+                        let d1 = { name: this.name, pass: this.password }
+                        localStorage.setItem('login_user', Base64.encode(JSON.stringify(d1)))
                     } else {
-                        vm.$Message.warning(res.data.msg);
+                        this.$Message.warning(res.data.msg);
                         this.isLogining = false;
                     }
                 });
@@ -91,10 +73,9 @@
             }
         },
         mounted() {
-            console.log('');
-            if(this.$localStorage.get('login_user')){
+            if(localStorage.getItem('login_user')&&localStorage.getItem('login_user') != 'null'){
               let user = Base64.decode(this.$localStorage.get('login_user'))
-              let u = JSON.parse(user.slice(2))
+              let u = JSON.parse(user)
               this.setUser(u)
             }else this.setUser({name:'',pass:''})
             let hei = document.documentElement.clientHeight * .555;
@@ -110,12 +91,11 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        background-image: url("../../static/img/bitmap_bg.jpg");
+        background-image: url("../assets/icons/img/bitmap_bg.jpg");
         background-repeat: no-repeat;
         background-size: 100% 100%;
     }
     .login-view{
-        // width: 62.5%;
         height: 55.5%;
         display: flex;
         flex-wrap: nowrap;
@@ -123,7 +103,7 @@
         .login-left {
             width: 50%;
             height: 100%;
-            background-image: url("../../static/img/bitmap.png");
+            background-image: url("../assets/icons/img/bitmap.png");
             background-repeat: no-repeat;
             background-size: 100% 100%;
             min-height: 480px;
@@ -175,6 +155,16 @@
                         margin-right: 10px;
                         color: #EEE
                     }
+                    /deep/ .ivu-select-single .ivu-select-selection{
+                        width: 100%;
+                        height: 48px;
+                    }
+                    /deep/ .ivu-select-selection{
+                        border:none
+                    }
+                    /deep/ .ivu-select-visible .ivu-select-selection{
+                        box-shadow: none
+                    }
                     .el-input {
                         width: 100%;
                         height: 48px;
@@ -197,15 +187,6 @@
                         :-ms-input-placeholder {
                             color: #99ABB4;
                         }
-                    }
-                }
-                .remember {
-                    margin-bottom: 0;
-                    margin-top: 13px;
-                    font-size: 14px;
-                    color: #858585;
-                    .rememberMeText {
-                        margin-left: 12px
                     }
                 }
             }

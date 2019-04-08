@@ -1,70 +1,84 @@
 <template>
-    <div class='dashboard-view'>
-        <Row type='flex' class='col-container'>
-            <Col class='menu-bar'span="4">
-                <sideMenu />
-            </Col>
-            <Col class='sub-view'>
-                <Tabs value="online">
-                    <TabPane label="线上课" name="online">
-                        <online/>
-                    </TabPane>
-                    <TabPane label="线下课" name="offline">
-                        <offline/>
-                    </TabPane>
-                    <TabPane label="作业" name="task">
-                        <task/>
-                    </TabPane>
-                    <TabPane label="资料" name="course">
-                        <course/>
-                    </TabPane>
-                    <TabPane label="证书" name="user">证书</TabPane>
-                </Tabs>
-            </Col>
-        </Row>
+    <div >
+        <Tabs @on-click="tabs" v-model="online">
+            <TabPane label="线上课" v-if="item1" name="product1">
+                <online v-if="pane1" />
+            </TabPane>
+            <TabPane label="线下课" v-if="item2" name="product2">
+                <offline v-if="pane2" />
+            </TabPane>
+            <TabPane label="作业" v-if="item3" name="product3">
+                <task v-if="pane3" />
+            </TabPane>
+            <TabPane label="资料" v-if="item4" name="product4">
+                <course v-if="pane4" />
+            </TabPane>
+            <TabPane label="证书" v-if="item5" name="product5">
+                <houner v-if="pane5" />
+            </TabPane>
+        </Tabs>
     </div>
 </template>
 
 <script>
-  import sideMenu from '../../../components/SideMenuForProject'
-  import online from '../../information/ManageOnlineCourse'
-  import offline from '../../information/ManageOfflineCourse'
-  import task from '../../information/ManageTask'
-  import course from '../../download/ManageCourseDownloadData'
+  import online from '../Online/ManageOnlineCourse'
+  import offline from '../Offline/ManageOfflineList'
+  import task from '../Task/ManageTask'
+  import course from '../Course/ManageCourseDownloadData'
+  import houner from '../Houner/ManageHouner'
 
   export default {
     name: "OpenProduct",
-    components:{sideMenu, online, offline, task, course}
+    components: { online, offline, task, course, houner},
+    data(){
+      return{
+          online: '',
+          item1: false,
+          item2: false,
+          item3: false,
+          item4: false,
+          item5: false,
+          pane1: true,
+          pane2: false,
+          pane3: false,
+          pane4: false,
+          pane5: false
+      }
+    },
+    methods:{
+        tabs(name){
+            localStorage.setItem('onlinePane',name)
+            let n = +name.replace(/[^0-9]/ig,"");
+            if(this['item'+n]) this['pane'+n] = true
+        },
+        setAuth(){
+            if(localStorage.getItem('PERSONALDETAILS')){
+               let d = JSON.parse(localStorage.getItem('PERSONALDETAILS'));
+               this.item1 = true;
+               this.item2 = true;
+               this.item3 = true;
+               this.item4 = true;
+               this.item5 = true;
+               if(d.role_id === 4){
+                    // this.item1 = false;
+                    // this.item2 = false;
+                    // this.item4 = false;
+                    // this.item5 = false;
+                    this.online = localStorage.getItem('onlinePane')
+               }
+            }
+        }
+    },
+    mounted(){
+        this.setAuth()
+        if(localStorage.getItem('onlinePane')){
+            this.online = localStorage.getItem('onlinePane')
+            this.tabs(this.online)
+        }
+    }
   }
 </script>
 
 <style scoped lang="scss">
-    body{
-        background-color:#333333;
-    }
-    .dashboard-view {
-        box-sizing:border-box;
-        width:100%;
-        height: 100%;
-        background-color:#ffffff;
-    .col-container {
-        height: 100%;
-        flex-wrap: nowrap !important;
-    .menu-bar {
-        height: 100%;
-        max-width:200px;
-        min-width:200px;
-        min-height:800px;
-        background-color: #333333;
-        box-shadow: 2px 0 10px 0 rgba(51,51,51,0.06);
-    }
-    .sub-view {
-        background-color: #ffffff;
-        position: relative;
-        min-height: 100vh;
-        width: calc(100% - 200px);
-        padding-bottom: 50px;
-    }
-    }
-    }
+
 </style>

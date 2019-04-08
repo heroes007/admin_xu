@@ -32,7 +32,7 @@ export function doOfflineCurriculumTypeFormat(val) {
       return '实践';
   }
 }
-export function doSortFormatCatalogList(list) {
+export function doSortFormatCatalogList(list)   {
   if (list.length === 0)
     return [];
 
@@ -112,18 +112,40 @@ export const MenuList = [
   {
     name: 'user-manage',
     title: '用户管理',
-    icon:'01.organ_gray'
+    icon:'logo-octocat',
   },
   {
     name: 'product-manage',
-    title: '产品管理',
-    icon:'01.organ_gray'
+    title: '培训管理',
+    icon:'md-school',
+  },
+  {
+    name: 'exchange-code',
+    title: '产品兑换',
+    icon:'md-clipboard',
   },
   {
     name: 'system-manage',
     title: '平台管理',
-    icon:'01.organ_gray'
+    icon: 'md-planet',
+    list: [
+    {
+      name: 'advertising-map',
+      title: '广告图'
+    },
+    {
+      name: 'manage-news',
+      title: '行业资讯'
+    },
+    // {
+    //   name: 'notification-chat',
+    //   badge: true,
+    //   title: '通知管理',
+    // }
+   ]
   },
+
+
   // {
   //   name: 'manage-project',
   //   title: '机构管理',

@@ -136,11 +136,11 @@ var webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'*/
     }),
-    new CompressionWebpackPlugin({
-      test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-      threshold: 8192,
-      minRatio: 0.8
-    }),
+    // new CompressionWebpackPlugin({
+    //   test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+    //   threshold: 8192,
+    //   minRatio: 0.8
+    // }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
     // split vendor js into its own file
