@@ -228,7 +228,7 @@
         min-width: 96px;
     }
     .money-size{
-        min-width: 96px;
+        min-width: 102px;
         border-left: 1px solid #CDCED3;
         margin-left: 12px;
         padding-left: 12px;

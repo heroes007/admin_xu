@@ -21,7 +21,7 @@
                     <Input v-model="lbData.redirect_url" placeholder="请输入跳转页面"></Input>
                 </FormItem>
                     <FormItem label="上传广告" required>
-                        <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
+                        <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2">
                             <span slot="file-require">* 只能上传 jpg/png 文件，建议尺寸1400*360px</span>
                         </UploadPanel>
                 </FormItem>

@@ -41,7 +41,7 @@
                                         <Col class="upload-img-col" span="8" v-for="(t,i) in form.imgList" :key="i">
                                             <div class="upload-img-main">
                                                 <Icon @click="deleteImgList(i)" class="upload-img-main-icon" v-if="t !== 'upload-btn'" type="ios-close-circle" />
-                                                <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="jhyl-static-file" @uploadcomplete="uploadcomplete" type="image/jpeg,image/png,image/jpg,image/bmp"/>
+                                                <UploadImgs v-if="t === 'upload-btn'" :imgtypes=1 bucket="jhyl-static-file" @uploadcomplete="uploadcomplete" type="image/jpeg,image/png,image/jpg,image/bmp" :maxFileSize="2"/>
                                                 <img v-else class="upload-img-item"  :src="t" />
                                             </div>
                                         </Col>
@@ -51,8 +51,8 @@
                             <TabPane label="展示视频" :disabled="disabled2" name="displayVideo">
                                 <FormItem label="展示视频" v-show="nextStep == 0" required>
                                   <div class="upload-video-main">
-                                    <upload-panel close :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2'>
-                                        <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过2M</span>
+                                    <upload-panel close :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler2' :upload-config='uploaderConfig2' :maxFileSize="300">
+                                        <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过300M</span>
                                     </upload-panel>
                                   </div>
                                 </FormItem>
@@ -461,5 +461,8 @@ export default {
 }
 .upload-video-main{
     position: relative;
+}
+/deep/ .w-e-text-container{
+    height: calc(100% - 44px) !important;
 }
 </style>

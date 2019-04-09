@@ -84,7 +84,7 @@
                 if (this.fileSize > parseInt(this.maxFileSize)) {
                     this.$Modal.info({
                         title: '提示',
-                        content: '文件过大',
+                        content: '文件不能超过${this.maxFileSize}M',
                         onOk: () => {}
                     });
                     return;
