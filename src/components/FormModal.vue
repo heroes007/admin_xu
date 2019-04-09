@@ -112,7 +112,7 @@
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
-                                        @uploadcomplete="uploadImg"/>
+                                        @uploadcomplete="uploadImg" :maxFileSize="300"/>
                         </div>
                     </FormItem>
                 </div>
@@ -180,6 +180,10 @@
             uploadFlie: {
                 type: Boolean,
                 default: false
+            },
+            maxFileSize: {
+                type: Number,
+                default: 0
             }
         },
         data() {
@@ -195,6 +199,7 @@
                 uploadData: {},
                 img_url: '',
                 resourse_url: '',
+                fileSize: null,
                 uploadConfig: {
                     bucket: 'jhyl-static-file',
                     dir: 'user_task',
@@ -330,6 +335,16 @@
                 this.show = _new
             },
             handleBeforeUpload(file) {
+                this.fileSize = file.size / (1024 * 1024);
+                if (this.maxFileSize > 0 && this.fileSize > this.maxFileSize) {
+                    this.$Modal.info({
+                        title: '提示',
+                        content: '文件过大',
+                        onOk: () => {
+                        }
+                    });
+                    return;
+                }
                 this.handleGetassignKey(file);
                 return false
             },

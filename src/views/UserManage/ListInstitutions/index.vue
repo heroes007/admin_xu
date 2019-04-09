@@ -2,7 +2,7 @@
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <FormModal :modal-false="true"  :modal-text="modalText" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
-                   @close="closeModal" :title="modalTitle" :rule-validate="rules" />
+                   @close="closeModal" :title="modalTitle" :rule-validate="rules" :maxFileSize="2"/>
         <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick" />
         <Tables :is-serial=true @operation1="see" @operation2="edit" :column="columns1" :table-data="list"
         @table-swtich="tableSwtich"   see-url='user/getDeptDetail'  :select-list="institution"/>

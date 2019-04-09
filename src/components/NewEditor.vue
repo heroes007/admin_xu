@@ -21,14 +21,15 @@
                     dir: 'user_task',
                     type: 1
                 },
-                editor: ''
+                editor: '',
+                fileSize: null,
             }
         },
         props: {
             content: {
                 type: String,
                 default: '123'
-            }
+            },
         },
         mounted() {
             let vm = this
@@ -79,6 +80,16 @@
                 });
             },
             handleGetassignKey(file_item, insert) {
+                this.fileSize = file_item.size / (1024 * 1024);
+                if (this.fileSize > 2) {
+                    this.$Modal.info({
+                        title: '提示',
+                        content: `文件不能超过2M`,
+                        onOk: () => {
+                        }
+                    });
+                    return;
+                }
                 var date = new Date();
                 date = date.toGMTString();
                 get_sign(file_item.type, date, this.uploadConfig.bucket, this.uploadConfig.dir, file_item.name, 'POST')
@@ -108,6 +119,6 @@
         height: 100%;
     }
     /deep/ .w-e-text-container{
-        height: calc(100% - 44px) !important;
+        /*height: calc(100% - 44px) !important;*/
     }
 </style>
