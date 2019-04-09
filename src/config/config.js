@@ -65,8 +65,8 @@ export default {
       case 4:
         return '老师'
         break;
-      // case 5:
-      //   return '辅导员'
+      case 5:
+        return '辅导员'
       default: return '不存在该身份'
     }
   },

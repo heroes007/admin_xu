@@ -15,8 +15,8 @@ export default [
         id: 4,
         name: '老师'
     },
-    {
-        id: 5,
-        name: '辅导员'
-    },
+    // {
+    //     id: 5,
+    //     name: '辅导员'
+    // },
 ]

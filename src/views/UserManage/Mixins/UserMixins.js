@@ -36,11 +36,11 @@ export default {
         handleAuth(d){
             if(d && d.hasOwnProperty('child')){
                 let t = d.child;
-                let col = this.columns1&&this.columns1[this.columns1.length-1].hasOwnProperty('operation')&&this.columns1[this.columns1.length-1].operation || null
+                let col = this.columns1&&this.columns1[this.columns1.length-1]&&this.columns1[this.columns1.length-1].hasOwnProperty('operation')&&this.columns1[this.columns1.length-1].operation || null
                 t.forEach((m) => {
                     let n = +m.permission_code.slice(4,6)
                     if(m.type === 'btn'){
-                       if(m.permission_code === '010401')  col.push(this.operationList[0])
+                       if(m.permission_code === '010401'&&col)  col.push(this.operationList[0])
                        else if(n === 1) this.btnType = true
                        else if(n>1){
                             if(this.operationList&&col) col.push(this.operationList[n-2])

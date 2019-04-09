@@ -148,6 +148,7 @@
         if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
         if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
         c.map((t) => {
+          if(t.hasOwnProperty('slot')&&t.slot == "operation" && !t.hasOwnProperty('align'))  t.align = 'left'
           if (!t.hasOwnProperty('align')) t.align = 'center'
           t.tooltip = true
         })
