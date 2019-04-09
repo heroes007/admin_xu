@@ -54,18 +54,19 @@
                 title: '手机号',
                 key: 'phone',
                 align: 'left',
-              minWidth: 100
-            },
-            //     {
-            //     title: '状态',
-            //     key: 'state',
-            // },
-                {
-                title: '最近登录时间',
-                key: 'create_time',
-                align: 'left',
                 minWidth: 100
-                },
+            },
+            {
+                title: '身份',
+                key: 'role_name',
+                minWidth: 100
+            },
+            {
+                title: '最近登录时间',
+                key: 'last_time',
+                align: 'left',
+                minWidth: 150
+            },
             {
                 title: '操作',
                 minWidth: 260,
@@ -133,6 +134,11 @@
             postData('user/getSuperAdminList', d).then((res) => {
                   this.list = res.data.list
                   this.total = res.data.count
+                  if(this.list.length>0){
+                      this.list.map((t) => {
+                          t.role_name = t.role_id == 1 ? '总管理员' : ''
+                      })
+                  }
             })
         }
     },

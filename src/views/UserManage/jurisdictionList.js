@@ -9,10 +9,14 @@ export default [
     // },
     {
         id: 3,
-        name: '机构导师'
+        name: '学管'
     },
     {
         id: 4,
-        name: '机构学管'
-    }
+        name: '老师'
+    },
+    {
+        id: 5,
+        name: '辅导员'
+    },
 ]

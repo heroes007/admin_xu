@@ -1,11 +1,7 @@
 <template>
     <div>
-        <Table highlight-row :columns="columns" :data="datas" :height="tabelHeight">
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas" :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
-                <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
-                    <span slot="open">启用</span>
-                    <span slot="close">禁用</span>
-                </Switch>
               <span v-for="(t,i) in column.operation" :key="i">
               <!-- poptip_state -->
                <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
@@ -21,7 +17,11 @@
                    {{handleBtnText(t,row,column)}}
                  </Button>
                </span>
-            </span>
+              </span>
+              <Switch class="operation_btn_show" v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
+                 <span slot="open">启用</span>
+                 <span slot="close">停用</span>
+               </Switch>
             </template>
             <template slot-scope="{ column, row, index }" slot="radio-item">
                 <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
@@ -89,9 +89,17 @@
       }
     },
     methods: {
+      rowClassName(r){
+       if(r.hasOwnProperty('states'))  return r.states ? '' : 'row-switch-disable'
+       return ''
+      },
+      rowClick(row,rowIndex){
+        this.show(row,rowIndex,'row-click')
+      },
       handleBtnShowClass(c,r,t){
          if (!c.hasOwnProperty('operation_btn_hide')){
-           if(!r.operation_btn_show&&t[0] !== '查看') return 'operation_btn_show'
+           if(c.operation[0][0] == t[0]) return 'operation_btn_see'
+           if(!r.operation_btn_show) return 'operation_btn_show'
            return ''
          }
          return ''
@@ -183,7 +191,9 @@
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }
-
+    /deep/ .ivu-table-row{
+      color: #474C63;
+    }
     .state-key-other0 {
         color: #474C63;
     }
@@ -239,7 +249,9 @@
     /deep/ .ivu-tooltip-rel {
         width: 100%;
     }
-
+    /deep/ .row-switch-disable{
+      color: #9397AD;
+    }
     .poptip-main {
         display: flex;
         margin-top: 20px;
@@ -281,6 +293,9 @@
     }
     .operation_btn_show{
        display: none
+    }
+    /deep/.operation_btn_see .ivu-btn-text{
+      margin-left: -5px;
     }
     /deep/ .ivu-table-row:hover{
      .operation_btn_show{

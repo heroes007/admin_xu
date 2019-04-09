@@ -63,7 +63,7 @@
               //   slot: 'sex',
               // },
             {
-                title: '管理权限',
+                title: '身份',
                 key: 'role_name',
                 align: 'left',
                 minWidth: 100
@@ -80,7 +80,7 @@
             // },
                 {
                 title: '最近登录时间',
-                key: 'create_time',
+                key: 'last_time',
                 align: 'left',
                 minWidth: 100
                 },

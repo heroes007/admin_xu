@@ -13,13 +13,14 @@
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
-        <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
+        <!-- <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
             <span class="money-student-content">付费学员</span>
-        </div>
+        </div> -->
         <div v-if="types && types !== 6 && types !== 7 || types == 11"  class="all-size">
             <span class="all-content">{{sizeTitle1}}</span>
-            <span class="all-num">{{sizeNum1}}</span>
+            <span v-if="typeof sizeNum1 == 'number'" class="all-num">{{sizeNum1}}</span>
+            <span v-else class="all-num" v-html="handleSizeNum(sizeNum1)"></span>
         </div>
         <div v-if="types ==3 || types ==5 || types ==8 && isSuper && sizeTitle2" class="money-size">
             <span class="all-content">{{sizeTitle2}}</span>
@@ -92,9 +93,7 @@
       sizeTitle1: {
         type: String
       },
-      sizeNum1: {
-        type: Number
-      },
+      sizeNum1: [Number,String],
       sizeTitle2: {
         type: String
       },
@@ -134,6 +133,15 @@
       moneyStudent(){
         this.iconColor = this.iconColor == '#9397AD' ? "#4098ff" : "#9397AD"
         this.$emit('moneyStudent', this.iconColor == '#9397AD' ? 'NO' : 'YES')
+      },
+      handleSizeNum(s){
+        if(s){
+        let arr = s.split('/');
+        let s1 = arr[0] != 'null' ? arr[0] : ''
+        let s2 = arr[1] != 'null' ? arr[1] : ''
+        return s1 + `<span style="color:#9397AD">/${s2}</span>`
+        }
+        return ''
       },
       //一个下拉框，change触发，返回value
       selectChange1(val){
