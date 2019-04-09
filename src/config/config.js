@@ -54,7 +54,7 @@ export default {
   status(n){
     switch (n) {
       case 1:
-        return '九划超级管理员'
+        return '总管理员'
         break
       case 2:
         return '机构管理员'

@@ -1,7 +1,7 @@
 export default [
     // {
     //     id: 1,
-    //     name: '九划超级管理员'
+    //     name: '总管理员'
     // },
     // {
     //     id: 2,

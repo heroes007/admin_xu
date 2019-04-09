@@ -60,7 +60,7 @@
             }, ],
             columns1: [
             {
-                title: '用户名',
+                title: '用户ID',
                 key: 'username',
                 align: 'left',
                 minWidth: 100
@@ -105,6 +105,7 @@
                 title: '操作',
                 minWidth: 100,
                 slot: 'operation',
+                align: 'left',
                 operation: [],
                 isSwitch: false,
                 switchKey: 'switch_state'

@@ -49,7 +49,7 @@
             organization_id:'',
             columns1: [
             {
-                title: '用户名',
+                title: '用户ID',
                 key: 'username',
                 align: 'left',
                 minWidth: 100
@@ -88,6 +88,7 @@
                 title: '操作',
                 minWidth: 260,
                 slot: 'operation',
+                align: 'left',
                 operation: [],
             }],
             list: [],

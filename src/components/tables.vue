@@ -1,12 +1,12 @@
 <template>
     <div>
-        <Table :columns="columns" :data="datas" :height="tabelHeight">
+        <Table highlight-row :columns="columns" :data="datas" :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
                 <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
                     <span slot="open">启用</span>
                     <span slot="close">禁用</span>
                 </Switch>
-                <span v-for="(t,i) in column.operation" :key="i">
+              <span v-for="(t,i) in column.operation" :key="i">
               <!-- poptip_state -->
                <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
                     <Button type="text">查看</Button>
@@ -15,10 +15,12 @@
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
                     </div>
                </Poptip>
-              <Button type="text" v-else-if="handleBtnShow(column,row,t)" size="small"
+               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                 <Button  type="text"  size="small"
                       style="margin-right: 5px" @click="show(row,index,t[1])">
-                {{handleBtnText(t,row,column)}}
-              </Button>
+                   {{handleBtnText(t,row,column)}}
+                 </Button>
+               </span>
             </span>
             </template>
             <template slot-scope="{ column, row, index }" slot="radio-item">
@@ -34,7 +36,6 @@
         </Table>
     </div>
 </template>
-
 <script>
   import postData from 'src/api/postData'
   export default {
@@ -88,8 +89,17 @@
       }
     },
     methods: {
+      handleBtnShowClass(c,r,t){
+         if (!c.hasOwnProperty('operation_btn_hide')){
+           if(!r.operation_btn_show&&t[0] !== '查看') return 'operation_btn_show'
+           return ''
+         }
+         return ''
+      },
       handleBtnShow(c,r,t){
-        return c.operation_btn_hide&&t[2] ? r.mark_state : true
+        if (c.hasOwnProperty('operation_btn_hide')){
+          return c.operation_btn_hide&&t[2] ? r.mark_state : true
+        }else return true
       },
       radioChange(r, c) {
         this.datas.map((t, k) => {
@@ -106,6 +116,7 @@
           if (t.hasOwnProperty('slot')) {
             if (t.operation.length > 0) this.btnList = t.operation
           }
+          t.operation_btn_show = false
         })
         this.datas = d
       },
@@ -264,5 +275,16 @@
     }
     /deep/ .ivu-table td.demo-table-info-column{
         color: #F54802;
+    }
+    /deep/ .ivu-btn{
+      display: flex;
+    }
+    .operation_btn_show{
+       display: none
+    }
+    /deep/ .ivu-table-row:hover{
+     .operation_btn_show{
+      display: inline-block;
+     }
     }
 </style>

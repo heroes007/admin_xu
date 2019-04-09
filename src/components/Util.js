@@ -227,7 +227,7 @@ export const MenuList = [
   // },
   // {
   //   name: '1',
-  //   title: '超级管理员',
+  //   title: '总管理员',
   //   icon: 'md-person',
   //   check: 'admin',
   //   list: [{

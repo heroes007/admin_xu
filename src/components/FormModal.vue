@@ -134,6 +134,7 @@
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
     import newEditor from './NewEditor'
+    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
         components: {ExchangeContent, uploadBtn, downLoading, newEditor},

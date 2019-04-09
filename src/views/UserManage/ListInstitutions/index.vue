@@ -59,6 +59,7 @@
                 title: '操作',
                 minWidth: 260,
                 slot: 'operation',
+                align: 'left',
                 operation: [],
             }],
             list: [],
