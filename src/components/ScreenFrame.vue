@@ -7,6 +7,9 @@
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list" placeholder="请选择机构">
             <Option v-for="(item,i) in select" :value="item.id " :key="i">{{ item.title }}</Option>
         </Select>
+        <Select v-if="selectSubjects" v-model="valueSelect3" @on-change="selectChange3" class="select-list" placeholder="选择学科">
+            <Option v-for="item in select3" :value="item.id" :key="item.id">{{ item.name }}</Option>
+        </Select>
         <Select v-if="types == 4 || types == 5 || types == 10 || types == 11 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
@@ -48,7 +51,9 @@
         iconColor: '#9397AD',
         backgroundColor: 'background: #fff',
         isSuper: false,
-        select: [{id: 'all', title:'全部'}]
+        select: [{id: 'all', title:'全部'}],
+        subjectsSelect3: [{id: '', name:'全部'}],
+        select3: []
       }
     },
     props:{
@@ -60,6 +65,10 @@
         required: true,
       },
       payingStudent: {
+        type: Boolean,
+        default: false
+      },
+      selectSubjects: {
         type: Boolean,
         default: false
       },
@@ -85,9 +94,6 @@
         type: Array
       },
       select2: {
-        type: Array
-      },
-      select3: {
         type: Array
       },
       sizeTitle1: {
@@ -121,12 +127,12 @@
     mounted() {
       // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
-      if(this.select3 && this.select3.length) this.valueSelect3 = this.select3[0].value
       this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
       postData('components/getOrganization').then((res) => {
         this.select = [...this.select, ...res.data]
         this.valueSelect1 = this.select[0].id
       })
+      if(this.selectSubjects) this.getSubjectsList()
     },
     methods:{
       // 付费学员返回事件，click触发，选中返回true
@@ -167,6 +173,12 @@
       //返回按钮触发事件
       handleBack(){
         this.$emit('handleBack')
+      },
+      getSubjectsList(){
+        postData('/components/getDepts').then((res) => {
+          this.select3 = [...this.subjectsSelect3,...res.data]
+          this.valueSelect1 = this.select2[0].id
+        })
       }
     }
   }

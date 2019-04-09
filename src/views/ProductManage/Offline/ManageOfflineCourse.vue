@@ -1,11 +1,12 @@
 <template>
-    <div class='manage-offline-course'>
+    <div class='manage-offline-course'> 
+        <SeeModal :show="seeModal" :details="details" @close-modal="closeModal" />
         <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
         <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
         <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
                    @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
                    @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList' @add-off-line-courses="addOffLineCourses"
-                   :header-data='dataHeader' :is-stripe='false' :table-height='listHeight'></data-list>
+              @see="see"     :header-data='dataHeader' :is-stripe='false' :table-height='listHeight'></data-list>
          <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
@@ -22,10 +23,10 @@
   import postData from '../../../api/postData.js'
   import FormModal from '../../../components/FormModal.vue'
   import setAuthMixins from '../setAuthMixins'
-
+  import SeeModal from "./see-modal.vue";
   export default {
     mixins: [Dialog, setAuthMixins],
-    components: { 'data-list': BaseList, 'save-order': SaveOrder, screen, FormModal },
+    components: { 'data-list': BaseList, 'save-order': SaveOrder, screen, FormModal, SeeModal },
     data() {
       return {
         show: false,
@@ -37,6 +38,7 @@
           id: 1,
           name: '英语'
         }],
+        seeModal: false,
         dirty: false,
         loadingInstance: null,
         isdelete: false,
@@ -50,6 +52,7 @@
         total: null,
         pageSize: 12,
         page_num: 1,
+        details: {},
         tableRow: {},
         modalTitle: '',
         show: false,
@@ -82,6 +85,7 @@
       }),
       dataHeader() {
         let d =  [
+              { text: '查看', param: 'see' },
               { text: '编辑', param: 'edit' },
               { text: '复制', param: 'copy' },
               { text: '发送', param: 'sendOfflineCourse' },
@@ -106,7 +110,7 @@
           },
           {
             prop: 'student_num',
-            label: '参加人数',
+            label: '预约人数',
             width: 100
           }, {
             prop: '',
@@ -127,7 +131,7 @@
           },
           {
             label: '操作',
-            width: 260,
+            width: 360,
             groupBtn: btnList
           },
           {
@@ -188,6 +192,9 @@
       closeModal2(){
         this.show = false
       },
+      closeModal(){
+        this.seeModal = false
+      },
       addOffLineCourses(row, type, index){
         this.term_row = row
         this.modalTitle = type ? '编辑课程' : '添加课程'
@@ -220,6 +227,10 @@
       showCourseDetailHandler(index, row) {
         this.detailData = row;
         this.showModal = true;
+      },
+      see(index, row){
+        this.details = row
+        this.seeModal = true
       },
       //复制
       copyItem(index, row){
