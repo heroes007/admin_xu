@@ -19,6 +19,9 @@ module.exports = merge(baseWebpackConfig, {
     chunkFilename: '[name].js'
   },
   mode: 'development',
+  optimization: {
+    nodeEnv: 'development'
+  },
   module: {
     rules: [
       {
