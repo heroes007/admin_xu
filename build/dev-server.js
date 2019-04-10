@@ -15,7 +15,6 @@ var webpackConfig = require('./webpack.dev.conf')
 var port = process.env.PORT || config.dev.port
 
 var compiler = webpack(webpackConfig)
-
 var server = new webpackDevServer(compiler, {
     hot: true,
     noInfo: false,

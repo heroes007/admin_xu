@@ -17,8 +17,8 @@ app.get('*',function (req, res) {
 /*app.get('/', function (request, response) {
     response.send('Hello World!');
 });*/
-
-var PORT = parseInt(process.env.npm_package_config_port || 8021);
+let env = process.env.NODE_ENV
+var PORT = parseInt(env == 'production' ? 8021 : 8521)
 app.listen(PORT, function () {
     console.log('Node app is running, port:', PORT, '\n\n\n\n\n\n');
 });

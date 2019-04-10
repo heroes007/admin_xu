@@ -10,7 +10,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
 // 需要gzip压缩的文件后缀
 const productionGzipExtensions = ['js', 'css']
 var webpackConfig = merge(baseWebpackConfig, {
@@ -60,7 +59,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     }
   },
   output: {
-    publicPath: config.prod.publicPath,
+    publicPath: config.test.publicPath,
     filename: config.base.assetsPath + '/js/[name].[hash].js',
     chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
@@ -68,7 +67,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     hints: false
   },
   optimization: {
-    nodeEnv: 'production',
+    nodeEnv: 'testing',
     minimizer: [
       new UglifyJsPlugin({
         test: /\.js(\?.*)?$/i,
