@@ -77,6 +77,17 @@ export default {
             this.ModalState(_new)
         },
         detailData(_new){
+          let list = _new.list;
+          if(list.length>0){
+            list.map((t,k) => {
+                if(t.includes('状态')){
+                let d = t.split(":")
+                if(d[1] == 0) d[1]= " 未认证"
+                if(d[1] == 1) d[1]= " 认证"
+                list.splice(k,1,d.join(":"))
+                }
+            })
+          }
           if (!_new.realname && _new.admin_id) _new.realname = _new.mechanismName + '管理员'
           this.formItem = _new
         }

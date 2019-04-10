@@ -32,7 +32,7 @@
                 <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
             </template>
             <template slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
-            <template slot-scope="{ column, row, index }" slot="_index">{{row._index == 0 ? '未认证' : '已认证'}}</template>
+            <template slot-scope="{ column, row, index }" slot="_index">{{row.state == 0 ? '未认证' : '已认证'}}</template>
         </Table>
     </div>
 </template>
@@ -53,7 +53,7 @@
       },
       tableData: {
         type: Array,
-        default: []
+        default: () => []
       },
       // isSerial -->  序号
       isSerial: {
@@ -179,7 +179,7 @@
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                 arr.push(`${item.name}: ${string.realname}`)
               } else {
-                str = item.name + ':' + ' ' + (string[x]&&string[x]!=0 ? string[x] : '—')
+                str = item.name + ':' + ' ' + (string[x]||string[x]==0 ? string[x] : '—')
                 arr.push(str)
               }
             }

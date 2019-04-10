@@ -6,9 +6,9 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "rm -rf server/dist && node build/build.js",
-    "server": "cd server && node server.js",
-    "start": "cd server && node server.js",
+    "build": "rm -rf server/dist && node build/prod.js",
+    "server": "cd server && node prod.js",
+    "start": "cd server && node test.js",
     "test": "rm -rf server/dist && node build/test.js"
   },
   "dependencies": {

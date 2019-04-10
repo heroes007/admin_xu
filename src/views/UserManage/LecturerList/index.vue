@@ -1,6 +1,6 @@
 <template>
     <div class="user-manage-main">
-        <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close"/>
+        <SeeModal :show="detailShow" :details="detailData" @close-modal="closeModal2" />
         <FormModal :modal-false="true" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" :maxFileSize="2"
                    @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
         <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="total" btn-name="添加讲师" placehodle="搜索讲师姓名"
@@ -15,8 +15,9 @@
                             <p>绑定课程：{{t.curriculum_count}}个</p>
                         </div>
                         <div class="lecturer-item-btn">
+                            <img @click="see(t)" class="lecturer-btn-icon" src="../../../assets/icons/icon/write.jpg"/>
                             <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="../../../assets/icons/icon/write.jpg"/>
-                            <img v-if="lectureesItem3" @click="deletes(t)" src="../../../assets/icons/icon/delete.jpg"/>
+                            <img v-if="lectureesItem3" @click="deletes(t)" class="lecturer-btn-icon" src="../../../assets/icons/icon/delete.jpg"/>
                         </div>
                     </div>
                 </Col>
@@ -27,7 +28,6 @@
 </template>
 <script>
   import screen from '../../../components/ScreenFrame'
-  import see from '../../../components/SeeInfo.vue'
   import seeMixin from '../Mixins/seeMixin'
   import FormModal from '../../../components/FormModal.vue'
   import FormModalMixin from '../Mixins/FormModalMixin'
@@ -35,9 +35,11 @@
   import UserMixins from '../Mixins/UserMixins'
   import pageList from '../../../components/Page'
   import pageMixin from '../../mixins/pageMixins'
+  import SeeModal from "./see-modal.vue";
+
   export default {
     name: "LecturerList",
-    components: {FormModal, screen, see, pageList},
+    components: {FormModal, screen, pageList, SeeModal},
     mixins: [seeMixin, FormModalMixin, UserMixins, pageMixin],
     props: {
       permissionItem5: {
@@ -55,6 +57,8 @@
         modalTitle: '',
         tableRow: {},
         tableRowData: {},
+        detailShow: false,
+        detailData: {},
         lectureesItem2: false,
         lectureesItem3: false,
         keyword: '',
@@ -76,6 +80,14 @@
       }
     },
     methods: {
+      see(t){
+        console.log(t,'t');
+        this.detailShow = true;
+        this.detailData = t
+      },
+      closeModal2(){
+        this.detailShow = false;
+      },
       edit(t) {
         this.modalTitle = '编辑讲师'
         this.show = true
@@ -135,7 +147,8 @@
 </script>
 <style lang="less" scoped>
     .lecturer-list-item {
-        background: #F0F0F7;
+        background: #FFFFFF;
+        border: 1px solid #F0F0F7;
         border-radius: 8px;
         height: 110px;
         padding-left: 10px;
@@ -175,17 +188,15 @@
             height: 110px;
             background-color: #fff;
             background: #9397AD;
-            display: none;
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
             display: none;
             .lecturer-btn-icon {
-                margin-top: 20px;
-                margin-bottom: 30px;
+                margin-top: 11px;
             }
             img {
-                width: 17.5px;
-                height: 17.5px;
+                width: 18px;
+                height: 18px;
             }
         }
     }
