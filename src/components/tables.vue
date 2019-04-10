@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas" :height="tabelHeight">
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas" :height="tabelHeight" >
             <template slot-scope="{ column, row, index }" slot="operation">
               <span v-for="(t,i) in column.operation" :key="i">
               <!-- poptip_state -->
