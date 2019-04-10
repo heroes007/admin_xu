@@ -173,7 +173,7 @@
               if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                 arr.push(`${item.name}: ${string.realname}`)
               } else {
-                str = item.name + ':' + ' ' + (string[x] ? string[x] : '—')
+                str = item.name + ':' + ' ' + (string[x]&&string[x]!=0 ? string[x] : '—')
                 arr.push(str)
               }
             }
