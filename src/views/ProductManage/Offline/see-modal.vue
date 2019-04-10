@@ -103,6 +103,12 @@
     }
 </script>
 <style lang="less" scoped>
+    /deep/ .ivu-table:before, /deep/ .ivu-table:after{
+        display: none;
+    }
+    /deep/ .ivu-table-wrapper{
+        border: none
+    }
     /deep/ .ivu-modal-content{
         padding: 10px 30px;
     }
