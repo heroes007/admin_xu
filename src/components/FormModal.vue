@@ -357,7 +357,6 @@
                         delete this.formItem.password
                     }
                 }
-                console.log(this.formItem, 'formItem')
                 let d = this.$config.copy(this.formItem, {})
                 let close = () => {
                     if (!this.modalFalse) this.closeModal()
@@ -376,7 +375,13 @@
                         else if (this.formList.length > 4 && this.formList[4].type === 'switch-datetimerange') {
                             if (!this.formItem.isswitch && !this.formItem.effective_time[0]) this.$Message.success('请选择有效时间');
                             else this.handleFormData()
-                        } else this.handleFormData()
+                        } else {
+                            if(this.$refs.formInput){
+                                if(this.content) this.handleFormData()
+                                else this.$Message.info('请输入作业描述')
+                            }
+                            else this.handleFormData()
+                        }
                     }
                 })
             },
