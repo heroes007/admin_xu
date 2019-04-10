@@ -4,8 +4,8 @@
         <FormModal :modal-false="true"  :modal-text="modalText" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" :maxFileSize="2"/>
         <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick" />
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list"
-       see-url='user/getDeptDetail'  :select-list="institution"/>
+        <Tables :is-serial=true @operation1="see" @operation2="edit" :column="columns1" :table-data="list"
+        @table-swtich="tableSwtich"   see-url='user/getDeptDetail'  :select-list="institution"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
@@ -46,19 +46,39 @@
                 align: 'left',
                 minWidth: 100
             },{
-                title: '导师人数',
+                title: '导师',
                 key: 'tutor_count',
                 minWidth: 100
-              },
+            },
             {
-                title: '付费学员',
+                title: '学员',
                 key: 'student_count',
                 minWidth: 100
+            },
+             {
+                title: '用户ID',
+                key: 'username',
+                align: 'left',
+                minWidth: 100
+            },
+            {
+                title: '状态',
+                key: 'state_name',
+                minWidth: 100
+            },
+            {
+                title: '最近登录时间',
+                key: 'last_time',
+                align: 'left',
+                minWidth: 150
             },
             {
                 title: '操作',
                 minWidth: 260,
                 slot: 'operation',
+                align: 'left',
+                isSwitch: false, // true --> 启用 false --> 禁用
+                switchKey: 'states',
                 operation: [],
             }],
             list: [],
@@ -76,7 +96,7 @@
                 password: [{ required: true, validator: validatePass }],
                 jurisdiction: [],
             },
-            operationList: [['查看','operation1'], ['编辑','operation2'], ['注销','operation3']]
+            operationList: [['查看','operation1'], ['编辑','operation2']]
         }
     },
     watch: {
@@ -121,11 +141,19 @@
             postData('user/getDeptAdminList', d).then((res) => {
               this.list = res.data.list
               this.total = res.data.count
+              this.list.map((t) => {
+                t.state_name = t.state == -1 ? '停用' : '启用'
+                t.states = t.state == -1 ? false : true
+              })
             })
         },
         handleSubmit(val) {
           if(this.modalTitle === '添加机构') this.fromAddAndEdit('user/addDeptAdmin', val)
           else this.fromAddAndEdit('user/modifyDept', val)
+        },
+        tableSwtich(r){
+          let d = { id: r.id, state:  r.states ? 0 : -1 }
+          this.fromAddAndEdit('user/removeDept', d)
         }
     },
     mounted() {

@@ -7,19 +7,23 @@
         <Select v-if="types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && selectType1 && isSuper" v-model="valueSelect1" @on-change="selectChange1" class="select-list" placeholder="请选择机构">
             <Option v-for="(item,i) in select" :value="item.id " :key="i">{{ item.title }}</Option>
         </Select>
+        <Select v-if="selectSubjects" v-model="valueSelect3" @on-change="selectChange3" class="select-list" placeholder="选择学科">
+            <Option v-for="item in select3" :value="item.id" :key="item.id">{{ item.name }}</Option>
+        </Select>
         <Select v-if="types == 4 || types == 5 || types == 10 || types == 11 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
-        <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
+        <!-- <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
             <span class="money-student-content">付费学员</span>
-        </div>
+        </div> -->
         <div v-if="types && types !== 6 && types !== 7 || types == 11"  class="all-size">
             <span class="all-content">{{sizeTitle1}}</span>
-            <span class="all-num">{{sizeNum1}}</span>
+            <span v-if="typeof sizeNum1 == 'number'" class="all-num">{{sizeNum1}}</span>
+            <span v-else class="all-num" v-html="handleSizeNum(sizeNum1)"></span>
         </div>
         <div v-if="types ==3 || types ==5 || types ==8 && isSuper && sizeTitle2" class="money-size">
             <span class="all-content">{{sizeTitle2}}</span>
@@ -47,7 +51,9 @@
         iconColor: '#9397AD',
         backgroundColor: 'background: #fff',
         isSuper: false,
-        select: [{id: 'all', title:'全部'}]
+        select: [{id: 'all', title:'全部'}],
+        subjectsSelect3: [{id: '', name:'全部'}],
+        select3: []
       }
     },
     props:{
@@ -59,6 +65,10 @@
         required: true,
       },
       payingStudent: {
+        type: Boolean,
+        default: false
+      },
+      selectSubjects: {
         type: Boolean,
         default: false
       },
@@ -86,15 +96,10 @@
       select2: {
         type: Array
       },
-      select3: {
-        type: Array
-      },
       sizeTitle1: {
         type: String
       },
-      sizeNum1: {
-        type: Number
-      },
+      sizeNum1: [Number,String],
       sizeTitle2: {
         type: String
       },
@@ -122,18 +127,27 @@
     mounted() {
       // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
-      if(this.select3 && this.select3.length) this.valueSelect3 = this.select3[0].value
       this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
       postData('components/getOrganization').then((res) => {
         this.select = [...this.select, ...res.data]
         this.valueSelect1 = this.select[0].id
       })
+      if(this.selectSubjects) this.getSubjectsList()
     },
     methods:{
       // 付费学员返回事件，click触发，选中返回true
       moneyStudent(){
         this.iconColor = this.iconColor == '#9397AD' ? "#4098ff" : "#9397AD"
         this.$emit('moneyStudent', this.iconColor == '#9397AD' ? 'NO' : 'YES')
+      },
+      handleSizeNum(s){
+        if(s){
+        let arr = s.split('/');
+        let s1 = arr[0] != 'null' ? arr[0] : ''
+        let s2 = arr[1] != 'null' ? arr[1] : ''
+        return s1 + `<span style="color:#9397AD">/${s2}</span>`
+        }
+        return ''
       },
       //一个下拉框，change触发，返回value
       selectChange1(val){
@@ -159,6 +173,12 @@
       //返回按钮触发事件
       handleBack(){
         this.$emit('handleBack')
+      },
+      getSubjectsList(){
+        postData('/components/getDepts').then((res) => {
+          this.select3 = [...this.subjectsSelect3,...res.data]
+          this.valueSelect1 = this.select2[0].id
+        })
       }
     }
   }

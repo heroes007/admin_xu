@@ -93,6 +93,7 @@ const actions = {
     },
     get_students_by_offline_term({commit}, params) {
         commit(types.OFFLINE_TERM_LIST_LOADING);
+        console.log(params,'params')
         get_students_by_offline_term(params).then(res => {
             if (res.data.res_code == 1) {
                 commit(types.QUERY_STUDENT_BY_OFFLINE_TERM, res.data.data);

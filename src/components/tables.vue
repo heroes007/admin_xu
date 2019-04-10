@@ -1,12 +1,8 @@
 <template>
     <div>
-        <Table :columns="columns" :data="datas" :height="tabelHeight">
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas" :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
-                <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
-                    <span slot="open">启用</span>
-                    <span slot="close">禁用</span>
-                </Switch>
-                <span v-for="(t,i) in column.operation" :key="i">
+              <span v-for="(t,i) in column.operation" :key="i">
               <!-- poptip_state -->
                <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
                     <Button type="text">查看</Button>
@@ -15,11 +11,17 @@
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
                     </div>
                </Poptip>
-              <Button type="text" v-else-if="handleBtnShow(column,row,t)" size="small"
+               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                 <Button  type="text"  size="small"
                       style="margin-right: 5px" @click="show(row,index,t[1])">
-                {{handleBtnText(t,row,column)}}
-              </Button>
-            </span>
+                   {{handleBtnText(t,row,column)}}
+                 </Button>
+               </span>
+              </span>
+              <Switch class="operation_btn_show" v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
+                 <span slot="open">启用</span>
+                 <span slot="close">停用</span>
+               </Switch>
             </template>
             <template slot-scope="{ column, row, index }" slot="radio-item">
                 <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
@@ -34,7 +36,6 @@
         </Table>
     </div>
 </template>
-
 <script>
   import postData from 'src/api/postData'
   export default {
@@ -88,8 +89,25 @@
       }
     },
     methods: {
+      rowClassName(r){
+       if(r.hasOwnProperty('states'))  return r.states ? '' : 'row-switch-disable'
+       return ''
+      },
+      rowClick(row,rowIndex){
+        this.show(row,rowIndex,'row-click')
+      },
+      handleBtnShowClass(c,r,t){
+         if (!c.hasOwnProperty('operation_btn_hide')){
+           if(c.operation[0][0] == t[0]) return 'operation_btn_see'
+           if(!r.operation_btn_show) return 'operation_btn_show'
+           return ''
+         }
+         return ''
+      },
       handleBtnShow(c,r,t){
-        return c.operation_btn_hide&&t[2] ? r.mark_state : true
+        if (c.hasOwnProperty('operation_btn_hide')){
+          return c.operation_btn_hide&&t[2] ? r.mark_state : true
+        }else return true
       },
       radioChange(r, c) {
         this.datas.map((t, k) => {
@@ -106,6 +124,7 @@
           if (t.hasOwnProperty('slot')) {
             if (t.operation.length > 0) this.btnList = t.operation
           }
+          t.operation_btn_show = false
         })
         this.datas = d
       },
@@ -129,6 +148,7 @@
         if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
         if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
         c.map((t) => {
+          if(t.hasOwnProperty('slot')&&t.slot == "operation" && !t.hasOwnProperty('align'))  t.align = 'left'
           if (!t.hasOwnProperty('align')) t.align = 'center'
           t.tooltip = true
         })
@@ -172,7 +192,9 @@
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }
-
+    /deep/ .ivu-table-row{
+      color: #474C63;
+    }
     .state-key-other0 {
         color: #474C63;
     }
@@ -228,7 +250,9 @@
     /deep/ .ivu-tooltip-rel {
         width: 100%;
     }
-
+    /deep/ .row-switch-disable{
+      color: #9397AD;
+    }
     .poptip-main {
         display: flex;
         margin-top: 20px;
@@ -264,5 +288,19 @@
     }
     /deep/ .ivu-table td.demo-table-info-column{
         color: #F54802;
+    }
+    /deep/ .ivu-btn{
+      display: flex;
+    }
+    .operation_btn_show{
+       display: none
+    }
+    /deep/.operation_btn_see .ivu-btn-text{
+      margin-left: -5px;
+    }
+    /deep/ .ivu-table-row:hover{
+     .operation_btn_show{
+      display: inline-block;
+     }
     }
 </style>

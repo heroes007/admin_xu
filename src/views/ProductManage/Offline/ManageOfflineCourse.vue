@@ -1,16 +1,12 @@
 <template>
     <div class='manage-offline-course'>
-        <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList"
-                   @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
-        <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack"
-                @handleClick="addOfflineSemesterHandler"/>
-        <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler'
-                   @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
-                   @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester'
-                   @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
-                   @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler'
-                   class='data-list light-header' :table-data='dataList' @add-off-line-courses="addOffLineCourses"
-                   :header-data='dataHeader' :is-stripe='false' :table-height='listHeight'></data-list>
+        <SeeModal :show="seeModal" :details="details" @close-modal="closeModal1" />
+        <FormModal modalFalse date-times :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal2" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
+        <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
+        <data-list @copy="copyItem" @detail='showCourseDetailHandler' @editCourse='editCourseHandler' @moveUp='moveUpHandler' @moveDown='moveDownHandler' @deleteCourse='deleteCourseHandler'
+                   @childBtnClick='childBtnClickHandler' @add='addOfflineCourse' @edit='editOfflineSemester' @expandOpen='rowExpandHandler' @delete='deleteOfflineSemester'
+                   @sendOfflineCourse="sendOfflineCourseHandler" @manageSignup='manageSignupHandler' class='data-list light-header' :table-data='dataList' @add-off-line-courses="addOffLineCourses"
+                   @see="see"     :header-data='dataHeader' :is-stripe='false' :table-height='listHeight'></data-list>
         <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
@@ -19,18 +15,18 @@
     import BaseList from '../../../components/BaseList'
     import SaveOrder from '../../../components/SaveOrder'
     import screen from '../../../components/ScreenFrame'
-    import {doTimeFormat, doDateFormat, doOfflineCurriculumTypeFormat} from '../../../components/Util'
-    import {Dialog} from '../../dialogs';
+    import { doTimeFormat, doDateFormat, doOfflineCurriculumTypeFormat } from '../../../components/Util'
+    import { Dialog } from '../../dialogs';
     import * as types from '../../dialogs/types';
-    import {mapActions, mapState} from 'vuex'
-    import {Config} from '../../../config/base'
+    import { mapActions, mapState } from 'vuex'
+    import { Config } from '../../../config/base'
     import postData from '../../../api/postData.js'
     import FormModal from '../../../components/FormModal.vue'
     import setAuthMixins from '../setAuthMixins'
-
+    import SeeModal from "./see-modal.vue";
     export default {
         mixins: [Dialog, setAuthMixins],
-        components: {'data-list': BaseList, 'save-order': SaveOrder, screen, FormModal},
+        components: { 'data-list': BaseList, 'save-order': SaveOrder, screen, FormModal, SeeModal },
         data() {
             return {
                 show: false,
@@ -42,6 +38,7 @@
                     id: 1,
                     name: '英语'
                 }],
+                seeModal: false,
                 dirty: false,
                 loadingInstance: null,
                 isdelete: false,
@@ -55,26 +52,25 @@
                 total: null,
                 pageSize: 12,
                 page_num: 1,
+                details: {},
                 tableRow: {},
                 modalTitle: '',
                 show: false,
                 formList: [
-                    {type: 'input', name: '课程名称', field: 'title'},
-                    {type: 'date', name: '开课时间', field: 'start_time'},
-                    {type: 'date', name: '结课时间', field: 'end_time'},
-                    {
-                        type: 'select', name: '课程讲师', field: 'teacher_id',
-                        selectList: [], selectField: ['id', 'name']
+                    { type: 'input', name: '课程名称',  field: 'title'},
+                    { type: 'date', name: '开课时间',  field: 'start_time' },
+                    { type: 'date', name: '结课时间',  field: 'end_time' },
+                    { type: 'select', name: '课程讲师', field: 'teacher_id' ,
+                        selectList: [], selectField: [ 'id','name' ]
                     },
-                    {
-                        type: 'select', name: '课程类型', field: 'type',
-                        selectList: [{id: 1, name: '讲座'}, {id: 2, name: '实践'}], selectField: ['id', 'name']
+                    { type: 'select', name: '课程类型', field: 'type' ,
+                        selectList: [{id: 1, name: '讲座'},{id: 2, name: '实践'}], selectField: [ 'id','name' ]
                     }
                 ],
-                rules: {
-                    title: [{required: true, message: '请输入课程名称', trigger: 'blur'}],
-                    start_time: [{type: 'date', required: true, message: '请输入开课时间'}],
-                    end_time: [{type: 'date', required: true, message: '请输入结课时间'}],
+                rules:{
+                    title: [{ required: true, message: '请输入课程名称', trigger: 'blur' } ],
+                    start_time: [{ type: 'date', required: true, message: '请输入开课时间'} ],
+                    end_time: [{  type: 'date', required: true, message: '请输入结课时间'}],
                     teacher_id: [{required: true, message: '请选择课程讲师'}],
                     type: [{required: true, message: '请选择课程类型'}],
                 },
@@ -88,18 +84,19 @@
                 page_conut: state => state.offline_curriculum.page_conut,
             }),
             dataHeader() {
-                let d = [
-                    {text: '编辑', param: 'edit'},
-                    {text: '复制', param: 'copy'},
-                    {text: '发送', param: 'sendOfflineCourse'},
-                    {text: '删除', param: 'delete',}];
-                let btnList2 = [{text: '编辑', param: 'editCourse'}, {text: '删除', param: 'deleteCourse'}]
-                let btnList = this.btnType ? d : [{text: '发送', param: 'sendOfflineCourse'}]
+                let d =  [
+                    { text: '查看', param: 'see' },
+                    { text: '编辑', param: 'edit' },
+                    { text: '复制', param: 'copy' },
+                    { text: '发送', param: 'sendOfflineCourse' },
+                    { text: '删除', param: 'delete', }];
+                let btnList2 = [{ text: '编辑', param: 'editCourse' }, { text: '删除', param: 'deleteCourse' }]
+                let btnList = this.btnType ? d : [{ text: '发送', param: 'sendOfflineCourse' }]
                 let data = [
                     {
                         sort: true,
                         label: '序号',
-                        minWidth: 60
+                        width: 60
                     }, {
                         prop: 'title',
                         label: '学期名称',
@@ -109,17 +106,16 @@
                     {
                         prop: 'curriculum_num',
                         label: '课程数量',
-                        minWidth: 100
+                        width: 100
                     },
                     {
                         prop: 'student_num',
                         label: '预约人数',
-                        minWidth: 100,
-                        groupBtn: [{canDisabled: 'student_num', param: 'sendOfflineCourse'}]
+                        width: 100
                     }, {
                         prop: '',
                         label: '开课日期',
-                        minWidth: 260,
+                        width: 260,
                         mixColumn: true,
                         mixFunc: (function (data) {
                             var open_date = doTimeFormat(data.start_time);
@@ -131,53 +127,52 @@
                     {
                         prop: 'register_end_time',
                         label: '报名截止日期',
-                        minWidth: 150,
+                        width: 150,
                     },
                     {
                         label: '操作',
-                        minWidth: 260,
+                        width: 360,
                         groupBtn: btnList
                     },
                     {
                         listExpand: true,
-                        minWidth: 90,
+                        width: 90,
                         listExpandBtn: this.btnType,
                         childHeader: [
                             {
                                 prop: '',
                                 label: '',
-                                minWidth: 100,
+                                width: 100,
                                 className: 'prop_key_0'
-                            }, {
+                            },{
                                 prop: 'title',
                                 label: '课程名称',
-                                align: 'left',
-                                minWidth: 200
+                                align: 'left'
                             },
                             {
                                 prop: 'type_text',
                                 label: '类型',
-                                minWidth: 120
+                                width: 120
                             },
                             {
                                 prop: 'teacher_name',
                                 label: '讲师',
-                                minWidth: 180
+                                width: 180
                             },
                             {
                                 prop: 'start_time',
                                 label: '开课时间',
-                                minWidth: 180
+                                width: 180
                             },
                             {
                                 prop: 'end_time',
                                 label: '结课时间',
-                                minWidth: 180
+                                width: 180
                             }
                         ]
                     }
                 ]
-                if (this.btnType) data[7].childHeader.push({label: '操作', width: 260, groupBtn: btnList2})
+                if(this.btnType) data[7].childHeader.push({ label: '操作', width: 260,  groupBtn: btnList2 })
                 return data
             },
             dataList() {
@@ -185,70 +180,72 @@
             },
         },
         methods: {
-            ...mapActions(['delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail']),
+            ...mapActions([ 'delete_offline_curriculum', 'delete_offline_term', 'get_offline_curriculum_detail']),
             handleBack() {
                 this.$router.replace({name: 'open-product'})
             },
-            getLecturerList() {
+            getLecturerList(){
                 postData('/components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
-                    if (res.res_code === 1) this.formList[3].selectList = res.data
+                    if(res.res_code === 1)  this.formList[3].selectList = res.data
                 })
             },
-            closeModal2() {
+            closeModal1(){
+                this.seeModal = false
+            },
+            closeModal2(){
                 this.show = false
             },
-            addOffLineCourses(row, type, index) {
+            addOffLineCourses(row, type, index){
                 this.term_row = row
                 this.modalTitle = type ? '编辑课程' : '添加课程'
                 this.tableRow = {}
-                if (type) {
+                if(type){
                     let d = row.childData[index];
                     this.tableRow = this.$config.copy(d)
                 }
                 this.show = true
             },
-            handleSubmit(v) {
-                let d1 = this.modalTitle === '添加课程' ? {term_underline_id: this.term_row.id} : {curriculum_underline_term_id: this.tableRow.id}
+            handleSubmit(v){
+                let d1 = this.modalTitle === '添加课程' ? { term_underline_id: this.term_row.id} : {curriculum_underline_term_id: this.tableRow.id}
                 let url = this.modalTitle === '添加课程' ? '/product/curriculum_offline/term_curriculum_add' : '/product/curriculum_offline/term_curriculum_change'
-                v.end_time = this.$config.formatDate(v.end_time)
-                v.start_time = this.$config.formatDate(v.start_time)
-                postData(url, {...d1, ...v}).then((res) => {
-                    if (res.res_code === 1) {
+                v.end_time = this.$config.formatDate( v.end_time )
+                v.start_time = this.$config.formatDate( v.start_time )
+                postData(url,{...d1,...v}).then((res) => {
+                    if(res.res_code === 1){
                         this.$Message.success(res.msg);
                         this.rowExpandHandler(this.term_row)
                         this.closeModal2()
                     }
                 })
             },
-            handleClick() {
-            },
+            handleClick() {},
             inputChange(val) {
             },
-            closeModal() {
+            closeModal(){
                 this.showModal = false;
             },
             showCourseDetailHandler(index, row) {
                 this.detailData = row;
                 this.showModal = true;
             },
+            see(index, row){
+                this.details = row
+                this.seeModal = true
+            },
             //复制
-            copyItem(index, row) {
+            copyItem(index, row){
                 this.$Modal.confirm({
                     title: '提示',
                     content: '确定你要复制该学期？',
                     onOk: () => {
-                        postData('/product/curriculum_offline/term_copy', {
-                            ...this.dataList[index],
-                            term_underline_id: row.id
-                        }).then((res) => {
-                            if (res.res_code === 1) {
+                        postData('/product/curriculum_offline/term_copy',{...this.dataList[index], term_underline_id:row.id}).then((res) => {
+                            if(res.res_code === 1){
                                 this.getList()
                                 this.$Message.success(res.msg);
                             }
                         })
                     },
-                    onCancel: () => {
-                    }
+                    onCancel: () => {}
                 });
             },
             sendOfflineCourseHandler(index, row) {
@@ -258,22 +255,18 @@
                 this.handleSelModal(types.ADD_QUESTION);
             },
             editChapterHandler(index) {
-                this.$router.push({name: 'online-course-chapter', params: {id: '1'}})
+                this.$router.push({ name: 'online-course-chapter', params: { id: '1' } })
             },
             editCourseHandler(param, index, row) {
 
             },
             editOfflineSemester(index, row) {
-                this.handleSelModal(types.ADD_OFFLINE_SEMESTER, {
-                    type: 2, row, page_size: this.pageSize,
-                    page_num: this.page_num
-                })
+                this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 2, row,page_size: this.pageSize,
+                    page_num: this.page_num })
             },
             addOfflineSemesterHandler() {
-                this.handleSelModal(types.ADD_OFFLINE_SEMESTER, {
-                    type: 1, page_size: this.pageSize,
-                    page_num: this.page_num,
-                })
+                this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 1, page_size: this.pageSize,
+                    page_num: this.page_num,})
             },
             moveUpHandler(index) {
                 this.dirty = true;
@@ -281,18 +274,17 @@
             moveDownHandler(index) {
                 this.dirty = true;
             },
-            deleteCourseHandler(index, data) {
-            },
+            deleteCourseHandler(index, data) {},
             deleteOfflineSemester(index, row) {
                 var vm = this;
                 if (row.can_delete == 0) {
-                    this.$Modal.info({title: '提示', content: '<p>无法删除该学期!</p >'});
+                    this.$Modal.info({ title: '提示', content: '<p>无法删除该学期!</p >' });
                 } else {
                     this.$Modal.confirm({
                         title: '提示',
                         content: '<p>确定您要删除该学期?</p >',
                         onOk: () => {
-                            vm.delete_offline_term({index, row});
+                            vm.delete_offline_term({ index, row });
                         },
                     });
                 }
@@ -307,14 +299,14 @@
                         title: '提示',
                         content: '<p>确定要删除该课程吗!</p >',
                         onOk: () => {
-                            vm.delete_offline_curriculum({index, row});
+                            vm.delete_offline_curriculum({ index, row });
                         },
                     });
                 } else {
-                    this.addOffLineCourses(row, 1, index)
+                    this.addOffLineCourses(row , 1 , index)
                 }
             },
-            setData() {
+            setData(){
                 return {
                     subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
                     page_size: this.pageSize,
@@ -322,19 +314,17 @@
                 }
             },
             rowExpandHandler(row) {
-                this.$store.dispatch('get_offline_curriculum_list', {
-                    page_size: this.pageSize,
-                    page_num: this.page_num, term_underline_id: row.id
-                })
+                this.$store.dispatch('get_offline_curriculum_list', { page_size: this.pageSize,
+                    page_num: this.page_num,term_underline_id: row.id})
             },
             manageSignupHandler(index, row) {
-                this.$router.replace({name: 'offline-course-manage-signup', params: {id: row.id}})
+                this.$router.replace({ name: 'offline-course-manage-signup', params: { id: row.id } })
             },
-            pageList(val) {
+            pageList(val){
                 this.page_num = val;
                 this.getList()
             },
-            getList() {
+            getList(){
                 this.$store.dispatch('get_offline_term_list', this.setData());
             }
         },
@@ -346,14 +336,13 @@
     }
 </script>
 <style scoped lang='scss'>
-    /deep/ .ivu-btn-text {
+    /deep/.ivu-btn-text{
         font-family: PingFangSC-Medium;
         font-size: 16px;
         color: #4098FF;
         letter-spacing: 0;
     }
-
-    /deep/ .prop_key_0 > .ivu-table-cell > span {
+    /deep/.prop_key_0>.ivu-table-cell>span{
         display: none
     }
 </style>

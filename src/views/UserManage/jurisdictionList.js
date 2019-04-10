@@ -1,7 +1,7 @@
 export default [
     // {
     //     id: 1,
-    //     name: '九划超级管理员'
+    //     name: '总管理员'
     // },
     // {
     //     id: 2,
@@ -9,10 +9,14 @@ export default [
     // },
     {
         id: 3,
-        name: '机构导师'
+        name: '学管'
     },
     {
         id: 4,
-        name: '机构学管'
-    }
+        name: '老师'
+    },
+    // {
+    //     id: 5,
+    //     name: '辅导员'
+    // },
 ]

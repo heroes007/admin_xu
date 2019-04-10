@@ -37,7 +37,7 @@
             modalText: '获得九划后台所有操作权限',
             columns1: [
             {
-                title: '用户名',
+                title: '用户ID',
                 key: 'username',
                 align: 'left',
                 minWidth: 100
@@ -54,22 +54,24 @@
                 title: '手机号',
                 key: 'phone',
                 align: 'left',
-              minWidth: 100
-            },
-            //     {
-            //     title: '状态',
-            //     key: 'state',
-            // },
-                {
-                title: '最近登录时间',
-                key: 'create_time',
-                align: 'left',
                 minWidth: 100
-                },
+            },
+            {
+                title: '身份',
+                key: 'role_name',
+                minWidth: 100
+            },
+            {
+                title: '最近登录时间',
+                key: 'last_time',
+                align: 'left',
+                minWidth: 150
+            },
             {
                 title: '操作',
                 minWidth: 260,
                 slot: 'operation',
+                align: 'left',
                 operation: [],
             }],
             list:[],
@@ -77,7 +79,7 @@
                 { type: 'input', name: '真实姓名',  field: 'realname'},
                 { type: 'input', name: '管理账号',  field: 'username' },
                 { type: 'password', name: '账号密码',  field: 'password' },
-                { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'九划超级管理员'}
+                { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'总管理员'}
             ],
             rules:{
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
@@ -132,6 +134,11 @@
             postData('user/getSuperAdminList', d).then((res) => {
                   this.list = res.data.list
                   this.total = res.data.count
+                  if(this.list.length>0){
+                      this.list.map((t) => {
+                          t.role_name = t.role_id == 1 ? '总管理员' : ''
+                      })
+                  }
             })
         }
     },

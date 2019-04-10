@@ -156,6 +156,8 @@
         }
         this.$store.dispatch('get_students_by_offline_term', {
           subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+          product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+          term_id: this.payload.row.id,
           page_num: this.pageIndex,
           page_size: this.pageSize,
           ...d
