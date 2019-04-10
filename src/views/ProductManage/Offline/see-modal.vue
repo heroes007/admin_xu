@@ -91,9 +91,11 @@
                     term_id: this.details.id
                 }
                 postData('/product/curriculum_offline/subject_reserve_student_get_list', data).then(res => {
+                    res.data.data.forEach(item => {
+                        item.sex = item.sex == 1 ? '男' : '女'
+                    })
                     this.total = res.data.count
                     this.list = res.data.data
-                    console.log(res.data.data)
                 })
             }
         },
