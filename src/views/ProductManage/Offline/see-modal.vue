@@ -106,6 +106,15 @@
     /deep/ .ivu-modal-content{
         padding: 10px 30px;
     }
+    /deep/ .ivu-table:after{
+        display: none;
+    }
+    /deep/ .ivu-table:before{
+        display: none;
+    }
+    /deep/ .ivu-table-wrapper{
+        border: none;
+    }
     .title{
         margin-top: 20px;
         display: flex;
