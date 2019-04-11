@@ -102,18 +102,15 @@
                 align: 'left',
                 minWidth: 150
             },
-            // {
-            //     title: '操作',
-            //     minWidth: 100,
-            //     slot: 'operation',
-            //     align: 'left',
-            //     operation: [],
-            //     isSwitch: false,
-            //     switchKey: 'switch_state'
-            // }
+            {
+                title: '操作',
+                minWidth: 100,
+                slot: 'operation',
+                align: 'left',
+                operation: []
+            }
             ],
-            // operationList: [['统计','operation1']],
-            operationList: [],
+            operationList: [['统计','operation1']],
             title2: '付费学员',
             title1: '学员总数',
             list: []

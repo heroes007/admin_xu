@@ -6,8 +6,8 @@
                 :select1="selectList"
                 size-title2="付费学员" :size-num2="14" @selectChange1="selectChange1" @inputChange="inputChange"
                 @handleClick="handleClick"/>
-        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="check" @operation2="edit"
-                @operation3="useRecords" @operation4="immediateFailure" @table-swtich="swtichChange" :column="columns1"
+        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="useRecords" @operation2="edit"
+                @operation3="batchDownload" @table-swtich="swtichChange" :column="columns1"
                 :table-data="list"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>

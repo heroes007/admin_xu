@@ -27,7 +27,8 @@
                 <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
             </template>
             <template slot-scope="{ column, row, index }" slot="state-item">
-                <span v-if="column.stateOther" :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
+                <span v-if="column.stateOther"
+                      :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
                 <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
             </template>
             <template slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
@@ -52,7 +53,7 @@
             },
             tableData: {
                 type: Array,
-                default: []
+                default: () => []
             },
             // isSerial -->  序号
             isSerial: {

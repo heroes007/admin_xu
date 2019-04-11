@@ -13,7 +13,10 @@
                     <Icon class="icon-setting" type="md-settings"/>
                     <div class='hover-glow'></div>
                 </Button>
-                <div slot="content">
+                <div class="setting-data" slot="content">
+                    <Button type='text' class='quit' @click='personalData'>
+                        个人资料
+                    </Button>
                     <Button type='text' class='quit' @click='logout'>
                         退出登录
                     </Button>
@@ -75,6 +78,9 @@
       },
     },
     methods: {
+      personalData(){
+        this.$router.push({path: 'personal-data'})
+      },
       openChange(name) {
         localStorage.setItem('menuOpenName', JSON.stringify(name));
         this.menuOpenName = name;
@@ -145,6 +151,10 @@
 <style lang="scss" scoped>
     /deep/.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after{
       background: #292929 ;
+    }
+    /deep/ .setting-data{
+      display: flex;
+      flex-direction: column;
     }
     .sub-item-title {
         padding-top: 14px !important;

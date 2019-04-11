@@ -60,7 +60,6 @@ var webpackConfig = merge(baseWebpackConfig, {
     }
   },
   output: {
-    publicPath: config.prod.publicPath,
     filename: config.base.assetsPath + '/js/[name].[hash].js',
     chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
@@ -68,7 +67,6 @@ var webpackConfig = merge(baseWebpackConfig, {
     hints: false
   },
   optimization: {
-    nodeEnv: 'production',
     minimizer: [
       new UglifyJsPlugin({
         test: /\.js(\?.*)?$/i,

@@ -4,6 +4,7 @@ import iView from 'iview'
 const Login = () => import('../views/Login');
 const NotFound = () => import('../views/notfound');
 const DashBoard = () => import('../views/DashBoard');
+const PersonalData = () => import('../views/personal-data/index');
 const ManageOnlineCourseChapter = () => import('../views/ProductManage/Online/ManageOnlineCourseChapter');
 const ManageOfflineCourse = () => import('../views/ProductManage/Offline/ManageOfflineCourse');
 const ManageNotification = () => import('../views/SystemManage/inform/ManageNotification');
@@ -36,6 +37,11 @@ const routes = [
         path: 'user-manage',
         name: 'user-manage',
         component: UserManage
+      },
+      {
+        path: 'personal-data',
+        name: 'personal-data',
+        component: PersonalData
       },
       {
         path: 'product-manage',
