@@ -283,6 +283,6 @@
   }
 
 </script>
-<style scoped lang='scss'>
+<style scoped lang="less">
   /deep/ .ivu-btn-text{color: #4098FF }
 </style>

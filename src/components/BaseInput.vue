@@ -34,7 +34,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
   .base-input-container{
     margin: 0 auto;
 

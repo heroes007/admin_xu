@@ -184,7 +184,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     .screen{
         height: 66px;
         background: #F0F0F7;

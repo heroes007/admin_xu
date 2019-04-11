@@ -18,7 +18,7 @@
         }
     }
 </script>
-<style lang='scss'>
+<style lang="less">
     .save-order {
         .btn-save {
             border-color: #3DAAFF;

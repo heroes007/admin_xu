@@ -365,7 +365,7 @@
     }
   }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
     /deep/ .ivu-form-item-error-tip{padding: 0;}
 /deep/ .upload-panel .img img { height: 250px; }
 /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}

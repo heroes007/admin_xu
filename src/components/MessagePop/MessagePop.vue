@@ -37,7 +37,7 @@
 
 </script>
 
-<style lang='scss'>
+<style lang="less">
     #message-pop-container {
         position: fixed;
         top: 0;

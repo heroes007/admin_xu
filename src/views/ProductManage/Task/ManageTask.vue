@@ -246,7 +246,7 @@
     }
 
 </script>
-<style scoped lang='scss'>
+<style scoped lang="less">
     /deep/ .ivu-btn-text {
         font-family: PingFangSC-Medium;
         font-size: 16px;

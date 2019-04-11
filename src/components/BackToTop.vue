@@ -31,7 +31,7 @@
         }
     }
 </script>
-<style lang='scss'>
+<style lang="less">
     .back-to-top {
         position: fixed;
     }

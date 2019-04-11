@@ -27,7 +27,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     body {
         background-color: #333333;
     }

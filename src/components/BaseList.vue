@@ -527,7 +527,7 @@
   }
 </script>
 
-<style lang='scss' scoped>
+<style lang="less" scoped>
     /deep/ .ivu-table-cell-expand>.ivu-icon-ios-arrow-forward{
       display: none;
     }

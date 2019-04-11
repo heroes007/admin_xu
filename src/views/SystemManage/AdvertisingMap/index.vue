@@ -44,7 +44,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .add-advert{
         width: 130px;
         height: 36px;

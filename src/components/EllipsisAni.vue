@@ -29,7 +29,7 @@
         }
     }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .spinner {
         //margin: 100px auto 0;
         //width: 150px;

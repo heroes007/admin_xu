@@ -218,7 +218,7 @@
     }
 
 </script>
-<style scoped lang='scss'>
+<style scoped lang="less">
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #3DAAFF }
     /deep/ .ivu-tabs-tab {
         text-align: center;

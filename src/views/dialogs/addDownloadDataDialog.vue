@@ -196,10 +196,9 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 
     #add-download-data-container {
-        @import "base.scss";
         input,
         textarea {
             resize: none;

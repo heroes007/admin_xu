@@ -150,7 +150,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
     /deep/ .all-size{
         height: 100%;
         display: flex;

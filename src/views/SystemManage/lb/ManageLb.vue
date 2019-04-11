@@ -215,7 +215,7 @@
         }
     }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
      /deep/ .form-item-state>.ivu-form-item-label{
          letter-spacing: 9px;
      }

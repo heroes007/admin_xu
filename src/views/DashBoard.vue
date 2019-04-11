@@ -19,7 +19,7 @@
         components:{ 'side-menu':SideMenu, HideMenu },
     }
 </script>
-<style lang="scss">
+<style lang="less">
     body{
         background-color:#333333;
     }

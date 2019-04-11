@@ -84,7 +84,7 @@
     }
 
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .login-container {
         width: 100%;
         display: flex;

@@ -133,7 +133,7 @@
     }
   }
 </script>
-<style scope lang='scss'>
+<style scope lang="less">
     .manage-course-download-data {
         .data-list {
             .base-list-row {

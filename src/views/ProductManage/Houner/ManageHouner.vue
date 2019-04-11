@@ -131,7 +131,7 @@
     }
   };
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .card-houner{
         display: flex;
         flex-wrap: wrap;

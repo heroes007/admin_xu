@@ -344,7 +344,7 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 /deep/ .original_price>.ivu-form-item-label{ letter-spacing: 9px; }
 /deep/ .ivu-select-selected-value, /deep/ .ivu-select-item{ letter-spacing: normal; }
 /deep/ .ivu-btn{display: inline-block !important;}
@@ -414,7 +414,6 @@ export default {
     width: 200px;
     height: 36px;}
 #add-production-container {
-    @import "base.scss";
     input,
     textarea {
         resize: none;

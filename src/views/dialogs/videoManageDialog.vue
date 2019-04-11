@@ -186,7 +186,7 @@
     }
   }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
   /deep/ .upload-panel .img img { width: 160px;height: 148px; }
     .btns{
         display: flex;
@@ -197,8 +197,6 @@
         margin-bottom: 10px;
     }
     #video-manage-container {
-        @import "base.scss";
-
         input,
         textarea {
             resize: none;
