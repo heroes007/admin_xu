@@ -90,7 +90,7 @@
                     {
                         title: '操作',
                         minWidth: 260,
-                        align: 'center',
+                        align: 'left',
                         slot: 'operation',
                         operation_state: true,
                         operation: [['查看', 'operation1'], ['编辑', 'operation2'], ['下载', 'operation3']]
@@ -184,15 +184,14 @@
                 })
             },
             fromSubmit(val) {
-                console.log(val, 'val')
                 let d = {
                     product_id: val.content,
                     title: val.realname,
                     code_count: val.num,
                     organization_id: val.jurisdiction,
                     state: val.isswitch ? 2 : 1,
-                    effect_time: val.effective_time[0],
-                    invalid_time: val.effective_time[1]
+                    effect_time: this.$config.formatTime(val.effective_time[0]),
+                    invalid_time: this.$config.formatTime(val.effective_time[1])
                 }
                 if(val.isEdit) {
                     postData('code/modifyCode', {...d, ...{id: val.id}}).then(res => {
