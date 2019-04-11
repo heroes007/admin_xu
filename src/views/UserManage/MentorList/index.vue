@@ -49,7 +49,7 @@
             organization_id:'',
             columns1: [
             {
-                title: '用户名',
+                title: '用户ID',
                 key: 'username',
                 align: 'left',
                 minWidth: 100
@@ -63,7 +63,7 @@
               //   slot: 'sex',
               // },
             {
-                title: '管理权限',
+                title: '身份',
                 key: 'role_name',
                 align: 'left',
                 minWidth: 100
@@ -80,7 +80,7 @@
             // },
                 {
                 title: '最近登录时间',
-                key: 'create_time',
+                key: 'last_time',
                 align: 'left',
                 minWidth: 100
                 },
@@ -88,6 +88,7 @@
                 title: '操作',
                 minWidth: 260,
                 slot: 'operation',
+                align: 'left',
                 operation: [],
             }],
             list: [],

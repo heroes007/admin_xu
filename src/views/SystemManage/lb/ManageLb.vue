@@ -1,7 +1,7 @@
 <template>
     <div class='manage-student-view'>
         <Modal v-model="showModal"  :mask-closable='false' :footer-hide="true" @on-cancel="close"  width="654">
-            <div slot="header" class="modal-header"><div>添加广告图</div></div>
+            <div slot="header" class="modal-header"><div>{{modalTitle}}广告图</div></div>
             <Form ref="lbForm" :model="lbData" :label-width="80" :rules="rules">
                 <FormItem label="广告名称" prop="name">
                     <Input v-model="lbData.name" placeholder="请输入广告名称"></Input>
@@ -21,7 +21,7 @@
                     <Input v-model="lbData.redirect_url" placeholder="请输入跳转页面"></Input>
                 </FormItem>
                     <FormItem label="上传广告" required>
-                        <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete">
+                        <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig" @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2">
                             <span slot="file-require">* 只能上传 jpg/png 文件，建议尺寸1400*360px</span>
                         </UploadPanel>
                 </FormItem>
@@ -65,6 +65,7 @@
                     {label: '已下线',value: 0}
                 ],
                 current: 1,
+                modalTitle: '',
                 total: null,
                 pageSize: 12,
                 lbData2: {
@@ -136,6 +137,7 @@
               this.adutplace = row.position == 1 ?  '首页轮播' : '课程页轮播'
               this.showModal = true;
               this.lbData = row;
+              this.modalTitle = '编辑'
               this.isEdit = true
             },
             batchDownload(row,index){
@@ -174,15 +176,17 @@
                 this.current = vl;
                 this.getList()
             },
-            addLb() {
+            setAdd(text){
                 this.showModal = true;
                 this.isEdit = false
-                this.adutplace = '首页轮播';
+                this.adutplace = text;
+                this.modalTitle = '添加'
+            },
+            addLb() {
+                this.setAdd('首页轮播')
             },
             addNew() {
-                this.showModal = true;
-                this.isEdit = false
-                this.adutplace = '课程页轮播';
+                this.setAdd('课程页轮播')
             },
             handleDefaultUploadComplete(url) {
                 this.lbData.img_url = url;

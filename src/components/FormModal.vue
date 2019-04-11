@@ -95,7 +95,7 @@
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
-                                        @uploadcomplete="uploadImg"/>
+                                        @uploadcomplete="uploadImg" :maxFileSize="300"/>
                         </div>
                     </FormItem>
                 </div>
@@ -117,7 +117,7 @@
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
     import newEditor from './NewEditor'
-    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com'
+    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
         components: {ExchangeContent, uploadBtn, downLoading, newEditor},
@@ -163,6 +163,10 @@
             uploadFlie: {
                 type: Boolean,
                 default: false
+            },
+            maxFileSize: {
+                type: Number,
+                default: 0
             }
         },
         data() {
@@ -178,6 +182,7 @@
                 uploadData: {},
                 img_url: '',
                 resourse_url: '',
+                fileSize: null,
                 uploadConfig: {
                     bucket: 'jhyl-static-file',
                     dir: 'user_task',
@@ -226,6 +231,7 @@
                 this.$nextTick(() => {
                     if (_new) {
                         this.formItem = this.dateTimes ? this.detailData : this.$config.copy(this.detailData, {})
+                        console.log(this.formItem, 'this.formItem')
                         if (this.formItem.upload) this.downList = this.formItem.upload
                         else this.downList = []
                         if (this.formItem.uploading) {
@@ -315,6 +321,16 @@
                 this.show = _new
             },
             handleBeforeUpload(file) {
+                this.fileSize = file.size / (1024 * 1024);
+                if (this.maxFileSize > 0 && this.fileSize > this.maxFileSize) {
+                    this.$Modal.info({
+                        title: '提示',
+                        content: '文件过大',
+                        onOk: () => {
+                        }
+                    });
+                    return;
+                }
                 this.handleGetassignKey(file);
                 return false
             },
@@ -351,7 +367,13 @@
                         else if (this.formList.length > 4 && this.formList[4].type === 'switch-datetimerange') {
                             if (!this.formItem.isswitch && !this.formItem.effective_time[0]) this.$Message.info('请选择有效时间');
                             else this.handleFormData()
-                        } else this.handleFormData()
+                        } else {
+                            if(this.$refs.formInput){
+                                if(this.content) this.handleFormData()
+                                else this.$Message.info('请输入作业描述')
+                            }
+                            else this.handleFormData()
+                        }
                     }
                 })
             },

@@ -203,7 +203,6 @@
                 return 'datacenter/curriculum/' + doTimeFormat(new Date().toString());
             },
             saveHomework(val) {
-                console.log(val,'val')
                 val.page = {page_size: this.pageSize, page_num: this.current}
                 val.keyword = this.keyword;
                 val._fn = () => {

@@ -48,11 +48,11 @@ const routes = [
         component: ExchangeCode
       },
       // 兑换码使用记录
-      // {
-      //   path: ':id/usage-record',
-      //   name: 'usage-record',
-      //   component: UsageRecord
-      // },
+      {
+        path: ':id/usage-record',
+        name: 'usage-record',
+        component: UsageRecord
+      },
       {
         name:'advertising-map',
         path:'advertising-map',

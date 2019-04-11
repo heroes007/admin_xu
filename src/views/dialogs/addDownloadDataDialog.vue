@@ -19,7 +19,7 @@
                         </Select>
                     </FormItem>
                     <FormItem label="上传附件" v-if="isupdata" required>
-                            <upload-btn bucket="jhyl-static-file" @uploadcomplete="uploadComplete" type="doc/pdf/zip"/>
+                            <upload-btn bucket="jhyl-static-file" @uploadcomplete="uploadComplete" type="doc/pdf/zip" :maxFileSize="300"/>
                    </FormItem>
                    <FormItem  label="上传附件" required v-else>
                        <div style="display:flex">

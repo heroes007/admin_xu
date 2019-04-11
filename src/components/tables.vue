@@ -1,12 +1,8 @@
 <template>
     <div>
-        <Table highlight-row :columns="columns" :data="datas" :height="tabelHeight">
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas" :height="tabelHeight" >
             <template slot-scope="{ column, row, index }" slot="operation">
-                <Switch v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
-                    <span slot="open">启用</span>
-                    <span slot="close">禁用</span>
-                </Switch>
-                <span v-for="(t,i) in column.operation" :key="i">
+              <span v-for="(t,i) in column.operation" :key="i">
               <!-- poptip_state -->
                <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
                     <Button type="text">查看</Button>
@@ -15,24 +11,27 @@
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p ></div>
                     </div>
                </Poptip>
-               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)" >
-                 <Button type="text"  size="small"
-                         style="margin-right: 5px" @click="show(row,index,t[1])">
+               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                 <Button  type="text"  size="small"
+                          style="margin-right: 5px" @click="show(row,index,t[1])">
                    {{handleBtnText(t,row,column)}}
                  </Button>
                </span>
-            </span>
+              </span>
+                <Switch class="operation_btn_show" v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
+                    <span slot="open">启用</span>
+                    <span slot="close">停用</span>
+                </Switch>
             </template>
             <template slot-scope="{ column, row, index }" slot="radio-item">
                 <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
             </template>
             <template slot-scope="{ column, row, index }" slot="state-item">
-                <span v-if="column.stateOther"
-                      :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
+                <span v-if="column.stateOther" :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
                 <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
             </template>
             <template slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
-            <template slot-scope="{ column, row, index }" slot="_index">{{row._index == 0 ? '未认证' : '已认证'}}</template>
+            <template slot-scope="{ column, row, index }" slot="_index">{{row.state == 0 ? '未认证' : '已认证'}}</template>
         </Table>
     </div>
 </template>
@@ -89,22 +88,17 @@
             }
         },
         methods: {
-            rowClick(row,i){
-                // row.operation_btn_show = true
-                this.datas[i].operation_btn_show = true
-                // this.$nextTick(() => {
-                this.datas.map((t,k) => {
-                    t.operation_btn_show = false
-                })
-                let d = this.$config.copy(this.datas[i],{})
-                d.operation_btn_show = true
-                // this.datas.splice(i,1,d)
-                console.log(this.datas[i],i);
-                // })
+            rowClassName(r){
+                if(r.hasOwnProperty('states'))  return r.states ? '' : 'row-switch-disable'
+                return ''
+            },
+            rowClick(row,rowIndex){
+                this.show(row,rowIndex,'row-click')
             },
             handleBtnShowClass(c,r,t){
                 if (!c.hasOwnProperty('operation_btn_hide')){
-                    if(!r.operation_btn_show&&t[0] !== '查看') return 'operation_btn_show'
+                    if(c.operation[0][0] == t[0]) return 'operation_btn_see'
+                    if(!r.operation_btn_show) return 'operation_btn_show'
                     return ''
                 }
                 return ''
@@ -112,12 +106,7 @@
             handleBtnShow(c,r,t){
                 if (c.hasOwnProperty('operation_btn_hide')){
                     return c.operation_btn_hide&&t[2] ? r.mark_state : true
-                }else{
-                    return true
-                    //  if(!r.operation_btn_show&&t[0] == '查看') return true
-                    // else if(r.operation_btn_show) return true
-                    // else return false
-                }
+                }else return true
             },
             radioChange(r, c) {
                 this.datas.map((t, k) => {
@@ -129,14 +118,20 @@
                 })
             },
             handleTableData(d) {
-                d.map((t, k) => {
-                    if (this.isSerial) t.serial_number = this.$config.addZero(k+1)
-                    if (t.hasOwnProperty('slot')) {
-                        if (t.operation.length > 0) this.btnList = t.operation
-                    }
-                    t.operation_btn_show = false
-                })
-                this.datas = d
+                let d3 = [];
+                if(d.length>0){
+                    let d1 = JSON.stringify(d)
+                    let d2 = d1.replace(/null/g, '"-"').replace(/""/g, '"-"');
+                    d3 = JSON.parse(d2)
+                    d3.map((t, k) => {
+                        if (this.isSerial) t.serial_number = this.$config.addZero(k+1)
+                        if (t.hasOwnProperty('slot')) {
+                            if (t.operation.length > 0) this.btnList = t.operation
+                        }
+                        t.operation_btn_show = false
+                    })
+                }
+                this.datas = d3
             },
             show(row, rowIndex, params) {
                 if(this.seeUrl){
@@ -158,6 +153,7 @@
                 if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
                 if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
                 c.map((t) => {
+                    if(t.hasOwnProperty('slot')&&t.slot == "operation" && !t.hasOwnProperty('align'))  t.align = 'left'
                     if (!t.hasOwnProperty('align')) t.align = 'center'
                     t.tooltip = true
                 })
@@ -182,7 +178,7 @@
                             if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                                 arr.push(`${item.name}: ${string.realname}`)
                             } else {
-                                str = item.name + ':' + ' ' + (string[x] ? string[x] : '—')
+                                str = item.name + ':' + ' ' + (string[x]||string[x]==0 ? string[x] : '—')
                                 arr.push(str)
                             }
                         }
@@ -198,18 +194,12 @@
     }
 </script>
 <style lang='less' scoped>
-    .operation_btn_show{
-        display: none;
-    }
-    /deep/ .ivu-table-row:hover{
-        .operation_btn_show{
-            display: inline-block;
-        }
-    }
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }
-
+    /deep/ .ivu-table-row{
+        color: #474C63;
+    }
     .state-key-other0 {
         color: #474C63;
     }
@@ -265,7 +255,9 @@
     /deep/ .ivu-tooltip-rel {
         width: 100%;
     }
-
+    /deep/ .row-switch-disable{
+        color: #9397AD;
+    }
     .poptip-main {
         display: flex;
         margin-top: 20px;
@@ -304,5 +296,16 @@
     }
     /deep/ .ivu-btn{
         display: flex;
+    }
+    .operation_btn_show{
+        display: none
+    }
+    /deep/.operation_btn_see .ivu-btn-text{
+        margin-left: -5px;
+    }
+    /deep/ .ivu-table-row:hover{
+        .operation_btn_show{
+            display: inline-block;
+        }
     }
 </style>

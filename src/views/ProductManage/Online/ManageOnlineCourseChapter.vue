@@ -424,6 +424,7 @@
         .chapter-list {
             .chapter-item {
                 .chapter-title {
+                    min-width: 824px;
                     padding: 0 40px;
                     background-color: #FBFBFB;
                     border: 1px solid #E5E5E5;

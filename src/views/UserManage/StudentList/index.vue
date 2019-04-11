@@ -1,11 +1,11 @@
 <template>
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-         <screen :paying-student="payingStudent" :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5"
-             :size-title1="title1" :size-num1="allNum" btn-name="添加导师" :select1="selectList" @moneyStudent="moneyStudent"
-             select2Placeholder="请选择年级"  :select2="selectList1" :size-title2="title2" :size-num2="titleTotal"
-          @selectChange1="selectChange1" @selectChange2="selectChange2"  @inputChange="inputChange" @handleClick="handleClick" />
-        <Tables :is-serial=true @operation1="see" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="student"/>
+         <screen select-subjects :paying-student="payingStudent" :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5"
+             :size-title1="title1" :size-num1="allNum+'/'+titleTotal" btn-name="添加导师" :select1="selectList" @moneyStudent="moneyStudent"
+             select2Placeholder="请选择年级"  :select2="selectList1" 
+          @selectChange1="selectChange1" @selectChange2="selectChange2" @selectChange3="selectChange3"  @inputChange="inputChange" @handleClick="handleClick" />
+        <Tables :is-serial=true @row-click="see" @operation1="statistics" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="student"/>
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
@@ -41,6 +41,7 @@
             selectType2: true,
             radioType: false,
             titleTotal: null,
+            department_id: null,
             payingStudent: localStorage.getItem('organizationId') == 1,
             selectList:[],
             selectList1: [
@@ -60,7 +61,7 @@
             }, ],
             columns1: [
             {
-                title: '用户名',
+                title: '用户ID',
                 key: 'username',
                 align: 'left',
                 minWidth: 100
@@ -99,26 +100,36 @@
                 title: '最近登录时间',
                 key: 'last_time',
                 align: 'left',
-                minWidth: 100
+                minWidth: 150
             },
-            {
-                title: '操作',
-                minWidth: 100,
-                slot: 'operation',
-                operation: [],
-                isSwitch: false,
-                switchKey: 'switch_state'
-            }],
-            operationList: [['查看','operation1']],
+            // {
+            //     title: '操作',
+            //     minWidth: 100,
+            //     slot: 'operation',
+            //     align: 'left',
+            //     operation: [],
+            //     isSwitch: false,
+            //     switchKey: 'switch_state'
+            // }
+            ],
+            // operationList: [['统计','operation1']],
+            operationList: [],
             title2: '付费学员',
             title1: '学员总数',
             list: []
         }
     },
     methods: {
-        see(row,rowIndex){
+        see(row){
             this.detailShow = true;
             this.tableRowData = row;
+        },
+        selectChange3(v){
+          this.department_id = v;
+          this.getList()
+        },
+        statistics(row,rowIndex){
+          console.log(row,'统计')
         },
         swtichChange(row){
              console.log(row);
@@ -150,20 +161,28 @@
             this.pay_state = val == "NO" ? '' : val
             this.getList()
         },
-        getList(v){
+        getList(){
             let d = {
               keyword: this.keyword,
               page_size: this.pageSize,
               page_num: this.current,
               organization_id: this.organization_id,
+              department_id: this.department_id,
               grade_id: this.grade_id,
               pay_state: this.pay_state
             }
             postData('user/getStudentList', d).then((res) => {
                   this.list = res.data.list
                   this.total = res.data.count
-                  this.titleTotal = v ? -1 : this.total
-                  this.allNum = v ? this.total : localStorage.getItem('organizationId') == 1 ? res.data.all_student : res.data.count
+                  this.titleTotal = res.data.all_student
+                  this.allNum = res.data.count
+                  if(this.list.length>0){
+                    this.list.map((t) => {
+                      t.states = t.pay_state
+                      if(!t.department_id) t.department_name = null
+                      if(!t.grade_id) t.grade_name = null
+                    })
+                  }
             })
         }
     },
