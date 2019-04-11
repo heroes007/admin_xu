@@ -14,6 +14,6 @@ module.exports = {
         publicPath:'http://sfile.jiuhuatech.com/met_admin/dist/'
     },
     test: {
-        publicPath:'/',
+        publicPath:'http://sfile.jiuhuatech.com/met_admin_test/dist/',
     }
 }

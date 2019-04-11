@@ -14,7 +14,7 @@
             </div>
         </div>
         <Divider />
-        <Tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tabelHeight"></Tables>
+        <Tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tabelHeight" @row-click="rowClick"></Tables>
         <Page :current="current" :total="total" :page-size="pageSize" @page-list="pageList"></Page>
     </Modal>
 </template>
@@ -73,6 +73,9 @@
             }
         },
         methods: {
+            rowClick(row){
+                window.open('http://'+row.link_url);
+            },
             closeModal() {
                 this.showModal = false
                 this.$emit('close-modal')
