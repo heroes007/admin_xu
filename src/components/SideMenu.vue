@@ -41,7 +41,7 @@
                             </div>
                         </Submenu>
                         <MenuItem v-else :name="it.name">
-                            <Icon :type="it.icon" size="20"/><span style="margin-left: 10px;font-size: 16px">{{it.title}}</span>
+                            <Icon :type="it.icon" size="20"/><span style="margin-left: 10px; font-size: 16px">{{it.title}}</span>
                         </MenuItem>
                     </div>
                 </Menu>
@@ -52,7 +52,6 @@
 <script>
   import api from '../api/modules/config'
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-  import { mapActions, mapGetters } from 'vuex'
   import { MenuList } from './Util'
   import postData from '../api/postData'
   export default {
