@@ -123,11 +123,11 @@ export const MenuList = [
         title: '培训管理',
         icon: 'md-school',
     },
-    {
-        name: 'exchange-code',
-        title: '兑换码',
-        icon: 'md-clipboard',
-    },
+    // {
+    //     name: 'exchange-code',
+    //     title: '兑换码',
+    //     icon: 'md-clipboard',
+    // },
     {
         name: 'system-manage',
         title: '平台管理',
