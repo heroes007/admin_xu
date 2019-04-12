@@ -14,7 +14,7 @@
                     <div class='hover-glow'></div>
                 </Button>
                 <div class="setting-data" slot="content">
-                    <Button type='text' class='quit' @click='personalData'>
+                    <Button v-if="personalShow" type='text' class='quit' @click='personalData'>
                         个人资料
                     </Button>
                     <Button type='text' class='quit' @click='logout'>
@@ -69,7 +69,10 @@
     },
     computed: {
       userInfo() {
-        return JSON.parse(localStorage.getItem('PERSONALDETAILS'))
+        return this.$store.state.auth.userInfo
+      },
+      personalShow(){
+        return this.userInfo.role_id == 1 || this.userInfo.role_id == 2
       },
       userHeader() {
         if (!this.userInfo) return defaultHeader;
@@ -115,16 +118,17 @@
           }
         },
       getName(){
-        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) {
-          this.userNameAll = JSON.parse(localStorage.getItem('PERSONALDETAILS')).name
-          if(this.userNameAll&&this.userNameAll.length > 10) {
-            this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
-          }
+        let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+        if(roleId == 1) {
+          this.userNameAll = this.$config.status(roleId)
+          // if(this.userNameAll&&this.userNameAll.length > 10) {
+          //   this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
+          // }
         }else{
           postData('components/getOrganization').then(res => {
             res.data.forEach(item => {
               if(item.id == JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id) {
-                this.userNameAll = item.title + JSON.parse(localStorage.getItem('PERSONALDETAILS')).name
+                this.userNameAll = item.title + this.$config.status(roleId)
                 if(this.userNameAll.length > 10) {
                   this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
                 }
@@ -233,6 +237,7 @@
                 margin-bottom: 18px;
                 img {
                     width: 100%;
+                    height: 100%;
                     border-radius: 50%;
                 }
             }

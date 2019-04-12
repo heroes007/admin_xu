@@ -54,7 +54,7 @@
                         this.isLogining = false;
                         let d = res.data.data;
                         localStorage.setItem('organizationId',d.userInfo[0].organization_id)
-                        this.$store.dispatch('set_user_info', d.userInfo[0]);
+                        this.$store.dispatch('get_user_info');
                         localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
                         this.$router.push({ path: 'dashboard' });
                         localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))

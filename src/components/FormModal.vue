@@ -347,12 +347,6 @@
                 let close = () => {
                     if (!this.modalFalse) this.closeModal()
                 }
-                // new Promise((resolve, reject) => {
-                //     this.$emit('from-submit', this.formItem)
-                //     resolve()
-                // }).then(() => {
-                //     close()
-                // })
                 (async () => {
                     await this.$emit('from-submit', this.formItem)
                     await close()

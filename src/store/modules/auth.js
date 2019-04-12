@@ -14,7 +14,7 @@ const actions = {
     get_user_info({ commit }, payload) {
         user_info().then(res => {
             if(res.data.res_code === 1){
-                commit(types.USERINFO_LOADED,{data: res.data.msg, callback: payload && payload.callback })
+                commit(types.USERINFO_SETTED,res.data.data)
             }else commit(types.USERINFO_NULL)
         })
     },

@@ -137,11 +137,12 @@
             },
             edit(row, rowIndex) {
                 postData('code/getCodeDetail', {code_id: row.id}).then(res => {
-                    console.log(res, 'res')
                     if(res.res_code == 1) {
                         this.modalTitle = '修改兑换码'
                         this.formList[3].disable = true
                         this.show = true
+                        let effct = this.$config.formatTime(new Date(res.data[0].effect_time))
+                        let invalid = this.$config.formatTime(new Date(res.data[0].invalid_time))
                         this.tableRow = {
                             id: res.data[0].id,
                             content: res.data[0].product_id,
@@ -149,9 +150,9 @@
                             num: res.data[0].code_count,
                             jurisdiction: res.data[0].organization_id,
                             state: res.data[0].state ,
-                            effect_time: res.data[0].effect_time,
-                            invalid_time: res.data[0].invalid_time,
-                            effective_time: [res.data[0].effect_time, res.data[0].invalid_time],
+                            effect_time: effct,
+                            invalid_time: invalid,
+                            effective_time: [effct, invalid],
                             isEdit: true
                         }
                     }
