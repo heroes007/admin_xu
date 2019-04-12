@@ -72,7 +72,7 @@ const routes = [
       {
         name:'notification-chat',
         path:'notification-chat',
-        component:ManageNotification
+        component: ManageNotification
       },
     ]
   },

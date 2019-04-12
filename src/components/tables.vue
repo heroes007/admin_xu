@@ -1,7 +1,8 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas"
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
                :height="tabelHeight">
+            
             <template slot-scope="{ column, row, index }" slot="operation">
               <span v-for="(t,i) in column.operation" :key="i">
               <!-- poptip_state -->
@@ -21,8 +22,8 @@
                 <Switch :class="column.isShow ? '' : 'operation_btn_show'"
                         v-if="column.isSwitch && handleBtnShow(column,row)" v-model="row[column.switchKey]" size="large"
                         @on-change="change(row)">
-                    <span slot="open">{{column.switchList[0] ? column.switchList[0] : '启用'}}</span>
-                    <span slot="close">{{column.switchList[1] ? column.switchList[1] : '停用'}}</span>
+                    <span slot="open">{{column.switchList[0]}}</span>
+                    <span slot="close">{{column.switchList[1]}}</span>
                 </Switch>
             </template>
             <template slot-scope="{ column, row, index }" slot="radio-item">

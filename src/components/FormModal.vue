@@ -90,8 +90,8 @@
                                     :placeholder="handlePlaceholder(t)"></DatePicker>
                     </FormItem>
                     <!--富文本编辑器-->
-                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
-                        <new-editor style="width: 470px;" @get-content="getContent" :content="content"/>
+                    <FormItem v-if="(t.type==='upload')" :label="t.name" :label-width="t.name ? 100 : 0" :prop="t.field" class="upload" ref="formInput">
+                        <new-editor style="width: 100%;" @get-content="getContent" :content="content"/>
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"

@@ -148,9 +148,16 @@ textarea.ivu-input{
 .ivu-table-cell-tooltip-content{
   margin-top: 3px !important;
 }
-.ivu-table-row-highlight td, tr.ivu-table-row-highlight.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td{
-  background: #fff !important
+/* .ivu-table-row-highlight td, tr.ivu-table-row-highlight.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td{
+  background: #fff !important;
 }
 .ivu-table-row:hover td{
-  background: #fff !important
+  background: #fff !important;
 }
+.ivu-table-row-hover {
+  z-index: 66666;
+  box-shadow: 2px 0px 2px red !important;
+  box-sizing: border-box !important;
+  position: absolute;
+  width: 100% !important;
+} */
