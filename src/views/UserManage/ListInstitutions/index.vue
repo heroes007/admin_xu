@@ -79,6 +79,7 @@
                 align: 'left',
                 isSwitch: false, // true --> 启用 false --> 禁用
                 switchKey: 'states',
+                switchList: ['启用', '停用'],
                 operation: [],
             }],
             list: [],

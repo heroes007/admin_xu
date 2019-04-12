@@ -55,13 +55,6 @@
                 minWidth: 100,
             },
             {
-                // title: '操作',
-                // width: 320,
-                // slot: 'operation',
-                // align: 'center',
-                // operation_state: true,
-                // poptip_state: true,
-                // operation: [[['查看','发送'],'operation1'], [['立即失效','立即生效'],'operation2']],
                 title: '操作',
                 minWidth: 160,
                 slot: 'operation',
@@ -70,7 +63,8 @@
                 switchKey: 'state',
                 operation: [],
                 switchList: ['生效', '失效'],
-                isShow: true
+                isShow: true,
+                isCard: true
             }],
             list: [],
         }
@@ -117,7 +111,6 @@
                 code_id: val.id
             }
             postData('code/modifyCodeDetail', d).then(res => {
-                console.log(res, 'res')
                 if(res.res_code == 1) {
                     this.getList()
                 }
@@ -133,7 +126,7 @@
             postData('code/getCodeHistory', d).then(res => {
                 res.data.list.forEach(item => {
                     item.use_text = item.use_state == 0 ? '未使用' : '已使用'
-                    item.state_name = item.state == -1 ? '失效' : '生效中'
+                    item.state_name = item.state == -1 ? '已失效' : '生效中'
                     item.state = item.state == 1 ? true : false
                 })
                 if(res.res_code == 1) {
@@ -151,6 +144,18 @@
             this.codeName = JSON.parse(localStorage.getItem('useRecords')).realname
         }
         this.tabelHeight = window.innerHeight - 130
+        this.$nextTick(() => {
+            // var arr = document.querySelectorAll('.ivu-table-row')
+            // console.log(arr, 'arr');
+            // arr.forEach(item => {
+            //     // console.log(item, 'item');
+            //     item.mouseover = function () {
+            //         console.log(123);
+            //     }
+            // })
+            // var a = document.getElementsByClassName('aaaa')[0]
+            // console.log(a);
+        })
     }
   }
 </script>

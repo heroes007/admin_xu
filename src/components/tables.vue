@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas"
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName"  :columns="columns" :data="datas"
                :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
               <span v-for="(t,i) in column.operation" :key="i">
@@ -21,9 +21,22 @@
                 <Switch :class="column.isShow ? '' : 'operation_btn_show'"
                         v-if="column.isSwitch && handleBtnShow(column,row)" v-model="row[column.switchKey]" size="large"
                         @on-change="change(row)">
-                    <span slot="open">{{column.switchList[0] ? column.switchList[0] : '启用'}}</span>
-                    <span slot="close">{{column.switchList[1] ? column.switchList[1] : '停用'}}</span>
+                    <span slot="open">{{column.switchList[0]}}</span>
+                    <span slot="close">{{column.switchList[1]}}</span>
                 </Switch>
+                <Card v-if="column.isCard && row.use_state == 1" class="card-show">
+                    <div class="triangle"></div>
+                    <div class="card-box">
+                        <img class="card-img" :src="row.head_img_url" alt="">
+                        <div class="card-content">
+                            <div class="content-user">
+                                <div class="content-user-name">{{row.realname}}</div>
+                                <img class="content-user-sex" :src="row.sex == 1 ? male : female" alt="">
+                            </div>
+                            <div class="content-userid">用户ID：{{row.user_id}}</div>
+                        </div>
+                    </div>
+                </Card>
             </template>
             <template slot-scope="{ column, row, index }" slot="radio-item">
                 <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
@@ -40,10 +53,13 @@
 </template>
 <script>
     import postData from 'src/api/postData'
+    import male from '../assets/img/male.png'
+    import female from '../assets/img/female.png'
 
     export default {
         data() {
             return {
+                female, male,
                 datas: [],
                 columns: [],
                 btnList: [],
@@ -189,7 +205,7 @@
                     }
                 })
                 return arr
-            }
+            },
         },
         mounted() {
             this.handleColumns(this.column)
@@ -198,6 +214,78 @@
     }
 </script>
 <style lang='less' scoped>
+    .triangle {
+        position: relative;
+        top: -33px;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 0;
+        width: 28px;
+        border-width: 0 18px 18px;
+        border-style: solid;
+        border-color: transparent transparent #fff;
+    }
+    .card-box{
+        display: flex;
+        align-items: center;
+
+        .card-img{
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .card-content{
+            margin-left: 20px;
+
+            .content-user{
+                display: flex;
+                align-items: center;
+
+                .content-user-name{
+                    font-family: PingFangSC-Medium;
+                    font-size: 20px;
+                    color: #474C63;
+                    letter-spacing: 0;
+                }
+
+                .content-user-sex{
+                    height: 17px;
+                    width: 17px;
+                    margin-left: 8px;
+                }
+            }
+
+            .content-userid{
+                font-family: PingFangSC-Regular;
+                font-size: 16px;
+                color: #474C63;
+                letter-spacing: 0;
+                margin-top: 20px;
+            }
+        }
+    }
+    .card-show{
+        position: absolute;
+        display: none;
+    }
+    /deep/ .ivu-table-row-hover{
+        .card-show{
+            position: absolute;
+            left: 50%;
+            transform: translateY(20%);
+            display: inline-block;
+            width: 254px;
+            height: 118px;
+            z-index: 1;
+            border: none;
+        }
+    }
+    /deep/ .ivu-card-body{
+        box-shadow: 0 0 10px 0 rgba(147,151,173,0.22);
+        background-color: #fff;
+        border-radius: 8px;
+    }
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }

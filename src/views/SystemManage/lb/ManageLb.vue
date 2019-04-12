@@ -30,7 +30,7 @@
                     </Row>
             </Form>
         </Modal>
-        <Tables :is-serial=true @operation1="edit" @operation2="batchDownload" :column="columns1" :table-data="list" />
+        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="edit" @operation2="batchDownload" :column="columns1" :table-data="list" />
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page  @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>
         </Row>
@@ -129,7 +129,8 @@
                     name: { required: true, message: '请输入广告名称', trigger: 'blur'},
                     redirect_url: { required: true, message: '请输入跳转页面', trigger: 'blur' },
                     state: { required: true, message: '请选择状态'},
-                }
+                },
+                tableHeight: null
             }
         },
         methods: {
@@ -212,6 +213,7 @@
         mounted() {
            this.getList()
            this.lbData = this.lbData2
+           this.tableHeight = window.innerHeight - 130
         }
     }
 </script>
