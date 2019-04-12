@@ -8,19 +8,19 @@
                <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
                     <Button type="text">查看</Button>
                     <div class="poptip-main" slot="content">
-                      < img class="poptip-img" src="../assets/icons/mn.jpeg"/>
+                      <img class="poptip-img" src="../assets/icons/mn.jpeg"/>
                       <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
                     </div>
                </Poptip>
                <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
-                 <Button type="text" size="small"
-                         style="margin-right: 5px" @click="show(row,index,t[1])">
+                 <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
                    {{handleBtnText(t,row,column)}}
                  </Button>
                </span>
               </span>
-                <Switch :class="column.isShow ? '' : 'operation_btn_show'" v-if="column.isSwitch && handleBtnShow(column,row)"
-                        v-model="row[column.switchKey]" size="large" @on-change="change(row)">
+                <Switch :class="column.isShow ? '' : 'operation_btn_show'"
+                        v-if="column.isSwitch && handleBtnShow(column,row)" v-model="row[column.switchKey]" size="large"
+                        @on-change="change(row)">
                     <span slot="open">{{column.switchList[0] ? column.switchList[0] : '启用'}}</span>
                     <span slot="close">{{column.switchList[1] ? column.switchList[1] : '停用'}}</span>
                 </Switch>
@@ -34,7 +34,7 @@
                 <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
             </template>
             <template slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
-            <template slot-scope="{ column, row, index }" slot="_index">{{row.state == 0 ? '未认证' : '已认证'}}</template>
+            <template slot-scope="{ column, row, index }" slot="_index">{{row._index == 0 ? '未认证' : '已认证'}}</template>
         </Table>
     </div>
 </template>
@@ -321,6 +321,7 @@
     }
 
     /deep/ .ivu-table-row:hover {
+
         .operation_btn_show {
             display: inline-block;
         }

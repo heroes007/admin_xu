@@ -145,3 +145,6 @@ textarea.ivu-input{
 .ivu-modal-header{
     border-radius: 10px 10px 0 0 !important;
 }
+.ivu-table-cell-tooltip-content{
+  margin-top: 3px !important;
+}

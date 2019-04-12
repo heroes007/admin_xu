@@ -277,7 +277,7 @@
 
             input {
                 width: 100%;
-                height: 74% !important;
+                height: 100% !important;
             }
         }
 

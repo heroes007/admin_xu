@@ -185,6 +185,8 @@
                         this.modalTitle = '修改兑换码'
                         this.formList[3].disable = true
                         this.show = true
+                        let effct = this.$config.formatTime(new Date(res.data[0].effect_time))
+                        let invalid = this.$config.formatTime(new Date(res.data[0].invalid_time))
                         this.tableRow = {
                             id: res.data[0].id,
                             content: res.data[0].product_id,

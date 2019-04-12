@@ -74,7 +74,7 @@
         },
         methods: {
             rowClick(row){
-                window.open('http://'+row.link_url);
+                // window.open('http://'+row.link_url);
             },
             closeModal() {
                 this.showModal = false

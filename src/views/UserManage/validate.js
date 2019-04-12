@@ -30,3 +30,11 @@ export const validateUsername3 = (rule, value, callback) => {
         else callback(new Error('请输入至少1位最多12位的字母或数字'));
     }
 };
+export const phone = (rule, value, callback) => {
+    if (value == ''||value == undefined) callback(new Error('请输入手机号'));
+    else {
+        var filter=/^1[3|4|5|7|8][0-9]{9}$/; 
+        if(filter.test(value)) callback();
+        else callback(new Error('请输入11位手机号'));
+    }
+};
