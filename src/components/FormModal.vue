@@ -33,7 +33,7 @@
                     </FormItem>
                     <!-- input-number -->
                     <FormItem v-if="t.type==='input-number'" :label="t.name" :prop="t.field">
-                        <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
+                        <InputNumber :disabled="t.disable" :min='1' v-model="formItem[t.field]"
                                      :placeholder="'请输入'+t.name"></InputNumber>
                     </FormItem>
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
@@ -231,7 +231,6 @@
                 this.$nextTick(() => {
                     if (_new) {
                         this.formItem = this.dateTimes ? this.detailData : this.$config.copy(this.detailData, {})
-                        console.log(this.formItem, 'this.formItem')
                         if (this.formItem.upload) this.downList = this.formItem.upload
                         else this.downList = []
                         if (this.formItem.uploading) {
