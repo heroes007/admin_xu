@@ -1,23 +1,16 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName"  :columns="columns" :data="datas"
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
                :height="tabelHeight">
             <template slot-scope="{ column, row, index }" slot="operation">
-              <span v-for="(t,i) in column.operation" :key="i">
-              <!-- poptip_state -->
-               <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
-                    <Button type="text">查看</Button>
-                    <div class="poptip-main" slot="content">
-                      <img class="poptip-img" src="../assets/icons/mn.jpeg"/>
-                      <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
-                    </div>
-               </Poptip>
-               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
-                 <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
-                   {{handleBtnText(t,row,column)}}
-                 </Button>
-               </span>
-              </span>
+                <span v-for="(t,i) in column.operation" :key="i">
+                <!-- poptip_state -->
+                    <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                        <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+                            {{handleBtnText(t,row,column)}}
+                        </Button>
+                    </span>
+                </span>
                 <Switch :class="column.isShow ? '' : 'operation_btn_show'"
                         v-if="column.isSwitch && handleBtnShow(column,row)" v-model="row[column.switchKey]" size="large"
                         @on-change="change(row)">
@@ -225,38 +218,39 @@
         border-style: solid;
         border-color: transparent transparent #fff;
     }
-    .card-box{
+
+    .card-box {
         display: flex;
         align-items: center;
 
-        .card-img{
+        .card-img {
             width: 80px;
             height: 80px;
             border-radius: 50%;
         }
 
-        .card-content{
+        .card-content {
             margin-left: 20px;
 
-            .content-user{
+            .content-user {
                 display: flex;
                 align-items: center;
 
-                .content-user-name{
+                .content-user-name {
                     font-family: PingFangSC-Medium;
                     font-size: 20px;
                     color: #474C63;
                     letter-spacing: 0;
                 }
 
-                .content-user-sex{
+                .content-user-sex {
                     height: 17px;
                     width: 17px;
                     margin-left: 8px;
                 }
             }
 
-            .content-userid{
+            .content-userid {
                 font-family: PingFangSC-Regular;
                 font-size: 16px;
                 color: #474C63;
@@ -265,12 +259,14 @@
             }
         }
     }
-    .card-show{
+
+    .card-show {
         position: absolute;
         display: none;
     }
-    /deep/ .ivu-table-row-hover{
-        .card-show{
+
+    /deep/ .ivu-table-row-hover {
+        .card-show {
             position: absolute;
             left: 50%;
             transform: translateY(20%);
@@ -281,11 +277,13 @@
             border: none;
         }
     }
-    /deep/ .ivu-card-body{
-        box-shadow: 0 0 10px 0 rgba(147,151,173,0.22);
+
+    /deep/ .ivu-card-body {
+        box-shadow: 0 0 10px 0 rgba(147, 151, 173, 0.22);
         background-color: #fff;
         border-radius: 8px;
     }
+
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }

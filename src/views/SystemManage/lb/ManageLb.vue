@@ -30,7 +30,7 @@
                     </Row>
             </Form>
         </Modal>
-        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="edit" @operation2="batchDownload" :column="columns1" :table-data="list" />
+        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="edit" @operation2="batchDownload" :column="columns1" :table-data="list" @operation3="moveUp" @operation4="moveDown"/>
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page  @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>
         </Row>
@@ -120,7 +120,7 @@
                     width: 420,
                     slot: 'operation',
                     operation_state: true,
-                    operation: [['编辑','operation1'], ['删除','operation2']],
+                    operation: [['编辑','operation1'], ['删除','operation2'], ['上移', 'operation3'], ['下移', 'operation4']],
                   },
                 ],
                 list:[],
@@ -192,6 +192,8 @@
             handleDefaultUploadComplete(url) {
                 this.lbData.img_url = url;
             },
+            moveUp() {},
+            moveDown() {},
             getList(){
                 let d = {
                 position: this.type ? 1 : 2,
