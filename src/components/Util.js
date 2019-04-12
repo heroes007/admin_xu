@@ -141,11 +141,11 @@ export const MenuList = [
                 name: 'manage-news',
                 title: '行业资讯'
             },
-            // {
-            //   name: 'notification-chat',
-            //   badge: true,
-            //   title: '通知管理',
-            // }
+            {
+              name: 'notification-chat',
+              badge: true,
+              title: '通知管理',
+            }
         ]
     },
 ]

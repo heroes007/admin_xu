@@ -138,6 +138,10 @@
         }
     },
     mounted() {
+        this.$nextTick(() => {
+             let doc = document.querySelector('.ivu-table-row-hover');
+        console.log(doc)
+        })
         this.handleList()
         this.getList()
         if(localStorage.getItem('useRecords')){
