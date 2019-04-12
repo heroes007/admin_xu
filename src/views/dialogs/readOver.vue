@@ -283,7 +283,7 @@
     }
   }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 /deep/.ivu-modal-header{background-color: #ffffff !important;padding: 22px 16px;}
 /deep/.ivu-modal-header-inner{
 font-family: PingFangSC-Regular;

@@ -122,7 +122,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;

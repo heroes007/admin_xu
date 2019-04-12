@@ -108,7 +108,7 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
     /deep/ .card-content-details{
         height: 65px;
         overflow:hidden;

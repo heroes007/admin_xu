@@ -156,7 +156,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .manage-production-view{
         position: relative;
         height: 100%;

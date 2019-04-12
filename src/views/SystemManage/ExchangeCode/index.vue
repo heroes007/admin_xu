@@ -92,7 +92,7 @@
                     {
                         title: '操作',
                         minWidth: 260,
-                        align: 'center',
+                        align: 'left',
                         slot: 'operation',
                         operation_state: true,
                         operation: [['查看', 'operation1'], ['编辑', 'operation2'], ['下载', 'operation3']]

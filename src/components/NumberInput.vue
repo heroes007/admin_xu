@@ -6,7 +6,7 @@
     </Row>
 </template>
 
-<style lang="scss">
+<style lang="less">
     .input-container {
         border: 1px solid #CECECE;
         border-radius:4px;

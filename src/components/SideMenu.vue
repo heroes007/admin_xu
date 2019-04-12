@@ -148,7 +148,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     /deep/.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after{
       background: #292929 ;
     }

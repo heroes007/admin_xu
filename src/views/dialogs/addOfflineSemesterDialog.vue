@@ -158,7 +158,7 @@
     }
   }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
     .sub-btn {
         width: 170px;
     }
@@ -187,7 +187,6 @@
     /deep/ .ivu-modal-close .ivu-icon-ios-close { color:#9397AD !important;font-size: 42px !important;}
     /deep/ .ivu-form-item{margin-bottom: 22px;}
     #add-offline-semester-container {
-        @import "base.scss";
         input,
         textarea {
             resize: none;

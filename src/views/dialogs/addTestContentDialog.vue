@@ -391,7 +391,7 @@
         }
     }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .row1-test-form {
         background: #F0F0F7;
         padding: 0 30px;

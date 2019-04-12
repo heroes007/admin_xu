@@ -28,7 +28,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style leng="less" scoped>
 .load-container {
   position: fixed;
   width: 100%;

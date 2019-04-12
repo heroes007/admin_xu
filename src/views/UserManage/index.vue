@@ -71,7 +71,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
   .tab-name, /deep/.ivu-tabs-content, .user-manage-main{
     height: 100% !important;
   }

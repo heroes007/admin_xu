@@ -75,7 +75,7 @@
   }
 
 </script>
-<style lang="scss">
+<style lang="less">
     .editor {
         .vueditor {
             height: 250px;
