@@ -2,7 +2,7 @@
     <div class='manage-notification'>
         <FormModal :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-        <Tables :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler" 
+        <Tables :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler"
         :column="columns1" :table-data="list" />
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
@@ -75,12 +75,12 @@
                 }, 100)
             },
             createNotificationHandler() {
-                this.modalTitle = '创建通知'
+                this.modalTitle = '添加通知'
                 this.show = true
             },
             handleSubmit(d){
                postData('platform/message/addMessage',d).then((res) => {
-                  
+
                })
             },
             sendAndDelete(row,text){
@@ -117,7 +117,6 @@
            this.getList()
         }
     }
-
 </script>
 <style scoped lang="less">
     /deep/ .form-message{

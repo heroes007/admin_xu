@@ -36,7 +36,7 @@
     import { mapState, mapActions } from 'vuex';
     import Vue from 'vue'
     export default {
-        components: {  EllipsisAni  },
+        components: { EllipsisAni },
         data() {
             return {
                 name: '',
