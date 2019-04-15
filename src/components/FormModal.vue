@@ -55,11 +55,10 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :label="t.name"
-                              :prop="t.field">
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :label="t.name" :prop="t.field">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
-                            <Option v-for="(m,i) in t.line == 1 ? t.selectList[0] : t.selectList[1]" :key="i"
-                                    :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}
+                            <Option v-for="(m,i) in (t.line == 1 ? t.selectList[0] : t.selectList[1])" :key="i" :value="m[t.selectField[0]]">
+                                {{m[t.selectField[1]]}}
                             </Option>
                         </Select>
                     </FormItem>
@@ -256,6 +255,12 @@
             show(val) {
                 if (!val) {
                     if (this.content) this.content = ''
+                }else {
+                    if(JSON.stringify(this.detailData) == '{}') {
+                        this.$nextTick(() => {
+                            this.$refs.formValidate.resetFields()
+                        })
+                    }
                 }
             },
             detailData(_new) {
@@ -270,8 +275,8 @@
                 this.content = val
             },
             selectChange(val) {
-                if (val == 'online') this.formList[2].line = 1
-                else if (val == 'underline') this.formList[2].line = 0
+                // if (val == 'online') this.formList[2].line = 1
+                // else if (val == 'underline') this.formList[2].line = 0
                 if (this.modalText2) {
                     if (val == 3) this.modalText2 = '获得所属机构后台发布产品及动态等操作权限'
                     if (val == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
@@ -436,12 +441,12 @@
     .modal-class{
         /deep/.ivu-modal-body {
             padding: 50px;
-        } 
+        }
     }
     .modal-class2{
         /deep/.ivu-modal-body {
             padding: 30px 25px;
-        } 
+        }
     }
     /deep/ .ivu-modal-header {
         background: #fff !important;

@@ -4,16 +4,16 @@ export default {
             menushow: true,
             hideIcon: 'ios-arrow-back',
             viewStyl: 'width: calc(100% - 260px)',
-            widthStyle: '@keyframes myfirst { from {width: 260px;} to {width: 60px;} };    animation: myfirst 1s;'
+            widthStyle: '@keyframes myFirst { from {width: 260px;} to {width: 60px;} }; animation: myFirst 1s;'
         }
     },
     methods: {
         hideMenu(){
             if(this.menushow) {
                 this.menushow = !this.menushow
-                this.widthStyle = '@keyframes myfirst { from {width: 260px;} to {width: 60px;} }'
+                this.widthStyle = '@keyframes myFirst { from {width: 260px;} to {width: 60px;} }'
             } else {
-              this.widthStyle = '@keyframes myfirst { from {width: 60px;} to {width: 260px;} }'
+              this.widthStyle = '@keyframes myFirst { from {width: 60px;} to {width: 260px;} }'
               this.menushow = !this.menushow
             }
             this.$nextTick(() => {

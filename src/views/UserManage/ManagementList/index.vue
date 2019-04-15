@@ -3,7 +3,7 @@
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <FormModal :modal-false="true" :modal-text="modalText" :detail-data="tableRow" :show-modal='show' :form-list="formList" @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
         <screen :btn-type="btnType" :types="1" size-title1="管理总数" :size-num1="total" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
-        <Tables :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="management"/>
+        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="management"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>

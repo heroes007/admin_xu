@@ -108,7 +108,7 @@ export default {
             unlock_type: '',
             states: '',
             fileValue: null,
-            imgType: 1,            
+            imgType: 1,
             fileType: 'image/png,image/jpg,video/mp4,video/mov,video/avi',
             selectList1: [{id: 0,title:'不限'},{id: 1,title:'按课程'},{id: 2,title:'按章节'},{id: 3,title:'按视频'}],
             show: false,

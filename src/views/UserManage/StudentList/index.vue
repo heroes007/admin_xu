@@ -5,7 +5,7 @@
              :size-title1="title1" :size-num1="allNum+'/'+titleTotal" btn-name="添加导师" :select1="selectList" @moneyStudent="moneyStudent"
              select2Placeholder="请选择年级"  :select2="selectList1" 
           @selectChange1="selectChange1" @selectChange2="selectChange2" @selectChange3="selectChange3"  @inputChange="inputChange" @handleClick="handleClick" />
-        <Tables :is-serial=true @row-click="see" @operation1="statistics" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="student"/>
+        <Tables :tabel-height="tableHeight" :is-serial=true @row-click="see" @operation1="statistics" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="student"/>
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
