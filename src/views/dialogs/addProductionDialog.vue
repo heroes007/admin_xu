@@ -57,7 +57,7 @@
                                     <video width="458" height="260" v-if="form.video_url" :src="form.video_url" controls="controls"/>
                                </div>
                             </div>
-                            <UploadBtn :imgtypes="imgType" bucket="jhyl-static-file" @uploadcomplete="uploadcomplete" :type="fileType" :maxFileSize="[2, 300]"/>
+                            <UploadBtn :imgtypes="imgType" bucket="jhyl-static-file" @handle-close="handleFileClose" @uploadcomplete="uploadcomplete" :type="fileType" :maxFileSize="[2, 300]"/>
                         </FormItem>
                         <FormItem v-show="nextStep == 0"> <p class="upload-img-text">可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；视频支持mp4/mov/avi格式，且大小不超过300M</p></FormItem>
 
@@ -253,9 +253,13 @@ export default {
             this.imgType = 1
             this.fileType = 'image/png,image/jpg,video/mp4,video/mov,video/avi'
         },
+        handleFileClose(){
+            this.$Message.warning('最多上传5张图片或1个视频');
+        },
         deleteImgList(i){
             if(Number.isInteger(i)){
                 this.form.imgList.splice(i,1)
+                this.fileValue = i == 0 ? 0 : i - 1
                 this.$forceUpdate()
             }else if(i === 'video'){
                 this.form.video_url = ''
@@ -399,6 +403,9 @@ export default {
 .upload-img-main-icon{
     color: #fff;
     .icons;
+}
+/deep/ .ivu-carousel-item{
+    position: relative;
 }
 .upload-img-main-icon2{
     color: #ddd;
