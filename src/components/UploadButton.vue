@@ -1,7 +1,7 @@
 <template>
     <div contentEditable="false">
         <div v-if="imgtypes">
-            <img v-if="imgtypes == 'close'" src="../assets/icons/icon/upload.png"  />
+            <img class="uploadImg" v-if="imgtypes == 'close'" @click="handleClose" src="../assets/icons/icon/upload.png"  />
             <div v-else>
                 <img class="uploadImg" src="../assets/icons/icon/upload.png" @click="handleStartUploadFile"/>
                 <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
@@ -65,6 +65,9 @@
         methods: {
             handleStartUploadFile() {
                 this.$refs.input.click();
+            },
+            handleClose(){
+                this.$emit('handle-close')
             },
             maxFileSize2(filename){
                 let fileType = filename.split(".")

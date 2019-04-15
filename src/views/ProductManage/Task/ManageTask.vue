@@ -1,7 +1,7 @@
 <template>
     <div class='manage-task'>
         <FormModal :detail-data="tableRow" @from-submit="saveHomework" :show-modal='show' :form-list="formList"
-                   @close="closeModal" :title="modalTitle" :rule-validate="rules" uploadBtn>
+                   @close="closeModal" :title="modalTitle" :rule-validate="rules" @change-list="changeList" uploadBtn>
         </FormModal>
         <screen selectType2 :select2="selectList" :types="4" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
               @selectChange2="selectChange"  @handleClick="addTaskCategory" :btn-type="btnType"/>
@@ -237,6 +237,10 @@
               }).then(res => {
                 this.curricumList[1] = res.data
               })
+            },
+            changeList(val) {
+                if(val == 'online') this.formList[2].line = 1
+                else this.formList[2].line = 0
             }
         },
         mounted() {

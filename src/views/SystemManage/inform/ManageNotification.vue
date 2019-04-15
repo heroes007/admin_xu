@@ -2,9 +2,9 @@
     <div class='manage-notification'>
         <FormModal modal-body :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-        <Tables :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler"
-        :column="columns1" :table-data="list" />
-        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+        <Tables  :tabel-height="tableHeight" :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler"
+                 :column="columns1" :table-data="list" />
+        <page-list class="pages" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
@@ -28,6 +28,7 @@
                 tableRow: {},
                 modalTitle: '',
                 show: false,
+                tableHeight: null,
                 list: [
                     {
                         content: '1',
@@ -41,31 +42,31 @@
                     uploading: [{ required: true, message: '请输入通知内容'} ],
                 },
                 columns1: [
-                {
-                    key: 'content',
-                    title: '通知内容',
-                    slot: 'content-html',
-                    width: 650,
-                    align: 'left'
-                },
-                {
-                    key: 'send_time',
-                    title: '发送时间',
-                    width: 150
-                },
-                {
-                    key: 'realname',
-                    title: '创建人',
-                    width: 120
-                },
-                {
-                    title: '操作',
-                    minWidth: 260,
-                    slot: 'operation',
-                    align: 'left',
-                    operationLast: true,
-                    operation: [['发送','operation1'], ['编辑','operation2'], ['删除','operation3']],
-                }]
+                    {
+                        key: 'content',
+                        title: '通知内容',
+                        slot: 'content-html',
+                        width: 650,
+                        align: 'left'
+                    },
+                    {
+                        key: 'send_time',
+                        title: '发送时间',
+                        width: 150
+                    },
+                    {
+                        key: 'realname',
+                        title: '创建人',
+                        width: 120
+                    },
+                    {
+                        title: '操作',
+                        minWidth: 260,
+                        slot: 'operation',
+                        align: 'left',
+                        operationLast: true,
+                        operation: [['发送','operation1'], ['编辑','operation2'], ['删除','operation3']],
+                    }]
             }
         },
         methods: {
@@ -81,31 +82,31 @@
                 this.show = true
             },
             handleSubmit(d){
-               d.content = d.uploading
-               let url = this.modalTitle === '创建通知' ? 'platform/message/addMessage' : 'platform/message/modifyMessage'
-               postData(url, d).then((res) => {
-                  if(res.res_code == 1){
-                      this.$Message.success(res.msg)
-                      this.getList()
-                  }
-               })
+                d.content = d.uploading
+                let url = this.modalTitle === '创建通知' ? 'platform/message/addMessage' : 'platform/message/modifyMessage'
+                postData(url, d).then((res) => {
+                    if(res.res_code == 1){
+                        this.$Message.success(res.msg)
+                        this.getList()
+                    }
+                })
             },
             sendAndDelete(row, text, url, index){
-              this.$Modal.confirm({
-                title: '提示',
-                content: `确定要${text}该通知吗!`,
-                onOk: () => {
-                  postData(url, {message_id: row.id}).then((res) => {
-                     if(res.res_code == 1){
-                        if(text == '发送'){
-                            this.$Message.success(res.msg)
-                            this.getList()
-                        }
-                        if(index) this.list.splice(index,1)
-                     }
-                  })
-                },
-              });
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: `确定要${text}该通知吗!`,
+                    onOk: () => {
+                        postData(url, {message_id: row.id}).then((res) => {
+                            if(res.res_code == 1){
+                                if(text == '发送'){
+                                    this.$Message.success(res.msg)
+                                    this.getList()
+                                }
+                                if(index) this.list.splice(index,1)
+                            }
+                        })
+                    },
+                });
             },
             sendHandler(row,index) {
                 this.sendAndDelete(row,'发送', 'platform/message/sendMessage')
@@ -131,7 +132,8 @@
             }
         },
         mounted() {
-           this.getList()
+            this.getList()
+            this.tableHeight = window.innerHeight - 130
         }
     }
 </script>
@@ -142,5 +144,12 @@
     }
     /deep/ .select-list{
         display: none;
+    }
+    /deep/ .pages{
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 10px;
+        margin: 0 auto;
     }
 </style>
