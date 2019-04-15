@@ -2,22 +2,18 @@
     <div>
         <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
                :height="tabelHeight">
+            <!-- content-html -->
+            <template slot-scope="{ column, row, index }" slot="content-html">
+                <span v-html="row[column.key]"></span>
+            </template>
             <template slot-scope="{ column, row, index }" slot="operation">
-              <span v-for="(t,i) in column.operation" :key="i">
-              <!-- poptip_state -->
-               <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
-                    <Button type="text">查看</Button>
-                    <div class="poptip-main" slot="content">
-                      <img class="poptip-img" src="../assets/icons/mn.jpeg"/>
-                      <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p></div>
-                    </div>
-               </Poptip>
-               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
-                 <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
-                   {{handleBtnText(t,row,column)}}
-                 </Button>
-               </span>
-              </span>
+                <span v-for="(t,i) in column.operation" :key="i">
+                    <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                        <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+                        {{handleBtnText(t,row,column)}}
+                        </Button>
+                    </span>
+                </span>
                 <Switch :class="column.isShow ? '' : 'operation_btn_show'"
                         v-if="column.isSwitch && handleBtnShow(column,row)" v-model="row[column.switchKey]" size="large"
                         @on-change="change(row)">
@@ -117,7 +113,9 @@
             },
             handleBtnShowClass(c, r, t) {
                 if (!c.hasOwnProperty('operation_btn_hide')) {
-                    if (c.operation[0][0] == t[0]) return 'operation_btn_see'
+                    if (c.hasOwnProperty('operationLast')&&c.operationLast){
+                        if (c.operation[c.operation.length-1][0] == t[0]) return 'operation_btn_see'
+                    }else if (c.operation[0][0] == t[0]) return 'operation_btn_see'
                     if (!r.operation_btn_show) return 'operation_btn_show'
                     return ''
                 }
@@ -409,9 +407,11 @@
     }
 
     /deep/ .ivu-table-row:hover {
-
         .operation_btn_show {
             display: inline-block;
+            .ivu-btn-text {
+                margin-left: -5px;
+            }
         }
     }
 </style>

@@ -2,7 +2,7 @@
     <div>
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList"
                          @close="exchangeContentClose" @selectChecked="exchangeContentChecked"/>
-        <Modal v-model="show" :title="title" :width="645" @on-cancel="closeModal" :mask-closable=false
+        <Modal :class="modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="645" @on-cancel="closeModal" :mask-closable=false
                :footer-hide="true">
             <div v-if="uploadFlie" class="upload-flie">
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com"
@@ -122,6 +122,10 @@
     export default {
         components: {ExchangeContent, uploadBtn, downLoading, newEditor},
         props: {
+            modalBody: {
+                type: Boolean,
+                default: false
+            },
             modalFalse: {
                 type: Boolean,
                 default: false
@@ -429,6 +433,16 @@
     }
 </script>
 <style lang="less" scoped>
+    .modal-class{
+        /deep/.ivu-modal-body {
+            padding: 50px;
+        } 
+    }
+    .modal-class2{
+        /deep/.ivu-modal-body {
+            padding: 30px 25px;
+        } 
+    }
     /deep/ .ivu-modal-header {
         background: #fff !important;
         padding: 0 !important;
@@ -444,10 +458,6 @@
         color: #474C63 !important;
         height: 70px;
         line-height: 70px;
-    }
-
-    /deep/ .ivu-modal-body {
-        padding: 40px;
     }
 
     .modal-text {

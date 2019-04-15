@@ -1,6 +1,6 @@
 <template>
     <div class='manage-notification'>
-        <FormModal :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
+        <FormModal modal-body :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
         <Tables :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler" 
         :column="columns1" :table-data="list" />
@@ -44,16 +44,17 @@
                 {
                     key: 'content',
                     title: '通知内容',
+                    slot: 'content-html',
                     width: 650,
                     align: 'left'
                 },
                 {
-                    key: 'create_time',
+                    key: 'send_time',
                     title: '发送时间',
                     width: 150
                 },
                 {
-                    key: 'create_time',
+                    key: 'realname',
                     title: '创建人',
                     width: 120
                 },
@@ -62,6 +63,7 @@
                     minWidth: 260,
                     slot: 'operation',
                     align: 'left',
+                    operationLast: true,
                     operation: [['发送','operation1'], ['编辑','operation2'], ['删除','operation3']],
                 }]
             }
@@ -79,28 +81,43 @@
                 this.show = true
             },
             handleSubmit(d){
-               postData('platform/message/addMessage',d).then((res) => {
-                  
+               d.content = d.uploading
+               let url = this.modalTitle === '创建通知' ? 'platform/message/addMessage' : 'platform/message/modifyMessage'
+               postData(url, d).then((res) => {
+                  if(res.res_code == 1){
+                      this.$Message.success(res.msg)
+                      this.getList()
+                  }
                })
             },
-            sendAndDelete(row,text){
+            sendAndDelete(row, text, url, index){
               this.$Modal.confirm({
                 title: '提示',
                 content: `确定要${text}该通知吗!`,
                 onOk: () => {
-
+                  postData(url, {message_id: row.id}).then((res) => {
+                     if(res.res_code == 1){
+                        if(text == '发送'){
+                            this.$Message.success(res.msg)
+                            this.getList()
+                        }
+                        if(index) this.list.splice(index,1)
+                     }
+                  })
                 },
               });
             },
             sendHandler(row,index) {
-                this.sendAndDelete(row,'发送')
+                this.sendAndDelete(row,'发送', 'platform/message/sendMessage')
             },
             deleteHandler(row, index) {
-                this.sendAndDelete(row,'删除')
+                this.sendAndDelete(row,'删除', 'platform/message/removeMessage', index)
             },
             editHandler(row, index) {
                 this.tableRow = row
+                this.tableRow.uploading = row.content
                 this.show = true
+                this.modalTitle = '编辑通知'
             },
             getList(){
                 let d = {
@@ -124,7 +141,7 @@
         width: 580px;
         height: 500px;
     }
-    /deep/.ivu-modal-body{
-        padding: 10px 25px !important;
+    /deep/ .select-list{
+        display: none;
     }
 </style>

@@ -1,8 +1,11 @@
 <template>
     <div contentEditable="false">
         <div v-if="imgtypes">
-            <img class="uploadImg" src="../assets/icons/icon/upload.png" @click='handleStartUploadFile'/>
-            <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
+            <img v-if="imgtypes == 'close'" src="../assets/icons/icon/upload.png"  />
+            <div v-else>
+                <img class="uploadImg" src="../assets/icons/icon/upload.png" @click="handleStartUploadFile"/>
+                <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
+            </div>
         </div>
         <div v-else class='el-upload__inner' contentEditable="false">
             <img v-if="iconType" :src="iconType" @click='handleStartUploadFile' style="cursor: pointer"/>
@@ -21,14 +24,12 @@
             return {
                 resultUrl: '',
                 fileName: '',
-                fileSize: null
+                fileSize: null,
+                maxSizes: ''
             }
         },
         props: {
-            imgtypes: {
-                type: Number,
-                default: 0
-            },
+            imgtypes: [Number, String],
             type: {
                 type: String,
                 default: '*'
@@ -56,29 +57,39 @@
             uploadType: {
                 type: Number
             },
-            maxFileSize: {
-                type: Number,
-                default: 0
-            }
+            maxFileSize: [Number, Array]
+        },
+        mounted(){
+            console.log(this.imgtypes ,this.type)
         },
         methods: {
             handleStartUploadFile() {
                 this.$refs.input.click();
             },
+            maxFileSize2(filename){
+                let fileType = filename.split(".")
+                let fileType2 = fileType[fileType.length-1]
+                if( fileType2 == 'jpg' || fileType2 == 'jpeg' || fileType2 == 'png'){
+                    return this.maxFileSize[0]
+                }else  return this.maxFileSize[1]
+            },
             handleUploadChange(event) {
+                console.log(event);
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
+                var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
+                this.fileName = filename;
+                let maxFileSizes = Array.isArray(this.maxFileSize) ? this.maxFileSize2(filename) : this.maxFileSize
+                this.maxSizes = maxFileSizes;
                 this.fileSize = event.target.files[0].size / (1024 * 1024);
-                if (this.maxFileSize > 0 && this.fileSize > this.maxFileSize) {
+                if (maxFileSizes > 0 && this.fileSize > maxFileSizes) {
                     this.$Modal.info({
                         title: '提示',
-                        content: `文件不能超过${this.maxFileSize}M`,
+                        content: `文件不能超过${maxFileSizes}M`,
                         onOk: () => {
                         }
                     });
                     return;
                 }
-                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-                var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
-                this.fileName = filename;
                 // if(this.handleCheckMedia(event))  this.handleGetassignKey(event.target.files[0]);
                 this.handleGetassignKey(event.target.files[0]);
             },
@@ -92,7 +103,7 @@
                 }).then(res => {
                     this.loadingInstance.close()
                     this.resultUrl = url + '/' + this.resultUrl;
-                    this.$emit('uploadcomplete', {name: this.fileName, url: this.resultUrl});
+                    this.$emit('uploadcomplete', {name: this.fileName, url: this.resultUrl, maxSizes: this.maxSizes == 2 ? 'img' : this.maxSizes == 300 ? 'video' : ''  });
                     var f = this.$refs.input;
                     if (f.value) {
                         var form = document.createElement('form'), ref = f.nextSibling;
