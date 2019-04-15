@@ -223,38 +223,39 @@
         border-style: solid;
         border-color: transparent transparent #fff;
     }
-    .card-box{
+
+    .card-box {
         display: flex;
         align-items: center;
 
-        .card-img{
+        .card-img {
             width: 80px;
             height: 80px;
             border-radius: 50%;
         }
 
-        .card-content{
+        .card-content {
             margin-left: 20px;
 
-            .content-user{
+            .content-user {
                 display: flex;
                 align-items: center;
 
-                .content-user-name{
+                .content-user-name {
                     font-family: PingFangSC-Medium;
                     font-size: 20px;
                     color: #474C63;
                     letter-spacing: 0;
                 }
 
-                .content-user-sex{
+                .content-user-sex {
                     height: 17px;
                     width: 17px;
                     margin-left: 8px;
                 }
             }
 
-            .content-userid{
+            .content-userid {
                 font-family: PingFangSC-Regular;
                 font-size: 16px;
                 color: #474C63;
@@ -263,12 +264,14 @@
             }
         }
     }
-    .card-show{
+
+    .card-show {
         position: absolute;
         display: none;
     }
-    /deep/ .ivu-table-row-hover{
-        .card-show{
+
+    /deep/ .ivu-table-row-hover {
+        .card-show {
             position: absolute;
             left: 50%;
             transform: translateY(20%);
@@ -279,11 +282,13 @@
             border: none;
         }
     }
-    /deep/ .ivu-card-body{
-        box-shadow: 0 0 10px 0 rgba(147,151,173,0.22);
+
+    /deep/ .ivu-card-body {
+        box-shadow: 0 0 10px 0 rgba(147, 151, 173, 0.22);
         background-color: #fff;
         border-radius: 8px;
     }
+
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }
