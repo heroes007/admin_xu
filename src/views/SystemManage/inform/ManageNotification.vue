@@ -2,9 +2,9 @@
     <div class='manage-notification'>
         <FormModal modal-body :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-        <Tables :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler"
+        <Tables  :tabel-height="tableHeight" :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler"
         :column="columns1" :table-data="list" />
-        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+        <page-list class="pages" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
@@ -28,6 +28,7 @@
                 tableRow: {},
                 modalTitle: '',
                 show: false,
+                tableHeight: null,
                 list: [
                     {
                         content: '1',
@@ -132,6 +133,7 @@
         },
         mounted() {
            this.getList()
+           this.tableHeight = window.innerHeight - 130
         }
     }
 </script>
@@ -142,5 +144,12 @@
     }
     /deep/ .select-list{
         display: none;
+    }
+    /deep/ .pages{
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 10px;
+        margin: 0 auto;
     }
 </style>

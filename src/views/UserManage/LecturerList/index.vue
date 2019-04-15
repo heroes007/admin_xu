@@ -15,9 +15,9 @@
                             <p>绑定课程：{{t.curriculum_count}}个</p>
                         </div>
                         <div class="lecturer-item-btn">
-                            <img @click="see(t)" class="lecturer-btn-icon" src="../../../assets/icons/icon/write.jpg"/>
-                            <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="../../../assets/icons/icon/write.jpg"/>
-                            <img v-if="lectureesItem3" @click="deletes(t)" class="lecturer-btn-icon" src="../../../assets/icons/icon/delete.jpg"/>
+                            <img @click="see(t)" class="lecturer-btn-icon" src="../../../assets/img/see-icon.png"/>
+                            <img v-if="lectureesItem2" @click="edit(t)" class="lecturer-btn-icon" src="../../../assets/img/edit-icon.png"/>
+                            <img v-if="lectureesItem3" @click="deletes(t)" class="lecturer-btn-icon" src="../../../assets/img/delete-icon.png"/>
                         </div>
                     </div>
                 </Col>
@@ -175,6 +175,10 @@
                 font-family: PingFangSC-Medium;
                 font-size: 18px;
                 margin-bottom: 15px;
+                width: 230px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
             p {
                 font-family: PingFangSC-Regular;
@@ -187,7 +191,7 @@
             width: 35px;
             height: 110px;
             background-color: #fff;
-            background: #9397AD;
+            // background: #9397AD;
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
             display: none;

@@ -236,7 +236,7 @@
         mounted() {
             this.getList()
             this.lbData = this.lbData2
-            this.tableHeight = window.innerHeight - 130
+            this.tableHeight = window.innerHeight - 124
         }
     }
 </script>

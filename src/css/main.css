@@ -148,6 +148,14 @@ textarea.ivu-input{
 .ivu-table-cell-tooltip-content{
   margin-top: 3px !important;
 }
+.ivu-table th,.ivu-table td{
+  border-bottom: 1px solid #f0f0f7  !important
+}
+.ivu-table-wrapper{
+  border: none !important;
+  border-top: 1px solid #f0f0f7  !important;
+  border-bottom: 1px solid #f0f0f7  !important;
+}
 /* .ivu-table-row-highlight td, tr.ivu-table-row-highlight.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td{
   background: #fff !important;
 }

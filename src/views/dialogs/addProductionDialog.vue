@@ -261,9 +261,7 @@ export default {
                 this.form.imgList.splice(i,1)
                 this.fileValue = i == 0 ? 0 : i - 1
                 this.$forceUpdate()
-            }else if(i === 'video'){
-                this.form.video_url = ''
-            }
+            }else if(i === 'video') this.form.video_url = ''
             if(!this.form.video_url&&this.form.imgList.length==0){
               this.openUpload()
             }
