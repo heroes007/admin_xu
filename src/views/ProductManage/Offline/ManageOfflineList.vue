@@ -22,7 +22,7 @@
                     <Button class="card-end-btn"  :class="btnType ? 'r48' : 'r0'" type="text" ghost @click="handleSee(t)">查看</Button>
                     <Button v-if="btnType" class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
                 </div>
-        </Card>
+            </Card>
         </div>
         <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit"/>
     </div>

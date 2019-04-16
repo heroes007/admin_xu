@@ -6,7 +6,7 @@ const NotFound = () => import('../views/notfound');
 const DashBoard = () => import('../views/DashBoard');
 const PersonalData = () => import('../views/personal-data/index');
 const ManageOnlineCourseChapter = () => import('../views/ProductManage/Online/ManageOnlineCourseChapter');
-const ManageOfflineCourse = () => import('../views/ProductManage/Offline/ManageOfflineCourse');
+const ManageOfflineCourse = () => import('../views/ProductManage/Offline/next-semester');
 const ManageNotification = () => import('../views/SystemManage/inform/ManageNotification');
 const ManageNews = () => import('../views/SystemManage/news/ManageNews')
 const UserManage = () => import('../views/UserManage/index')

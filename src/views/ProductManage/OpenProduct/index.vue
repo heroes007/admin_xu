@@ -1,10 +1,10 @@
 <template>
     <div >
         <Tabs @on-click="tabs" v-model="online">
-            <TabPane label="线上课" v-if="item1" name="product1">
+            <TabPane label="线上自学" v-if="item1" name="product1">
                 <online v-if="pane1" />
             </TabPane>
-            <TabPane label="线下课" v-if="item2" name="product2">
+            <TabPane label="线下集中" v-if="item2" name="product2">
                 <offline v-if="pane2" />
             </TabPane>
             <TabPane label="作业" v-if="item3" name="product3">

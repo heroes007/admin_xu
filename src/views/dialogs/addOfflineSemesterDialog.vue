@@ -4,8 +4,16 @@
         <base-input :baseInputWidth="600" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
                 <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="120">
-                    <FormItem label="学期名称" prop="title" required>
+                    <FormItem label="学期名称" prop="title" >
                         <Input v-model="form1.title" placeholder="请输入学期名称"></Input>
+                    </FormItem>
+                    <FormItem label="学期描述" class="semester-description" prop="description" >
+                        <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
+                    </FormItem>
+                    <FormItem  label="辅导老师" prop="tutor_id">
+                        <Select v-model="form1.tutor_id" placeholder="请选择辅导老师" >
+                            <Option v-for="(m,i) in teacherList" :key="i" :value="m.id">{{m.realname}}</Option>
+                        </Select>
                     </FormItem>
                     <FormItem label="开课日期" prop="stage1">
                         <DatePicker v-model="form1.stage1" type="daterange" format="yyyy/MM/dd" placeholder="请选择时间范围" :transfer="true"></DatePicker>
@@ -13,9 +21,18 @@
                     <FormItem label="报名截止" prop="register_end_time">
                         <DatePicker v-model="form1.register_end_time" type="date" format="yyyy/MM/dd" placeholder="请选择报名截止" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
                     </FormItem>
-                    <FormItem label="学期描述" class="semester-description" prop="description" required>
-                        <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
-                    </FormItem>
+                    <div v-for="(t,i) in form1.offlineCurriculums" :key="i">
+                      <Divider />
+                      <FormItem label="课程名称"><Input v-model="t.title" disabled></Input></FormItem>
+                      <FormItem label="课程类型"><Input v-model="t.type_name" disabled></Input></FormItem>
+                      <FormItem label="课程讲师"><Input v-model="t.teacher_name" disabled></Input></FormItem>
+                      <FormItem label="上课时间" :prop="'class_start_time'+i">
+                        <DatePicker class="class-time" v-model="form1['class_start_time'+i]" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="请选择上课时间" :transfer="true"></DatePicker>
+                      </FormItem>
+                      <FormItem label="上课地点" :prop="'class_address'+i">
+                        <Input v-model="form1['class_address'+i]" placeholder="请输入上课地点"></Input>
+                      </FormItem>
+                    </div>
                     <div style="text-align: center">
                         <Button style="margin: 40px 227px" type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
                     </div>
@@ -47,43 +64,24 @@
         addOfflineSemesterDialog: true,
         form1: {
           title: this.payload.row && this.payload.row.title || '',
-          stage1: this.payload.row && [this.payload.row.start_time, this.payload.row.register_end_time] || [],
+          stage1: this.payload.row && [this.payload.row.start_time, this.payload.row.end_time] || [],
           description: this.payload.row && this.payload.row.description || '',
           register_end_time: this.payload.row && this.payload.row.register_end_time || null,
-          state: this.payload.row && this.payload.row.state || 0
+          state: this.payload.row && this.payload.row.state || 0,
+          tutor_id: this.payload.row && this.payload.row.tutor_id,
+          offlineCurriculums: this.payload.offlineCurriculums
         },
-        form2: {
-          name2: '',
-          stage2: [],
-          level2: 0,
-          description2: '',
-          semester: ''
-        },
+        teacherList: [],
         rules1: {
-          title: [{
-            required: true,
-            message: '请输入学期名称',
-            trigger: 'blur'
-          }],
+          title: [{ required: true, message: '请输入学期名称', trigger: 'blur' }],
+          tutor_id: [{required: true, message: '请选择辅导老师'}],
           stage1: [{
             type: 'array',
             required: true,
-            fields: { 0: {type: 'date', required: true, message: '请输入开课日期'},1: {type: 'date', required: true, message: '请输入结课日期'}}
+            fields: { 0: {type: 'date', required: true, message: '请选择开课日期'},1: {type: 'date', required: true, message: '请选择结课日期'}}
           }],
-          description: [{
-            required: true,
-            message: '请输入学期描述内容',
-            trigger: 'blur'
-          }],
+          description: [{ required: true, message: '请输入学期描述内容', trigger: 'blur' }],
           register_end_time: [{type: 'date', required: true, message: '请选择报名截止'}],
-        },
-        rules2: {
-          semester: [{
-            required: true,
-            type: 'number',
-            message: '请选择学期名称',
-            trigger: 'change'
-          }]
         }
       }
     },
@@ -109,34 +107,42 @@
       handleClose() {
         this.addOfflineSemesterDialog = false;
       },
-      handleSelectItem(idx) {
-        this.form2.name2 = this.offline_term_list1[idx].name;
-        this.form2.stage2 = [this.offline_term_list1[idx].start_time, this.offline_term_list1[idx].register_end_time];
-        this.form2.level2 = this.offline_term_list1[idx].level || '';
-        this.form2.description2 = this.offline_term_list1[idx].description || '';
+      setOfflineCurriculums(d){
+        let d1 = []
+        if(this.payload.offlineCurriculums.length>0){
+          this.payload.offlineCurriculums.map((t,i) => {
+            d1[i] = t
+            d1[i].class_address = this.form1['class_address'+i],
+            d1[i].class_start_time = this.$config.formatTime(this.form1['class_start_time'+i])
+          })
+        }
+        return d1
       },
       handleSubmit(formName) {
-        let vm = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-           let obj = vm.payload.type == 1 ? {subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id} : {term_underline_id: vm.payload.row.id}
-           let url = vm.payload.type == 1 ? 'product/curriculum_offline/term_add' : '/product/curriculum_offline/term_change'
-            let d = {
+           let obj = this.payload.type == 1 ? {subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id} : {id: this.payload.row.id}
+           let url = this.payload.type == 1 ? 'product/curriculum_offline_term/addTermAndCurriculums' : 'product/curriculum_offline_term/operateTermAndCurriculums'
+           let course = this.setOfflineCurriculums(this.form1)
+           let d = {
               ...obj,
-              title: vm.form1.title,
-              description: vm.form1.description,
-              start_time: dateFormat(vm.form1.stage1[0]),
-              end_time: dateFormat(vm.form1.stage1[1]),
-              register_end_time: dateFormat(vm.form1.register_end_time),
+              tutor_id: this.form1.tutor_id,
+              title: this.form1.title,
+              description: this.form1.description,
+              start_time: dateFormat(this.form1.stage1[0]),
+              end_time: dateFormat(this.form1.stage1[1]),
+              register_end_time: dateFormat(this.form1.register_end_time),
+              offlineCurriculums: course
             }
+            console.log(d,'ddd');
             postData(url, d).then((res) => {
                 if(res.res_code == 1){
                   this.$Message.success(res.msg);
                   this.addOfflineSemesterDialog = false;
                     let d = {
                     subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
-                    page_size: vm.payload.page_size,
-                    page_num:  vm.payload.page_num
+                    page_size: this.payload.page_size,
+                    page_num:  this.payload.page_num
                   }
                   this.$store.dispatch('get_offline_term_list', d);
                 }
@@ -154,11 +160,37 @@
             this.form1.register_end_time = this.payload.row && this.payload.row.register_end_time || null
           }
         }
+      },
+      getTeacherList(){
+        postData('/components/getInstructors',{organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
+          if(res.res_code==1) this.teacherList = res.data
+        })
+      },
+      setRules(){
+        let offlineCurriculums = this.payload.offlineCurriculums;
+        if(offlineCurriculums.length>0){
+          offlineCurriculums.forEach((t,i) => {
+          this.rules1['class_start_time'+i] = [{ required: true, message: '请选择上课时间'}]
+          this.rules1['class_address'+i] = [{ required: true, message: '请输入上课地点', trigger: 'blur' }]
+          this.form1['class_start_time'+i] = t.class_start_time
+          this.form1['class_address'+i] = t.class_address
+          t.type_name = t.type == 1 ? '讲座' : '实践'
+         });
+        }
       }
+    },
+    mounted(){
+      this.setRules()
+      this.getTeacherList()
     }
   }
 </script>
 <style scoped lang="less">
+    /deep/ .ivu-date-picker-transfer {
+      /deep/.ivu-picker-confirm{
+        display: flex;
+      }
+    }
     .sub-btn {
         width: 170px;
     }

@@ -14,15 +14,11 @@
 </template>
 <script>
   import SideMenu from '../../../components/SideMenuForProject'
-  import online from '../Online/ManageOnlineCourse'
-  import offline from '../Offline/ManageOfflineCourse'
-  import task from '../Task/ManageTask'
-  import course from '../Course/ManageCourseDownloadData'
   import HideMenu from '../../../components/HideMenu.vue'
   import hideMenuMixins from './hideMenuMixins'
   export default {
     name: "MainProduct",
-    components: {SideMenu, online, offline, task, course, HideMenu},
+    components: {SideMenu, HideMenu},
     mixins: [hideMenuMixins],
   }
 </script>
