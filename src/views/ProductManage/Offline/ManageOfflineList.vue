@@ -60,8 +60,8 @@
                 ],
                 modalTitle: '',
                 rules: {
-                    title: [{required: true, message: '请输入主题名称', trigger: 'blur'}],
-                    description: [{required: true, message: '请输入主题描述', trigger: 'blur'}]
+                    title: [{required: true, message: '请输入主题名称'}],
+                    description: [{required: true, message: '请输入主题描述'}]
                 },
                 show: false,
                 detailData: {},
@@ -140,7 +140,7 @@
                 let arr = this.$config.copy(this.formList[2].list, [])
                 arr.forEach(item => {
                     this.courseRule[item.field + item.index] = [{required: true, message: `请输入${item.name}`}]
-                    item.type === 'input' ? this.courseRule[item.field + item.index][0].trigger = 'blur' : ''
+                    // item.type === 'input' ? this.courseRule[item.field + item.index][0].trigger = 'blur' : ''
                 })
                 this.rules = {...this.rules, ...this.courseRule}
             },
