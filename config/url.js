@@ -1,4 +1,4 @@
-let env = process.env.NODE_ENV 
+let env = process.env.NODE_ENV
 const PRO_URL = 'http://api.jiuhuatech.com/met/'
 const TEST_URL = 'http://api.met.xuege100.com/met/'
 const DEV_URL = 'http://192.168.6.55:5520/met/'

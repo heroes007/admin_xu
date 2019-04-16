@@ -16,7 +16,7 @@
                     <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
                 </Upload>
             </div>
-            <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}">
+            <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
                 <div v-for="(t,index) in formList" :key="index">
                     <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
@@ -97,6 +97,18 @@
                                         @uploadcomplete="uploadImg" :maxFileSize="300"/>
                         </div>
                     </FormItem>
+                    <!--数组表单,针对线下课-->
+                    <FormItem v-if="(t.type === 'array')" v-for="(item, index) in t.list" :label="item.name" :prop="item.field + item.index" :key="index">
+                        <div v-if="item.field == 'title'" style="color: #f00; cursor: pointer" @click="deleteList(item, index)">X</div>
+                        <Input v-if="(item.type === 'input')" v-model="formItem[item.field + item.index]" :placeholder="'请输入'+item.name"></Input>
+                        <Select v-if="(item.type === 'select')" v-model="formItem[item.field + item.index]" :placeholder="'请选择'+item.name" :disabled="item.disable"
+                                @on-change="selectChange">
+                            <Option v-for="(m,i) in item.selectList" :key="i" :value="m[item.selectField[0]]">
+                                {{m[item.selectField[1]]}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    <div v-if="(t.type === 'array')" class="add-course" @click="addCourse">添加课程</div>
                 </div>
             </Form>
             <p v-if="modalText2" class="modal-text">* {{modalText2}}</p>
@@ -170,6 +182,10 @@
             maxFileSize: {
                 type: Number,
                 default: 0
+            },
+            styleRule: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -271,6 +287,10 @@
             },
         },
         methods: {
+            deleteList(item, index) {
+                console.log(item, index)
+                this.$emit('delete-list', index)
+            },
             getContent(val) {
                 this.content = val
             },
@@ -360,6 +380,21 @@
                     await close()
                 })()
             },
+            setCourse() {
+                this.formItem.offlineCurriculums = []
+                for(let i = 0; i < parseInt((this.formList[2].list.length)/4); i++) {
+                    this.formItem.offlineCurriculums.push({})
+                }
+                for(let item in this.formItem) {
+                    let index = item.substring(item.length - 1)
+                    let name = item.substring(item.length - 1, 0)
+                    this.formItem.offlineCurriculums.forEach((item1, index1) => {
+                        if(index == index1) {
+                            item1[name] = this.formItem[name + index]
+                        }
+                    })
+                }
+            },
             handleSubmit(name) {
                 let d = this.$refs.inputStyle && this.$refs.inputStyle[0].innerText || this.imgUrl
                 this.$refs[name].validate((valid) => {
@@ -374,7 +409,13 @@
                                 if(this.content) this.handleFormData()
                                 else this.$Message.info('请输入作业描述')
                             }
-                            else this.handleFormData()
+                            else {
+                                if(this.styleRule) {
+                                    this.setCourse()
+                                    this.handleFormData()
+                                }
+                                else this.handleFormData()
+                            }
                         }
                     }
                 })
@@ -434,6 +475,9 @@
             handleDrop1(val) {
                 this.$refs.inputStyle[0].style.color = val
             },
+            addCourse() {
+                this.$emit('add-course', (this.formList[2].list.length)/4)
+            }
         },
     }
 </script>
@@ -600,5 +644,12 @@
     .form-editor {
         display: flex;
         margin-top: 15px;
+    }
+
+    .add-course{
+        text-align: center;
+        color: #4098ff;
+        font-size: 16px;
+        cursor: pointer;
     }
 </style>
