@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="card-row mt20">
-                    <div class="card-end-time">创建时间：{{t.create_time}}</div>
+                    <div class="card-end-time">共{{t.curriculum_count}}节课</div>
                     <Button v-if="btnType" class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
                     <Button class="card-end-btn" :class="btnType ? 'r48' : 'r0'" type="text" ghost
                             @click="handleSee(t)">查看
@@ -60,8 +60,8 @@
                 ],
                 modalTitle: '',
                 rules: {
-                    title: [{required: true, message: '请输入主题名称', trigger: 'blur'}],
-                    description: [{required: true, message: '请输入主题描述', trigger: 'blur'}]
+                    title: [{required: true, message: '请输入主题名称'}],
+                    description: [{required: true, message: '请输入主题描述'}]
                 },
                 show: false,
                 detailData: {},
@@ -125,6 +125,7 @@
                     product_id: this.product_id
                 }
                 postData('product/curriculum_offline/subject_get_list', d).then((res) => {
+                    console.log(res, 'res')
                     this.list = res.data;
                 })
             },
@@ -140,7 +141,7 @@
                 let arr = this.$config.copy(this.formList[2].list, [])
                 arr.forEach(item => {
                     this.courseRule[item.field + item.index] = [{required: true, message: `请输入${item.name}`}]
-                    item.type === 'input' ? this.courseRule[item.field + item.index][0].trigger = 'blur' : ''
+                    // item.type === 'input' ? this.courseRule[item.field + item.index][0].trigger = 'blur' : ''
                 })
                 this.rules = {...this.rules, ...this.courseRule}
             },
