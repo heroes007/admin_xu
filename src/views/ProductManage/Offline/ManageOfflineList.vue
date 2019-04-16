@@ -8,7 +8,8 @@
             <Card class="card" v-for="(t ,index) in list" :key="index">
                 <div class="card-row">
                     <div class="card-title-state">开课中</div>
-                    <div class="card-title-num">已开课<span style="color: #4098FF;margin: 0 5px;">{{t.term_num}}</span>期</div>
+                    <div class="card-title-num">已开课<span style="color: #4098FF;margin: 0 5px;">{{t.term_num}}</span>期
+                    </div>
                 </div>
                 <div class="mt14">
                     <div class="card-content-title">{{t.title}}</div>
@@ -18,105 +19,167 @@
                 </div>
                 <div class="card-row mt20">
                     <div class="card-end-time">创建时间：{{t.create_time}}</div>
-                    <Button v-if="btnType" class="card-end-btn r0"  type="text" ghost @click="handleEdit(t)">编辑</Button>
-                    <Button class="card-end-btn"  :class="btnType ? 'r48' : 'r0'" type="text" ghost @click="handleSee(t)">查看</Button>
-                    <Button v-if="btnType" class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除</Button>
+                    <Button v-if="btnType" class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
+                    <Button class="card-end-btn" :class="btnType ? 'r48' : 'r0'" type="text" ghost
+                            @click="handleSee(t)">查看
+                    </Button>
+                    <Button v-if="btnType" class="card-end-btn r58" type="text" ghost @click="handleDelete(t)">删除
+                    </Button>
                 </div>
             </Card>
         </div>
-        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit"/>
+        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" :styleRule="styleRule" @delete-list="deleteList"
+                    @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit" @add-course="addCourse"/>
     </div>
 </template>
 
 <script>
-  import formModal from '../../../components/FormModal'
-  import postData from '../../../api/postData'
-  import postMixins from '../../mixins/postMixins.js'
-  import setAuthMixins from '../setAuthMixins'
+    import formModal from '../../../components/FormModal'
+    import postData from '../../../api/postData'
+    import postMixins from '../../mixins/postMixins.js'
+    import setAuthMixins from '../setAuthMixins'
 
-  export default {
-    name: "ManageOfflineList",
-    mixins: [postMixins, setAuthMixins],
-    data() {
-      return {
-        list: [],
-        tableRow: {},
-        formList: [
-          { type: 'input', name: '主题名称',  field: 'title'},
-          { type: 'textarea', name: '主题描述',  field: 'description' }
-        ],
-        modalTitle: '',
-        rules:{
-          title: [{ required: true, message: '请输入主题名称', trigger: 'blur' } ],
-          description: [{ required: true, message: '请输入主题描述', trigger: 'blur' } ]
-        },
-        show: false,
-        detailData:{},
-        product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
-        windowHight:'',
-        role: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
-      }
-    },
-    components: {formModal},
-    methods: {
-      handleTabAdd() {
-        this.modalTitle = '添加主题'
-        this.show = true
-      },
-      handleEdit(item) {
-        this.modalTitle = '编辑主题'
-        this.detailData = {
-          subject_id: item.id,
-          title: item.title,
-          description: item.description
-        }
-        this.show = true
-      },
-      handleSee(item) {
-        this.$router.push('open-product/offline-course')
-        localStorage.setItem('OffLineClassTheme',JSON.stringify(item))
-      },
-      handleSubmit(v) {
-           let d = { ...v , product_id: this.product_id}
-         if(this.modalTitle === '添加主题') this.fromAddAndEdit('/product/curriculum_offline_subject/add',d)
-         else this.fromAddAndEdit('/product/curriculum_offline_subject/change',v)
-      },
-      closeModal() {
-        this.detailData = {}
-        this.show = false
-      },
-      getList(){
-          let d = {
-              product_id: this.product_id
-          }
-          postData('product/curriculum_offline/subject_get_list',d).then((res) => {
-              this.list = res.data;
-          })
-      },
-      handleDelete(t){
-          postData('/product/curriculum_offline_subject/delete',{subject_id: t.id}).then((res) => {
-            if(res.res_code == 1){
-              this.getList()
+    export default {
+        name: "ManageOfflineList",
+        mixins: [postMixins, setAuthMixins],
+        data() {
+            return {
+                list: [],
+                tableRow: {},
+                courseList: [
+                    {type: 'input', name: '课程名称', index: 0, field: 'title'},
+                    {type: 'select', name: '课程类型', index: 0, field: 'type', selectList: [{id: 1, name: '讲座'}, {id: 2, name: '实践'}], selectField:['id', 'name']},
+                    {type: 'select', name: '课程讲师', index: 0, field: 'teacher_id', selectList: [], selectField: ['id', 'name']},
+                    {type: 'input', name: '上课地点', index: 0, field: 'class_address'},
+                ],
+                courseRule: [],
+                formList: [
+                    {type: 'input', name: '主题名称', field: 'title'},
+                    {type: 'textarea', name: '主题描述', field: 'description'},
+                    {type: 'array', list: []}
+                ],
+                modalTitle: '',
+                rules: {
+                    title: [{required: true, message: '请输入主题名称', trigger: 'blur'}],
+                    description: [{required: true, message: '请输入主题描述', trigger: 'blur'}]
+                },
+                show: false,
+                detailData: {},
+                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+                windowHight: '',
+                role: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id,
+                styleRule:"height: 500px; overflow-y: auto;"
             }
-          })
-      }
-    },
-    mounted() {
-       this.getList()
-       this.windowHight = window.innerHeight - 60
-    },
-  }
+        },
+        components: {formModal},
+        watch: {
+            show(val) {
+                if(!val) this.formList[2].list = this.courseList
+            }
+        },
+        methods: {
+            handleTabAdd() {
+                this.modalTitle = '添加主题'
+                this.show = true
+            },
+            handleEdit(item) {
+                postData('product/curriculum_offline/getSubjectCurriculumList', {subject_id: item.id}).then(res => {
+                    this.modalTitle = '编辑主题'
+                    this.detailData = {
+                        id: item.id,
+                        title: item.title,
+                        description: item.description,
+                    }
+                    res.data.forEach((item, index) => {
+                        item.code = item.parent_code
+                        for(let it in item) {
+                            this.detailData[it + index] = item[it]
+                        }
+                        if(index > 0) this.addCourse(index)
+                    })
+                    this.show = true
+                })
+            },
+            handleSee(item) {
+                this.$router.push('open-product/offline-course')
+                localStorage.setItem('OffLineClassTheme', JSON.stringify(item))
+            },
+            handleSubmit(v) {
+                let d = {title: v.title, product_id: this.product_id,offlineCurriculums: v.offlineCurriculums, description: v.description}
+                if (this.modalTitle === '添加主题'){
+                    postData('product/curriculum_offline/addSubjectAndOfflineCurriculums', d).then(res => {
+                        if(res.res_code == 1) this.getList()
+                    })
+                }else{
+                    postData('product/curriculum_offline/operateSubjectAndOfflineCurriculums', {...d,id: v.id}).then(res => {
+                        if(res.res_code == 1) this.getList()
+                    })
+                }
+            },
+            closeModal() {
+                this.detailData = {}
+                this.show = false
+            },
+            getList() {
+                let d = {
+                    product_id: this.product_id
+                }
+                postData('product/curriculum_offline/subject_get_list', d).then((res) => {
+                    this.list = res.data;
+                })
+            },
+            handleDelete(t) {
+                postData('/product/curriculum_offline_subject/delete', {subject_id: t.id}).then((res) => {
+                    if (res.res_code == 1) {
+                        this.getList()
+                    }
+                })
+            },
+            setCourseList(list) {
+                this.formList[2].list = this.$config.copy([...this.formList[2].list, ...list], [])
+                let arr = this.$config.copy(this.formList[2].list, [])
+                arr.forEach(item => {
+                    this.courseRule[item.field + item.index] = [{required: true, message: `请输入${item.name}`}]
+                    item.type === 'input' ? this.courseRule[item.field + item.index][0].trigger = 'blur' : ''
+                })
+                this.rules = {...this.rules, ...this.courseRule}
+            },
+            addCourse(val) {
+                let arr = this.$config.copy(this.courseList, [])
+                arr.forEach(item => {
+                    if(val) item.index = val - 1
+                    item.index += 1
+                })
+                this.setCourseList(arr)
+            },
+            deleteList(val) {
+                if(this.formList[2].list.length == 4) this.$Message.info('只剩一组，不能继续删除')
+                else this.formList[2].list.splice(val, 4)
+            }
+        },
+        mounted() {
+            this.getList()
+            this.windowHight = window.innerHeight - 60
+            postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
+                if(res.res_code == 1) {
+                    this.courseList[2].selectList = res.data
+                    this.setCourseList(this.courseList)
+                }
+            })
+        },
+    }
 </script>
 
 <style scoped lang="less">
-    /deep/ .card-content-details{
+    /deep/ .card-content-details {
         height: 65px;
-        overflow:hidden;
+        overflow: hidden;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 3;
-        text-overflow:ellipsis;
+        text-overflow: ellipsis;
     }
+
     .content {
         display: flex;
         flex-wrap: wrap;
@@ -124,6 +187,7 @@
         height: 100%;
         overflow-y: auto;
         align-content: start;
+
         .card {
             width: 440px;
             height: 230px;
@@ -193,6 +257,7 @@
             .r48 {
                 right: 98px;
             }
+
             .r58 {
                 right: 48px;
             }
@@ -207,10 +272,10 @@
                 color: #474C63;
                 letter-spacing: 0;
                 text-align: justify;
-                overflow:hidden;
-                word-break:keep-all;
-                white-space:nowrap;
-                text-overflow:ellipsis;
+                overflow: hidden;
+                word-break: keep-all;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
 
             .card-content-details {
@@ -228,7 +293,8 @@
     .mt20 {
         margin-top: 20px;
     }
-    .box{
+
+    .box {
         overflow: hidden;
         overflow-y: auto;
     }

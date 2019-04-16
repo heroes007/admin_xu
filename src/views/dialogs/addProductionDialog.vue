@@ -62,7 +62,7 @@
                             </div>
                             <UploadBtn :imgtypes="imgType" bucket="jhyl-static-file" @handle-close="handleFileClose" @uploadcomplete="uploadcomplete" :type="fileType" :maxFileSize="[2, 300]"/>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0"> <p class="upload-img-text">可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；视频支持mp4/mov/avi格式，且大小不超过300M</p></FormItem>
+                        <FormItem v-show="nextStep == 0"> <p class="upload-img-text">*可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；视频支持mp4/mov/avi格式，且大小不超过300M</p></FormItem>
 
                          <!--可插入输入框-->
                         <FormItem v-show="nextStep == 2" label=""  class="upload">
@@ -379,7 +379,7 @@ export default {
 }
 .upload-img-text{
     font-family: PingFangSC-Regular;
-    font-size: 14px;
+    font-size: 12px;
     color: #F54802;
     text-align: justify;
     line-height: 20px;

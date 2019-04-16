@@ -39,21 +39,26 @@
                 title: '用户名',
                 key: 'username',
                 align: 'left',
+                minWidth: 200
             },{
                 title: '真实姓名',
                 key: 'realname',
+                minWidth: 100
             },{
                 title: '科室',
                 key: 'department_name',
+                minWidth: 100
             },
             {
                 title: '年级',
                 key: 'grade_name',
                 align: 'left',
+                minWidth: 100
             },
             {
                 title: '状态',
                 key: 'isState',
+                minWidth: 100
                 // slot: 'state-item',
                 // stateKey: 'state'
             },
@@ -61,10 +66,11 @@
                 title: '提交作业时间',
                 key: 'create_time',
                 align: 'left',
+                minWidth: 200
             },
             {
                 title: '操作',
-                width: 260,
+                minWidth: 260,
                 slot: 'operation',
                 operation_btn_hide: true,
                 operation: [['查看','operation1',true], ['批阅','operation2']],

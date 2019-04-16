@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div class="upload-list">
-                            <div class="upload-title">* 只能上传 jpg/png/jpeg/mp4/mov/avi 文件，且不超过300M</div>
+                            <div class="upload-title">* 附件可上传任意格式，附件大小不超过300M</div>
                             <uploadBtn class="upload-img" text="上传附件" @uploadcomplete="uploadImg" type="*" :maxFileSize="300"/>
                         </div>
                     </FormItem>
@@ -432,16 +432,13 @@
     .upload-list {
         display: flex;
         margin-top: 15px;
+        justify-content: space-between;
 
         .upload-title {
             font-family: PingFangSC-Regular;
             font-size: 14px;
             color: #F54802;
             letter-spacing: 0;
-        }
-
-        .upload-img {
-            margin-left: 160px;
         }
 
         .upload-video {
