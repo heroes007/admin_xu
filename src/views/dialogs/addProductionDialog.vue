@@ -65,7 +65,7 @@
                         <FormItem v-show="nextStep == 0"> <p class="upload-img-text">*可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；视频支持mp4/mov/avi格式，且大小不超过300M</p></FormItem>
 
                          <!--可插入输入框-->
-                        <FormItem v-show="nextStep == 2" label=""  class="upload">
+                        <FormItem v-show="nextStep == 2" label="" class="upload">
                             <new-editor style="width: 620px; height: 600px;" @get-content="getContent" :content="content"/>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
