@@ -54,7 +54,6 @@
             this.editor.customConfig.zIndex = 0
             this.editor.create()
             this.editor.txt.html(this.content)
-            this.$forceUpdate()
         },
         watch:{
             content(val) {
