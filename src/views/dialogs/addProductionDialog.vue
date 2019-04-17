@@ -5,7 +5,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top">
-                    <Form ref="form" :model="form" :rules="rules" :label-width="fromLabelWidth" class="add-task-form">
+                    <Form ref="form" :model="form" :rules="rules" :label-width="fromLabelWidth" class="add-task-form" :class="nextStep == 0 ? 'add-task-form-type': ''">
                         <FormItem v-show="nextStep == 0" prop="title" label="产品名称" >
                             <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                         </FormItem>
@@ -57,16 +57,18 @@
                                     <video width="458" height="260" v-if="form.video_url" :src="form.video_url" controls="controls"/>
                                </div>
                                <div class="demo-file-key" v-if="form.imgList.length == 0 && !form.video_url">
-                                   <p>展示图片或展示视频</p>
+                                  <img src="../../assets/img/img-video.png" />
+                                  <p>展示图片或视频</p>
                                </div>
                             </div>
-                            <UploadBtn :imgtypes="imgType" bucket="jhyl-static-file" @handle-close="handleFileClose" @uploadcomplete="uploadcomplete" :type="fileType" :maxFileSize="[2, 300]"/>
+                            <div class="upload-btn-flex">
+                               <p class="upload-img-text">*可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；视频支持mp4/mov/avi格式，且大小不超过300M</p>
+                               <UploadBtn text="上传" :imgtypes="imgType" bucket="jhyl-static-file" @handle-close="handleFileClose" @uploadcomplete="uploadcomplete" :type="fileType" :maxFileSize="[2, 300]"/>
+                            </div>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0"> <p class="upload-img-text">*可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；视频支持mp4/mov/avi格式，且大小不超过300M</p></FormItem>
-
                          <!--可插入输入框-->
                         <FormItem v-show="nextStep == 2" label=""  class="upload">
-                            <new-editor style="width: 620px; height: 600px;" @get-content="getContent" :content="content"/>
+                            <new-editor style="width: 604px; height: 600px;" @get-content="getContent" :content="content"/>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
@@ -148,8 +150,7 @@ export default {
                 type:4
             },
             loadingInstance:null,
-            fromLabelWidth:121,
-            formItemLabelWidth:121,
+            fromLabelWidth: 86,
             // certificate: [],
             paneItem: 'displayImg',
             description: '',
@@ -218,6 +219,7 @@ export default {
             this.form.product_id = d.id
             this.form.organization_id = d.organization_id
             this.content = d.description
+            console.log(this.content,'this.content')
             // this.descriptionHtml = d.description.replace('class="form-message"','')
             // this.form.organization_id = this.organization_id
         }
@@ -298,7 +300,7 @@ export default {
                    if(!this.form.video_url) this.form.video_url = v.url
                    this.imgType = 'close'
                }
-               this.$forceUpdate()
+            //    this.$forceUpdate()
             }else {
                 this.imgType = 'close'
                 this.$Message.warning('最多上传5张图片或1个视频');
@@ -320,15 +322,13 @@ export default {
                         this.formState = this.form.state
                         this.organizationId = this.form.organization_id
                         this.fromLabelWidth = 0;
-                        this.formItemLabelWidth = 0
                         this.nextStep = 2
                     }else  this.$Message.warning('请上传展示图片或展示视频');
                 }
            })
         },
         handlePreStep() {
-            this.fromLabelWidth = 121
-            this.formItemLabelWidth = 121
+            this.fromLabelWidth = 86
             this.nextStep = 0
         },
         handleSubmit(name) {
@@ -357,6 +357,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+/deep/ .ivu-modal-body{
+    padding: 30px 25px 15px 25px
+}
 /deep/ .original_price>.ivu-form-item-label{ letter-spacing: 9px; }
 /deep/ .ivu-select-selected-value, /deep/ .ivu-select-item{ letter-spacing: normal; }
 /deep/ .ivu-btn{display: inline-block !important;}
@@ -377,13 +380,18 @@ export default {
 .upload-img-row{
     margin: 10px 0px 0px 0px !important;
 }
-.upload-img-text{
-    font-family: PingFangSC-Regular;
-    font-size: 12px;
-    color: #F54802;
-    text-align: justify;
-    line-height: 20px;
+.upload-btn-flex{
+    display: flex;
+    .upload-img-text{
+        font-family: PingFangSC-Regular;
+        font-size: 12px;
+        color: #F54802;
+        text-align: justify;
+        line-height: 20px;
+        margin-right: 50px;
+    }
 }
+
 .upload-img-main{
    width: 100%;
    height: 100%;
@@ -418,8 +426,9 @@ export default {
 }
  .add-task-form{
     width: 100% !important;
-    padding-top: 30px;
-    padding-right: 40px;
+}
+.add-task-form-type{
+    padding: 0px 25px ;
 }
 .btn-next{ margin-left: 20%; }
 .btn-orange:hover,.btn-next:hover{
@@ -488,19 +497,25 @@ export default {
     height: calc(100% - 44px) !important;
 }
 .demo-carousel{
-    width: 458px;
+    width: 466px;
     height: 260px;
 }
 .demo-file{
-    width: 460px;
+    width: 468px;
     height: 260px;
     margin-bottom: 20px;
     border: 1px solid #d7dde4;
+    p{
+       color: #d6dbe2;
+    }
 }
 .demo-file-key{
     width: 460px;
     height: 260px;
-    line-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 /deep/ .ivu-carousel-item{
     width: 458px

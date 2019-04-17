@@ -28,12 +28,14 @@
                         <span class="item-course-left"><span class="item-course-title">课程{{$config.addZero(i+1)}}</span>{{t.title}}</span> 
                         <span class="item-course-rigth">{{t.type_name}} | {{t.teacher_name}}</span>
                       </div>
-                      <FormItem label="上课时间" :prop="'class_start_time'+i" required>
-                        <DatePicker class="class-time" v-model="form1['class_start_time'+i]" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="请选择上课时间" :transfer="true"></DatePicker>
-                      </FormItem>
-                      <FormItem label="上课地点" :prop="'class_address'+i" required>
-                        <Input v-model="form1['class_address'+i]" placeholder="请输入上课地点"></Input>
-                      </FormItem>
+                      <div class="item-course2">
+                        <FormItem class="item-course2-time" label="上课时间" :prop="'class_start_time'+i" required>
+                          <DatePicker class="class-time" v-model="form1['class_start_time'+i]" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="请选择上课时间" ></DatePicker>
+                        </FormItem>
+                        <FormItem class="item-course2-address" label="上课地点" :prop="'class_address'+i" required>
+                          <Input v-model="form1['class_address'+i]" placeholder="请输入上课地点"></Input>
+                        </FormItem>
+                      </div>
                     </div>
                     <div style="text-align: center">
                         <Button style="margin: 40px 227px" type="primary" class="sub-btn" @click="handleSubmit('myForm1')">保存</Button>
@@ -183,6 +185,7 @@
     mounted(){
       if(this.payload.type == 1){
         this.$refs.myForm1.resetFields()
+        console.log(this.form1.offlineCurriculums,this.payload.offlineCurriculums);
         this.form1.offlineCurriculums = this.payload.offlineCurriculums
       }
       this.setRules()
@@ -207,7 +210,7 @@
       margin-top: 15px;
       background: #F7F7F7;
       border-radius: 4px;
-      padding: 10px 15px;
+      padding: 10px 15px 0 15px;
       .item-course{
         height: 22px;
         margin-bottom: 20px;
@@ -224,6 +227,18 @@
         .item-course-rigth{
           position: absolute;
           right: 0;
+        }
+      }
+      .item-course2{
+        display: flex;
+        .item-course2-time{
+          flex: 1;
+          margin-bottom: 15px;
+        }
+        .item-course2-address{
+          margin-left: 10px;
+          flex: 2;
+          margin-bottom: 15px;
         }
       }
     }

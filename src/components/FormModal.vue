@@ -16,7 +16,7 @@
                     <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
                 </Upload>
             </div>
-            <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
+            <Form ref="formValidate" :model="formItem" :label-width="80" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
                 <div v-for="(t,index) in formList" :key="index">
                     <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>

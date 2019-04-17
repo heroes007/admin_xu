@@ -1,9 +1,9 @@
 <template>
     <div contentEditable="false">
         <div v-if="imgtypes">
-            <img class="uploadImg" v-if="imgtypes == 'close'" @click="handleClose" src="../assets/icons/icon/upload.png"  />
+            <Button class="imgtypes-btn" v-if="imgtypes == 'close'" @click="handleClose" >{{text}}</button>
             <div v-else>
-                <img class="uploadImg" src="../assets/icons/icon/upload.png" @click="handleStartUploadFile"/>
+                <Button class="imgtypes-btn" @click='handleStartUploadFile'>{{text}}</button>
                 <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
             </div>
         </div>
@@ -59,9 +59,6 @@
             },
             maxFileSize: [Number, Array]
         },
-        mounted(){
-            console.log(this.imgtypes ,this.type)
-        },
         methods: {
             handleStartUploadFile() {
                 this.$refs.input.click();
@@ -77,7 +74,6 @@
                 }else  return this.maxFileSize[1]
             },
             handleUploadChange(event) {
-                console.log(event);
                 this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
                 var filename = event.target.value.substring(event.target.value.lastIndexOf("\\") + 1, event.target.value.length);
                 this.fileName = filename;
@@ -140,10 +136,11 @@
     }
 </script>
 <style>
-    .uploadImg {
-        cursor: pointer;
-        width: 60px;
-        height: 60px;
+    .imgtypes-btn{
+        width: 120px;
+        background: #fff;
+        color: #3DAAFF;
+        border: 1px solid #3DAAFF;
     }
 </style>
 

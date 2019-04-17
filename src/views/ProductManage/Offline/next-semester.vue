@@ -178,7 +178,6 @@
                     if(this.subjectList.length>0){
                         this.subjectList.map((t) => {
                             t.class_start_time = null
-                            t.class_address = null
                         })
                     }
                 })
