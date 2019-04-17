@@ -90,6 +90,14 @@ export default {
       ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate())
       : times
   },
+  setLockType(d){
+   let arr = [{id: 0,title:'不限'},{id: 1,title:'按课程'},{id: 2,title:'按章节'},{id: 3,title:'按视频'}]
+   let d1 = ''
+   arr.forEach((t) => {
+      if(t.id == d) d1 = t.title
+   })
+   return d1
+  },
   setProductState(n){
     // -2删除 -1下架 0未上架 1测试 2上架 3推荐
     let stateText = ''

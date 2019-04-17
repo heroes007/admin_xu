@@ -94,13 +94,8 @@
                         </upload-panel>
                     </FormItem>
                     <!--富文本编辑器-->
-<<<<<<< HEAD
-                    <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 100 : 0" :prop="t.field" class="upload" ref="formInput">
-                        <new-editor :style=" t.small ? 'height: 340px;' : 'height: 500px;'" @get-content="getContent" :content="content"/>
-=======
                     <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 80 : 0" :prop="t.field" class="upload" ref="formInput">
-                        <new-editor style="width: 100%; height: 500px;" @get-content="getContent" :content="content"/>
->>>>>>> a262795f21e95d7d382dea65744ad185b686596e
+                        <NewEditor :style=" t.small ? 'height: 340px;' : 'height: 500px;'" @get-content="getContent" :content="content"/>
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
