@@ -15,13 +15,12 @@
     import Tables from '../../../components/tables.vue'
     import screen from '../../../components/ScreenFrame'
     import FormModal from '../../../components/FormModal'
-    import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
     import pageList from '../../../components/Page'
     import pageMixin from '../../mixins/pageMixins.js'
     import postData from '../../../api/postData'
 
     export default {
-        mixins: [FormModalMixin, pageMixin],
+        mixins: [pageMixin],
         components: {screen, FormModal, pageList, Tables},
         data() {
             return {
