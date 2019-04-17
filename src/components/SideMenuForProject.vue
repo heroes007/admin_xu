@@ -12,25 +12,30 @@
             <div class="head-title">{{detail.title}}</div>
             <div class="head-list">
                 <div>
-                    <span class="w80">实际售价:</span><span>{{detail.price}}</span>
+                    <span class="w60">实际售价:</span><span>{{detail.price}}</span>
                 </div>
                 <div>
-                    <span class="w80"><span>原</span><span>价:</span></span><span>{{detail.original_price}}</span>
+                    <span class="w60"><span>原</span><span>价:</span></span><span>{{detail.original_price}}</span>
                 </div>
                 <div>
-                    <span class="w80">阅读人数:</span><span>{{detail.view_num}}</span>
+                    <span class="w60">解锁方式:</span><span>{{$config.setLockType(detail.unlock_type)}}</span>
+                </div>
+                <Divider />
+                <!-- <div>
+                    <span class="w60">阅读人数:</span><span>{{detail.view_num}}</span>
+                </div> -->
+                <div>
+                    <span class="w60">购买人数:</span><span>{{detail.pay_number}}</span>
                 </div>
                 <div>
-                    <span class="w80">购买人数:</span><span>{{detail.pay_number}}</span>
+                    <span class="w60">结业人数:</span><span>{{detail.honour}}</span>
                 </div>
-                <div>
-                    <span class="w80">结业人数:</span><span>{{detail.honour}}</span>
-                </div>
+                 <Divider />
                 <div style="margin-top: 30px;">
-                    <span class="w80">创建人名:</span><span>{{detail.username}}</span>
+                    <span class="w73">创建用户ID:</span><span>{{detail.username}}</span>
                 </div>
                 <div>
-                    <span class="w80">创建时间:</span><span>{{detail.create_time}}</span>
+                    <span class="w60">创建时间:</span><span>{{detail.create_time}}</span>
                 </div>
             </div>
             <div class="head-btn">
@@ -244,11 +249,16 @@
             }
         }
     }
-    .w80 {
-        display: flex;
-        width: 60px;
+    .w73,.w60{
+       display: flex;
         justify-content: space-between;
         margin-right: 6px;
+    }
+    .w60 {
+        width: 60px;
+    }
+    .w73 {
+        width: 73px;
     }
     .head-btn {
         position: relative;

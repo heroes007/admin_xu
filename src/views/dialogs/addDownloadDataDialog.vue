@@ -97,8 +97,8 @@ export default {
                 type: {required: true, message: '请选择资料类型'}
             },
             typeList: [
-              {state: 'online', title: '线上课'},
-              {state: 'underline', title: '线下课'},
+              {state: 'online', title: '线上资料'},
+              {state: 'underline', title: '线下资料'},
             ]
         }
     },
