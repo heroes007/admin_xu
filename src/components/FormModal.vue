@@ -2,7 +2,7 @@
     <div>
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList"
                          @close="exchangeContentClose" @selectChecked="exchangeContentChecked"/>
-        <Modal :class="modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="645" @on-cancel="closeModal" :mask-closable=false
+        <Modal :class="modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth" @on-cancel="closeModal" :mask-closable=false
                :footer-hide="true">
             <div v-if="uploadFlie" class="upload-flie">
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com"
@@ -98,21 +98,31 @@
                         </div>
                     </FormItem>
                     <!--数组表单,针对线下课-->
-                    <FormItem v-if="(t.type === 'array')" v-for="(item, index) in t.list" :label="item.name" :prop="item.field + item.index" :key="index">
-                        <div v-if="item.field == 'title'" style="color: #f00; cursor: pointer" @click="deleteList(item, index)">X</div>
-                        <Input v-if="(item.type === 'input')" v-model="formItem[item.field + item.index]" :placeholder="'请输入'+item.name"></Input>
-                        <Select v-if="(item.type === 'select')" v-model="formItem[item.field + item.index]" :placeholder="'请选择'+item.name" :disabled="item.disable"
-                                @on-change="selectChange">
-                            <Option v-for="(m,i) in item.selectList" :key="i" :value="m[item.selectField[0]]">
-                                {{m[item.selectField[1]]}}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                    <div v-if="(t.type === 'array')" class="add-course" @click="addCourse">添加课程</div>
+                    <div class="offline-course" v-for="(it, ins) in t.list"  v-if="(t.type === 'array')">
+                        <div class="offline-course-title">
+                            <div class="offline-course-num">课程{{ins + 1 < 10 ? '0' + (ins + 1) : (ins + 1)}}</div>
+                            <div class="offline-course-delete" @click="deleteList(it, ins)">
+                                <img class="offline-course-delete-img" :src="rubbishIcon" alt="">
+                                <div class="offline-course-delete-font">删除</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap">
+                            <FormItem v-for="(item, index) in it" :label="item.name" :prop="item.field + item.index" :key="index"  style="margin-right: 10px;">
+                                <Input v-if="(item.type === 'input')" v-model="formItem[item.field + item.index]" :placeholder="'请输入'+item.name" style="width: 320px;"></Input>
+                                <Select v-if="(item.type === 'select')" v-model="formItem[item.field + item.index]" :placeholder="'请选择'+item.name" :disabled="item.disable"
+                                        @on-change="selectChange" style="width: 250px;">
+                                    <Option v-for="(m,i) in item.selectList" :key="i" :value="m[item.selectField[0]]">
+                                        {{m[item.selectField[1]]}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </div>
+                    </div>
                 </div>
             </Form>
             <p v-if="modalText2" class="modal-text">* {{modalText2}}</p>
             <div class="foot-btn">
+                <Button v-if="isAdd" type="primary" ghost class="add-course" @click="addCourse">添加课程</Button>
                 <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
         </Modal>
@@ -127,6 +137,7 @@
     import iconFont from '../assets/icons/icon/font.png'
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
+    import rubbishIcon from '../assets/img/rubbish.png'
     import newEditor from './NewEditor'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
@@ -186,13 +197,21 @@
             styleRule: {
                 type: String,
                 default: ''
+            },
+            modalWidth: {
+                type: Number,
+                default: 645
+            },
+            isAdd: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
             return {
                 content: '',
                 descriptionHtml: '',
-                iconFont, iconColor, iconCopy,
+                iconFont, iconColor, iconCopy,rubbishIcon,
                 exchangeContentShow: false,
                 exchangeContentList: [],
                 show: false,
@@ -288,7 +307,6 @@
         },
         methods: {
             deleteList(item, index) {
-                console.log(item, index)
                 this.$emit('delete-list', index)
             },
             getContent(val) {
@@ -382,7 +400,7 @@
             },
             setCourse() {
                 this.formItem.offlineCurriculums = []
-                for(let i = 0; i < parseInt((this.formList[2].list.length)/4); i++) {
+                for(let i = 0; i < this.formList[2].list.length; i++) {
                     this.formItem.offlineCurriculums.push({})
                 }
                 for(let item in this.formItem) {
@@ -476,12 +494,17 @@
                 this.$refs.inputStyle[0].style.color = val
             },
             addCourse() {
-                this.$emit('add-course', (this.formList[2].list.length)/4)
+                this.$emit('add-course', this.formList[2].list.length)
             }
         },
     }
 </script>
 <style lang="less" scoped>
+    .form-item-date{
+        /deep/ .ivu-btn{
+            display: inline-block !important;
+        }
+    }
     .modal-class{
         /deep/.ivu-modal-body {
             padding: 50px;
@@ -651,5 +674,45 @@
         color: #4098ff;
         font-size: 16px;
         cursor: pointer;
+        width: 150px;
+        margin-right: 20px;
+    }
+
+    .offline-course{
+        background: #F7F7F7;
+        margin-bottom: 15px;
+    }
+
+    .offline-course-title{
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 15px;
+
+        .offline-course-num{
+            font-family: PingFangSC-Medium;
+            font-size: 16px;
+            color: #474C63;
+            letter-spacing: 0;
+        }
+
+        .offline-course-delete{
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+
+            .offline-course-delete-img{
+                width: 13px;
+                height: 14px;
+                margin-right: 4px;
+            }
+
+            .offline-course-delete-font{
+                opacity: 0.5;
+                font-family: PingFangSC-Regular;
+                font-size: 14px;
+                color: #474C63;
+                letter-spacing: 0;
+            }
+        }
     }
 </style>

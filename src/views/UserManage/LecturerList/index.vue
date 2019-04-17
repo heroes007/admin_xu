@@ -157,6 +157,7 @@
         flex-wrap: nowrap;
         align-items: center;
         position: relative;
+        width: 100%;
         .lecturer-item-img {
             width: 59px;
             height: 60px;
@@ -167,6 +168,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            width: calc(100% - 120px);
             h2, p {
                 text-align: left;
                 color: #474C63;
@@ -175,7 +177,7 @@
                 font-family: PingFangSC-Medium;
                 font-size: 18px;
                 margin-bottom: 15px;
-                width: 230px;
+                width: 98%;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;

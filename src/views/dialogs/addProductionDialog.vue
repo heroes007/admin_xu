@@ -56,6 +56,9 @@
                                     <Icon @click="deleteImgList('video')" class="upload-img-main-icon2" type="ios-close-circle" />
                                     <video width="458" height="260" v-if="form.video_url" :src="form.video_url" controls="controls"/>
                                </div>
+                               <div class="demo-file-key" v-if="form.imgList.length == 0 && !form.video_url">
+                                   <p>展示图片或展示视频</p>
+                               </div>
                             </div>
                             <UploadBtn :imgtypes="imgType" bucket="jhyl-static-file" @handle-close="handleFileClose" @uploadcomplete="uploadcomplete" :type="fileType" :maxFileSize="[2, 300]"/>
                         </FormItem>
@@ -493,6 +496,11 @@ export default {
     height: 260px;
     margin-bottom: 20px;
     border: 1px solid #d7dde4;
+}
+.demo-file-key{
+    width: 460px;
+    height: 260px;
+    line-height: 260px;
 }
 /deep/ .ivu-carousel-item{
     width: 458px

@@ -1,17 +1,22 @@
 <template>
-    <Modal v-model="showModal" title="查看详情" :width="960" @on-cancel="closeModal" :mask-closable=false
+    <Modal v-model="showModal" title="查看预约" :width="960" @on-cancel="closeModal" :mask-closable=false
            :footer-hide="true" :styles="{top: '6%'}">
         <div class="title">
             <span class="title-name">{{details.title}}</span>
-            <span class="title-num">预约人数：{{details.student_num}}</span>
+            <span class="title-num">{{details.student_num}}人预约</span>
         </div>
-        <div class="time">
-            <span class="time-content">开课日期：{{details.start_time}}至{{details.end_time}}</span>
-            <span class="time-content">报名截止日期：{{details.register_end_time}}</span>
+         <div class="make-list-item" v-for="(t,i) in list" :key="i">
+            <img class="make-item-img" :src="t.head_img_url"/>
+                <div class="make-item-content">
+                    <h2>{{t.realname}}  <span>{{t.department_name}} | {{t.grade_name}}</span></h2>
+                    <div class="make-item-de">
+                        <div>{{t.username}}</div> 
+                        <div class="make-item-time" v-if="t.reserve_time">预约时间: {{t.reserve_time}}</div>
+                    </div>
+                </div>
         </div>
-        <div class="student">预约学员</div>
-        <Tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tabelHeight"></Tables>
-        <Page :current="current" :total="total" :page-size="pageSize" @page-list="pageList"></Page>
+        <!-- <Tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tabelHeight"></Tables> -->
+        <Page v-if="this.total>4" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"></Page>
     </Modal>
 </template>
 
@@ -100,7 +105,7 @@
             }
         },
         mounted() {
-            this.pageSize = 10
+            this.pageSize = 4
         }
     }
 </script>
@@ -142,28 +147,52 @@
             letter-spacing: 0;
         }
     }
-    .time{
-        margin-top: 20px;
+    .make-list-item {
+        background: #FFFFFF;
+        height: 110px;
         display: flex;
-        justify-content: space-between;
-
-        .time-content{
-            font-family: PingFangSC-Regular;
-            font-size: 16px;
-            color: #474C63;
-            letter-spacing: 0;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        .make-item-img {
+            width: 59px;
+            height: 60px;
+            border-radius: 30px;
+        }
+        .make-item-content {
+            margin-left: 15.5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: calc(100% - 75.5px);
+            h2, .make-item-de {
+                text-align: left;
+                color: #474C63;
+            }
+            h2 {
+                font-family: PingFangSC-Medium;
+                font-size: 18px;
+                margin-bottom: 15px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                span{
+                    margin-left: 20px;
+                }
+            }
+            .make-item-de {
+                font-family: PingFangSC-Regular;
+                font-size: 14px;
+                position: relative;
+                display: flex;
+                .make-item-time{
+                    position: absolute;
+                    right: 0;
+                }
+            }
         }
     }
-    .student{
-        margin-top: 24px;
-        background: #F7F7F7;
-        height: 46px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: PingFangSC-Medium;
-        font-size: 16px;
-        color: #474C63;
-    }
+
 </style>
