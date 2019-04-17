@@ -522,6 +522,7 @@
             },
             handleDefaultUploadComplete(url) {
                 this.formItem.img_default = url;
+                this.$forceUpdate()
             },
         },
     }

@@ -108,6 +108,12 @@
                 return result;
             }
         },
+        watch:{
+            resourse(val) {
+                if(!val) this.is_show = true
+                else this.resourse_url = val
+            }
+        },
         methods: {
             handleSave() {
                 //获取剪切后的图片对象并且上传到服务器

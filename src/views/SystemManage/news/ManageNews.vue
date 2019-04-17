@@ -15,13 +15,12 @@
     import Tables from '../../../components/tables.vue'
     import screen from '../../../components/ScreenFrame'
     import FormModal from '../../../components/FormModal'
-    import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
     import pageList from '../../../components/Page'
     import pageMixin from '../../mixins/pageMixins.js'
     import postData from '../../../api/postData'
 
     export default {
-        mixins: [FormModalMixin, pageMixin],
+        mixins: [pageMixin],
         components: {screen, FormModal, pageList, Tables},
         data() {
             return {
@@ -137,6 +136,7 @@
                 this.isAdd = false
                 this.modalTitle = '编辑文章'
                 this.tableRow = row
+                this.tableRow.img_default = row.img_url
                 this.tableRow.uploading = row.content
                 this.show = true
             },
@@ -170,20 +170,22 @@
                     this.total = res.data.count
                 })
             },
-            handleNext() {
+            setShow() {
                 this.formList.forEach(item => {
                     item.isShow == 1 ? item.isShow = 2 : item.isShow = 1
                 })
+            },
+            handleNext() {
+                this.setShow()
                 this.handleFloor = 2
             },
             handleLast() {
-                this.formList.forEach(item => {
-                    item.isShow == 1 ? item.isShow = 2 : item.isShow = 1
-                })
+                this.setShow()
                 this.handleFloor = 1
             },
             closeModal() {
-                this.handleLast()
+                if(this.formList[0].isShow == 2) this.setShow()
+                this.handleFloor = 1
                 this.show = false
             }
         },
