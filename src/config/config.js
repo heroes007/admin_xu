@@ -63,10 +63,10 @@ export default {
         return '学管'
         break
       case 4:
-        return '老师'
+        return '辅导老师'
         break;
-      case 5:
-        return '辅导员'
+      // case 5:
+      //   return '辅导员'
       default: return '不存在该身份'
     }
   },
@@ -120,12 +120,37 @@ export default {
   setAuthTube(){
     return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 4
   },
+  //table导出excel
+    downExcel(th, list) {
+        var title = '', content = ''
+        th.forEach(item => {
+            title += `<th>${item.title}</th>`
+        })
+        title = `<tr>${title}</tr>`
+        list.forEach(item => {
+            let detail = ''
+            th.forEach(it => {
+                detail += `<td>${item[it.key]}</td>`
+            })
+            detail += `<tr>${detail}</tr>`
+            content += detail
+        })
+        var tables = title + content
+        let html = "<html><head><meta charset='utf-8' /></head><body><table>";
+        html += tables;
+        html += "</table></body></html>";
+        var blob = new Blob([html], { type: "application/vnd.ms-excel" });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = "兑换码数据.xls";
+        a.click()
+    },
   //阿拉伯数字转换为简写汉字
   ArabiaToSimplifiedChinese(Num) {
   for (let i = Num.length - 1; i >= 0; i--) {
       Num = Num.replace(",", "")//替换Num中的“,”
       Num = Num.replace(" ", "")//替换Num中的空格
-  }    
+  }
   if (isNaN(Num)) { //验证输入的字符是否为数字
       //alert("请检查小写金额是否正确");
       return;
@@ -166,13 +191,13 @@ export default {
           case 9: tmpnewchar = tmpnewchar + "十"; break;
       }
       newchar = tmpnewchar + newchar;
-  }   
+  }
   //替换所有无用汉字，直到没有此类无用的数字为止
   while (newchar.search("零零") != -1 || newchar.search("零亿") != -1 || newchar.search("亿万") != -1 || newchar.search("零万") != -1) {
       newchar = newchar.replace("零亿", "亿");
       newchar = newchar.replace("亿万", "亿");
       newchar = newchar.replace("零万", "万");
-      newchar = newchar.replace("零零", "零");      
+      newchar = newchar.replace("零零", "零");
   }
   //替换以“一十”开头的，为“十”
   if (newchar.indexOf("一十") == 0) {

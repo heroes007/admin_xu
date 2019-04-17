@@ -12,7 +12,7 @@
                     <!--</FormItem>-->
                     <FormItem label="上传视频" class="upload-form" required>
                         <upload-panel :resourse='form.video_url' @uploadcomplete='uploadCompleteHandler' @vedioTime="vedioTime"
-                                      :upload-config='uploaderConfig' :maxFileSize="300">
+                                      :upload-config='uploaderConfig' :maxFileSize="300" types="video/mp4,video/mov,video/avi">
                             <span slot="file-require">只能上传 MP4/MOV/AVI 文件，且不超过300M</span>
                         </upload-panel>
                     </FormItem>
@@ -186,7 +186,7 @@
     }
   }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
   /deep/ .upload-panel .img img { width: 160px;height: 148px; }
     .btns{
         display: flex;
@@ -197,8 +197,6 @@
         margin-bottom: 10px;
     }
     #video-manage-container {
-        @import "base.scss";
-
         input,
         textarea {
             resize: none;

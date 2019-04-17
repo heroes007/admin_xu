@@ -34,7 +34,7 @@ module.exports = merge(baseWebpackConfig, {
               loader: 'vue-loader',
               options: {
                 loaders: {
-                  scss: 'vue-style-loader!css-loader!sass-loader'
+                  less: 'vue-style-loader!css-loader!less-loader'
                 }
               }
         },
@@ -47,9 +47,6 @@ module.exports = merge(baseWebpackConfig, {
       },{
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
-      }, {
-        test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"]
       }]
   },
   resolve: {

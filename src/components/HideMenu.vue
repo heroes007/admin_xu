@@ -15,7 +15,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .hide-menu-main {
         width: 60px;
         height: 100%;

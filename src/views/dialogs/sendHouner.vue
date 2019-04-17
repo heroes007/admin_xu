@@ -162,7 +162,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     /deep/ .ivu-select-selected-value{padding-left: 15px;}
     /deep/ .ivu-input-wrapper{
       margin-left: 15px;

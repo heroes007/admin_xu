@@ -13,7 +13,7 @@ export default [
     },
     {
         id: 4,
-        name: '老师'
+        name: '辅导老师'
     },
     // {
     //     id: 5,

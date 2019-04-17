@@ -2,7 +2,7 @@
     <div class='side-menu-for-project'>
         <Row class='logo' type='flex' justify='center' align='middle'>
             <img class="logo-img" src='../assets/img/logo-white1.jpg'>
-            <div class="logo-title">九划医疗</div>
+            <div class="logo-title">九划医教</div>
         </Row>
         <div class="elRow">
             <div class='head-img'>
@@ -122,7 +122,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;

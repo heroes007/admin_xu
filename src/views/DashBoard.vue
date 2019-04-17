@@ -1,11 +1,11 @@
 <template>
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
-            <Col v-if="menushow" class='menu-bar'><side-menu/></Col>
-            <Col v-if="!menushow" ><HideMenu /></Col>
+            <Col v-if="menushow" :style="widthStyle" class='menu-bar'><side-menu/></Col>
+            <Col v-if="!menushow"><HideMenu /></Col>
             <Col class='sub-view' :style="viewStyl">
                 <div class="hide-menu-btn" @click="hideMenu"><Icon class="hide-icon" :type="hideIcon" /></div>
-                <router-view />
+                <router-view :key="$route.fullPath" />
             </Col>
         </Row>
     </div>
@@ -19,7 +19,7 @@
         components:{ 'side-menu':SideMenu, HideMenu },
     }
 </script>
-<style lang="scss">
+<style lang="less">
     body{
         background-color:#333333;
     }

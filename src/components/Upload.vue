@@ -14,7 +14,7 @@
             </div>
         </div>
         <Row type='flex' justify='end' align='middle'>
-            <p class="description">最多上传{{maxFileCount}}个{{filtersString}}文件,且不超过{{maxFileSize | file_size_filter}}</p>
+            <p class="description">最多上传{{maxFileCount}}个{{filtersString}}文件,且不超过{{maxFileSize | file_size_filter}}</p >
         </Row>
     </div>
 </template>
@@ -166,29 +166,18 @@
         }
     }
 </script>
-<style lang="scss">
-    $ft12: 12px;
-    $ft13: 13px;
-    $ft14: 14px;
-    $ft20: 20px;
+<style lang="less">
     .upload-field {
         background-color: #FFFFFF;
         border: 1px solid #E5E5E5;
-        padding: {
-            top: 16px;
-            bottom: 16px;
-            left: 50px;
-            right: 50px;
-        }
+        padding: 16px 50px;
         .file-name-field {
             display: flex;
             flex-direction: column;
             align-self: center;
             width: 100%;
-            margin: {
-                top: 9px;
-                right: 25px;
-            }
+            margin-top: 9px;
+            margin-right: 25px;
             form {
                 display: flex;
                 justify-content: flex-end;
@@ -239,7 +228,7 @@
         right: 0;
         margin: 0;
         padding: 0;
-        font-size: $ft20;
+        font-size: 20px;
         cursor: pointer;
         opacity: 0;
         z-index: -1;
@@ -281,7 +270,7 @@
 
     .remove-file {
         color: skyblue;
-        font-size: $ft12;
+        font-size: 12px;
         cursor: pointer;
     }
 </style>

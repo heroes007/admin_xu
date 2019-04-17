@@ -6,7 +6,7 @@
             <Row slot="body">
                 <Row class="body-top">
                     <Form ref="formHouner" class="add-course-form" :model="form" :rules="rules"
-                          :label-position="labelPosition" :label-width="100">
+                          :label-position="labelPosition" :label-width="80">
                         <Col>
                             <FormItem label="证书名称" prop="name">
                                 <Input v-model="form.name" placeholder="请输入证书名称"></Input>
@@ -25,7 +25,7 @@
                             <FormItem label="证书照片" required>
                                 <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig"
                                               @uploadcomplete="handleDefaultUploadComplete"  :maxFileSize="2">
-                                    <span slot="file-require">只能上传 jpg/png 文件，且图片480*270,大小不超过2M</span>
+                                    <span slot="file-require" class="font-hint">*只能上传 jpg/png/jpeg 文件，且图片480*270,大小不超过2M</span>
                                 </upload-panel>
                             </FormItem>
                             <FormItem class="btns">
@@ -261,7 +261,7 @@
     }
   }
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
     /deep/ .ivu-modal-header {
         background-color: #ffffff !important;
         padding: 22px 16px;
@@ -327,5 +327,8 @@
     }
     .public-btn {
         width: 170px;
+    }
+    .font-hint{
+        color: #F54802;
     }
 </style>

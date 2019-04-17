@@ -1,26 +1,24 @@
 <template>
     <div class='manage-notification'>
-        <FormModal :detail-data="tableRow"  :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
+        <FormModal modal-body :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-            <data-list class='data-list' :table-data='notificationList' :header-data='notificationHeader' :column-formatter='listColumnFormatter'
-                       @send='sendHandler' @delete='deleteHandler' @edit='editHandler'/>
+        <Tables  :tabel-height="tableHeight" :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler"
+        :column="columns1" :table-data="list" />
+        <page-list class="pages" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
 <script>
-    import BaseList from '../../../components/BaseList'
-    import { mapActions, mapState, mapGetters } from 'vuex'
-    import { Dialog } from '../../dialogs'
-    import { ADD_NOTIFICATION, } from '../../dialogs/types'
-    import { doTimeFormat } from '../../../components/Util'
-    import { Config } from '../../../config/base'
-    import defaultHeader from '../../../assets/img/side-menu/default-header.jpg'
     import FormModal from '../../../components/FormModal'
     import FormModalMixin from '../../UserManage/Mixins/FormModalMixin'
     import screen from '../../../components/ScreenFrame'
+    import Tables from '../../../components/tables.vue'
+    import postData from 'src/api/postData'
+    import pageList from '../../../components/Page'
+    import pageMixin from '../../mixins/pageMixins'
     export default {
-        mixins: [Dialog,FormModalMixin],
-        components: { 'data-list': BaseList,screen,FormModal },
+        mixins: [FormModalMixin, pageMixin],
+        components: { screen, FormModal, Tables, pageList },
         data() {
             return {
                 messageContent: '',
@@ -28,136 +26,47 @@
                 noSelect:true,
                 tabName: 'notification',
                 tableRow: {},
-                modalTitle: '创建通知',
+                modalTitle: '',
                 show: false,
+                tableHeight: null,
+                list: [
+                    {
+                        content: '1',
+                        create_time: '2018/01/01'
+                    }
+                ],
                 formList: [
-                    { type: 'upload',name:'通知', field: 'uploading' }
+                    { type: 'upload',name:'', field: 'content' }
                 ],
                 rules:{
-                    uploading: [{ required: true, message: '请输入课程介绍'} ],
+                    uploading: [{ required: true, message: '请输入通知内容'} ],
                 },
-            }
-        },
-        computed: {
-            ...mapState({
-                notificationLoading: state => state.notification.isLoading,
-                messageLoading: state => state.message.isLoading,
-                notificationList: state => state.notification.notification_list,
-                studentList: state => state.message.student_list,
-                userInfo: state => state.auth.userInfo,
-                doUpdate: state => state.message.select_msg_update
-            }),
-            isLoading() {
-                return this.notificationLoading || this.messageLoading;
-            },
-            notificationHeader() {
-                return [
-                //     {
-                //     prop: 'id',
-                //     label: 'ID',
-                //     width: 80
-                // },
-                {
-                    label:"序号",
-                    width: 80,
-                    sort:true
-                },
-                {
-                    prop: 'content',
-                    label: '通知内容',
-                    width: 650,
-                    limit: 30,
-                    hideOverflow: true,
-                    actionName: 'modify_notification_'
-                },
-                {
-                    prop: 'create_time',
-                    label: '发送时间',
-                    width: 120
-                },
-                {
-                    prop: 'create_time',
-                    label: '创建人',
-                    width: 120
-                },
-                {
-                    prop: '',
-                    label: '操作',
-                    groupBtn: [
+                columns1: [
                     {
-                        text: '发送',
-                        param: 'send'
-                    },
-                     {
-                        text: '编辑',
-                        param: 'edit'
+                        key: 'content',
+                        title: '通知内容',
+                        slot: 'content-html',
+                        width: 650,
+                        align: 'left'
                     },
                     {
-                        text: '删除',
-                        param: 'delete'
+                        key: 'send_time',
+                        title: '发送时间',
+                        width: 150
+                    },
+                    {
+                        key: 'realname',
+                        title: '创建人',
+                        width: 120
+                    },
+                    {
+                        title: '操作',
+                        minWidth: 260,
+                        slot: 'operation',
+                        align: 'left',
+                        operationLast: true,
+                        operation: [['发送','operation1'], ['编辑','operation2'], ['删除','operation3']],
                     }]
-                }]
-            },
-            studentHeader() {
-                return [{
-                    prop:'unread_count',
-                    label:'',
-                    badge:true
-                },{
-                    prop: '',
-                    label: '姓名',
-                    width: 100,
-                mixColumn: true,
-                mixFunc: (function(data) {
-                    if(data.realname)
-                        return data.realname;
-                    else
-                        return data.nickname;
-                })
-                }, {
-                    prop: 'subject_id',
-                    label: '学科',
-                    width: 80
-                }, {
-                    prop: 'grade_id',
-                    label: '学段',
-                    width: 80
-                }, {
-                    prop: 'times',
-                    label: '学期',
-                }]
-            },
-            listColumnFormatter() {
-                return [{ columnName: 'create_time', doFormat: doTimeFormat }]
-            },
-            studentlistColumnFormatter() {
-                return [{
-                    columnName: 'grade_id',
-                    dataIndex: 0,
-                    dataProp: 'id',
-                    dataValue: 'name'
-                }, {
-                    columnName: 'subject_id',
-                    dataIndex: 1,
-                    dataProp: 'id',
-                    dataValue: 'name'
-                }]
-            },
-            studentlistColumnFormatterData() {
-                return [this.gradeList, []];
-            }
-        },
-        watch: {
-            // isLoading(val) {
-            //    if (val) {
-            //        this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-            //         setTimeout(() => {
-            //             this.loadingInstance.close()
-            //         }, Config.base_timeout);
-            //     }else if(this.loadingInstance) this.loadingInstance.close()
-            // },
-            doUpdate(val) {
-                this.updateWrapper();
             }
         },
         methods: {
@@ -169,111 +78,78 @@
                 }, 100)
             },
             createNotificationHandler() {
-                // this.handleSelModal(ADD_NOTIFICATION);
+                this.modalTitle = '添加通知'
                 this.show = true
             },
-            sendHandler(index, row) {
-              this.$Modal.confirm({
-                title: '提示',
-                content: '确定要发送该通知吗!',
-                onOk: () => {
-
-                },
-              });
+            handleSubmit(d){
+                d.content = d.uploading
+                let url = this.modalTitle === '创建通知' ? 'platform/message/addMessage' : 'platform/message/modifyMessage'
+                postData(url, d).then((res) => {
+                    if(res.res_code == 1){
+                        this.$Message.success(res.msg)
+                        this.getList()
+                    }
+                })
             },
-            deleteHandler(index, row) {
-              this.$Modal.confirm({
-                title: '提示',
-                content: '确定要删除该通知吗!',
-                onOk: () => {
-                    
-                },
-              });
-            },
-            editHandler(index, row) {
-                this.handleSelModal(ADD_NOTIFICATION, row);
-            },
-            handleClick() {},
-            rowClickHandler(row) {
-                this.messageContent = '';
-            },
-            getTimeStr(time) {
-                return doTimeFormat(time);
-            },
-            sendMsg() {
-                if (!this.messageContent) {
-                  this.$Modal.info({
+            sendAndDelete(row, text, url, index){
+                this.$Modal.confirm({
                     title: '提示',
-                    content: '不能发送空消息！'
-                  });
+                    content: `确定要${text}该通知吗!`,
+                    onOk: () => {
+                        postData(url, {message_id: row.id}).then((res) => {
+                            if(res.res_code == 1){
+                                if(text == '发送'){
+                                    this.$Message.success(res.msg)
+                                    this.getList()
+                                }
+                                if(index) this.list.splice(index,1)
+                            }
+                        })
+                    },
+                });
+            },
+            sendHandler(row,index) {
+                this.sendAndDelete(row,'发送', 'platform/message/sendMessage')
+            },
+            deleteHandler(row, index) {
+                this.sendAndDelete(row,'删除', 'platform/message/removeMessage', index)
+            },
+            editHandler(row, index) {
+                this.tableRow = row
+                this.tableRow.uploading = row.content
+                this.show = true
+                this.modalTitle = '编辑通知'
+            },
+            getList(){
+                let d = {
+                    page_size: this.pageSize,
+                    page_num: this.current,
                 }
-                else {
-                   
-                }
+                postData('platform/message/getMessageList',d).then((res) => {
+                    this.list = res.data.list
+                    this.total = res.data.count
+                })
             }
         },
         mounted() {
-            // this.get_message_student_list();
+           this.getList()
+           this.tableHeight = window.innerHeight - 130
         }
     }
-
 </script>
-<style scoped lang='scss'>
-    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover{ color: #3DAAFF }
-    /deep/ .ivu-tabs-tab {
-        text-align: center;
-        line-height: 40px;
-        margin-bottom: 0;
-        font-size: 18px;
-    }
-    .manage-notification {
-        .data-list {
-            .base-list-row {
-                .cell {
-                    .el-button {
-                        &:last-child {
-                            margin-left: 5px;
-                        }
-                    }
-                }
-            }
-            thead {
-                tr {
-                    height: 60px;
-                    th {
-                        .cell {
-                            font-size: 16px;
-                            color: #757575;
-                            letter-spacing: 0;
-                        }
-                    }
-                }
-            }
-        }
-        .student-list {
-            .base-list-row {
-                background-color: #F6F6F6;
-                td {
-                    &:last-child {
-                        border-right: 1px solid #dfe6ec;
-                    }
-                }
-                &.current-row {
-                    td {
-                        background-color: #ffffff;
-                        &:last-child {
-                            border-right-color: #ffffff;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    /deep/ .ivu-table-cell div{
-        justify-content: center;
-    }
+<style scoped lang="less">
     /deep/ .form-message{
         width: 580px;
         height: 500px;
+    }
+    /deep/ .select-list{
+        display: none;
+    }
+    /deep/ .pages{
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 10px;
+        margin: 0 auto;
     }
 </style>

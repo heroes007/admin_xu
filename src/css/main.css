@@ -19,7 +19,9 @@ body { background-color: #fff; height: 100%; }
     text-align: center !important;
 }
 .ivu-page-prev, .ivu-page-next  {
- border: 1px solid #d7dde4 !important
+ border: 1px solid #d7dde4 !important;
+ width: 60px;
+ height: 34px;
 }
   .ivu-page>li>a{
     font-size: 16px !important;
@@ -32,7 +34,9 @@ body { background-color: #fff; height: 100%; }
     color: #fff !important;
   }
   .ivu-page.mini .ivu-page-item,.ivu-page-item{
-    border: 1px solid #d7dde4 !important
+    border: 1px solid #d7dde4 !important;
+    width: 50px;
+    height: 34px;
   }
   .ivu-page>.ivu-page-item-active{
     background: #3DAAFF !important;
@@ -141,3 +145,27 @@ textarea.ivu-input{
 .ivu-modal-header{
     border-radius: 10px 10px 0 0 !important;
 }
+.ivu-table-cell-tooltip-content{
+  margin-top: 3px !important;
+}
+.ivu-table th,.ivu-table td{
+  border-bottom: 1px solid #f0f0f7  !important
+}
+.ivu-table-wrapper{
+  border: none !important;
+  border-top: 1px solid #f0f0f7  !important;
+  border-bottom: 1px solid #f0f0f7  !important;
+}
+/* .ivu-table-row-highlight td, tr.ivu-table-row-highlight.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td{
+  background: #fff !important;
+}
+.ivu-table-row:hover td{
+  background: #fff !important;
+}
+.ivu-table-row-hover {
+  z-index: 66666;
+  box-shadow: 2px 0px 2px red !important;
+  box-sizing: border-box !important;
+  position: absolute;
+  width: 100% !important;
+} */

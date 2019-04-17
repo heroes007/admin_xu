@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="showModal" title="查看详情" :width="960" @on-cancel="closeModal" :mask-closable=false
+    <Modal v-model="showModal" title="查看详情" :width="720" @on-cancel="closeModal" :mask-closable=false
            :footer-hide="true" :styles="{top: '6%'}">
         <div class="title">
             <span class="title-name">{{details.title}}</span>

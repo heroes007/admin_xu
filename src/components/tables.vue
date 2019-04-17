@@ -1,48 +1,64 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName" highlight-row :columns="columns" :data="datas" :height="tabelHeight" >
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
+               :height="tabelHeight">
+            <!-- content-html -->
+            <template slot-scope="{ column, row, index }" slot="content-html">
+                <span v-html="row[column.key]"></span>
+            </template>
             <template slot-scope="{ column, row, index }" slot="operation">
-              <span v-for="(t,i) in column.operation" :key="i">
-              <!-- poptip_state -->
-               <Poptip v-if="column.poptip_state&&handleBtnText(t,row,column) === '查看'" width="254" placement="bottom">
-                    <Button type="text">查看</Button>
-                    <div class="poptip-main" slot="content">
-                      < img class="poptip-img" src="../assets/icons/mn.jpeg"/>
-                      <div class="poptip-content"><h2>王晓东</h2><p>用户ID：ur9812</p ></div>
-                    </div>
-               </Poptip>
-               <span v-else-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
-                 <Button  type="text"  size="small"
-                          style="margin-right: 5px" @click="show(row,index,t[1])">
-                   {{handleBtnText(t,row,column)}}
-                 </Button>
-               </span>
-              </span>
-                <Switch class="operation_btn_show" v-if="column.isSwitch" v-model="row[column.switchKey]" size="large" @on-change="change(row)">
-                    <span slot="open">启用</span>
-                    <span slot="close">停用</span>
+                <span v-for="(t,i) in column.operation" :key="i">
+                    <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                        <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+                        {{handleBtnText(t,row,column)}}
+                        </Button>
+                    </span>
+                </span>
+                <Switch :class="column.isShow ? '' : 'operation_btn_show'"
+                        v-if="column.isSwitch && handleBtnShow(column,row)" v-model="row[column.switchKey]" size="large"
+                        @on-change="change(row)">
+                    <span slot="open">{{column.switchList[0]}}</span>
+                    <span slot="close">{{column.switchList[1]}}</span>
                 </Switch>
+                <Card v-if="column.isCard && row.use_state == 1" class="card-show">
+                    <div class="triangle"></div>
+                    <div class="card-box">
+                        <img class="card-img" :src="row.head_img_url" alt="">
+                        <div class="card-content">
+                            <div class="content-user">
+                                <div class="content-user-name">{{row.realname}}</div>
+                                <img class="content-user-sex" :src="row.sex == 1 ? male : female" alt="">
+                            </div>
+                            <div class="content-userid">用户ID：{{row.user_id}}</div>
+                        </div>
+                    </div>
+                </Card>
             </template>
             <template slot-scope="{ column, row, index }" slot="radio-item">
                 <Radio @on-change="radioChange(row,column)" v-model="row[column.key]"></Radio>
             </template>
             <template slot-scope="{ column, row, index }" slot="state-item">
-                <span v-if="column.stateOther" :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
+                <span v-if="column.stateOther"
+                      :class="'state-key-other'+row[column.stateKey]">{{row[column.key]}}</span>
                 <span v-else :class="'state-key'+row[column.stateKey]">{{row[column.key]}}</span>
             </template>
             <template slot-scope="{ column, row, index }" slot="sex">{{row.sex == 0 ? '女' : '男'}}</template>
-            <template slot-scope="{ column, row, index }" slot="_index">{{row.state == 0 ? '未认证' : '已认证'}}</template>
+            <template slot-scope="{ column, row, index }" slot="_index">{{row._index == 0 ? '未认证' : '已认证'}}</template>
         </Table>
     </div>
 </template>
 <script>
     import postData from 'src/api/postData'
+    import male from '../assets/img/male.png'
+    import female from '../assets/img/female.png'
+
     export default {
         data() {
             return {
+                female, male,
                 datas: [],
                 columns: [],
-                btnList: []
+                btnList: [],
             }
         },
         props: {
@@ -52,7 +68,7 @@
             },
             tableData: {
                 type: Array,
-                default: []
+                default: () => []
             },
             // isSerial -->  序号
             isSerial: {
@@ -88,25 +104,27 @@
             }
         },
         methods: {
-            rowClassName(r){
-                if(r.hasOwnProperty('states'))  return r.states ? '' : 'row-switch-disable'
+            rowClassName(r) {
+                if (r.hasOwnProperty('states')) return r.states ? '' : 'row-switch-disable'
                 return ''
             },
-            rowClick(row,rowIndex){
-                this.show(row,rowIndex,'row-click')
+            rowClick(row, rowIndex) {
+                this.show(row, rowIndex, 'row-click')
             },
-            handleBtnShowClass(c,r,t){
-                if (!c.hasOwnProperty('operation_btn_hide')){
-                    if(c.operation[0][0] == t[0]) return 'operation_btn_see'
-                    if(!r.operation_btn_show) return 'operation_btn_show'
+            handleBtnShowClass(c, r, t) {
+                if (!c.hasOwnProperty('operation_btn_hide')) {
+                    if (c.hasOwnProperty('operationLast')&&c.operationLast){
+                        if (c.operation[c.operation.length-1][0] == t[0]) return 'operation_btn_see'
+                    }else if (c.operation[0][0] == t[0]) return 'operation_btn_see'
+                    if (!r.operation_btn_show) return 'operation_btn_show'
                     return ''
                 }
                 return ''
             },
-            handleBtnShow(c,r,t){
-                if (c.hasOwnProperty('operation_btn_hide')){
-                    return c.operation_btn_hide&&t[2] ? r.mark_state : true
-                }else return true
+            handleBtnShow(c, r, t) {
+                if (c.hasOwnProperty('operation_btn_hide')) {
+                    return c.operation_btn_hide && t[2] ? r.mark_state : true
+                } else return true
             },
             radioChange(r, c) {
                 this.datas.map((t, k) => {
@@ -119,12 +137,12 @@
             },
             handleTableData(d) {
                 let d3 = [];
-                if(d.length>0){
+                if (d.length > 0) {
                     let d1 = JSON.stringify(d)
                     let d2 = d1.replace(/null/g, '"-"').replace(/""/g, '"-"');
                     d3 = JSON.parse(d2)
                     d3.map((t, k) => {
-                        if (this.isSerial) t.serial_number = this.$config.addZero(k+1)
+                        if (this.isSerial) t.serial_number = this.$config.addZero(k + 1)
                         if (t.hasOwnProperty('slot')) {
                             if (t.operation.length > 0) this.btnList = t.operation
                         }
@@ -134,16 +152,16 @@
                 this.datas = d3
             },
             show(row, rowIndex, params) {
-                if(this.seeUrl){
+                if (this.seeUrl) {
                     postData(this.seeUrl, {id: row.organization_id}).then((res) => {
-                        if(res.data){
+                        if (res.data) {
                             row = {...row, ...res.data[0]}
                             row.head_img_url = res.data[0].admin[0].head_img_url
                             if (this.selectList) row.list = this.getArray(this.selectList, res.data[0].admin[0])
                             this.$emit(params, row, rowIndex)
                         }
                     })
-                }else{
+                } else {
                     if (this.selectList) row.list = this.getArray(this.selectList, row)
                     this.$emit(params, row, rowIndex)
                 }
@@ -153,7 +171,7 @@
                 if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
                 if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
                 c.map((t) => {
-                    if(t.hasOwnProperty('slot')&&t.slot == "operation" && !t.hasOwnProperty('align'))  t.align = 'left'
+                    if (t.hasOwnProperty('slot') && t.slot == "operation" && !t.hasOwnProperty('align')) t.align = 'left'
                     if (!t.hasOwnProperty('align')) t.align = 'center'
                     t.tooltip = true
                 })
@@ -165,7 +183,7 @@
             handleBtnText(t, r, c) {
                 // operation_state -- 处理 兑换码
                 if (Array.isArray(t[0])) {
-                    if (c.operation_state ) return r.state == 1 ? t[0][0] : t[0][1]
+                    if (c.operation_state) return r.state == 1 ? t[0][0] : t[0][1]
                     return c.operation_state && r.use_state ? t[0][0] : c.operation_state && r.use_state === 0 ? t[0][1] : t[0]
                 } else return t[0]
             },
@@ -178,14 +196,14 @@
                             if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                                 arr.push(`${item.name}: ${string.realname}`)
                             } else {
-                                str = item.name + ':' + ' ' + (string[x]||string[x]==0 ? string[x] : '—')
+                                str = item.name + ':' + ' ' + (string[x] || string[x] == 0 ? string[x] : '—')
                                 arr.push(str)
                             }
                         }
                     }
                 })
                 return arr
-            }
+            },
         },
         mounted() {
             this.handleColumns(this.column)
@@ -194,18 +212,101 @@
     }
 </script>
 <style lang='less' scoped>
+    .triangle {
+        position: relative;
+        top: -33px;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 0;
+        width: 28px;
+        border-width: 0 18px 18px;
+        border-style: solid;
+        border-color: transparent transparent #fff;
+    }
+
+    .card-box {
+        display: flex;
+        align-items: center;
+
+        .card-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .card-content {
+            margin-left: 20px;
+
+            .content-user {
+                display: flex;
+                align-items: center;
+
+                .content-user-name {
+                    font-family: PingFangSC-Medium;
+                    font-size: 20px;
+                    color: #474C63;
+                    letter-spacing: 0;
+                }
+
+                .content-user-sex {
+                    height: 17px;
+                    width: 17px;
+                    margin-left: 8px;
+                }
+            }
+
+            .content-userid {
+                font-family: PingFangSC-Regular;
+                font-size: 16px;
+                color: #474C63;
+                letter-spacing: 0;
+                margin-top: 20px;
+            }
+        }
+    }
+
+    .card-show {
+        position: absolute;
+        display: none;
+    }
+
+    /deep/ .ivu-table-row-hover {
+        .card-show {
+            position: absolute;
+            left: 50%;
+            transform: translateY(20%);
+            display: inline-block;
+            width: 254px;
+            height: 118px;
+            z-index: 1;
+            border: none;
+        }
+    }
+
+    /deep/ .ivu-card-body {
+        box-shadow: 0 0 10px 0 rgba(147, 151, 173, 0.22);
+        background-color: #fff;
+        border-radius: 8px;
+    }
+
     .state-key1, .state-key-other1 {
         color: #2EBF07;
     }
-    /deep/ .ivu-table-row{
+
+    /deep/ .ivu-table-row {
         color: #474C63;
     }
+
     .state-key-other0 {
         color: #474C63;
     }
 
     .state-key0 {
         color: #F54802;
+    }
+
+    .state-key2 {
+        color: #666;
     }
 
     /deep/ .ivu-table th {
@@ -255,9 +356,11 @@
     /deep/ .ivu-tooltip-rel {
         width: 100%;
     }
-    /deep/ .row-switch-disable{
+
+    /deep/ .row-switch-disable {
         color: #9397AD;
     }
+
     .poptip-main {
         display: flex;
         margin-top: 20px;
@@ -291,21 +394,29 @@
             }
         }
     }
-    /deep/ .ivu-table td.demo-table-info-column{
+
+    /deep/ .ivu-table td.demo-table-info-column {
         color: #F54802;
     }
-    /deep/ .ivu-btn{
+
+    /deep/ .ivu-btn {
         display: flex;
     }
-    .operation_btn_show{
+
+    .operation_btn_show {
         display: none
     }
-    /deep/.operation_btn_see .ivu-btn-text{
+
+    /deep/ .operation_btn_see .ivu-btn-text {
         margin-left: -5px;
     }
-    /deep/ .ivu-table-row:hover{
-        .operation_btn_show{
+
+    /deep/ .ivu-table-row:hover {
+        .operation_btn_show {
             display: inline-block;
+            .ivu-btn-text {
+                margin-left: -5px;
+            }
         }
     }
 </style>

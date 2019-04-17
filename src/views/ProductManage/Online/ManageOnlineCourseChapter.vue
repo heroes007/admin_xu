@@ -353,7 +353,7 @@
     }
   }
 </script>
-<style scoped lang='scss'>
+<style scoped lang="less">
     /deep/ .ivu-table-header{
         display: none;
     }

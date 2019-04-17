@@ -1,10 +1,10 @@
 <template>
     <Tabs v-model="tabName" @on-click="tabs" class="tab-name">
-        <TabPane v-if='permissionCode1' label="管理列表" name="item1"><ManagementList v-if="pane1" :permission-item1="permissionItem1" /></TabPane>
-        <TabPane v-if='permissionCode2' label="机构列表" name="item2"><ListInstitutions v-if="pane2" :permission-item2="permissionItem2" /></TabPane>
-        <TabPane v-if='permissionCode3' label="导师列表" name="item3"><MentorList v-if="pane3" :permission-item3="permissionItem3" /></TabPane>
-        <TabPane v-if='permissionCode4' label="学员列表" name="item4"><StudentList v-if="pane4" :permission-item4="permissionItem4" /></TabPane>
-        <TabPane v-if='permissionCode5' label="讲师列表" name="item5"><LecturerList  v-if="pane5" :permission-item5="permissionItem5" /></TabPane>
+        <TabPane v-if='permissionCode1' label="管理列表" name="item1"><ManagementList :permission-item1="permissionItem1" /></TabPane>
+        <TabPane v-if='permissionCode2' label="机构列表" name="item2"><ListInstitutions  :permission-item2="permissionItem2" /></TabPane>
+        <TabPane v-if='permissionCode3' label="导师列表" name="item3"><MentorList :permission-item3="permissionItem3" /></TabPane>
+        <TabPane v-if='permissionCode4' label="学员列表" name="item4"><StudentList  :permission-item4="permissionItem4" /></TabPane>
+        <TabPane v-if='permissionCode5' label="讲师列表" name="item5"><LecturerList  :permission-item5="permissionItem5" /></TabPane>
     </Tabs>
 </template>
 <script>
@@ -71,7 +71,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
   .tab-name, /deep/.ivu-tabs-content, .user-manage-main{
     height: 100% !important;
   }

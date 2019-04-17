@@ -220,7 +220,7 @@
     }
   };
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .manage-production-view {
       background: #f0f0f7;
       min-height: 1200px;

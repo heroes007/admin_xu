@@ -1,7 +1,7 @@
 <template>
     <div class='manage-task'>
         <FormModal :detail-data="tableRow" @from-submit="saveHomework" :show-modal='show' :form-list="formList"
-                   @close="closeModal" :title="modalTitle" :rule-validate="rules" uploadBtn>
+                   @close="closeModal" :title="modalTitle" :rule-validate="rules" @change-list="changeList" uploadBtn>
         </FormModal>
         <screen selectType2 :select2="selectList" :types="4" sizeTitle1="作业总数" :sizeNum1="pageTotal" btnName="添加作业" @inputChange="manageEdit"
               @selectChange2="selectChange"  @handleClick="addTaskCategory" :btn-type="btnType"/>
@@ -66,7 +66,7 @@
                         type: 'select', name: '绑定课程', field: 'binding_course', disable: false,
                         selectList: [], selectField: ['id', 'title'], change: true, line: 1
                     },
-                    {type: 'upload', name: '作业描述', field: 'uploading'}
+                    {type: 'upload', name: '作业描述', field: 'uploading', small: true}
                 ],
                 rules: {
                     realname: [{required: true, message: '请输入作业名称', trigger: 'blur'}],
@@ -237,6 +237,10 @@
               }).then(res => {
                 this.curricumList[1] = res.data
               })
+            },
+            changeList(val) {
+                if(val == 'online') this.formList[2].line = 1
+                else this.formList[2].line = 0
             }
         },
         mounted() {
@@ -246,7 +250,7 @@
     }
 
 </script>
-<style scoped lang='scss'>
+<style scoped lang="less">
     /deep/ .ivu-btn-text {
         font-family: PingFangSC-Medium;
         font-size: 16px;

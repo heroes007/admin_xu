@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div class="upload-list">
-                            <div class="upload-title">* 只能上传 jpg/png/jpeg/mp4/mov/avi 文件，且不超过300M</div>
+                            <div class="upload-title">* 附件可上传任意格式，附件大小不超过300M</div>
                             <uploadBtn class="upload-img" text="上传附件" @uploadcomplete="uploadImg" type="*" :maxFileSize="300"/>
                         </div>
                     </FormItem>
@@ -75,8 +75,6 @@
     import {RemoveModal} from './mixins'
     import {MPop} from '../../components/MessagePop'
     import postData from '../../api/postData'
-    import newEditor from '../../components/NewEditor'
-
     export default {
         mixins: [RemoveModal, MPop],
         props: {
@@ -85,11 +83,7 @@
             },
             payload: {}
         },
-        components: {
-            'base-input': BaseInput,
-            'data-list': BaseList,
-            uploadBtn, newEditor
-        },
+        components: { 'base-input': BaseInput, 'data-list': BaseList, uploadBtn },
         data() {
             return {
                 addTestContentDialog: true,
@@ -391,7 +385,7 @@
         }
     }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .row1-test-form {
         background: #F0F0F7;
         padding: 0 30px;
@@ -432,16 +426,13 @@
     .upload-list {
         display: flex;
         margin-top: 15px;
+        justify-content: space-between;
 
         .upload-title {
             font-family: PingFangSC-Regular;
             font-size: 14px;
             color: #F54802;
             letter-spacing: 0;
-        }
-
-        .upload-img {
-            margin-left: 160px;
         }
 
         .upload-video {

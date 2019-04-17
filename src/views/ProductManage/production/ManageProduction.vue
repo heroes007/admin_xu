@@ -129,7 +129,7 @@
     }
   };
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
   .lecturer-list{
       margin: 20px;
   }

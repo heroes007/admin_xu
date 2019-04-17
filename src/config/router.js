@@ -4,8 +4,9 @@ import iView from 'iview'
 const Login = () => import('../views/Login');
 const NotFound = () => import('../views/notfound');
 const DashBoard = () => import('../views/DashBoard');
+const PersonalData = () => import('../views/personal-data/index');
 const ManageOnlineCourseChapter = () => import('../views/ProductManage/Online/ManageOnlineCourseChapter');
-const ManageOfflineCourse = () => import('../views/ProductManage/Offline/ManageOfflineCourse');
+const ManageOfflineCourse = () => import('../views/ProductManage/Offline/next-semester');
 const ManageNotification = () => import('../views/SystemManage/inform/ManageNotification');
 const ManageNews = () => import('../views/SystemManage/news/ManageNews')
 const UserManage = () => import('../views/UserManage/index')
@@ -16,6 +17,9 @@ const ExchangeCode = () => import('../views/SystemManage/ExchangeCode/index')
 const UsageRecord = () => import('../views/SystemManage/ExchangeCode/UsageRecord/index')
 const MarkingHomework = () => import('../views/ProductManage/Task/MarkingHomework/index')
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
+const head = () => import('../views/tutor/head.vue')
+const home = () => import('../views/tutor/home.vue')
+const JobList = () => import('../views/tutor/job-list.vue')
 Vue.use(VueRouter);
 // 页面路由
 const routes = [
@@ -23,6 +27,27 @@ const routes = [
     path:'',
     redirect:'/login'
   },
+  //辅导老师
+  // {
+  //   path: '/tutor',
+  //   component: head,
+  //   children:[
+  //     {
+  //       path:'',
+  //       redirect:'home'
+  //     },
+  //     {
+  //       path: 'home',
+  //       name: 'home',
+  //       component: home
+  //     },
+  //     {
+  //       path: ':id/job-list',
+  //       name: 'job-list',
+  //       component: JobList
+  //     },
+  //   ]
+  // },
   {
     path:'/dashboard',
     // name:'dashboard',
@@ -36,6 +61,11 @@ const routes = [
         path: 'user-manage',
         name: 'user-manage',
         component: UserManage
+      },
+      {
+        path: 'personal-data',
+        name: 'personal-data',
+        component: PersonalData
       },
       {
         path: 'product-manage',
@@ -66,7 +96,7 @@ const routes = [
       {
         name:'notification-chat',
         path:'notification-chat',
-        component:ManageNotification
+        component: ManageNotification
       },
     ]
   },

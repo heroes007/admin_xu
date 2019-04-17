@@ -36,7 +36,7 @@ var webpackConfig = merge(baseWebpackConfig, {
           loader: 'vue-loader',
           options: {
             loaders: {
-              scss: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+              less: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"]
             },
           }
         },
@@ -48,9 +48,10 @@ var webpackConfig = merge(baseWebpackConfig, {
           }]
       },
       {
-        test: /\.(sc|c)ss$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-      }],
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
+      }
+    ],
     noParse: /videojs-contrib-hls/
   },
   resolve: {
@@ -60,7 +61,6 @@ var webpackConfig = merge(baseWebpackConfig, {
     }
   },
   output: {
-    publicPath: config.prod.publicPath,
     filename: config.base.assetsPath + '/js/[name].[hash].js',
     chunkFilename: config.base.assetsPath + '/js/[name].[chunkhash].js'
   },
@@ -68,7 +68,6 @@ var webpackConfig = merge(baseWebpackConfig, {
     hints: false
   },
   optimization: {
-    nodeEnv: 'production',
     minimizer: [
       new UglifyJsPlugin({
         test: /\.js(\?.*)?$/i,
@@ -86,7 +85,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         }
       }),
       new OptimizeCssAssetsPlugin({
-        assetNameRegExp: /\.optimize\.(sc|c)ss$/g,
+        assetNameRegExp: /\.optimize\.(le|c)ss$/g,
         cssProcessor: require('cssnano'),
         cssProcessorOptions: { safe: true, discardComments: { removeAll: true }, autoprefixer: false},
         canPrint: true
@@ -99,7 +98,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       cacheGroups: {
         styles: {
           name: 'styles',
-          test: /\.(scss|css)$/,
+          test: /\.(less|css)$/,
           chunks: 'all',
           enforce: true
         }

@@ -4,7 +4,7 @@
         <FormModal :modal-false="true"  :modal-text="modalText" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" :maxFileSize="2"/>
         <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick" />
-        <Tables :is-serial=true @operation1="see" @operation2="edit" :column="columns1" :table-data="list"
+        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="see" @operation2="edit" :column="columns1" :table-data="list"
         @table-swtich="tableSwtich"   see-url='user/getDeptDetail'  :select-list="institution"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
@@ -79,6 +79,7 @@
                 align: 'left',
                 isSwitch: false, // true --> 启用 false --> 禁用
                 switchKey: 'states',
+                switchList: ['启用', '停用'],
                 operation: [],
             }],
             list: [],

@@ -2,7 +2,7 @@
     <div class='side-menu'>
         <Row class='logo' type='flex' justify='center' align='middle'>
             <img class="logo-img" src='../assets/img/logo-white1.jpg'>
-            <div class="logo-title">九划医疗</div>
+            <div class="logo-title">九划医教</div>
         </Row>
         <Row class="head-img-row" type='flex' justify='center' align='middle'>
             <div class='head-img'>
@@ -13,7 +13,10 @@
                     <Icon class="icon-setting" type="md-settings"/>
                     <div class='hover-glow'></div>
                 </Button>
-                <div slot="content">
+                <div class="setting-data" slot="content">
+                    <Button v-if="personalShow" type='text' class='quit' @click='personalData'>
+                        个人资料
+                    </Button>
                     <Button type='text' class='quit' @click='logout'>
                         退出登录
                     </Button>
@@ -67,7 +70,10 @@
     },
     computed: {
       userInfo() {
-        return JSON.parse(localStorage.getItem('PERSONALDETAILS'))
+        return this.$store.state.auth.userInfo
+      },
+      personalShow(){
+        return this.userInfo.role_id == 1 || this.userInfo.role_id == 2
       },
       userHeader() {
         if (!this.userInfo) return defaultHeader;
@@ -76,6 +82,9 @@
       },
     },
     methods: {
+      personalData(){
+        this.$router.push({path: 'personal-data'})
+      },
       openChange(name) {
         localStorage.setItem('menuOpenName', JSON.stringify(name));
         this.menuOpenName = name;
@@ -110,16 +119,17 @@
           }
         },
       getName(){
-        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) {
-          this.userNameAll = JSON.parse(localStorage.getItem('PERSONALDETAILS')).name
-          if(this.userNameAll&&this.userNameAll.length > 10) {
-            this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
-          }
+        let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+        if(roleId == 1) {
+          this.userNameAll = this.$config.status(roleId)
+          // if(this.userNameAll&&this.userNameAll.length > 10) {
+          //   this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
+          // }
         }else{
           postData('components/getOrganization').then(res => {
             res.data.forEach(item => {
               if(item.id == JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id) {
-                this.userNameAll = item.title + JSON.parse(localStorage.getItem('PERSONALDETAILS')).name
+                this.userNameAll = item.title + this.$config.status(roleId)
                 if(this.userNameAll.length > 10) {
                   this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
                 }
@@ -143,9 +153,13 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     /deep/.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after{
       background: #292929 ;
+    }
+    /deep/ .setting-data{
+      display: flex;
+      flex-direction: column;
     }
     .sub-item-title {
         padding-top: 14px !important;
@@ -224,6 +238,7 @@
                 margin-bottom: 18px;
                 img {
                     width: 100%;
+                    height: 100%;
                     border-radius: 50%;
                 }
             }

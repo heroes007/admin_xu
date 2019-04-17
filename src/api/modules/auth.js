@@ -7,5 +7,5 @@ export function login_pwd(name,password) {
     });
 }
 export function user_info(){
-    return api.post('/user/getUsreDetail', {from:'web'});
+    return api.post('/user/getUsreDetail');
 }

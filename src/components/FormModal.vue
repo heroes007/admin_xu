@@ -2,7 +2,7 @@
     <div>
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList"
                          @close="exchangeContentClose" @selectChecked="exchangeContentChecked"/>
-        <Modal v-model="show" :title="title" :width="645" @on-cancel="closeModal" :mask-closable=false
+        <Modal :class="modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth" @on-cancel="closeModal" :mask-closable=false
                :footer-hide="true">
             <div v-if="uploadFlie" class="upload-flie">
                 <Upload ref="upload" :show-upload-list="false" action="http://dscj-app.oss-cn-qingdao.aliyuncs.com"
@@ -16,9 +16,9 @@
                     <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
                 </Upload>
             </div>
-            <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}">
+            <Form ref="formValidate" :model="formItem" :label-width="80" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
                 <div v-for="(t,index) in formList" :key="index">
-                    <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
+                    <FormItem v-if="t.type==='input'" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <FormItem v-if="t.type==='password'" :label="t.name" :prop="t.field">
@@ -27,13 +27,13 @@
                     <FormItem v-if="t.type==='inputTab'" :label="t.name" :prop="t.field">
                         <Input disabled :value="t.content"></Input>
                     </FormItem>
-                    <FormItem v-if="t.type==='textarea'" :label="t.name" :prop="t.field">
+                    <FormItem v-if="t.type==='textarea'"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
                         <Input type="textarea" :rows="6" v-model="formItem[t.field]"
                                :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <!-- input-number -->
                     <FormItem v-if="t.type==='input-number'" :label="t.name" :prop="t.field">
-                        <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
+                        <InputNumber :disabled="t.disable" :min='1' v-model="formItem[t.field]"
                                      :placeholder="'请输入'+t.name"></InputNumber>
                     </FormItem>
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
@@ -55,15 +55,14 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :label="t.name"
-                              :prop="t.field">
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :label="t.name" :prop="t.field">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
-                            <Option v-for="(m,i) in t.line == 1 ? t.selectList[0] : t.selectList[1]" :key="i"
-                                    :value="m[t.selectField[0]]">{{m[t.selectField[1]]}}
+                            <Option v-for="(m,i) in (t.line == 1 ? t.selectList[0] : t.selectList[1])" :key="i" :value="m[t.selectField[0]]">
+                                {{m[t.selectField[1]]}}
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field"
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field"
                               :class="t.clas ? t.clas: ''">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
                                 @on-change="selectChange">
@@ -84,25 +83,59 @@
                             <span slot="open">{{t.switchList[0]}}</span>
                             <span slot="close">{{t.switchList[1]}}</span>
                         </Switch>
-                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)"
-                                    :format="handleDateType(t)" v-model="formItem[handleField(t,1)]"
-                                    :value="formItem[handleField(t,1)]"
-                                    :placeholder="handlePlaceholder(t)"></DatePicker>
+                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)" :format="handleDateType(t)" v-model="formItem[handleField(t,1)]"
+                                    :value="formItem[handleField(t,1)]" :placeholder="handlePlaceholder(t)"></DatePicker>
+                    </FormItem>
+                    <!--上传封面-->
+                    <FormItem v-if="t.type == 'uploadPanel'" v-show="t.isShow ? t.isShow == 1 : true"  ref="upload" label="展示封面" required>
+                        <upload-panel ref="upload_panel" :resourse="formItem[t.field]" :upload-config="uploadConfig" :panelOptions="panelOptions"
+                                      @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2" types="image/gif, image/jpeg, image/png">
+                            <span slot="file-require" class="font-hint">*只能上传jpg/png文件，且图片比例为3:2，建议尺寸480*320px</span>
+                        </upload-panel>
                     </FormItem>
                     <!--富文本编辑器-->
-                    <FormItem v-if="(t.type==='upload')" :label="t.name" :prop="t.field" class="upload" ref="formInput">
-                        <new-editor style="width: 470px;" @get-content="getContent" :content="content"/>
+<<<<<<< HEAD
+                    <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 100 : 0" :prop="t.field" class="upload" ref="formInput">
+                        <new-editor :style=" t.small ? 'height: 340px;' : 'height: 500px;'" @get-content="getContent" :content="content"/>
+=======
+                    <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 80 : 0" :prop="t.field" class="upload" ref="formInput">
+                        <new-editor style="width: 100%; height: 500px;" @get-content="getContent" :content="content"/>
+>>>>>>> a262795f21e95d7d382dea65744ad185b686596e
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
                                         @uploadcomplete="uploadImg" :maxFileSize="300"/>
                         </div>
                     </FormItem>
+                    <!--数组表单,针对线下课-->
+                    <div  v-if="(t.type === 'array')" class="offline-course" v-for="(it, ins) in t.list" :key="ins">
+                        <div class="offline-course-title">
+                            <div class="offline-course-num">课程{{ins + 1 < 10 ? '0' + (ins + 1) : (ins + 1)}}</div>
+                            <div class="offline-course-delete" @click="deleteList(it, ins)">
+                                <img class="offline-course-delete-img" :src="rubbishIcon" alt="">
+                                <div class="offline-course-delete-font">删除</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap">
+                            <FormItem v-for="(item, index) in it" :label="item.name" :prop="item.field + item.index" :key="index"  style="margin-right: 10px;">
+                                <Input v-if="(item.type === 'input')" v-model="formItem[item.field + item.index]" :placeholder="'请输入'+item.name" style="width: 320px;"></Input>
+                                <Select v-if="(item.type === 'select')" v-model="formItem[item.field + item.index]" :placeholder="'请选择'+item.name" :disabled="item.disable"
+                                        @on-change="selectChange" style="width: 250px;">
+                                    <Option v-for="(m,i) in item.selectList" :key="i" :value="m[item.selectField[0]]">
+                                        {{m[item.selectField[1]]}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </div>
+                    </div>
                 </div>
             </Form>
             <p v-if="modalText2" class="modal-text">* {{modalText2}}</p>
             <div class="foot-btn">
-                <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
+                <Button v-if="isAdd" type="primary" ghost class="add-course" @click="addCourse">添加课程</Button>
+                <Button v-if="handleFloor && handleFloor == '2'" class="btn-orange btn-last" type="primary" @click="handleLast">上一步</Button>
+                <Button v-if="handleFloor && handleFloor == '1'" class="btn-orange" type="primary" @click="handleSubmit('formValidate')">下一步</Button>
+                <Button v-else class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
         </Modal>
     </div>
@@ -116,12 +149,18 @@
     import iconFont from '../assets/icons/icon/font.png'
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
+    import rubbishIcon from '../assets/img/rubbish.png'
     import newEditor from './NewEditor'
+    import uploadPanel from './UploadPanel'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
-        components: {ExchangeContent, uploadBtn, downLoading, newEditor},
+        components: {ExchangeContent, uploadBtn, downLoading, newEditor, uploadPanel},
         props: {
+            modalBody: {
+                type: Boolean,
+                default: false
+            },
             modalFalse: {
                 type: Boolean,
                 default: false
@@ -167,13 +206,29 @@
             maxFileSize: {
                 type: Number,
                 default: 0
+            },
+            styleRule: {
+                type: String,
+                default: ''
+            },
+            modalWidth: {
+                type: Number,
+                default: 645
+            },
+            isAdd: {
+                type: Boolean,
+                default: false
+            },
+            handleFloor: {
+                type: Number,
+                default: null
             }
         },
         data() {
             return {
                 content: '',
                 descriptionHtml: '',
-                iconFont, iconColor, iconCopy,
+                iconFont, iconColor, iconCopy,rubbishIcon,
                 exchangeContentShow: false,
                 exchangeContentList: [],
                 show: false,
@@ -220,6 +275,10 @@
                 ],
                 color: '',
                 modalText2: '',
+                panelOptions: {
+                    panelWidth: 465,
+                    panelHeight: 310
+                }
             }
         },
         watch: {
@@ -231,7 +290,6 @@
                 this.$nextTick(() => {
                     if (_new) {
                         this.formItem = this.dateTimes ? this.detailData : this.$config.copy(this.detailData, {})
-                        console.log(this.formItem, 'this.formItem')
                         if (this.formItem.upload) this.downList = this.formItem.upload
                         else this.downList = []
                         if (this.formItem.uploading) {
@@ -253,6 +311,12 @@
             show(val) {
                 if (!val) {
                     if (this.content) this.content = ''
+                }else {
+                    if(JSON.stringify(this.detailData) == '{}') {
+                        this.$nextTick(() => {
+                            this.$refs.formValidate.resetFields()
+                        })
+                    }
                 }
             },
             detailData(_new) {
@@ -263,12 +327,15 @@
             },
         },
         methods: {
+            deleteList(item, index) {
+                this.$emit('delete-list', index)
+            },
             getContent(val) {
                 this.content = val
             },
             selectChange(val) {
-                if (val == 'online') this.formList[2].line = 1
-                else if (val == 'underline') this.formList[2].line = 0
+                // if (val == 'online') this.formList[2].line = 1
+                // else if (val == 'underline') this.formList[2].line = 0
                 if (this.modalText2) {
                     if (val == 3) this.modalText2 = '获得所属机构后台发布产品及动态等操作权限'
                     if (val == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
@@ -347,16 +414,25 @@
                 let close = () => {
                     if (!this.modalFalse) this.closeModal()
                 }
-                // new Promise((resolve, reject) => {
-                //     this.$emit('from-submit', this.formItem)
-                //     resolve()
-                // }).then(() => {
-                //     close()
-                // })
                 (async () => {
-                    await this.$emit('from-submit', this.formItem)
-                    await close()
+                    await this.handleFloor && this.handleFloor == 1 ? this.$emit('handle-next') : this.$emit('from-submit', this.formItem)
+                    await this.handleFloor && this.handleFloor == 1 ? ()=>{} : close()
                 })()
+            },
+            setCourse() {
+                this.formItem.offlineCurriculums = []
+                for(let i = 0; i < this.formList[2].list.length; i++) {
+                    this.formItem.offlineCurriculums.push({})
+                }
+                for(let item in this.formItem) {
+                    let index = item.substring(item.length - 1)
+                    let name = item.substring(item.length - 1, 0)
+                    this.formItem.offlineCurriculums.forEach((item1, index1) => {
+                        if(index == index1) {
+                            item1[name] = this.formItem[name + index]
+                        }
+                    })
+                }
             },
             handleSubmit(name) {
                 let d = this.$refs.inputStyle && this.$refs.inputStyle[0].innerText || this.imgUrl
@@ -370,9 +446,15 @@
                         } else {
                             if(this.$refs.formInput){
                                 if(this.content) this.handleFormData()
-                                else this.$Message.info('请输入作业描述')
+                                else (this.handleFloor && this.handleFloor == '2') ? this.$Message.info('请输入作业描述') : this.handleFormData()
                             }
-                            else this.handleFormData()
+                            else {
+                                if(this.styleRule) {
+                                    this.setCourse()
+                                    this.handleFormData()
+                                }
+                                else this.handleFormData()
+                            }
                         }
                     }
                 })
@@ -432,10 +514,40 @@
             handleDrop1(val) {
                 this.$refs.inputStyle[0].style.color = val
             },
+            addCourse() {
+                this.$emit('add-course', this.formList[2].list.length)
+            },
+            // 下一步操作
+            handleNext() {
+                this.$emit('handle-next')
+            },
+            //上一步操作
+            handleLast() {
+                this.$emit('handle-last')
+            },
+            handleDefaultUploadComplete(url) {
+                this.formItem.img_default = url;
+                this.$forceUpdate()
+            },
         },
     }
 </script>
 <style lang="less" scoped>
+    .form-item-date{
+        /deep/ .ivu-btn{
+            display: inline-block !important;
+        }
+    }
+    .modal-class{
+        /deep/.ivu-modal-body {
+            padding: 50px;
+        }
+    }
+    .modal-class2{
+        /deep/.ivu-modal-body {
+            padding: 30px 25px;
+        }
+    }
     /deep/ .ivu-modal-header {
         background: #fff !important;
         padding: 0 !important;
@@ -453,10 +565,6 @@
         line-height: 70px;
     }
 
-    /deep/ .ivu-modal-body {
-        padding: 40px;
-    }
-
     .modal-text {
         margin-left: 100px;
         font-family: PingFangSC-Regular;
@@ -466,6 +574,10 @@
 
     .btn-orange {
         width: 150px;
+    }
+
+    .btn-last{
+        margin-right: 20px;
     }
 
     .foot-btn {
@@ -592,5 +704,55 @@
     .form-editor {
         display: flex;
         margin-top: 15px;
+    }
+
+    .add-course{
+        text-align: center;
+        color: #4098ff;
+        font-size: 16px;
+        cursor: pointer;
+        width: 150px;
+        margin-right: 20px;
+    }
+
+    .offline-course{
+        background: #F7F7F7;
+        margin-bottom: 15px;
+    }
+
+    .offline-course-title{
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 15px;
+
+        .offline-course-num{
+            font-family: PingFangSC-Medium;
+            font-size: 16px;
+            color: #474C63;
+            letter-spacing: 0;
+        }
+
+        .offline-course-delete{
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+
+            .offline-course-delete-img{
+                width: 13px;
+                height: 14px;
+                margin-right: 4px;
+            }
+
+            .offline-course-delete-font{
+                opacity: 0.5;
+                font-family: PingFangSC-Regular;
+                font-size: 14px;
+                color: #474C63;
+                letter-spacing: 0;
+            }
+        }
+    }
+    .font-hint{
+        color: #F54802;
     }
 </style>

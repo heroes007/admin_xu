@@ -20,7 +20,8 @@
                     </FormItem>
                     <FormItem label="上传附件" v-if="isupdata" required>
                             <upload-btn bucket="jhyl-static-file" @uploadcomplete="uploadComplete" type="doc/pdf/zip" :maxFileSize="300"/>
-                   </FormItem>
+                        <span class="font-hint">* 附件可上传任意格式，附件大小不超过300M</span>
+                    </FormItem>
                    <FormItem  label="上传附件" required v-else>
                        <div style="display:flex">
                            <p style="text-align:left">{{this.form.url_name}}</p>
@@ -196,10 +197,9 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 
     #add-download-data-container {
-        @import "base.scss";
         input,
         textarea {
             resize: none;
@@ -228,5 +228,13 @@ export default {
     }
     /deep/ .ivu-modal-body{
         padding: 40px 50px;
+    }
+    .font-hint{
+        color: #F54802;
+        width: 100%;
+        text-align: left;
+        float: left;
+        margin-top: 10px;
+        font-size: 12px;
     }
 </style>

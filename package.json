@@ -1,14 +1,14 @@
 {
   "name": "medical_education_training_admin",
   "version": "1.0.0",
-  "description": "九划医疗后台管理",
+  "description": "九划医教后台管理",
   "author": "lesonli <307771861@qq.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "rm -rf server/dist && node build/build.js",
-    "server": "cd server && node server.js",
-    "start": "cd server && node server.js",
+    "build": "rm -rf server/dist && node build/prod.js",
+    "server": "cd server && node prod.js",
+    "start": "cd server && node test.js",
     "test": "rm -rf server/dist && node build/test.js"
   },
   "dependencies": {
@@ -28,7 +28,6 @@
     "latest": "^0.2.0",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",
-    "sass-loader": "^7.1.0",
     "socket.io": "^2.2.0",
     "uglifyjs-webpack-plugin": "^2.1.1",
     "vue": "^2.5.21",
@@ -72,11 +71,9 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "0.4.1",
-    "node-sass": "^4.11.0",
     "opn": "^5.4.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "ora": "^3.0.0",
-    "sass-loader": "^7.1.0",
     "semver": "^5.6.0",
     "shelljs": "^0.8.3",
     "style-loader": "^0.23.1",

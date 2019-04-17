@@ -4,7 +4,8 @@ export default {
         return {
             btnType: false,
             organizationList: null,
-            role_id: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
+            role_id: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id,
+            tableHeight: null
         }
     },
     methods: {
@@ -56,5 +57,8 @@ export default {
                 })
             }
         },
+    },
+    mounted() {
+        this.tableHeight = window.innerHeight - 180
     }
 }

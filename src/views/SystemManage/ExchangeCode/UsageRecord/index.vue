@@ -1,90 +1,72 @@
 <template>
    <div>
        <SendCode title="发送兑换码" :show-modal="codeShow" :list="codeList" @close="codeClose" @selectChecked="codeChecked" />
-       <screen :types="8" size-title1="兑换码总数" :code-name="codeName" placehodle="搜索兑换码" :size-num1="23"  :select1="selectList"
-          size-title2="已使用"  :size-num2="17" @handleBack="handleBack"  @selectChange1="selectChange1"  @inputChange="inputChange" />
-        <Tables :is-serial=true @operation1="see" @operation2="immediateFailure" :column="columns1" :table-data="list" />
+       <screen :types="8" size-title1="兑换码总数" :code-name="codeName" placehodle="搜索兑换码" :size-num1="total"  :select1="selectList"
+          size-title2="已使用"  :size-num2="use_count" @handleBack="handleBack"  @selectChange1="selectChange1"  @inputChange="inputChange"/>
+        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="see" @operation2="immediateFailure" :column="columns1" :table-data="list" @table-swtich="tableSwtich"/>
+       <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
 <script>
   import Tables from '../../../../components/tables.vue'
   import screen from '../../../../components/ScreenFrame'
   import SendCode from './SendCode'
+  import pageMixin from '../../../mixins/pageMixins.js'
+  import pageList from '../../../../components/Page'
+  import postData from '../../../../api/postData'
+  import seeMixin from '../../../UserManage/Mixins/seeMixin'
+
   export default {
     name: "UsageRecord",
-    components: { Tables, screen, SendCode },
+    components: { Tables, screen, SendCode, pageList },
+    mixins: [pageMixin, seeMixin],
     data (){
         return{
             codeName: '',
             codeShow: false,
             codeList: [],
-            selectList:[
-            {
-                value:'all',
-                label:'全部机构'
-            },
-            {
-                value:'zj',
-                label:'浙江医院'
-            },
-            {
-                value:'bj',
-                label:'北京医院'
-            }],
+            tabelHeight: null,
+            use_count: null,
+            keyword: '',
+            selectList:[],
              columns1: [
             {
                 title: '兑换码',
-                key: 'realname',
+                minWidth: 360,
+                key: 'code',
                 align: 'left'
             },
             {
                 title: '是否使用',
-                key: 'state_text',
+                key: 'use_text',
                 slot: 'state-item',
-                stateKey: 'state',
-                stateOther: true
+                stateKey: 'use_state',
+                stateOther: true,
+                minWidth: 100,
             },
-            {
-                title: '发送时间',
-                key: 'create_time',
-                align: 'left',
-            },
+            // {
+            //     title: '发送时间',
+            //     key: 'create_time',
+            //     align: 'left',
+            // },
             {
                 title: '状态',
-                key: 'state1',
+                key: 'state_name',
+                minWidth: 100,
             },
             {
                 title: '操作',
-                width: 320,
+                minWidth: 160,
                 slot: 'operation',
-                operation_state: true,
-                poptip_state: true,
-                operation: [[['查看','发送'],'operation1'], [['立即失效','立即生效'],'operation2']],
+                align: 'center',
+                isSwitch: true, // true --> 启用 false --> 禁用
+                switchKey: 'state',
+                operation: [],
+                switchList: ['生效', '失效'],
+                isShow: true,
+                isCard: true
             }],
-            list: [
-                {
-                    "id": 13186,
-                    jurisdiction: "培训",
-                    "realname": "ANKXZPDD7Q",
-                    "product": "浙江全科医生培训",
-                    "num": 1000,
-                    "create_time": "2019/01/12",
-                    "state": 1,
-                    use_state: 1, //1--已使用 0--未使用
-                    isswitch: false,
-                },
-                 {
-                    "id": 13187,
-                    jurisdiction: "培训",
-                    "realname": "ANKXZPDD7QA",
-                    "product": "浙江全科医生培训",
-                    "num": 1001,
-                    "create_time": "2019/01/13",
-                    "state": 0, // 1 -- 生效中 0 -- 已失效
-                    use_state: 0, //1--已使用 0--未使用
-                    isswitch: false,
-                }
-            ],
+            list: [],
         }
     },
     methods: {
@@ -106,7 +88,8 @@
             console.log(val)
         },
         inputChange(val){
-            console.log(val)
+            this.keyword = val
+            this.getList()
         },
         handleClick(){
             this.modalTitle = '添加学员'
@@ -121,13 +104,62 @@
                 it.state_text = it.use_state ? '已使用' : '未使用'
                 it.state1 = it.state ? '生效中' : '已失效'
             })
+        },
+        tableSwtich(val) {
+            let d = {
+                state: val.state == true ? 1 : -1,
+                code_id: val.id
+            }
+            postData('code/modifyCodeDetail', d).then(res => {
+                if(res.res_code == 1) {
+                    this.getList()
+                }
+            })
+        },
+        getList() {
+            let d = {
+                code_id: JSON.parse(localStorage.getItem('useRecords')).id,
+                page_size : this.pageSize,
+                page_num: this.current,
+                keyword: this.keyword
+            }
+            postData('code/getCodeHistory', d).then(res => {
+                res.data.list.forEach(item => {
+                    item.use_text = item.use_state == 0 ? '未使用' : '已使用'
+                    item.state_name = item.state == -1 ? '已失效' : '生效中'
+                    item.state = item.state == 1 ? true : false
+                })
+                if(res.res_code == 1) {
+                    this.total = res.data.count
+                    this.list = res.data.list
+                    this.use_count = res.data.use_count
+                }
+            })
         }
     },
     mounted() {
+        this.$nextTick(() => {
+             let doc = document.querySelector('.ivu-table-row-hover');
+        console.log(doc)
+        })
         this.handleList()
+        this.getList()
         if(localStorage.getItem('useRecords')){
             this.codeName = JSON.parse(localStorage.getItem('useRecords')).realname
         }
+        this.tabelHeight = window.innerHeight - 130
+        this.$nextTick(() => {
+            // var arr = document.querySelectorAll('.ivu-table-row')
+            // console.log(arr, 'arr');
+            // arr.forEach(item => {
+            //     // console.log(item, 'item');
+            //     item.mouseover = function () {
+            //         console.log(123);
+            //     }
+            // })
+            // var a = document.getElementsByClassName('aaaa')[0]
+            // console.log(a);
+        })
     }
   }
 </script>

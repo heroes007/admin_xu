@@ -166,7 +166,7 @@
     }
   }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     /deep/ th, /deep/ .ivu-table-cell > span {
         font-size: 14px !important
     }

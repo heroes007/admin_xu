@@ -3,11 +3,11 @@
         <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal"
                    :title="modalTitle" :rule-validate='rules' @from-submit="fromSubmit" @change-list="changeList"/>
         <screen btnType :types="4" size-title1="兑换码总数" placehodle="搜索兑换码" :size-num1="total" btn-name="添加兑换码"
-                :select1="selectList"
+                :select1="selectList" :selectType1="true" select2Placeholder="选择状态" :select2="selectList2"
                 size-title2="付费学员" :size-num2="14" @selectChange1="selectChange1" @inputChange="inputChange"
-                @handleClick="handleClick"/>
-        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="check" @operation2="edit"
-                @operation3="useRecords" @operation4="immediateFailure" @table-swtich="swtichChange" :column="columns1"
+                @handleClick="handleClick" @selectChange2="selectChange2"/>
+        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="useRecords" @operation2="edit"
+                @operation3="batchDownload" @table-swtich="swtichChange" :column="columns1"
                 :table-data="list"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
@@ -32,6 +32,8 @@
                 modalTitle: '',
                 tableRow: {},
                 keyword:'',
+                state: '',
+                organization_id: '',
                 tableRow1: {
                     realname: '',
                     content: '',
@@ -72,13 +74,13 @@
                         title: '生效时间',
                         key: 'effect_time',
                         align: 'left',
-                        minWidth: 120
+                        minWidth: 160
                     },
                     {
                         title: '失效时间',
                         key: 'invalid_time',
                         align: 'left',
-                        minWidth: 120
+                        minWidth: 160
                     },
                     {
                         title: '状态',
@@ -90,7 +92,7 @@
                     {
                         title: '操作',
                         minWidth: 260,
-                        align: 'center',
+                        align: 'left',
                         slot: 'operation',
                         operation_state: true,
                         operation: [['查看', 'operation1'], ['编辑', 'operation2'], ['下载', 'operation3']]
@@ -99,7 +101,7 @@
                 formList: [
                     {type: 'input', name: '兑换码名称', field: 'realname'},
                     {
-                        type: 'select', name: '选择机构', field: 'jurisdiction', selectChange: true,
+                        type: 'select', name: '选择机构', field: 'jurisdiction', select_change: true,
                         selectList: [], selectField: ['id', 'title']
                     },
                     {
@@ -121,13 +123,55 @@
                     content: [{required: true, message: '请选择兑换内容'}],
                     num: [{required: true, message: '请输入兑换数量'}],
                     effective_time: []
-                }
+                },
+                selectList2: [
+                    {id: '', title: '全部'},
+                    {id: 0, title: '已失效'},
+                    {id: 3, title: '生效中'},
+                ]
             }
         },
         methods: {
             batchDownload(row, rowIndex) {
-                console.log(row, rowIndex, 'batchDownload');
+                postData('code/getCodeHistory', {code_id: row.id, page_size: 20, page_num: 1}).then(res => {
+                    res.data.list.forEach(item => {
+                        item.product_name = row.product_name
+                        item.organization_name = row.organization_name
+                        item.is_state = item.use_state == 0 ? '未使用' : '已使用'
+                    })
+                    let titleList = [
+                        {title: '兑换码名称', key: 'code'},
+                        {title: '兑换码产品名称', key: 'product_name'},
+                        {title: '所属机构', key: 'organization_name'},
+                        {title: '是否使用', key: 'is_state'}
+                        ]
+                    this.$config.downExcel(titleList, res.data.list)
+                })
             },
+            // downExcel(th, list) {
+            //     var title = '', content = ''
+            //     th.forEach(item => {
+            //         title += `<th>${item.title}</th>`
+            //     })
+            //     title = `<tr>${title}</tr>`
+            //     list.forEach(item => {
+            //         let detail = ''
+            //         th.forEach(it => {
+            //             detail += `<td>${item[it.key]}</td>`
+            //         })
+            //         detail += `<tr>${detail}</tr>`
+            //         content += detail
+            //     })
+            //     var tables = title + content
+            //     let html = "<html><head><meta charset='utf-8' /></head><body><table>";
+            //     html += tables;
+            //     html += "</table></body></html>";
+            //     var blob = new Blob([html], { type: "application/vnd.ms-excel" });
+            //     var a = document.createElement('a');
+            //     a.href = URL.createObjectURL(blob);
+            //     a.download = "兑换码数据.xls";
+            //     a.click()
+            // },
             useRecords(row, rowIndex) {
                 this.$router.replace({path: `/dashboard/${row.id}/usage-record/`})
                 localStorage.setItem('useRecords', JSON.stringify(row))
@@ -137,11 +181,12 @@
             },
             edit(row, rowIndex) {
                 postData('code/getCodeDetail', {code_id: row.id}).then(res => {
-                    console.log(res, 'res')
                     if(res.res_code == 1) {
                         this.modalTitle = '修改兑换码'
                         this.formList[3].disable = true
                         this.show = true
+                        let effct = this.$config.formatTime(new Date(res.data[0].effect_time))
+                        let invalid = this.$config.formatTime(new Date(res.data[0].invalid_time))
                         this.tableRow = {
                             id: res.data[0].id,
                             content: res.data[0].product_id,
@@ -151,7 +196,7 @@
                             state: res.data[0].state ,
                             effect_time: res.data[0].effect_time,
                             invalid_time: res.data[0].invalid_time,
-                            effective_time: [res.data[0].effect_time, res.data[0].invalid_time],
+                            effective_time: [this.$config.formatTime(new Date(res.data[0].effect_time)), this.$config.formatTime(new Date(res.data[0].invalid_time))],
                             isEdit: true
                         }
                     }
@@ -168,9 +213,16 @@
             },
             selectChange1(val) {
                 console.log(val)
+                this.organization_id = val
+                this.getList()
+            },
+            selectChange2(val) {
+                this.state = val
+                this.getList()
             },
             inputChange(val) {
-                console.log(val)
+                this.keyword = val
+                this.getList()
             },
             handleClick() {
                 this.modalTitle = '添加兑换码'
@@ -184,34 +236,38 @@
                 })
             },
             fromSubmit(val) {
-                console.log(val, 'val')
                 let d = {
                     product_id: val.content,
                     title: val.realname,
                     code_count: val.num,
                     organization_id: val.jurisdiction,
                     state: val.isswitch ? 2 : 1,
-                    effect_time: val.effective_time[0],
-                    invalid_time: val.effective_time[1]
+                    effect_time: this.$config.formatTime(val.effective_time[0]),
+                    invalid_time: this.$config.formatTime(val.effective_time[1])
                 }
+                if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 1) d.organization_id = JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id
                 if(val.isEdit) {
                     postData('code/modifyCode', {...d, ...{id: val.id}}).then(res => {
-                        console.log(res, 'res')
-                        if(res.res_code == 1) this.getList()
+                        if(res.res_code == 1) {
+                            this.getList()
+                            this.show = false
+                        }
                     })
                 }else{
                     postData('code/addCode', d).then(res => {
-                        if(res.res_code == 1) this.getList()
+                        if(res.res_code == 1) {
+                            this.getList()
+                            this.show = false
+                        }
                     })
                 }
-                this.show = false
             },
             closeModal() {
                 this.show = false
             },
             getOrganization() {
                 postData('components/getOrganization').then(res => {
-                    if (res.res_code == 1) this.formList[1].selectList = res.data
+                    if (res.res_code == 1 && JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) this.formList[1].selectList = res.data
                 })
             },
             getProducts(val) {
@@ -233,11 +289,13 @@
                     page_size: this.pageSize,
                     page_num: this.current,
                     keyword: this.keyword,
+                    state: this.state,
+                    organization_id: this.organization_id
                 }
                 postData('code/getCodeList', d).then(res => {
                     res.data.list.forEach(item => {
-                        item.stateName = item.state == 0 ? '未生效' : '已生效'
-                        item.state = item.state == 0 ? 0 : 1
+                        item.stateName = item.state == -1 ? '已失效' : item.state == 0 ? '未生效' : '已生效'
+                        item.state = item.state == -1 ? 0 : item.state == 0 ? 2 : 1
                     })
                     this.list = res.data.list
                     this.total = res.data.count
@@ -246,7 +304,12 @@
         },
         mounted() {
             this.getOrganization()
-            this.getProducts()
+            if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) {
+                this.getProducts()
+            }else {
+                this.organization_id = JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id
+                this.getProducts(JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id)
+            }
             this.handleList()
             this.getList()
             this.tableRow = this.tableRow1

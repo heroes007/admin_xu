@@ -10,11 +10,10 @@ module.exports = {
         port: 8001
     },
     prod:{
-        publicPath:'http://sfile.jiuhuatech.com/met_admin/dist/',
-        port: 8021,
+        // publicPath:'/',
+        publicPath:'http://sfile.jiuhuatech.com/met_admin/dist/'
     },
     test: {
-        publicPath:'/',
-        port: 8521
+        publicPath:'http://sfile.jiuhuatech.com/met_admin_test/dist/',
     }
 }

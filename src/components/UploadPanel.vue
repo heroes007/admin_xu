@@ -3,7 +3,7 @@
         <Icon class="icon-colse" v-if="close&&!is_show" type="md-close-circle" @click="closeModal"/>
         <Row class="upload-space" v-show="is_show"
              :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
-            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
+            <input type="file" style="font-size: 1.2em; padding: 10px 0;height: 100%;" @change="handleChangeMedia" :accept="types"/>
             <!--<Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />-->
             <img class="md-cloud-upload" src="../assets/icons/icon/upload.png" alt="">
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -17,7 +17,7 @@
         <span style="display: none">{{resultUrl}}</span>
         <Row class="video" v-if="type=='video'&&!is_show">
             <video ref="vedioPlayer" v-if="resourse_url||resultUrl" :src="resourse_url?resourse_url:resultUrl" controls="controls"/>
-            <input v-if="resourse_url ? (!resourse_url) : (!resultUrl)" type="file" accept="*"
+            <input v-if="resourse_url ? (!resourse_url) : (!resultUrl)" type="file" :accept="types"
                    style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
         </Row>
         <div class="file-require">
@@ -64,6 +64,10 @@
             maxFileSize: {
                 type: Number,
                 default: 0
+            },
+            types: {
+                type: String,
+                default: '*'
             }
         },
         data() {
@@ -98,10 +102,14 @@
                 if (/\.(mp4|wav|mov)/.test(this.resourse)) {
                     this.type = 'video';
                     this.is_show = false;
-                    // if(result.indexOf('http') < 0)
-                    //     result = 'http://video.laoshi123.com/' + this.resourse;
                 }
                 return result;
+            }
+        },
+        watch:{
+            resourse(val) {
+                if(!val) this.is_show = true
+                else this.resourse_url = val
             }
         },
         methods: {
@@ -238,7 +246,7 @@
         }
     }
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .icon-colse {
         position: absolute;
         z-index: 1000;
@@ -277,7 +285,7 @@
 
             input {
                 width: 100%;
-                height: 74% !important;
+                height: 100% !important;
             }
         }
 
@@ -290,7 +298,7 @@
         }
 
         .upload-space {
-            height: 250px;
+            height: 100%;
             background: #F6F6F6;
             border: 1px solid #CCCCCC;
             display: block;

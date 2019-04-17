@@ -3,8 +3,8 @@
         <div class="login-view" :style="loginViewStyl">
             <div class="login-left"></div>
             <div class='login-right'>
-                <div class='logo'><img src='../assets/icons/img/logo_copy.png'></div>
-                <h1 class="login-title">九划医疗后台管理系统</h1>
+                <div class='logo'><img class="logo-img" src='http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/wenda/20190327113914.ico'> <span>九划医教</span></div>
+                <h1 class="login-title">九划医教后台管理系统</h1>
                 <div class='data-input'>
                     <div class="elRow">
                         <img class="input-img" src='../assets/icons/img/head.png'>
@@ -36,7 +36,7 @@
     import { mapState, mapActions } from 'vuex';
     import Vue from 'vue'
     export default {
-        components: {  EllipsisAni  },
+        components: { EllipsisAni },
         data() {
             return {
                 name: '',
@@ -54,8 +54,10 @@
                         this.isLogining = false;
                         let d = res.data.data;
                         localStorage.setItem('organizationId',d.userInfo[0].organization_id)
-                        this.$store.dispatch('set_user_info', d.userInfo[0]);
+                        this.$store.dispatch('get_user_info');
                         localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
+                        // if(d.userInfo[0].role_id == 4)  this.$router.push({ path: 'tutor' });
+                        // else 
                         this.$router.push({ path: 'dashboard' });
                         localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
                         localStorage.setItem('token',d.token)
@@ -74,7 +76,7 @@
         },
         mounted() {
             if(localStorage.getItem('login_user')&&localStorage.getItem('login_user') != 'null'){
-              let user = Base64.decode(this.$localStorage.get('login_user'))
+              let user = Base64.decode(localStorage.getItem('login_user'))
               let u = JSON.parse(user)
               this.setUser(u)
             }else this.setUser({name:'',pass:''})
@@ -84,7 +86,7 @@
     }
 
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
     .login-container {
         width: 100%;
         display: flex;
@@ -128,8 +130,16 @@
                 height: 38px;
                 img {
                     height: 38px;
-                    width: 136px;
+                    width: 38px;
                     float: left;
+                }
+                span{
+                    font-family: PingFangSC-Semibold;
+                    text-align: left;
+                    font-size: 22px;
+                    position: absolute;
+                    letter-spacing: 1.5px;
+                    left: 50px;
                 }
             }
             .login-title{
