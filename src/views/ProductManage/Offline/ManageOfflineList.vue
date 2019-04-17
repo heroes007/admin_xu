@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="card-row mt20">
-                    <div class="card-end-time">创建时间：{{t.create_time}}</div>
+                    <div class="card-end-time">共{{t.curriculum_count}}节课</div>
                     <Button v-if="btnType" class="card-end-btn r0" type="text" ghost @click="handleEdit(t)">编辑</Button>
                     <Button class="card-end-btn" :class="btnType ? 'r48' : 'r0'" type="text" ghost
                             @click="handleSee(t)">查看
@@ -28,8 +28,8 @@
                 </div>
             </Card>
         </div>
-        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" :styleRule="styleRule" @delete-list="deleteList"
-                    @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit" @add-course="addCourse"/>
+        <form-modal :detail-data="tableRow" :show-modal='show' :form-list="formList" :detailData="detailData" :styleRule="styleRule" @delete-list="deleteList" :modalWidth="860" :isAdd="true"
+                    @close="closeModal" :title="modalTitle" :rule-validate="rules" @from-submit="handleSubmit" @add-course="addCourse" :modalBody="true"/>
     </div>
 </template>
 
@@ -47,15 +47,15 @@
                 list: [],
                 tableRow: {},
                 courseList: [
-                    {type: 'input', name: '课程名称', index: 0, field: 'title'},
-                    {type: 'select', name: '课程类型', index: 0, field: 'type', selectList: [{id: 1, name: '讲座'}, {id: 2, name: '实践'}], selectField:['id', 'name']},
-                    {type: 'select', name: '课程讲师', index: 0, field: 'teacher_id', selectList: [], selectField: ['id', 'name']},
-                    {type: 'input', name: '上课地点', index: 0, field: 'class_address'},
+                    {type: 'input', name: '课程名称:', index: 0, field: 'title'},
+                    {type: 'select', name: '课程类型:', index: 0, field: 'type', selectList: [{id: 1, name: '讲座'}, {id: 2, name: '实践'}], selectField:['id', 'name']},
+                    {type: 'input', name: '上课地点:', index: 0, field: 'class_address'},
+                    {type: 'select', name: '课程讲师:', index: 0, field: 'teacher_id', selectList: [], selectField: ['id', 'name']},
                 ],
                 courseRule: [],
                 formList: [
-                    {type: 'input', name: '主题名称', field: 'title'},
-                    {type: 'textarea', name: '主题描述', field: 'description'},
+                    {type: 'input', name: '主题名称:', field: 'title'},
+                    {type: 'textarea', name: '主题描述:', field: 'description'},
                     {type: 'array', list: []}
                 ],
                 modalTitle: '',
@@ -74,7 +74,10 @@
         components: {formModal},
         watch: {
             show(val) {
-                if(!val) this.formList[2].list = this.courseList
+                if(!val) {
+                    this.formList[2].list = []
+                    this.formList[2].list.push(this.courseList)
+                }
             }
         },
         methods: {
@@ -108,11 +111,21 @@
                 let d = {title: v.title, product_id: this.product_id,offlineCurriculums: v.offlineCurriculums, description: v.description}
                 if (this.modalTitle === '添加主题'){
                     postData('product/curriculum_offline/addSubjectAndOfflineCurriculums', d).then(res => {
-                        if(res.res_code == 1) this.getList()
+                        if(res.res_code == 1) {
+                            this.$Message.success('保存成功')
+                            this.getList()
+                        }else{
+                            this.$Message.info(res.msg)
+                        }
                     })
                 }else{
                     postData('product/curriculum_offline/operateSubjectAndOfflineCurriculums', {...d,id: v.id}).then(res => {
-                        if(res.res_code == 1) this.getList()
+                        if(res.res_code == 1) {
+                            this.$Message.success('保存成功')
+                            this.getList()
+                        }else{
+                            this.$Message.info(res.msg)
+                        }
                     })
                 }
             },
@@ -136,11 +149,12 @@
                 })
             },
             setCourseList(list) {
-                this.formList[2].list = this.$config.copy([...this.formList[2].list, ...list], [])
+                this.formList[2].list.push(list)
                 let arr = this.$config.copy(this.formList[2].list, [])
                 arr.forEach(item => {
-                    this.courseRule[item.field + item.index] = [{required: true, message: `请输入${item.name}`}]
-                    // item.type === 'input' ? this.courseRule[item.field + item.index][0].trigger = 'blur' : ''
+                    item.forEach(it => {
+                        this.courseRule[it.field + it.index] = [{required: true, message: `请输入${it.name}`}]
+                    })
                 })
                 this.rules = {...this.rules, ...this.courseRule}
             },
@@ -153,8 +167,8 @@
                 this.setCourseList(arr)
             },
             deleteList(val) {
-                if(this.formList[2].list.length == 4) this.$Message.info('只剩一组，不能继续删除')
-                else this.formList[2].list.splice(val, 4)
+                if(this.formList[2].list.length == 1) this.$Message.info('只剩一组，不能继续删除')
+                else this.formList[2].list.splice(val, 1)
             }
         },
         mounted() {
@@ -162,7 +176,7 @@
             this.windowHight = window.innerHeight - 60
             postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
                 if(res.res_code == 1) {
-                    this.courseList[2].selectList = res.data
+                    this.courseList[3].selectList = res.data
                     this.setCourseList(this.courseList)
                 }
             })

@@ -136,7 +136,6 @@
               register_end_time: dateFormat(this.form1.register_end_time),
               offlineCurriculums: course
             }
-            console.log(d,'ddd');
             postData(url, d).then((res) => {
                 if(res.res_code == 1){
                   this.$Message.success(res.msg);
