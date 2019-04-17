@@ -89,8 +89,7 @@
                 resourse_url: '',
                 fullscreenLoading: null,
                 video_url: '',
-                fileSize: null,
-                imgShow: false
+                fileSize: null
             }
         },
         computed: {
@@ -104,8 +103,6 @@
                     this.type = 'video';
                     this.is_show = false;
                 }
-                if(result) this.imgShow = true
-                else this.imgShow = true
                 return result;
             }
         },

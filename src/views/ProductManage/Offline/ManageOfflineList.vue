@@ -47,15 +47,15 @@
                 list: [],
                 tableRow: {},
                 courseList: [
-                    {type: 'input', name: '课程名称:', index: 0, field: 'title'},
-                    {type: 'select', name: '课程类型:', index: 0, field: 'type', selectList: [{id: 1, name: '讲座'}, {id: 2, name: '实践'}], selectField:['id', 'name']},
-                    {type: 'input', name: '上课地点:', index: 0, field: 'class_address'},
-                    {type: 'select', name: '课程讲师:', index: 0, field: 'teacher_id', selectList: [], selectField: ['id', 'name']},
+                    {type: 'input', name: '课程名称', index: 0, field: 'title'},
+                    {type: 'select', name: '课程类型', index: 0, field: 'type', selectList: [{id: 1, name: '讲座'}, {id: 2, name: '实践'}], selectField:['id', 'name']},
+                    {type: 'input', name: '上课地点', index: 0, field: 'class_address'},
+                    {type: 'select', name: '课程讲师', index: 0, field: 'teacher_id', selectList: [], selectField: ['id', 'name']},
                 ],
                 courseRule: [],
                 formList: [
-                    {type: 'input', name: '主题名称:', field: 'title'},
-                    {type: 'textarea', name: '主题描述:', field: 'description'},
+                    {type: 'input', name: '主题名称', field: 'title'},
+                    {type: 'textarea', name: '主题描述', field: 'description'},
                     {type: 'array', list: []}
                 ],
                 modalTitle: '',

@@ -94,7 +94,7 @@
                         </upload-panel>
                     </FormItem>
                     <!--富文本编辑器-->
-                    <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 100 : 0" :prop="t.field" class="upload" ref="formInput">
+                    <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 80 : 0" :prop="t.field" class="upload" ref="formInput">
                         <new-editor style="width: 100%; height: 500px;" @get-content="getContent" :content="content"/>
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
@@ -103,7 +103,7 @@
                         </div>
                     </FormItem>
                     <!--数组表单,针对线下课-->
-                    <div class="offline-course" v-for="(it, ins) in t.list"  v-if="(t.type === 'array')">
+                    <div  v-if="(t.type === 'array')" class="offline-course" v-for="(it, ins) in t.list" :key="ins">
                         <div class="offline-course-title">
                             <div class="offline-course-num">课程{{ins + 1 < 10 ? '0' + (ins + 1) : (ins + 1)}}</div>
                             <div class="offline-course-delete" @click="deleteList(it, ins)">
@@ -271,8 +271,8 @@
                 color: '',
                 modalText2: '',
                 panelOptions: {
-                    panelWidth: 445,
-                    panelHeight: 296
+                    panelWidth: 465,
+                    panelHeight: 310
                 }
             }
         },
@@ -306,7 +306,12 @@
             show(val) {
                 if (!val) {
                     if (this.content) this.content = ''
-                    this.formItem = {}
+                }else {
+                    if(JSON.stringify(this.detailData) == '{}') {
+                        this.$nextTick(() => {
+                            this.$refs.formValidate.resetFields()
+                        })
+                    }
                 }
             },
             detailData(_new) {
