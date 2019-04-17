@@ -16,7 +16,7 @@
                     <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
                 </Upload>
             </div>
-            <Form ref="formValidate" :model="formItem" :label-width="100" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
+            <Form ref="formValidate" :model="formItem" :label-width="80" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
                 <div v-for="(t,index) in formList" :key="index">
                     <FormItem v-if="t.type==='input'" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
@@ -94,8 +94,13 @@
                         </upload-panel>
                     </FormItem>
                     <!--富文本编辑器-->
+<<<<<<< HEAD
                     <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 100 : 0" :prop="t.field" class="upload" ref="formInput">
                         <new-editor :style=" t.small ? 'height: 340px;' : 'height: 500px;'" @get-content="getContent" :content="content"/>
+=======
+                    <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 80 : 0" :prop="t.field" class="upload" ref="formInput">
+                        <new-editor style="width: 100%; height: 500px;" @get-content="getContent" :content="content"/>
+>>>>>>> a262795f21e95d7d382dea65744ad185b686596e
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
@@ -103,7 +108,7 @@
                         </div>
                     </FormItem>
                     <!--数组表单,针对线下课-->
-                    <div class="offline-course" v-for="(it, ins) in t.list"  v-if="(t.type === 'array')">
+                    <div  v-if="(t.type === 'array')" class="offline-course" v-for="(it, ins) in t.list" :key="ins">
                         <div class="offline-course-title">
                             <div class="offline-course-num">课程{{ins + 1 < 10 ? '0' + (ins + 1) : (ins + 1)}}</div>
                             <div class="offline-course-delete" @click="deleteList(it, ins)">
@@ -271,8 +276,8 @@
                 color: '',
                 modalText2: '',
                 panelOptions: {
-                    panelWidth: 445,
-                    panelHeight: 296
+                    panelWidth: 465,
+                    panelHeight: 310
                 }
             }
         },

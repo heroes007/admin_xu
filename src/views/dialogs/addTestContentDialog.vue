@@ -75,8 +75,6 @@
     import {RemoveModal} from './mixins'
     import {MPop} from '../../components/MessagePop'
     import postData from '../../api/postData'
-    import newEditor from '../../components/NewEditor'
-
     export default {
         mixins: [RemoveModal, MPop],
         props: {
@@ -85,11 +83,7 @@
             },
             payload: {}
         },
-        components: {
-            'base-input': BaseInput,
-            'data-list': BaseList,
-            uploadBtn, newEditor
-        },
+        components: { 'base-input': BaseInput, 'data-list': BaseList, uploadBtn },
         data() {
             return {
                 addTestContentDialog: true,

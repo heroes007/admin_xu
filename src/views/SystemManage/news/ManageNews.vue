@@ -133,6 +133,7 @@
                 })
             },
             edit(row, rowIndex) {
+                console.log(row);
                 this.isAdd = false
                 this.modalTitle = '编辑文章'
                 this.tableRow = row

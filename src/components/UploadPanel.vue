@@ -102,8 +102,6 @@
                 if (/\.(mp4|wav|mov)/.test(this.resourse)) {
                     this.type = 'video';
                     this.is_show = false;
-                    // if(result.indexOf('http') < 0)
-                    //     result = 'http://video.laoshi123.com/' + this.resourse;
                 }
                 return result;
             }
