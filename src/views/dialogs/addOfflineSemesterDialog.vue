@@ -1,35 +1,37 @@
 <template>
     <Modal :transfer=false v-model="addOfflineSemesterDialog" :title="payload.type == 2 ? '编辑学期' : '添加学期'" @on-cancel="handleRemoveModal(remove)" size="auto"
-           :footer-hide="true" :mask-closable="false" :styles="{width: '640px'}" style="border-radius:6px !important" :closable="true">
-        <base-input :baseInputWidth="600" @closedialog="handleClose">
+           :footer-hide="true" :mask-closable="false" :styles="{width: '860px'}" style="border-radius:6px !important" :closable="true">
+        <base-input :baseInputWidth="800" @closedialog="handleClose">
             <Row slot="body" class="top-nav">
-                <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="120">
+                <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="80">
                     <FormItem label="学期名称" prop="title" >
                         <Input v-model="form1.title" placeholder="请输入学期名称"></Input>
                     </FormItem>
                     <FormItem label="学期描述" class="semester-description" prop="description" >
                         <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
                     </FormItem>
-                    <FormItem  label="辅导老师" prop="tutor_id">
-                        <Select v-model="form1.tutor_id" placeholder="请选择辅导老师" >
-                            <Option v-for="(m,i) in teacherList" :key="i" :value="m.id">{{m.realname}}</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem label="开课日期" prop="stage1">
-                        <DatePicker v-model="form1.stage1" type="daterange" format="yyyy/MM/dd" placeholder="请选择时间范围" :transfer="true"></DatePicker>
-                    </FormItem>
-                    <FormItem label="报名截止" prop="register_end_time">
-                        <DatePicker v-model="form1.register_end_time" type="date" format="yyyy/MM/dd" placeholder="请选择报名截止" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
-                    </FormItem>
-                    <div v-for="(t,i) in form1.offlineCurriculums" :key="i">
-                      <Divider />
-                      <FormItem label="课程名称"><Input v-model="t.title" disabled></Input></FormItem>
-                      <FormItem label="课程类型"><Input v-model="t.type_name" disabled></Input></FormItem>
-                      <FormItem label="课程讲师"><Input v-model="t.teacher_name" disabled></Input></FormItem>
-                      <FormItem label="上课时间" :prop="'class_start_time'+i">
+                    <div class="form-item-semester">
+                      <FormItem class="item-semester"  label="辅导老师" prop="tutor_id">
+                          <Select v-model="form1.tutor_id" placeholder="请选择辅导老师" >
+                              <Option v-for="(m,i) in teacherList" :key="i" :value="m.id">{{m.realname}}</Option>
+                          </Select>
+                      </FormItem>
+                      <FormItem  class="item-semester item-semester2"  label="开课日期" prop="stage1">
+                          <DatePicker v-model="form1.stage1" type="daterange" format="yyyy/MM/dd" placeholder="请选择时间范围" :transfer="true"></DatePicker>
+                      </FormItem>
+                      <FormItem  class="item-semester item-semester2" label="报名截止" prop="register_end_time">
+                          <DatePicker v-model="form1.register_end_time" type="date" format="yyyy/MM/dd" placeholder="请选择报名截止" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
+                      </FormItem>
+                    </div>
+                    <div class="form-item-course" v-for="(t,i) in form1.offlineCurriculums" :key="i">
+                      <div class="item-course">
+                        <span class="item-course-left"><span class="item-course-title">课程{{$config.addZero(i+1)}}</span>{{t.title}}</span> 
+                        <span class="item-course-rigth">{{t.type_name}} | {{t.teacher_name}}</span>
+                      </div>
+                      <FormItem label="上课时间" :prop="'class_start_time'+i" required>
                         <DatePicker class="class-time" v-model="form1['class_start_time'+i]" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="请选择上课时间" :transfer="true"></DatePicker>
                       </FormItem>
-                      <FormItem label="上课地点" :prop="'class_address'+i">
+                      <FormItem label="上课地点" :prop="'class_address'+i" required>
                         <Input v-model="form1['class_address'+i]" placeholder="请输入上课地点"></Input>
                       </FormItem>
                     </div>
@@ -171,7 +173,7 @@
         if(offlineCurriculums.length>0){
           offlineCurriculums.forEach((t,i) => {
           this.rules1['class_start_time'+i] = [{ required: true, message: '请选择上课时间'}]
-          this.rules1['class_address'+i] = [{ required: true, message: '请输入上课地点', trigger: 'blur' }]
+          this.rules1['class_address'+i] = [{ required: true, message: '请输入上课地点'}]
           this.form1['class_start_time'+i] = t.class_start_time
           this.form1['class_address'+i] = t.class_address
           t.type_name = t.type == 1 ? '讲座' : '实践'
@@ -180,15 +182,50 @@
       }
     },
     mounted(){
+      if(this.payload.type == 1){
+        this.$refs.myForm1.resetFields()
+        this.form1.offlineCurriculums = this.payload.offlineCurriculums
+      }
       this.setRules()
       this.getTeacherList()
     }
   }
 </script>
 <style scoped lang="less">
-    /deep/ .ivu-date-picker-transfer {
-      /deep/.ivu-picker-confirm{
+    /deep/ .ivu-btn{
+      display: inline-block !important;
+    }
+    .form-item-semester{
+      display: flex;
+      .item-semester{
+        flex: 1;
+      }
+      .item-semester2{
+        margin-left: 10px;
+      }
+    }
+    .form-item-course{
+      margin-top: 15px;
+      background: #F7F7F7;
+      border-radius: 4px;
+      padding: 10px 15px;
+      .item-course{
+        height: 22px;
+        margin-bottom: 20px;
         display: flex;
+        position: relative;
+        font-size: 16px;
+        font-family: PingFangSC-Regular;
+        .item-course-left{
+          .item-course-title{
+            font-family: PingFangSC-Medium;
+            margin-right: 20px;
+          }
+        }
+        .item-course-rigth{
+          position: absolute;
+          right: 0;
+        }
       }
     }
     .sub-btn {

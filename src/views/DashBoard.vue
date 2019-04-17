@@ -5,7 +5,7 @@
             <Col v-if="!menushow"><HideMenu /></Col>
             <Col class='sub-view' :style="viewStyl">
                 <div class="hide-menu-btn" @click="hideMenu"><Icon class="hide-icon" :type="hideIcon" /></div>
-                <router-view />
+                <router-view :key="$route.fullPath" />
             </Col>
         </Row>
     </div>

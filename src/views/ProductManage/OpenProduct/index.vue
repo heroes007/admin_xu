@@ -2,19 +2,19 @@
     <div >
         <Tabs @on-click="tabs" v-model="online">
             <TabPane label="线上自学" v-if="item1" name="product1">
-                <online v-if="pane1" />
+                <online />
             </TabPane>
             <TabPane label="线下集中" v-if="item2" name="product2">
-                <offline v-if="pane2" />
+                <offline />
             </TabPane>
             <TabPane label="作业" v-if="item3" name="product3">
-                <task v-if="pane3" />
+                <task />
             </TabPane>
             <TabPane label="资料" v-if="item4" name="product4">
-                <course v-if="pane4" />
+                <course />
             </TabPane>
             <TabPane label="证书" v-if="item5" name="product5">
-                <houner v-if="pane5" />
+                <houner />
             </TabPane>
         </Tabs>
     </div>

@@ -56,7 +56,8 @@
                         localStorage.setItem('organizationId',d.userInfo[0].organization_id)
                         this.$store.dispatch('get_user_info');
                         localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
-                        this.$router.push({ path: 'dashboard' });
+                        if(d.userInfo[0].role_id == 4)  this.$router.push({ path: 'tutor' });
+                        else this.$router.push({ path: 'dashboard' });
                         localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
                         localStorage.setItem('token',d.token)
                         let d1 = { name: this.name, pass: this.password }
@@ -74,7 +75,7 @@
         },
         mounted() {
             if(localStorage.getItem('login_user')&&localStorage.getItem('login_user') != 'null'){
-              let user = Base64.decode(this.$localStorage.get('login_user'))
+              let user = Base64.decode(localStorage.getItem('login_user'))
               let u = JSON.parse(user)
               this.setUser(u)
             }else this.setUser({name:'',pass:''})

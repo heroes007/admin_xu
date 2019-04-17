@@ -2,31 +2,13 @@
     <div class='manage-offline-course'>
         <SeeModal :show="seeModal" :details="details" @close-modal="closeModal1" />
         <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
-        <div class="offline-item" v-for="(t,i) in dataList" :key="i">
-            <div class="offline-item-title offline-title">
-                <p>{{t.title}}</p>
-                <div class="offline-item-title-right"> 
-                    <span>{{t.student_num}}人预约</span>
-                    <span>开课日期: {{t.start_time}}</span>
-                    <span>报名截止: {{t.register_end_time}}</span>
-                </div>
-            </div>
-            <div class="offline-item-title offline-item-de">
-                <p>{{t.description}}</p>
-                <div class="offline-item-btn">
-                    <Button class="item-btn" @click="see(i,t)" type="text">查看预约</Button>
-                    <Button class="item-btn" @click="editOfflineSemester(i,t)" type="text">编辑</Button>
-                    <Button class="item-btn" @click="copyItem(i,t)" type="text">复制</Button>
-                    <Button class="item-btn" @click="sendOfflineCourseHandler(i,t)" type="text">发送</Button>
-                    <Button class="item-btn" @click="deleteOfflineSemester(i,t)" type="text">删除</Button>
-                </div>
-            </div>
-        </div>
+        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="editOfflineSemester" @operation2="see" @operation3="sendOfflineCourseHandler" @operation4="deleteOfflineSemester" :column="columns1" :table-data="dataList" />
         <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
 
 <script>
+    import Tables  from '../../../components/tables.vue'
     import SaveOrder from '../../../components/SaveOrder'
     import screen from '../../../components/ScreenFrame'
     import { Dialog } from '../../dialogs';
@@ -38,7 +20,7 @@
     import SeeModal from "./see-modal.vue";
     export default {
         mixins: [Dialog, setAuthMixins],
-        components: { 'save-order': SaveOrder, screen, SeeModal },
+        components: { 'save-order': SaveOrder, screen, SeeModal, Tables },
         data() {
             return {
                 seeModal: false,
@@ -54,10 +36,11 @@
                 theme: JSON.parse(localStorage.getItem('OffLineClassTheme')),
                 current: 1,
                 total: null,
-                pageSize: 4,
+                pageSize: 12,
                 page_num: 1,
                 details: {},
                 term_row: null,
+                tableHeight: null
             }
         },
         computed: {
@@ -68,6 +51,45 @@
             dataList() {
                 return this.$store.state.offline_curriculum.offline_term_list;
             },
+            columns1(){
+                let d = [['编辑','operation1'], ['查看预约','operation2'], ['发送','operation3'], ['删除','operation4']]
+                let btnList = this.btnType ? d : [['发送','operation3']]
+                return [
+                    {
+                        key: 'title',
+                        title: '学期名称',
+                        align: 'left',
+                        minWidth: 200
+                    },
+                    {
+                        key: 'student_num',
+                        title: '预约人数',
+                        width: 100
+                    },
+                    {
+                        key: '',
+                        title: '开课日期',
+                        minWidth: 200,
+                        render: (h, params) => {
+                            let open_date = this.$config.formatDate(params.row.start_time);
+                            let end_date = this.$config.formatDate(params.row.end_time);
+                            let d = end_date&&end_date!='-' ? '至' + end_date : ''
+                            return h('span', open_date + d)
+                        }
+                    },
+                    {
+                        key: 'register_end_time',
+                        title: '报名截止日期',
+                        width: 150,
+                    }, 
+                    {
+                        title: '操作',
+                        minWidth: 260,
+                        slot: 'operation',
+                        align: 'left',
+                        operation: btnList,
+                    }]
+            }
         },
         methods: {
             ...mapActions([ 'delete_offline_term', 'get_offline_curriculum_detail']),
@@ -77,13 +99,13 @@
             closeModal1(){
                 this.seeModal = false
             },
-            see(index, row){
+            see(row, index){
                 console.log(row,'dd');
                 this.details = row
                 this.seeModal = true
             },
             //复制
-            copyItem(index, row){
+            copyItem(row, index){
                 this.$Modal.confirm({
                     title: '提示',
                     content: '确定你要复制该学期？',
@@ -98,10 +120,10 @@
                     onCancel: () => {}
                 });
             },
-            sendOfflineCourseHandler(index, row) {
+            sendOfflineCourseHandler(row, index) {
                 this.handleSelModal(types.SEND_OFFLINE_COURSE, {row: row});
             },
-            editOfflineSemester(index, row) {
+            editOfflineSemester(row, index) {
                 postData('product/curriculum_offline_term/getTermAndCurriculums', {term_id: row.id}).then((res) => {
                     if(res.res_code == 1){
                     let d = res.data
@@ -111,10 +133,11 @@
                 })
             },
             addOfflineSemesterHandler() {
+                console.log(this.subjectList);
                 this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 1, page_size: this.pageSize,
                 page_num: this.page_num, offlineCurriculums: this.subjectList})
             },
-            deleteOfflineSemester(index, row) {
+            deleteOfflineSemester(row, index) {
                 var vm = this;
                 if (row.can_delete == 0) {
                     this.$Modal.info({ title: '提示', content: '<p>无法删除该学期!</p >' });
@@ -139,7 +162,7 @@
                 this.$store.dispatch('get_offline_curriculum_list', { page_size: this.pageSize,
                     page_num: this.page_num,term_underline_id: row.id})
             },
-            manageSignupHandler(index, row) {
+            manageSignupHandler(row, index) {
                 this.$router.replace({ name: 'offline-course-manage-signup', params: { id: row.id } })
             },
             pageList(val){
@@ -191,38 +214,5 @@
     .pos{
         position: absolute;
         right: 0; 
-    }
-    .offline-item{
-        margin: 40px;
-        padding: 30px 40px;
-        border: 1px solid #ddd;
-        display: flex;
-        flex-direction: column;
-        .offline-item-title{
-            display: flex;
-            position: relative;
-            .offline-item-title-right{
-                .pos;
-                span{
-                    margin-left: 20px;
-                }
-            }
-        }
-        .offline-title{
-            font-family: PingFangSC-Medium;
-            font-size: 18px;
-        }
-        .offline-item-de{
-            margin-top: 20px;
-            height: 40px;
-            align-items: center;
-            .offline-item-btn{
-               .pos;
-               /deep/.item-btn{
-                   padding: 0;
-                   margin-left: 20px;
-               }
-            }
-        }
     }
 </style>
