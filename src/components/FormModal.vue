@@ -18,7 +18,7 @@
             </div>
             <Form ref="formValidate" :model="formItem" :label-width="80" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
                 <div v-for="(t,index) in formList" :key="index">
-                    <FormItem v-if="t.type==='input'" :label="t.name" :prop="t.field">
+                    <FormItem v-if="t.type==='input'" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <FormItem v-if="t.type==='password'" :label="t.name" :prop="t.field">
@@ -27,7 +27,7 @@
                     <FormItem v-if="t.type==='inputTab'" :label="t.name" :prop="t.field">
                         <Input disabled :value="t.content"></Input>
                     </FormItem>
-                    <FormItem v-if="t.type==='textarea'" :label="t.name" :prop="t.field">
+                    <FormItem v-if="t.type==='textarea'"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
                         <Input type="textarea" :rows="6" v-model="formItem[t.field]"
                                :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
@@ -62,7 +62,7 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" :label="t.name" :prop="t.field"
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field"
                               :class="t.clas ? t.clas: ''">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
                                 @on-change="selectChange">
@@ -83,14 +83,19 @@
                             <span slot="open">{{t.switchList[0]}}</span>
                             <span slot="close">{{t.switchList[1]}}</span>
                         </Switch>
-                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)"
-                                    :format="handleDateType(t)" v-model="formItem[handleField(t,1)]"
-                                    :value="formItem[handleField(t,1)]"
-                                    :placeholder="handlePlaceholder(t)"></DatePicker>
+                        <DatePicker class="form-item-date" v-if="handleDateShow(t)" :type="handleType(t)" :format="handleDateType(t)" v-model="formItem[handleField(t,1)]"
+                                    :value="formItem[handleField(t,1)]" :placeholder="handlePlaceholder(t)"></DatePicker>
+                    </FormItem>
+                    <!--上传封面-->
+                    <FormItem v-if="t.type == 'uploadPanel'" v-show="t.isShow ? t.isShow == 1 : true"  ref="upload" label="展示封面" required>
+                        <upload-panel ref="upload_panel" :resourse="formItem[t.field]" :upload-config="uploadConfig" :panelOptions="panelOptions"
+                                      @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2" types="image/gif, image/jpeg, image/png">
+                            <span slot="file-require" class="font-hint">*只能上传jpg/png文件，且图片比例为3:2，建议尺寸480*320px</span>
+                        </upload-panel>
                     </FormItem>
                     <!--富文本编辑器-->
-                    <FormItem v-if="(t.type==='upload')" :label="t.name" :label-width="t.name ? 100 : 0" :prop="t.field" class="upload" ref="formInput">
-                        <new-editor style="width: 100%;" @get-content="getContent" :content="content"/>
+                    <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 100 : 0" :prop="t.field" class="upload" ref="formInput">
+                        <new-editor style="width: 100%; height: 500px;" @get-content="getContent" :content="content"/>
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
@@ -123,7 +128,9 @@
             <p v-if="modalText2" class="modal-text">* {{modalText2}}</p>
             <div class="foot-btn">
                 <Button v-if="isAdd" type="primary" ghost class="add-course" @click="addCourse">添加课程</Button>
-                <Button class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
+                <Button v-if="handleFloor && handleFloor == '2'" class="btn-orange btn-last" type="primary" @click="handleLast">上一步</Button>
+                <Button v-if="handleFloor && handleFloor == '1'" class="btn-orange" type="primary" @click="handleSubmit('formValidate')">下一步</Button>
+                <Button v-else class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
             </div>
         </Modal>
     </div>
@@ -139,10 +146,11 @@
     import iconCopy from '../assets/icons/icon/photo.png'
     import rubbishIcon from '../assets/img/rubbish.png'
     import newEditor from './NewEditor'
+    import uploadPanel from './UploadPanel'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
-        components: {ExchangeContent, uploadBtn, downLoading, newEditor},
+        components: {ExchangeContent, uploadBtn, downLoading, newEditor, uploadPanel},
         props: {
             modalBody: {
                 type: Boolean,
@@ -205,6 +213,10 @@
             isAdd: {
                 type: Boolean,
                 default: false
+            },
+            handleFloor: {
+                type: Number,
+                default: null
             }
         },
         data() {
@@ -258,6 +270,10 @@
                 ],
                 color: '',
                 modalText2: '',
+                panelOptions: {
+                    panelWidth: 445,
+                    panelHeight: 296
+                }
             }
         },
         watch: {
@@ -290,12 +306,7 @@
             show(val) {
                 if (!val) {
                     if (this.content) this.content = ''
-                }else {
-                    if(JSON.stringify(this.detailData) == '{}') {
-                        this.$nextTick(() => {
-                            this.$refs.formValidate.resetFields()
-                        })
-                    }
+                    this.formItem = {}
                 }
             },
             detailData(_new) {
@@ -394,8 +405,8 @@
                     if (!this.modalFalse) this.closeModal()
                 }
                 (async () => {
-                    await this.$emit('from-submit', this.formItem)
-                    await close()
+                    await this.handleFloor && this.handleFloor == 1 ? this.$emit('handle-next') : this.$emit('from-submit', this.formItem)
+                    await this.handleFloor && this.handleFloor == 1 ? ()=>{} : close()
                 })()
             },
             setCourse() {
@@ -425,7 +436,7 @@
                         } else {
                             if(this.$refs.formInput){
                                 if(this.content) this.handleFormData()
-                                else this.$Message.info('请输入作业描述')
+                                else (this.handleFloor && this.handleFloor == '2') ? this.$Message.info('请输入作业描述') : this.handleFormData()
                             }
                             else {
                                 if(this.styleRule) {
@@ -495,7 +506,19 @@
             },
             addCourse() {
                 this.$emit('add-course', this.formList[2].list.length)
-            }
+            },
+            // 下一步操作
+            handleNext() {
+                this.$emit('handle-next')
+            },
+            //上一步操作
+            handleLast() {
+                this.$emit('handle-last')
+            },
+            handleDefaultUploadComplete(url) {
+                this.formItem.img_default = url;
+                this.$forceUpdate()
+            },
         },
     }
 </script>
@@ -541,6 +564,10 @@
 
     .btn-orange {
         width: 150px;
+    }
+
+    .btn-last{
+        margin-right: 20px;
     }
 
     .foot-btn {
@@ -714,5 +741,8 @@
                 letter-spacing: 0;
             }
         }
+    }
+    .font-hint{
+        color: #F54802;
     }
 </style>

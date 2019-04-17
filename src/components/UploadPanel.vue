@@ -3,7 +3,7 @@
         <Icon class="icon-colse" v-if="close&&!is_show" type="md-close-circle" @click="closeModal"/>
         <Row class="upload-space" v-show="is_show"
              :style="{width: panelOptions.panelWidth + 'px', height: panelOptions.panelHeight + 'px'}">
-            <input type="file" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia" :accept="types"/>
+            <input type="file" style="font-size: 1.2em; padding: 10px 0;height: 100%;" @change="handleChangeMedia" :accept="types"/>
             <!--<Icon class="md-cloud-upload" :size=56 type="md-cloud-upload" />-->
             <img class="md-cloud-upload" src="../assets/icons/icon/upload.png" alt="">
             <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -89,7 +89,8 @@
                 resourse_url: '',
                 fullscreenLoading: null,
                 video_url: '',
-                fileSize: null
+                fileSize: null,
+                imgShow: false
             }
         },
         computed: {
@@ -102,9 +103,9 @@
                 if (/\.(mp4|wav|mov)/.test(this.resourse)) {
                     this.type = 'video';
                     this.is_show = false;
-                    // if(result.indexOf('http') < 0)
-                    //     result = 'http://video.laoshi123.com/' + this.resourse;
                 }
+                if(result) this.imgShow = true
+                else this.imgShow = true
                 return result;
             }
         },
@@ -294,7 +295,7 @@
         }
 
         .upload-space {
-            height: 250px;
+            height: 100%;
             background: #F6F6F6;
             border: 1px solid #CCCCCC;
             display: block;

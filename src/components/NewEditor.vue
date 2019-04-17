@@ -120,6 +120,6 @@
         height: 100%;
     }
     /deep/ .w-e-text-container{
-        /*height: calc(100% - 44px) !important;*/
+        height: calc(100% - 44px) !important;
     }
 </style>
