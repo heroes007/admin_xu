@@ -35,34 +35,16 @@
                 default: 'div'
             }
         },
-        mounted() {
-            let vm = this
-            this.editor = new E(`#${this.editorId}`)
-            this.editor.customConfig.menus = [
-                'head',
-                'bold',
-                'underline',
-                'foreColor',
-                'image',
-                'justify',
-                'list',
-                'undo',
-            ]
-            this.editor.customConfig.customUploadImg = function (files, insert) {
-                vm.handleGetassignKey(files[0], insert)
-            }
-            this.editor.customConfig.showLinkImg = false
-            this.editor.customConfig.onchange = function (html) {
-                vm.$emit('get-content', html)
-            }
-            this.editor.customConfig.zIndex = 0
-            this.editor.create()
-            this.editor.txt.html(this.content)
-        },
         watch:{
             content(val) {
                 this.editor.txt.html(val)
             }
+        },
+        beforeDestroy(){
+            this.setEditor = null;
+            this.handleUploadFile = null;
+            this.handleGetassignKey = null;
+            this.resourse_url = ''
         },
         methods: {
             handleUploadFile(form_data, url, insert) {
@@ -111,7 +93,25 @@
                         }
                     })
             },
-        }
+            setEditor(){
+                let vm = this
+                this.editor = new E(`#${this.editorId}`)
+                this.editor.customConfig.menus = [ 'head', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list', 'undo']
+                this.editor.customConfig.customUploadImg = function (files, insert) {
+                    vm.handleGetassignKey(files[0], insert)
+                }
+                this.editor.customConfig.showLinkImg = false
+                this.editor.customConfig.onchange = function (html) {
+                    vm.$emit('get-content', html)
+                }
+                this.editor.customConfig.zIndex = 0
+                this.editor.create()
+                this.editor.txt.html(this.content)
+            }
+        },
+        mounted() {
+            this.setEditor()
+        },
     }
 </script>
 
@@ -123,6 +123,6 @@
         height: 100%;
     }
     /deep/ .w-e-text-container{
-        height: calc(100% - 44px) !important;
+        /*height: calc(100% - 44px) !important;*/
     }
 </style>

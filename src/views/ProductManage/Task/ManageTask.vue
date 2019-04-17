@@ -109,7 +109,7 @@
                     dataProp: 'id',
                     dataValue: 'name'
                 }, {
-                    columnName: 'subject_id',
+                    columnName: 'item_id',
                     dataIndex: 1,
                     dataProp: 'id',
                     dataValue: 'name'
@@ -179,7 +179,7 @@
                 this.tableRow.realname = row.title
                 this.tableRow.uploading = row.description
                 this.tableRow.jurisdiction = row.type
-                this.tableRow.binding_course = row.subject_id
+                this.tableRow.binding_course = row.item_id
                 this.tableRow.upload = row.attachment_url ? JSON.parse(row.attachment_url) : row.attachment_url
                 this.$store.dispatch("change_homework_id", row.id)
             },

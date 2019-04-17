@@ -380,6 +380,9 @@ export default {
 .upload-img-row{
     margin: 10px 0px 0px 0px !important;
 }
+.upload {
+    text-align: left;
+}
 .upload-btn-flex{
     display: flex;
     .upload-img-text{
