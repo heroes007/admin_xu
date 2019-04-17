@@ -66,7 +66,7 @@
                         type: 'select', name: '绑定课程', field: 'binding_course', disable: false,
                         selectList: [], selectField: ['id', 'title'], change: true, line: 1
                     },
-                    {type: 'upload', name: '作业描述', field: 'uploading'}
+                    {type: 'upload', name: '作业描述', field: 'uploading', small: true}
                 ],
                 rules: {
                     realname: [{required: true, message: '请输入作业名称', trigger: 'blur'}],
@@ -109,7 +109,7 @@
                     dataProp: 'id',
                     dataValue: 'name'
                 }, {
-                    columnName: 'subject_id',
+                    columnName: 'item_id',
                     dataIndex: 1,
                     dataProp: 'id',
                     dataValue: 'name'
@@ -179,7 +179,7 @@
                 this.tableRow.realname = row.title
                 this.tableRow.uploading = row.description
                 this.tableRow.jurisdiction = row.type
-                this.tableRow.binding_course = row.curriculum_id
+                this.tableRow.binding_course = row.item_id
                 this.tableRow.upload = row.attachment_url ? JSON.parse(row.attachment_url) : row.attachment_url
                 this.$store.dispatch("change_homework_id", row.id)
             },
@@ -248,7 +248,6 @@
             this.getListLine()
         }
     }
-
 </script>
 <style scoped lang="less">
     /deep/ .ivu-btn-text {

@@ -11,7 +11,7 @@ export function get_curriculum_data_center(param, page, search) {
 export function add_data_center(param) {
   return api.post('product/data/add',{
         title: param.name,
-        curriculum_id: param.subject_id,
+        item_id: param.subject_id,
         attachment_url: param.download_url,
         attachment_name: param.url_name,
         type: param.type

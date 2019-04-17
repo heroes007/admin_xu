@@ -67,8 +67,8 @@
                             </div>
                         </FormItem>
                          <!--可插入输入框-->
-                        <FormItem v-show="nextStep == 2" label=""  class="upload">
-                            <new-editor style="width: 604px; height: 600px;" @get-content="getContent" :content="content"/>
+                        <FormItem v-show="nextStep == 2" label="" class="upload">
+                            <new-editor style="width: 620px; height: 600px;" @get-content="getContent" :content="content"/>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
@@ -379,6 +379,9 @@ export default {
 }
 .upload-img-row{
     margin: 10px 0px 0px 0px !important;
+}
+.upload {
+    text-align: left;
 }
 .upload-btn-flex{
     display: flex;

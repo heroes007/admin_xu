@@ -54,6 +54,7 @@
   import defaultHeader from '../assets/img/side-menu/default-header.jpg'
   import { MenuList } from './Util'
   import postData from '../api/postData'
+
   export default {
     data() {
       return {

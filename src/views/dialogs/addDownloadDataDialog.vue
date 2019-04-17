@@ -9,12 +9,12 @@
                         <Input v-model="form.name" placeholder="请输入资料名称"></Input>
                    </FormItem>
                     <FormItem label="资料类型" prop="type">
-                        <Select v-model="form.type" placeholder="请选择资料类型" @on-change="typeChange">
+                        <Select v-model="form.type" placeholder="请选择资料类型" @on-change="typeChange" :disabled="payload.state === 0 ? true : false">
                             <Option v-for="item in typeList" :key="item.state" :label="item.title" :value="item.state"></Option>
                         </Select>
                     </FormItem>
-                   <FormItem label="绑定课程" prop="subject_id" >
-                        <Select v-model="form.subject_id" placeholder="请选择绑定课程">
+                   <FormItem label="绑定课程" prop="item_id" >
+                        <Select v-model="form.item_id" placeholder="请选择绑定课程" :disabled="payload.state === 0 ? true : false">
                             <Option v-for="item in curricumList" :key="item.id" :label="item.title" :value="item.id"></Option>
                         </Select>
                     </FormItem>
@@ -83,7 +83,7 @@ export default {
             curricumList: [],
             form: {
                 name:'',
-                subject_id:null,
+                item_id:null,
                 grade_id: null,
                 download_url:'',
                 url_name:'',
@@ -93,7 +93,7 @@ export default {
             isupdata:true,
             rules: {
                 name: { required: true, message: '请输入资料名称', trigger: 'blur'},
-                subject_id: { required: true, message: '请选择绑定课程'},
+                item_id: { required: true, message: '请选择绑定课程'},
                 type: {required: true, message: '请选择资料类型'}
             },
             typeList: [
@@ -124,7 +124,7 @@ export default {
              postData('product/data/change', {
                data_id: this.form.id,
                title: this.form.name,
-               curriculum_id: this.form.subject_id,
+               item_id: this.form.item_id,
                attachment_url: this.form.download_url,
                attachment_name: this.form.url_name,
                type: this.form.type
@@ -161,7 +161,7 @@ export default {
         },
         typeChange(val){
             if(val == 'online') {
-              postData('product/curriculum_online/getMyselflist',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+              postData('product/curriculum_online/pulldown_get_list',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
                 if(res.res_code == 1) this.curricumList = res.data
               })
             }else{
@@ -179,11 +179,11 @@ export default {
         };
         if(this.form.state === 0){
             this.form.grade_id = 0;
-            this.form.subject_id = 0;
+            this.form.item_id = 0;
         }
         if(this.payload.state == 0) {
           this.typeChange(this.payload.form.type)
-          this.form.subject_id = this.payload.form.curriculum_id
+          this.form.item_id = this.payload.form.item_id
           this.form.curriculum_id = this.payload.form.curriculum_id
           this.form.name = this.payload.form.title
           this.form.id = this.payload.form.id

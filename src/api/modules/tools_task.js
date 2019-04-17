@@ -13,7 +13,7 @@ export function create_category(params) {
     return api.post('/product/homework/add',{
         title:params.realname,
         type:params.jurisdiction,
-        curriculum_id:params.binding_course,
+        item_id:params.binding_course,
         description:params.uploading,
         attachment_url:JSON.stringify(params.downList)
     });
@@ -51,7 +51,7 @@ export function get_read_over(params) {
 export function save_datalist(params) {
     return api.post('/product/data/add',{
         title: params.name,
-        curriculum_id: params.subject_id,
+        item_id: params.subject_id,
         attachment_url: params.download_url,
         state: 1
     })
