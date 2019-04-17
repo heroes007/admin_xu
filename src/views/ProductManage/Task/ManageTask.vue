@@ -179,7 +179,7 @@
                 this.tableRow.realname = row.title
                 this.tableRow.uploading = row.description
                 this.tableRow.jurisdiction = row.type
-                this.tableRow.binding_course = row.curriculum_id
+                this.tableRow.binding_course = row.subject_id
                 this.tableRow.upload = row.attachment_url ? JSON.parse(row.attachment_url) : row.attachment_url
                 this.$store.dispatch("change_homework_id", row.id)
             },
@@ -248,7 +248,6 @@
             this.getListLine()
         }
     }
-
 </script>
 <style scoped lang="less">
     /deep/ .ivu-btn-text {

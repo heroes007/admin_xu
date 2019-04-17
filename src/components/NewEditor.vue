@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <div id="div" class="h100"></div>
+        <div :id="editorId" class="h100"></div>
     </div>
 </template>
 
@@ -30,10 +30,14 @@
                 type: String,
                 default: '123'
             },
+            editorId: {
+                type: String,
+                default: 'div'
+            }
         },
         mounted() {
             let vm = this
-            this.editor = new E('#div')
+            this.editor = new E(`#${this.editorId}`)
             this.editor.customConfig.menus = [
                 'head',
                 'bold',
