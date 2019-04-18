@@ -28,7 +28,7 @@
         props: {
             content: {
                 type: String,
-                default: '123'
+                default: ''
             },
             editorId: {
                 type: String,
@@ -96,7 +96,7 @@
             setEditor(){
                 let vm = this
                 this.editor = new E(`#${this.editorId}`)
-                this.editor.customConfig.menus = [ 'head', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list', 'undo']
+                this.editor.customConfig.menus = [ 'fontSize', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list', 'undo']
                 this.editor.customConfig.customUploadImg = function (files, insert) {
                     vm.handleGetassignKey(files[0], insert)
                 }
