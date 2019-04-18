@@ -6,7 +6,7 @@
 
 <script>
     import axios from 'axios'
-    import E from 'wangeditor'
+    import E from './wangEditor'
     import {get_sign} from '../api/modules/ali_oss'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
     export default {
@@ -96,7 +96,7 @@
             setEditor(){
                 let vm = this
                 this.editor = new E(`#${this.editorId}`)
-                this.editor.customConfig.menus = [ 'head', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list', 'undo']
+                this.editor.customConfig.menus = ['fontSize', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list']
                 this.editor.customConfig.customUploadImg = function (files, insert) {
                     vm.handleGetassignKey(files[0], insert)
                 }
