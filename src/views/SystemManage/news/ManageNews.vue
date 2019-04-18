@@ -60,7 +60,7 @@
                         minWidth: 260,
                         slot: 'operation',
                         operation_state: true,
-                        operation: [[['下架', '上架'], 'operation1', true], ['编辑', 'operation2'], ['删除', 'operation3']]
+                        operation: [['编辑', 'operation2'], ['删除', 'operation3']]
                     }],
                 list: [],
                 show: false,
