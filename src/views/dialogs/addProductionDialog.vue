@@ -34,21 +34,23 @@
                         <FormItem v-show="nextStep == 0" prop="short_description" label="产品介绍" >
                             <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
                         </FormItem>
-                        <FormItem label="图片/视频" v-if="nextStep == 0" required>
+                        <FormItem label="图片视频" v-if="nextStep == 0" required>
                             <div class="demo-file">
                                <div v-if="form.imgList.length>0">
                                 <div v-if="form.imgList.length>1">
                                     <Carousel autoplay v-model="fileValue" loop>
                                         <CarouselItem v-for="(t,i) in form.imgList" :key="i">
                                             <div class="demo-carousel">
-                                                <Icon @click="deleteImgList(i)" class="upload-img-main-icon" type="ios-close-circle" />
+                                                <img @click="deleteImgList(i)" src="../../assets/img/close-icon.png" class="upload-img-main-icon" />
+                                                <!-- <Icon @click="deleteImgList(i)" class="upload-img-main-icon" type="ios-close-circle" /> -->
                                                 <img class="upload-img-item"  :src="t" />
                                             </div>
                                         </CarouselItem>
                                     </Carousel>
                                 </div>
                                 <div v-if="form.imgList.length===1" class="demo-carousel">
-                                    <Icon @click="deleteImgList(0)" class="upload-img-main-icon" type="ios-close-circle" />
+                                    <img @click="deleteImgList(0)" src="../../assets/img/close-icon.png" class="upload-img-main-icon" />
+                                    <!-- <Icon @click="deleteImgList(0)" class="upload-img-main-icon" type="ios-close-circle" /> -->
                                     <img class="upload-img-item"  :src="form.imgList[0]" />
                                 </div>
                                </div>
@@ -94,11 +96,11 @@ import iconFont from '../../assets/icons/icon/font.png'
 import iconColor from '../../assets/icons/icon/color.png'
 import iconCopy from '../../assets/icons/icon/photo.png'
 import postData from '../../api/postData';
-import newEditor from '../../components/NewEditor'
+import NewEditor from '../../components/NewEditor'
 
 export default {
     mixins: [RemoveModal,MPop],
-    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'data-list': BaseList, UploadBtn, newEditor },
+    components: { 'base-input': BaseInput,'upload-panel': UploadPanel,'data-list': BaseList, UploadBtn, NewEditor },
     props: {
         remove: {
             type: String

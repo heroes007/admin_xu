@@ -145,12 +145,12 @@
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
     import rubbishIcon from '../assets/img/rubbish.png'
-    import newEditor from './NewEditor'
+    import NewEditor from './NewEditor'
     import uploadPanel from './UploadPanel'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
-        components: {ExchangeContent, uploadBtn, downLoading, newEditor, uploadPanel},
+        components: {ExchangeContent, uploadBtn, downLoading, NewEditor, uploadPanel},
         props: {
             modalBody: {
                 type: Boolean,
