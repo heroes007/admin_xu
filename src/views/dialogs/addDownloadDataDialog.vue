@@ -116,6 +116,7 @@ export default {
             }
         },
         handleSubmit(){
+            console.log(this.form, 'form')
             this.form._fn = () => {
                 this.addDownloadDataDialog = false
                  this.$Message.success('添加成功');
