@@ -19,7 +19,8 @@ export function add_curriculum(data) {
       state: data.state,
       description: data.description,
       img_url: data.img_default,
-      unlock_type: data.unlock_type
+      unlock_type: data.unlock_type,
+      instructor_id: data.instructor_id
     })
 }
 export function update_curriculum(data) {
