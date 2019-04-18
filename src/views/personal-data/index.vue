@@ -5,7 +5,7 @@
         <div class="personal-main">
           <upload-panel class="upload-head-img" :resourse="formValidate.head_img_url" :upload-config="uploadConfig" @uploadcomplete="uploadcomplete" :maxFileSize="2">
           </upload-panel>
-          <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+          <Form ref="formValidate" class="personal-form" :model="formValidate" :rules="ruleValidate" :label-width="80">
             <FormItem prop="realname" >
                 <template slot="label">真实姓名</template>
                 <Input v-model="formValidate.realname" placeholder="请输入真实姓名"></Input>
@@ -40,7 +40,7 @@
         <div class="personal-main">
           <upload-panel class="upload-head-img2" :resourse="formValidate2.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadcomplete2" :maxFileSize="2">
           </upload-panel>
-          <Form ref="formValidate2" :model="formValidate2" :rules="ruleValidate2" :label-width="80">
+          <Form ref="formValidate2" class="personal-form" :model="formValidate2" :rules="ruleValidate2" :label-width="80">
             <FormItem label="机构名称" >
                 <Input disabled v-model="formValidate2.title"></Input>
             </FormItem>
@@ -143,6 +143,12 @@
   }
 </script>
 <style lang="less" scoped>
+/deep/ .ivu-tabs-tabpane{
+  box-shadow: 0 0 15px 0 rgba(117,124,157,0.10);
+}
+.personal-form{
+  margin-top: 20px;
+}
 .form-label{
   letter-spacing: 14px;
 }

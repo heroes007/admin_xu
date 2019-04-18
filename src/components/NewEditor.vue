@@ -28,7 +28,7 @@
         props: {
             content: {
                 type: String,
-                default: '123'
+                default: ''
             },
             editorId: {
                 type: String,

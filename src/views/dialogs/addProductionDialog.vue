@@ -70,7 +70,7 @@
                         </FormItem>
                          <!--可插入输入框-->
                         <FormItem v-show="nextStep == 2" label="" class="upload">
-                            <new-editor style="width: 620px; height: 600px;" @get-content="getContent" :content="content"/>
+                            <new-editor style="width: 604px; height: 600px;" @get-content="getContent" :editor-id="editorId" :content="content"/>
                         </FormItem>
                         <div v-if="nextStep == 2" class="btns">
                             <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
@@ -119,6 +119,7 @@ export default {
             fileType: 'image/png,image/jpg,video/mp4,video/mov,video/avi',
             selectList1: [{id: 0,title:'不限'},{id: 1,title:'按课程'},{id: 2,title:'按章节'},{id: 3,title:'按视频'}],
             show: false,
+            editorId: 'form-item-new-editer' + Math.floor(Math.random()*10000+1),
             selectList2: [{id: -1,title:'下架'},{id: 1,title:'测试'},{id: 2,title:'上架'}],
             form: {
                 unlock_type: '',
