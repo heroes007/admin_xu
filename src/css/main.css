@@ -157,7 +157,7 @@ textarea.ivu-input{
   border-bottom: 1px solid #f0f0f7  !important;
 }
 .logo-img {
-  width: 34px;
+  width: 34px !important;
 }
 .logo-title {
   color: #fff;

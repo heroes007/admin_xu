@@ -147,7 +147,7 @@
     }
     .side-menu-for-project {
         padding: 27px 0;
-        height: 100%;
+        /*height: 100%;*/
         .logo {
             margin-bottom: 40px;
             img {
@@ -260,6 +260,7 @@
         .btn-content {
             position: relative;
             left: 0;
+            margin-top: 50px;
         }
     }
     /deep/ .ivu-btn {
