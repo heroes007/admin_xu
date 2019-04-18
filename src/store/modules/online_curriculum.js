@@ -122,7 +122,7 @@ const actions = {
             if (res.data.res_code === 1) {
                 dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
                 // commit(types.ONLINE_CURRICULUM_VIDEO_ADDED, {result: res.data.msg, data: params});
-                // params._fn();
+                params._fn();
             }
         })
     },

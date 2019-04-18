@@ -15,7 +15,7 @@
                                 <div style="margin-right: 25px;">
                                     <Button v-if='showListState[index] == 0' type="text"  @click="toggleListShow(index,item)">展开</Button>
                                     <Button v-else-if='showListState[index] == 1' type="text"  @click="toggleListShow(index)">收起</Button>
-                                    <Button v-if="btnType" type='text' @click="addVideo(item)">添加视频</Button>
+                                    <Button v-if="btnType" type='text' @click="addVideo(item,index)">添加视频</Button>
                                     <Button v-if="btnType" type='text' @click="addTest(item, index)">添加测验</Button>
                                     <Button v-if="btnType" type="text" @click="deleteText(item, index)">删除</Button>
                                 </div>
@@ -279,7 +279,7 @@
           }
         }
       },
-      addVideo(item) {
+      addVideo(item,index) {
         if (!item) {
           this.$Modal.info({title: '提示', content: '<p>请先添加章节名称</p>'});
         } else {
@@ -290,6 +290,7 @@
             group_name: item.group_name,
             group_orderby: item.group_orderby,
             orderby: item.orderby + 1,
+            i: index,
             type: 0
           });
         }
@@ -304,6 +305,7 @@
             curriculum_data: item,
             group_orderby: item.id,
             section_id: '',
+            i: index
             // curriculum_catalog_id: item.id,
             // curriculum_id: item.curriculum_id,
             // orderby: item.orderby + 1,
@@ -349,6 +351,9 @@
       }
     },
     mounted() {
+      $OnLine.$on('OnLine', (i) => {
+        this.showListState[i] = 1
+      })
       this.getLists()
     }
   }

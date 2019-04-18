@@ -6,30 +6,28 @@
           <upload-panel class="upload-head-img" :resourse="formValidate.head_img_url" :upload-config="uploadConfig" @uploadcomplete="uploadcomplete" :maxFileSize="2">
           </upload-panel>
           <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-            <p class="item-title">真实姓名</p>
-            <FormItem label="" prop="realname" :label-width="0">
+            <FormItem prop="realname" >
+                <template slot="label">真实姓名</template>
                 <Input v-model="formValidate.realname" placeholder="请输入真实姓名"></Input>
             </FormItem>
-            <p class="item-title">性别</p>
-            <FormItem label="" prop="sex" :label-width="0">
+            <FormItem prop="sex" >
+                <template slot="label"><span class="form-label">性别</span></template>
                 <Select v-model="formValidate.sex" placeholder="请选择性别">
                   <Option :value="0">女</Option><Option :value="1">男</Option>
                 </Select>
             </FormItem>
-            <p class="item-title">手机号</p>
-            <FormItem label="" prop="phone" :label-width="0">
+            <FormItem prop="phone" >
+                <template slot="label"><span class="form-label2">手机号</span></template>
                 <Input v-model="formValidate.phone" placeholder="请输入手机号"></Input>
             </FormItem>
-            <p class="item-title">身份</p>
-            <FormItem label=""  :label-width="0">
+            <FormItem class="form-labels">
+                <template slot="label"><span class="form-label">身份</span></template>
                 <Input disabled v-model="formValidate.role_name" ></Input>
             </FormItem>
-            <p class="item-title">登录账号</p>
-            <FormItem label=""  :label-width="0">
+            <FormItem label="登录账号"  >
                 <Input disabled v-model="formValidate.username"></Input>
             </FormItem>
-            <p class="item-title">账号密码</p>
-            <FormItem label="" prop="password" :label-width="0">
+            <FormItem label="账号密码" prop="password" >
                 <Input type="password" v-model="formValidate.password" placeholder="请输入账号密码"></Input>
             </FormItem>
           </Form>
@@ -43,12 +41,10 @@
           <upload-panel class="upload-head-img2" :resourse="formValidate2.img_url" :upload-config="uploadConfig" @uploadcomplete="uploadcomplete2" :maxFileSize="2">
           </upload-panel>
           <Form ref="formValidate2" :model="formValidate2" :rules="ruleValidate2" :label-width="80">
-            <p class="item-title">机构名称</p>
-            <FormItem label="" :label-width="0">
+            <FormItem label="机构名称" >
                 <Input disabled v-model="formValidate2.title"></Input>
             </FormItem>
-            <p class="item-title">机构介绍</p>
-            <FormItem label="" prop="description" :label-width="0">
+            <FormItem label="机构介绍" prop="description" >
                 <Input type="textarea" :rows="6" v-model="formValidate2.description" placeholder="请输入机构介绍"></Input>
             </FormItem>
           </Form>
@@ -147,6 +143,12 @@
   }
 </script>
 <style lang="less" scoped>
+.form-label{
+  letter-spacing: 14px;
+}
+.form-label2{
+  letter-spacing: 4px;
+}
 /deep/ .upload-panel .img{
   border: none
 }
