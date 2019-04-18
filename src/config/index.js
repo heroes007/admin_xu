@@ -9,6 +9,7 @@ import config from './config';
 import { Base64 } from 'js-base64';
 import postData from '../api/postData'
 Vue.prototype.$config = config;
+window.$OnLine = new Vue()
 Vue.use(LoadingY)
 // sync the router with the vuex store.
 // this registers `store.state.route`
