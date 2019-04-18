@@ -125,7 +125,7 @@
                     </div>
                 </div>
             </Form>
-            <p v-if="modalText2" class="modal-text">* {{modalText2}}</p>
+            <p v-if="modalText2" class="modal-text">{{modalText2}}</p>
             <div class="foot-btn">
                 <Button v-if="isAdd" type="primary" ghost class="add-course" @click="addCourse">添加课程</Button>
                 <Button v-if="handleFloor && handleFloor == '2'" class="btn-orange btn-last" type="primary" @click="handleLast">上一步</Button>
@@ -332,10 +332,6 @@
             selectChange(val) {
                 // if (val == 'online') this.formList[2].line = 1
                 // else if (val == 'underline') this.formList[2].line = 0
-                if (this.modalText2) {
-                    if (val == 3) this.modalText2 = '获得所属机构后台发布产品及动态等操作权限'
-                    if (val == 4) this.modalText2 = '获得所属机构后台批阅作业等操作权限'
-                }
             },
             selectChangeList(val) {
               this.$emit('change-list', val)
@@ -562,7 +558,7 @@
     }
 
     .modal-text {
-        margin-left: 100px;
+        margin-left: 80px;
         font-family: PingFangSC-Regular;
         font-size: 14px;
         color: #F54802;

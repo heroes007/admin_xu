@@ -43,7 +43,7 @@
                 password: '',
                 isLogining: false,
                 loginViewStyl: {},
-                projectData: []
+                projectData: [],
             }
         },
         methods: {
@@ -57,7 +57,7 @@
                         this.$store.dispatch('get_user_info');
                         localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
                         // if(d.userInfo[0].role_id == 4)  this.$router.push({ path: 'tutor' });
-                        // else 
+                        // else
                         this.$router.push({ path: 'dashboard' });
                         localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
                         localStorage.setItem('token',d.token)

@@ -156,6 +156,14 @@ textarea.ivu-input{
   border-top: 1px solid #f0f0f7  !important;
   border-bottom: 1px solid #f0f0f7  !important;
 }
+.logo-img {
+  width: 34px;
+}
+.logo-title {
+  color: #fff;
+  font-size: 18px;
+  margin-left: 10px;
+}
 /* .ivu-table-row-highlight td, tr.ivu-table-row-highlight.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td{
   background: #fff !important;
 }

@@ -8,6 +8,16 @@ export default {
             tableHeight: null
         }
     },
+    beforeDestroy() {
+        this.list = null;
+        this.getList = null;
+        this.see = null;
+        this.edit = null;
+        this.deletes = null;
+        this.handleClick = null;
+        this.handleSubmit = null;
+        this.inputChange = null;
+    },
     methods: {
         setSex(n){
             return n ? '男' : '女'

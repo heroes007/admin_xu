@@ -215,14 +215,6 @@
     }
     .logo {
         margin-bottom: 40px;
-        .logo-img {
-            width: 34px !important;
-        }
-        .logo-title {
-            color: #fff;
-            font-size: 18px;
-            margin-left: 10px;
-        }
     }
     .elRow {
         display: flex;
