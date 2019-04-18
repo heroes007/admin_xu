@@ -128,7 +128,7 @@ export default {
   getRoleId(){
     return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
   },
-  // 设置学管的权限  只能查看产品 批阅作业
+  // 设置role_id === 4 的权限  只能查看产品 批阅作业
   setAuthTube(){
     return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 4
   },

@@ -56,7 +56,6 @@
         this.setAuth()
         if(localStorage.getItem('onlinePane')){
             this.online = localStorage.getItem('onlinePane')
-            this.tabs(this.online)
         }
     }
   }

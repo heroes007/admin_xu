@@ -27,13 +27,13 @@
     components: { Tables, FormModal, screen, see, pageList },
     mixins: [seeMixin, FormModalMixin, UserMixins, pageMixin],
     props: {
-        permissionItem3: {
+        permissionItem6: {
             type: Object,
             default: null
         }
     },
     watch: {
-        permissionItem3(_new){
+        permissionItem6(_new){
             this.handleAuth(_new)
         }
     },
@@ -171,7 +171,7 @@
     },
     mounted() {
         this.getList()
-        if(this.permissionItem3) this.handleAuth(this.permissionItem3)
+        if(this.permissionItem6) this.handleAuth(this.permissionItem6)
         this.organizationList = null
         if(this.role_id == 1)  this.getOrganization()
     }
