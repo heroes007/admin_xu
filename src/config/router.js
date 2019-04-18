@@ -28,26 +28,26 @@ const routes = [
     redirect:'/login'
   },
   //辅导老师
-  // {
-  //   path: '/tutor',
-  //   component: head,
-  //   children:[
-  //     {
-  //       path:'',
-  //       redirect:'home'
-  //     },
-  //     {
-  //       path: 'home',
-  //       name: 'home',
-  //       component: home
-  //     },
-  //     {
-  //       path: ':id/job-list',
-  //       name: 'job-list',
-  //       component: JobList
-  //     },
-  //   ]
-  // },
+  {
+    path: '/tutor',
+    component: head,
+    children:[
+      {
+        path:'',
+        redirect:'home'
+      },
+      {
+        path: 'home',
+        name: 'home',
+        component: home
+      },
+      {
+        path: ':id/job-list',
+        name: 'job-list',
+        component: JobList
+      },
+    ]
+  },
   {
     path:'/dashboard',
     // name:'dashboard',

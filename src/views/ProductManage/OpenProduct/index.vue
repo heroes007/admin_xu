@@ -1,6 +1,6 @@
 <template>
     <div >
-        <Tabs @on-click="tabs" v-model="online">
+        <Tabs v-model="online">
             <TabPane label="线上自学" v-if="item1" name="product1">
                 <online />
             </TabPane>
@@ -37,20 +37,10 @@
           item2: false,
           item3: false,
           item4: false,
-          item5: false,
-          pane1: true,
-          pane2: false,
-          pane3: false,
-          pane4: false,
-          pane5: false
+          item5: false
       }
     },
     methods:{
-        tabs(name){
-            localStorage.setItem('onlinePane',name)
-            let n = +name.replace(/[^0-9]/ig,"");
-            if(this['item'+n]) this['pane'+n] = true
-        },
         setAuth(){
             if(localStorage.getItem('PERSONALDETAILS')){
                let d = JSON.parse(localStorage.getItem('PERSONALDETAILS'));
@@ -59,13 +49,6 @@
                this.item3 = true;
                this.item4 = true;
                this.item5 = true;
-               if(d.role_id === 4){
-                    // this.item1 = false;
-                    // this.item2 = false;
-                    // this.item4 = false;
-                    // this.item5 = false;
-                    this.online = localStorage.getItem('onlinePane')
-               }
             }
         }
     },

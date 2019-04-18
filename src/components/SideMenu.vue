@@ -228,14 +228,6 @@
         height: calc(100% - 240px);
         .logo {
             margin-bottom: 40px;
-            .logo-img {
-                width: 34px;
-            }
-            .logo-title {
-                color: #fff;
-                font-size: 18px;
-                margin-left: 10px;
-            }
         }
         .head-img-row {
             position: relative;

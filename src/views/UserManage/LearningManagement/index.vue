@@ -3,7 +3,7 @@
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <FormModal :modal-false="true"  :detail-data="tableRow" :modal-text="modalText" :show-modal='show' :form-list="formList" @close="closeModal" @from-submit="handleSubmit"
                    :title="modalTitle" :rule-validate='rules'/>
-        <screen :btn-type="btnType" :select-type1="selectType1" :types="2" size-title1="导师总数" :size-num1="total" btn-name="添加导师" 
+        <screen :btn-type="btnType" :select-type1="selectType1" :types="2" size-title1="学管总数" :size-num1="total" btn-name="添加学管" 
                @selectChange1="selectChange1"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :tabel-height="tableHeight" :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="mentor"/>
        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -40,7 +40,7 @@
     data (){
         return{
             modalTitle: '',
-            modalText:'获得所属机构后台批阅作业、课程评分、回答问题等权限',
+            modalText:'获得所属机构后台创建产品、创建兑换码、管理导师等操作权限',
             tableRow: {},
             tableRowData: {},
             selectType1: false,
@@ -53,19 +53,18 @@
                 { type: 'select', name: '所属机构', field: 'organization_id' ,
                     selectList: [], selectField: [ 'id','title' ]
                 },
-                { type: 'input', name: '导师账号',  field: 'username' },
+                { type: 'input', name: '学管账号',  field: 'username' },
                 { type: 'password', name: '账号密码',  field: 'password' },
             ],
             rules:{
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
                 organization_id: [{ required: true, message: '请选择机构' } ],
                 username: [{ required: true, validator: validateUsername3 }],
-                password: [{ required: true, validator: validatePass }],
-            }
+                password: [{ required: true, validator: validatePass }]            }
         }
     },
     computed: {
-         columns1(){
+        columns1(){
             let role = this.$config.getRoleId() !== 2
             let d = role ? [{ title: '所属机构', key: 'title', align: 'left', minWidth: 100 }] : []
             return [
@@ -74,46 +73,26 @@
                 key: 'username',
                 align: 'left',
                 minWidth: 100
-            },{
+            },
+            {
                 title: '真实姓名',
                 key: 'realname',
-                align: 'left',
                 minWidth: 100
-              },
+            },
             {
                 key: '',
                 title: '身份',
                 minWidth: 100,
                 render: (h, params) => {
-                    return h('span', '导师')
+                    return h('span', '学管')
                 }
             },
             ...d,
             {
-                title: '绑定课程',
-                key: 'state',
-                minWidth: 100
-            },
-            {
-                title: '批阅作业',
-                key: 'state',
-                minWidth: 100
-            },
-            // {
-            //     title: '课程评分',
-            //     key: 'state',
-            //     minWidth: 100
-            // },
-            // {
-            //     title: '回答问题',
-            //     key: 'state',
-            //     minWidth: 100
-            // },
-            {
             title: '最近登录时间',
             key: 'last_time',
             align: 'left',
-            minWidth: 130
+            minWidth: 100
             },
             {
                 title: '操作',
@@ -122,7 +101,7 @@
                 align: 'left',
                 operation: [],
             }]
-         }
+        }
     },
     methods: {
         see(row,rowIndex){
@@ -130,7 +109,7 @@
             this.tableRowData = row;
         },
         edit(row,rowIndex){
-            this.modalTitle = '编辑导师'
+            this.modalTitle = '编辑学管'
             this.show = true
             this.tableRow = {
               realname: row.realname,
@@ -163,7 +142,7 @@
             }
         },
         handleClick(){
-            this.modalTitle = '添加导师'
+            this.modalTitle = '添加学管'
             this.show = true
             this.tableRow = {}
             this.setOrganization()
@@ -174,7 +153,7 @@
               page_size: this.pageSize,
               page_num: this.current,
               organization_id: this.organization_id,
-              role_id: 4
+              role_id: 3
             }
             postData('user/getDeptTeacherList', d).then((res) => {
                   this.list = res.data.list
@@ -183,9 +162,9 @@
         },
         handleSubmit(val){
           let d = val
-          d.role_id = 4
+          d.role_id = 3;
           if(this.role_id != 1) d.organization_id = +localStorage.getItem('organizationId')
-          if(this.modalTitle == '添加导师') this.fromAddAndEdit('/user/addDeptTeacher',d)
+          if(this.modalTitle == '添加学管') this.fromAddAndEdit('/user/addDeptTeacher',d)
           else this.fromAddAndEdit('/user/modifyDeptTeacher',d)
         }
     },

@@ -38,20 +38,26 @@
             tableRow: {},
             tableRowData: {},
             keyword: '',
-            modalText: '获得所属机构后台所有操作权限',
+            modalText: '获得所属机构所有权限',
             columns1: [
             {
                 title: '机构名称',
                 key: 'title',
                 align: 'left',
                 minWidth: 100
-            },{
-                title: '导师',
+            },
+            {
+                title: '学管总数',
+                key: 'tutor_study_count',
+                minWidth: 100
+            },
+            {
+                title: '导师总数',
                 key: 'tutor_count',
                 minWidth: 100
             },
             {
-                title: '学员',
+                title: '学员总数',
                 key: 'student_count',
                 minWidth: 100
             },
@@ -59,7 +65,15 @@
                 title: '用户ID',
                 key: 'username',
                 align: 'left',
-                minWidth: 100
+                minWidth: 150
+            },
+            {
+                key: '',
+                title: '身份',
+                minWidth: 100,
+                render: (h, params) => {
+                    return h('span', '机构管理员')
+                }
             },
             {
                 title: '状态',
