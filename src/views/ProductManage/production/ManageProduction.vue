@@ -1,6 +1,6 @@
 <template>
     <div class='manage-production-view'>
-        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="培训总数" :size-num1="total" btn-name="添加培训" :select1="selectList" :select2="selectList2"
+        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="培训总数" :size-num1="total" btn-name="添加培训" :select2="selectList2"
             select2Placeholder="请选择状态"  placehodle="搜索产品名称"  @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
           <div class="lecturer-list">
            <Row :gutter="20">
@@ -48,7 +48,6 @@
         curPage: 1,
         cardList: [],
         search: '',
-        selectList: [],
         selectList2: [{id: '',title:'全部'},{id: '3',title:'推荐'},{id: '2',title:'上架'},{id: '-1',title:'下架'},{id: '1',title:'测试'}],
         courseNums:12,
         organization_id: localStorage.getItem('organization_id'),
@@ -99,11 +98,6 @@
         this.curPage = val;
         var data = this.getData();
       },
-      getDeptAdminList(){
-         postData('user/getDeptAdminList',{page_size:100, page_num:1}).then((res) => {
-          this.selectList = res.data.list
-        })
-      },
       getList(){
         let organization_id = this.organization_id !== 1 ? this.organization_id : ''
         let d = {
@@ -125,7 +119,6 @@
     },
     mounted() {
       this.getList()
-      this.getDeptAdminList()
     }
   };
 </script>

@@ -34,7 +34,7 @@
           modalTitle: '',
             tableRow: {},
             tableRowData: {},
-            modalText: '获得九划后台所有操作权限',
+            modalText: '获得九划医教后台所有操作权限',
             columns1: [
             {
                 title: '用户ID',

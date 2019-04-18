@@ -8,7 +8,7 @@
             <div class='head-img'>
                 <img :src='userHeader'>
             </div>
-            <Poptip trigger="hover" placement="right">
+            <Poptip trigger="hover" :class="personalShow ? 'poptip-role-1' : 'poptip-role-3'" placement="right">
                 <Button class='setting'>
                     <Icon class="icon-setting" type="md-settings"/>
                     <div class='hover-glow'></div>
@@ -207,8 +207,15 @@
     /deep/ .ivu-poptip-body {
         padding: 0
     }
-    /deep/ .ivu-poptip-popper {
+    .poptip-role-1{
+      /deep/ .ivu-poptip-popper {
+        top: 45px !important
+      }
+    }
+    .poptip-role-3{
+      /deep/ .ivu-poptip-popper {
         top: 60px !important
+      }
     }
     /deep/ .ivu-btn-text, /deep/ .ivu-btn {
         border: none
@@ -221,14 +228,6 @@
         height: calc(100% - 240px);
         .logo {
             margin-bottom: 40px;
-            .logo-img {
-                width: 34px;
-            }
-            .logo-title {
-                color: #fff;
-                font-size: 18px;
-                margin-left: 10px;
-            }
         }
         .head-img-row {
             position: relative;
