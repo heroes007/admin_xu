@@ -20,9 +20,9 @@
     }
 </script>
 <style lang="less">
-    body{
-        background-color:#333333;
-    }
+    /*body{*/
+        /*background-color:#333333;*/
+    /*}*/
     .dashboard-view {
         box-sizing:border-box;
         width:100%;
