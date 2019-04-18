@@ -91,12 +91,12 @@
             ...d,
             {
                 title: '绑定课程',
-                key: 'state',
+                key: 'curr_count',
                 minWidth: 100
             },
             {
                 title: '批阅作业',
-                key: 'state',
+                key: 'homework_rate',
                 minWidth: 100
             },
             // {
