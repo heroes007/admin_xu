@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <div id="div" class="h100"></div>
+        <div :id="editorId" class="h100"></div>
     </div>
 </template>
 
@@ -30,35 +30,21 @@
                 type: String,
                 default: '123'
             },
-        },
-        mounted() {
-            let vm = this
-            this.editor = new E('#div')
-            this.editor.customConfig.menus = [
-                'head',
-                'bold',
-                'underline',
-                'foreColor',
-                'image',
-                'justify',
-                'list',
-                'undo',
-            ]
-            this.editor.customConfig.customUploadImg = function (files, insert) {
-                vm.handleGetassignKey(files[0], insert)
+            editorId: {
+                type: String,
+                default: 'div'
             }
-            this.editor.customConfig.showLinkImg = false
-            this.editor.customConfig.onchange = function (html) {
-                vm.$emit('get-content', html)
-            }
-            this.editor.customConfig.zIndex = 0
-            this.editor.create()
-            this.editor.txt.html(this.content)
         },
         watch:{
             content(val) {
                 this.editor.txt.html(val)
             }
+        },
+        beforeDestroy(){
+            this.setEditor = null;
+            this.handleUploadFile = null;
+            this.handleGetassignKey = null;
+            this.resourse_url = ''
         },
         methods: {
             handleUploadFile(form_data, url, insert) {
@@ -107,7 +93,25 @@
                         }
                     })
             },
-        }
+            setEditor(){
+                let vm = this
+                this.editor = new E(`#${this.editorId}`)
+                this.editor.customConfig.menus = [ 'head', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list', 'undo']
+                this.editor.customConfig.customUploadImg = function (files, insert) {
+                    vm.handleGetassignKey(files[0], insert)
+                }
+                this.editor.customConfig.showLinkImg = false
+                this.editor.customConfig.onchange = function (html) {
+                    vm.$emit('get-content', html)
+                }
+                this.editor.customConfig.zIndex = 0
+                this.editor.create()
+                this.editor.txt.html(this.content)
+            }
+        },
+        mounted() {
+            this.setEditor()
+        },
     }
 </script>
 

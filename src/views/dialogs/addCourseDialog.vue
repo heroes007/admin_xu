@@ -17,6 +17,12 @@
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
+                            <FormItem label="辅导老师" prop="instructor_id">
+                                <Select v-model="form.instructor_id" placeholder="请选择观讲师">
+                                    <Option v-for="item in tutorList" :key="item.id" :label="item.realname"
+                                            :value="item.id"></Option>
+                                </Select>
+                            </FormItem>
                             <FormItem label="科室" prop="department_id">
                                 <Select v-model="form.department_id" placeholder="请选择科室">
                                     <Option v-for="item in detpysList" :key="item.id" :label="item.name"
@@ -173,6 +179,7 @@
                 teacherList: [],
                 detpysList: [],
                 gradesList: [],
+                tutorList: [],
                 clearList: [
                     {
                         id: 0,
@@ -193,6 +200,9 @@
                     ],
                     teacher_id: [
                         {required: true, message: '请选择课程讲师'}
+                    ],
+                    instructor_id: [
+                        {required: true, message: '请选择辅导老师'}
                     ],
                     department_id: [
                         {required: true, message: '请选择科室'}
@@ -219,6 +229,7 @@
             this.getListTeacher()
             // this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
             if (this.payload.modify === 0) {
+                console.log(this.payload.row, 'log');
                 let d = this.payload.row
                 this.form = d
                 this.form.img_default = d.img_url
@@ -376,6 +387,10 @@
                 })
                 postData('components/getGrades').then((res) => {
                     this.gradesList = res.data
+                })
+                postData('components/getInstructors', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
+                    console.log(res.data, 'res')
+                    this.tutorList = res.data
                 })
             },
             getName(arr) {

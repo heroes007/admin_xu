@@ -95,7 +95,7 @@
                     </FormItem>
                     <!--富文本编辑器-->
                     <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 80 : 0" :prop="t.field" class="upload" ref="formInput">
-                        <new-editor :style=" t.small ? 'height: 340px;' : 'height: 500px;'" @get-content="getContent" :content="content"/>
+                        <new-editor :style=" t.small ? 'height: 340px;' : 'height: 500px;'" @get-content="getContent" :content="content" editorId="form"/>
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn"  text="上传附件" class="upload-img" bucket="jhyl-static-file"
@@ -145,12 +145,12 @@
     import iconColor from '../assets/icons/icon/color.png'
     import iconCopy from '../assets/icons/icon/photo.png'
     import rubbishIcon from '../assets/img/rubbish.png'
-    import newEditor from './NewEditor'
+    import NewEditor from './NewEditor'
     import uploadPanel from './UploadPanel'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
-        components: {ExchangeContent, uploadBtn, downLoading, newEditor, uploadPanel},
+        components: {ExchangeContent, uploadBtn, downLoading, NewEditor, uploadPanel},
         props: {
             modalBody: {
                 type: Boolean,

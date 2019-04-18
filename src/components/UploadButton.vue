@@ -138,6 +138,7 @@
 <style>
     .imgtypes-btn{
         width: 120px;
+        height: 36px;
         background: #fff;
         color: #3DAAFF;
         border: 1px solid #3DAAFF;

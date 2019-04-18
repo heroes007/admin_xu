@@ -186,6 +186,7 @@
         mounted() {
             this.getSubjectCurriculumList()
             this.getList()
+            this.tableHeight = window.innerHeight - 130
         }
     }
 </script>
