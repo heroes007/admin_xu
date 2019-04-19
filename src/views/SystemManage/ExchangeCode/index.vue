@@ -1,6 +1,6 @@
 <template>
     <div>
-        <FormModal :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal"
+        <FormModal :label-widths="95" :detail-data="tableRow" :show-modal='show' :form-list="formList" @close="closeModal"
                    :title="modalTitle" :rule-validate='rules' @from-submit="fromSubmit" @change-list="changeList"/>
         <screen btnType :types="4" size-title1="兑换码总数" placehodle="搜索兑换码" :size-num1="total" btn-name="添加兑换码"
                 :select1="selectList" :selectType1="true" select2Placeholder="选择状态" :select2="selectList2"
@@ -144,7 +144,7 @@
                         {title: '兑换码产品名称', key: 'product_name'},
                         {title: '所属机构', key: 'organization_name'},
                         {title: '是否使用', key: 'is_state'}
-                        ]
+                    ]
                     this.$config.downExcel(titleList, res.data.list)
                 })
             },

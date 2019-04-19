@@ -49,10 +49,10 @@
     }
     .hide-menu-main-close{
         animation: myFirst 0.5s ease-out;
-        -webkit-animation: mySecond 0.5s ease-out;
-        -moz-animation: mySecond 0.5s ease-out;
-        -o-animation: mySecond 0.5s ease-out;
-        -ms-animation: mySecond 0.5s ease-out;
+        -webkit-animation: myFirst 0.5s ease-out;
+        -moz-animation: myFirst 0.5s ease-out;
+        -o-animation: myFirst 0.5s ease-out;
+        -ms-animation: myFirst 0.5s ease-out;
         width: 60px;
     }
     .hide-menu-img {

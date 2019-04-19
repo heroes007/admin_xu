@@ -6,10 +6,10 @@
                 <homework />
             </TabPane>
             <TabPane label="课程">
-                <exchenge />
+                <curriculum />
             </TabPane>
             <TabPane label="问答">
-                <curriculum />
+                <exchenge />
             </TabPane>
         </Tabs>
     </div>

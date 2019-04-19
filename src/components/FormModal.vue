@@ -16,7 +16,7 @@
                     <img v-if="img_url" class="upload-flie-img-2" :src="img_url"/>
                 </Upload>
             </div>
-            <Form ref="formValidate" :model="formItem" :label-width="80" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
+            <Form ref="formValidate" :model="formItem" :label-width="labelWidths ? labelWidths : 80" :label-position="labelWidths ? 'left' : 'right'" :rules="ruleValidate ? ruleValidate : {}" :style="styleRule">
                 <div v-for="(t,index) in formList" :key="index">
                     <FormItem v-if="t.type==='input'" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
@@ -32,7 +32,8 @@
                                :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <!-- input-number -->
-                    <FormItem v-if="t.type==='input-number'" :label="t.name" :prop="t.field">
+                    <FormItem v-if="t.type==='input-number'" :prop="t.field">
+                        <template slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
                         <InputNumber :disabled="t.disable" :min='1' v-model="formItem[t.field]"
                                      :placeholder="'请输入'+t.name"></InputNumber>
                     </FormItem>
@@ -46,7 +47,7 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectChange" :label="t.name" :prop="t.field"
+                    <FormItem v-else-if="t.type==='select'&&t.selectChange" :prop="t.field" :label="t.name"
                               :class="t.clas ? t.clas: ''">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
                                 @on-change="selectChangeList">
@@ -55,15 +56,16 @@
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :label="t.name" :prop="t.field">
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :prop="t.field" :label="t.name" >
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
                             <Option v-for="(m,i) in (t.line == 1 ? t.selectList[0] : t.selectList[1])" :key="i" :value="m[t.selectField[0]]">
                                 {{m[t.selectField[1]]}}
                             </Option>
                         </Select>
                     </FormItem>
-                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field"
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0" v-show="t.isShow ? t.isShow == 1 : true" :prop="t.field"
                               :class="t.clas ? t.clas: ''">
+                        <template slot="label"><span :class="handleSelectClass(t)">{{t.name}}</span></template>
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
                                 @on-change="selectChange">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
@@ -77,7 +79,8 @@
                                     :format="handleDateType(t)" :placeholder="handlePlaceholder(t)"></DatePicker>
                     </FormItem>
                     <!-- switch-datetimerange-->
-                    <FormItem v-if="(t.type==='switch-datetimerange')" :label="t.name" :prop="handleField(t,1)">
+                    <FormItem class="form-labels" v-if="(t.type==='switch-datetimerange')" :label="t.name" :prop="handleField(t,1)">
+                        <template slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
                         <Switch class="form-item-swtich" size="large" v-if="t.switchList&&t.switchList.length>0"
                                 v-model="formItem[handleField(t,0)]" @on-change="switchChange">
                             <span slot="open">{{t.switchList[0]}}</span>
@@ -152,6 +155,10 @@
     export default {
         components: {ExchangeContent, uploadBtn, downLoading, NewEditor, uploadPanel},
         props: {
+            labelWidths: {
+                type: Number,
+                default: null
+            },
             modalBody: {
                 type: Boolean,
                 default: false
@@ -323,6 +330,13 @@
             },
         },
         methods: {
+            handleSelectClass(t){
+              if(this.labelWidths) return this.handleClass(t)
+              return  t.name.length == 2 ? 'form-label' : ''
+            },
+            handleClass(t){
+              return t.name.length == 4 && this.labelWidths ? 'form-label-2' : ''
+            },
             deleteList(item, index) {
                 this.$emit('delete-list', index)
             },
@@ -529,6 +543,9 @@
         /deep/ .ivu-btn{
             display: inline-block !important;
         }
+    }
+    .form-label-2{
+        letter-spacing: 3px
     }
     .modal-class{
         /deep/.ivu-modal-body {

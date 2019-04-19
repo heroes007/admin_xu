@@ -16,7 +16,7 @@
     import HideMenu from '../components/HideMenu'
     export default{
         mixins: [hideMenuMixins],
-        components:{ 'side-menu':SideMenu, HideMenu },
+        components:{ 'side-menu':SideMenu, HideMenu }
     }
 </script>
 <style lang="less">

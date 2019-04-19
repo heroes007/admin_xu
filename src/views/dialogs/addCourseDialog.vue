@@ -5,7 +5,7 @@
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Row class="body-top" v-if="dialogIndex==1">
-                    <Form class="add-course-form" :label-position="labelPosition" :label-width="100"
+                    <Form class="add-course-form" :label-position="labelPosition" :label-width="80"
                           :rules="ruleValidate" ref="form" :model="form">
                         <Col>
                             <FormItem label="课程名称" prop="title">
@@ -17,20 +17,22 @@
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="辅导老师" >
+                            <FormItem label="辅导老师" class="form-labels">
                                 <Select v-model="form.instructor_id" placeholder="请选择观讲师">
                                     <Option v-for="item in tutorList" :key="item.id" :label="item.realname"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="科室" prop="department_id">
+                            <FormItem prop="department_id">
+                                <template slot="label"><span class="form-label">科室</span></template>
                                 <Select v-model="form.department_id" placeholder="请选择科室">
                                     <Option v-for="item in detpysList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="年级" prop="grade_id">
-                                <Select v-model="form.grade_id" placeholder="请选择学段">
+                            <FormItem prop="grade_id">
+                                <template slot="label"><span class="form-label">年级</span></template>
+                                <Select v-model="form.grade_id" placeholder="请选择年级">
                                     <Option v-for="item in gradesList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
