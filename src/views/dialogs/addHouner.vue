@@ -19,7 +19,7 @@
                                     </Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="证书描述">
+                            <FormItem class="form-labels" label="证书描述">
                                 <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.detail"></Input>
                             </FormItem>
                             <FormItem label="证书照片" required>

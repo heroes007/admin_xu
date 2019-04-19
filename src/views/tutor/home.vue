@@ -1,5 +1,7 @@
 <template>
-  <h2 @click="toLink">{{ text }}</h2>
+ <div>
+    <h2 @click="toLink">{{ text }}</h2>
+ </div>
 </template>
 
 <script>
@@ -19,3 +21,6 @@
     }
   }
 </script>
+<style lang="less" scoped>
+</style>
+

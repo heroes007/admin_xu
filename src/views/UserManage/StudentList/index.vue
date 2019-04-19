@@ -2,7 +2,7 @@
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
          <screen select-subjects :paying-student="payingStudent" :radio-type="radioType" :select-type1="selectType1" :select-type2="selectType2" :types="5"
-             :size-title1="title1" :size-num1="allNum+'/'+titleTotal"  @moneyStudent="moneyStudent"
+             :size-title1="title1" :size-num1="allNum+ (titleTotal ? '/'+titleTotal : '')"  @moneyStudent="moneyStudent"
              select2Placeholder="请选择年级"  :select2="selectList1" 
           @selectChange1="selectChange1" @selectChange2="selectChange2" @selectChange3="selectChange3"  @inputChange="inputChange" @handleClick="handleClick" />
         <Tables :tabel-height="tableHeight" :is-serial=true @row-click="see" @operation1="statistics" @radio-change="radioChange"  @table-swtich="swtichChange" :column="columns1" :table-data="list"  :select-list="student"/>

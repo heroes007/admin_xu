@@ -451,6 +451,7 @@
             font-size: 14px;
             color: #474C63;
             letter-spacing: 0;
+            padding-left: 11px;
         }
 
         .answer-checkbox {

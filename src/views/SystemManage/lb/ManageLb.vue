@@ -11,7 +11,8 @@
                 <FormItem label="显示位置">
                     <Input :placeholder="adutplace == '首页轮播' ? '首页轮播' : '课程页轮播'" disabled></Input>
                 </FormItem>
-                <FormItem class="form-item-state" label="状态" prop="state">
+                <FormItem prop="state">
+                    <template slot="label"><span class="form-label">状态</span></template>
                     <Select v-model="lbData.state" placeholder="请选择状态">
                         <Option :value="1">上线中</Option>
                         <Option :value="-1">已下线</Option>
@@ -241,10 +242,6 @@
     }
 </script>
 <style scoped lang="less">
-    /deep/ .form-item-state > .ivu-form-item-label {
-        letter-spacing: 9px;
-    }
-
     /deep/ .ivu-input-disabled::-webkit-input-placeholder {
         color: #474C63
     }
