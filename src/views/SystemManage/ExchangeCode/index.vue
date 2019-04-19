@@ -140,7 +140,7 @@
                         item.is_state = item.use_state == 0 ? '未使用' : '已使用'
                     })
                     let titleList = [
-                        {title: '兑换码名称', key: 'code'},
+                        {title: '兑换码', key: 'code'},
                         {title: '兑换码产品名称', key: 'product_name'},
                         {title: '所属机构', key: 'organization_name'},
                         {title: '是否使用', key: 'is_state'}
@@ -148,30 +148,6 @@
                     this.$config.downExcel(titleList, res.data.list)
                 })
             },
-            // downExcel(th, list) {
-            //     var title = '', content = ''
-            //     th.forEach(item => {
-            //         title += `<th>${item.title}</th>`
-            //     })
-            //     title = `<tr>${title}</tr>`
-            //     list.forEach(item => {
-            //         let detail = ''
-            //         th.forEach(it => {
-            //             detail += `<td>${item[it.key]}</td>`
-            //         })
-            //         detail += `<tr>${detail}</tr>`
-            //         content += detail
-            //     })
-            //     var tables = title + content
-            //     let html = "<html><head><meta charset='utf-8' /></head><body><table>";
-            //     html += tables;
-            //     html += "</table></body></html>";
-            //     var blob = new Blob([html], { type: "application/vnd.ms-excel" });
-            //     var a = document.createElement('a');
-            //     a.href = URL.createObjectURL(blob);
-            //     a.download = "兑换码数据.xls";
-            //     a.click()
-            // },
             useRecords(row, rowIndex) {
                 this.$router.replace({path: `/dashboard/${row.id}/usage-record/`})
                 localStorage.setItem('useRecords', JSON.stringify(row))
