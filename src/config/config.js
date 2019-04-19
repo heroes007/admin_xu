@@ -140,18 +140,19 @@ export default {
         })
         title = `<tr>${title}</tr>`
         list.forEach(item => {
-            let detail = ''
+            let detail = '', trs = ''
             th.forEach(it => {
                 detail += `<td>${item[it.key]}</td>`
             })
-            detail += `<tr>${detail}</tr>`
-            content += detail
+            trs += `<tr>${detail}</tr>`
+            content += trs
         })
         var tables = title + content
         let html = "<html><head><meta charset='utf-8' /></head><body><table>";
         html += tables;
         html += "</table></body></html>";
         var blob = new Blob([html], { type: "application/vnd.ms-excel" });
+
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = "兑换码数据.xls";
@@ -179,7 +180,7 @@ export default {
      let tmpnewchar = ""
      let  perchar = part[0].charAt(i);
       switch (perchar) {
-          case "0":  tmpnewchar = "零" + tmpnewchar;break;
+          case "0": tmpnewchar = "零" + tmpnewchar; break;
           case "1": tmpnewchar = "一" + tmpnewchar; break;
           case "2": tmpnewchar = "二" + tmpnewchar; break;
           case "3": tmpnewchar = "三" + tmpnewchar; break;

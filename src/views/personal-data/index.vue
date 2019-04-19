@@ -149,9 +149,6 @@
 .personal-form{
   margin-top: 20px;
 }
-.form-label{
-  letter-spacing: 14px;
-}
 .form-label2{
   letter-spacing: 4px;
 }

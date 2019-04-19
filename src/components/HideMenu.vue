@@ -8,7 +8,6 @@
   import hideMenuMixins from '../views/ProductManage/MainProduct/hideMenuMixins'
 
   export default {
-    props: ['text', 'hide'],
     mixins: [hideMenuMixins],
     mounted: function () {
       document.title = this.text;

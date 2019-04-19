@@ -83,7 +83,7 @@
             },
             handleSubmit(d){
                 d.content = d.uploading
-                let url = this.modalTitle === '创建通知' ? 'platform/message/addMessage' : 'platform/message/modifyMessage'
+                let url = this.modalTitle === '添加通知' ? 'platform/message/addMessage' : 'platform/message/modifyMessage'
                 postData(url, d).then((res) => {
                     if(res.res_code == 1){
                         this.$Message.success(res.msg)

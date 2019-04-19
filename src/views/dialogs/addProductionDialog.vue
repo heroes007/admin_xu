@@ -9,7 +9,8 @@
                         <FormItem v-show="nextStep == 0" prop="title" label="产品名称" >
                             <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                         </FormItem>
-                        <FormItem v-show="nextStep == 0" class="original_price"  prop="original_price" label="原价" >
+                        <FormItem v-show="nextStep == 0" prop="original_price" >
+                            <template slot="label"><span class="form-label">原价</span></template>
                             <InputNumber placeholder="售价必须小于等于定价" v-model="form.original_price"></InputNumber>
                         </FormItem>
                         <FormItem v-show="nextStep == 0" prop="price" label="实际售价" >
@@ -363,7 +364,6 @@ export default {
 /deep/ .ivu-modal-body{
     padding: 30px 25px 15px 25px
 }
-/deep/ .original_price>.ivu-form-item-label{ letter-spacing: 9px; }
 /deep/ .ivu-select-selected-value, /deep/ .ivu-select-item{ letter-spacing: normal; }
 /deep/ .ivu-btn{display: inline-block !important;}
 /deep/.ivu-switch-large { width: 75px }

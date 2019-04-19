@@ -164,6 +164,9 @@ textarea.ivu-input{
   font-size: 18px;
   margin-left: 10px;
 }
+.form-label{
+  letter-spacing: 14px;
+}
 /* .ivu-table-row-highlight td, tr.ivu-table-row-highlight.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td{
   background: #fff !important;
 }
