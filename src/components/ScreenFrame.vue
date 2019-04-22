@@ -1,5 +1,5 @@
 <template>
-    <div class="screen" :style="(types == 4 || types == 8 || types == 9 || types == 12) ? backgroundColor:''">
+    <div class="screen" :class="types == 12 ? 'box-shadows' : ''" :style="(types == 4 || types == 8 || types == 9 || types == 12) ? backgroundColor:''">
         <div v-if="types == 6 || types == 7 || types == 8 || types == 9" class="back" @click="handleBack">
             <img class="back-img" src="../assets/icons/icon/back.png" alt="">
             <div class="back-title">返回</div>
@@ -188,6 +188,9 @@
 </script>
 
 <style scoped lang="less">
+    .box-shadows{
+       box-shadow: 0 0 6px 0 rgba(117,124,157,0.10);
+    }
     .screen{
         height: 66px;
         background: #F0F0F7;
