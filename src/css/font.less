@@ -1,9 +1,9 @@
-@selectors-size: 22, 14, 18, 14, 14;
-@selectors-color: #4098FF, #4098FF, #333333, #333333, #8C9095;
+@selectors-size: 22, 14, 18, 14, 14, 16;
+@selectors-color: #4098FF, #4098FF, #333333, #333333, #8C9095, #474C63;
 each(range(3), {
-  .font-regular@{value} {
-    font-family: PingFangSC-Regular;
-    color: extract(@selectors-color, @value);
-    font-size: extract(@selectors-size, @value) * 1px;
-  }
+.font-regular@{value} {
+  font-family: PingFangSC-Regular;
+  color: extract(@selectors-color, @value);
+  font-size: extract(@selectors-size, @value) * 1px;
+}
 });

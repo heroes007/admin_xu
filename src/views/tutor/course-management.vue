@@ -2,7 +2,7 @@
  <div class="course-management">
     <screen :types="12" size-title1="管理课程" selectType2 :size-num1="list.length"  select2Placeholder="请选择课程"  :select2="selectList1" @selectChange2="selectChange2" />
     <div class="course-list" v-if="list.length>0">
-        <Card class="course-main" v-for="(t,i) in list" :key="i" @click.native="rowClick(t.id)">
+        <Card class="course-main" v-for="(t,i) in list" :key="i" @click.native="rowClick(t)">
             <div class="course-main-item">
                <div class="course-item-de">
                   <p class="font-regular3 text-ellipsis course-item-title">{{t.title}}</p>
@@ -52,8 +52,8 @@
             let d = v == 'all' ? '' : v;
             this.getList(d)
         },
-        rowClick(id){
-            this.$router.push({name: 'job-list', params: {id}})
+        rowClick(t){
+            this.$router.push({name: 'job-list', params: t})
         },
         getList(d){
             postData('tutor/getCurriculumList', {curriculum_type: d || ''}).then((res) => {
@@ -74,6 +74,12 @@
   }
 </script>
 <style lang="less" scoped>
+/deep/ .screen{
+    box-shadow: 0 0 6px 0 rgba(117,124,157,0.10);
+}
+/deep/ .ivu-select-selection{
+    background: #EEEEF6;
+}
 .course-management{
     height: 100%;
     .course-list{

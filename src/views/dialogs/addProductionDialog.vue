@@ -220,7 +220,6 @@ export default {
             this.form.product_id = d.id
             this.form.organization_id = d.organization_id
             this.content = d.description
-            console.log(this.content,'this.content')
             // this.descriptionHtml = d.description.replace('class="form-message"','')
             // this.form.organization_id = this.organization_id
         }
