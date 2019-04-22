@@ -79,6 +79,7 @@
             },
             createNotificationHandler() {
                 this.modalTitle = '添加通知'
+                this.tableRow = {}
                 this.show = true
             },
             handleSubmit(d){

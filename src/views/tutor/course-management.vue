@@ -13,7 +13,7 @@
     },
     methods: {
         toLink(){
-            this.$router.push('/tutor-course')
+            this.$router.push('/job-list')
         }
     },
     mounted() {

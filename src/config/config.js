@@ -2,137 +2,138 @@ import $LoadingY from '../plug/loading'
 import {Config} from './base'
 import axios from 'axios'
 import Vue from 'vue'
-import { Base64 } from 'js-base64';
+import {Base64} from 'js-base64';
 import postData from '../api/postData'
+
 var loadingInstance = null;
 export default {
-  IsLoading: (val) => {
-    if (val) {
-      loadingInstance = $LoadingY({message: "加载中，请稍后", show: true})
-      setTimeout(() => {
-        loadingInstance.close()
-      }, Config.base_timeout);
-    } else {
-      if (loadingInstance) loadingInstance.close();
-    }
-  },
-  /* 深拷贝 */
-  copy: function (obj1, obj2) {
-    var obj2 = obj2 || {};
-    for (let name in obj1) {
-      if (obj1[name] != null) {
-        if (typeof obj1[name] === "object") {
-          obj2[name] = obj1[name].constructor === Array ? [] : {};
-          this.copy(obj1[name], obj2[name]);
+    IsLoading: (val) => {
+        if (val) {
+            loadingInstance = $LoadingY({message: "加载中，请稍后", show: true})
+            setTimeout(() => {
+                loadingInstance.close()
+            }, Config.base_timeout);
         } else {
-          obj2[name] = obj1[name];
+            if (loadingInstance) loadingInstance.close();
         }
-      } else {
-        obj2[name] = null;
-      }
-    }
-    return obj2; //然后在把复制好的对象给return出去
-  },
-  // 为小于10的数字添加0
-  addZero(data) {
-    if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
-  },
-  // 获取权限
-  getAuth(v){
-    let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
-    let d1 = JSON.parse(d.slice(4))
-    let da = null
-    d1.map((t) => {
-      let n = +t.permission_code.slice(0,2)
-      if(n === v) da = t
-    })
-    if(da&&da.hasOwnProperty('child')) return da.child
-    return false
-  },
+    },
+    /* 深拷贝 */
+    copy: function (obj1, obj2) {
+        var obj2 = obj2 || {};
+        for (let name in obj1) {
+            if (obj1[name] != null) {
+                if (typeof obj1[name] === "object") {
+                    obj2[name] = obj1[name].constructor === Array ? [] : {};
+                    this.copy(obj1[name], obj2[name]);
+                } else {
+                    obj2[name] = obj1[name];
+                }
+            } else {
+                obj2[name] = null;
+            }
+        }
+        return obj2; //然后在把复制好的对象给return出去
+    },
+    // 为小于10的数字添加0
+    addZero(data) {
+        if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
+    },
+    // 获取权限
+    getAuth(v) {
+        let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+        let d1 = JSON.parse(d.slice(4))
+        let da = null
+        d1.map((t) => {
+            let n = +t.permission_code.slice(0, 2)
+            if (n === v) da = t
+        })
+        if (da && da.hasOwnProperty('child')) return da.child
+        return false
+    },
 
-  //判断管理身份
-  status(n){
-    switch (n) {
-      case 1:
-        return '总管理员'
-        break
-      case 2:
-        return '机构管理员'
-        break
-      case 3:
-        return '学管'
-        break
-      case 4:
-        return '辅导老师'
-        break;
-      // case 5:
-      //   return '辅导员'
-      default: return '不存在该身份'
-    }
-  },
-  // 为小于10的数字添加0
-  addZero (data) {
-    if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
-  },
-  // 格式化日期 为小于10日期 拼0
-  formatDateStr: function (year, month, day) {
-    return year + '/' + this.addZero(month) + ((day && this.addZero) ? '/' : '') + this.addZero(day)
-  },
-  // 格式化日期 YYYY/MM/DD HH:MM:SS
-  formatTime (times) {
-    return (times instanceof Date === true)
-      ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate()) + ' ' + this.addZero(times.getHours()) +
-              ':' + this.addZero(times.getMinutes()) + ':' + this.addZero(times.getSeconds()) : times
-  },
-  // 格式化日期 YYYY/MM/DD
-  formatDate (times) {
-    return (times instanceof Date === true)
-      ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate())
-      : times
-  },
-  setLockType(d){
-   let arr = [{id: 0,title:'不限'},{id: 1,title:'按课程'},{id: 2,title:'按章节'},{id: 3,title:'按视频'}]
-   let d1 = ''
-   arr.forEach((t) => {
-      if(t.id == d) d1 = t.title
-   })
-   return d1
-  },
-  setProductState(n){
-    // -2删除 -1下架 0未上架 1测试 2上架 3推荐
-    let stateText = ''
-    switch(n)
-    {
-    case -2:
-      stateText = '删除'
-      break;
-      case -1:
-      stateText = '下架'
-      break;
-      case 0:
-      stateText = '未上架'
-      break;
-      case 1:
-      stateText = '测试'
-      break;
-      case 2:
-      stateText = '上架'
-      break;
-      case 3:
-      stateText = '推荐'
-      break;
-    }
-    return stateText
-  },
-  // 获取当前角色的权限
-  getRoleId(){
-    return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
-  },
-  // 设置role_id === 4 的权限  只能查看产品 批阅作业
-  setAuthTube(){
-    return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 4
-  },
-  //table导出excel
+    //判断管理身份
+    status(n) {
+        switch (n) {
+            case 1:
+                return '总管理员'
+                break
+            case 2:
+                return '机构管理员'
+                break
+            case 3:
+                return '学管'
+                break
+            case 4:
+                return '辅导老师'
+                break;
+            // case 5:
+            //   return '辅导员'
+            default:
+                return '不存在该身份'
+        }
+    },
+    // 为小于10的数字添加0
+    addZero(data) {
+        if (typeof data === 'number') return data < 10 ? '0' + data : data + ''
+    },
+    // 格式化日期 为小于10日期 拼0
+    formatDateStr: function (year, month, day) {
+        return year + '/' + this.addZero(month) + ((day && this.addZero) ? '/' : '') + this.addZero(day)
+    },
+    // 格式化日期 YYYY/MM/DD HH:MM:SS
+    formatTime(times) {
+        return (times instanceof Date === true)
+            ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate()) + ' ' + this.addZero(times.getHours()) +
+            ':' + this.addZero(times.getMinutes()) + ':' + this.addZero(times.getSeconds()) : times
+    },
+    // 格式化日期 YYYY/MM/DD
+    formatDate(times) {
+        return (times instanceof Date === true)
+            ? times.getFullYear() + '/' + this.addZero(times.getMonth() + 1) + '/' + this.addZero(times.getDate())
+            : times
+    },
+    setLockType(d) {
+        let arr = [{id: 0, title: '不限'}, {id: 1, title: '按课程'}, {id: 2, title: '按章节'}, {id: 3, title: '按视频'}]
+        let d1 = ''
+        arr.forEach((t) => {
+            if (t.id == d) d1 = t.title
+        })
+        return d1
+    },
+    setProductState(n) {
+        // -2删除 -1下架 0未上架 1测试 2上架 3推荐
+        let stateText = ''
+        switch (n) {
+            case -2:
+                stateText = '删除'
+                break;
+            case -1:
+                stateText = '下架'
+                break;
+            case 0:
+                stateText = '未上架'
+                break;
+            case 1:
+                stateText = '测试'
+                break;
+            case 2:
+                stateText = '上架'
+                break;
+            case 3:
+                stateText = '推荐'
+                break;
+        }
+        return stateText
+    },
+    // 获取当前角色的权限
+    getRoleId() {
+        return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
+    },
+    // 设置role_id === 4 的权限  只能查看产品 批阅作业
+    setAuthTube() {
+        return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 4
+    },
+    //table导出excel
     downExcel(th, list) {
         var title = '', content = ''
         th.forEach(item => {
@@ -151,8 +152,7 @@ export default {
         let html = "<html><head><meta charset='utf-8' /></head><body><table>";
         html += tables;
         html += "</table></body></html>";
-        var blob = new Blob([html], { type: "application/vnd.ms-excel" });
-
+        var blob = new Blob([html], {type: "application/vnd.ms-excel"});
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = "兑换码数据.xls";

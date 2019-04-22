@@ -17,7 +17,7 @@
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="辅导老师" prop="instructor_id">
+                            <FormItem label="辅导老师" class="form-labels">
                                 <Select v-model="form.instructor_id" placeholder="请选择观讲师">
                                     <Option v-for="item in tutorList" :key="item.id" :label="item.realname"
                                             :value="item.id"></Option>
@@ -203,9 +203,9 @@
                     teacher_id: [
                         {required: true, message: '请选择课程讲师'}
                     ],
-                    instructor_id: [
-                        {required: true, message: '请选择辅导老师'}
-                    ],
+                    // instructor_id: [
+                    //     {required: true, message: '请选择辅导老师'}
+                    // ],
                     department_id: [
                         {required: true, message: '请选择科室'}
                     ],

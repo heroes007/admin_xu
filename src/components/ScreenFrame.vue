@@ -143,9 +143,9 @@
       handleSizeNum(s){
         if(s){
         let arr = s.split('/');
-        let s1 = arr[0] != 'null' ? arr[0] : ''
-        let s2 = arr[1] != 'null' ? arr[1] : ''
-        return s1 + `<span style="color:#9397AD">/${s2}</span>`
+        let s1 = arr[0]&&arr[0] != 'null' ? arr[0] : ''
+        let s2 = arr[1]&&arr[1] != 'null' ? '/' +  arr[1] : ''
+        return s1 + `<span style="color:#9397AD">${s2}</span>`
         }
         return ''
       },

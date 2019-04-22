@@ -2,7 +2,7 @@
     <div class='dashboard-view'>
         <Row type='flex' class='col-container'>
             <Col v-if="menushow" class='menu-bar'><SideMenu/></Col>
-            <Col v-if="!menushow"><HideMenu/></Col>
+            <Col v-if="!menushow"><HideMenu :stateClasses="hideClass"/></Col>
             <Col class='sub-view' :style="viewStyl">
                 <div class="hide-menu-btn" @click="hideMenu">
                     <Icon class="hide-icon" :type="hideIcon"/>
@@ -39,7 +39,7 @@
                 height: 100%;
                 max-width: 260px;
                 min-width: 260px;
-                min-height: 800px;
+                /*min-height: 800px;*/
                 background-color: #333333;
                 box-shadow: 2px 0 10px 0 rgba(51, 51, 51, 0.06);
                 overflow-y: auto;
