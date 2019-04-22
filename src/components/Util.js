@@ -111,7 +111,13 @@ export function exportCsv(data, fields, fileNames, fileName) {
 export function reunitPrice(val) {
     return (val).toString();
 }
-
+export const MenuToturList = [
+    {
+        name: 'tutor-course',
+        title: '课程管理',
+        icon: 'md-school',
+    },
+]
 export const MenuList = [
     {
         name: 'user-manage',

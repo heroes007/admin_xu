@@ -98,11 +98,8 @@
                     onOk: () => {
                         postData(url, {message_id: row.id}).then((res) => {
                             if(res.res_code == 1){
-                                if(text == '发送'){
-                                    this.$Message.success(res.msg)
-                                    this.getList()
-                                }
-                                if(index) this.list.splice(index,1)
+                                if(text == '发送') this.$Message.success(res.msg)
+                                this.getList()
                             }
                         })
                     },

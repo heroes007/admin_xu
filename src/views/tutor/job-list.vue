@@ -29,7 +29,7 @@
         },
         methods: {
             toLink() {
-                this.$router.push('/tutor/home')
+                this.$router.push('/dashboard/tutor-course')
             }
         },
         mounted() {
