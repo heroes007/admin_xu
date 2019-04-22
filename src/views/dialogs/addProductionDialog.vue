@@ -218,12 +218,11 @@ export default {
             let arrObj = JSON.parse(d.url_arr);
             this.form.imgList = [...this.form.imgList,...arrObj.default]
             this.form.video_url = arrObj.video
-            if(arrObj.video) this.setPane(true)
-            if(this.form.imgList.length>1) this.setPane(false)
+            // if(arrObj.video) this.setPane(true)
+            // if(this.form.imgList.length>1) this.setPane(false)
             this.form.product_id = d.id
             this.form.organization_id = d.organization_id
             this.content = d.description
-            console.log(this.content,'this.content')
             // this.descriptionHtml = d.description.replace('class="form-message"','')
             // this.form.organization_id = this.organization_id
         }

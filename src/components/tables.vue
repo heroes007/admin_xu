@@ -6,6 +6,10 @@
             <template slot-scope="{ column, row, index }" slot="content-html">
                 <span v-html="row[column.key]"></span>
             </template>
+            <template slot-scope="{ column, row, index }" slot="accessory">
+                <Icon type="ios-link" style="margin-right: 10px;height: 20px;"/>
+                <span>{{row.accessory}}</span>
+            </template>
             <template slot-scope="{ column, row, index }" slot="operation">
                 <span v-for="(t,i) in column.operation" :key="i">
                     <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">

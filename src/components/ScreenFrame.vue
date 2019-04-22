@@ -1,5 +1,5 @@
 <template>
-    <div class="screen" :style="(types == 4 || types == 8 || types == 9) ? backgroundColor:''">
+    <div class="screen" :style="(types == 4 || types == 8 || types == 9 || types == 12) ? backgroundColor:''">
         <div v-if="types == 6 || types == 7 || types == 8 || types == 9 || types == 13" class="back" @click="handleBack">
             <img class="back-img" src="../assets/icons/icon/back.png" alt="">
             <div class="back-title">返回</div>
@@ -10,10 +10,10 @@
         <Select v-if="selectSubjects" v-model="valueSelect3" @on-change="selectChange3" class="select-list" placeholder="请选择学科">
             <Option v-for="item in select3" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
-        <Select v-if="types == 4 || types == 5 || types == 10 || types == 11 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
+        <Select v-if="types == 4 || types == 5 || types == 10 || types == 11 || types == 12 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
+        <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13 && types != 12" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
         <!-- <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
@@ -29,7 +29,7 @@
             <span class="all-content">{{sizeTitle2}}</span>
             <span v-if='sizeNum2 >= 0' class="all-num">{{sizeNum2}}</span>
         </div>
-        <div v-if="types == 6 || types == 7 || types == 9 || types == 10 || types == 13" class="title">
+        <div v-if="types == 6 || types == 7 || types == 9 || types == 10 || types == 12 || types == 13" class="title">
             <div>{{title}}</div>
         </div>
         <Select v-if="types == 13" v-model="valueSelect4" @on-change="selectChange2" class="select-list4" :placeholder="select2Placeholder">
@@ -63,7 +63,7 @@
     props:{
       //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
       //types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
-      //types=10： 下拉框+标题+按钮; types=13：返回+标题+下拉框
+      //types = 10 下拉框+标题+按钮; types = 12 下拉框+标题;  types=13：返回+标题+下拉框
       types: {
         type: Number,
         required: true,
@@ -133,7 +133,10 @@
     },
     mounted() {
       // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
-      if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].id
+      if(this.select2 && this.select2.length) {
+        if(this.types == 12) this.valueSelect2 = this.select2[0].id
+        else this.valueSelect2 = this.select2[0].value
+      }
       if(this.select4 && this.select4.length) this.valueSelect4 = this.select4[0].id
       this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
       postData('components/getOrganization').then((res) => {
@@ -293,9 +296,6 @@
         width: 120px;
         position: absolute;
         right: 100px;
-    }
-    /deep/ .ivu-select-selection{
-        background: #EEEEF6;
     }
     .back{
         display: flex;

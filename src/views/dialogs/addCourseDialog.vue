@@ -225,7 +225,7 @@
             }
         },
         mounted() {
-            if(JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 2) this.clearList = this.clearList.slice(1,2)
+            if(JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 2) this.clearList = this.clearList.slice(1,3)
             else if(JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 3) this.clearList = this.clearList.slice(2,3)
             this.stateName = this.payload.state
             this.getListTeacher()
