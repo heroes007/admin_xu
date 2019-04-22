@@ -1,6 +1,6 @@
 <template>
     <div class="screen" :style="(types == 4 || types == 8 || types == 9) ? backgroundColor:''">
-        <div v-if="types == 6 || types == 7 || types == 8 || types == 9" class="back" @click="handleBack">
+        <div v-if="types == 6 || types == 7 || types == 8 || types == 9 || types == 13" class="back" @click="handleBack">
             <img class="back-img" src="../assets/icons/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
@@ -13,7 +13,7 @@
         <Select v-if="types == 4 || types == 5 || types == 10 || types == 11 && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
+        <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
         </Input>
         <!-- <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
@@ -29,9 +29,12 @@
             <span class="all-content">{{sizeTitle2}}</span>
             <span v-if='sizeNum2 >= 0' class="all-num">{{sizeNum2}}</span>
         </div>
-        <div v-if="types == 6 || types == 7 || types == 9 || types == 10" class="title">
+        <div v-if="types == 6 || types == 7 || types == 9 || types == 10 || types == 13" class="title">
             <div>{{title}}</div>
         </div>
+        <Select v-if="types == 13" v-model="valueSelect4" @on-change="selectChange2" class="select-list4" :placeholder="select2Placeholder">
+            <Option v-for="item in select4" :value="item.id" :key="item.id">{{ item.title }}</Option>
+        </Select>
         <Button v-if="types && types !== 5 && types !== 7 && types !== 9 && btnType" class="btn" type="primary" @click="handleClick">{{btnName}}</Button>
         <p class="code_name_text" v-if="types == 8">{{codeName}}</p>
     </div>
@@ -46,6 +49,7 @@
         valueSelect1: '',
         valueSelect2: '',
         valueSelect3: '',
+        valueSelect4: '',
         valueInput: '',
         placehodleInput: '搜索用户名/姓名/手机号',
         iconColor: '#9397AD',
@@ -59,7 +63,7 @@
     props:{
       //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
       //types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
-      //types = 10 下拉框+标题+按钮;
+      //types=10： 下拉框+标题+按钮; types=13：返回+标题+下拉框
       types: {
         type: Number,
         required: true,
@@ -96,10 +100,13 @@
       select2: {
         type: Array
       },
+      select4: {
+        type: Array
+      },
       sizeTitle1: {
         type: String
       },
-      sizeNum1: [Number,String],
+      sizeNum1: [Number, String],
       sizeTitle2: {
         type: String
       },
@@ -126,7 +133,8 @@
     },
     mounted() {
       // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
-      if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].value
+      if(this.select2 && this.select2.length) this.valueSelect2 = this.select2[0].id
+      if(this.select4 && this.select4.length) this.valueSelect4 = this.select4[0].id
       this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
       postData('components/getOrganization').then((res) => {
         this.select = [...this.select, ...res.data]
@@ -187,6 +195,7 @@
 <style scoped lang="less">
     .screen{
         height: 66px;
+        min-width: 800px;
         background: #F0F0F7;
         display: flex;
         align-items: center;
@@ -280,6 +289,14 @@
         width:200px;
         margin-left: 21px;
     }
+    .select-list4{
+        width: 120px;
+        position: absolute;
+        right: 100px;
+    }
+    /deep/ .ivu-select-selection{
+        background: #EEEEF6;
+    }
     .back{
         display: flex;
         justify-content: center;
@@ -314,4 +331,5 @@
       position: absolute;
       right: 40px;
     }
+
 </style>

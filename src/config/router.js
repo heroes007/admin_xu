@@ -17,9 +17,11 @@ const ExchangeCode = () => import('../views/SystemManage/ExchangeCode/index')
 const UsageRecord = () => import('../views/SystemManage/ExchangeCode/UsageRecord/index')
 const MarkingHomework = () => import('../views/ProductManage/Task/MarkingHomework/index')
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
+
 const head = () => import('../views/tutor/head.vue')
 const home = () => import('../views/tutor/home.vue')
 const JobList = () => import('../views/tutor/job-list.vue')
+const tutorCourse = () => import('../views/tutor/course-management')
 Vue.use(VueRouter);
 // 页面路由
 const routes = [
@@ -27,40 +29,30 @@ const routes = [
     path:'',
     redirect:'/login'
   },
-  //辅导老师
   {
-    path: '/tutor',
-    component: head,
-    children:[
-      {
-        path:'',
-        redirect:'home'
-      },
-      {
-        path: 'home',
-        name: 'home',
-        component: home
-      },
-      {
-        path: ':id/job-list',
-        name: 'job-list',
-        component: JobList
-      },
-    ]
+    path: '/job-list',
+    name: 'job-list',
+    component: JobList
   },
   {
     path:'/dashboard',
     // name:'dashboard',
     component:DashBoard,
     children:[
-      {
-        path:'',
-        redirect:'user-manage'
-      },
+      // {
+      //   path:'',
+      //   redirect: 'user-manage'
+      // },
       {
         path: 'user-manage',
         name: 'user-manage',
         component: UserManage
+      },
+        //辅导老师
+      {
+        path: 'tutor-course',
+        name: 'tutor-course',
+        component: tutorCourse,
       },
       {
         path: 'personal-data',

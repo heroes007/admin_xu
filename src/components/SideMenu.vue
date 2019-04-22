@@ -57,7 +57,7 @@
 <script>
     import api from '../api/modules/config'
     import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-    import {MenuList} from './Util'
+    import { MenuList, MenuToturList } from './Util'
     import postData from '../api/postData'
 
     export default {
@@ -111,7 +111,9 @@
                 });
             },
             handleMenuList() {
-                if (localStorage.getItem('PERMISSIONS')) {
+                let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+                if(roleId == 4) this.menuList = MenuToturList
+                else if (localStorage.getItem('PERMISSIONS')) {
                     let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
                     let d1 = JSON.parse(d.slice(4))
                     if (d1 && d1.length > 0) {
@@ -145,16 +147,17 @@
             }
         },
         mounted() {
-            this.handleMenuList()
-            if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
-            let menuActive = localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage'
-            this.activeIndex = menuActive
-            if (this.$route.name === 'user-manage') this.activeIndex = 'user-manage'
-            this.$nextTick(() => {
-                this.$refs.side_menu.updateOpened();
-                this.$refs.side_menu.updateActiveName();
-            })
-            this.getName()
+          let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+          this.handleMenuList()
+          if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
+          let menuActive = roleId !=4 ? ( localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
+          this.activeIndex = menuActive
+          if(this.$route.name ==='user-manage') this.activeIndex =  roleId !=4 ? 'user-manage' : 'tutor-course'
+          this.$nextTick(() => {
+              this.$refs.side_menu.updateOpened();
+              this.$refs.side_menu.updateActiveName();
+          })
+          this.getName()
         }
     }
 </script>
