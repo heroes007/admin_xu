@@ -1,7 +1,11 @@
 <template>
     <div>
-        <div>作业</div>
-        <tables :column="column" :table-data="list" @operation1="check"/>
+        <div style="text-align: left; display: flex">
+            <div>选项</div>
+            <Button type="primary">下载附件</Button>
+            <Button type="primary">批阅</Button>
+        </div>
+        <tables :column="column" :table-data="list" @operation1="check" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
     </div>
 </template>
 
@@ -13,9 +17,9 @@
         data() {
             return {
                column: [
-                   {title: '选项', type: 'selection', minWidth: 100},
+                   {title: '选项', type: 'selection', width: 100},
                    {title: '姓名', key: 'realname', minWidth: 100 },
-                   {title: '作业描述', key: 'describe', minWidth: 100 },
+                   // {title: '作业描述', key: 'describe', minWidth: 100 },
                    {title: '作业附件', key: 'accessory', minWidth: 100 },
                    {title: '提交日期', key: 'upDate', minWidth: 180},
                    {title: '批阅', key: 'state', slot: 'state-item', stateKey: 'read', minWidth: 100},
@@ -38,6 +42,12 @@
         methods: {
             check() {
 
+            },
+            selectTables(selection, row) {
+                console.log(selection, row, '123')
+            },
+            selectTablesAll() {
+                console.log(123);
             }
         },
         mounted() {

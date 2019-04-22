@@ -1,7 +1,7 @@
 <template>
     <div>
         <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
-               :height="tabelHeight">
+               :height="tabelHeight" @on-select="selectTables">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
                 <span v-html="row[column.key]"></span>
@@ -204,6 +204,9 @@
                 })
                 return arr
             },
+            selectTables(selection, row) {
+                this.$emit('select-tables', selection, row)
+            }
         },
         mounted() {
             this.handleColumns(this.column)
