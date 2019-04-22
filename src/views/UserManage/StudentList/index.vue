@@ -57,7 +57,7 @@
             }, {
               id: 3,
               title: '三年级'
-            }, ],
+            }],
             columns1: [
             {
                 title: '用户ID',
