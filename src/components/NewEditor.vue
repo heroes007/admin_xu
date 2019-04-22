@@ -96,7 +96,7 @@
             setEditor(){
                 let vm = this
                 this.editor = new E(`#${this.editorId}`)
-                this.editor.customConfig.menus = ['fontSize', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list', 'undo', 'redo']
+                this.editor.customConfig.menus = ['fontSize', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list']
                 this.editor.customConfig.customUploadImg = function (files, insert) {
                     vm.handleGetassignKey(files[0], insert)
                 }

@@ -35,6 +35,7 @@
     import checkImg from '../../assets/img/check.jpg'
     import pageList from '../../components/Page'
     import pageMixins from '../mixins/pageMixins'
+    import postData from '../../api/postData'
     export default {
         components: {tables, screen, pageList},
         mixins: [pageMixins],
@@ -95,13 +96,25 @@
             },
             handleBack() {
                 this.$router.go(-1)
+            },
+            getList() {
+                let data = {
+                    page_size: this.pageSize,
+                    page_num: this.current,
+                    curr_term_id: +this.$route.query.id,
+                    curriculum_type: this.$route.query.curriculum_type
+                }
+                postData('/tutor/getHomeworkByCurr', data).then(res => {
+                    console.log(res)
+                    this.total = res.count
+                })
             }
         },
         mounted() {
-            console.log(this.$route.params);
             this.pageSize = 10
             this.tableHeight = window.innerHeight - 260
             this.stateValue = this.stateSelect[0].id
+            this.getList()
         }
     }
 </script>

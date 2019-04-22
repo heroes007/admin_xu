@@ -12,7 +12,7 @@
                       <!-- <p class="course-item"><span class="font-regular1">13</span><span class="font-regular5">/24</span></p> -->
                       <p><span class="item-badge">{{t.no_see_count}}</span><span>作业</span></p>
                   </div>
-               </div> 
+               </div>
                <div class="course-item-de course-item-de2">
                   <div class="course-item-title course-flex">
                       <span class="course-item-type" :class="t.curriculum_type">{{t.curriculum_name}}</span>
@@ -24,7 +24,7 @@
                       <!-- <p class="course-item"><span class="font-regular5">问答总数</span></p> -->
                       <!-- <p><span class="item-badge">0</span><span>提问</span></p> -->
                   </div>
-               </div> 
+               </div>
             </div>
         </Card>
     </div>
@@ -53,7 +53,11 @@
             this.getList(d)
         },
         rowClick(t){
-            this.$router.push({name: 'job-list', params: t})
+            const data = {
+                id: t.id,
+                curriculum_type: t.curriculum_type
+            }
+            this.$router.push({name: 'job-list', query: data})
         },
         getList(d){
             postData('tutor/getCurriculumList', {curriculum_type: d || ''}).then((res) => {
@@ -131,8 +135,8 @@
                         position: absolute;
                         right: 0;
                         display: inline-flex;
-                        .course-item { 
-                            margin-left: 30px; 
+                        .course-item {
+                            margin-left: 30px;
                             text-align: center;
                             width: 57px;
                         }
