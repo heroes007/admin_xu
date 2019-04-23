@@ -1,6 +1,6 @@
 <template>
     <div>
-        <tutor-modal :details="details" :show="show" :type="types" @close-modal="closeModal" :title="modalTitle"/>
+        <tutor-modal :details="details" :type="types" :show="show" @close-modal="closeModal" :title="modalTitle"/>
         <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
@@ -89,23 +89,23 @@
             }
         },
         methods: {
-            setShowModal(text, details, type){
+            setShowModal(text,details,type){
                 this.show = true
                 this.modalTitle = text
                 this.details = details
                 this.types = type
             },
             check(val) {
-               this.setShowModal('查看作业', [val])
+                this.setShowModal('查看作业', [val], 'see')
+            },
+            selectTables(selection, row) {
+                this.selectionList = selection
             },
             checkTitle() {
                 postData('product/homework/get_detail', {item_id: this.$route.query.id, curriculum_type: this.$route.query.curriculum_type}).then(res => {
                     let val = res.data
-                    this.setShowModal('查看作业', val)
+                    this.setShowModal('查看题目', val)
                 })
-            },
-            selectTables(selection, row) {
-                this.selectionList = selection
             },
             selectTablesAll(selection, row) {
                 this.selectionList = selection
@@ -115,7 +115,7 @@
             },
             Marking(){
                 let len = this.selectionList.length
-                if(len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList)
+                if(len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList, 'batch')
                 else  this.$Message.warning('请选择学员');
             },
             getList() {
@@ -126,7 +126,8 @@
                     curriculum_type: this.$route.query.curriculum_type,
                     mark_state: this.mark_state
                 }
-                postData('/tutor/getHomeworkByCurr', data).then(res => {
+                // postData('/tutor/getHomeworkByCurr', data).then(res => {
+                    let res = {"res_code":1,"msg":"查询成功","data":{"submit_count":2,"pass_count":0,"unpass_count":1,"unmark_count":1,"review_count":1,"list":[{"id":1,"homework_id":2,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":50,"mark_state":2,"realname":"小明"},{"id":2,"homework_id":2,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":55,"mark_state":2,"realname":"小明"},{"id":3,"homework_id":2,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":90,"mark_state":1,"realname":"小明"},{"id":4,"homework_id":7,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":90,"mark_state":0,"realname":"逸风的账号"}],"count":4}}
                     res.data.list.forEach(item => {
                         item.accessory = item.attachment_url ? JSON.parse(item.attachment_url)[0].attachment_name : ''
                         item.state = item.mark_state == 0 ? '未通过' : item.mark_state == 1 ? '已通过' : '未批阅'
@@ -138,7 +139,7 @@
                     this.numList[2].num = res.data.unpass_count
                     this.numList[3].num = res.data.pass_count
                     this.numList[4].num = res.data.review_count
-                })
+                // })
             },
             selectChange(val) {
                 this.mark_state = val == 'all' ? '' : val
