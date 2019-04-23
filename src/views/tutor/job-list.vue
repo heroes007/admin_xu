@@ -1,12 +1,12 @@
 <template>
     <div>
-        <tutor-modal :details="details" :show="show" @close-modal="closeModal" :title="modalTitle"/>
+        <tutor-modal :details="details" :type="types" :show="show" @close-modal="closeModal" :title="modalTitle"/>
         <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
                 <Option v-for="item in stateSelect" :key="item.id" :value="item.id">{{item.title}}</Option>
             </Select>
-            <div class="state-btn">
+            <div class="state-btn" @click="checkTitle">
                 <img class="state-img" :src="checkImg" alt="">
                 <div class="state-check font-regular6">查看题目</div>
             </div>
@@ -84,20 +84,28 @@
                 show: false,
                 modalTitle: '',
                 selectionList: [],
+                types: '',
                 checkImg
             }
         },
         methods: {
-            setShowModal(text,details){
+            setShowModal(text,details,type){
                 this.show = true
                 this.modalTitle = text
                 this.details = details
+                this.types = type
             },
             check(val) {
-               this.setShowModal('查看作业', [val])
+               this.setShowModal('查看作业', [val], 'see')
             },
             selectTables(selection, row) {
                 this.selectionList = selection
+            },
+            checkTitle() {
+                postData('product/homework/get_detail', {item_id: this.$route.query.id, curriculum_type: this.$route.query.curriculum_type}).then(res => {
+                    let val = res.data
+                    this.setShowModal('查看题目', val, 'subject')
+                })
             },
             selectTablesAll(selection, row) {
                 this.selectionList = selection
@@ -107,7 +115,7 @@
             },
             Marking(){
                 let len = this.selectionList.length
-                if(len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList)
+                if(len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList, 'batch')
                 else  this.$Message.warning('请选择学员');
             },
             getList() {
