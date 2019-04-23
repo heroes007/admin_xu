@@ -1,8 +1,9 @@
 <template>
     <div class='manage-notification'>
-        <FormModal modal-body :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules" ></FormModal>
+        <FormModal modal-body :detail-data="tableRow" @from-submit="handleSubmit" :show-modal='show' :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules"
+                   btnName="确认发送"></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler" style="background:#ffffff"/>
-        <Tables  :tabel-height="tableHeight" :is-serial=true @operation1="sendHandler" @operation2="editHandler" @operation3="deleteHandler"
+        <Tables  :tabel-height="tableHeight" :is-serial=true @operation1="recallHandler" @operation2="editHandler" @operation3="deleteHandler"
         :column="columns1" :table-data="list" />
         <page-list class="pages" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
@@ -29,43 +30,45 @@
                 modalTitle: '',
                 show: false,
                 tableHeight: null,
-                list: [
-                    {
-                        content: '1',
-                        create_time: '2018/01/01'
-                    }
-                ],
+                list: [],
                 formList: [
-                    { type: 'upload',name:'', field: 'content' }
+                    { type: 'input', name: '通知标题', field: 'title'},
+                    { type: 'upload',name: '通知内容', field: 'content' }
                 ],
                 rules:{
-                    uploading: [{ required: true, message: '请输入通知内容'} ],
+                    title: [{ required: true, message: '请输入通知标题'} ],
                 },
                 columns1: [
                     {
-                        key: 'content',
-                        title: '通知内容',
+                        key: 'title',
+                        title: '通知标题',
                         slot: 'content-html',
-                        width: 650,
+                        minWidth: 200,
                         align: 'left'
+                    },
+                    {
+                        key: 'stateInform',
+                        title: '状态',
+                        minWidth: 100
                     },
                     {
                         key: 'send_time',
                         title: '发送时间',
-                        width: 150
+                        minWidth: 150
                     },
                     {
                         key: 'realname',
                         title: '创建人',
-                        width: 120
+                        minWidth: 120
                     },
                     {
                         title: '操作',
                         minWidth: 260,
                         slot: 'operation',
                         align: 'left',
-                        operationLast: true,
-                        operation: [['发送','operation1'], ['编辑','operation2'], ['删除','operation3']],
+                        operationLast: false,
+                        isInform: true,
+                        operation: [['撤回','operation1'],['编辑','operation2'], ['删除','operation3']],
                     }]
             }
         },
@@ -84,7 +87,7 @@
             },
             handleSubmit(d){
                 d.content = d.uploading
-                let url = this.modalTitle === '添加通知' ? 'platform/message/addMessage' : 'platform/message/modifyMessage'
+                let url = this.modalTitle === '添加通知' ? 'platform/message/addAndSendMessage' : 'platform/message/modifyAndSendMessage'
                 postData(url, d).then((res) => {
                     if(res.res_code == 1){
                         this.$Message.success(res.msg)
@@ -102,6 +105,17 @@
                                 if(text == '发送') this.$Message.success(res.msg)
                                 this.getList()
                             }
+                        })
+                    },
+                });
+            },
+            recallHandler(row) {
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: `确定要撤回该通知吗!`,
+                    onOk: () => {
+                        postData('platform/message/dropMessage', {message_id: row.id}).then(res => {
+                            if(res.res_code == 1) this.getList()
                         })
                     },
                 });
@@ -124,6 +138,9 @@
                     page_num: this.current,
                 }
                 postData('platform/message/getMessageList',d).then((res) => {
+                    res.data.list.forEach(item => {
+                        item.stateInform = item.state == 1 ? '已发送' : '已撤回'
+                    })
                     this.list = res.data.list
                     this.total = res.data.count
                 })

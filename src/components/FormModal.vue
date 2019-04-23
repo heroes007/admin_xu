@@ -133,7 +133,7 @@
                 <Button v-if="isAdd" type="primary" ghost class="add-course" @click="addCourse">添加课程</Button>
                 <Button v-if="handleFloor && handleFloor == '2'" class="btn-orange btn-last" type="primary" @click="handleLast">上一步</Button>
                 <Button v-if="handleFloor && handleFloor == '1'" class="btn-orange" type="primary" @click="handleSubmit('formValidate')">下一步</Button>
-                <Button v-else class="btn-orange" type="primary" @click="handleSubmit('formValidate')">保存</Button>
+                <Button v-else class="btn-orange" type="primary" @click="handleSubmit('formValidate')">{{btnName ? btnName : '保存'}}</Button>
             </div>
         </Modal>
     </div>
@@ -224,6 +224,10 @@
             handleFloor: {
                 type: Number,
                 default: null
+            },
+            btnName: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -449,10 +453,15 @@
                         else if (this.formList.length > 4 && this.formList[4].type === 'switch-datetimerange') {
                             if (!this.formItem.isswitch && !this.formItem.effective_time[0]) this.$Message.info('请选择有效时间');
                             else this.handleFormData()
+                        }else if(this.formList.length == 5 && this.formList[3].type == 'uploadPanel' && !this.formItem.img_default){
+                            this.$Message.info('请上传封面')
                         } else {
                             if(this.$refs.formInput){
                                 if(this.content) this.handleFormData()
-                                else (this.handleFloor && this.handleFloor == '2') ? this.$Message.info('请输入作业描述') : this.handleFormData()
+                                else {
+                                    if(this.handleFloor && this.handleFloor == '1') this.handleFormData()
+                                     else this.$Message.info('请输入作业描述')
+                                }
                             }
                             else {
                                 if(this.styleRule) {

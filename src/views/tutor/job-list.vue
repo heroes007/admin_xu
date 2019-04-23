@@ -104,7 +104,7 @@
             checkTitle() {
                 postData('product/homework/get_detail', {item_id: this.$route.query.id, curriculum_type: this.$route.query.curriculum_type}).then(res => {
                     let val = res.data
-                    this.setShowModal('查看题目', val)
+                    this.setShowModal('查看题目', val, 'subject')
                 })
             },
             selectTablesAll(selection, row) {
