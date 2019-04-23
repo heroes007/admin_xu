@@ -15,6 +15,12 @@ Vue.use(LoadingY)
 // this registers `store.state.route`
 sync(store, router)
 router.beforeEach((to, from, next) => {
+  if(localStorage.getItem('token') && to.name === 'login') {
+    let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+    if(roleId != 4)  next({name: 'user-manage'})
+    else if(to.name === 'login') next()
+    else  next({name: 'tutor-course'})
+  }else 
   if (store.state.auth.userInfo || to.name === 'login') {
     next();
   } else {

@@ -22,7 +22,7 @@
         <div class="batch">
             <div class="batch-title">选项</div>
             <Button class="batch-download" type="primary" ghost>下载附件</Button>
-            <Button class="batch-read" type="primary" ghost>批阅</Button>
+            <Button class="batch-read" type="primary" @click="Marking" ghost>批阅</Button>
         </div>
         <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="check" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
         <page-list  :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -95,6 +95,9 @@
             },
             handleBack() {
                 this.$router.go(-1)
+            },
+            Marking(){
+                
             }
         },
         mounted() {
@@ -125,20 +128,17 @@
         display: flex;
         align-items: center;
         position: relative;
-
         .state-select{
             width: 120px;
             border-radius: 18px;
             margin-left: 40px;
         }
-
         .state-btn{
             display: flex;
             align-items: center;
             cursor: pointer;
             margin-left: 30px;
         }
-
         .state-img{
             height: 24px;
             width: 24px;
