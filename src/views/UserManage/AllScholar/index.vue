@@ -173,8 +173,10 @@
               role_id:  this.role
             }
             postData('user/getDeptTeacherList', d).then((res) => {
-                  this.list = res.data.list
-                  this.total = res.data.count
+                 if(res.res_code == 1){
+                    this.list = res.data.list
+                    this.total = res.data.count
+                 }
             })
         },
         handleSubmit(val){

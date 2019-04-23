@@ -1,6 +1,6 @@
 <template>
     <div>
-        <tutor-modal :details="details" :type="types" :show="show" @close-modal="closeModal" :title="modalTitle"/>
+        <tutor-modal :details="details" :type="types" :student-info="studentList" :show="show" @close-modal="closeModal" :title="modalTitle"/>
         <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
@@ -25,7 +25,7 @@
             <Button class="batch-download" type="primary" ghost>下载附件</Button>
             <Button class="batch-read" type="primary" @click="Marking" ghost>批阅</Button>
         </div>
-        <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="check" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
+        <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="see" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
         <page-list  :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -85,7 +85,8 @@
                 modalTitle: '',
                 selectionList: [],
                 types: '',
-                checkImg
+                studentList: [],
+                checkImg,
             }
         },
         methods: {
@@ -95,8 +96,17 @@
                 this.details = details
                 this.types = type
             },
-            check(val) {
-               this.setShowModal('查看作业', [val], 'see')
+            see(val) {
+                postData('product/homework/mark_get_list', {student_homework_id: val.homework_id}).then((res) => {
+                    if(res.res_code == 1){
+                        let d = res.data.select_result
+                        if(d.length>0){
+                            d.map((t) => { t.title = res.data.homework_detail[0].title })
+                        }
+                        this.setShowModal('查看作业', d, 'seeTask')
+                        this.studentList = res.data.student_detail
+                    }
+                })
             },
             selectTables(selection, row) {
                 this.selectionList = selection
