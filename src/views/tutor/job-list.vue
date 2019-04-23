@@ -1,8 +1,9 @@
 <template>
     <div>
+        <tutor-modal :show="show" @close-modal="closeModal" :title="modalTitle"/>
         <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
-            <Select v-model="stateValue" class="state-select">
+            <Select v-model="stateValue" class="state-select" @on-change="selectChange">
                 <Option v-for="item in stateSelect" :key="item.id" :value="item.id">{{item.title}}</Option>
             </Select>
             <div class="state-btn">
@@ -36,8 +37,9 @@
     import pageList from '../../components/Page'
     import pageMixins from '../mixins/pageMixins'
     import postData from '../../api/postData'
+    import tutorModal from './modal/tutor-modal'
     export default {
-        components: {tables, screen, pageList},
+        components: {tables, screen, pageList, tutorModal},
         mixins: [pageMixins],
         data() {
             return {
@@ -45,8 +47,8 @@
                     {title: '选项', type: 'selection', width: 100},
                     {title: '姓名', key: 'realname', minWidth: 100 },
                     {title: '作业附件', slot: 'accessory', minWidth: 180 },
-                    {title: '提交日期', key: 'upDate', minWidth: 180},
-                    {title: '批阅', key: 'state', slot: 'state-item', stateKey: 'read', minWidth: 100},
+                    {title: '提交日期', key: 'submit_time', minWidth: 180},
+                    {title: '批阅', key: 'state', slot: 'state-item', stateKey: 'mark_state', minWidth: 100},
                     {title: '评分', key: 'score', minWidth: 100 },
                     {
                         title: '操作',
@@ -56,37 +58,38 @@
                         operation: [['查看','operation1']],
                     }
                 ],
-                list: [
-                    {realname: '张三', describe: '描述', accessory: '附件', upDate: new Date(), read: 1, state: '已通过', score: 80},
-                    {realname: '李四', describe: '描述', accessory: '附件', upDate: new Date(), read: 0, state: '未通过', score: 80},
-                    {realname: '王五', describe: '描述', accessory: '附件', upDate: new Date(), read: 2, state: '未批阅', score: 80},
-                ],
+                list: [],
                 selectList: [
                     {id: 1, title: '作业'},
-                    {id: 2, title: '问答'},
-                    {id: 3, title: '课程'},
+                    // {id: 2, title: '问答'},
+                    // {id: 3, title: '课程'},
                 ],
                 title: '课程名称癌症病人的心理护理与症状干预',
                 stateValue: null,
                 stateSelect: [
-                    {id: 1, title: '全部'},
+                    {id: 'all', title: '全部'},
                     {id: 2, title: '未批阅'},
-                    {id: 3, title: '未通过'},
+                    {id: 0, title: '未通过'},
                 ],
                 numList: [
-                    {num: 13, unit: '人', title: '交作业'},
-                    {num: 13, unit: '人', title: '未批阅'},
-                    {num: 13, unit: '人', title: '未通过'},
-                    {num: 13, unit: '人', title: '已通过'},
-                    {num: 13, unit: '次', title: '复审'},
+                    {num: null, unit: '人', title: '交作业'},
+                    {num: null, unit: '人', title: '未批阅'},
+                    {num: null, unit: '人', title: '未通过'},
+                    {num: null, unit: '人', title: '已通过'},
+                    {num: null, unit: '次', title: '复审'},
                 ],
                 tableHeight: null,
+                mark_state: '',
+                show: false,
+                modalTitle: '',
                 checkImg
             }
         },
         methods: {
-            check() {
-
+            check(val) {
+                console.log(val, 'val');
+                this.show = true
+                this.modalTitle = '查看题目'
             },
             selectTables(selection, row) {
                 console.log(selection, row, '123')
@@ -102,12 +105,29 @@
                     page_size: this.pageSize,
                     page_num: this.current,
                     curr_term_id: +this.$route.query.id,
-                    curriculum_type: this.$route.query.curriculum_type
+                    curriculum_type: this.$route.query.curriculum_type,
+                    mark_state: this.mark_state
                 }
                 postData('/tutor/getHomeworkByCurr', data).then(res => {
-                    console.log(res)
-                    this.total = res.count
+                    res.data.list.forEach(item => {
+                        item.accessory = item.attachment_url ? JSON.parse(item.attachment_url)[0].attachment_name : ''
+                        item.state = item.mark_state == 0 ? '未通过' : item.mark_state == 1 ? '已通过' : '未批阅'
+                    })
+                    this.list = res.data.list
+                    this.total = res.data.count
+                    this.numList[0].num = res.data.submit_count
+                    this.numList[1].num = res.data.unmark_count
+                    this.numList[2].num = res.data.unpass_count
+                    this.numList[3].num = res.data.pass_count
+                    this.numList[4].num = res.data.review_count
                 })
+            },
+            selectChange(val) {
+                this.mark_state = val == 'all' ? '' : val
+                this.getList()
+            },
+            closeModal(val) {
+                this.show = val
             }
         },
         mounted() {
