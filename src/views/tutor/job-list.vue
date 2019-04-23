@@ -6,7 +6,7 @@
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
                 <Option v-for="item in stateSelect" :key="item.id" :value="item.id">{{item.title}}</Option>
             </Select>
-            <div class="state-btn">
+            <div class="state-btn" @click="check">
                 <img class="state-img" :src="checkImg" alt="">
                 <div class="state-check font-regular6">查看题目</div>
             </div>
