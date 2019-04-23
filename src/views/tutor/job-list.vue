@@ -1,12 +1,12 @@
 <template>
     <div>
-        <tutor-modal :show="show" @close-modal="closeModal" :title="modalTitle"/>
+        <tutor-modal :details="details" :show="show" :type="types" @close-modal="closeModal" :title="modalTitle"/>
         <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
                 <Option v-for="item in stateSelect" :key="item.id" :value="item.id">{{item.title}}</Option>
             </Select>
-            <div class="state-btn" @click="check">
+            <div class="state-btn" @click="checkTitle">
                 <img class="state-img" :src="checkImg" alt="">
                 <div class="state-check font-regular6">查看题目</div>
             </div>
@@ -23,7 +23,7 @@
         <div class="batch">
             <div class="batch-title">选项</div>
             <Button class="batch-download" type="primary" ghost>下载附件</Button>
-            <Button class="batch-read" type="primary" ghost>批阅</Button>
+            <Button class="batch-read" type="primary" @click="Marking" ghost>批阅</Button>
         </div>
         <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="check" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
         <page-list  :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -44,7 +44,7 @@
         data() {
             return {
                 column: [
-                    {title: '选项', type: 'selection', width: 100},
+                    {title: '选项', type: 'selection', width: 100 },
                     {title: '姓名', key: 'realname', minWidth: 100 },
                     {title: '作业附件', slot: 'accessory', minWidth: 180 },
                     {title: '提交日期', key: 'submit_time', minWidth: 180},
@@ -59,6 +59,7 @@
                     }
                 ],
                 list: [],
+                details: null,
                 selectList: [
                     {id: 1, title: '作业'},
                     // {id: 2, title: '问答'},
@@ -82,23 +83,40 @@
                 mark_state: '',
                 show: false,
                 modalTitle: '',
+                selectionList: [],
+                types: '',
                 checkImg
             }
         },
         methods: {
-            check(val) {
-                console.log(val, 'val');
+            setShowModal(text, details, type){
                 this.show = true
-                this.modalTitle = '查看题目'
+                this.modalTitle = text
+                this.details = details
+                this.types = type
+            },
+            check(val) {
+               this.setShowModal('查看作业', [val])
+            },
+            checkTitle() {
+                postData('product/homework/get_detail', {item_id: this.$route.query.id, curriculum_type: this.$route.query.curriculum_type}).then(res => {
+                    let val = res.data
+                    this.setShowModal('查看作业', val)
+                })
             },
             selectTables(selection, row) {
-                console.log(selection, row, '123')
+                this.selectionList = selection
             },
-            selectTablesAll() {
-                console.log(123);
+            selectTablesAll(selection, row) {
+                this.selectionList = selection
             },
             handleBack() {
                 this.$router.go(-1)
+            },
+            Marking(){
+                let len = this.selectionList.length
+                if(len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList)
+                else  this.$Message.warning('请选择学员');
             },
             getList() {
                 let data = {
@@ -158,20 +176,17 @@
         display: flex;
         align-items: center;
         position: relative;
-
         .state-select{
             width: 120px;
             border-radius: 18px;
             margin-left: 40px;
         }
-
         .state-btn{
             display: flex;
             align-items: center;
             cursor: pointer;
             margin-left: 30px;
         }
-
         .state-img{
             height: 24px;
             width: 24px;

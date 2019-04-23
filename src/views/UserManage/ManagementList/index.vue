@@ -1,7 +1,7 @@
 <template>
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <FormModal :modal-false="true" :modal-text="modalText" :detail-data="tableRow" :show-modal='show' :form-list="formList" @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
+        <FormModal :modal-false="true" :detail-data="tableRow" :show-modal='show' :form-list="formList" @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
         <screen :btn-type="btnType" :types="1" size-title1="管理总数" :size-num1="total" btn-name="添加管理"  @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :tabel-height="tableHeight" :is-serial=true @operation1="see" @operation2="edit" @operation3="deletes"  :column="columns1" :table-data="list" :select-list="management"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -34,7 +34,7 @@
           modalTitle: '',
             tableRow: {},
             tableRowData: {},
-            modalText: '获得九划医教后台所有操作权限',
+            // modalText: '获得九划医教后台所有操作权限',
             columns1: [
             {
                 title: '用户ID',
@@ -79,13 +79,13 @@
                 { type: 'input', name: '真实姓名',  field: 'realname'},
                 { type: 'input', name: '管理账号',  field: 'username' },
                 { type: 'password', name: '账号密码',  field: 'password' },
-                { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'总管理员'}
+                // { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'总管理员'}
             ],
             rules:{
                 realname: [{ required: true, message: '请输入真实姓名', trigger: 'blur' } ],
                 username: [{ required: true, validator: validateUsername }],
                 password: [{ required: true, validator: validatePass }],
-                jurisdiction: [],
+                // jurisdiction: [],
             },
             data1: null,
             keyword: '',
@@ -108,6 +108,7 @@
             this.tableRow = row
         },
         handleSubmit(val){
+           val.role_id = 1
            if(this.modalTitle == '添加管理') this.fromAddAndEdit('user/addSuperAdmin',val)
            else this.fromAddAndEdit('user/modifySuperAdmin',val)
         },

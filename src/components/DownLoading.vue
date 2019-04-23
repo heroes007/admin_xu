@@ -1,9 +1,12 @@
 <template>
     <div>
-        <div v-for="(item, index) in formData" :key="index" @click="download(item)" class="content">
+        <div v-for="(item, index) in formData" :key="index" @click="download(item)" class="download-content">
+          <span class="download-text grey-regular2" v-if="text">{{text}}</span>
+          <div class="content">
             <Icon style="margin-left: 20px;" type="ios-folder-outline" size="20"/>
             <div class="content-title">{{item.name}}</div>
             <Icon style="margin-left: 8px;" color="#4098ff" type="md-arrow-round-down" size="20"/>
+          </div>
         </div>
     </div>
 </template>
@@ -20,7 +23,11 @@
       formData: {
         type: Array ,
         default: []
-      }
+      },
+      text: {
+        type: String ,
+        default: ''
+      },
     },
     methods: {
       download(item) {
@@ -37,6 +44,12 @@
 </script>
 
 <style scoped>
+    .download-content{
+      display: inline-flex;
+    }
+    .download-text{
+      line-height: 60px;
+    }
     .content{
         display: flex;
         align-items: center;
