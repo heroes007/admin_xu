@@ -113,6 +113,9 @@
             listHeight() {
                 return window.innerHeight - 60 - 50 - 70;
             },
+            productState() {
+                return this.$store.state.production.edit_product_state
+            }
         },
         watch: {
             // isLoading(val) {
@@ -126,6 +129,9 @@
             //     this.dirty = false;
             //   }
             // },
+            productState(val) {
+                if(val) this.initData()
+            }
         },
         methods: {
             submit() {

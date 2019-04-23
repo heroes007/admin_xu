@@ -1,7 +1,7 @@
 <template>
     <div>
         <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
-               :height="tabelHeight" @on-select="selectTables">
+               :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
                 <span v-html="row[column.key]"></span>
@@ -208,9 +208,18 @@
                 })
                 return arr
             },
+            selectCancel(selection, row) {
+                this.$emit('select-tables', selection, row)
+            },
             selectTables(selection, row) {
                 this.$emit('select-tables', selection, row)
-            }
+            },
+            selectAllCancel(selection, row) {
+                this.$emit('on-select-all', selection, row)
+            },
+            selectAll(selection, row) {
+                this.$emit('on-select-all', selection, row)
+            },
         },
         mounted() {
             this.handleColumns(this.column)

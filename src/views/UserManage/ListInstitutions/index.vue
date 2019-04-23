@@ -1,7 +1,7 @@
 <template>
    <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
-        <FormModal :modal-false="true"  :modal-text="modalText" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
+        <FormModal :modal-false="true" :detail-data="tableRow" :uploadFlie=true :show-modal='show' :form-list="formList" @from-submit="handleSubmit"
                    @close="closeModal" :title="modalTitle" :rule-validate="rules" :maxFileSize="2"/>
         <screen :btn-type="btnType" :types="1" size-title1="机构总数" :size-num1="total" btn-name="添加机构" placehodle="搜索机构姓名"  @inputChange="inputChange" @handleClick="handleClick" />
         <Tables :tabel-height="tableHeight" :is-serial=true @operation1="see" @operation2="edit" :column="columns1" :table-data="list"
@@ -38,7 +38,7 @@
             tableRow: {},
             tableRowData: {},
             keyword: '',
-            modalText: '获得所属机构所有权限',
+            // modalText: '获得所属机构所有权限',
             columns1: [
             {
                 title: '机构名称',
@@ -102,14 +102,14 @@
                 { type: 'textarea', name: '机构介绍',  field: 'description' },
                 { type: 'input', name: '机构账号',  field: 'username' },
                 { type: 'password', name: '账号密码',  field: 'password' },
-                { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'机构管理员'}
+                // { type: 'inputTab', name: '管理权限',  field: 'jurisdiction', content:'机构管理员'}
             ],
             rules:{
                 title: [{ required: true, message: '请输入机构名称', trigger: 'blur' } ],
                 description: [{ required: true, message: '请输入机构介绍', trigger: 'blur' } ],
                 username: [{ required: true, validator: validateUsername2 }],
                 password: [{ required: true, validator: validatePass }],
-                jurisdiction: [],
+                // jurisdiction: [],
             },
             operationList: [['查看','operation1'], ['编辑','operation2']]
         }
@@ -163,6 +163,7 @@
             })
         },
         handleSubmit(val) {
+          val.role_id = 2
           if(this.modalTitle === '添加机构') this.fromAddAndEdit('user/addDeptAdmin', val)
           else this.fromAddAndEdit('user/modifyDept', val)
         },
