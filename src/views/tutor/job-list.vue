@@ -1,6 +1,7 @@
 <template>
     <div>
-        <tutor-modal :details="details" :type="types" :show="show" @close-modal="closeModal" :title="modalTitle"/>
+        <tutor-modal :details="details" :type="types" :student-info="studentList" :show="show" @close-modal="closeModal"
+                     :title="modalTitle"/>
         <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
@@ -22,11 +23,12 @@
         </div>
         <div class="batch">
             <div class="batch-title">选项</div>
-            <Button class="batch-download" type="primary" ghost>下载附件</Button>
+            <Button class="batch-download" type="primary" ghost @click="accessDown">下载附件</Button>
             <Button class="batch-read" type="primary" @click="Marking" ghost>批阅</Button>
         </div>
-        <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="check" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
-        <page-list  :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+        <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="see"
+                @select-tables="selectTables" @on-select-all="selectTablesAll"/>
+        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
@@ -38,24 +40,27 @@
     import pageMixins from '../mixins/pageMixins'
     import postData from '../../api/postData'
     import tutorModal from './modal/tutor-modal'
+    import JSZip from 'jszip'
+    import {saveAs} from 'file-saver';
+
     export default {
         components: {tables, screen, pageList, tutorModal},
         mixins: [pageMixins],
         data() {
             return {
                 column: [
-                    {title: '选项', type: 'selection', width: 100 },
-                    {title: '姓名', key: 'realname', minWidth: 100 },
-                    {title: '作业附件', slot: 'accessory', minWidth: 180 },
+                    {title: '选项', type: 'selection', width: 100},
+                    {title: '姓名', key: 'realname', minWidth: 100},
+                    {title: '作业附件', slot: 'accessory', minWidth: 180},
                     {title: '提交日期', key: 'submit_time', minWidth: 180},
                     {title: '批阅', key: 'state', slot: 'state-item', stateKey: 'mark_state', minWidth: 100},
-                    {title: '评分', key: 'score', minWidth: 100 },
+                    {title: '评分', key: 'score', minWidth: 100},
                     {
                         title: '操作',
                         minWidth: 100,
                         slot: 'operation',
                         align: 'left',
-                        operation: [['查看','operation1']],
+                        operation: [['查看', 'operation1']],
                     }
                 ],
                 list: [],
@@ -85,24 +90,39 @@
                 modalTitle: '',
                 selectionList: [],
                 types: '',
-                checkImg
+                studentList: [],
+                checkImg,
             }
         },
         methods: {
-            setShowModal(text,details,type){
+            setShowModal(text, details, type) {
                 this.show = true
                 this.modalTitle = text
                 this.details = details
                 this.types = type
             },
-            check(val) {
-                this.setShowModal('查看作业', [val], 'see')
+            see(val) {
+                postData('product/homework/mark_get_list', {student_homework_id: val.homework_id}).then((res) => {
+                    if (res.res_code == 1) {
+                        let d = res.data.select_result
+                        if (d.length > 0) {
+                            d.map((t) => {
+                                t.title = res.data.homework_detail[0].title
+                            })
+                        }
+                        this.setShowModal('查看作业', d, 'seeTask')
+                        this.studentList = res.data.student_detail
+                    }
+                })
             },
             selectTables(selection, row) {
                 this.selectionList = selection
             },
             checkTitle() {
-                postData('product/homework/get_detail', {item_id: this.$route.query.id, curriculum_type: this.$route.query.curriculum_type}).then(res => {
+                postData('product/homework/get_detail', {
+                    item_id: this.$route.query.id,
+                    curriculum_type: this.$route.query.curriculum_type
+                }).then(res => {
                     let val = res.data
                     this.setShowModal('查看题目', val, 'subject')
                 })
@@ -113,10 +133,10 @@
             handleBack() {
                 this.$router.go(-1)
             },
-            Marking(){
+            Marking() {
                 let len = this.selectionList.length
-                if(len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList, 'batch')
-                else  this.$Message.warning('请选择学员');
+                if (len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList, 'batch')
+                else this.$Message.warning('请选择学员');
             },
             getList() {
                 let data = {
@@ -127,18 +147,60 @@
                     mark_state: this.mark_state
                 }
                 // postData('/tutor/getHomeworkByCurr', data).then(res => {
-                    let res = {"res_code":1,"msg":"查询成功","data":{"submit_count":2,"pass_count":0,"unpass_count":1,"unmark_count":1,"review_count":1,"list":[{"id":1,"homework_id":2,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":50,"mark_state":2,"realname":"小明"},{"id":2,"homework_id":2,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":55,"mark_state":2,"realname":"小明"},{"id":3,"homework_id":2,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":90,"mark_state":1,"realname":"小明"},{"id":4,"homework_id":7,"attachment_url":"[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]","submit_time":"2019/04/22 17:29","score":90,"mark_state":0,"realname":"逸风的账号"}],"count":4}}
-                    res.data.list.forEach(item => {
-                        item.accessory = item.attachment_url ? JSON.parse(item.attachment_url)[0].attachment_name : ''
-                        item.state = item.mark_state == 0 ? '未通过' : item.mark_state == 1 ? '已通过' : '未批阅'
-                    })
-                    this.list = res.data.list
-                    this.total = res.data.count
-                    this.numList[0].num = res.data.submit_count
-                    this.numList[1].num = res.data.unmark_count
-                    this.numList[2].num = res.data.unpass_count
-                    this.numList[3].num = res.data.pass_count
-                    this.numList[4].num = res.data.review_count
+                let res = {
+                    "res_code": 1, "msg": "查询成功", "data": {
+                        "submit_count": 2,
+                        "pass_count": 0,
+                        "unpass_count": 1,
+                        "unmark_count": 1,
+                        "review_count": 1,
+                        "list": [{
+                            "id": 1,
+                            "homework_id": 2,
+                            "attachment_url": "[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]",
+                            "submit_time": "2019/04/22 17:29",
+                            "score": 50,
+                            "mark_state": 2,
+                            "realname": "小明"
+                        }, {
+                            "id": 2,
+                            "homework_id": 2,
+                            "attachment_url": "[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]",
+                            "submit_time": "2019/04/22 17:29",
+                            "score": 55,
+                            "mark_state": 2,
+                            "realname": "小明"
+                        }, {
+                            "id": 3,
+                            "homework_id": 2,
+                            "attachment_url": "[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]",
+                            "submit_time": "2019/04/22 17:29",
+                            "score": 90,
+                            "mark_state": 1,
+                            "realname": "小明"
+                        }, {
+                            "id": 4,
+                            "homework_id": 7,
+                            "attachment_url": "[{\"attachment_name\":\"001 (1).jpg\",\"attachment_url\":\"http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/user_task/20190408192537.jpg\"}]",
+                            "submit_time": "2019/04/22 17:29",
+                            "score": 90,
+                            "mark_state": 0,
+                            "realname": "逸风的账号"
+                        }],
+                        "count": 4
+                    }
+                }
+                res.data.list.forEach(item => {
+                    item.accessory = item.attachment_url ? JSON.parse(item.attachment_url)[0].attachment_name : ''
+                    item.state = item.mark_state == 0 ? '未通过' : item.mark_state == 1 ? '已通过' : '未批阅'
+                })
+                this.list = res.data.list
+                this.total = res.data.count
+                this.numList[0].num = res.data.submit_count
+                this.numList[1].num = res.data.unmark_count
+                this.numList[2].num = res.data.unpass_count
+                this.numList[3].num = res.data.pass_count
+                this.numList[4].num = res.data.review_count
                 // })
             },
             selectChange(val) {
@@ -147,6 +209,61 @@
             },
             closeModal(val) {
                 this.show = val
+            },
+            accessDown() {
+                if (this.selectionList.length > 0) {
+                    console.log(this.selectionList);
+                    this.selectionList.forEach(item => {
+                        var url = JSON.parse(item.attachment_url)
+                        url.forEach(item1 => {
+                            //    方法一：window.open
+                            // window.open(item1.attachment_url);
+
+                            //    方法二：a标签
+                            var eleLink = document.createElement('a');
+                            eleLink.download = item1.attachment_name;
+                            eleLink.href = item1.attachment_url;
+                            eleLink.target = '_blank'
+                            // 触发点击
+                            document.body.appendChild(eleLink);
+                            eleLink.click();
+                            // 然后移除
+                            document.body.removeChild(eleLink);
+
+                            //    方法三：form标签
+                            // var form = document.createElement('form')
+                            // form.action = item1.attachment_url
+                            // form.method = 'get'
+                            // document.body.appendChild(form);
+                            // form.submit()
+
+                            //    方法四：JSZip插件
+                            // var zip = new JSZip();
+                            // zip.file("Hello.txt", "Hello World\n");
+                            // var img = zip.folder("access");
+                            // img.file(item1.attachment_name, item1.attachment_url, {base64: false});
+                            // zip.generateAsync({type: "blob"}).then(function (content) {
+                            //     saveAs(content, "example.zip");
+                            // });
+
+                            //    方法五：
+                            // new Promise(resolve => {
+                            //     const xhr = new XMLHttpRequest();
+                            //     xhr.open('GET', item1.attachment_url);
+                            //     xhr.responseType = 'blob';
+                            //     xhr.onload = () => {
+                            //         if (xhr.status === 200) {
+                            //             resolve(xhr.response);
+                            //         }
+                            //     };
+                            //     xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
+                            //     xhr.send();
+                            // }).then(res => {
+                            //     saveAs(res, item1.attachment_name)
+                            // })
+                        })
+                    })
+                } else this.$Message.warning('请选择学员')
             }
         },
         mounted() {
@@ -159,85 +276,92 @@
 </script>
 
 <style lang="less" scoped>
-    .screen{
+    .screen {
         background-color: #fff;
     }
-    /deep/ .ivu-select-selection{
+
+    /deep/ .ivu-select-selection {
         border-radius: 100px;
         height: 36px;
         padding-left: 15px;
     }
-    /deep/ .ivu-select-selection{
+
+    /deep/ .ivu-select-selection {
         background: #EEEEF6;
     }
-    .state{
+
+    .state {
         background-color: #fff;
         border-top: 1px solid #F0F0F7;
         height: 80px;
         display: flex;
         align-items: center;
         position: relative;
-        .state-select{
+
+        .state-select {
             width: 120px;
             border-radius: 18px;
             margin-left: 40px;
         }
-        .state-btn{
+
+        .state-btn {
             display: flex;
             align-items: center;
             cursor: pointer;
             margin-left: 30px;
         }
-        .state-img{
+
+        .state-img {
             height: 24px;
             width: 24px;
         }
 
-        .state-check{
+        .state-check {
             margin-left: 5px;
             letter-spacing: 2px;
         }
 
-        .state-data{
+        .state-data {
             display: flex;
             position: absolute;
             right: 40px;
         }
 
-        .state-data-box{
+        .state-data-box {
             margin-left: 30px;
 
-            &-unit{
+            &-unit {
                 font-size: 14px;
                 color: #4098FF;
             }
 
-            &-title{
+            &-title {
                 font-size: 14px;
                 color: #8C9095;
             }
         }
     }
-    .batch{
+
+    .batch {
         text-align: left;
         display: flex;
         border-top: 1px solid #F0F0F7;
-        background-color:#fff;
+        background-color: #fff;
         height: 60px;
         align-items: center;
 
-        &-title{
+        &-title {
             margin-left: 36px;
             font-size: 16px
         }
 
-        &-download{
+        &-download {
             margin-left: 40px;
             width: 100px;
             height: 30px;
         }
 
-        &-read{
+        &-read {
             margin-left: 10px;
             width: 100px;
             height: 30px;

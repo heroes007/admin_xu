@@ -9,11 +9,20 @@ each(range(6), {
 });
 
 
-@selectors-size2: 18, 16, 13;
-each(range(3), {
+@selectors-size2: 18, 16, 13, 14;
+each(range(4), {
 .grey-regular@{value} {
   font-family: PingFangSC-Regular;
   color: #474C63;
   font-size: extract(@selectors-size2, @value) * 1px;
+}
+});
+
+@selectors-size3: 18;
+each(range(1), {
+.grey-medium@{value} {
+  font-family: PingFangSC-Medium;
+  color: #474C63;
+  font-size: extract(@selectors-size3, @value) * 1px;
 }
 });

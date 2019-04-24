@@ -146,7 +146,7 @@
                 let d3 = [];
                 if (d.length > 0) {
                     let d1 = JSON.stringify(d)
-                    let d2 = d1.replace(/null/g, '"-"').replace(/""/g, '"-"');
+                    let d2 = d1.replace(/^null$/g, '"-"').replace(/""/g, '"-"');
                     d3 = JSON.parse(d2)
                     d3.map((t, k) => {
                         if (this.isSerial) t.serial_number = this.$config.addZero(k + 1)
