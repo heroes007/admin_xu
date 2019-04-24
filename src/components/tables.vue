@@ -7,7 +7,9 @@
                 <span v-html="row[column.key]"></span>
             </template>
             <template slot-scope="{ column, row, index }" slot="accessory">
-                <Icon type="ios-link" style="margin-right: 10px;height: 20px;"/>
+                <span v-if="row.accessory&&row.accessory != '-'">
+                    <Icon type="ios-link" style="margin-right: 10px;height: 20px;"/>
+                </span>
                 <span>{{row.accessory}}</span>
             </template>
             <template slot-scope="{ column, row, index }" slot="operation">

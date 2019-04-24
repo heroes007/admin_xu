@@ -1,6 +1,6 @@
 <template>
     <div>
-        <tutor-modal :details="details" :type="types" :student-info="studentList" :show="show" @close-modal="closeModal" :title="modalTitle"/>
+        <tutor-modal :details="details" :type="types" @preservation-success="preservationSuccess" :student-info="studentList" :show="show" @close-modal="closeModal" :title="modalTitle"/>
         <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
@@ -22,7 +22,7 @@
         </div>
         <div class="batch">
             <div class="batch-title">选项</div>
-            <Button class="batch-download" type="primary" ghost>下载附件</Button>
+            <Button class="batch-download" type="primary" ghost @click="accessDown">下载附件</Button>
             <Button class="batch-read" type="primary" @click="Marking" ghost>批阅</Button>
         </div>
         <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="see" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
@@ -46,10 +46,15 @@
                 column: [
                     {title: '选项', type: 'selection', width: 100 },
                     {title: '姓名', key: 'realname', minWidth: 100 },
-                    {title: '作业附件', slot: 'accessory', minWidth: 180 },
-                    {title: '提交日期', key: 'submit_time', minWidth: 180},
+                    {title: '作业附件', slot: 'accessory', minWidth: 200, align: 'left' },
+                    {title: '提交日期', key: 'submit_time', minWidth: 180, align: 'left'},
                     {title: '批阅', key: 'state', slot: 'state-item', stateKey: 'mark_state', minWidth: 100},
-                    {title: '评分', key: 'score', minWidth: 100 },
+                    {
+                        title: '评分', key: '', minWidth: 100,
+                        render: (h, params) => {
+                            return h('span', params.row.score + '分')
+                        }
+                    },
                     {
                         title: '操作',
                         minWidth: 100,
@@ -97,7 +102,7 @@
                 this.types = type
             },
             see(val) {
-                postData('product/homework/mark_get_list', {student_homework_id: val.homework_id}).then((res) => {
+                postData('product/homework/mark_get_list', {student_homework_id: val.id}).then((res) => {
                     if(res.res_code == 1){
                         let d = res.data.select_result
                         if(d.length>0){
@@ -125,7 +130,14 @@
             },
             Marking(){
                 let len = this.selectionList.length
-                if(len > 0) this.setShowModal(`批阅作业（${len}人）`, this.selectionList, 'batch')
+                if(len > 0) {
+                    let str = ''
+                    this.selectionList.map((t) => {
+                        str += t.mark_state
+                    })
+                    if(str.includes('0')||str.includes('1'))  this.$Message.warning('已批阅的作业不能再批阅')
+                    else this.setShowModal(`批阅作业（${len}人）`, this.selectionList, 'batch')
+                }
                 else  this.$Message.warning('请选择学员');
             },
             getList() {
@@ -138,8 +150,11 @@
                 }
                 postData('/tutor/getHomeworkByCurr', data).then(res => {
                     res.data.list.forEach(item => {
-                        item.accessory = item.attachment_url ? JSON.parse(item.attachment_url)[0].attachment_name : ''
+                        let d = item.attachment_url ? JSON.parse(item.attachment_url) : []
+                        item.accessory = d && d.length>0 ? d[0].attachment_name : ''
                         item.state = item.mark_state == 0 ? '未通过' : item.mark_state == 1 ? '已通过' : '未批阅'
+                        // item._disabled = item.mark_state === 2 ? false : true
+                        item.score = item.mark_state == 2 ? '未评' : item.score
                     })
                     this.list = res.data.list
                     this.total = res.data.count
@@ -156,6 +171,64 @@
             },
             closeModal(val) {
                 this.show = val
+            },
+            preservationSuccess(){
+                this.getList()
+            },
+            accessDown() {
+                if (this.selectionList.length > 0) {
+                    console.log(this.selectionList);
+                    this.selectionList.forEach(item => {
+                        var url = JSON.parse(item.attachment_url)
+                        url.forEach(item1 => {
+                            //    方法一：window.open
+                            // window.open(item1.attachment_url);
+
+                            //    方法二：a标签
+                            var eleLink = document.createElement('a');
+                            eleLink.download = item1.attachment_name;
+                            eleLink.href = item1.attachment_url;
+                            eleLink.target = '_blank'
+                            // 触发点击
+                            document.body.appendChild(eleLink);
+                            eleLink.click();
+                            // 然后移除
+                            document.body.removeChild(eleLink);
+
+                            //    方法三：form标签
+                            // var form = document.createElement('form')
+                            // form.action = item1.attachment_url
+                            // form.method = 'get'
+                            // document.body.appendChild(form);
+                            // form.submit()
+
+                            //    方法四：JSZip插件
+                            // var zip = new JSZip();
+                            // zip.file("Hello.txt", "Hello World\n");
+                            // var img = zip.folder("access");
+                            // img.file(item1.attachment_name, item1.attachment_url, {base64: false});
+                            // zip.generateAsync({type: "blob"}).then(function (content) {
+                            //     saveAs(content, "example.zip");
+                            // });
+
+                            //    方法五：
+                            // new Promise(resolve => {
+                            //     const xhr = new XMLHttpRequest();
+                            //     xhr.open('GET', item1.attachment_url);
+                            //     xhr.responseType = 'blob';
+                            //     xhr.onload = () => {
+                            //         if (xhr.status === 200) {
+                            //             resolve(xhr.response);
+                            //         }
+                            //     };
+                            //     xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
+                            //     xhr.send();
+                            // }).then(res => {
+                            //     saveAs(res, item1.attachment_name)
+                            // })
+                        })
+                    })
+                } else this.$Message.warning('请选择学员')
             }
         },
         mounted() {
