@@ -159,20 +159,18 @@ export default {
                 })
             }
         }, 
-        isTrue(d){
-            if(Array.isArray(d)){
-                if(d.length>0&&d[0].hasOwnProperty('student_homework_answer_id')){
-                    if(d[0].student_homework_answer_id) return true
-                    return false
-                }
-                return false
-            }else{
-                if(d&&d.hasOwnProperty('student_homework_answer_id')){
-                    if(d.student_homework_answer_id) return true
-                    return false
-                }
+        isHasOwnProperty(d){
+            if(d&&d.hasOwnProperty('student_homework_answer_id')){
+                if(d.student_homework_answer_id) return true
                 return false
             }
+            return false
+        },
+        isTrue(d){
+            if(Array.isArray(d)){
+                if(d.length>0)  return this.isHasOwnProperty(d[0])
+                return false
+            }else  return  this.isHasOwnProperty(d)
         },
         preservation(d, url, da){
             if(this.isTrue(da)) {
@@ -190,6 +188,8 @@ export default {
                                    t.icon = this.markingRadio ? pass : unpass
                                    this.$forceUpdate()
                                    this.haveReadList.splice(k,1)
+                                   this.comment = ''
+                                   this.score = 0
                                }
                             })
                             if(this.haveReadList.length==0) this.closeModal(false)
