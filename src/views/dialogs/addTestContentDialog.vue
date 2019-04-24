@@ -371,7 +371,7 @@
                 innerCheck.forEach(item => {
                     if(!this.check) {
                         item.style.border = '1px solid #ff3300'
-                        this.showFont = '选项不能为空'
+                        this.showFont = '请选择正确答案'
                     }
                     else item.style.border = '1px solid #d7dde4'
                 })
@@ -383,7 +383,7 @@
                                 item.children[1].style.border = '1px solid #ff3300'
                             }
                         })
-                        this.showFont = '内容不能为空'
+                        this.showFont = '请输入答案内容'
                     }
                     else item.children[1].style.border = '1px solid #d7dde4'
                 })

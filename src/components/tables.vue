@@ -12,17 +12,17 @@
                 </span>
                 <span>{{row.accessory}}</span>
             </template>
+            <!--stateInform判断通知按钮展示内容-->
             <template slot-scope="{ column, row, index }" slot="operation">
-                <span v-for="(t,i) in column.operation" :key="i">
+                <span v-for="(t,i) in row.stateInform ? row.state == 1 ? column.operation.slice(0,1).concat(column.operation.slice(2,3)) : column.operation.slice(1,3) : column.operation" :key="i">
                     <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
                         <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
-                        {{handleBtnText(t,row,column)}}
+                            {{handleBtnText(t,row,column)}}
                         </Button>
                     </span>
                 </span>
-                <Switch :class="column.isShow ? '' : 'operation_btn_show'"
-                        v-if="column.isSwitch && handleBtnShow(column,row)" v-model="row[column.switchKey]" size="large"
-                        @on-change="change(row)">
+                <Switch :class="column.isShow ? '' : 'operation_btn_show'" v-if="column.isSwitch && handleBtnShow(column,row)"
+                        v-model="row[column.switchKey]" size="large" @on-change="change(row)">
                     <span slot="open">{{column.switchList[0]}}</span>
                     <span slot="close">{{column.switchList[1]}}</span>
                 </Switch>
@@ -117,11 +117,14 @@
             rowClick(row, rowIndex) {
                 this.show(row, rowIndex, 'row-click')
             },
+            //operationLast为true操作展示第一个，false展示最后一个
             handleBtnShowClass(c, r, t) {
                 if (!c.hasOwnProperty('operation_btn_hide')) {
                     if (c.hasOwnProperty('operationLast')&&c.operationLast){
                         if (c.operation[c.operation.length-1][0] == t[0]) return 'operation_btn_see'
-                    }else if (c.operation[0][0] == t[0]) return 'operation_btn_see'
+                    }else if (c.isInform){
+                        if(c.operation[0][0] == t[0] || c.operation[1][0] == t[0]) return 'operation_btn_see'
+                    } else if(c.operation[0][0] == t[0]) return 'operation_btn_see'
                     if (!r.operation_btn_show) return 'operation_btn_show'
                     return ''
                 }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="(item, index) in formData" :key="index" @click="download(item)" class="download-content">
-          <span class="download-text grey-regular2" v-if="text">{{text}}</span>
+          <span class="download-text grey-regular2" v-if="text">{{index == 0 ? text : ''}}</span>
           <div class="content">
             <Icon style="margin-left: 20px;" type="ios-folder-outline" size="20"/>
             <div class="content-title">{{item.name}}</div>
@@ -49,6 +49,7 @@
     }
     .download-text{
       line-height: 60px;
+      width: 35px;
     }
     .content{
         display: flex;

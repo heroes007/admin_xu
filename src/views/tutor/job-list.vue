@@ -149,6 +149,7 @@
                     mark_state: this.mark_state
                 }
                 postData('/tutor/getHomeworkByCurr', data).then(res => {
+                    if(res.res_code == 1){
                     res.data.list.forEach(item => {
                         let d = item.attachment_url ? JSON.parse(item.attachment_url) : []
                         item.accessory = d && d.length>0 ? d[0].attachment_name : ''
@@ -163,6 +164,7 @@
                     this.numList[2].num = res.data.unpass_count
                     this.numList[3].num = res.data.pass_count
                     this.numList[4].num = res.data.review_count
+                    }
                 })
             },
             selectChange(val) {
