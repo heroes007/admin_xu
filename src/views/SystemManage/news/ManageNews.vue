@@ -93,6 +93,15 @@
                 handleFloor: 1
             }
         },
+        beforeDestroy() {
+            this.list = null;
+            this.addNewsHandler = null;
+            this.fromSubmit = null;
+            this.setLowerShelf = null;
+            this.edit = null;
+            this.deletes = null;
+            this.getList = null;
+        },
         methods: {
             addNewsHandler() {
                 this.tableRow = {}

@@ -107,9 +107,6 @@
             stateList() {
                 return this.$store.state.online_curriculum.stateList;
             },
-            // isLoading() {
-            //   return this.$store.state.online_curriculum.showMainLoading;
-            // },
             listHeight() {
                 return window.innerHeight - 60 - 50 - 70;
             },
@@ -118,20 +115,23 @@
             }
         },
         watch: {
-            // isLoading(val) {
-            //   if (val) {
-            //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
-            //     setTimeout(() => {
-            //       this.loadingInstance.close();
-            //     }, Config.base_timeout);
-            //   } else {
-            //     if (this.loadingInstance) this.loadingInstance.close();
-            //     this.dirty = false;
-            //   }
-            // },
             productState(val) {
                 if(val) this.initData()
             }
+        },
+        beforeDestroy() {
+            this.dataHeader = null;
+            this.listColumnFormatter = null;
+            this.handleClick = null;
+            this.editChapterHandler = null;
+            this.editCourseHandler = null;
+            this.moveUpHandler = null;
+            this.moveDownHandler = null;
+            this.deleteCourseHandler = null;
+            this.showDeleteConfirm = null;
+            this.resetCurriculumOrder = null;
+            this.initData = null;
+            this.addCourseHandler = null;
         },
         methods: {
             submit() {

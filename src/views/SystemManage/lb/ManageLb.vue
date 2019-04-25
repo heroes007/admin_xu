@@ -138,6 +138,16 @@
                 tableHeight: null
             }
         },
+        beforeDestroy() {
+            this.list = null;
+            this.edit = null;
+            this.batchDownload = null;
+            this.setSubmit = null;
+            this.submit = null;
+            this.handleCurrentChange = null;
+            this.getList = null;
+            this.moveList = null;
+        },
         methods: {
             edit(row, index) {
                 this.adutplace = row.position == 1 ? '首页轮播' : '课程页轮播'
@@ -208,9 +218,7 @@
                 if(location ? index == 0 : index == this.list.length - 1) this.$Message.info(location ? '已是第一个' : '已是最后一个')
                 else {
                     this.list.splice(index , 0, location ? this.list.splice(index - 1, 1)[0] : this.list.splice(index + 1, 1)[0])
-                    this.list.forEach(item => {
-                        id.push(item.id)
-                    })
+                    this.list.forEach(item => { id.push(item.id) })
                     postData('platform/banner/moveBanner', {ids: id}).then(res => {
                         if(res.res_code == 1) this.getList()
                     })

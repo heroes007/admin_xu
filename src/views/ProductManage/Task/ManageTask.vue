@@ -78,9 +78,6 @@
             }
         },
         computed: {
-            // isLoading() {
-            //   return this.$store.state.task.showLoading;
-            // },
             listHeight() {
                 return window.innerHeight - 60 - 50 - 70;
             },
@@ -126,18 +123,17 @@
             },
             ...mapState({ dataList: state => state.task.task_category_list })
         },
-        watch: {
-            // isLoading(val) {
-            //   if (val) {
-            //     this.loadingInstance = this.$LoadingY({message: "加载中，请稍后",show: true})
-            //     setTimeout(() => {
-            //       this.loadingInstance.close()
-            //     }, Config.base_timeout);
-            //   }else{
-            //     if(this.loadingInstance) this.loadingInstance.close()
-            //     this.dirty = false
-            //   }
-            // },
+        beforeDestroy() {
+            this.dataHeader = null;
+            this.listColumnFormatter = null;
+            this.addTaskCategory = null;
+            this.manageEdit = null;
+            this.marking = null;
+            this.editHandler = null;
+            this.deleteHandler = null;
+            this.saveHomework = null;
+            this.initData = null;
+            this.getListLine = null;
         },
         methods: {
             ...mapActions(['delete_task']),
