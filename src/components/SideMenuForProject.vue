@@ -260,7 +260,7 @@
         .btn-content {
             position: relative;
             left: 0;
-            margin-top: 50px;
+            margin-top: 40px;
         }
     }
     /deep/ .ivu-btn {
