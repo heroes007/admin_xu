@@ -23,7 +23,7 @@
         </div>
         <div class="batch">
             <div class="batch-title">选项</div>
-            <Button class="batch-download" type="primary" ghost @click="downloadAttachments">下载附件</Button>
+            <Button class="batch-download" type="primary" ghost @click="getFileName">下载附件</Button>
             <Button class="batch-read" type="primary" @click="Marking" ghost>批阅</Button>
         </div>
         <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="see"
@@ -95,6 +95,7 @@
                 types: '',
                 studentList: [],
                 arrList: [],
+                fullscreenLoading: null,
                 checkImg,
             }
         },
@@ -185,59 +186,75 @@
             preservationSuccess() {
                 this.getList()
             },
-            accessDown() {
+            accessDown(val) {
                 let data = {
-                    dir_name: this.selectionList.length > 1 ? this.$route.query.title + " - 作业" : '',
-                    homeworks: this.arrList
+                    folder_name: this.selectionList.length > 1 ? "作业-" + this.$route.query.title : '',
+                    children: val
                 }
-            },
-            downloadAttachments() {
-                (async () => {
-                    if (this.selectionList.length > 0) {
-                        await this.getFileName()
-                        await this.accessDown()
-                    } else this.$Message.warning('请选择学员')
-                })()
+                postData('/tutor/downloadHomework', data).then(res => {
+                    if(res.res_code == 1) {
+                        this.fullscreenLoading.close()
+                        let a = document.createElement('a')
+                        a.target = '_blank'
+                        a.href = 'http://192.168.6.55:5520/' + res.data.download_url
+                        a.click()
+                    }
+                })
             },
             getFileName() {
-                this.arrList = []
-                this.selectionList.forEach((item, index) => {
-                    postData('product/homework/mark_get_list', {student_homework_id: item.id}).then(res => {
-                        let arr = []
-                        res.data.select_result.forEach((item1, index1) => {
-                            if (JSON.parse(item1.attachment_url).length) {
-                                JSON.parse(item1.attachment_url).forEach((item2, index2) => {
-                                    if (index1 < res.data.select_result.length - 1) {
-                                        arr.push({
-                                            file_name: item2.attachment_name.slice(0, item2.attachment_name.length - item2.attachment_name.split('.')[item2.attachment_name.split('.').length - 1].length - 1) + ' - 未通过（' + (index2 + 1) + ')' + '.' + item2.attachment_name.split('.')[item2.attachment_name.split('.').length - 1],
-                                            attachment_url: item2.attachment_url
-                                        })
-                                    } else {
-                                        arr.push({
-                                            file_name: item2.attachment_name,
-                                            attachment_url: item2.attachment_url
-                                        })
+                if (this.selectionList.length > 0) {
+                    this.fullscreenLoading = this.$LoadingY({message: "", show: true})
+                    this.arrList = []
+                    this.selectionList.forEach((item, index) => {
+                        postData('product/homework/mark_get_list', {student_homework_id: item.id}).then(res => {
+                            let arrFile = []
+                            res.data.select_result.forEach((item1, index1) => {
+                                let arr = []
+                                if (JSON.parse(item1.attachment_url).length) {
+                                    JSON.parse(item1.attachment_url).forEach((item2, index2) => {
+                                        if (index1 < res.data.select_result.length - 1) {
+                                            arr.push({
+                                                file_name: item2.attachment_name,
+                                                attachment_url: item2.attachment_url
+                                            })
+                                        } else {
+                                            arr.push({
+                                                file_name: item2.attachment_name,
+                                                attachment_url: item2.attachment_url
+                                            })
+                                        }
+                                    })
+                                }
+                                if (index1 < res.data.select_result.length - 1) {
+                                    var homework = {
+                                        txt_name: item1.update_time,
+                                        txt_content: item1.answer
                                     }
-                                })
+                                } else {
+                                    var homework = {
+                                        txt_name: item1.update_time,
+                                        txt_content: item1.answer
+                                    }
+                                }
+                                homework.folder_name = item1.update_time.slice(5, 7) + item1.update_time.slice(8, 10) + '作业' + (index1 == res.data.select_result.length - 1 ? '已通过' : '未通过（' + (index1 + 1) + ')' )
+                                arrFile.push({children: arr, ...homework})
+                            })
+                            let num = 0
+                            this.arrList.forEach(item => {
+                                if(item.folder_name == this.selectionList[index].realname) num++
+                            })
+                            this.arrList.push({
+                                folder_name: this.selectionList[index].realname ? this.selectionList[index].realname + (num ? '(' + num + ')' : '') : '未命名',
+                                children: arrFile
+                            })
+                            return this.arrList
+                        }).then(res => {
+                            if(index == this.selectionList.length - 1) {
+                                this.accessDown(res)
                             }
-                            if (index1 < res.data.select_result.length - 1) {
-                                arr.push({
-                                    txt_name: '作业内容 - 未通过（' + (index1 + 1) + ')',
-                                    txt_content: item1.answer
-                                })
-                            } else {
-                                arr.push({
-                                    txt_name: '作业内容',
-                                    txt_content: item1.answer
-                                })
-                            }
-                        })
-                        this.arrList.push({
-                            child_name: this.selectionList[index].realname ? this.selectionList[index].realname : '未命名',
-                            files: arr
                         })
                     })
-                })
+                } else this.$Message.warning('请选择学员')
             }
         },
         mounted() {
