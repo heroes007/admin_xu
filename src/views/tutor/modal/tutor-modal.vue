@@ -183,14 +183,14 @@ export default {
                         }
                         if(this.modeRadio&&this.type == 'batch'){
                             this.list.map((t,k) => {
-                                if(t.id == d.student_homework_answer_id){
-                                    t.mark_state = d.mark_state
-                                    t.icon = this.markingRadio ? pass : unpass
-                                    this.$forceUpdate()
-                                    this.haveReadList.splice(k,1)
-                                    this.comment = ''
-                                    this.score = 0
-                                }
+                               if(t.id == d.student_homework_answer_id){
+                                   t.mark_state = d.mark_state
+                                   t.icon = this.markingRadio ? pass : unpass
+                                   this.$forceUpdate()
+                                   this.haveReadList.splice(k,1)
+                                   this.comment = ''
+                                   this.score = 0
+                               }
                             })
                             if(this.haveReadList.length==0) this.closeModal(false)
                         }else this.closeModal(false)
