@@ -357,9 +357,7 @@
             handleDateType(t) {
                 return t.type.includes('time') ? 'yyyy/MM/dd HH:mm' : 'yyyy/MM/dd'
             },
-            overImg(val) {
-                console.log(val);
-            },
+            overImg(val) {},
             handleDateShow(t) {
                 return t.type === 'switch-datetimerange' ? !this.formItem[this.handleField(t, 0)] : true
             },

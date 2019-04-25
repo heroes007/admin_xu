@@ -92,6 +92,13 @@
         return this.user.role_id == 2
       }
     },
+    beforeDestroy() {
+      this.handleSubmit = null;
+      this.preservation = null;
+      this.handleFormData = null;
+      this.handleUser = null;
+      this.getMechanismData = null;
+    },
     methods: {
       handleSubmit(name){
         let d = {...this.formValidate, from: 'web'}

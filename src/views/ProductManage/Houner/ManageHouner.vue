@@ -60,7 +60,7 @@
         courseNums2: null,
         cardImg1: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222115758.jpeg",
         cardImg2: "http://dscj-app.oss-cn-qingdao.aliyuncs.com/user_task/20190222121345.jpeg",
-        organizationId: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id,
+        organizationId: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id,
         keyword: ''
       };
     },
@@ -110,7 +110,7 @@
         window.open(routeData.href, "_blank");
       },
       setRelation(item,type){
-        let d = {product_id: +JSON.parse(localStorage.getItem('PRODUCTINFO')).id,honour_ids: [item.id]}
+        let d = {product_id: +JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,honour_ids: [item.id]}
         let d1 = {id: item.ph_id }
         let url = type ? '/product/remove_product_honour' : '/product/set_honour_to_product'
         postData(url,type ? d1 : d).then((res) => {
@@ -124,7 +124,7 @@
          this.setRelation(item,1)
       },
       getList(){
-        let d = {organization_id: this.organizationId, product_id: +JSON.parse(localStorage.getItem('PRODUCTINFO')).id}
+        let d = {organization_id: this.organizationId, product_id: +JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id}
         postData('/product/get_honour_certificates',{keyword: this.keyword,...d}).then((res) => {
            this.cardList1 = res.data
            this.courseNums1 = res.data.length
@@ -133,7 +133,7 @@
       }
     },
     mounted() {
-      // this.organizationId = JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id
+      // this.organizationId = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id
       this.getList()
       this.$refs.box.style.height = window.innerHeight - 130 + 'px'
     }

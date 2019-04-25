@@ -29,10 +29,8 @@ export function doDateFormat(val) {
 
 export function doOfflineCurriculumTypeFormat(val) {
     switch (val) {
-        case 1:
-            return '讲座';
-        case 2:
-            return '实践';
+        case 1: return '讲座';
+        case 2: return '实践';
     }
 }
 

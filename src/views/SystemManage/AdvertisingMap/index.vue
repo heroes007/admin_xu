@@ -31,7 +31,7 @@
                 this['permissionItem' + n] = t
             },
             changeatub(name){
-                 localStorage.setItem('AdvertisingMap',name)
+                 sessionStorage.setItem('AdvertisingMap',name)
             },
             addatub(){
                 if (this.tabName == "lb") this.$refs.HomePageBroadcast.addLb()
@@ -39,7 +39,7 @@
             }
         },
         mounted(){
-            if(localStorage.getItem('AdvertisingMap')) this.tabName = localStorage.getItem('AdvertisingMap')
+            if(sessionStorage.getItem('AdvertisingMap')) this.tabName = sessionStorage.getItem('AdvertisingMap')
         }
     }
 </script>

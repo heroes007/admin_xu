@@ -47,9 +47,7 @@
             this.showContent = false
             this.$emit('close')
         },
-        changeVal(v){
-            console.log(v)
-        },
+        changeVal(v){},
         handleClick(v){
             this.list.map((t,k) => {
                 if(t.id === v.id){

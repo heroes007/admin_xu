@@ -140,8 +140,8 @@
         }
     },
     mounted() {
-        if(localStorage.getItem('MarkingHomework')){
-            this.screenTitle = JSON.parse(localStorage.getItem('MarkingHomework')).title
+        if(sessionStorage.getItem('MarkingHomework')){
+            this.screenTitle = JSON.parse(sessionStorage.getItem('MarkingHomework')).title
         }
        this.initData()
     }

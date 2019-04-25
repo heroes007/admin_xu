@@ -4,5 +4,5 @@ export default axios.create({
     baseURL: url,
     timeout: 10000,
     withCredentials: false,
-    data: {  token: localStorage.getItem('token') || '' }
+    data: {  token: sessionStorage.getItem('token') || '' }
 });

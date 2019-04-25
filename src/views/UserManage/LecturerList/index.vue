@@ -121,7 +121,7 @@
       },
       handleSubmit(val) {
         let d = val
-        if (this.role_id != 1) d.organization_id = +localStorage.getItem('organizationId')
+        if (this.role_id != 1) d.organization_id = +sessionStorage.getItem('organizationId')
         if (this.modalTitle === '添加讲师') this.fromAddAndEdit('user/addTeacher', d)
         else this.fromAddAndEdit('user/modifyTeacher', d)
       },

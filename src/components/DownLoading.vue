@@ -32,12 +32,8 @@
     methods: {
       download(item) {
         try{
-          // var elemIF = document.createElement("a");
-          // elemIF.href = item.url;
           window.open(item.url,'_blank')
-        }catch (e) {
-          console.log(e)
-        }
+        }catch (e) {}
       }
     }
   }

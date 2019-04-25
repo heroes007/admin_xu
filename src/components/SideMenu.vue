@@ -91,11 +91,11 @@
                 this.$router.push({path: 'personal-data'})
             },
             openChange(name) {
-                localStorage.setItem('menuOpenName', JSON.stringify(name));
+                sessionStorage.setItem('menuOpenName', JSON.stringify(name));
                 this.menuOpenName = name;
             },
             selectItem(index) {
-                localStorage.setItem('menuActiveIndex', index);
+                sessionStorage.setItem('menuActiveIndex', index);
                 this.$router.push({name: index});
                 this.activeIndex = index
             },
@@ -103,39 +103,33 @@
                 api.post('user/logout', {from: 'web'}).then((res) => {
                     if (res.data.res_code === 1) {
                         let d = localStorage.getItem('login_user')
-                        localStorage.clear()
-                        // this.$localStorage.set('token', '');
+                        sessionStorage.clear()
                         this.$router.push({path: '/login'});
                         localStorage.setItem('login_user', d)
                     }
                 });
             },
             handleMenuList() {
-                let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+                let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
                 if(roleId == 4) this.menuList = MenuToturList
-                else if (localStorage.getItem('PERMISSIONS')) {
-                    let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+                else if (sessionStorage.getItem('PERMISSIONS')) {
+                    let d = Base64.decode(sessionStorage.getItem('PERMISSIONS'));
                     let d1 = JSON.parse(d.slice(4))
                     if (d1 && d1.length > 0) {
                         d1.forEach(t => {
                             let num = +t.permission_code.slice(0, 2)
                             this.menuList.push(MenuList[num - 1])
                         });
-                        // if(this.menuList.length>0) this.activeIndex = this.menuList[0].name
                     }
                 }
             },
             getName() {
-                let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
-                if (roleId == 1) {
-                    this.userNameAll = this.$config.status(roleId)
-                    // if(this.userNameAll&&this.userNameAll.length > 10) {
-                    //   this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
-                    // }
-                } else {
+                let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
+                if (roleId == 1) this.userNameAll = this.$config.status(roleId)
+                else {
                     postData('components/getOrganization').then(res => {
                         res.data.forEach(item => {
-                            if (item.id == JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id) {
+                            if (item.id == JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).organization_id) {
                                 this.userNameAll = item.title + this.$config.status(roleId)
                                 if (this.userNameAll.length > 10) {
                                     this.userName = this.userNameAll.substring(0, 4) + '***' + this.userNameAll.substring(this.userNameAll.length - 4, this.userNameAll.length)
@@ -147,10 +141,10 @@
             }
         },
         mounted() {
-          let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+          let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
           this.handleMenuList()
-          if (localStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(localStorage.getItem('menuOpenName'))
-          let menuActive = roleId !=4 ? ( localStorage.getItem('menuActiveIndex') ? localStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
+          if (sessionStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(sessionStorage.getItem('menuOpenName'))
+          let menuActive = roleId !=4 ? ( sessionStorage.getItem('menuActiveIndex') ? sessionStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
           this.activeIndex = menuActive
           if(this.$route.name ==='user-manage') this.activeIndex =  roleId !=4 ? 'user-manage' : 'tutor-course'
           this.$nextTick(() => {

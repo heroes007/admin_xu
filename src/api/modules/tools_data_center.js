@@ -1,6 +1,6 @@
 import api from './config'
 export function get_curriculum_data_center(param, page, search) {
-    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    let id = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id
     return api.post('/product/data/get_list',{
       product_id:id,
       page_size: page.page_size,

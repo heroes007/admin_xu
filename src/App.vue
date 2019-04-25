@@ -10,8 +10,8 @@
       let vm = this;
       api.interceptors.request
         .use(function (config) {
-          if (config.data) config.data.token = '' || vm.$localStorage.get('token');
-          else config.data = {token: vm.$localStorage.get('token')}
+          if (config.data) config.data.token = '' || sessionStorage.getItem('token')
+          else config.data = {token: sessionStorage.getItem('token')}
           return config;
         }, function (error) {
           return Promise.reject(error);

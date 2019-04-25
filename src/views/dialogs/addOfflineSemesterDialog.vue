@@ -125,7 +125,7 @@
       handleSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-           let obj = this.payload.type == 1 ? {subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id} : {id: this.payload.row.id}
+           let obj = this.payload.type == 1 ? {subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id} : {id: this.payload.row.id}
            let url = this.payload.type == 1 ? 'product/curriculum_offline_term/addTermAndCurriculums' : 'product/curriculum_offline_term/operateTermAndCurriculums'
            let course = this.setOfflineCurriculums(this.form1)
            let d = {
@@ -143,7 +143,7 @@
                   this.$Message.success(res.msg);
                   this.addOfflineSemesterDialog = false;
                     let d = {
-                    subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+                    subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id,
                     page_size: this.payload.page_size,
                     page_num:  this.payload.page_num
                   }
@@ -165,7 +165,7 @@
         }
       },
       getTeacherList(){
-        postData('/components/getInstructors',{organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
+        postData('/components/getInstructors',{organization_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
           if(res.res_code==1) this.teacherList = res.data
         })
       },

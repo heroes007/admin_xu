@@ -40,7 +40,7 @@
     import pageMixins from '../mixins/pageMixins'
     import postData from '../../api/postData'
     import tutorModal from './modal/tutor-modal'
-
+    import downloadUrl from '../../../config/url'
     export default {
         components: {tables, screen, pageList, tutorModal},
         mixins: [pageMixins],
@@ -181,14 +181,14 @@
                 this.getList()
             },
             closeModal(val) {
-                this.show = val
+                this.show = val;
             },
             preservationSuccess() {
                 this.getList()
             },
             accessDown(val) {
                 let data = {
-                    folder_name: this.selectionList.length > 1 ? "作业-" + this.$route.query.title : '',
+                    folder_name: "作业-" + this.$route.query.title,
                     children: val
                 }
                 postData('/tutor/downloadHomework', data).then(res => {

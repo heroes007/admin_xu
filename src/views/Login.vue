@@ -53,13 +53,13 @@
                     if (res.data.res_code === 1) {
                         this.isLogining = false;
                         let d = res.data.data;
-                        localStorage.setItem('organizationId',d.userInfo[0].organization_id)
+                        sessionStorage.setItem('organizationId',d.userInfo[0].organization_id)
                         this.$store.dispatch('get_user_info');
-                        localStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
+                        sessionStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
                         if(d.userInfo[0].role_id == 4)  this.$router.push({ path: '/dashboard/tutor-course' });
                         else  this.$router.push({ path: '/dashboard/user-manage' });
-                        localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
-                        localStorage.setItem('token',d.token)
+                        sessionStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
+                        sessionStorage.setItem('token',d.token)
                         let d1 = { name: this.name, pass: this.password }
                         localStorage.setItem('login_user', Base64.encode(JSON.stringify(d1)))
                     } else {

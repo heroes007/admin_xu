@@ -4,7 +4,7 @@ export default {
         return {
             btnType: false,
             organizationList: null,
-            role_id: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id,
+            role_id: JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id,
             tableHeight: null
         }
     },

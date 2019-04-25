@@ -84,7 +84,6 @@ const actions = {
         }, params) {
             commit(types.TASK_SHOW_LOADING);
             delete_task_by_id(params).then(res => {
-                // console.log(res);
                 if (res.data.res_code === 1) {
                     commit(types.TASK_DELETED, params);
                 }

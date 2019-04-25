@@ -105,10 +105,10 @@
       }
     },
     mounted() {
-      if (JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) this.getOrganization()
+      if (JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1) this.getOrganization()
       this.$store.commit('set_houner_state', false)
       if (this.payload.hasOwnProperty('row')) this.form = this.payload.row
-      this.form.organization_id = JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id
+      this.form.organization_id = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id
     },
     computed: {
       ...mapState({

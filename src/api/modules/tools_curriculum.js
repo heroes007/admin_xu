@@ -1,6 +1,6 @@
 import api from './config'
 export function get_list(page, keyword) {
-    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    let id = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id
     return api.post('product/curriculum_online/get_list',{
         product_id: id,
         page_size: page.page_size,
@@ -9,7 +9,7 @@ export function get_list(page, keyword) {
     });
 }
 export function add_curriculum(data) {
-    let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+    let id = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id
     return api.post('product/curriculum_online/add', {
       product_id: id,
       title: data.title,
