@@ -22,7 +22,7 @@
         </div>
         <div class="batch">
             <div class="batch-title">选项</div>
-            <Button class="batch-download" type="primary" ghost @click="accessDown">下载附件</Button>
+            <Button class="batch-download" type="primary" ghost @click="downloadAttachments">下载附件</Button>
             <Button class="batch-read" type="primary" @click="Marking" ghost>批阅</Button>
         </div>
         <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="see" @select-tables="selectTables" @on-select-all="selectTablesAll"/>
@@ -91,6 +91,7 @@
                 selectionList: [],
                 types: '',
                 studentList: [],
+                arrList: [],
                 checkImg,
             }
         },
@@ -177,57 +178,59 @@
             preservationSuccess(){
                 this.getList()
             },
-            accessDown() {
+            accessDown(){
                 if (this.selectionList.length > 0) {
-                    console.log(this.selectionList);
-                    this.selectionList.forEach(item => {
-                        var url = JSON.parse(item.attachment_url)
-                        url.forEach(item1 => {
-                            //    方法一：window.open
-                            // window.open(item1.attachment_url);
-
-                            //    方法二：a标签
-                            var eleLink = document.createElement('a');
-                            eleLink.download = item1.attachment_name;
-                            eleLink.href = item1.attachment_url;
-                            eleLink.target = '_blank'
-                            // 触发点击
-                            document.body.appendChild(eleLink);
-                            eleLink.click();
-                            // 然后移除
-                            document.body.removeChild(eleLink);
-
-                            //    方法三：form标签
-                            // var form = document.createElement('form')
-                            // form.action = item1.attachment_url
-                            // form.method = 'get'
-                            // document.body.appendChild(form);
-                            // form.submit()
-
-                            //    方法四：JSZip插件
-                            // var zip = new JSZip();
-                            // zip.file("Hello.txt", "Hello World\n");
-                            // var img = zip.folder("access");
-                            // img.file(item1.attachment_name, item1.attachment_url, {base64: false});
-                            // zip.generateAsync({type: "blob"}).then(function (content) {
-                            //     saveAs(content, "example.zip");
-                            // });
-
-                            //    方法五：
-                            // new Promise(resolve => {
-                            //     const xhr = new XMLHttpRequest();
-                            //     xhr.open('GET', item1.attachment_url);
-                            //     xhr.responseType = 'blob';
-                            //     xhr.onload = () => {
-                            //         if (xhr.status === 200) {
-                            //             resolve(xhr.response);
-                            //         }
-                            //     };
-                            //     xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
-                            //     xhr.send();
-                            // }).then(res => {
-                            //     saveAs(res, item1.attachment_name)
-                            // })
+                    let data = {
+                        dir_name: this.selectionList.length > 1 ? this.$route.query.title + " - 作业" : '',
+                        homeworks: this.arrList
+                    }
+                    console.log(data);
+                }
+            },
+            downloadAttachments(){
+                (async () => {
+                    await this.getFileName()
+                    await this.accessDown()
+                })()
+            },
+            getFileName() {
+                if (this.selectionList.length > 0) {
+                    this.arrList= []
+                    this.selectionList.forEach((item, index) => {
+                        postData('product/homework/mark_get_list', {student_homework_id: item.id}).then(res => {
+                            let arr = []
+                            res.data.select_result.forEach((item1, index1) => {
+                                if(JSON.parse(item1.attachment_url).length) {
+                                    JSON.parse(item1.attachment_url).forEach((item2, index2) => {
+                                        if(index1 < res.data.select_result.length - 1){
+                                            arr.push({
+                                                file_name: item2.attachment_name.slice(0, item2.attachment_name.length - item2.attachment_name.split('.')[item2.attachment_name.split('.').length - 1].length - 1) + ' - 未通过（' + (index2+1) +')' + '.' + item2.attachment_name.split('.')[item2.attachment_name.split('.').length - 1],
+                                                attachment_url: item2.attachment_url
+                                            })
+                                        }else{
+                                            arr.push({
+                                                file_name: item2.attachment_name ,
+                                                attachment_url: item2.attachment_url
+                                            })
+                                        }
+                                    })
+                                }
+                                if(index1 < res.data.select_result.length - 1) {
+                                    arr.push({
+                                        txt_name: '作业内容 - 未通过（' + (index1 + 1) + ')',
+                                        txt_content: item1.answer
+                                    })
+                                }else{
+                                    arr.push({
+                                        txt_name: '作业内容',
+                                        txt_content: item1.answer
+                                    })
+                                }
+                            })
+                            this.arrList.push({
+                                child_name: this.selectionList[index].realname,
+                                files: arr
+                            })
                         })
                     })
                 } else this.$Message.warning('请选择学员')
@@ -237,6 +240,7 @@
             this.pageSize = 10
             this.tableHeight = window.innerHeight - 260
             this.stateValue = this.stateSelect[0].id
+            this.title = this.$route.query.title
             this.getList()
         }
     }
