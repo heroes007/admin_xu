@@ -102,7 +102,7 @@ export default {
             score: 0,
             comment: '',
             markData: null,
-            footerHide: this.type == 'subject' ? true : false
+            footerHide: false
         }
     },
     watch: {
@@ -137,13 +137,15 @@ export default {
     },
     methods: {
         handleFoot(){
-            if(this.list.length>0){
+            if(Array.isArray(this.list)&&this.list.length>0){
                 if(this.type == 'seeTask'){
                     let d = this.$config.copy(this.list[this.list.length-1],{});
                     let bool = this.handleDisable(d.mark_state, this.list.length-1)
                     this.footerHide = !bool
                 }
             }
+            if(this.type == 'batch')  this.footerHide = false
+            if(this.type == 'subject')  this.footerHide = true
         },
         closeModal(val) {
             this.$emit('close-modal', val)
