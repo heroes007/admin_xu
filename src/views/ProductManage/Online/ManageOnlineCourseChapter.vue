@@ -234,7 +234,7 @@
         }
       },
       moveDownHandler(i, row, index) {
-        if(i == this.chapterList[index].children.length){
+        if(i == this.chapterList[index].children.length - 1){
           this.$Modal.info({
             title: '提示',
             content: '无法下移'
