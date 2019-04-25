@@ -96,6 +96,15 @@
         ]
       }
     },
+    beforeDestroy(){
+      this.addClickHandler = null;
+      this.addClickHandler2 = null;
+      this.deleteHandler = null;
+      this.initData = null;
+      this.downloadMsg = null;
+      this.dataHeader = null;
+      this.searchResult = null;
+    },
     methods: {
       ...mapActions(['get_online_curriculum_list', 'get_curriculum_donwload_data_list', 'delete_download_data']),
       addClickHandler() {

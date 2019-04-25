@@ -131,6 +131,16 @@
                 ]
             }
         },
+        beforeDestroy() {
+            this.batchDownload = null;
+            this.edit = null;
+            this.handleClick = null;
+            this.getList = null;
+            this.fromSubmit = null;
+            this.getProducts = null;
+            this.getOrganization = null;
+            this.list = null;
+        },
         methods: {
             batchDownload(row, rowIndex) {
                 postData('code/getCodeHistory', {code_id: row.id, page_size: 20, page_num: 1}).then(res => {
@@ -206,11 +216,6 @@
                 this.formList[3].disable = false
                 this.tableRow = this.tableRow1
             },
-            handleList() {
-                this.list.map((it) => {
-                    it.state1 = it.state ? '生效中' : '已失效'
-                })
-            },
             fromSubmit(val) {
                 let d = {
                     product_id: val.content,
@@ -280,13 +285,11 @@
         },
         mounted() {
             this.getOrganization()
-            if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) {
-                this.getProducts()
-            }else {
+            if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1)  this.getProducts()
+            else {
                 this.organization_id = JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id
                 this.getProducts(JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id)
             }
-            this.handleList()
             this.getList()
             this.tableRow = this.tableRow1
             this.tabelHeight = window.innerHeight - 130

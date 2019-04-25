@@ -34,6 +34,7 @@
 <script>
   import screen from '../../components/ScreenFrame.vue'
   import postData from '../../api/postData.js'
+import { async } from 'q';
   export default {
     components: { screen },
     data(){
@@ -46,6 +47,11 @@
             ],
             list: []
         }
+    },
+    beforeDestroy() {
+        this.getList = null;
+        this.rowClick = null;
+        this.list = null;
     },
     methods: {
         selectChange2(v){

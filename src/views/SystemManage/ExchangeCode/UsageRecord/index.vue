@@ -69,6 +69,11 @@
             list: [],
         }
     },
+    beforeDestroy() {
+        this.getList = null;
+        this.tableSwtich = null;
+        this.list = null;
+    },
     methods: {
         codeClose(){
             this.codeShow = false;
@@ -77,9 +82,7 @@
             console.log(val);
         },
         see(row,rowIndex){
-            if(!row.use_state){
-                this.codeShow = true
-            }
+            if(!row.use_state) this.codeShow = true
         },
         immediateFailure(row,rowIndex){
             console.log(row,rowIndex,'immediateFailure');
@@ -99,21 +102,13 @@
         handleBack(){
              this.$router.replace({path: `/dashboard/exchange-code`})
         },
-        handleList(){
-            this.list.map((it) => {
-                it.state_text = it.use_state ? '已使用' : '未使用'
-                it.state1 = it.state ? '生效中' : '已失效'
-            })
-        },
         tableSwtich(val) {
             let d = {
                 state: val.state == true ? 1 : -1,
                 code_id: val.id
             }
             postData('code/modifyCodeDetail', d).then(res => {
-                if(res.res_code == 1) {
-                    this.getList()
-                }
+                if(res.res_code == 1) this.getList()
             })
         },
         getList() {
@@ -138,31 +133,12 @@
         }
     },
     mounted() {
-        this.$nextTick(() => {
-             let doc = document.querySelector('.ivu-table-row-hover');
-        console.log(doc)
-        })
-        this.handleList()
         this.getList()
         if(localStorage.getItem('useRecords')){
             this.codeName = JSON.parse(localStorage.getItem('useRecords')).realname
         }
         this.tabelHeight = window.innerHeight - 130
-        this.$nextTick(() => {
-            // var arr = document.querySelectorAll('.ivu-table-row')
-            // console.log(arr, 'arr');
-            // arr.forEach(item => {
-            //     // console.log(item, 'item');
-            //     item.mouseover = function () {
-            //         console.log(123);
-            //     }
-            // })
-            // var a = document.getElementsByClassName('aaaa')[0]
-            // console.log(a);
-        })
     }
   }
 </script>
 
-<style scoped>
-</style>

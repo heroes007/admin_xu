@@ -91,6 +91,15 @@
                     }]
             }
         },
+        beforeDestroy(){
+            this.columns1 = null;
+            this.copyItem = null;
+            this.editOfflineSemester = null;
+            this.addOfflineSemesterHandler = null;
+            this.sendOfflineCourseHandler = null;
+            this.deleteOfflineSemester = null;
+            this.getSubjectCurriculumList = null;
+        },
         methods: {
             ...mapActions([ 'delete_offline_term', 'get_offline_curriculum_detail']),
             handleBack() {

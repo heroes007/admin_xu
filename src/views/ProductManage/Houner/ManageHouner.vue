@@ -72,6 +72,14 @@
         if(_new) this.getList()
       }
     },
+    beforeDestroy(){
+      this.handleJump = null;
+      this.setRelation = null;
+      this.addOfflineSemesterHandler = null;
+      this.sendOfflineCourseHandler = null;
+      this.hadleChange = null;
+      this.getList = null;
+    },
     methods: {
       selectChange1(val) {
        this.organizationId = val;

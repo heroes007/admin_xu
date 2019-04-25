@@ -80,6 +80,17 @@
                 }
             }
         },
+        beforeDestroy(){
+            this.handleEdit = null;
+            this.handleSubmit = null;
+            this.getList = null;
+            this.deleteList = null;
+            this.handleDelete = null;
+            this.setCourseList = null;
+            this.addCourse = null;
+            this.getTeachers = null;
+            this.list = null;
+        },
         methods: {
             handleTabAdd() {
                 this.modalTitle = '添加主题'
@@ -169,17 +180,20 @@
             deleteList(val) {
                 if(this.formList[2].list.length == 1) this.$Message.info('只剩一组，不能继续删除')
                 else this.formList[2].list.splice(val, 1)
+            },
+            getTeachers(){
+                postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
+                    if(res.res_code == 1) {
+                        this.courseList[3].selectList = res.data
+                        this.setCourseList(this.courseList)
+                    }
+                })
             }
         },
         mounted() {
             this.getList()
             this.windowHight = window.innerHeight - 60
-            postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
-                if(res.res_code == 1) {
-                    this.courseList[3].selectList = res.data
-                    this.setCourseList(this.courseList)
-                }
-            })
+            this.getTeachers()
         },
     }
 </script>

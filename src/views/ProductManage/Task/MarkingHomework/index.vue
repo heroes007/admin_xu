@@ -13,7 +13,6 @@
   import screen from '../../../../components/ScreenFrame';
   import * as types from '../../../dialogs/types';
   import { Dialog } from '../../../dialogs';
-  import {get_read_over} from '../../../../api/modules/tools_task';
   import postData from '../../../../api/postData'
   import pageMixin from '../../../mixins/pageMixins'
   import pageList from '../../../../components/Page'
@@ -90,17 +89,21 @@
         this.initData()
       }
     },
+    beforeDestroy() {
+      this.list = null;
+      this.initData = null;
+      this.initData = null;
+
+    },
     methods: {
         selectChange1(val){
           this.mark_state = val;
           this.initData()
         },
         see(row,rowIndex){
-            // console.log(row,rowIndex,'see');
            this.handleSelModal(types.READ_OVER, { type: 2, row })
         },
         edit(row,rowIndex){
-            // console.log(row,rowIndex);
             this.handleSelModal(types.READ_OVER, { type: 1, row })
         },
         deletes(row,rowIndex){
@@ -117,12 +120,7 @@
             this.$router.replace({path:'/product/open-product'})
             // this.$router.replace({name: 'open-product'});
         },
-        handleList(){
-            // this.list.map((it) => {
-            //     it.state1 = it.state ? '已批阅' : '未批阅'
-            // })
-        },
-      initData(){
+        initData(){
             postData('product/homework/student_homework_get_list',{
                 homework_id: parseInt(this.$route.params.id),
                 search: this.search,
@@ -142,15 +140,9 @@
         }
     },
     mounted() {
-        this.handleList()
         if(localStorage.getItem('MarkingHomework')){
             this.screenTitle = JSON.parse(localStorage.getItem('MarkingHomework')).title
         }
-        // get_read_over().then(res=>{
-        //     console.log(res);
-        //     this.list = res.data.data.data
-        // })
-        // console.log(this.$route.params.id,'$route')
        this.initData()
     }
   }

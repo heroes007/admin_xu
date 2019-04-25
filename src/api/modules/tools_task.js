@@ -39,15 +39,6 @@ export function get_curriculumlist_online(params) {
         page_num:1,
     });
 }
-export function get_read_over(params) {
-    let id = JSON.parse(localStorage.getItem('MarkingHomework')).id
-    return api.post('/product/homework/student_homework_get_list',{
-        homework_id: id,
-        search: "",
-        page_size: 3,
-        page_num: 1,
-    });
-}
 export function save_datalist(params) {
     return api.post('/product/data/add',{
         title: params.name,

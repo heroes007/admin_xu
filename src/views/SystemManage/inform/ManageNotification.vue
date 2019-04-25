@@ -72,6 +72,16 @@
                     }]
             }
         },
+        beforeDestroy() {
+            this.updateWrapper = null;
+            this.createNotificationHandler = null;
+            this.handleSubmit = null;
+            this.sendAndDelete = null;
+            this.recallHandler = null;
+            this.editHandler = null;
+            this.getList = null;
+            this.list = null;
+        },
         methods: {
             updateWrapper() {
                 var vm = this;

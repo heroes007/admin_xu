@@ -65,6 +65,14 @@
     computed:{
       ...mapState({productState: state => state.production.add_product_state,editProductState: state => state.production.edit_product_state}),
     },
+    beforeDestroy() {
+      this.getList = null;
+      this.handleJump = null;
+      this.handleClick = null;
+      this.selectChange1 = null;
+      this.selectChange2 = null;
+      this.cardList = null;
+    },
     methods: {
       handleCardClass(t){
         return (t === 2 || t === 3) ? 'card-main-list1' : 'card-main-list0'
@@ -93,10 +101,6 @@
         });
         localStorage.setItem('onlinePane','product1')
         window.open(routeData.href, "_blank")
-      },
-      handleCurrentChange(val) {
-        this.curPage = val;
-        var data = this.getData();
       },
       getList(){
         let organization_id = this.organization_id !== 1 ? this.organization_id : ''

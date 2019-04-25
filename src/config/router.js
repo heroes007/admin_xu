@@ -6,7 +6,7 @@ const NotFound = () => import('../views/notfound');
 const DashBoard = () => import('../views/DashBoard');
 const PersonalData = () => import('../views/personal-data/index');
 const ManageOnlineCourseChapter = () => import('../views/ProductManage/Online/ManageOnlineCourseChapter');
-const ManageOfflineCourse = () => import('../views/ProductManage/Offline/next-semester');
+const nextSemester = () => import('../views/ProductManage/Offline/next-semester');
 const ManageNotification = () => import('../views/SystemManage/inform/ManageNotification');
 const ManageNews = () => import('../views/SystemManage/news/ManageNews')
 const UserManage = () => import('../views/UserManage/index')
@@ -19,7 +19,6 @@ const MarkingHomework = () => import('../views/ProductManage/Task/MarkingHomewor
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
 
 const head = () => import('../views/tutor/head.vue')
-const home = () => import('../views/tutor/home.vue')
 const JobList = () => import('../views/tutor/job-list.vue')
 const tutorCourse = () => import('../views/tutor/course-management')
 Vue.use(VueRouter);
@@ -117,7 +116,7 @@ const routes = [
       {
         name:'offline-course',
         path:'open-product/offline-course',
-        component:ManageOfflineCourse
+        component: nextSemester
       },
     ]
   },

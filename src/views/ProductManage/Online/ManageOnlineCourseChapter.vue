@@ -152,6 +152,23 @@
         if (this.$route.name == "online-course-chapter") this.getLists()
       }
     },
+    beforeDestroy() {
+      this.setChapter = null;
+      this.saveChapter = null;
+      this.showDataState = null;
+      this.editorNote = null;
+      this.openModal = null;
+      this.moveHandler = null;
+      this.moveUpHandler = null;
+      this.moveDownHandler = null;
+      this.deleteHandler = null;
+      this.initChapter = null;
+      this.setChapterShowState = null;
+      this.addVideo = null;
+      this.addTest = null;
+      this.deleteHandler = null;
+      this.editHandler = null;
+    },
     methods: {
       saveChapter2(t,i){
       },
