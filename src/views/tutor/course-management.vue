@@ -61,7 +61,8 @@ import { async } from 'q';
         rowClick(t){
             const data = {
                 id: t.id,
-                curriculum_type: t.curriculum_type
+                curriculum_type: t.curriculum_type,
+                title: t.title
             }
             this.$router.push({name: 'job-list', query: data})
         },

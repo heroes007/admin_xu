@@ -48,7 +48,7 @@
                 <Divider v-if="i != (list.length-1)" />
             </div>
        </div>
-       <div v-if="type !='subject'"> 
+       <div v-if="type !='subject'">
          <div v-if="type=='batch'">
             <div class="radio-type">
                 <span class="grey-regular2">批阅：</span>
@@ -119,7 +119,7 @@ export default {
                          let d = JSON.parse(attachment)
                          if(this.type == 'seeTask'){
                              t.description = t.answer
-                             t.tesk_state = t.mark_state 
+                             t.tesk_state = t.mark_state
                          }
                          if(this.type == 'batch'){
                             t.clas = ''
@@ -158,7 +158,7 @@ export default {
                     this.$forceUpdate()
                 })
             }
-        }, 
+        },
         isHasOwnProperty(d){
             if(d&&d.hasOwnProperty('student_homework_answer_id')){
                 if(d.student_homework_answer_id) return true

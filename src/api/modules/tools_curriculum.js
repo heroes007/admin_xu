@@ -34,6 +34,7 @@ export function update_curriculum(data) {
         description: data.description,
         img_url: data.img_default,
         unlock_type: data.unlock_type,
+        instructor_id: data.instructor_id
     });
 }
 export function delete_curriculum(id) {
