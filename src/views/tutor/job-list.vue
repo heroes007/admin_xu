@@ -192,8 +192,8 @@
                     children: val
                 }
                 postData('/tutor/downloadHomework', data).then(res => {
+                    this.fullscreenLoading.close()
                     if(res.res_code == 1) {
-                        this.fullscreenLoading.close()
                         let a = document.createElement('a')
                         a.target = '_blank'
                         a.href = 'http://192.168.6.55:5520/' + res.data.download_url

@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="isShow" :title="title" :styles="{top: '60px'}" :footer-hide="!footerHide" :width="700" :mask-closable="false" @on-cancel="closeModal">
+    <Modal v-model="isShow" :title="title" :styles="{top: '60px'}" :footer-hide="footerHide" :width="700" :mask-closable="false" @on-cancel="closeModal">
        <div v-if="type=='batch'" class="batch">
          <div class="batch-main" v-for="(m,k) in list" @click="Marking(m)" :class="k&&k%9 ? 'batch-marign' : ''" :key="k">
             <img class="batch-img" :class="m.clas" :src="m.head_img_url" />
@@ -64,8 +64,8 @@
             <Input class="textarea" type="textarea" :rows="6" v-model="comment" placeholder="请输入评语"></Input>
          </div>
        </div>
-       <div slot="footer" v-if="footerHide" class="submission"><Button type="primary" @click="submission">提交</Button></div>
-       <div v-if="!footerHide" class="footer-hide"></div>
+       <div slot="footer" v-if="showBtn" class="submission"><Button type="primary" @click="submission">提交</Button></div>
+       <div v-if="!showBtn" class="footer-hide"></div>
     </Modal>
 </template>
 
@@ -102,7 +102,8 @@ export default {
             score: 0,
             comment: '',
             markData: null,
-            footerHide: this.type == 'subject' ? true : false
+            footerHide: false,
+            showBtn: false
         }
     },
     watch: {
@@ -136,14 +137,20 @@ export default {
         }
     },
     methods: {
+        setShow(bool){
+            this.footerHide = bool
+            this.showBtn = !bool
+        },
         handleFoot(){
-            if(this.list.length>0){
+            if(Array.isArray(this.list)&&this.list.length>0){
                 if(this.type == 'seeTask'){
                     let d = this.$config.copy(this.list[this.list.length-1],{});
                     let bool = this.handleDisable(d.mark_state, this.list.length-1)
-                    this.footerHide = !bool
+                    this.setShow(bool)
                 }
             }
+            if(this.type == 'batch') this.setShow(false)
+            if(this.type == 'subject') this.setShow(true)
         },
         closeModal(val) {
             this.$emit('close-modal', val)
