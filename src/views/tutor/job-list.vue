@@ -196,7 +196,7 @@
                     if(res.res_code == 1) {
                         let a = document.createElement('a')
                         a.target = '_blank'
-                        a.href = 'http://192.168.6.55:5520/' + res.data.download_url
+                        a.href = downloadUrl + res.data.download_url
                         a.click()
                     }
                 })

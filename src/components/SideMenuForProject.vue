@@ -250,7 +250,7 @@
         width: 60px;
     }
     .w73 {
-        width: 73px;
+        width: 76px;
     }
     .head-btn {
         position: relative;
