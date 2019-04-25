@@ -44,7 +44,10 @@ router.beforeEach((to, from, next) => {
                 } else {
                     Message.warning('暂无权限');
                     if (to.name == 'login') next();
-                    else next({path: '/login'});
+                    else {
+                        localStorage.clear()
+                        next({path: '/login'});
+                    }
                 }
             })
         }
