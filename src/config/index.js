@@ -18,13 +18,12 @@ router.beforeEach((to, from, next) => {
   if(sessionStorage.getItem('token') && to.name === 'login') {
     let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
     if(roleId != 4)  next({name: 'user-manage'})
-    else if(to.name === 'login') next()
     else  next({name: 'tutor-course'})
   }else 
   if (store.state.auth.userInfo || to.name === 'login') {
     next();
   } else {
-    if (to.name !== 'login') {
+    if (sessionStorage.getItem('token') && to.name !== 'login') {
       postData('user/getUserPermission',{from:"web"}).then((res) => {
         if(res.res_code === 1 && res.data){
           sessionStorage.setItem('token',res.data.token)
@@ -43,8 +42,11 @@ router.beforeEach((to, from, next) => {
           })
         }else{
           Message.warning('暂无权限');
-          if (to.name !== 'login') next({ path: '/login' });
-          else next();
+          if (to.name == 'login') next();
+          else {
+              sessionStorage.clear();
+              next({path: '/login'});
+          }
         }
       })
     }
