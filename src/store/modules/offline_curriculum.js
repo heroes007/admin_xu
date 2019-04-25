@@ -78,7 +78,6 @@ const actions = {
     },
     get_offline_curriculum_detail({commit, state}, payload) {
         commit(types.OFFLINE_LOADING_CURRICULUM_DETAIL);
-        console.log(payload, 'pp')
         // if (!state.catch_offline_curriculum_detail[payload.row.childData[payload.index].id]) {
         get_offline_curriculum_detail(payload.row.childData[payload.index].id).then(res => {
             if (res.data.res_code == 1) {
@@ -93,7 +92,6 @@ const actions = {
     },
     get_students_by_offline_term({commit}, params) {
         commit(types.OFFLINE_TERM_LIST_LOADING);
-        console.log(params,'params')
         get_students_by_offline_term(params).then(res => {
             if (res.data.res_code == 1) {
                 commit(types.QUERY_STUDENT_BY_OFFLINE_TERM, res.data.data);

@@ -44,7 +44,7 @@
       },
       tabs(name){
           this.tabName = name
-          localStorage.setItem('UserManagePane', name)
+          sessionStorage.setItem('UserManagePane', name)
       },
       handleAuth(){
         let d = this.$config.getAuth(1)
@@ -54,8 +54,8 @@
             this.setAuth(n,t)
           }); 
         }
-        if(localStorage.getItem('UserManagePane')){
-           this.tabName = localStorage.getItem('UserManagePane')   
+        if(sessionStorage.getItem('UserManagePane')){
+           this.tabName = sessionStorage.getItem('UserManagePane')   
         }     
       }
     },

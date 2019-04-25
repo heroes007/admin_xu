@@ -113,7 +113,7 @@
         },
         getList() {
             let d = {
-                code_id: JSON.parse(localStorage.getItem('useRecords')).id,
+                code_id: JSON.parse(sessionStorage.getItem('useRecords')).id,
                 page_size : this.pageSize,
                 page_num: this.current,
                 keyword: this.keyword
@@ -134,8 +134,8 @@
     },
     mounted() {
         this.getList()
-        if(localStorage.getItem('useRecords')){
-            this.codeName = JSON.parse(localStorage.getItem('useRecords')).realname
+        if(sessionStorage.getItem('useRecords')){
+            this.codeName = JSON.parse(sessionStorage.getItem('useRecords')).realname
         }
         this.tabelHeight = window.innerHeight - 130
     }

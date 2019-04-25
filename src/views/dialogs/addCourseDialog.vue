@@ -152,7 +152,7 @@
                     curriculum_roles: [0],
                     pre_curriculum_ids: [],
                     data_center_id: 0,
-                    unlock_type: this.payload.hasOwnProperty('row') && this.payload.row.unlock_type || JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
+                    unlock_type: this.payload.hasOwnProperty('row') && this.payload.row.unlock_type || JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type
                 },
                 newData: {
                     show: false,
@@ -225,11 +225,11 @@
             }
         },
         mounted() {
-            if(JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 2) this.clearList = this.clearList.slice(1,3)
-            else if(JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 3) this.clearList = this.clearList.slice(2,3)
+            if(JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type == 2) this.clearList = this.clearList.slice(1,3)
+            else if(JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type == 3) this.clearList = this.clearList.slice(2,3)
             this.stateName = this.payload.state
             this.getListTeacher()
-            // this.form.unlock_type = JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(localStorage.getItem('PRODUCTINFO')).unlock_type
+            // this.form.unlock_type = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type
             if (this.payload.modify === 0) {
                 console.log(this.payload.row, 'log');
                 let d = this.payload.row
@@ -381,7 +381,7 @@
                 this.form.img_3_8 = url;
             },
             getListTeacher() {
-                postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
+                postData('components/getTeachers', {organization_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id}).then((res) => {
                     this.teacherList = res.data
                 })
                 postData('components/getDepts').then((res) => {
@@ -390,7 +390,7 @@
                 postData('components/getGrades').then((res) => {
                     this.gradesList = res.data
                 })
-                postData('components/getInstructors', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
+                postData('components/getInstructors', {organization_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
                     console.log(res.data, 'res')
                     this.tutorList = res.data
                 })

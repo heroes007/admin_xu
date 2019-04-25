@@ -31,9 +31,9 @@
                 showModal: false,
                 detailData: {},
                 subjectList: [],
-                subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
-                title: JSON.parse(localStorage.getItem('OffLineClassTheme')).title,
-                theme: JSON.parse(localStorage.getItem('OffLineClassTheme')),
+                subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id,
+                title: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).title,
+                theme: JSON.parse(sessionStorage.getItem('OffLineClassTheme')),
                 current: 1,
                 total: null,
                 pageSize: 12,
@@ -109,7 +109,6 @@
                 this.seeModal = false
             },
             see(row, index){
-                console.log(row,'dd');
                 this.details = row
                 this.seeModal = true
             },
@@ -162,7 +161,7 @@
             },
             setData(){
                 return {
-                    subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+                    subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id,
                     page_size: this.pageSize,
                     page_num: this.page_num,
                 }

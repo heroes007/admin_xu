@@ -160,7 +160,7 @@
             },
             useRecords(row, rowIndex) {
                 this.$router.replace({path: `/dashboard/${row.id}/usage-record/`})
-                localStorage.setItem('useRecords', JSON.stringify(row))
+                sessionStorage.setItem('useRecords', JSON.stringify(row))
             },
             immediateFailure(row, rowIndex) {
                 console.log(row, rowIndex, 'immediateFailure');
@@ -226,7 +226,7 @@
                     effect_time: this.$config.formatTime(val.effective_time[0]),
                     invalid_time: this.$config.formatTime(val.effective_time[1])
                 }
-                if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 1) d.organization_id = JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id
+                if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) d.organization_id = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).organization_id
                 if(val.isEdit) {
                     postData('code/modifyCode', {...d, ...{id: val.id}}).then(res => {
                         if(res.res_code == 1) {
@@ -248,7 +248,7 @@
             },
             getOrganization() {
                 postData('components/getOrganization').then(res => {
-                    if (res.res_code == 1 && JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1) this.formList[1].selectList = res.data
+                    if (res.res_code == 1 && JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1) this.formList[1].selectList = res.data
                 })
             },
             getProducts(val) {
@@ -285,10 +285,10 @@
         },
         mounted() {
             this.getOrganization()
-            if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1)  this.getProducts()
+            if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1)  this.getProducts()
             else {
-                this.organization_id = JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id
-                this.getProducts(JSON.parse(localStorage.getItem('PERSONALDETAILS')).organization_id)
+                this.organization_id = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).organization_id
+                this.getProducts(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).organization_id)
             }
             this.getList()
             this.tableRow = this.tableRow1

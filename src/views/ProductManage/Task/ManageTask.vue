@@ -144,7 +144,7 @@
                 this.formList[1].disable = false
                 this.formList[2].disable = false
                 this.modalTitle = "添加作业"
-                let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
+                let v = JSON.parse(sessionStorage.getItem("PRODUCTINFO")).id
                 this.$store.dispatch('get_curriculumlist_list', {product_id: v})
                 this.formList[2].selectList = this.curricumList
             },
@@ -160,7 +160,7 @@
                 this.$router.push({
                   path: `open-product/${row.id}/marking-homework`
                 })
-                localStorage.setItem('MarkingHomework', JSON.stringify(row))
+                sessionStorage.setItem('MarkingHomework', JSON.stringify(row))
             },
             editHandler(index, row) {
                 this.show = true;
@@ -169,7 +169,7 @@
                 this.formList[1].disable = true
                 this.formList[2].disable = true
                 this.modalTitle = '编辑作业';
-                let v = JSON.parse(localStorage.getItem("PRODUCTINFO")).id
+                let v = JSON.parse(sessionStorage.getItem("PRODUCTINFO")).id
                 this.$store.dispatch('get_curriculumlist_list', {product_id: v})
                 this.formList[2].selectList = this.curricumList
                 this.tableRow.realname = row.title
@@ -224,12 +224,12 @@
             },
             getListLine(){
               postData('product/curriculum_online/pulldown_get_list', {
-                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+                product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
               }).then(res => {
                 this.curricumList[0] = res.data
               })
               postData('product/curriculum_online/pulldown_get_offline_list', {
-                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+                product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
               }).then(res => {
                 this.curricumList[1] = res.data
               })

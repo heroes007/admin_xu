@@ -42,7 +42,7 @@
             radioType: false,
             titleTotal: null,
             department_id: null,
-            payingStudent: localStorage.getItem('organizationId') == 1,
+            payingStudent: sessionStorage.getItem('organizationId') == 1,
             selectList1: [
             {
               id: '',

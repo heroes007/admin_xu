@@ -140,7 +140,6 @@
           if(valid) {
             if(this.form.video_url){
               this.form._fn =  () =>{
-                console.log(this.payload.i,'sss');
                 $OnLine.$emit('OnLine',this.payload.i)
                 this.handleClose();
                 this.showPop('保存成功！', 1000);

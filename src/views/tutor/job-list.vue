@@ -180,7 +180,7 @@
                 this.getList()
             },
             closeModal(val) {
-                this.show = val
+                this.show = val;
             },
             preservationSuccess() {
                 this.getList()

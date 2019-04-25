@@ -75,18 +75,11 @@
     },
     methods: {
       ...mapActions(["get_production_list", "change_production_vailid", "delete_production", "get_production_group_list"]),
-      selectChange1(val){
-        console.log(val)
-      },
-      selectChange2(val){
-        console.log(val)
-      },
+      selectChange1(val){},
+      selectChange2(val){},
       inputChange(val){
         console.log(val)
       },
-      // handleClick(){
-      //   console.log('open modal')
-      // },
       handleJump(){
         let routeData = this.$router.resolve({
           query: '',

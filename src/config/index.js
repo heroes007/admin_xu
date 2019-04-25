@@ -15,10 +15,10 @@ Vue.use(LoadingY)
 // this registers `store.state.route`
 sync(store, router)
 router.beforeEach((to, from, next) => {
-  if(localStorage.getItem('token') && to.name === 'login') {
-    let roleId = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id;
+  if(sessionStorage.getItem('token') && to.name === 'login') {
+    let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
     if(roleId != 4)  next({name: 'user-manage'})
-    else if(to.name === 'login') next()
+    // else if(to.name === 'login') next()
     else  next({name: 'tutor-course'})
   }else 
   if (store.state.auth.userInfo || to.name === 'login') {
@@ -27,14 +27,14 @@ router.beforeEach((to, from, next) => {
     if (to.name !== 'login') {
       postData('user/getUserPermission',{from:"web"}).then((res) => {
         if(res.res_code === 1 && res.data){
-          localStorage.setItem('token',res.data.token)
-          localStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(res.data.permissions)));
+          sessionStorage.setItem('token',res.data.token)
+          sessionStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(res.data.permissions)));
           user_info().then((res) => {
             if (res.data.res_code === 1) {
               let d = res.data.data;
-              localStorage.setItem('organizationId',d.organization_id)
+              sessionStorage.setItem('organizationId',d.organization_id)
               store.dispatch('set_user_info', d);
-              localStorage.setItem('PERSONALDETAILS',JSON.stringify(d))
+              sessionStorage.setItem('PERSONALDETAILS',JSON.stringify(d))
               next();
             } else {
               if (to.name !== 'login') next({ path: '/login' });

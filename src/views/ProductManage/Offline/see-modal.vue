@@ -85,7 +85,7 @@
             },
             getList() {
                 var data = {
-                    product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+                    product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
                     page_size: this.pageSize,
                     page_num: this.current,
                     term_id: this.details.id

@@ -182,7 +182,7 @@
         handleSubmit(val){
           let d = val
           d.role_id = this.role
-          if(this.role_id != 1) d.organization_id = +localStorage.getItem('organizationId')
+          if(this.role_id != 1) d.organization_id = +sessionStorage.getItem('organizationId')
           if(this.modalTitle == ('添加'+this.scholarTitle)) this.fromAddAndEdit('/user/addDeptTeacher',d)
           else this.fromAddAndEdit('/user/modifyDeptTeacher',d)
         }

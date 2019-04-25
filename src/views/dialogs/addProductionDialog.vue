@@ -203,7 +203,7 @@ export default {
     },
     mounted() {
         this.organizationList = null
-        if(JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1){
+        if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1){
             this.getOrganization()
         }
         if(this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2){

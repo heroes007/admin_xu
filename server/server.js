@@ -1,6 +1,3 @@
-/**
- * Created by lesonli on 2016/11/15.
- */
 let server = (port) => {
     const path = require('path');
     const express = require('express');

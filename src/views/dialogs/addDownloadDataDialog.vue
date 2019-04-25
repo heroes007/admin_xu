@@ -162,11 +162,11 @@ export default {
         },
         typeChange(val){
             if(val == 'online') {
-              postData('product/curriculum_online/pulldown_get_list',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+              postData('product/curriculum_online/pulldown_get_list',{product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id}).then((res) => {
                 if(res.res_code == 1) this.curricumList = res.data
               })
             }else{
-              postData('product/curriculum_online/pulldown_get_offline_list',{product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+              postData('product/curriculum_online/pulldown_get_offline_list',{product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id}).then((res) => {
                 if(res.res_code == 1) this.curricumList = res.data
               })
             }

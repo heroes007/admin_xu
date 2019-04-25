@@ -65,9 +65,9 @@
                 },
                 show: false,
                 detailData: {},
-                product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+                product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
                 windowHight: '',
-                role: JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id,
+                role: JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id,
                 styleRule:"height: 500px; overflow-y: auto;"
             }
         },
@@ -116,7 +116,7 @@
             },
             handleSee(item) {
                 this.$router.push('open-product/offline-course')
-                localStorage.setItem('OffLineClassTheme', JSON.stringify(item))
+                sessionStorage.setItem('OffLineClassTheme', JSON.stringify(item))
             },
             handleSubmit(v) {
                 let d = {title: v.title, product_id: this.product_id,offlineCurriculums: v.offlineCurriculums, description: v.description}
@@ -182,7 +182,7 @@
                 else this.formList[2].list.splice(val, 1)
             },
             getTeachers(){
-                postData('components/getTeachers', {organization_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
+                postData('components/getTeachers', {organization_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
                     if(res.res_code == 1) {
                         this.courseList[3].selectList = res.data
                         this.setCourseList(this.courseList)

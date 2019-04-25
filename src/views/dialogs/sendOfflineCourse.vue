@@ -109,7 +109,7 @@
       },
       handleQueryList() {
         this.$store.dispatch('get_students_by_offline_term', {
-          product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+          product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
           term_id: this.payload.row.id,
           page_num: this.pageIndex,
           page_size: this.pageSize,
@@ -126,7 +126,7 @@
       },
       handleCurrentChange(val) {
         this.$store.dispatch('get_students_by_offline_term', {
-          subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
+          subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id,
           page_num: this.pageIndex,
           page_size: this.pageSize,
         })
@@ -155,8 +155,8 @@
             search: this.searchData
         }
         this.$store.dispatch('get_students_by_offline_term', {
-          subject_id: JSON.parse(localStorage.getItem('OffLineClassTheme')).id,
-          product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+          subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id,
+          product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
           term_id: this.payload.row.id,
           page_num: this.pageIndex,
           page_size: this.pageSize,

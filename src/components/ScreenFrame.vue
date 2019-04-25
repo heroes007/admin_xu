@@ -138,7 +138,7 @@
         else this.valueSelect2 = this.select2[0].value
       }
       if(this.select4 && this.select4.length) this.valueSelect4 = this.select4[0].id
-      this.isSuper = JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
+      this.isSuper = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
       postData('components/getOrganization').then((res) => {
         this.select = [...this.select, ...res.data]
         this.valueSelect1 = this.select[0].id

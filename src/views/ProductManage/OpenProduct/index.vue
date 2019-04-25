@@ -43,10 +43,10 @@
     methods:{
         tabs(name){
             this.online = name
-            localStorage.setItem('onlinePane', name)
+            sessionStorage.setItem('onlinePane', name)
         },
         setAuth(){
-            if(localStorage.getItem('PERSONALDETAILS')){
+            if(sessionStorage.getItem('PERSONALDETAILS')){
                this.item1 = true;
                this.item2 = true;
                this.item3 = true;
@@ -57,8 +57,8 @@
     },
     mounted(){
         this.setAuth()
-        if(localStorage.getItem('onlinePane')){
-            this.online = localStorage.getItem('onlinePane')
+        if(sessionStorage.getItem('onlinePane')){
+            this.online = sessionStorage.getItem('onlinePane')
         }
     }
   }

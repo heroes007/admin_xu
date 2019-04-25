@@ -40,7 +40,7 @@ export default {
     },
     // 获取权限
     getAuth(v) {
-        let d = Base64.decode(localStorage.getItem('PERMISSIONS'));
+        let d = Base64.decode(sessionStorage.getItem('PERMISSIONS'));
         let d1 = JSON.parse(d.slice(4))
         let da = null
         d1.map((t) => {
@@ -127,11 +127,11 @@ export default {
     },
     // 获取当前角色的权限
     getRoleId() {
-        return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id
+        return JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id
     },
     // 设置role_id === 4 的权限  只能查看产品 批阅作业
     setAuthTube() {
-        return JSON.parse(localStorage.getItem('PERSONALDETAILS')).role_id !== 4
+        return JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 4
     },
     //table导出excel
     downExcel(th, list) {

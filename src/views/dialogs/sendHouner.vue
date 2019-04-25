@@ -97,7 +97,7 @@
     methods: {
       getList(){
         let d = {
-          product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+          product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
           page_size: this.pageSize,
           page_num: this.current,
           keyword: this.keyword,
@@ -142,7 +142,7 @@
         }
         if (list.length > 0) {
           let d = {
-            product_id: JSON.parse(localStorage.getItem('PRODUCTINFO')).id,
+            product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
             honour_id: this.payload.row.id,
             user_ids: list
           }

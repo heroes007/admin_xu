@@ -39,10 +39,10 @@ const actions = {
     update_product(param).then(res => {
       if (res.data.res_code === 1) {
         commit('edit_product_states',true)
-        let id = JSON.parse(localStorage.getItem('PRODUCTINFO')).id
+        let id = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id
         get_product_info(id).then(res => {
           if(res.data.res_code == 1){
-            localStorage.setItem('PRODUCTINFO',JSON.stringify(res.data.data))
+            sessionStorage.setItem('PRODUCTINFO',JSON.stringify(res.data.data))
           }
         })
         if (param._fn)
