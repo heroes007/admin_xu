@@ -15,17 +15,17 @@
          </div>
        </div>
        <div v-else>
-           <div v-if="type=='seeTask'" class="student-info">
-               < img class="batch-img" v-if="studentInfo.length>0" :src="studentInfo[0].head_img_url" />
-               <div class="student-name">
-                   <div class="grey-medium1">
-                       {{getName(studentInfo, 'realname')}}
-                       <img v-if="studentInfo.length>0&&studentInfo[0].sex" src="../../../assets/img/female.png" />
-                       <img v-else-if="studentInfo.length>0" src="../../../assets/img/male.png" />
-                   </div>
-                   <span class="grey-regular4">ID: {{getName(studentInfo, 'username')}}</span>
-               </div>
-           </div>
+            <div v-if="type=='seeTask'" class="student-info">
+                <img class="batch-img" v-if="studentInfo.length>0" :src="studentInfo[0].head_img_url" />
+                <div class="student-name">
+                     <div class="grey-medium1">
+                         {{getName(studentInfo, 'realname')}}
+                        <img v-if="studentInfo.length>0&&studentInfo[0].sex" src="../../../assets/img/female.png" />
+                        <img v-else-if="studentInfo.length>0" src="../../../assets/img/male.png" />
+                    </div>
+                     <span class="grey-regular4">ID: {{getName(studentInfo, 'username')}}</span>
+                </div>
+            </div>
             <div v-for="(t,i) in list" :key="i" class="task-list">
                 <p class="grey-regular1">{{t.title}}</p >
                 <p class="job-details grey-regular2" v-html="t.description"></p >

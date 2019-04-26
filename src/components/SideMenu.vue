@@ -109,7 +109,14 @@
                     }
                 });
             },
-            handleMenuList() {
+            handleMenuList(type) {
+               if(type){
+                let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
+                if(roleId == 4) this.menuList = MenuToturList
+                else if(sessionStorage.getItem('PERMISSIONS')){
+                    this.menuList = MenuList
+                }
+               }else{
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
                 if(roleId == 4) this.menuList = MenuToturList
                 else if (sessionStorage.getItem('PERMISSIONS')) {
@@ -122,6 +129,7 @@
                         });
                     }
                 }
+               }
             },
             getName() {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
@@ -142,7 +150,7 @@
         },
         mounted() {
           let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
-          this.handleMenuList()
+          this.handleMenuList(2)
           if (sessionStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(sessionStorage.getItem('menuOpenName'))
           let menuActive = roleId !=4 ? ( sessionStorage.getItem('menuActiveIndex') ? sessionStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
           this.activeIndex = menuActive
