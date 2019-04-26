@@ -133,6 +133,16 @@ export const MenuList = [
         icon: 'md-clipboard',
     },
     {
+        name: 'order-management',
+        title: '订单管理',
+        icon: 'md-clipboard',
+    },
+    {
+        name: 'private-letter',
+        title: '私信管理',
+        icon: 'md-clipboard',
+    },
+    {
         name: 'system-manage',
         title: '平台管理',
         icon: 'md-planet',
@@ -140,6 +150,14 @@ export const MenuList = [
             {
                 name: 'advertising-map',
                 title: '广告图'
+            },
+            {
+                name: 'recommended-products',
+                title: '推荐产品'
+            },
+            {
+                name: 'open-class',
+                title: '公开课'
             },
             {
                 name: 'manage-news',

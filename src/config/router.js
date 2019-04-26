@@ -17,10 +17,14 @@ const ExchangeCode = () => import('../views/SystemManage/ExchangeCode/index')
 const UsageRecord = () => import('../views/SystemManage/ExchangeCode/UsageRecord/index')
 const MarkingHomework = () => import('../views/ProductManage/Task/MarkingHomework/index')
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
-
+const OpenClass = () => import('../views/SystemManage/OpenClass/index')
 const head = () => import('../views/tutor/head.vue')
 const JobList = () => import('../views/tutor/job-list.vue')
 const tutorCourse = () => import('../views/tutor/course-management')
+const OrderManagement = () => import('../views/OrderManagement/index')
+const PrivateLetter = () => import('../views/PrivateLetter/index')
+const RecommendedProducts = () => import('../views/SystemManage/RecommendedProducts/index')
+
 Vue.use(VueRouter);
 // 页面路由
 const routes = [
@@ -68,6 +72,18 @@ const routes = [
         name: 'exchange-code',
         component: ExchangeCode
       },
+      //订单管理
+      {
+        path: 'order-management',
+        name: 'order-management',
+        component: OrderManagement
+      },
+      //私信管理
+      {
+        path: 'private-letter',
+        name: 'private-letter',
+        component: PrivateLetter
+      },
       // 兑换码使用记录
       {
         path: ':id/usage-record',
@@ -88,6 +104,16 @@ const routes = [
         name:'notification-chat',
         path:'notification-chat',
         component: ManageNotification
+      },
+      {
+        name:'open-class',
+        path:'open-class',
+        component: OpenClass
+      },
+      {
+        name:'recommended-products',
+        path:'recommended-products',
+        component: RecommendedProducts
       },
     ]
   },

@@ -16,12 +16,12 @@
        </div>
        <div v-else>
             <div v-if="type=='seeTask'" class="student-info">
-                <img class="batch-img" :src="studentInfo.length>0 && studentInfo[0].head_img_url" />
+                <img class="batch-img" v-if="studentInfo.length>0" :src="studentInfo[0].head_img_url" />
                 <div class="student-name">
                      <div class="grey-medium1">
                          {{getName(studentInfo, 'realname')}}
                         <img v-if="studentInfo.length>0&&studentInfo[0].sex" src="../../../assets/img/female.png" />
-                        <img v-else src="../../../assets/img/male.png" />
+                        <img v-else-if="studentInfo.length>0" src="../../../assets/img/male.png" />
                     </div>
                      <span class="grey-regular4">ID: {{getName(studentInfo, 'username')}}</span>
                 </div>
