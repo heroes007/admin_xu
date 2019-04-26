@@ -194,10 +194,12 @@
                 postData('/tutor/downloadHomework', data).then(res => {
                     this.fullscreenLoading.close()
                     if(res.res_code == 1) {
-                        let a = document.createElement('a')
-                        a.target = '_blank'
-                        a.href = downloadUrl.slice(0, downloadUrl.length - 4) + 'download/' + res.data.download_url
-                        a.click()
+                        // let a = document.createElement('a')
+                        // a.target = '_blank'
+                        // a.href = downloadUrl.slice(0, downloadUrl.length - 4) + 'download/' + res.data.download_url
+                        // a.click()
+                        var newTab = window.open('about:blank')
+                        newTab.location.href = downloadUrl.slice(0, downloadUrl.length - 4) + 'download/' + res.data.download_url;
                     }
                 })
             },
