@@ -19,8 +19,7 @@ router.beforeEach((to, from, next) => {
         let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
         if(roleId != 4)  next({name: 'user-manage'})
         else  next({name: 'tutor-course'})
-    }else
-    if (store.state.auth.userInfo || to.name === 'login') {
+    }else if (store.state.auth.userInfo || to.name === 'login') {
         next();
     } else {
         if (sessionStorage.getItem('token') && to.name !== 'login') {
