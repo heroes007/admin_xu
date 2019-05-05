@@ -81,7 +81,7 @@
                         key: 'register_end_time',
                         title: '报名截止日期',
                         width: 150,
-                    }, 
+                    },
                     {
                         title: '操作',
                         minWidth: 260,
@@ -92,7 +92,6 @@
             }
         },
         beforeDestroy(){
-            this.columns1 = null;
             this.copyItem = null;
             this.editOfflineSemester = null;
             this.addOfflineSemesterHandler = null;
@@ -221,6 +220,6 @@
     }
     .pos{
         position: absolute;
-        right: 0; 
+        right: 0;
     }
 </style>

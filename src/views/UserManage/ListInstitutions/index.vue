@@ -70,7 +70,7 @@
             {
                 key: '',
                 title: '身份',
-                minWidth: 100,
+                minWidth: 120,
                 render: (h, params) => {
                     return h('span', '机构管理员')
                 }

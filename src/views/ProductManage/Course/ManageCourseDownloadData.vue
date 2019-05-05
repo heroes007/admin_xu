@@ -102,7 +102,6 @@
       this.deleteHandler = null;
       this.initData = null;
       this.downloadMsg = null;
-      this.dataHeader = null;
       this.searchResult = null;
     },
     methods: {

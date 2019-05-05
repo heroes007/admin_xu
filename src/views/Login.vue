@@ -54,14 +54,14 @@
                         this.isLogining = false;
                         let d = res.data.data;
                         sessionStorage.setItem('organizationId',d.userInfo[0].organization_id)
-                        this.$store.dispatch('get_user_info');
                         sessionStorage.setItem('PERSONALDETAILS',JSON.stringify(d.userInfo[0]))
-                        if(d.userInfo[0].role_id == 4)  this.$router.push({ path: '/dashboard/tutor-course' });
-                        else  this.$router.push({ path: '/dashboard/user-manage' });
                         sessionStorage.setItem('PERMISSIONS',Base64.encode('学格科技' + JSON.stringify(d.permissions)))
                         sessionStorage.setItem('token',d.token)
+                        this.$store.dispatch('get_user_info');
                         let d1 = { name: this.name, pass: this.password }
                         localStorage.setItem('login_user', Base64.encode(JSON.stringify(d1)))
+                        if(d.userInfo[0].role_id == 4)  this.$router.replace({ path: '/dashboard/tutor-course' });
+                        else  this.$router.replace({ path: '/dashboard/user-manage' });
                     } else {
                         this.$Message.warning(res.data.msg);
                         this.isLogining = false;

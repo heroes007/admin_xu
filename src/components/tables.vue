@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas" ref="tables"
                :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
@@ -103,12 +103,19 @@
             },
             tabelHeight: {
                 type: Number
+            },
+            selectIndex: {
+                type: Number
             }
         },
         watch: {
             tableData(_new) {
                 this.tableData = _new;
                 this.handleTableData(this.tableData)
+            },
+            selectIndex(val) {
+                console.log(val)
+                this.$refs.tables.objData[val]._isChecked = false;
             }
         },
         methods: {

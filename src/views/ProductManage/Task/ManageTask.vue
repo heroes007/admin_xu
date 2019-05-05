@@ -124,8 +124,6 @@
             ...mapState({ dataList: state => state.task.task_category_list })
         },
         beforeDestroy() {
-            this.dataHeader = null;
-            this.listColumnFormatter = null;
             this.addTaskCategory = null;
             this.manageEdit = null;
             this.marking = null;

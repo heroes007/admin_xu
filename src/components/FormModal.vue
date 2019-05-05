@@ -47,6 +47,7 @@
                             </Option>
                         </Select>
                     </FormItem>
+                    <!--下拉框触发chenge事件-->
                     <FormItem v-else-if="t.type==='select'&&t.selectChange" :prop="t.field" :label="t.name"
                               :class="t.clas ? t.clas: ''">
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"

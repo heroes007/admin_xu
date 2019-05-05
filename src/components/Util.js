@@ -135,12 +135,12 @@ export const MenuList = [
     {
         name: 'order-management',
         title: '订单管理',
-        icon: 'md-clipboard',
+        icon: 'md-pricetag',
     },
     {
         name: 'private-letter',
         title: '私信管理',
-        icon: 'md-clipboard',
+        icon: 'md-chatboxes',
     },
     {
         name: 'system-manage',

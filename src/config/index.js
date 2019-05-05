@@ -15,12 +15,18 @@ Vue.use(LoadingY)
 // this registers `store.state.route`
 sync(store, router)
 router.beforeEach((to, from, next) => {
+    let toLogin = () => {
+        if (to.name == 'login') next();
+        else {
+            sessionStorage.clear();
+            next({path: '/login'});
+        }
+    }
     if(sessionStorage.getItem('token') && to.name === 'login') {
         let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
         if(roleId != 4)  next({name: 'user-manage'})
         else  next({name: 'tutor-course'})
-    }else
-    if (store.state.auth.userInfo || to.name === 'login') {
+    }else if (store.state.auth.userInfo || to.name === 'login') {
         next();
     } else {
         if (sessionStorage.getItem('token') && to.name !== 'login') {
@@ -42,14 +48,10 @@ router.beforeEach((to, from, next) => {
                     })
                 }else{
                     Message.warning('暂无权限');
-                    if (to.name == 'login') next();
-                    else {
-                        sessionStorage.clear();
-                        next({path: '/login'});
-                    }
+                    toLogin()
                 }
             })
-        }
+        }else toLogin()
     }
 })
 export default router;
