@@ -1,16 +1,18 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
+        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas" ref="tables"
              @on-expand="expand"  :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
                 <span v-html="row[column.key]"></span>
             </template>
             <template slot-scope="{ column, row, index }" slot="accessory">
-                <span v-if="row.accessory&&row.accessory != '-'">
-                    <Icon type="ios-link" style="margin-right: 10px;height: 20px;"/>
-                </span>
-                <span>{{row.accessory}}</span>
+                <div style="white-space: nowrap; text-overflow: ellipsis; width: 100%;overflow: hidden">
+                    <span v-if="row.accessory&&row.accessory != '-'">
+                        <Icon type="ios-link" style="margin-right: 10px;height: 20px;"/>
+                    </span>
+                    <span>{{row.accessory}}</span>
+                </div>
             </template>
             <!--stateInform判断通知按钮展示内容-->
             <template slot-scope="{ column, row, index }" slot="operation">
@@ -101,6 +103,9 @@
             },
             tabelHeight: {
                 type: Number
+            },
+            selectIndex: {
+                type: Number
             }
         },
         watch: {
@@ -110,6 +115,9 @@
             },
             column(_new){
                   this.handleColumns(_new)
+            },
+            selectIndex(val) {
+                this.$refs.tables.objData[val]._isChecked = false;
             }
         },
         methods: {

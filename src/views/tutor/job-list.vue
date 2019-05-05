@@ -38,7 +38,7 @@
     import pageMixins from '../mixins/pageMixins'
     import postData from '../../api/postData'
     import tutorModal from './modal/tutor-modal'
-    import downloadUrl from '../../../config/url'
+    import downloadUrl from '../../../config/url_download'
     export default {
         components: {tables, pageList, tutorModal},
         mixins: [pageMixins],
@@ -181,12 +181,21 @@
                     children: val
                 }
                 postData('/tutor/downloadHomework', data).then(res => {
+                    this.fullscreenLoading.close()
                     if(res.res_code == 1) {
-                        this.fullscreenLoading.close()
-                        let a = document.createElement('a')
-                        a.target = '_blank'
-                        a.href = 'http://192.168.6.55:5520/' + res.data.download_url
-                        a.click()
+                        // let a = document.createElement('a')
+                        // a.target = '_blank'
+                        // a.href = downloadUrl + 'download/' + res.data.download_url
+                        // a.click()
+
+                        // var newTab = window.open('about:blank')
+                        // newTab.location.href = downloadUrl + 'download/' + res.data.download_url;
+
+                        var form = document.createElement('form')
+                        form.action = downloadUrl + 'download/' + res.data.download_url;
+                        form.method = 'get'
+                        document.body.appendChild(form);
+                        form.submit()
                     }
                 })
             },

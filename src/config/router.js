@@ -30,7 +30,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path:'',
-    redirect:'/login'
+    redirect:'/login',
   },
   // 辅导老师
   {
