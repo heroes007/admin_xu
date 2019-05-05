@@ -92,8 +92,6 @@
     beforeDestroy() {
       this.list = null;
       this.initData = null;
-      this.initData = null;
-
     },
     methods: {
         selectChange1(val){

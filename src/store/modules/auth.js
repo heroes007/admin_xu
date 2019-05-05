@@ -34,7 +34,7 @@ const mutations = {
     },
     [types.USERINFO_SETTED] (state,param) {
         state.userInfo = param;
-        state.isLogin = true;
+        // state.isLogin = true;
     },
     [types.USERINFO_NULL] (state) {
         state.isLogin = false;

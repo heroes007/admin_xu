@@ -255,6 +255,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/deep/ .ivu-modal-header-inner{
+    font-family: PingFangSC-Medium;
+}
 /deep/ .ivu-modal-footer{
     border: none;
     padding: 0 0 40px 0;

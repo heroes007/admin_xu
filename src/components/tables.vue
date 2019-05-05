@@ -1,7 +1,7 @@
 <template>
     <div>
         <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas"
-               :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
+             @on-expand="expand"  :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
                 <span v-html="row[column.key]"></span>
@@ -70,7 +70,7 @@
         props: {
             column: {
                 type: Array,
-                default: []
+                default: () => []
             },
             tableData: {
                 type: Array,
@@ -107,6 +107,9 @@
             tableData(_new) {
                 this.tableData = _new;
                 this.handleTableData(this.tableData)
+            },
+            column(_new){
+                  this.handleColumns(_new)
             }
         },
         methods: {
@@ -116,6 +119,9 @@
             },
             rowClick(row, rowIndex) {
                 this.show(row, rowIndex, 'row-click')
+            },
+            expand(row,states){
+                this.$emit('expand', row,states)
             },
             //operationLast为true操作展示第一个，false展示最后一个
             handleBtnShowClass(c, r, t) {
@@ -175,16 +181,20 @@
                     this.$emit(params, row, rowIndex)
                 }
             },
-            handleColumns(c) {
-                if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 80})
-                if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
-                if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
-                c.map((t) => {
-                    if (t.hasOwnProperty('slot') && t.slot == "operation" && !t.hasOwnProperty('align')) t.align = 'left'
-                    if (!t.hasOwnProperty('align')) t.align = 'center'
-                    t.tooltip = true
-                })
-                this.columns = c
+            handleColumns(c,type) {
+                if(c&&c.length>0){
+                    if(type){
+                        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 80})
+                        if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
+                        if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
+                    }
+                    c.map((t) => {
+                        if (t.hasOwnProperty('slot') && t.slot == "operation" && !t.hasOwnProperty('align')) t.align = 'left'
+                        if (!t.hasOwnProperty('align')) t.align = 'center'
+                        t.tooltip = true
+                    })
+                    this.columns = c
+                }
             },
             change(row) {
                 this.$emit('table-swtich', row)
@@ -227,7 +237,7 @@
             },
         },
         mounted() {
-            this.handleColumns(this.column)
+            this.handleColumns(this.column, 1)
             this.handleTableData(this.tableData)
         }
     }

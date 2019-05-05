@@ -120,8 +120,6 @@
             }
         },
         beforeDestroy() {
-            this.dataHeader = null;
-            this.listColumnFormatter = null;
             this.handleClick = null;
             this.editChapterHandler = null;
             this.editCourseHandler = null;

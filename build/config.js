@@ -11,10 +11,10 @@ module.exports = {
     },
     prod:{
         // publicPath:'/',
-        publicPath:'http://sfile.jiuhuatech.com/met_admin/dist/'
+        publicPath:'http://sfile.9mededu.com/met_admin/dist/'
     },
     test: {
         // publicPath:'/',
-        publicPath:'http://sfile.jiuhuatech.com/met_admin_test/dist/',
+        publicPath:'http://sfile.9mededu.com/met_admin_test/dist/',
     }
 }

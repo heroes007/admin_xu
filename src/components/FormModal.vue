@@ -96,6 +96,13 @@
                             <span slot="file-require" class="font-hint">*只能上传jpg/png文件，且图片比例为3:2，建议尺寸480*320px</span>
                         </upload-panel>
                     </FormItem>
+                    <!-- 上传视频 -->
+                    <FormItem v-if="t.type == 'uploadVideo'" ref="upload" label="上传视频" required>
+                        <upload-panel ref="upload_panel" :resourse="formItem[t.field]" :upload-config="uploaderConfigVideo"
+                                 @vedioTime="videoTime"  @uploadcomplete="handleDefaultUploadCompleteVideo" :maxFileSize="300" types="video/mp4,video/mov,video/avi">
+                            <span slot="file-require" class="font-hint">*只能上传mp4/mov/avi文件，且不超过300M</span>
+                        </upload-panel>
+                    </FormItem>
                     <!--富文本编辑器-->
                     <FormItem v-if="(t.type==='upload')"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :label-width="t.name ? 80 : 0" :prop="t.field" class="upload" ref="formInput">
                         <new-editor :style=" t.small ? 'height: 340px;' : 'height: 500px;'" @get-content="getContent" :content="content" editor-id="editorId"/>
@@ -250,6 +257,12 @@
                     dir: 'user_task',
                     type: 1
                 },
+                uploaderConfigVideo: {
+                    bucket: 'jhyl-static-file',
+                    dir: 'mspx',
+                    time: true,
+                    type: 2
+               },
                 downList: [],
                 fontList: [
                     {
@@ -337,6 +350,10 @@
             handleSelectClass(t){
               if(this.labelWidths) return this.handleClass(t)
               return  t.name.length == 2 ? 'form-label' : ''
+            },
+            videoTime(v){
+                console.log(v,'v');
+                this.formItem.duration = v
             },
             handleClass(t){
               return t.name.length == 4 && this.labelWidths ? 'form-label-2' : ''
@@ -453,6 +470,8 @@
                             else this.handleFormData()
                         }else if(this.formList.length == 5 && this.formList[3].type == 'uploadPanel' && !this.formItem.img_default){
                             this.$Message.info('请上传封面')
+                        } else if(this.formList.length == 3 && this.formList[2].type == 'uploadVideo' && !this.formItem.video_url){
+                            this.$Message.info('请上传视频')
                         } else {
                             if(this.$refs.formInput){
                                 if(this.content) this.handleFormData()
@@ -538,6 +557,11 @@
             handleLast() {
                 this.$emit('handle-last')
             },
+            handleDefaultUploadCompleteVideo(url){
+                console.log(url,'ss');
+                this.formItem.video_url = url;
+                this.$forceUpdate()
+            },
             handleDefaultUploadComplete(url) {
                 this.formItem.img_default = url;
                 this.$forceUpdate()
@@ -546,6 +570,9 @@
     }
 </script>
 <style lang="less" scoped>
+    /deep/ .upload-panel{
+        width: 100%;
+    }
     .form-item-date{
         /deep/ .ivu-btn{
             display: inline-block !important;

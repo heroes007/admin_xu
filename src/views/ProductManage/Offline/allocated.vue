@@ -1,16 +1,17 @@
 <template>
-    <Modal v-model="showModal" :title="'预约学员（'+total+'）'" :width="960" @on-cancel="closeModal" :mask-closable=false
+    <Modal v-model="showModal" title="分配学员" :width="960" @on-cancel="closeModal" :mask-closable=false
            :footer-hide="true" :styles="{top: '6%'}">
-        <div class="title-bg grey-medium1">{{details.title}}</div>
-        <Tables class="tables" :is-serial=true :column="columns1" :table-data="list" :tabel-height="tabelHeight"></Tables>
+        <div class="title-bg grey-medium1">{{details.title}} <span>预约{{details.student_num}}人</span></div>
+        <Tables class="tables" :is-serial=true :column="columns1" :table-data="list" @expand="expand" :tabel-height="576"></Tables>
     </Modal>
 </template>
 
 <script>
     import Tables from '../../../components/tables'
     import postData from '../../../api/postData'
+    import allocatedForm from './allocatedForm.vue'
     export default {
-        components: {Tables},
+        components: { Tables, allocatedForm },
         props: {
             show: {
                 type: Boolean,
@@ -25,39 +26,46 @@
             return {
                 showModal: false,
                 list:[],
+                states: false,
                 total: '',
-                tabelHeight: 480,
                 columns1:[
                     {
-                        title: '用户ID',
-                        key: 'id',
+                        title: '课程名称',
+                        key: 'title',
                         minWidth: 100
                     },
                     {
-                        title: '真实姓名',
-                        key: 'realname',
+                        title: '类型',
+                        key: '',
+                        minWidth: 100,
+                        render: (h, params) => {
+                            let d = params.row.type == 1 ? '讲座' : '实践'
+                            return h('span', d)
+                        }
+                    },
+                    {
+                        title:'地址',
+                        key:'class_address',
                         minWidth: 100
                     },
                     {
-                        title:'性别',
-                        key:'sex',
+                        title:'已分配',
+                        key:'',
                         minWidth: 100
                     },
                     {
-                        title:'学科',
-                        key:'department_name',
-                        minWidth: 100
+                        title:'操作',
+                        key:'',
+                        minWidth: 100,
+                        slot: 'listExpand',
+                        type: 'expand',
+                        render: (h, params) => {
+                              let d = params.row;
+                              d.term_id = this.details.term_id
+                              d.student_num = this.details.student_num
+                              return  h(allocatedForm, { props: { details: d} })
+                        }
                     },
-                    {
-                        title:'年级',
-                        key:'grade_name',
-                        minWidth: 100
-                    },
-                    {
-                        title:'预约时间',
-                        key:'reserve_time',
-                        minWidth: 200
-                    }
                 ],
             }
         },
@@ -65,28 +73,18 @@
             show(_new) {
                 this.showModal = _new
                 if(_new) {
-                    this.getList()
+                    this.list = this.details.offlineCurriculums
                 }
             }
         },
         methods: {
+            expand(row,states){
+              console.log(states)
+            },
             closeModal() {
                 this.showModal = false
                 this.$emit('close-modal')
                 this.formList = [this.clearItem]
-            },
-            getList() {
-                var data = {
-                    product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
-                    term_id: this.details.id
-                }
-                postData('/product/curriculum_offline/subject_reserve_student_get_list', data).then(res => {
-                    res.data.data.forEach(item => {
-                        item.sex = item.sex == 1 ? '男' : '女'
-                    })
-                    this.total = res.data.count
-                    this.list = res.data.data
-                })
             }
         }
     }
@@ -97,6 +95,10 @@
     }
     /deep/ .ivu-modal-header{
         border: none;
+    }
+    /deep/ .ivu-table-cell-expand i{
+        color: #4098FF;
+        font-size: 16px;
     }
     /deep/ .ivu-modal-body{
         padding: 0;
@@ -112,6 +114,12 @@
         width: 100%;
         padding-left: 20px;
         line-height: 48px;
+        position: relative;
+        text-align: left;
+        span{
+            position: absolute;
+            right: 20px;
+        }
     }
     /deep/ .ivu-table:before, /deep/ .ivu-table:after{
         display: none;

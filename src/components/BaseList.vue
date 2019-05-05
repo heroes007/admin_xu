@@ -117,7 +117,8 @@
       },
       headerData: { //header数据
         type: Array,
-        required: true
+        required: true,
+        default: ([]) => { [] }
       },
       showHeader: {
         type: Boolean,

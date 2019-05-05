@@ -1,8 +1,9 @@
 <template>
     <div class='manage-offline-course'>
         <SeeModal :show="seeModal" :details="details" @close-modal="closeModal1" />
+        <allocated :show="allocatedModal" :details="allocateddetails" @close-modal="closeModal2" />
         <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
-        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="editOfflineSemester" @operation2="see" @operation3="sendOfflineCourseHandler" @operation4="deleteOfflineSemester" :column="columns1" :table-data="dataList" />
+        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="editOfflineSemester" @operation2="see" @operation3="allocated" @operation4="sendOfflineCourseHandler" @operation5="deleteOfflineSemester" :column="columns1" :table-data="dataList" />
         <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
@@ -18,9 +19,10 @@
     import postData from '../../../api/postData.js'
     import setAuthMixins from '../setAuthMixins'
     import SeeModal from "./see-modal.vue";
+    import allocated from './allocated.vue'
     export default {
         mixins: [Dialog, setAuthMixins],
-        components: { 'save-order': SaveOrder, screen, SeeModal, Tables },
+        components: { 'save-order': SaveOrder, screen, SeeModal, Tables, allocated},
         data() {
             return {
                 seeModal: false,
@@ -29,6 +31,8 @@
                 deleteData: null,
                 courseNums: 12,
                 showModal: false,
+                allocatedModal: false,
+                allocateddetails: {},
                 detailData: {},
                 subjectList: [],
                 subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id,
@@ -52,8 +56,8 @@
                 return this.$store.state.offline_curriculum.offline_term_list;
             },
             columns1(){
-                let d = [['编辑','operation1'], ['查看预约','operation2'], ['发送','operation3'], ['删除','operation4']]
-                let btnList = this.btnType ? d : [['发送','operation3']]
+                let d = [['编辑','operation1'], ['查看预约','operation2'],['分配','operation3'],['发送','operation4'], ['删除','operation5']]
+                let btnList = this.btnType ? d : [['发送','operation4']]
                 return [
                     {
                         key: 'title',
@@ -84,7 +88,7 @@
                     }, 
                     {
                         title: '操作',
-                        minWidth: 260,
+                        minWidth: 360,
                         slot: 'operation',
                         align: 'left',
                         operation: btnList,
@@ -92,7 +96,6 @@
             }
         },
         beforeDestroy(){
-            this.columns1 = null;
             this.copyItem = null;
             this.editOfflineSemester = null;
             this.addOfflineSemesterHandler = null;
@@ -108,9 +111,24 @@
             closeModal1(){
                 this.seeModal = false
             },
+            closeModal2(){
+                this.allocatedModal = false
+            },
             see(row, index){
                 this.details = row
                 this.seeModal = true
+            },
+            //分配
+            allocated(row, index){
+                postData('product/curriculum_offline_term/getTermAndCurriculums', {term_id: row.id}).then((res) => {
+                    if(res.res_code == 1){
+                        let d = res.data
+                        d.term_id = row.id
+                        d.student_num = row.student_num
+                        this.allocatedModal = true;
+                        this.allocateddetails = d
+                    }
+                })
             },
             //复制
             copyItem(row, index){
@@ -134,9 +152,9 @@
             editOfflineSemester(row, index) {
                 postData('product/curriculum_offline_term/getTermAndCurriculums', {term_id: row.id}).then((res) => {
                     if(res.res_code == 1){
-                    let d = res.data
-                    this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 2, row: d,page_size: this.pageSize,
-                    page_num: this.page_num, offlineCurriculums: d.offlineCurriculums})
+                        let d = res.data
+                        this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 2, row: d,page_size: this.pageSize,
+                        page_num: this.page_num, offlineCurriculums: d.offlineCurriculums})
                     }
                 })
             },
@@ -198,7 +216,13 @@
         }
     }
 </script>
-<style scoped lang="less">
+<style scoped lang="less"> 
+    /deep/ .ivu-icon-ios-arrow-forward:before{
+        content: '分配学员'
+    }
+    /deep/ .ivu-table-cell-expand-expanded{
+        transform: none
+    }
     .manage-offline-course{
         position: relative;
         height: 100%;

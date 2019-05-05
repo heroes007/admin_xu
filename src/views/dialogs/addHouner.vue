@@ -24,7 +24,7 @@
                             </FormItem>
                             <FormItem label="证书照片" required>
                                 <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig"
-                                              @uploadcomplete="handleDefaultUploadComplete"  :maxFileSize="2">
+                                        types="image/jpg, image/jpeg, image/png"  @uploadcomplete="handleDefaultUploadComplete"  :maxFileSize="2">
                                     <span slot="file-require" class="font-hint">*只能上传 jpg/png/jpeg 文件，且图片480*270,大小不超过2M</span>
                                 </upload-panel>
                             </FormItem>
