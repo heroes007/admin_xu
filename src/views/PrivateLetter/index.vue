@@ -32,7 +32,7 @@
                     {title: '收信学员', key: 'students_num', minWidth: 100},
                     {title: '发送时间', key: 'send_time', minWidth: 100},
                     {title: '创建人', key: 'realname', minWidth: 100},
-                    {title: '操作', minWidth: 260, slot: 'operation', operation_btn_hide: true, operation: [['查看','operation1']]}
+                    {title: '操作', minWidth: 100, slot: 'operation', operation_btn_hide: true, operation: [['查看','operation1']]}
                 ],
                 list: [
                     {content: '私信内容', students: '张三', send_time: '3/15', realname: '创建人'},
