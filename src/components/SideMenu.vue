@@ -57,8 +57,9 @@
 <script>
     import api from '../api/modules/config'
     import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-    import { MenuList, MenuToturList } from './Util'
+    import { MenuList, MenuToturList, cleanHtmlLabel } from './Util'
     import postData from '../api/postData'
+import { async } from 'q';
 
     export default {
         data() {
@@ -110,13 +111,6 @@
                 });
             },
             handleMenuList(type) {
-               if(type){
-                let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
-                if(roleId == 4) this.menuList = MenuToturList
-                else if(sessionStorage.getItem('PERMISSIONS')){
-                    this.menuList = MenuList
-                }
-               }else{
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
                 if(roleId == 4) this.menuList = MenuToturList
                 else if (sessionStorage.getItem('PERMISSIONS')) {
@@ -125,11 +119,30 @@
                     if (d1 && d1.length > 0) {
                         d1.forEach(t => {
                             let num = +t.permission_code.slice(0, 2)
-                            this.menuList.push(MenuList[num - 1])
+                            let p1 = () => {
+                                if(num != 4&&num != 5){
+                                if(num == 6) this.menuList.push(MenuList[3])
+                                else this.menuList.push(MenuList[num - 1])
+                                }
+                            }
+                            let p2 = () => { if(num == 5) this.menuList.push(MenuList[4]) }
+                            let p3 = () => { 
+                                if(num == 4) {
+                                    if(roleId != 1){
+                                        MenuList[5].list.splice(1,1)
+                                        MenuList[5].list.splice(1,1)
+                                    }
+                                    this.menuList.push(MenuList[5])
+                                }
+                            }
+                            (async() => {
+                                await p1()
+                                await p2()
+                                await p3()
+                            })()
                         });
                     }
                 }
-               }
             },
             getName() {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
@@ -150,7 +163,7 @@
         },
         mounted() {
           let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
-          this.handleMenuList(2)
+          this.handleMenuList()
           if (sessionStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(sessionStorage.getItem('menuOpenName'))
           let menuActive = roleId !=4 ? ( sessionStorage.getItem('menuActiveIndex') ? sessionStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
           this.activeIndex = menuActive

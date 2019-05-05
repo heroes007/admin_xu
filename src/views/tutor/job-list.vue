@@ -2,7 +2,6 @@
     <div>
         <tutor-modal :details="details" :type="types" @preservation-success="preservationSuccess"
                      :student-info="studentList" :show="show" @close-modal="closeModal" :title="modalTitle"/>
-        <screen :types="13" :selectType2="true" :select4="selectList" :title="title" @handleBack="handleBack"/>
         <div class="state">
             <Select v-model="stateValue" class="state-select" @on-change="selectChange">
                 <Option v-for="item in stateSelect" :key="item.id" :value="item.id">{{item.title}}</Option>
@@ -34,7 +33,6 @@
 
 <script>
     import tables from '../../components/tables'
-    import screen from '../../components/ScreenFrame'
     import checkImg from '../../assets/img/check.jpg'
     import pageList from '../../components/Page'
     import pageMixins from '../mixins/pageMixins'
@@ -42,7 +40,7 @@
     import tutorModal from './modal/tutor-modal'
     import downloadUrl from '../../../config/url_download'
     export default {
-        components: {tables, screen, pageList, tutorModal},
+        components: {tables, pageList, tutorModal},
         mixins: [pageMixins],
         data() {
             return {
@@ -68,12 +66,6 @@
                 ],
                 list: [],
                 details: null,
-                selectList: [
-                    {id: 1, title: '作业'},
-                    // {id: 2, title: '问答'},
-                    // {id: 3, title: '课程'},
-                ],
-                title: '课程名称癌症病人的心理护理与症状干预',
                 stateValue: null,
                 stateSelect: [
                     {id: 'all', title: '全部'},
@@ -81,11 +73,11 @@
                     {id: 0, title: '未通过'},
                 ],
                 numList: [
-                    {num: null, unit: '人', title: '交作业'},
-                    {num: null, unit: '人', title: '未批阅'},
-                    {num: null, unit: '人', title: '未通过'},
-                    {num: null, unit: '人', title: '已通过'},
-                    {num: null, unit: '次', title: '复审'},
+                    {num: 0, unit: '人', title: '交作业'},
+                    {num: 0, unit: '人', title: '未批阅'},
+                    {num: 0, unit: '人', title: '未通过'},
+                    {num: 0, unit: '人', title: '已通过'},
+                    {num: 0, unit: '次', title: '复审'},
                 ],
                 tableHeight: null,
                 mark_state: '',
@@ -135,9 +127,6 @@
             selectTablesAll(selection, row) {
                 this.selectionList = selection
             },
-            handleBack() {
-                this.$router.go(-1)
-            },
             Marking() {
                 let len = this.selectionList.length
                 if (len > 0) {
@@ -168,11 +157,11 @@
                         })
                         this.list = res.data.list
                         this.total = res.data.count
-                        this.numList[0].num = res.data.submit_count
-                        this.numList[1].num = res.data.unmark_count
-                        this.numList[2].num = res.data.unpass_count
-                        this.numList[3].num = res.data.pass_count
-                        this.numList[4].num = res.data.review_count
+                        this.numList[0].num = res.data.submit_count || 0
+                        this.numList[1].num = res.data.unmark_count || 0
+                        this.numList[2].num = res.data.unpass_count || 0
+                        this.numList[3].num = res.data.pass_count || 0
+                        this.numList[4].num = res.data.review_count || 0
                     }
                 })
             },
@@ -270,7 +259,6 @@
             this.pageSize = 10
             this.tableHeight = window.innerHeight - 260
             this.stateValue = this.stateSelect[0].id
-            this.title = this.$route.query.title
             this.getList()
         }
     }

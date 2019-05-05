@@ -1,9 +1,9 @@
 <template>
     <Modal :transfer=false v-model="addOfflineSemesterDialog" :title="payload.type == 2 ? '编辑学期' : '添加学期'" @on-cancel="handleRemoveModal(remove)" size="auto"
            :footer-hide="true" :mask-closable="false" :styles="{width: '860px'}" style="border-radius:6px !important" :closable="true">
-        <base-input :baseInputWidth="800" @closedialog="handleClose">
-            <Row slot="body" class="top-nav">
-                <Form ref="myForm1" label-position="left" :rules="rules1" :model="form1" :label-width="80">
+        <base-input :baseInputWidth="860" @closedialog="handleClose">
+            <Row slot="body">
+                <Form ref="myForm1"  class="top-nav" label-position="left" :rules="rules1" :model="form1" :label-width="80">
                     <FormItem label="学期名称" prop="title" >
                         <Input v-model="form1.title" placeholder="请输入学期名称"></Input>
                     </FormItem>
@@ -18,6 +18,11 @@
                       </FormItem>
                       <FormItem  class="item-semester item-semester2"  label="开课日期" prop="stage1">
                           <DatePicker v-model="form1.stage1" type="daterange" format="yyyy/MM/dd" placeholder="请选择时间范围" :transfer="true"></DatePicker>
+                      </FormItem>
+                    </div>
+                    <div class="form-item-semester">
+                      <FormItem  class="item-semester" label="报名上限" prop="sign_limit">
+                         <InputNumber :min="0" v-model="form1.sign_limit"></InputNumber>
                       </FormItem>
                       <FormItem  class="item-semester item-semester2" label="报名截止" prop="register_end_time">
                           <DatePicker v-model="form1.register_end_time" type="date" format="yyyy/MM/dd" placeholder="请选择报名截止" :picker-options="pickerOptions" @on-change='changeDeadlineHandler' :transfer="true"></DatePicker>
@@ -73,7 +78,8 @@
           register_end_time: this.payload.row && this.payload.row.register_end_time || null,
           state: this.payload.row && this.payload.row.state || 0,
           tutor_id: this.payload.row && this.payload.row.tutor_id,
-          offlineCurriculums: this.payload.offlineCurriculums
+          offlineCurriculums: this.payload.offlineCurriculums,
+          sign_limit: this.payload.row &&this.payload.row.sign_limit || 500
         },
         teacherList: [],
         rules1: {
@@ -86,6 +92,7 @@
           }],
           description: [{ required: true, message: '请输入学期描述内容', trigger: 'blur' }],
           register_end_time: [{type: 'date', required: true, message: '请选择报名截止'}],
+          sign_limit:  [{type: 'number', required: true, message: '请输入报名上限'}],
         }
       }
     },
@@ -136,7 +143,8 @@
               start_time: dateFormat(this.form1.stage1[0]),
               end_time: dateFormat(this.form1.stage1[1]),
               register_end_time: dateFormat(this.form1.register_end_time),
-              offlineCurriculums: course
+              offlineCurriculums: course,
+              sign_limit: this.form1.sign_limit
             }
             postData(url, d).then((res) => {
                 if(res.res_code == 1){
@@ -183,9 +191,9 @@
       }
     },
     mounted(){
+      console.log(this.payload);
       if(this.payload.type == 1){
         this.$refs.myForm1.resetFields()
-        console.log(this.form1.offlineCurriculums,this.payload.offlineCurriculums);
         this.form1.offlineCurriculums = this.payload.offlineCurriculums
       }
       this.setRules()
@@ -194,6 +202,15 @@
   }
 </script>
 <style scoped lang="less">
+    /deep/ .ivu-modal-body{
+      padding: 16px 0;
+    }
+    .top-nav{
+      max-height: 726px;
+      padding: 0 40px;
+      overflow: hidden;
+      overflow-y: auto;
+    }
     /deep/ .ivu-btn{
       display: inline-block !important;
     }

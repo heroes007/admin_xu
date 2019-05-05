@@ -2,15 +2,19 @@
  <div class="course-management">
     <screen :types="12" size-title1="管理课程" selectType2 :size-num1="list.length"  select2Placeholder="请选择课程"  :select2="selectList1" @selectChange2="selectChange2" />
     <div class="course-list" v-if="list.length>0">
-        <Card class="course-main" v-for="(t,i) in list" :key="i" @click.native="rowClick(t)">
+        <!-- @click.native="rowClick(t, 'job-list')" -->
+        <Card class="course-main" v-for="(t,i) in list" :key="i" @click.native="rowClick(t, 'job-list')">
             <div class="course-main-item">
                <div class="course-item-de">
                   <p class="font-regular3 text-ellipsis course-item-title">{{t.title}}</p>
                   <div class="item-right">
                       <p class="course-item"><span class="font-regular1" v-text="t.curr_finish_count"></span><span v-if="t.join_count||t.join_count==0" class="font-regular5">/{{t.join_count}}</span></p>
-                      <p class="course-item"><span class="font-regular1" v-text="t.complete_hw_count"></span><span v-if="t.join_count||t.join_count==0" class="font-regular5">/{{t.join_count}}</span></p>
+                      <p class="course-item"  :class="t.no_see_count||t.no_score_count ? '' : 'course-item2'"><span class="font-regular1" v-text="t.complete_hw_count"></span><span v-if="t.join_count||t.join_count==0" class="font-regular5">/{{t.join_count}}</span></p>
                       <!-- <p class="course-item"><span class="font-regular1">13</span><span class="font-regular5">/24</span></p> -->
-                      <p><span class="item-badge">{{t.no_see_count}}</span><span>作业</span></p>
+                      <p class="course-item-p">
+                          <span  v-if="t.no_see_count"  class="item-badges"><span class="item-badge">{{t.no_see_count}}</span><span>作业</span></span>
+                          <span  v-if="t.no_score_count"  class="item-badges course-item-2" style="margin-top:10px" @click="rowClick(t, 'curriculum', 1)"><span class="item-badge">{{t.no_score_count}}</span><span>课程</span></span>
+                      </p>
                   </div>
                </div>
                <div class="course-item-de course-item-de2">
@@ -34,7 +38,7 @@
 <script>
   import screen from '../../components/ScreenFrame.vue'
   import postData from '../../api/postData.js'
-import { async } from 'q';
+  import { async } from 'q';
   export default {
     components: { screen },
     data(){
@@ -42,10 +46,11 @@ import { async } from 'q';
             selectList1: [
                 { id: 'all', title: '全部课程' },
                 { id: 'online_self', title: '线上自学' },
-                { id: 'online_concentrate', title: '线上集中'},
+                // { id: 'online_concentrate', title: '线上集中'},
                 { id: 'offline_concentrate', title: '线下集中' },
-            ],
-            list: []
+            ],                
+            list: [],
+            urlType: false
         }
     },
     beforeDestroy() {
@@ -58,13 +63,17 @@ import { async } from 'q';
             let d = v == 'all' ? '' : v;
             this.getList(d)
         },
-        rowClick(t){
+        rowClick(t, url, type){
             const data = {
                 id: t.id,
                 curriculum_type: t.curriculum_type,
                 title: t.title
             }
-            this.$router.push({name: 'job-list', query: data})
+            if(t.hasOwnProperty('no_score_count')&&t.no_score_count || t.hasOwnProperty('no_see_count')&&t.no_see_count){
+                if(type) this.urlType = true 
+                if(this.urlType&&type) this.$router.push({path: '/tutor/'+url, query: data})
+                else if(!type&&!this.urlType) this.$router.push({path: '/tutor/'+url, query: data})
+            }
         },
         getList(d){
             postData('tutor/getCurriculumList', {curriculum_type: d || ''}).then((res) => {
@@ -94,7 +103,7 @@ import { async } from 'q';
 .course-management{
     height: 100%;
     .course-list{
-        padding: 20px 30px;
+        padding: 40px 120px 40px 40px;
         height: calc(100% - 66px);
         overflow: hidden;
         overflow-y: auto;
@@ -137,7 +146,7 @@ import { async } from 'q';
                    .course-flex{
                         display: inline-flex;
                     }
-                    .item-right2{ margin-right: 76px; }
+                    .item-right2, .course-item2{ margin-right: 76px; }
                     .item-right{
                         position: absolute;
                         right: 0;
@@ -147,17 +156,26 @@ import { async } from 'q';
                             text-align: center;
                             width: 57px;
                         }
-                        .item-badge{
-                            background: #F54802;
-                            font-family: PingFangSC-Medium;
-                            font-size: 14px;
-                            color: #FFFFFF;
-                            letter-spacing: 0.18px;
-                            border-radius: 18px;
-                            padding: 0 5px;
-                            margin-left: 24px;
-                            margin-right: 5px;
-                            height: 20px;
+                        .course-item-p{
+                            display: flex;
+                            flex-direction: column;
+                            height: 58px;
+                            margin-top: 5px;
+                            .item-badges{
+                                display: inline-flex;
+                                .item-badge{
+                                    background: #F54802;
+                                    font-family: PingFangSC-Medium;
+                                    font-size: 14px;
+                                    color: #FFFFFF;
+                                    letter-spacing: 0.18px;
+                                    border-radius: 18px;
+                                    padding: 0 5px;
+                                    margin-left: 24px;
+                                    margin-right: 5px;
+                                    height: 20px;
+                                }
+                            }
                         }
                     }
                 }
@@ -167,5 +185,10 @@ import { async } from 'q';
 }
 /deep/ .ivu-card-body{
     padding: 20px 18px;
+}
+.course-item-2{
+    z-index: 3333;
+    cursor: pointer;
+    margin-top: 10px;
 }
 </style>

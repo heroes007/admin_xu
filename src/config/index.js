@@ -10,17 +10,18 @@ import { Base64 } from 'js-base64';
 import postData from '../api/postData'
 Vue.prototype.$config = config;
 window.$OnLine = new Vue()
+window.$MakeAppointment = new Vue()
 Vue.use(LoadingY)
 // sync the router with the vuex store.
 // this registers `store.state.route`
 sync(store, router)
 router.beforeEach((to, from, next) => {
     let toLogin = () => {
-        if (to.name == 'login') next();
-        else {
-            sessionStorage.clear();
-            next({path: '/login'});
-        }
+      if (to.name == 'login') next();
+      else {
+          sessionStorage.clear();
+          next({path: '/login'});
+      }
     }
     if(sessionStorage.getItem('token') && to.name === 'login') {
         let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;

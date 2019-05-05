@@ -21,6 +21,7 @@
           if (response.data.res_code < 0) {
             let code = response.data.res_code;
             if (code >= -999 && code <= -990) {
+              sessionStorage.clear();
               vm.$router.push({path: '/login'});
             }
           }

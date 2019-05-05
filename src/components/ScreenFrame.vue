@@ -137,7 +137,14 @@
         if(this.types == 12) this.valueSelect2 = this.select2[0].id
         else this.valueSelect2 = this.select2[0].value
       }
-      if(this.select4 && this.select4.length) this.valueSelect4 = this.select4[0].id
+      if(this.select4 && this.select4.length){
+        this.$nextTick(() => {
+          if(this.$route.name == 'curriculum'&&this.select4.length == 2){
+            this.valueSelect4 = this.select4[1].id
+          }
+          if(this.$route.name == 'job-list') this.valueSelect4 = this.select4[0].id
+        })
+      }
       this.isSuper = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
       postData('components/getOrganization').then((res) => {
         this.select = [...this.select, ...res.data]

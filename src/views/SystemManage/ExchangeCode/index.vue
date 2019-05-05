@@ -292,7 +292,7 @@
             }
             this.getList()
             this.tableRow = this.tableRow1
-            this.tabelHeight = window.innerHeight - 130
+            this.tabelHeight = window.innerHeight - 116
         }
     }
 </script>

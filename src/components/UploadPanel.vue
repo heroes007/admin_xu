@@ -11,13 +11,14 @@
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
     </vue-cropper> -->
         <Row class="img" v-if="type=='image'&&!is_show">
-            <img :src="resourse_url?resourse_url:resultUrl" alt=""/>
+            <img :src="resourse_url" alt=""/>
             <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
         </Row>
-        <span style="display: none">{{resultUrl}}</span>
+        <span style="display: none">{{resourse_url}}</span>
         <Row class="video" v-if="type=='video'&&!is_show">
-            <video ref="vedioPlayer" v-if="resourse_url||resultUrl" :src="resourse_url?resourse_url:resultUrl" controls="controls"/>
-            <input v-if="resourse_url ? (!resourse_url) : (!resultUrl)" type="file" :accept="types"
+            <img v-if="resourse_url" @click="deleteVideo" src="../assets/img/close-icon.png" class="upload-img-main-icon" />
+            <video ref="vedioPlayer" v-if="resourse_url" :src="resourse_url" controls="controls"/>
+            <input v-if="resourse_url" type="file" :accept="types"
                    style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
         </Row>
         <div class="file-require">
@@ -92,27 +93,27 @@
                 fileSize: null
             }
         },
-        computed: {
-            resultUrl() {
-                var result = this.resourse;
-                if (/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(this.resourse)) {
-                    this.type = 'image';
-                    this.is_show = false;
-                }
-                if (/\.(mp4|wav|mov)/.test(this.resourse)) {
-                    this.type = 'video';
-                    this.is_show = false;
-                }
-                return result;
-            }
-        },
         watch:{
             resourse(val) {
                 if(!val) this.is_show = true
-                else this.resourse_url = val
+                else {
+                    if (/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(this.resourse)) {
+                        this.type = 'image';
+                        this.is_show = false;
+                    }
+                    if (/\.(mp4|wav|mov)/.test(this.resourse)) {
+                        this.type = 'video';
+                        this.is_show = false;
+                    }
+                    this.resourse_url = val
+                }
             }
         },
         methods: {
+            deleteVideo(){
+                this.is_show = true
+                this.resourse_url = ''
+            },
             handleSave() {
                 //获取剪切后的图片对象并且上传到服务器
                 this.$refs.cropper.getCroppedCanvas().toBlob(blob => {
@@ -123,7 +124,6 @@
             closeModal() {
                 this.is_show = true;
                 // this.resourse_url = '';
-                // this.resultUrl = ''
                 this.$emit('uploadcomplete', "");
             },
             //通过插件显示图片
@@ -210,7 +210,7 @@
                     },
                 }).then(res => {
                     this.resourse_url = url + '/' + this.video_url
-                    if (this.type == 'video') {
+                    if (this.type == 'video'&&this.uploadConfig.time) {
                         setTimeout(() => {
                             let vedioTime = this.$refs.vedioPlayer.duration
                             this.$emit('vedioTime', vedioTime)
@@ -254,7 +254,18 @@
         color: white;
         font-size: 20px;
     }
-
+    .icons{
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        z-index: 20;
+        font-size: 20px;
+        z-index: 9999;
+    }
+    .upload-img-main-icon{
+        color: #fff;
+        .icons;
+    }
     /deep/ .md-cloud-upload {
         margin-top: 70px;
     }
@@ -290,8 +301,7 @@
         }
 
         .video {
-            @extend .img;
-
+            position: relative;
             video {
                 width: 100%;
             }

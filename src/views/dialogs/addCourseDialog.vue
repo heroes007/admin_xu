@@ -55,7 +55,7 @@
                             </FormItem>
                             <FormItem ref="upload" label="展示封面" required>
                                 <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig"
-                                              @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2" types="image/gif, image/jpeg, image/png">
+                                              @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2" types="image/jpg, image/jpeg, image/png">
                                     <span slot="file-require" class="font-hint">*只能上传 jpg/png 文件，且图片比例为16:9，建议尺寸768*432px</span>
                                 </upload-panel>
                             </FormItem>

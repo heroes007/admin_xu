@@ -70,6 +70,7 @@
         uploaderConfig: {
           bucket: 'jhyl-static-file',
           dir: 'mspx',
+          time: true,
           type: 2
         },
         selectedVideo: null,

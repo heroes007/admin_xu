@@ -18,13 +18,13 @@ const UsageRecord = () => import('../views/SystemManage/ExchangeCode/UsageRecord
 const MarkingHomework = () => import('../views/ProductManage/Task/MarkingHomework/index')
 const AdvertisingMap = () => import('../views/SystemManage/AdvertisingMap/index')
 const OpenClass = () => import('../views/SystemManage/OpenClass/index')
-const head = () => import('../views/tutor/head.vue')
 const JobList = () => import('../views/tutor/job-list.vue')
 const tutorCourse = () => import('../views/tutor/course-management')
+const Curriculum = () => import('../views/tutor/curriculum')
 const OrderManagement = () => import('../views/OrderManagement/index')
 const PrivateLetter = () => import('../views/PrivateLetter/index')
 const RecommendedProducts = () => import('../views/SystemManage/RecommendedProducts/index')
-
+const TutorHead = () => import('../views/tutor/tutor-head')
 Vue.use(VueRouter);
 // 页面路由
 const routes = [
@@ -32,10 +32,23 @@ const routes = [
     path:'',
     redirect:'/login',
   },
+  // 辅导老师
   {
-    path: '/job-list',
-    name: 'job-list',
-    component: JobList
+    path: '/tutor',
+    name: 'tutor',
+    component: TutorHead,
+    children: [
+      {
+        path: 'job-list',
+        name: 'job-list',
+        component: JobList
+      },
+      {
+        path: 'curriculum',
+        name: 'curriculum',
+        component: Curriculum
+      },
+    ]
   },
   {
     path:'/dashboard',

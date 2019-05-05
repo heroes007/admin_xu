@@ -60,12 +60,12 @@
                         this.$store.dispatch('get_user_info');
                         let d1 = { name: this.name, pass: this.password }
                         localStorage.setItem('login_user', Base64.encode(JSON.stringify(d1)))
-                        if(d.userInfo[0].role_id == 4)  this.$router.replace({ path: '/dashboard/tutor-course' });
-                        else  this.$router.replace({ path: '/dashboard/user-manage' });
+                        if(d.userInfo[0].role_id == 4)  this.$router.push({ path: '/dashboard/tutor-course' });
+                        else  this.$router.push({ path: '/dashboard/user-manage' });
                     } else {
                         this.$Message.warning(res.data.msg);
                         this.isLogining = false;
-                    }
+                    }    
                 });
             },
             setUser({name,pass}){
