@@ -67,12 +67,15 @@
             const data = {
                 id: t.id,
                 curriculum_type: t.curriculum_type,
-                title: t.title
+                title: t.title,
+                homework_count: t.homework_count
             }
-            if(t.curriculum_type=='online_self'&&t.hasOwnProperty('join_count')&&t.join_count || t.curriculum_type=='offline_concentrate'){
+            if(t.hasOwnProperty('homework_count')&&t.homework_count || t.curriculum_type=='offline_concentrate'&&t.no_score_count){
                 if(type) this.urlType = true 
                 if(this.urlType&&type) this.$router.push({path: '/tutor/'+url, query: data})
                 else if(!type&&!this.urlType) this.$router.push({path: '/tutor/'+url, query: data})
+            }else if(t.curriculum_type=='offline_concentrate'&&!t.homework_count){
+                this.$router.push({path: '/tutor/curriculum', query: data})
             }
         },
         getList(d){

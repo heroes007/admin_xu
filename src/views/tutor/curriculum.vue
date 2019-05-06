@@ -24,10 +24,13 @@
         </div>
         <div class="batch">
             <div class="batch-title">选项</div>
-            <Button class="batch-read" type="primary" @click="Marking" ghost>批量评分</Button>
+            <!-- Batch check -->
+            <Button class="batch-read" type="primary" @click="BatchCheck(1)" ghost>批量签到</Button>
+            <Button class="batch-check" type="primary" @click="BatchCheck(0)" ghost>批量取消签到</Button>
+            <Button class="batch-read2" type="primary" @click="Marking" ghost>批量评分</Button>
         </div>
         <tables :tabel-height="tableHeight" :column="column" :table-data="list" @operation1="see"
-                @select-tables="selectTables" @on-select-all="selectTablesAll"/>
+            @operation2="signIn"    @select-tables="selectTables" @on-select-all="selectTablesAll"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -72,7 +75,8 @@
                         minWidth: 100,
                         slot: 'operation',
                         align: 'left',
-                        operation: [['查看', 'operation1']],
+                        operation_state: true,
+                        operation: [['查看', 'operation1'], [['取消签到', '签到'], 'operation2']],
                     }
                 ],
                 list: [],
@@ -113,6 +117,45 @@
             this.getSelectList = null;
         },
         methods: {
+            setBath(type){
+                let text = type ? '确定给选中学员签到？' : '确定取消选中学员的签到状态？'
+                let arr = [];
+                this.selectionList.forEach((t) => {
+                    arr.push(t.student_underline_id)
+                })
+                let d = {student_underline_ids: arr, state: type}
+                this.tips(text, d, 'product/curriculum_offline_grade/change_state_mul')
+            },
+            BatchCheck(type){
+                if(this.selectionList.length>0){
+                    if(this.handleSelectionList()){
+                        if(type) this.$Message.warning('已签到的学员不能再签到')
+                        else this.setBath(type)
+                    }else{
+                        if(!type) this.$Message.warning('未签到的学员不能取消签到状态')
+                        else this.setBath(type)
+                    }
+                }else this.$Message.warning('请选择学员')
+            },
+            sendSignIn(d, url){
+                postData(url, d).then((res)=> {
+                    if(res.res_code == 1)  this.getList()
+                })
+            },
+            tips(text, d, url){
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: `<p>${text}</p>`,
+                    onOk: () => {
+                        this.sendSignIn(d, url)
+                    }
+                });
+            },
+            signIn(row, index){
+                let text = !row.state ? '确定给该学员签到？' : '确定取消该学员的签到状态？'
+                let d = {student_underline_id: row.student_underline_id, state: !row.state}
+                this.tips(text, d, 'product/curriculum_offline_grade/change_state')
+            },
             setShowModal(text, details, type) {
                 this.show = true
                 this.modalTitle = text
@@ -141,11 +184,19 @@
                 })
                 return d
             },
+            handleSelectionList(){
+                let arr = []
+                this.selectionList.forEach((t) =>{
+                    arr.push(t.state)
+                })
+                return arr.includes(0) ? false : true
+            },
             Marking(){
                 if(this.selectionList.length>0){
                     this.studentInfo = this.getActiveCourse(this.coursValue)
                     this.columns = columnBatchScore
-                    this.setShowModal('批量评分', this.selectionList, 'BatchScore')
+                    if(this.handleSelectionList())  this.setShowModal('批量评分', this.selectionList, 'BatchScore')
+                    else this.$Message.warning('未签到学员不能评分')
                 }else this.$Message.warning('请选择学员')
             },
             see(row) {
@@ -175,9 +226,10 @@
                 postData('/product/curriculum_offline_grade/student_of_curriculum_get_list', data).then(res => {
                     if (res.res_code == 1) {
                         this.list = res.data.data
-                        this.list.map((t) => {
-                          if(!t.state) t._disabled = true
-                        })
+                        this.selectionList = []
+                        // this.list.map((t) => {
+                        //   if(!t.state) t._disabled = true
+                        // })
                         $MakeAppointment.$emit('MakeAppointment', res.data.detail.apply_num)
                         this.numList[0].num = res.data.detail.sign_rate || 0
                         this.numList[1].num = res.data.detail.graded || 0
@@ -209,6 +261,10 @@
 </script>
 
 <style lang="less" scoped>
+    .size{
+        width: 100px;
+        height: 30px;
+    }
     .screen {
         background-color: #fff;
     }
@@ -269,8 +325,16 @@
         }
         &-read {
             margin-left: 40px;
-            width: 100px;
-            height: 30px;
+            .size;
+        }
+        &-read2 {
+            margin-left: 10px;
+            .size;
+        }
+        &-check{
+            margin-left: 10px;
+            width: 130px;
+            height: 30px; 
         }
     }
 </style>

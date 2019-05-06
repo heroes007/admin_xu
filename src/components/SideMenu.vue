@@ -123,7 +123,7 @@ import { async, Promise, resolve, reject } from 'q';
                     }) 
                 }
             },
-            handleMenuList(type) {
+            handleMenuList() {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
                 if(roleId == 4) this.menuList = MenuToturList
                 else if (sessionStorage.getItem('PERMISSIONS')) {
@@ -175,13 +175,12 @@ import { async, Promise, resolve, reject } from 'q';
             }
         },
         mounted() {
-          let p = new Promise((resolve,reject) => {
+         new Promise((resolve,reject) => {
               this.handleMenuList()
               resolve()
           }).then(() => {
               this.setMenuActive()
           })
-          p()
           this.getName()
         }
     }

@@ -134,14 +134,14 @@
     mounted() {
       // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) {
-         this.valueSelect2 = this.select2[0].id
+       this.valueSelect2 = this.select2[0].id
       }
       if(this.select4 && this.select4.length){
         this.$nextTick(() => {
-          if(this.$route.name == 'curriculum'&&this.select4.length == 2){
-            this.valueSelect4 = this.select4[1].id
+          if(this.$route.name == 'curriculum'&&this.select4.length>0){
+            this.valueSelect4 = 3
           }
-          if(this.$route.name == 'job-list') this.valueSelect4 = this.select4[0].id
+          if(this.$route.name == 'job-list') this.valueSelect4 = 1
         })
       }
       this.isSuper = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1 ? true : false
