@@ -209,16 +209,16 @@
     }
     /deep/ .ivu-modal-content{
         min-height: 400px;
-        max-height: 800px;
         overflow-y: auto;
     }
     .message{
         font-family: PingFangSC-Regular;
-        font-size: 18px;
+        font-size: 16px;
         color: #474C63;
+        letter-spacing: 0;
+        line-height: 28px;
         padding-top: 20px;
         padding-bottom: 80px;
-        letter-spacing: 0.22px;
         border-bottom: 1px solid #F0F0F7;
         margin-bottom: 20px;
     }
@@ -258,7 +258,7 @@
         align-items: center;
         justify-content: center;
         margin: 0 !important;
-        border-right: 1px solid #F0F0F7;
+        border-left: 1px solid #F0F0F7;
         border-bottom: 1px solid #F0F0F7;
     }
     .select-student{
@@ -319,5 +319,18 @@
         height: 17.5px;
         opacity: 0;
         cursor: pointer;
+    }
+    /deep/ .ivu-table:before{
+        width: 0;
+    }
+    /deep/ .ivu-table:after{
+        width: 0;
+    }
+    /deep/ .ivu-table-wrapper{
+        border-left: 1px solid #f0f0f7 !important;
+        border-bottom: none !important;
+    }
+    /deep/ .ivu-modal-body{
+        padding: 32px;
     }
 </style>

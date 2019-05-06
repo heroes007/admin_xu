@@ -1,7 +1,7 @@
 <template>
     <div>
         <form-modal :show-modal="show" :detail-data="tableRow" @from-submit="handleSubmit" :form-list="formList" @close="closeModal"  :title="modalTitle" :rule-validate="rules"
-                    btnName="确认发送" @change-list="changeList"/>
+                    btnName="确认" @change-list="changeList"/>
         <screen :types="10" title="首页推荐产品" btnType btnName="添加产品" @handleClick="handleClick" style="background:#ffffff"/>
         <div class="hint">提示：首页最少展示1个产品，最多展示3个产品</div>
         <div class="content">
@@ -161,7 +161,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border-bottom: 1px solid #F0F0F7;
         padding: 20px;
 
         .product-img{

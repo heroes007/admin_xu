@@ -66,7 +66,7 @@ import { async } from 'q';
             return {
                 use_router: true,
                 activeIndex: "user-manage",
-                menuOpenName: ['6', '2'],
+                menuOpenName: [],
                 menuList: [],
                 png: '.png',
                 name: '',
@@ -126,7 +126,7 @@ import { async } from 'q';
                                 }
                             }
                             let p2 = () => { if(num == 5) this.menuList.push(MenuList[4]) }
-                            let p3 = () => { 
+                            let p3 = () => {
                                 if(num == 4) {
                                     if(roleId != 1){
                                         MenuList[5].list.splice(1,1)

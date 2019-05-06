@@ -44,12 +44,12 @@
                 minWidth: 100
             },
             {
-                key: '',
+                key: 'state',
                 title: '订单状态',
                 minWidth: 100,
                 render: (h, params) => {
                     let d = params.row.state == -1 ? '支付失败' : params.row.state == 1 ? '已支付' :'未支付'
-                    return h('span', d)
+                    return h('span', {style: {color: params.row.state == -1 ? '#F54802' : params.row.state == 1 ? '#2EBF07' :'#474c63'}}, d)
                 }
             },
             {
@@ -109,11 +109,8 @@
   }
 </script>
 <style lang="less" scoped>
-/deep/.screen{
-  background: #fff;
-}
-/deep/ .ivu-select-selection, /deep/ .ivu-input{
-  background: #f0f0f0
-}
+    /deep/.screen{
+      background: #fff;
+    }
 </style>
 
