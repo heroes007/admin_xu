@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="show" :title="title" :mask-closable="false" :footer-hide="true" @on-cancel="cancelModal" :width="modalWidth" :styles="{top: state == 1 ? '10%' : '2%'}">
+    <Modal v-model="show" :title="title" :mask-closable="false" :footer-hide="true" @on-cancel="cancelModal" :width="modalWidth" :styles="{top: state == 1 ? '10%' : '2%', minHeight: '400px'}">
         <div v-if="creat">
             <Input v-model="inputData" v-show="state == 1" class="input-textarea" type="textarea" placeholder="请输入私信内容"/>
             <div v-show="state == 2">
@@ -116,7 +116,8 @@
                 this.$emit('handle-close')
             },
             handleSubmit() {
-                this.$emit('handle-submit', this.state)
+                if(this.inputData) this.$emit('handle-submit', this.state)
+                else this.$Message.info('请输入私信内容')
             },
             selectChange1(val) {
                 this.organization_id = val
@@ -206,12 +207,20 @@
         width: 150px;
         height: 38px;
     }
+    /deep/ .ivu-modal-content{
+        min-height: 400px;
+        max-height: 800px;
+        overflow-y: auto;
+    }
     .message{
         font-family: PingFangSC-Regular;
         font-size: 18px;
         color: #474C63;
+        padding-top: 20px;
+        padding-bottom: 80px;
         letter-spacing: 0.22px;
-        padding: 30px;
+        border-bottom: 1px solid #F0F0F7;
+        margin-bottom: 20px;
     }
     .message-num{
         font-family: PingFangSC-Regular;
@@ -222,6 +231,7 @@
     .message-box{
         display: flex;
         margin-top: 20px;
+        margin-bottom: 43px;
     }
     .message-info{
         text-align: center;
@@ -230,6 +240,7 @@
         .info-img{
             width: 50px;
             height: 50px;
+            border-radius: 50%;
         }
         .info-name{
             font-family: PingFangSC-Regular;

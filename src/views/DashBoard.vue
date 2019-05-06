@@ -57,6 +57,7 @@
                     border-bottom-right-radius: 2px;
                     display: flex;
                     align-items: center;
+                    cursor: pointer;
                     .hide-icon{
                         font-size: 14px;
                         color: #fff
