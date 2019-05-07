@@ -9,7 +9,7 @@
         </div>
         <div v-else class='el-upload__inner' contentEditable="false">
             <img v-if="iconType" :src="iconType" @click='handleStartUploadFile' style="cursor: pointer"/>
-            <Button v-else type='primary' @click='handleStartUploadFile'>{{text}}</Button>
+            <Button v-else type='primary' ghost @click='handleStartUploadFile'>{{text}}</Button>
             <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
         </div>
     </div>

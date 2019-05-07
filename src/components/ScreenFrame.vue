@@ -55,7 +55,7 @@
         iconColor: '#9397AD',
         backgroundColor: 'background: #fff',
         isSuper: false,
-        select: [{id: 'all', title:'全部'}],
+        select: [{id: 'all', title:'全部机构'}],
         subjectsSelect3: [{id: '', name:'全部'}],
         select3: []
       }

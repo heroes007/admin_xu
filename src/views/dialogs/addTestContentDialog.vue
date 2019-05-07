@@ -21,11 +21,14 @@
                         </div>
                         <div class="upload-list">
                             <div class="upload-title">* 附件可上传任意格式，附件大小不超过300M</div>
-                            <uploadBtn class="upload-img" text="上传附件" @uploadcomplete="uploadImg" type="*" :maxFileSize="300"/>
+                            <uploadBtn class="upload-img" text="上传附件" @uploadcomplete="uploadImg" type="*"
+                                       :maxFileSize="300"/>
                         </div>
                     </FormItem>
                     <FormItem label="选项数量" prop="select_count">
                         <Select v-model="formInline2.select_count" placeholder="选项数量" style="width: 260px;">
+                            <Option label="0" value="0"></Option>
+                            <Option label="1" value="1"></Option>
                             <Option label="2" value="2"></Option>
                             <Option label="3" value="3"></Option>
                             <Option label="4" value="4"></Option>
@@ -36,11 +39,16 @@
                     <FormItem v-for='(item, index) in answerList' :key="item.id">
                         <div class="answer">
                             <div class="answer-title"><span v-if="index == 0">选项结果</span></div>
-                            <Checkbox class="answer-checkbox" v-model="item.answer" @on-change="checkChange">{{item.name}}</Checkbox>
-                            <Input class="change-input" placeholder="请输入内容" v-model="item.desc" @on-blur="inputChange"></Input>
+                            <Checkbox class="answer-checkbox" v-model="item.answer" @on-change="checkChange">
+                                {{item.name}}
+                            </Checkbox>
+                            <Input class="change-input" placeholder="请输入内容" v-model="item.desc"
+                                   @on-blur="inputChange"></Input>
                         </div>
                     </FormItem>
-                    <div style="text-align: left; color: #f30;font-size: 14px;margin-left: 60px;height: 20px;line-height: 20px">{{showFont}}</div>
+                    <div style="text-align: left; color: #f30;font-size: 14px;margin-left: 60px;height: 20px;line-height: 20px">
+                        {{showFont}}
+                    </div>
                     <!-- <span style="clear: left"></span> -->
                     <FormItem class="save-test-item">
                         <!--<Button @click="cancelSaveHandler" class="cancel-test-item-btn">取消</Button>-->
@@ -76,6 +84,7 @@
     import {RemoveModal} from './mixins'
     import {MPop} from '../../components/MessagePop'
     import postData from '../../api/postData'
+
     export default {
         mixins: [RemoveModal, MPop],
         props: {
@@ -84,7 +93,7 @@
             },
             payload: {}
         },
-        components: { 'base-input': BaseInput, 'data-list': BaseList, uploadBtn },
+        components: {'base-input': BaseInput, 'data-list': BaseList, uploadBtn},
         data() {
             return {
                 addTestContentDialog: true,
@@ -301,7 +310,7 @@
                             this.desc = this.desc && item.desc
                             this.check = this.check || item.answer
                         })
-                        if(this.desc && this.check) {
+                        if ( (this.desc && this.check) || (this.formInline2.answerList.length == 0) ) {
                             this.formInline2.result = [];
                             for (var i = 0; i < this.formInline2.answerList.length; i++) {
                                 if (this.formInline2.answerList[i].answer) {
@@ -360,7 +369,7 @@
                                 })
                             }
                             this.cancelSaveHandler()
-                        }else {
+                        } else {
                             this.ruleOption()
                         }
                     }
@@ -369,23 +378,21 @@
             ruleOption() {
                 var innerCheck = document.querySelectorAll('.ivu-checkbox-inner')
                 innerCheck.forEach(item => {
-                    if(!this.check) {
+                    if (!this.check) {
                         item.style.border = '1px solid #ff3300'
                         this.showFont = '请选择正确答案'
-                    }
-                    else item.style.border = '1px solid #d7dde4'
+                    } else item.style.border = '1px solid #d7dde4'
                 })
                 var innerInput = document.querySelectorAll('.change-input')
                 innerInput.forEach((item, index) => {
-                    if(!this.desc) {
+                    if (!this.desc) {
                         this.formInline2.answerList.forEach((item1, index1) => {
-                            if(!item1.desc && (index == index1)) {
+                            if (!item1.desc && (index == index1)) {
                                 item.children[1].style.border = '1px solid #ff3300'
                             }
                         })
                         this.showFont = '请输入答案内容'
-                    }
-                    else item.children[1].style.border = '1px solid #d7dde4'
+                    } else item.children[1].style.border = '1px solid #d7dde4'
                 })
             },
             checkChange() {
