@@ -90,6 +90,10 @@
     }
 </script>
 <style lang="less" scoped>
+    /deep/ .ivu-table-body{
+        overflow: hidden;
+        overflow-y: auto;
+    }
     /deep/ .ivu-modal-header-inner{
         font-family: PingFangSC-Medium;
     }

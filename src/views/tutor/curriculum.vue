@@ -241,7 +241,7 @@
                 this.show = val;
             },
             getSelectList(){
-                postData('product//curriculum_offline_grade/curriculum_of_term_get_list', {term_id: this.$route.query.id}).then((res) => {
+                postData('product/curriculum_offline_grade/curriculum_of_term_get_list', {term_id: this.$route.query.id}).then((res) => {
                 if(res.res_code == 1) {
                      this.courseSelect = res.data
                      if(this.courseSelect.length>0) {
