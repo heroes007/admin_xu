@@ -49,6 +49,7 @@
             if(n) this.title = this.types.title + '（' + n + '）'
         } )
         this.title = this.types.title
+        if(!this.types.homework_count) this.selectList = []
         if(this.types.curriculum_type == 'offline_concentrate') this.selectList.push({id: 3, title: '课程'})
     }
   }

@@ -84,7 +84,7 @@ export default {
         },
         send(d,url){
             postData(url, d).then((res) => {
-                if(res.res_code) {
+                if(res.res_code == 1) {
                     this.$Message.success('评分成功')
                     this.closeModal()
                 }
@@ -109,7 +109,6 @@ export default {
                 }
                 if(this.type == 'BatchScore'){
                     let d = {
-                        curriculum_id: 10,
                         curriculum_id: this.studentInfo.id,
                         student_ids: this.setDatas('user_id'), 
                         score: this.score
