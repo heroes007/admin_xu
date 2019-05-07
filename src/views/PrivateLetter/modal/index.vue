@@ -59,7 +59,7 @@
                 show: false,
                 placehodle: '搜索学员姓名/账号',
                 select2Placeholder: '选择产品',
-                select2: [],
+                select2: [{name: '全部产品', id: 'all'}],
                 valueSelect2: [],
                 columns1: [
                     {type: 'selection'},
@@ -113,6 +113,7 @@
         },
         methods: {
             cancelModal(val) {
+                this.inputData = ''
                 this.$emit('handle-close')
             },
             handleSubmit() {
@@ -149,6 +150,7 @@
                         this.list = res.data.list
                     }
                 })
+                this.getProducts()
             },
             selectTable(selection, row) {
                 this.changeList = selection
@@ -180,7 +182,7 @@
                         this.inputData = ''
                         this.changeList = []
                         this.$emit('submit')
-                    }else this.$Message.info(res.msg)
+                    }
                 })
             }
         },
