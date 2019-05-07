@@ -122,12 +122,15 @@
                 })
             },
             closeModal() {
-                this.is_show = true;
-                // this.resourse_url = '';
+                this.$nextTick(()=>{
+                    this.is_show = true;
+                    this.resourse_url = '';
+                })
                 this.$emit('uploadcomplete', "");
             },
             //通过插件显示图片
             handleChangeMedia(e) {
+                console.log(e,'e');
                 this.fileSize = e.target.files[0].size / (1024 * 1024);
                 if (this.maxFileSize > 0 && this.fileSize > this.maxFileSize) {
                     this.$Modal.info({
@@ -148,7 +151,7 @@
                 this.show_file_name = true;
                 this.file_name = filename;
                 if (this.handleCheckMedia(event)) {
-                    this.handleGetassignKey(event.target.files[0]);
+                    this.handleGetassignKey(event.target.files[0], event);
                 }
             },
             handleCheckMedia(event) {
@@ -197,7 +200,7 @@
                 }
             },
             // 上传到oss上
-            handleUploadFile(form_data, url, fileItem) {
+            handleUploadFile(form_data, url, e) {
                 var vm = this;
                 axios({
                     method: 'POST',
@@ -209,6 +212,7 @@
                         vm.percentage = progress;
                     },
                 }).then(res => {
+                    e.target.value = ''
                     this.resourse_url = url + '/' + this.video_url
                     if (this.type == 'video'&&this.uploadConfig.time) {
                         setTimeout(() => {
@@ -225,7 +229,7 @@
                 });
             },
             // 从oss上获取assignKey;
-            handleGetassignKey(file_item) {
+            handleGetassignKey(file_item, event) {
                 var date = new Date(); //dscj-app,user_task
                 date = date.toGMTString();
                 get_sign(file_item.type, date, this.uploadConfig.bucket, this.uploadConfig.dir, file_item.name, 'POST')
@@ -239,7 +243,7 @@
                             formData.append('signature', res.data.data.sign);
                             formData.append('policy', res.data.data.policyBase64);
                             formData.append('file', file_item);
-                            this.handleUploadFile(formData, encodeURI(ossHost));
+                            this.handleUploadFile(formData, encodeURI(ossHost), event);
                         }
                     })
             },

@@ -61,6 +61,7 @@
                 minWidth: 260,
                 slot: 'operation',
                 align: 'left',
+                operationLower: true,
                 operation: [['编辑','operation1'], ['上移','operation2'], ['下移','operation3'], ['删除','operation4']],
             }
             ],

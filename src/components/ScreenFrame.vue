@@ -55,8 +55,8 @@
         iconColor: '#9397AD',
         backgroundColor: 'background: #fff',
         isSuper: false,
-        select: [{id: 'all', title:'全部'}],
-        subjectsSelect3: [{id: '', name:'全部'}],
+        select: [{id: 'all', title:'全部机构'}],
+        subjectsSelect3: [{id: 'all', name:'全部学科'}],
         select3: []
       }
     },
@@ -194,7 +194,9 @@
       getSubjectsList(){
         postData('/components/getDepts').then((res) => {
           this.select3 = [...this.subjectsSelect3,...res.data]
-          this.valueSelect1 = this.select2[0].id
+          this.$nextTick(() => {
+             this.valueSelect3 = this.select3[0].id
+          })
         })
       }
     }

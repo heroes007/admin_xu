@@ -9,10 +9,13 @@
                   <p class="font-regular3 text-ellipsis course-item-title">{{t.title}}</p>
                   <div class="item-right">
                       <p class="course-item"><span class="font-regular1" v-text="t.curr_finish_count"></span><span v-if="t.join_count||t.join_count==0" class="font-regular5">/{{t.join_count}}</span></p>
-                      <p class="course-item"  :class="t.no_see_count||t.no_score_count ? '' : 'course-item2'"><span class="font-regular1" v-text="t.complete_hw_count"></span><span v-if="t.join_count||t.join_count==0" class="font-regular5">/{{t.join_count}}</span></p>
+                      <p class="course-item"  :class="t.no_mark_count||t.no_score_count ? '' : 'course-item2'">
+                          <span class="font-regular1" v-text="t.complete_hw_count"></span>
+                          <span v-if="t.join_count||t.join_count==0" class="font-regular5">/{{t.join_count}}</span>
+                      </p>
                       <!-- <p class="course-item"><span class="font-regular1">13</span><span class="font-regular5">/24</span></p> -->
                       <p class="course-item-p">
-                          <span  v-if="t.no_see_count"  class="item-badges"><span class="item-badge">{{t.no_see_count}}</span><span>作业</span></span>
+                          <span  v-if="t.no_mark_count"  class="item-badges"><span class="item-badge">{{t.no_mark_count}}</span><span>作业</span></span>
                           <span  v-if="t.no_score_count"  class="item-badges course-item-2" style="margin-top:10px" @click="rowClick(t, 'curriculum', 1)"><span class="item-badge">{{t.no_score_count}}</span><span>课程</span></span>
                       </p>
                   </div>

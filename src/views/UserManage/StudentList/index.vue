@@ -45,8 +45,8 @@
             payingStudent: sessionStorage.getItem('organizationId') == 1,
             selectList1: [
             {
-              id: '',
-              title: '全部'
+              id: 'all',
+              title: '全部年级'
             },
             {
               id: 1,
@@ -91,6 +91,16 @@
             //     minWidth: 200
             // },
             {
+                key: '',
+                title: '身份',
+                minWidth: 100,
+                render: (h, params) => {
+                    let d = params.row.pay_state ? '学员' :'游客'
+                    // {style: {color: params.row.pay_state ? '#2EBF07' :'#F54802'}}, 
+                    return h('span', d)
+                }
+            },
+            {
                 title: '状态',
                 slot: '_index',
                 minWidth: 100
@@ -101,13 +111,13 @@
                 align: 'left',
                 minWidth: 150
             },
-            {
-                title: '操作',
-                minWidth: 100,
-                slot: 'operation',
-                align: 'left',
-                operation: []
-            }
+            // {
+            //     title: '操作',
+            //     minWidth: 100,
+            //     slot: 'operation',
+            //     align: 'left',
+            //     operation: []
+            // }
             ],
             operationList: [['统计','operation1']],
             title2: '付费学员',
@@ -162,9 +172,9 @@
               keyword: this.keyword,
               page_size: this.pageSize,
               page_num: this.current,
-              organization_id: this.organization_id,
-              department_id: this.department_id,
-              grade_id: this.grade_id,
+              organization_id: this.$config.setSelVal(this.organization_id),
+              department_id: this.$config.setSelVal(this.department_id),
+              grade_id: this.$config.setSelVal(this.grade_id),
               pay_state: this.pay_state
             }
             postData('user/getStudentList', d).then((res) => {

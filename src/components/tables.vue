@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :row-class-name="rowClassName" :columns="columns" :data="datas" ref="tables"
+        <Table @on-row-click="rowClick" :columns="columns" :data="datas" ref="tables"
              @on-expand="expand"  :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
@@ -16,7 +16,17 @@
             </template>
             <!--stateInform判断通知按钮展示内容-->
             <template slot-scope="{ column, row, index }" slot="operation">
-                <span v-for="(t,i) in row.stateInform ? row.state == 1 ? column.operation.slice(0,1).concat(column.operation.slice(2,3)) : column.operation.slice(1,3) : column.operation" :key="i">
+                <!-- operationLower -->
+                <span v-if="column.hasOwnProperty('operationLower')">
+                    <span v-for="(t,i) in handleOperation(column.operation, row.state)" :key="i">
+                        <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                            <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+                                {{handleBtnText(t,row,column)}}
+                            </Button>
+                        </span>
+                    </span>
+                </span>
+                <span v-else v-for="(t,i) in row.stateInform ? row.state == 1 ? column.operation.slice(0,1).concat(column.operation.slice(2,3)) : column.operation.slice(1,3) : column.operation" :key="i">
                     <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
                         <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
                             {{handleBtnText(t,row,column)}}
@@ -121,9 +131,8 @@
             }
         },
         methods: {
-            rowClassName(r) {
-                if (r.hasOwnProperty('states')) return r.states ? '' : 'row-switch-disable'
-                return ''
+            handleOperation(list, state){
+                return state == -1 ? [list[0],list[3]] : list
             },
             rowClick(row, rowIndex) {
                 this.show(row, rowIndex, 'row-click')

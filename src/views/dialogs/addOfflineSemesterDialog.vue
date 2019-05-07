@@ -52,7 +52,6 @@
 </template>
 <script>
   import BaseInput from '../../components/BaseInput'
-  import UploadButton from '../../components/UploadButton'
   import { RemoveModal } from './mixins'
   import UploadPanel from '../../components/UploadPanel'
   import { mapActions, mapState } from 'vuex'
@@ -67,7 +66,7 @@
       },
       payload: {}
     },
-    components: { 'base-input': BaseInput, 'upload-button': UploadButton, 'upload-panel': UploadPanel },
+    components: { 'base-input': BaseInput, 'upload-panel': UploadPanel },
     data() {
       return {
         addOfflineSemesterDialog: true,

@@ -165,7 +165,10 @@
                 this.lbData.share_img_url = url;
             },
             close() {
-                this.lbData = this.lbData2;
+                this.$nextTick(() => {
+                     this.lbData = this.lbData2;
+                     this.lbData.img_url = ''
+                })
                 this.showModal = false
                 this.$refs.lbForm.resetFields()
             },
