@@ -59,7 +59,7 @@
     import defaultHeader from '../assets/img/side-menu/default-header.jpg'
     import { MenuList, MenuToturList, cleanHtmlLabel } from './Util'
     import postData from '../api/postData'
-import { async } from 'q';
+import { async, Promise, resolve, reject } from 'q';
 
     export default {
         data() {
@@ -109,6 +109,19 @@ import { async } from 'q';
                         localStorage.setItem('login_user', d)
                     }
                 });
+            },
+            setMenuActive(){
+                let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
+                let menuActive = roleId !=4 ? ( sessionStorage.getItem('menuActiveIndex') ? sessionStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
+                this.activeIndex = menuActive
+                if(sessionStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(sessionStorage.getItem('menuOpenName'))
+                if(this.$route.name ==='user-manage') this.activeIndex =  roleId !=4 ? 'user-manage' : 'tutor-course'
+                if(this.$refs.side_menu){
+                    this.$nextTick(() => {
+                        this.$refs.side_menu.updateOpened();
+                        this.$refs.side_menu.updateActiveName();
+                    }) 
+                }
             },
             handleMenuList(type) {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
@@ -162,16 +175,13 @@ import { async } from 'q';
             }
         },
         mounted() {
-          let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
-          this.handleMenuList()
-          if (sessionStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(sessionStorage.getItem('menuOpenName'))
-          let menuActive = roleId !=4 ? ( sessionStorage.getItem('menuActiveIndex') ? sessionStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
-          this.activeIndex = menuActive
-          if(this.$route.name ==='user-manage') this.activeIndex =  roleId !=4 ? 'user-manage' : 'tutor-course'
-          this.$nextTick(() => {
-              this.$refs.side_menu.updateOpened();
-              this.$refs.side_menu.updateActiveName();
+          let p = new Promise((resolve,reject) => {
+              this.handleMenuList()
+              resolve()
+          }).then(() => {
+              this.setMenuActive()
           })
+          p()
           this.getName()
         }
     }

@@ -134,8 +134,7 @@
     mounted() {
       // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
       if(this.select2 && this.select2.length) {
-        if(this.types == 12) this.valueSelect2 = this.select2[0].id
-        else this.valueSelect2 = this.select2[0].value
+         this.valueSelect2 = this.select2[0].id
       }
       if(this.select4 && this.select4.length){
         this.$nextTick(() => {

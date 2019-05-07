@@ -69,7 +69,7 @@
                 curriculum_type: t.curriculum_type,
                 title: t.title
             }
-            if(t.hasOwnProperty('no_score_count')&&t.no_score_count || t.hasOwnProperty('no_see_count')&&t.no_see_count){
+            if(t.curriculum_type=='online_self'&&t.hasOwnProperty('join_count')&&t.join_count || t.curriculum_type=='offline_concentrate'){
                 if(type) this.urlType = true 
                 if(this.urlType&&type) this.$router.push({path: '/tutor/'+url, query: data})
                 else if(!type&&!this.urlType) this.$router.push({path: '/tutor/'+url, query: data})

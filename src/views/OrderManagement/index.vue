@@ -1,8 +1,8 @@
 <template>
    <div class="user-manage-main">
-        <screen  select-type1 :types="2" placehodle="搜索产品名称/支付账号" @selectChange1="selectChange1"  @inputChange="inputChange" />
+        <screen  select-type1 selectType2 :types="14" :select2="select2" placehodle="搜索产品名称/支付账号" @selectChange1="selectChange1" @selectChange2="selectChange2"  @inputChange="inputChange" />
         <Tables :tabel-height="tableHeight" :is-serial=true :column="columns1" :table-data="list"/>
-       <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
 <script>
@@ -22,6 +22,12 @@
             organization_id:'',
             tableHeight: 0,
             list: [],
+            pay_state: 'all',
+            select2: [
+              {id: 'all', title: '全部订单'},
+              {id: 1, title: '已支付'},
+              {id: 0, title: '未支付'},
+            ],
         }
     },
     computed: {
@@ -83,6 +89,10 @@
           this.organization_id = val
           this.getList()
         },
+        selectChange2(val){
+          this.pay_state = val
+          this.getList()
+        },
         inputChange(val){
           this.keyword = val
           this.getList()
@@ -93,6 +103,7 @@
               page_size: this.pageSize,
               page_num: this.current,
               organization_id: this.organization_id,
+              pay_state: this.$config.setSelVal(this.pay_state)
             }
             postData('order/getOrderListAdmin', d).then((res) => {
                  if(res.res_code == 1){
