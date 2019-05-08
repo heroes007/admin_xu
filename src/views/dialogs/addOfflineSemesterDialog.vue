@@ -11,7 +11,7 @@
                         <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
                     </FormItem>
                     <div class="form-item-semester">
-                      <FormItem class="item-semester"  label="辅导老师" prop="tutor_id">
+                      <FormItem class="item-semester"  label="导师" prop="tutor_id">
                           <Select v-model="form1.tutor_id" placeholder="请选择辅导老师" >
                               <Option v-for="(m,i) in teacherList" :key="i" :value="m.id">{{m.realname}}</Option>
                           </Select>

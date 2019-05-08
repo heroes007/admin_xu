@@ -67,7 +67,7 @@ export default {
                 return '学管'
                 break
             case 4:
-                return '辅导老师'
+                return '导师'
                 break;
             // case 5:
             //   return '辅导员'

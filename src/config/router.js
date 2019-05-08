@@ -32,7 +32,7 @@ const routes = [
     path:'',
     redirect:'/login',
   },
-  // 辅导老师
+  // 导师
   {
     path: '/tutor',
     name: 'tutor',
@@ -64,7 +64,7 @@ const routes = [
         name: 'user-manage',
         component: UserManage
       },
-        //辅导老师
+        //导师
       {
         path: 'tutor-course',
         name: 'tutor-course',
