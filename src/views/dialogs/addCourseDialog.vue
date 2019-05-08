@@ -17,7 +17,8 @@
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="导师" class="form-labels">
+                            <FormItem >
+                                <template slot="label"><span class="form-label-taech">导师</span></template>
                                 <Select v-model="form.instructor_id" placeholder="请选择导师">
                                     <Option v-for="item in tutorList" :key="item.id" :label="item.realname"
                                             :value="item.id"></Option>
@@ -203,7 +204,7 @@
                         {required: true, message: '请选择课程讲师'}
                     ],
                     // instructor_id: [
-                    //     {required: true, message: '请选择辅导老师'}
+                    //     {required: true, message: '请选择导师'}
                     // ],
                     department_id: [
                         {required: true, message: '请选择科室'}
@@ -383,8 +384,14 @@
                     this.gradesList = res.data
                 })
                 postData('components/getInstructors', {organization_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
-                    // this.tutorList = res.data
-                    this.tutorList = [...this.tutorList, ...res.data]
+                    if(res.res_code==1){
+                            this.tutorList = [...this.tutorList, ...res.data]
+                    }
+                    if (this.payload.modify === 0) {
+                        let d = this.payload.row
+                        this.form = d
+                        this.form.img_default = d.img_url
+                    }
                 })
             },
             getName(arr) {
@@ -493,5 +500,9 @@
     }
     .font-hint{
         color: #F54802;
+    }
+    .form-label-taech{
+        margin-left: 11px;
+        letter-spacing: 14px;
     }
 </style>
