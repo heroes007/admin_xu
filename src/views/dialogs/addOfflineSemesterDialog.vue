@@ -11,8 +11,9 @@
                         <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
                     </FormItem>
                     <div class="form-item-semester">
-                      <FormItem class="item-semester"  label="导师" prop="tutor_id">
-                          <Select v-model="form1.tutor_id" placeholder="请选择辅导老师" >
+                      <FormItem class="item-semester" prop="tutor_id">
+                          <template slot="label"><span class="form-label-taech">导师</span></template>
+                          <Select v-model="form1.tutor_id" placeholder="请选择导师" >
                               <Option v-for="(m,i) in teacherList" :key="i" :value="m.id">{{m.realname}}</Option>
                           </Select>
                       </FormItem>
@@ -201,6 +202,9 @@
   }
 </script>
 <style scoped lang="less">
+    .form-label-taech{
+      letter-spacing: 14px;
+    }
     /deep/ .ivu-modal-body{
       padding: 16px 0;
     }

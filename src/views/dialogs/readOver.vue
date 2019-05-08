@@ -119,24 +119,7 @@
         },
         resourse1: '',
         resourse2: '',
-        studata:{
-            stuimg:'https://ysf.nosdn.127.net/E07821B15D5420E8DF04C6BB4F474D92?imageView&thumbnail=300x300',
-            stuname:"王晓东",
-            stuwork:"这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息这是一段文字信息",
-            stuurl:"XXXXXXXX作业文.zip",
-            teacherTail:{
-                teacher1:{
-                    contnumber:"11",
-                    contdetail:"这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语这是教师1的评语",
-                    conttime:"2019/01/02"
-                },
-                teacher2:{
-                    contnumber:"99",
-                    contdetail:"这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语这是教师2的评语",
-                    conttime:"2019/11/22"
-            }
-            }
-        }
+        studata:{}
       }
     },
     mounted() {
