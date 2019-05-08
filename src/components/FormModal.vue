@@ -28,7 +28,7 @@
                         <Input disabled :value="t.content"></Input>
                     </FormItem>
                     <FormItem v-if="t.type==='textarea'"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
-                        <Input type="textarea" :rows="6" v-model="formItem[t.field]"
+                        <Input type="textarea" :maxlength="t.maxlength"  :rows="6" v-model="formItem[t.field]"
                                :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <!-- input-number -->
@@ -59,7 +59,7 @@
                     </FormItem>
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.change" :prop="t.field" :label="t.name" >
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable">
-                            <Option v-for="(m,i) in (t.line == 1 ? t.selectList[0] : t.selectList[1])" :key="i" :value="m[t.selectField[0]]">
+                            <Option v-for="(m,i) in (t.line == 1 ? t.selectList[0] : t.selectList[1])" :key="i" :value="m[t.selectField[0]]" :disabled="m.disabled">
                                 {{m[t.selectField[1]]}}
                             </Option>
                         </Select>

@@ -77,7 +77,7 @@
                         selectList: [{state: 1, title: '上架'}, {state: 0, title: '测试'}, {state: -1, title: '下架'}],
                         selectField: ['state', 'title']
                     },
-                    {type: 'textarea', name: '文章摘要', field: 'description', isShow: 1},
+                    {type: 'textarea', name: '文章摘要', field: 'description', isShow: 1, maxlength: 200},
                     {type: 'uploadPanel', name: '上传封面', field: 'img_default', isShow: 1},
                     {type: 'upload',  field: 'uploading', isShow: 2},
                 ],
@@ -226,5 +226,8 @@
     }
     /deep/ .w-e-text-container{
         height: 700px !important;
+    }
+    /deep/ .md-cloud-upload{
+        margin-top: 100px !important;
     }
 </style>

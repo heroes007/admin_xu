@@ -12,13 +12,14 @@
                                 <Input v-model="form.title" placeholder="请输入课程名称"></Input>
                             </FormItem>
                             <FormItem label="课程讲师" prop="teacher_id">
-                                <Select v-model="form.teacher_id" placeholder="请选择观讲师">
+                                <Select v-model="form.teacher_id" placeholder="请选择讲师">
                                     <Option v-for="item in teacherList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="辅导老师" class="form-labels">
-                                <Select v-model="form.instructor_id" placeholder="请选择观讲师">
+                            <FormItem >
+                                <template slot="label"><span class="form-label-taech">导师</span></template>
+                                <Select v-model="form.instructor_id" placeholder="请选择导师">
                                     <Option v-for="item in tutorList" :key="item.id" :label="item.realname"
                                             :value="item.id"></Option>
                                 </Select>
@@ -180,7 +181,7 @@
                 teacherList: [],
                 detpysList: [],
                 gradesList: [],
-                tutorList: [],
+                tutorList: [{id: 'all', realname: '请选择导师'}],
                 clearList: [
                     {
                         id: 0,
@@ -203,7 +204,7 @@
                         {required: true, message: '请选择课程讲师'}
                     ],
                     // instructor_id: [
-                    //     {required: true, message: '请选择辅导老师'}
+                    //     {required: true, message: '请选择导师'}
                     // ],
                     department_id: [
                         {required: true, message: '请选择科室'}
@@ -228,13 +229,12 @@
             else if(JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type == 3) this.clearList = this.clearList.slice(2,3)
             this.stateName = this.payload.state
             this.getListTeacher()
-            // this.form.unlock_type = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type == 1 ? 0 : JSON.parse(sessionStorage.getItem('PRODUCTINFO')).unlock_type
-            if (this.payload.modify === 0) {
-                console.log(this.payload.row, 'log');
-                let d = this.payload.row
-                this.form = d
-                this.form.img_default = d.img_url
-            }
+            // if (this.payload.modify === 0) {
+            //     console.log(this.payload.row, 'log');
+            //     let d = this.payload.row
+            //     this.form = d
+            //     this.form.img_default = d.img_url
+            // }
         },
         computed: {
             ...mapState({
@@ -320,6 +320,7 @@
                                 name: 'department_name'
                             }, {list: this.gradesList, id: this.form.grade_id, name: 'grade_name'}])
                             this.form.page = this.payload.page
+                            if(this.form.instructor_id == 'all')  this.form.instructor_id = ''
                             if (this.stateName == 1) {
                                 this.add_online_curriculum(this.form)
                             } else {
@@ -389,8 +390,13 @@
                     this.gradesList = res.data
                 })
                 postData('components/getInstructors', {organization_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
-                    console.log(res.data, 'res')
-                    this.tutorList = res.data
+                    // this.tutorList = res.data
+                    this.tutorList = [...this.tutorList, ...res.data]
+                    if (this.payload.modify === 0) {
+                        let d = this.payload.row
+                        this.form = d
+                        this.form.img_default = d.img_url
+                    }
                 })
             },
             getName(arr) {
@@ -499,5 +505,9 @@
     }
     .font-hint{
         color: #F54802;
+    }
+    .form-label-taech{
+        margin-left: 11px;
+        letter-spacing: 14px;
     }
 </style>

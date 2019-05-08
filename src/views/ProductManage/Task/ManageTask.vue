@@ -71,7 +71,7 @@
                 rules: {
                     realname: [{required: true, message: '请输入作业名称', trigger: 'blur'}],
                     jurisdiction: [{required: true, message: '请选择作业类型'}],
-                    binding_course: [{required: true, message: '请选择绑定课程'}],
+                    binding_course: [{required: true, message: '请绑定已分配导师的课程'}],
                     // uploading: [{ required: true, message: '请输入课程介绍'} ],
                 },
                 contentData: ''
@@ -224,7 +224,11 @@
               postData('product/curriculum_online/pulldown_get_list', {
                 product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
               }).then(res => {
+                  res.data.forEach(item => {
+                      item.disabled = !item.instructor_id
+                  })
                 this.curricumList[0] = res.data
+                  console.log(res.data, '123')
               })
               postData('product/curriculum_online/pulldown_get_offline_list', {
                 product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
