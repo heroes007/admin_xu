@@ -92,7 +92,8 @@
                         { prop: 'curriculum_title', label: '绑定课程', minWidth:200,  align: 'left' },
                         { prop: 'course', label: '类型', minWidth: 100 },
                         { label: '操作', minWidth: 260, align:"center",
-                            groupBtn: [{  text: '批阅', param: 'marking' },...btnList]
+                            // {  text: '批阅', param: 'marking' }
+                            groupBtn: [...btnList]
                         }]
                 return arr
             },
