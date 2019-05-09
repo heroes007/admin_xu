@@ -13,11 +13,11 @@
                 </Input>
             </Row>
             <Row slot="body">
-                <Table class="table" ref="table" :data="queryOfflineUserList" @on-select-all="handleSelectedAll"
+                <Table :height="578" class="table" ref="table" :data="queryOfflineUserList" @on-select-all="handleSelectedAll"
                        :columns="courseColumns" style="width: 100%" @on-selection-change="handleSelectionChange">
                 </Table>
                 <Row class="course-page">
-                    <Page @on-change="handleCurrentChange" :current="curPage" :page-size="pageSize" :total="totalNum"></Page>
+                    <Page @on-change="handleCurrentChange" :current="pageIndex" :page-size="pageSize" :total="totalNum"></Page>
                 </Row>
                 <Row class="btns">
                     <Button class="send-btn" @click="handleSendTask">发送</Button>
@@ -79,19 +79,21 @@
           {
             type: 'selection'
           }
-        ]
+        ],
+          pageSize: 12,
+          pageIndex: 1,
       }
     },
     computed: {
       queryOfflineUserList() {
         return this.$store.state.offline_curriculum.offline_term_student
       },
-      pageSize() {
-        return this.$store.state.offline_curriculum.page_size
-      },
-      pageIndex() {
-        return this.$store.state.offline_curriculum.page_index
-      },
+      // pageSize() {
+      //   return this.$store.state.offline_curriculum.page_size
+      // },
+      // pageIndex() {
+      //   return this.$store.state.offline_curriculum.page_index
+      // },
       totalNum() {
         return this.$store.state.offline_curriculum.total_num
       }
@@ -125,10 +127,12 @@
         this.multipleSelection = val;
       },
       handleCurrentChange(val) {
-        this.$store.dispatch('get_students_by_offline_term', {
-          subject_id: JSON.parse(sessionStorage.getItem('OffLineClassTheme')).id,
-          page_num: this.pageIndex,
-          page_size: this.pageSize,
+          this.pageIndex = val
+          this.$store.dispatch('get_students_by_offline_term', {
+              product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
+              term_id: this.payload.row.id,
+              page_num: this.pageIndex,
+              page_size: this.pageSize,
         })
       },
       handleSendTask() {
