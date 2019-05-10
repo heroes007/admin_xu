@@ -2,7 +2,7 @@
     <Modal v-model="showModal" title="分配学员" :width="960" @on-cancel="closeModal" :mask-closable=false
            :footer-hide="true" :styles="{top: '6%'}">
         <div class="title-bg grey-medium1">{{details.title}} 
-            <!-- <span >预约{{termData.student_num}}人</span> -->
+            <span >预约{{termData.student_num}}人</span>
         </div>
         <Tables class="tables" :is-serial=true :column="columns1" :table-data="list" @expand="expand" :tabel-height="576"></Tables>
     </Modal>
@@ -99,6 +99,12 @@
     }
 </script>
 <style lang="less" scoped>
+    /deep/ .ivu-table-cell-expand{
+        transition: none;
+        .ivu-icon-ios-arrow-forward:before{
+           content: "分配学员"
+        }
+    }
     /deep/ .ivu-table-body{
         overflow: hidden;
         overflow-y: auto;
