@@ -101,6 +101,7 @@
                     postData('product/curriculum_offline_subject/splitGroup', d).then((res) => {
                         if(res.res_code==1){
                             this.$Message.success(res.msg)
+                            $SplitGroupRefresh.$emit("SplitGroupRefresh")
                         }
                     })
                 }
@@ -109,7 +110,8 @@
                this.formList.splice(i, 1)
             },
             getAllocatedList(){
-                postData('product/curriculum_offline_subject/getGroups', { term_id: this.details.term_id, curr_id: this.details.id }).then((res) => {
+                let d = JSON.parse(sessionStorage.getItem('termData'))
+                postData('product/curriculum_offline_subject/getGroups', { term_id: d.term_id, curr_id: this.details.id }).then((res) => {
                     if(res.res_code==1){
                       if(res.data.length>0)  this.formList = res.data
                       else this.formList = [{stu_num: 0, address: this.details.class_address}]

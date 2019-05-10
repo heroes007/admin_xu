@@ -1,7 +1,9 @@
 <template>
     <Modal v-model="showModal" title="分配学员" :width="960" @on-cancel="closeModal" :mask-closable=false
            :footer-hide="true" :styles="{top: '6%'}">
-        <div class="title-bg grey-medium1">{{details.title}} <span>预约{{details.student_num}}人</span></div>
+        <div class="title-bg grey-medium1">{{details.title}} 
+            <!-- <span >预约{{termData.student_num}}人</span> -->
+        </div>
         <Tables class="tables" :is-serial=true :column="columns1" :table-data="list" @expand="expand" :tabel-height="576"></Tables>
     </Modal>
 </template>
@@ -20,7 +22,7 @@
             details: {
                 type: Object,
                 default: {}
-            }
+            },
         },
         data() {
             return {
@@ -28,6 +30,7 @@
                 list:[],
                 states: false,
                 total: '',
+                termData: {},
                 columns1:[
                     {
                         title: '课程名称',
@@ -50,7 +53,7 @@
                     },
                     {
                         title:'已分配',
-                        key:'',
+                        key:'divide_count',
                         minWidth: 100
                     },
                     {
@@ -61,9 +64,11 @@
                         type: 'expand',
                         render: (h, params) => {
                               let d = params.row;
-                              d.term_id = this.details.term_id
-                              d.student_num = this.details.student_num
-                              return  h(allocatedForm, { props: { details: d} })
+                              let term = JSON.parse(sessionStorage.getItem('termData'))
+                              this.termData = term;
+                              d.term_id = term.term_id
+                              d.student_num = term.student_num
+                              return  h(allocatedForm, { props: { details: d, } })
                         }
                     },
                 ],
@@ -74,12 +79,16 @@
                 this.showModal = _new
                 if(_new) {
                     this.list = this.details.offlineCurriculums
+                    this.termData = JSON.parse(sessionStorage.getItem('termData'))
                 }
+            },
+            details(_new){
+               if(this.show) this.list = this.details.offlineCurriculums
             }
         },
         methods: {
             expand(row,states){
-              console.log(states)
+                // if(states) this.list = this.details.offlineCurriculums
             },
             closeModal() {
                 this.showModal = false

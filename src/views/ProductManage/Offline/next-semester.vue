@@ -44,7 +44,8 @@
                 page_num: 1,
                 details: {},
                 term_row: null,
-                tableHeight: null
+                tableHeight: null,
+                termData: {}
             }
         },
         computed: {
@@ -125,6 +126,11 @@
                         let d = res.data
                         d.term_id = row.id
                         d.student_num = row.student_num
+                        this.termData = {
+                            term_id: row.id,
+                            student_num: row.student_num
+                        }
+                        sessionStorage.setItem('termData', JSON.stringify(this.termData))
                         this.allocatedModal = true;
                         this.allocateddetails = d
                     }
@@ -210,6 +216,11 @@
             },
         },
         mounted() {
+            $SplitGroupRefresh.$on('SplitGroupRefresh',()=>{
+                let d = JSON.parse(sessionStorage.getItem('termData'))
+                d.id = d.term_id
+                this.allocated(d)
+            })
             this.getSubjectCurriculumList()
             this.getList()
             this.tableHeight = window.innerHeight - 130
