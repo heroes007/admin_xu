@@ -80,7 +80,7 @@
                         res.data.list.forEach(item => {
                             item.students_num = item.students.length + '人'
                         })
-                        this.total = res.count
+                        this.total = res.data.count
                         this.list = res.data.list
                     }
                 })

@@ -227,10 +227,10 @@
         }
     }
 </script>
-<style scoped lang="less"> 
-    /deep/ .ivu-icon-ios-arrow-forward:before{
-        content: '分配学员'
-    }
+<style scoped lang="less">
+    /*/deep/ .ivu-icon-ios-arrow-forward:before{*/
+        /*content: '分配学员'*/
+    /*}*/
     /deep/ .ivu-table-cell-expand-expanded{
         transform: none
     }

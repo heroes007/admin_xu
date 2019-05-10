@@ -59,7 +59,7 @@
                 show: false,
                 placehodle: '搜索学员姓名/账号',
                 select2Placeholder: '选择产品',
-                select2: [{name: '全部产品', id: 'all'}],
+                select2: [],
                 valueSelect2: [],
                 columns1: [
                     {type: 'selection'},
@@ -122,18 +122,18 @@
             },
             selectChange1(val) {
                 this.organization_id = val
-                this.initData()
+                this.getList()
                 this.getProducts()
             },
             selectChange2(val) {
-                this.product_id = val
-                this.initData()
+                val == 'all' ? this.product_id = '' : this.product_id = val
+                this.getList()
             },
             inputChange(val) {
                 this.keyword = val
-                this.initData()
+                this.getList()
             },
-            initData() {
+            getList() {
                 let data = {
                     page_size: this.pageSize,
                     page_num: this.current,
@@ -164,7 +164,7 @@
             },
             getProducts() {
                 postData('components/getProducts', {organization_id: this.organization_id}).then(res => {
-                    this.select2 = res.data
+                    this.select2 = [{title: '全部产品', id: 'all'}, ...res.data]
                 })
             },
             submit() {
@@ -188,7 +188,7 @@
         },
         mounted() {
             this.pageSize = 10
-            this.initData()
+            this.getList()
         }
     }
 </script>
