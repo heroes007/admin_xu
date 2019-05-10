@@ -91,6 +91,7 @@
                         title: '操作',
                         minWidth: 360,
                         slot: 'operation',
+                        operationStudentNum: true,
                         align: 'left',
                         operation: btnList,
                     }]
