@@ -10,8 +10,14 @@
         <Select v-if="selectSubjects" v-model="valueSelect3" @on-change="selectChange3" class="select-list" placeholder="请选择学科">
             <Option v-for="item in select3" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
-        <Select v-if=" ( types == 4 || types == 5 || types == 10 || types == 11 || types == 12 || types == 14) && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
+        <Select v-if=" ( types == 4 || types == 5 || types == 10 || types == 11 || types == 12 || types == 14 || types == 15) && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
+        </Select>
+        <Select v-if="types == 15" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
+            <Option v-for="item in select5" :value="item.id" :key="item.id">{{ item.title }}</Option>
+        </Select>
+         <Select v-if="types == 15" v-model="valueSelect6" @on-change="selectChange6" class="select-list">
+            <Option v-for="item in select6" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13 && types != 12" v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix" />
@@ -50,6 +56,8 @@
         valueSelect2: '',
         valueSelect3: '',
         valueSelect4: '',
+        valueSelect5: '',
+        valueSelect6: '',
         valueInput: '',
         placehodleInput: '搜索用户名/姓名/手机号',
         iconColor: '#9397AD',
@@ -64,6 +72,7 @@
       //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
       //types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
       //types = 10 下拉框+标题+按钮; types = 12 下拉框+标题;  types=13：返回+标题+下拉框; types = 14: 下拉框*2+搜索框
+      //types = 15 下拉框*4+搜索框
       types: {
         type: Number,
         required: true,
@@ -103,6 +112,12 @@
       select4: {
         type: Array
       },
+      select5: {
+        type: Array
+      },
+      select6: {
+        type: Array
+      },
       sizeTitle1: {
         type: String
       },
@@ -133,9 +148,9 @@
     },
     mounted() {
       // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value
-      if(this.select2 && this.select2.length) {
-       this.valueSelect2 = this.select2[0].id
-      }
+      this.setSelectInit('select2','valueSelect2')
+      this.setSelectInit('select5','valueSelect5')
+      this.setSelectInit('select6','valueSelect6')
       if(this.select4 && this.select4.length){
         this.$nextTick(() => {
           if(this.$route.name == 'curriculum'&&this.select4.length>0){
@@ -152,6 +167,11 @@
       if(this.selectSubjects) this.getSubjectsList()
     },
     methods:{
+      setSelectInit(list,valueSelect){
+        if(this[list] && this[list].length) {
+         this[valueSelect] = this[list][0].id
+        }
+      },
       // 付费学员返回事件，click触发，选中返回true
       moneyStudent(){
         this.iconColor = this.iconColor == '#9397AD' ? "#4098ff" : "#9397AD"
@@ -174,6 +194,12 @@
       //第二个下拉框，change触发，返回value
       selectChange2(val){
         this.$emit('selectChange2', val)
+      },
+      selectChange5(val){
+        this.$emit('selectChange5', val)
+      },
+      selectChange6(val){
+        this.$emit('selectChange6', val)
       },
       //第三个下拉框
       selectChange3(val){

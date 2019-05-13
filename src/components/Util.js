@@ -133,9 +133,19 @@ export const MenuList = [
         icon: 'md-clipboard',
     },
     {
-        name: 'order-management',
+        name: 'order',
         title: '订单管理',
         icon: 'md-pricetag',
+        list: [
+            {
+                name: 'order-management',
+                title: '支付订单',
+            },
+            {
+                name: 'invoice-info',
+                title: '发票信息',
+            },
+        ]
     },
     {
         name: 'private-letter',

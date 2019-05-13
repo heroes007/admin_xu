@@ -204,8 +204,8 @@
                 if(c&&c.length>0){
                     if(type){
                         if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 80})
-                        if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
-                        if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
+                        if (this.isSelection) c.unshift({type: 'selection', width: 100, align: 'center'})
+                        if (this.isSelectionRight) c.push({type: 'selection', width: 100, align: 'center'})
                     }
                     c.map((t) => {
                         if (t.hasOwnProperty('slot') && t.slot == "operation" && !t.hasOwnProperty('align')) t.align = 'left'
