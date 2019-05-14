@@ -120,7 +120,7 @@ import { async, Promise, resolve, reject } from 'q';
                     this.$nextTick(() => {
                         this.$refs.side_menu.updateOpened();
                         this.$refs.side_menu.updateActiveName();
-                    }) 
+                    })
                 }
             },
             handleMenuList() {
@@ -275,7 +275,7 @@ import { async, Promise, resolve, reject } from 'q';
 
     .side-menu {
         padding: 27px 0;
-        height: calc(100% - 240px);
+        height: 100%;
 
         .logo {
             margin-bottom: 40px;
@@ -364,7 +364,7 @@ import { async, Promise, resolve, reject } from 'q';
         }
 
         .menu-list {
-            height: 100%;
+            height: calc(100% - 240px);
             overflow: hidden;
             overflow-y: auto;
         }

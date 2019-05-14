@@ -51,8 +51,7 @@
                                 </Select>
                             </FormItem>
                             <FormItem label="课程介绍" prop="description">
-                                <Input type="textarea" :rows="7" placeholder="请输入课程介绍"
-                                       v-model="form.description"></Input>
+                                <Input type="textarea" :rows="7" placeholder="请输入课程介绍" :maxlength="100" v-model="form.description"></Input>
                             </FormItem>
                             <FormItem ref="upload" label="展示封面" required>
                                 <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig"

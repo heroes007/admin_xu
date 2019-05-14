@@ -39,7 +39,6 @@
                 height: 100%;
                 max-width: 260px;
                 min-width: 260px;
-                /*min-height: 800px;*/
                 background-color: #333333;
                 box-shadow: 2px 0 10px 0 rgba(51, 51, 51, 0.06);
                 overflow-y: auto;

@@ -33,7 +33,7 @@
                             </Select>
                         </FormItem>
                         <FormItem v-show="nextStep == 0" prop="short_description" label="产品介绍" >
-                            <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"></Input>
+                            <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description" :maxlength="100"></Input>
                         </FormItem>
                         <FormItem label="图片视频" v-if="nextStep == 0" required>
                             <div class="demo-file">

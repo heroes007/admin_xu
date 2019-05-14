@@ -65,7 +65,7 @@
                 this.show = true
                 this.title = '查看私信'
                 this.creat = false
-                this.modalWidth = 740
+                this.modalWidth = 960
                 postData('pmsg/getPMsgDetail', {msg_id: val.id}).then(res => {
                     this.personMessage = res.data
                 })
