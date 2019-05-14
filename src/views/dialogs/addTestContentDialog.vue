@@ -351,7 +351,7 @@
                             } else {
                                 let formChapter
                                 this.formInline2.curriculum_id = this.payload.curriculum_online_id
-                                if (this.section_id) formChapter = {...this.formInline2, ...{section_id: this.section_id}}
+                                if (this.section_id) formChapter = {...this.formInline2, ...{section_id: this.section_id},...{type: this. payload.type == 2 ? 2 : 1}}
                                 else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby},...{type: this. payload.type == 2 ? 2 : 1}}
                                 add_test_detail(formChapter).then(res => {
                                     if (res.data.res_code === 1) {
