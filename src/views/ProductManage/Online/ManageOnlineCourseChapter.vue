@@ -484,7 +484,7 @@
         .chapter-container {
             box-sizing: border-box;
             width: 100%;
-            height: 100%;
+            height: calc(100% - 66px);
             top: 0;
             z-index: 0;
             pointer-events: none;
