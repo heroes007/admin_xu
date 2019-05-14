@@ -10,6 +10,7 @@ import { Base64 } from 'js-base64';
 import postData from '../api/postData'
 Vue.prototype.$config = config;
 window.$OnLine = new Vue()
+window.$SplitGroupRefresh = new Vue()
 window.$MakeAppointment = new Vue()
 Vue.use(LoadingY)
 // sync the router with the vuex store.

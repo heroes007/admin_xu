@@ -16,9 +16,9 @@
             </template>
             <!--stateInform判断通知按钮展示内容-->
             <template slot-scope="{ column, row, index }" slot="operation">
-                <!-- operationLower -->
-                <span v-if="column.hasOwnProperty('operationLower')">
-                    <span v-for="(t,i) in handleOperation(column.operation, row.state)" :key="i">
+                <!-- operationLower operationStudentNum-->
+                <span v-if="column.hasOwnProperty('operationLower')|| column.hasOwnProperty('operationStudentNum')">
+                    <span v-for="(t,i) in handleOperation(column, row)" :key="i">
                         <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
                             <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
                                 {{handleBtnText(t,row,column)}}
@@ -134,8 +134,10 @@
             }
         },
         methods: {
-            handleOperation(list, state){
-                return state == -1 ? [list[0],list[3]] : list
+            handleOperation(c, row){
+                let list = c.operation
+                if(c.hasOwnProperty('operationLower'))  return row.state == -1 ? [list[0],list[3]] : list
+                if(c.hasOwnProperty('operationStudentNum'))  return row.student_num ? list : [ list[0], list[1], list[3], list[4] ]
             },
             rowClick(row, rowIndex) {
                 this.show(row, rowIndex, 'row-click')
@@ -205,8 +207,8 @@
                 if(c&&c.length>0){
                     if(type){
                         if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 80})
-                        if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'center'})
-                        if (this.isSelectionRight) c.push({type: 'selection', width: 60, align: 'center'})
+                        if (this.isSelection) c.unshift({type: 'selection', width: 100, align: 'center'})
+                        if (this.isSelectionRight) c.push({type: 'selection', width: 100, align: 'center'})
                     }
                     c.map((t) => {
                         if (t.hasOwnProperty('slot') && t.slot == "operation" && !t.hasOwnProperty('align')) t.align = 'left'

@@ -4,7 +4,7 @@
          <div class="batch-main" v-for="(m,k) in list" @click="Marking(m)" :class="k&&k%9 ? 'batch-marign' : ''" :key="k">
             <img class="batch-img" :class="m.clas" :src="m.head_img_url" />
             <img class="batch-icon" v-if="m.icon" :src="m.icon" />
-            <span class="grey-regular3 batch-name">天涯</span>
+            <span class="grey-regular3 batch-name">{{m.realname}}</span>
          </div>
         <div class="batch-type">
             <span class="grey-regular2">方式：</span>

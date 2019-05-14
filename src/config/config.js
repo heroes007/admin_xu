@@ -137,7 +137,7 @@ export default {
         return JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 4
     },
     //table导出excel
-    downExcel(th, list) {
+    downExcel(th, list, fileName) {
         var title = '', content = ''
         th.forEach(item => {
             title += `<th>${item.title}</th>`
@@ -158,7 +158,8 @@ export default {
         var blob = new Blob([html], {type: "application/vnd.ms-excel"});
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = "兑换码数据.xls";
+        let name = fileName || '兑换码数据'
+        a.download = name + ".xls";
         a.click()
     },
   //阿拉伯数字转换为简写汉字

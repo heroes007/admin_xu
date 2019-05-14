@@ -21,7 +21,8 @@ const OpenClass = () => import('../views/SystemManage/OpenClass/index')
 const JobList = () => import('../views/tutor/job-list.vue')
 const tutorCourse = () => import('../views/tutor/course-management')
 const Curriculum = () => import('../views/tutor/curriculum')
-const OrderManagement = () => import('../views/OrderManagement/index')
+const OrderManagement = () => import('../views/Order/OrderManagement/index')
+const InvoiceInfo = () => import('../views/Order/InvoiceInfo/index')
 const PrivateLetter = () => import('../views/PrivateLetter/index')
 const RecommendedProducts = () => import('../views/SystemManage/RecommendedProducts/index')
 const TutorHead = () => import('../views/tutor/tutor-head')
@@ -85,11 +86,17 @@ const routes = [
         name: 'exchange-code',
         component: ExchangeCode
       },
-      //订单管理
+      //支付订单
       {
         path: 'order-management',
         name: 'order-management',
         component: OrderManagement
+      },
+      //发票信息
+      {
+        path: 'invoice-info',
+        name: 'invoice-info',
+        component: InvoiceInfo
       },
       //私信管理
       {

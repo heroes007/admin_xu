@@ -6,12 +6,12 @@
    </div>
 </template>
 <script>
-  import Tables from '../../components/tables.vue'
-  import screen from '../../components/ScreenFrame'
-  import UserMixins from '../UserManage/Mixins/UserMixins'
+  import Tables from '../../../components/tables.vue'
+  import screen from '../../../components/ScreenFrame'
+  import UserMixins from '../../UserManage/Mixins/UserMixins'
   import postData from 'src/api/postData'
-  import pageList from '../../components/Page'
-  import pageMixin from '../mixins/pageMixins'
+  import pageList from '../../../components/Page'
+  import pageMixin from '../../mixins/pageMixins'
   export default {
     name: "ManagementList",
     components: { Tables, screen, pageList },
@@ -102,7 +102,7 @@
               keyword: this.keyword,
               page_size: this.pageSize,
               page_num: this.current,
-              organization_id: this.organization_id,
+              organization_id: this.$config.setSelVal(this.organization_id),
               pay_state: this.$config.setSelVal(this.pay_state)
             }
             postData('order/getOrderListAdmin', d).then((res) => {

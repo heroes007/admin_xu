@@ -1,7 +1,7 @@
 <template>
     <div>
         <ScoreModal :details="details" :type="types"
-              :columns="columns"    :studentInfo="studentInfo"   :show="show" @close-modal="closeModal" :title="modalTitle"/>
+              :columns="columns" @submission="submission"   :studentInfo="studentInfo"   :show="show" @close-modal="closeModal" :title="modalTitle"/>
         <div class="state">
             <Select v-model="coursValue" class="course-select" @on-change="coursChange">
                 <Option v-for="item in courseSelect" :key="item.id" :value="item.id">{{item.title}}</Option>
@@ -239,6 +239,9 @@
             },
             closeModal(val) {
                 this.show = val;
+            },
+            submission(){
+                this.getList()
             },
             getSelectList(){
                 postData('product/curriculum_offline_grade/curriculum_of_term_get_list', {term_id: this.$route.query.id}).then((res) => {
