@@ -116,6 +116,9 @@
             },
             selectIndex: {
                 type: Number
+            },
+            deleteData: {
+                type: Boolean
             }
         },
         watch: {
@@ -126,8 +129,8 @@
             column(_new){
                   this.handleColumns(_new)
             },
-            selectIndex(val) {
-                this.$refs.tables.objData[val]._isChecked = false;
+            deleteData() {
+                this.$refs.tables.objData[this.selectIndex]._isChecked = false;
             }
         },
         methods: {

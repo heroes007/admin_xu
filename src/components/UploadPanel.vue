@@ -130,7 +130,6 @@
             },
             //通过插件显示图片
             handleChangeMedia(e) {
-                console.log(e,'e');
                 this.fileSize = e.target.files[0].size / (1024 * 1024);
                 if (this.maxFileSize > 0 && this.fileSize > this.maxFileSize) {
                     this.$Modal.info({
@@ -214,11 +213,12 @@
                 }).then(res => {
                     e.target.value = ''
                     this.resourse_url = url + '/' + this.video_url
-                    if (this.type == 'video'&&this.uploadConfig.time) {
+                    if (this.type == 'video' && this.uploadConfig.time) {
                         setTimeout(() => {
                             let vedioTime = this.$refs.vedioPlayer.duration
                             this.$emit('vedioTime', vedioTime)
-                        }, 500)
+                            console.log(vedioTime)
+                        }, 1000)
                     }
                     this.$emit('getuploadfile', {
                         name: this.file_name,
@@ -247,7 +247,7 @@
                         }
                     })
             },
-        }
+        },
     }
 </script>
 <style lang="less" scoped>

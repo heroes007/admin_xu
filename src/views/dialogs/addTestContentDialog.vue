@@ -1,14 +1,14 @@
 <template>
-    <Modal :transfer=false title="添加测验" v-model="addTestContentDialog" :footer-hide="true"
+    <Modal :transfer=false :title="payload.type == 2 ? '添加案例' : '添加测验'" v-model="addTestContentDialog" :footer-hide="true"
            @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" width="800">
         <base-input @closedialog="handleClose">
             <Row slot="body">
                 <Form :inline="true" :model="formInline2" class="row2-test-form" :rules="rulesList" ref="formValidate">
-                    <FormItem label="测验名称" class="form-title" prop="title">
+                    <FormItem :label="payload.type == 2 ? '案例名称' : '测验名称'" class="form-title" prop="title">
                         <Input class="formInput" v-model="formInline2.title" placeholder="请输入测验的名称"
                                :disabled='isEdit'></Input>
                     </FormItem>
-                    <FormItem label="题干名称" prop="body" style="text-align: left">
+                    <FormItem :label="payload.type == 2 ? '案例内容' : '测验内容'" prop="body" style="text-align: left">
                         <Input type="textarea" :rows="5" placeholder="请输入内容" v-model="formInline2.body"
                                class="input-text"></Input>
                     </FormItem>
@@ -204,7 +204,7 @@
             dataHeader() {
                 return [
                     {label: '排序', width: 90, sort: true},
-                    {prop: 'title', label: '题干名称'},
+                    {prop: 'title', label: this.payload.type == 2 ? '案例名称' : '题干名称'},
                     {width: 200, label: '操作', groupBtn: [{text: '编辑', param: 'edit'}, {text: '删除', param: 'delete'}]}
                 ]
             },
@@ -351,8 +351,8 @@
                             } else {
                                 let formChapter
                                 this.formInline2.curriculum_id = this.payload.curriculum_online_id
-                                if (this.section_id) formChapter = {...this.formInline2, ...{section_id: this.section_id}}
-                                else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby}}
+                                if (this.section_id) formChapter = {...this.formInline2, ...{section_id: this.section_id},...{type: this. payload.type == 2 ? 2 : 1}}
+                                else formChapter = {...this.formInline2, ...{group_orderby: this.payload.group_orderby},...{type: this. payload.type == 2 ? 2 : 1}}
                                 add_test_detail(formChapter).then(res => {
                                     if (res.data.res_code === 1) {
                                         if (res.data.data.section_id) this.section_id = res.data.data.section_id

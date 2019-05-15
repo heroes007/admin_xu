@@ -7,7 +7,8 @@
                         @inputChange="inputChange" @selectChange1="selectChange1" @selectChange2="selectChange2"/>
                 <Row style="height: 650px;">
                     <Col :span="14">
-                        <tables :column="columns1" :table-data="list" :select-index="selectIndex" :tabel-height="tableHeight" @select-tables="selectTable" @on-select-all="selectAllTable"/>
+                        <tables :column="columns1" :table-data="list" :select-index="selectIndex" :delete-data="deleteList" :tabel-height="tableHeight" @select-tables="selectTable"
+                                @on-select-all="selectAllTable"/>
                         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
                     </Col>
                     <Col :span="10" style="height: 619px;border: 1px solid #f0f0f7;">
@@ -18,7 +19,7 @@
                                 <div class="change-student" v-for="(item, index) in changeList">
                                     <div class="change-name">{{item.realname}}</div>
                                     <div class="change-num">{{item.username}}</div>
-                                    <img class="change-img" @click="deletStudent(item, index)" :src="deleteImg" alt="">
+                                    <img class="change-img" @click="deleteStudent(item, index)" :src="deleteImg" alt="">
                                 </div>
                             </div>
                             <div style="height: 88px;border-bottom:1px solid #f0f0f7;display: flex;align-items: center;justify-content: center">
@@ -70,11 +71,13 @@
                 tableHeight: 530,
                 selectList: [{}],
                 changeList: [],
+                studentList: [],
                 selectIndex: null,
                 organization_id: '',
                 product_id: '',
                 keyword: '',
                 inputData: '',
+                deleteList: true,
                 deleteImg
             }
         },
@@ -143,24 +146,44 @@
                 }
                 postData('pmsg/getStudents', data).then(res => {
                     if(res.res_code == 1) {
+                        for(var i = 0; i < Math.ceil(res.data.count/10); i++) {
+                            this.studentList.push([])
+                        }
                         this.total = res.data.count
                         res.data.list.forEach((item, index) => {
                             item.index = index
+                            this.studentList[this.current - 1].forEach(item1 => {
+                                if(item1.index == index) {
+                                    item._checked = true
+                                }
+                            })
                         })
                         this.list = res.data.list
                     }
                 })
                 this.getProducts()
             },
+            setChangeList() {
+                this.changeList = []
+                this.studentList.forEach(item => {
+                    if(item.length > 0) {
+                        this.changeList = this.changeList.concat(item)
+                    }
+                })
+            },
             selectTable(selection, row) {
-                this.changeList = selection
+                this.studentList[this.current - 1] = selection
+                this.setChangeList()
             },
             selectAllTable(selection, row) {
-                this.changeList = selection
+                this.studentList[this.current - 1] = selection
+                this.setChangeList()
             },
-            deletStudent(item, index) {
-                this.changeList.splice(index, 1)
+            deleteStudent(item, index) {
+                this.studentList[this.current - 1].splice(index, 1)
                 this.selectIndex = item.index
+                this.deleteList = !this.deleteList
+                this.setChangeList()
             },
             getProducts() {
                 postData('components/getProducts', {organization_id: this.organization_id}).then(res => {
@@ -232,12 +255,17 @@
     }
     .message-box{
         display: flex;
+        flex-wrap: wrap;
+        align-content: start;
         margin-top: 20px;
         margin-bottom: 43px;
+        height: 400px;
+        overflow-y: auto;
     }
     .message-info{
         text-align: center;
         margin-right: 15px;
+        margin-bottom: 15px;
 
         .info-img{
             width: 50px;
@@ -249,6 +277,10 @@
             font-size: 16px;
             color: #474C63;
             letter-spacing: 0.19px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 66px;
+            white-space: nowrap;
         }
     }
     .btn{

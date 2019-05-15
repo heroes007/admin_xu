@@ -10,7 +10,10 @@
                 <video v-else :src="JSON.parse(item.url_arr).video" class="product-img"></video>
                 <div class="product-content">
                     <div class="product-content-title">{{item.title}}</div>
-                    <Input v-model="item.front_description" type="textarea" class="product-content-input" placeholder="请输入产品介绍"/>
+                    <div style="position: relative">
+                        <Input v-model="item.front_description" type="textarea" class="product-content-input" placeholder="请输入产品介绍" :maxlength="100"/>
+                        <div class="font-num">{{item.front_description.length}}/100</div>
+                    </div>
                     <div class="product-content-tab">
                         <img :src="upImg" alt="" @click="handleUp(index)">
                         <img :src="downImg" alt="" @click="handleDown(index)">
@@ -208,5 +211,11 @@
             width: 150px;
             margin-left: 20px;
         }
+    }
+    .font-num {
+        display: inline-block;
+        position: absolute;
+        top: 77px;
+        right: 18px;
     }
 </style>
