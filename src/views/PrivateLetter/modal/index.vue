@@ -7,7 +7,8 @@
                         @inputChange="inputChange" @selectChange1="selectChange1" @selectChange2="selectChange2"/>
                 <Row style="height: 650px;">
                     <Col :span="14">
-                        <tables :column="columns1" :table-data="list" :select-index="selectIndex" :delete-data="deleteList" :tabel-height="tableHeight" @select-tables="selectTable" @on-select-all="selectAllTable"/>
+                        <tables :column="columns1" :table-data="list" :select-index="selectIndex" :delete-data="deleteList" :tabel-height="tableHeight" @select-tables="selectTable"
+                                @on-select-all="selectAllTable"/>
                         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
                     </Col>
                     <Col :span="10" style="height: 619px;border: 1px solid #f0f0f7;">

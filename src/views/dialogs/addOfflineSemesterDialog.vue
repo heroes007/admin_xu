@@ -8,7 +8,8 @@
                         <Input v-model="form1.title" placeholder="请输入学期名称"></Input>
                     </FormItem>
                     <FormItem label="学期描述" class="semester-description" prop="description" >
-                        <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description"></Input>
+                        <Input type="textarea" :rows="8" placeholder="请输入学期描述内容" v-model="form1.description" :maxlength="100"></Input>
+                        <div class="font-num">{{form1.description.length}}/100</div>
                     </FormItem>
                     <div class="form-item-semester">
                       <FormItem class="item-semester" prop="tutor_id">
@@ -31,7 +32,7 @@
                     </div>
                     <div class="form-item-course" v-for="(t,i) in form1.offlineCurriculums" :key="i">
                       <div class="item-course">
-                        <span class="item-course-left"><span class="item-course-title">课程{{$config.addZero(i+1)}}</span>{{t.title}}</span> 
+                        <span class="item-course-left"><span class="item-course-title">课程{{$config.addZero(i+1)}}</span>{{t.title}}</span>
                         <span class="item-course-rigth">{{t.type_name}} | {{t.teacher_name}}</span>
                       </div>
                       <div class="item-course2">
@@ -307,5 +308,11 @@
                 color: #757575;
             }
         }
+    }
+    .font-num {
+        display: inline-block;
+        position: absolute;
+        top: 142px;
+        right: 18px;
     }
 </style>

@@ -55,7 +55,7 @@
                 courseRule: [],
                 formList: [
                     {type: 'input', name: '主题名称', field: 'title'},
-                    {type: 'textarea', name: '主题描述', field: 'description'},
+                    {type: 'textarea', name: '主题描述', field: 'description', maxlength: 200},
                     {type: 'array', list: []}
                 ],
                 modalTitle: '',

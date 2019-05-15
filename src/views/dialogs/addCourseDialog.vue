@@ -52,6 +52,7 @@
                             </FormItem>
                             <FormItem label="课程介绍" prop="description">
                                 <Input type="textarea" :rows="7" placeholder="请输入课程介绍" :maxlength="100" v-model="form.description"></Input>
+                                <div class="font-num">{{form.description.length}}/100</div>
                             </FormItem>
                             <FormItem ref="upload" label="展示封面" required>
                                 <upload-panel ref="upload_panel" :resourse="form.img_default" :upload-config="uploadConfig"
@@ -503,5 +504,11 @@
     .form-label-taech{
         margin-left: 11px;
         letter-spacing: 14px;
+    }
+    .font-num {
+        display: inline-block;
+        position: absolute;
+        top: 122px;
+        right: 18px;
     }
 </style>

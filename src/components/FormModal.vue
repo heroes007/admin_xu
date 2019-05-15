@@ -30,6 +30,7 @@
                     <FormItem v-if="t.type==='textarea'"  v-show="t.isShow ? t.isShow == 1 : true" :label="t.name" :prop="t.field">
                         <Input type="textarea" :maxlength="t.maxlength"  :rows="6" v-model="formItem[t.field]"
                                :placeholder="'请输入'+t.name"></Input>
+                        <div v-if="t.maxlength" class="font-num">{{formItem[t.field].length}}/{{t.maxlength}}</div>
                     </FormItem>
                     <!-- input-number -->
                     <FormItem v-if="t.type==='input-number'" :prop="t.field">
@@ -798,5 +799,11 @@
     }
     .font-hint{
         color: #F54802;
+    }
+    .font-num {
+        display: inline-block;
+        position: absolute;
+        top: 102px;
+        right: 18px;
     }
 </style>
