@@ -181,7 +181,6 @@
                 this.setChangeList()
             },
             deleteStudent(item, index) {
-                console.log(item, this.deleteList)
                 let num = null
                 this.studentList[item.page - 1].forEach((item1, index1) => {
                     if(item1.id == item.id) {
