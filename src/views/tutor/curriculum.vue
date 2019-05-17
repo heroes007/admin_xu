@@ -200,7 +200,7 @@
                 }else this.$Message.warning('请选择学员')
             },
             see(row) {
-                postData('product/curriculum_offline_grade/curriculum_of_student_get_list', {student_id: row.user_id}).then((res) => {
+                postData('product/curriculum_offline_grade/curriculum_of_student_get_list', {student_id: row.user_id,term_id: this.$route.query.id}).then((res) => {
                     if (res.res_code == 1) {
                         this.setShowModal('查看学员', res.data, 'See')
                         this.columns = columnSee
