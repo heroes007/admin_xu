@@ -219,7 +219,7 @@
                     page_size: this.pageSize,
                     page_num: this.current,
                     // 91  this.coursValue
-                    curriculum_id:  this.coursValue,
+                    curriculum_id: this.coursValue,
                     sign_state: this.setSelVal(this.stateValue),
                     grade_state: this.setSelVal(this.scoreValue)
                 }

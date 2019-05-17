@@ -47,6 +47,7 @@
                     {
                         title: '兑换码名称',
                         key: 'title',
+                        align: 'left',
                         minWidth: 120
                     },
                     // {

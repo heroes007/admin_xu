@@ -3,7 +3,7 @@
     <div v-if="type=='See'">
         <div class="head">
             <img :src="info.user_avatar" />
-            <div><p class="real grey-medium1">{{info.user_realname}}</p><p class="user grey-regular">{{info.username}}</p></div>
+            <div><p class="real grey-medium1">{{info.user_realname}}</p><p class="user grey-regular">{{info.username||info.user_username}}</p></div>
         </div>
     </div>
     <div v-if="type=='BatchScore'">
@@ -106,6 +106,7 @@ export default {
                         score: this.score
                     }
                     this.send(d, 'product/curriculum_offline_grade/grade_student')
+                    this.$emit('submission')
                 }
                 if(this.type == 'BatchScore'){
                     let d = {
