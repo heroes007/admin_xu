@@ -214,11 +214,12 @@
                     e.target.value = ''
                     this.resourse_url = url + '/' + this.video_url
                     if (this.type == 'video' && this.uploadConfig.time) {
-                        setTimeout(() => {
-                            let vedioTime = this.$refs.vedioPlayer.duration
-                            this.$emit('vedioTime', vedioTime)
-                            console.log(vedioTime)
-                        }, 1000)
+                        let setTime = setInterval(() => {
+                            if(this.$refs.vedioPlayer && this.$refs.vedioPlayer.duration) {
+                                this.$emit('vedioTime', this.$refs.vedioPlayer.duration)
+                                clearInterval(setTime)
+                            }
+                        }, 100)
                     }
                     this.$emit('getuploadfile', {
                         name: this.file_name,

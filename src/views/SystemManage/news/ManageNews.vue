@@ -118,7 +118,10 @@
                         state: v.state,
                         img_url: v.img_default
                     }).then(res => {
-                        if (res.res_code == 1) this.getList()
+                        if (res.res_code == 1) {
+                            this.$Message.success(res.msg)
+                            this.getList()
+                        }
                     })
                 } else {
                     postData('platform/news/modifyNews', {
@@ -129,7 +132,10 @@
                         id: v.id,
                         img_url: v.img_default
                     }).then(res => {
-                        if (res.res_code == 1) this.getList()
+                        if (res.res_code == 1) {
+                            this.$Message.success(res.msg)
+                            this.getList()
+                        }
                     })
                 }
             },
@@ -157,7 +163,7 @@
             deletes(row, rowIndex) {
                 this.$Modal.confirm({
                     title: '提示',
-                    content: '<p>是否确认删除该产品？</p >',
+                    content: '<p>是否确认删除该咨询？</p >',
                     onOk: () => {
                         postData('/platform/news/removeNews', {id: row.id}).then((res) => {
                             if (res.res_code == 1) this.getList()
