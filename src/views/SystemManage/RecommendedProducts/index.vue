@@ -11,7 +11,7 @@
                 <div class="product-content">
                     <div class="product-content-title">{{item.title}}</div>
                     <div style="position: relative">
-                        <Input v-model="item.front_description" type="textarea" class="product-content-input" placeholder="请输入产品介绍" :maxlength="100"/>
+                        <Input v-model="item.front_description" type="textarea" class="product-content-input" placeholder="请输入产品介绍" :maxlength="100" @on-change="changeContent"/>
                         <div class="font-num">{{item.front_description.length}}/100</div>
                     </div>
                     <div class="product-content-tab">
@@ -76,6 +76,9 @@
                     }
                 })
 
+            },
+            changeContent() {
+                this.isShow = true
             },
             closeModal() {
                 this.show = false

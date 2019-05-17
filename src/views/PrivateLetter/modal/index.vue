@@ -152,6 +152,7 @@
                         this.total = res.data.count
                         res.data.list.forEach((item, index) => {
                             item.index = index
+                            item.page = this.current
                             this.studentList[this.current - 1].forEach(item1 => {
                                 if(item1.index == index) {
                                     item._checked = true
@@ -180,9 +181,17 @@
                 this.setChangeList()
             },
             deleteStudent(item, index) {
-                this.studentList[this.current - 1].splice(index, 1)
+                let num = null
+                this.studentList[item.page - 1].forEach((item1, index1) => {
+                    if(item1.id == item.id) {
+                        num = index1
+                    }
+                })
+                this.studentList[item.page - 1].splice(num, 1)
                 this.selectIndex = item.index
-                this.deleteList = !this.deleteList
+                if(item.page == this.current) {
+                    this.deleteList = !this.deleteList
+                }
                 this.setChangeList()
             },
             getProducts() {
