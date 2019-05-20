@@ -20,7 +20,9 @@
                 <div>
                     <span class="w60">解锁方式:</span><span>{{$config.setLockType(detail.unlock_type)}}</span>
                 </div>
-                <Divider />
+                <div class="category_item">
+                    <span class="w60">产品分类:</span><span class="category_id">{{handleCategory(detail.category_id)}}</span>
+                </div>
                 <!-- <div>
                     <span class="w60">阅读人数:</span><span>{{detail.view_num}}</span>
                 </div> -->
@@ -30,7 +32,6 @@
                 <div>
                     <span class="w60">结业人数:</span><span>{{detail.honour}}</span>
                 </div>
-                 <Divider />
                 <div style="margin-top: 30px;">
                     <span class="w73">创建用户ID:</span><span>{{detail.username}}</span>
                 </div>
@@ -41,7 +42,7 @@
             <div class="head-btn">
                 <Button type="default" @click="edit" ghost class="btn-content" style="top: 20%;">编辑</Button>
                 <!--<Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>-->
-                <Button type="default" ghost class="btn-content" style="top: 40%;" @click="handleDelete">注销</Button>
+                <Button type="default" ghost class="btn-content" style="top: 40%;" @click="handleDelete">删除</Button>
             </div>
         </div>
     </div>
@@ -53,6 +54,7 @@
   import {Dialog} from "../views/dialogs";
   import { ADD_PRODUCTION } from "../views/dialogs/types";
   import {mapState} from 'vuex'
+  import { classification2 } from '../views/ProductManage/production/consts'
   export default {
     mixins: [Dialog],
     data() {
@@ -65,6 +67,13 @@
       }
     },
     methods: {
+      handleCategory(num){
+          let text = ''
+          classification2.forEach((t) => {
+              if(t.id == num) text = t.title
+          })
+          return text
+      },
       getList(){
         postData('/product/product/get_detail',{product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id} ).then((res) => {
             this.detail = res.data[0]
@@ -128,6 +137,13 @@
   }
 </script>
 <style lang="less" scoped>
+    .hide{
+        display: -webkit-box;
+        white-space: normal;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        -webkit-line-clamp: 1;
+    }
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;
@@ -204,11 +220,7 @@
                 margin-right: 10px;
             }
             p {
-                display: -webkit-box;
-                white-space: normal;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                -webkit-line-clamp: 1;
+                .hide;
             }
             margin-bottom: 50px;
         }
@@ -266,5 +278,13 @@
     /deep/ .ivu-btn {
         width: 190px;
         height: 40px;
+    }
+    .category_item{
+        display: inline-flex;
+        flex-wrap: nowrap;
+    }
+    .category_id{
+         width: calc(100% - 70px);
+         .hide;
     }
 </style>

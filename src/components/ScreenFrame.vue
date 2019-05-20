@@ -1,5 +1,5 @@
 <template>
-    <div class="screen" :style="(types == 4 || types == 8 || types == 9 || types == 12) ? backgroundColor:''">
+    <div class="screen" :style="(types == 4 || types == 8 || types == 9 || types == 12 || types == 16) ? backgroundColor:''">
         <div v-if="types == 6 || types == 7 || types == 8 || types == 9 || types == 13" class="back" @click="handleBack">
             <img class="back-img" src="../assets/icons/icon/back.png" alt="">
             <div class="back-title">返回</div>
@@ -10,10 +10,10 @@
         <Select v-if="selectSubjects" v-model="valueSelect3" @on-change="selectChange3" class="select-list" placeholder="请选择学科">
             <Option v-for="item in select3" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
-        <Select v-if=" ( types == 4 || types == 5 || types == 10 || types == 11 || types == 12 || types == 14 || types == 15) && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
+        <Select v-if=" ( types == 4 || types == 16 || types == 5 || types == 10 || types == 11 || types == 12 || types == 14 || types == 15) && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 15" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
+        <Select v-if="types == 15 || types == 16" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
             <Option v-for="item in select5" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
          <Select v-if="types == 15" v-model="valueSelect6" @on-change="selectChange6" class="select-list">
@@ -73,6 +73,7 @@
       //types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
       //types = 10 下拉框+标题+按钮; types = 12 下拉框+标题;  types=13：返回+标题+下拉框; types = 14: 下拉框*2+搜索框
       //types = 15 下拉框*4+搜索框
+      //type = 16 下拉框*3+搜索框+按钮
       types: {
         type: Number,
         required: true,

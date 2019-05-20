@@ -1,7 +1,7 @@
 <template>
     <div class='manage-production-view'>
-        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="4" size-title1="培训总数" :size-num1="total" btn-name="添加培训" :select2="selectList2"
-            select2Placeholder="请选择状态"  placehodle="搜索产品名称"  @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="16" size-title1="培训总数" :size-num1="total" btn-name="添加培训" 
+          :select2="selectList2" :select5="select5" @selectChange5="selectChange5" placehodle="搜索产品名称"  @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
           <div class="lecturer-list">
            <Row :gutter="20">
             <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
@@ -40,6 +40,7 @@
   import {Dialog} from "../../dialogs";
   import { ADD_PRODUCTION } from "../../dialogs/types";
   import {mapState} from 'vuex'
+  import { classification } from './consts'
   export default {
     mixins: [pageMixin, Dialog],
     components: { screen, pageList },
@@ -48,10 +49,12 @@
         curPage: 1,
         cardList: [],
         search: '',
-        selectList2: [{id: '',title:'全部'},{id: '3',title:'推荐'},{id: '2',title:'上架'},{id: '-1',title:'下架'},{id: '1',title:'测试'}],
+        select5: [{id: 'all',title:'全部状态'},{id: '3',title:'推荐'},{id: '2',title:'上架'},{id: '-1',title:'下架'},{id: '1',title:'测试'}],
         courseNums:12,
+        selectList2: classification,
         organization_id: sessionStorage.getItem('organization_id'),
-        state: ''
+        state: '',
+        category_id: 'all'
       }
     },
     watch:{
@@ -81,8 +84,12 @@
        this.organization_id = val;
        this.getList()
       },
-      selectChange2(val){
+      selectChange5(val){
         this.state = val
+        this.getList()
+      },
+      selectChange2(val){
+        this.category_id = val
         this.getList()
       },
       inputChange(val){
@@ -104,13 +111,16 @@
       },
       getList(){
         let organization_id = this.organization_id !== 1 ? this.organization_id : ''
+        // category_id
         let d = {
           organization_id,
-          state: this.state,
+          state: this.$config.setSelVal(this.state),
           search: this.search,
           page_size: this.pageSize,
           page_num: this.current,
+          category_id: this.category_id
         }
+        if(this.category_id == 'all') delete d.category_id
         postData('product/product/get_list',d).then((res) => {
          this.cardList = res.data.data
          this.cardList.map((t) => {

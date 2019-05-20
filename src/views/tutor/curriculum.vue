@@ -98,7 +98,7 @@
                 numList: [
                     {num: 0, unit: '人', title: '已签到'},
                     {num: 0, unit: '人', title: '已评分'},
-                    {num: 0, unit: '人', title: '平均分'},
+                    {num: 0, unit: '分', title: '平均分'},
                 ],
                 tableHeight: null,
                 show: false,

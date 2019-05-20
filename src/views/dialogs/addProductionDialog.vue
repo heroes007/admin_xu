@@ -17,6 +17,12 @@
                             <FormItem v-show="nextStep == 0" prop="price" label="实际售价">
                                 <InputNumber placeholder="0为免费，单位默认（元）" v-model="form.price"></InputNumber>
                             </FormItem>
+                            <FormItem v-show="nextStep == 0" prop="category_id" label="产品分类">
+                                <Select v-model="form.category_id" placeholder="请选择产品分类" >
+                                    <Option v-for="item in selectList3" :value="item.id" :key="item.id">{{item.title}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
                             <FormItem v-show="nextStep == 0" prop="unlock_type" label="解锁方式">
                                 <Select v-model="form.unlock_type" placeholder="不限/按课程/按章节/按视频">
                                     <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}
@@ -116,6 +122,7 @@
     import iconCopy from '../../assets/icons/icon/photo.png'
     import postData from '../../api/postData';
     import NewEditor from '../../components/NewEditor'
+    import { classification2 } from '../ProductManage/production/consts'
 
     export default {
         mixins: [RemoveModal, MPop],
@@ -140,6 +147,7 @@
                     id: 3,
                     title: '按视频'
                 }],
+                selectList3: classification2,
                 show: false,
                 editorId: 'form-item-new-editer' + Math.floor(Math.random() * 10000 + 1),
                 selectList2: [{id: -1, title: '下架'}, {id: 1, title: '测试'}, {id: 2, title: '上架'}],
@@ -210,6 +218,7 @@
                 color: '',
                 organizationList: null,
                 formState: null,
+                formCategory: null,
                 organizationId: null,
                 rules: {
                     organization_id: {required: true, message: '请选择所属机构'},
@@ -219,6 +228,7 @@
                     unlock_type: {required: true, message: '请选择解锁方式'},
                     state: {required: true, message: '请选择产品状态'},
                     short_description: {required: true, message: '请输入产品介绍', trigger: 'blur'},
+                    category_id: {required: true, message: '请选择产品分类'},
                 }
             }
         },
@@ -229,6 +239,7 @@
             }
             if (this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2) {
                 let d = this.payload.row
+                console.log(d);
                 this.form.title = d.title;
                 this.form.original_price = d.original_price;
                 this.form.price = d.price;
@@ -240,6 +251,7 @@
                 this.form.video_url = arrObj.video
                 this.form.product_id = d.id
                 this.form.organization_id = d.organization_id
+                this.form.category_id = d.category_id
                 this.content = d.description
                 // this.descriptionHtml = d.description.replace('class="form-message"','')
                 // this.form.organization_id = this.organization_id
@@ -341,6 +353,7 @@
                     } else {
                         if (this.form.imgList.length > 0 || this.form.video_url) {
                             this.formState = this.form.state
+                            this.formCategory = this.form.category_id
                             this.organizationId = this.form.organization_id
                             this.fromLabelWidth = 0;
                             this.nextStep = 2
@@ -361,6 +374,7 @@
                         }
                         if (this.form.imgList.length > 0 || this.form.video_url) {
                             this.form.state = this.formState;
+                            this.form.category_id = this.formCategory;
                             this.form.organization_id = this.organizationId;
                             this.form.url_arr = JSON.stringify(arrObj);
                             if (this.content) this.form.description = this.content
