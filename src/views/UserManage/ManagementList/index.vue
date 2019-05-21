@@ -113,8 +113,8 @@
            else this.fromAddAndEdit('user/modifySuperAdmin',val)
         },
         deletes(row,rowIndex){
-            postData('/user/removeSuperAdmin',{id: row.id}).then(res => {
-              if(res.res_code == 1) this.getList()
+            this.$config.deleteModal(() => {
+                this.fromAddAndEdit('user/removeSuperAdmin',{id: row.id})
             })
         },
         inputChange(val){

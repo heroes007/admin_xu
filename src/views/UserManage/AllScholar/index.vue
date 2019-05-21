@@ -138,7 +138,9 @@
             this.setOrganization()
         },
         deletes(row,rowIndex){
-           this.fromAddAndEdit('/user/removeDeptTeacher',{id: row.id})
+            this.$config.deleteModal(() => {
+                this.fromAddAndEdit('user/removeDeptTeacher', {id:  row.id})
+            })
         },
         selectChange1(val){
           this.organization_id = val

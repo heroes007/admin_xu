@@ -40,9 +40,11 @@
                 </div>
             </div>
             <div class="head-btn">
-                <Button type="default" @click="edit" ghost class="btn-content" style="top: 20%;">编辑</Button>
-                <!--<Button type="default" ghost class="btn-content" style="top: 20%;">统计</Button>-->
-                <Button type="default" ghost class="btn-content" style="top: 40%;" @click="handleDelete">删除</Button>
+                <Button type="default" @click="goBack" ghost class="btn-content" style="top: 20%;"><Icon class="btn-i" :size="22" type="ios-undo" /> 返回上一页</Button>
+                <div class="btn-list">
+                    <Button type="default" @click="handleDelete" ghost class="btn-content2" style="top: 20%;">删除</Button>
+                    <Button type="default" @click="edit" ghost class="btn-content3" style="top: 40%;margin-left:10px" >编辑</Button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,6 +69,9 @@
       }
     },
     methods: {
+      goBack(){
+          this.$router.push({ name: 'product-manage' })
+      },
       handleCategory(num){
           let text = ''
           classification2.forEach((t) => {
@@ -96,17 +101,14 @@
       handleDelete() {
         this.$Modal.confirm({
           title: '提示',
-          content: '注销后将永久删除，确认是否注销',
+          content: '删除后将永久删除，确认是否删除',
           onOk: () => {
             postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
               if(res.res_code == 1) {
                 this.$Message.info('删除产品');
-                window.close()
+                this.$router.push({ name: 'product-manage' })
               }
             })
-          },
-          onCancel: () => {
-            this.$Message.info('Clicked cancel');
           }
         });
       }
@@ -247,6 +249,7 @@
             color: #FFFFFF;
             letter-spacing: 0;
             margin-top: 30px;
+            width: 100%;
             div {
                 margin-bottom: 10px;
                 display: flex;
@@ -267,17 +270,49 @@
     .head-btn {
         position: relative;
         flex: 1;
-        width: 170px;
+        width: 190px;
         padding-bottom: 40px;
         .btn-content {
-            position: relative;
-            left: 0;
             margin-top: 40px;
+            background-color: #424242;
+            color: #fff;
+            .btn-i{
+                position: relative;
+                top: -2px;
+            }
+            &:hover{
+                background-color: #fff;
+                color: #5194f8
+            }
+        }
+        .btn-list{
+            display: inline-flex;
+            margin-top: 40px;
+            .btn-content2 {
+              width: 60px;
+              background: #653522;
+              color: #fff;
+               &:hover{
+                  background-color: #e55114;
+               }
+            }
+            .btn-content3 {
+              width: 120px;
+              background: #364d6a;
+              color: #fff;
+              &:hover{
+                 background-color: #5099fa;
+              }
+            }
         }
     }
     /deep/ .ivu-btn {
         width: 190px;
         height: 40px;
+        border: none;
+        &:hover{
+            border: none
+        }
     }
     .category_item{
         display: inline-flex;

@@ -4,7 +4,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import {Base64} from 'js-base64';
 import postData from '../api/postData'
-
+import {Modal} from 'iview'
 var loadingInstance = null;
 export default {
     IsLoading: (val) => {
@@ -16,6 +16,13 @@ export default {
         } else {
             if (loadingInstance) loadingInstance.close();
         }
+    },
+    deleteModal(fn, text){
+        Modal.confirm({
+          title: '提示',
+          content: text || '确定要删除？',
+          onOk: () => { fn() }
+      });
     },
     /* 深拷贝 */
     copy: function (obj1, obj2) {
@@ -33,6 +40,15 @@ export default {
             }
         }
         return obj2; //然后在把复制好的对象给return出去
+    },
+    // 处理 replace(/^ null$/g, '"-"') replace(/""/g, '"-"')
+    setDataInit(d){
+        d.map((t) => {
+            for (let name in t) {
+                if(t[name] == '' || t[name] == null) t[name] = '-'
+            }
+        })
+        return d
     },
     setSelVal(val){
         return val == 'all' ? '' : val

@@ -136,7 +136,9 @@
              })
         },
         deletes(row,rowIndex){
-          this.fromAddAndEdit('user/removeDept', {id: row.organization_id})
+            this.$config.deleteModal(() => {
+                this.fromAddAndEdit('user/removeDept', {id: row.organization_id})
+            })
         },
         inputChange(val){
            this.keyword = val;

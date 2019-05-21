@@ -4,8 +4,8 @@
           :select2="selectList2" :select5="select5" @selectChange5="selectChange5" placehodle="搜索产品名称"  @selectChange1="selectChange1"  @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick"/>
           <div class="lecturer-list">
            <Row :gutter="20">
-            <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
-                <div class="manage-production-col">
+            <Col span="6" :class="handleCardClass(t.state)"  v-for="(t, index) in cardList" :key="index" @click.native="handleJump(t)">
+                <div class="manage-production-col cards" >
                     <Row>
                     <Col span="2" class="al-left cad-top-left" >
                      <p>ID:</p>
@@ -101,13 +101,14 @@
       },
       handleJump(t){
         sessionStorage.setItem('PRODUCTINFO',JSON.stringify(t))
-        let routeData = this.$router.resolve({
-          query: '',
-          params: '',
-          name: "open-product",
-        });
+        // let routeData = this.$router.resolve({
+        //   query: '',
+        //   params: '',
+        //   name: "open-product",
+        // });
         sessionStorage.setItem('onlinePane','product1')
-        window.open(routeData.href, "_blank")
+        // window.open(routeData.href, "_blank")
+        this.$router.push({name: "open-product"})
       },
       getList(){
         let organization_id = this.organization_id !== 1 ? this.organization_id : ''
@@ -139,6 +140,9 @@
 <style lang="less" scoped>
   .lecturer-list{
       margin: 20px;
+  }
+  .cards:hover{
+    box-shadow: 0 0 2px 2px rgba(117, 124, 157, 0.15)
   }
   .manage-production-col{
     background: #fff;

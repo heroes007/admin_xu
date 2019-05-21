@@ -31,7 +31,7 @@ export default {
               if(res.res_code == 1){
                 if(res.msg === '修改成功'||res.msg === '添加成功') {
                   this.$Message.success(res.msg);
-                  this.show = false
+                  if(this.show)  this.show = false
                 }
                 this.getList()
               }

@@ -181,7 +181,7 @@ import { async, Promise, resolve, reject } from 'q';
           }).then(() => {
               this.setMenuActive()
           })
-          this.getName()
+          this.getName()          
         }
     }
 </script>

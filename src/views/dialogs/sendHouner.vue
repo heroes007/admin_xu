@@ -104,13 +104,18 @@
           honour_id: this.payload.row.id,
           complete_state: this.complete_state
         };
+        let loadingInstance = null
+        loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
         postData('product/get_product_students',d).then((res) => {
-          this.list = res.data.list
-          this.list.map((t) => {
-            t._disabled = t.state ? true : false
-            t._checked = t.state ? true : false
-          })
-          this.total = res.data.count
+         if(res.res_code == 1){
+            this.list = res.data.list
+            this.list.map((t) => {
+              t._disabled = t.state ? true : false
+              t._checked = t.state ? true : false
+            })
+            if(loadingInstance) loadingInstance.close()
+            this.total = res.data.count
+         }
         })
       },
       search(){
