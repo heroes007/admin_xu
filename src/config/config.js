@@ -45,7 +45,7 @@ export default {
     setDataInit(d){
         d.map((t) => {
             for (let name in t) {
-                if(t[name] == '' || t[name] == null) t[name] = '-'
+                if(t[name] === '' || t[name] == null) t[name] = '-'
             }
         })
         return d

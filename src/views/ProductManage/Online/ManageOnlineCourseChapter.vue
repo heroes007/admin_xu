@@ -278,7 +278,9 @@
                     id: row.id,
                     curriculum_online_id: parseInt(this.$route.params.id)
                 }
-                this.$store.dispatch('delete_online_curriculum_catalog', val)
+                this.$config.deleteModal(() => {
+                    this.$store.dispatch('delete_online_curriculum_catalog', val)
+                })
             },
             toggleListShow(index, t) {
                 this.showListState[index] = 1 - this.showListState[index];

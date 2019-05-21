@@ -49,7 +49,7 @@ export default {
         showItem(i,t){
           let d = this.detailData;
           if(d.prop==0&&i>5) return false
-          if(d.prop==1) {
+          else if(d.prop==1) {
               if(i == 3 || i == 5) return false
           }
           return true

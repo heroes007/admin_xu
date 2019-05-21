@@ -117,12 +117,8 @@
         this.initData()
       },
       deleteHandler(index, row) {
-        this.$Modal.confirm({
-          title: '提示',
-          content: '<p>是否确定删除该资料？</p>',
-          onOk: () => {
+        this.$config.deleteModal(() => {
             this.delete_download_data(row.id);
-          },
         });
       },
       downloadMsg(row) {

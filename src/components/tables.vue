@@ -204,8 +204,8 @@
             handleColumns(c,type) {
                 if(c&&c.length>0){
                     if(type){
-                        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 80})
-                        if (this.isSelection) c.unshift({type: 'selection', width: 100, align: 'center'})
+                        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 70})
+                        if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'right'})
                         if (this.isSelectionRight) c.push({type: 'selection', width: 100, align: 'center'})
                     }
                     c.map((t) => {

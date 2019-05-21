@@ -120,14 +120,10 @@
            }
         },
         deletes(row,rowIndex){
-             this.$Modal.confirm({
-                title: '提示',
-                content: '确定删除该公开课？',
-                onOk: () => {
-                    postData('product/curriculum_open/delete',{curriculum_open_id: row.id}).then(res => {
-                        if(res.res_code == 1) this.getList()
-                    })
-                }
+            this.$config.deleteModal(() => {
+                postData('product/curriculum_open/delete',{curriculum_open_id: row.id}).then(res => {
+                    if(res.res_code == 1) this.getList()
+                })
             });
         },
         handleClick(){

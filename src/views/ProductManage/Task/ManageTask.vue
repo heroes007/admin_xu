@@ -180,12 +180,8 @@
             },
             deleteHandler(index, row) {
                 var vm = this;
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: '<p>您确定要删除该任务吗?</p>',
-                    onOk: () => {
+                this.$config.deleteModal(() => {
                         this.delete_task(row.id)
-                    },
                 });
             },
             deleteCourseHandler(index, row) {

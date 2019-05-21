@@ -33,7 +33,7 @@
                 </Row>
             </Form>
         </Modal>
-        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="edit" @operation2="batchDownload"
+        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="edit" @operation2="deletes"
                 :column="columns1" :table-data="list" @operation3="moveUp" @operation4="moveDown"/>
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>
@@ -141,7 +141,7 @@
         beforeDestroy() {
             this.list = null;
             this.edit = null;
-            this.batchDownload = null;
+            this.deletes = null;
             this.setSubmit = null;
             this.submit = null;
             this.handleCurrentChange = null;
@@ -156,9 +156,11 @@
                 this.modalTitle = '编辑'
                 this.isEdit = true
             },
-            batchDownload(row, index) {
-                postData('/platform/banner/removeBanner', {id: row.id}).then((res) => {
-                    if (res.res_code == 1) this.getList()
+            deletes(row, index) {
+                this.$config.deleteModal(() => {
+                    postData('/platform/banner/removeBanner', {id: row.id}).then((res) => {
+                        if (res.res_code == 1) this.getList()
+                    })
                 })
             },
             uploadShareImgComplete(url) {

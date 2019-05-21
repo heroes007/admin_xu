@@ -54,15 +54,27 @@
          columns1(){
             return [
             {
+                title: '用户ID',
+                key: 'user_username',
+                align: 'left',
+                minWidth: 140
+            },
+            {
+                title: '开票用户',
+                key: 'user_realname',
+                minWidth: 100
+            },
+            {
                 title: '发票类型',
                 key: 'prop_name',
                 align: 'left',
-                minWidth: 200
+                minWidth: 100
             },
             {
                 title: '发票抬头',
+                align: 'left',
                 key: 'title',
-                minWidth: 100
+                minWidth: 150
             },
             {
                 title: '发票金额',
@@ -73,7 +85,7 @@
                 title: '购买产品',
                 key: 'product_title',
                 align: 'left',
-                minWidth: 100
+                minWidth: 150
             },
             {
               title: '申请时间',
@@ -136,6 +148,7 @@
         see(row,rowIndex){
             this.detailShow = true;
             this.tableRowData = row;
+            console.log(row,'rr');
         },
         selectChange1(val){
           this.organization_id = val
@@ -188,7 +201,7 @@
         }
     },
     mounted() {
-        this.tableHeight = window.innerHeight - 116
+        this.tableHeight = window.innerHeight - 176
         this.getProd()
         this.getList()
     }
@@ -210,11 +223,11 @@
         height: 60px;
         align-items: center;
         &-title {
-            margin-left: 36px;
+            margin-left: 26px;
             font-size: 16px
         }
         &-read {
-            margin-left: 40px;
+            margin-left: 20px;
             .size;
         }
         &-read2 {

@@ -95,8 +95,8 @@
         this.setOrganization()
       },
       deletes(t) {
-        postData('user/removeTeacher', {id: t.id}).then((res) => {
-          this.getList()
+        this.$config.deleteModal(() => {
+            postData('user/removeTeacher', {id: t.id}).then((res) => { this.getList() })
         })
       },
       inputChange(val) {

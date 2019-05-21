@@ -76,7 +76,6 @@
             this.updateWrapper = null;
             this.createNotificationHandler = null;
             this.handleSubmit = null;
-            this.sendAndDelete = null;
             this.recallHandler = null;
             this.editHandler = null;
             this.getList = null;
@@ -105,20 +104,6 @@
                     }
                 })
             },
-            sendAndDelete(row, text, url, index){
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: `确定要${text}该通知吗!`,
-                    onOk: () => {
-                        postData(url, {message_id: row.id}).then((res) => {
-                            if(res.res_code == 1){
-                                if(text == '发送') this.$Message.success(res.msg)
-                                this.getList()
-                            }
-                        })
-                    },
-                });
-            },
             recallHandler(row) {
                 this.$Modal.confirm({
                     title: '提示',
@@ -130,11 +115,12 @@
                     },
                 });
             },
-            sendHandler(row,index) {
-                this.sendAndDelete(row,'发送', 'platform/message/sendMessage')
-            },
             deleteHandler(row, index) {
-                this.sendAndDelete(row,'删除', 'platform/message/removeMessage', index)
+                this.$config.deleteModal(() => {
+                    postData('platform/message/removeMessage', {message_id: row.id}).then((res) => {
+                        if(res.res_code == 1) this.getList()
+                    })
+                })
             },
             editHandler(row, index) {
                 this.tableRow = row

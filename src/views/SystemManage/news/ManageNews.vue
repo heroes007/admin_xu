@@ -161,14 +161,10 @@
                 this.getList()
             },
             deletes(row, rowIndex) {
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: '<p>是否确认删除该咨询？</p >',
-                    onOk: () => {
-                        postData('/platform/news/removeNews', {id: row.id}).then((res) => {
-                            if (res.res_code == 1) this.getList()
-                        })
-                    },
+                this.$config.deleteModal(() => {
+                    postData('/platform/news/removeNews', {id: row.id}).then((res) => {
+                        if (res.res_code == 1) this.getList()
+                    })
                 });
             },
             getList() {
