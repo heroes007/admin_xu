@@ -25,7 +25,7 @@
                 <FormItem label="上传广告" required>
                     <UploadPanel ref="upload_panel" :resourse="lbData.img_url" :upload-config="uploadConfig"
                                  @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2">
-                        <span slot="file-require">* 只能上传 jpg/png 文件，建议尺寸1400*360px</span>
+                        <span slot="file-require">* 只能上传 jpg/png 文件，建议尺寸{{fileSize}}px</span>
                     </UploadPanel>
                 </FormItem>
                 <Row class='user-data' type='flex' justify='center' align='middle'>
@@ -64,6 +64,11 @@
             show(_new){
                 this.showModal = _new
                 if(_new)  this.setAdd(this.titleList[this.type-1], this.type)
+            }
+        },
+        computed: {
+            fileSize(){
+                return this.type == 1 || this.type == 2 ? '1400*360' : '750*120'
             }
         },
         data() {
@@ -160,6 +165,7 @@
                 this.lbData = this.$config.copy(row,{});
                 this.modalTitle = '编辑'
                 this.isEdit = true
+                this.type = row.position
             },
             deletes(row, index) {
                 this.$config.deleteModal(() => {

@@ -87,6 +87,7 @@ export default {
                 if(res.res_code == 1) {
                     this.$Message.success('评分成功')
                     this.closeModal()
+                    this.$emit('submission')
                 }
             })
         },
@@ -106,7 +107,6 @@ export default {
                         score: this.score
                     }
                     this.send(d, 'product/curriculum_offline_grade/grade_student')
-                    this.$emit('submission')
                 }
                 if(this.type == 'BatchScore'){
                     let d = {
@@ -115,7 +115,6 @@ export default {
                         score: this.score
                     }
                     this.send(d, 'product/curriculum_offline_grade/grade_curriculum')
-                    this.$emit('submission')
                 }
             }else{
               if(this.selectionList.length==0)  this.$Message.warning('请选择学员')
