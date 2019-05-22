@@ -5,7 +5,7 @@
                    @close="closeModal" @from-submit="handleSubmit" :title="modalTitle" :rule-validate="rules"/>
         <screen :btn-type="btnType" :types="1" size-title1="讲师总数" :size-num1="total" btn-name="添加讲师" placehodle="搜索讲师姓名"
                 @inputChange="inputChange" @handleClick="handleClick"/>
-        <div class="lecturer-list">
+        <div class="lecturer-list" :class="heights">
             <Row :gutter="20">
                 <Col span="6" v-for="(t,i) in list" :key="i">
                     <div class="lecturer-list-item">
@@ -50,6 +50,11 @@
     watch: {
       permissionItem5(_new) {
         this.handleAuth(_new)
+      }
+    },
+    computed:{
+      heights(){
+        return window.innerHeight < 720 ? 'lecturer1' : ''
       }
     },
     data() {
@@ -137,6 +142,7 @@
       }
     },
     mounted() {
+      console.log(window.innerHeight);
       this.getList()
       if (this.permissionItem5) this.handleAuth(this.permissionItem5)
       this.organizationList = null
@@ -210,8 +216,13 @@
     }
     .lecturer-list {
         margin: 20px;
+        overflow: hidden;
+        overflow-y:auto; 
     }
     /deep/ .ivu-col-span-6 {
         margin-bottom: 20px;
+    }
+    .lecturer1{
+      height: 400px;
     }
 </style>
