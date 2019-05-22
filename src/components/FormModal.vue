@@ -354,7 +354,6 @@
               return  t.name.length == 2 ? 'form-label' : ''
             },
             videoTime(v){
-                console.log(v,'v');
                 this.formItem.duration = v
             },
             handleClass(t){
@@ -560,7 +559,6 @@
                 this.$emit('handle-last')
             },
             handleDefaultUploadCompleteVideo(url){
-                console.log(url,'ss');
                 this.formItem.video_url = url;
                 this.$forceUpdate()
             },

@@ -225,7 +225,6 @@
                       item.disabled = !item.instructor_id
                   })
                 this.curricumList[0] = res.data
-                  console.log(res.data, '123')
               })
               postData('product/curriculum_online/pulldown_get_offline_list', {
                 product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,

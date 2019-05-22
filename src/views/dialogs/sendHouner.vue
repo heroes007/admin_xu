@@ -84,6 +84,7 @@
           {
             title: '完成率',
             key: 'complete_rate',
+            align: 'center',
           },
           {
             type: 'selection'

@@ -33,6 +33,7 @@
                     {
                         key: 'title',
                         title: '新闻标题',
+                        align: 'left',
                         minWidth: 200
                     },
                     {

@@ -28,7 +28,7 @@
                 title: '',
                 state: 1,
                 columns1: [
-                    {title: '私信内容', key: 'content', minWidth: 200},
+                    {title: '私信内容', key: 'content', minWidth: 200, align: 'left'},
                     {title: '收信学员', key: 'students_num', minWidth: 100},
                     {title: '发送时间', key: 'send_time', minWidth: 100},
                     {title: '创建人', key: 'realname', minWidth: 100},

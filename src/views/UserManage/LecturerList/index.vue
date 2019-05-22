@@ -81,7 +81,6 @@
     },
     methods: {
       see(t){
-        console.log(t,'t');
         this.detailShow = true;
         this.detailData = t
       },

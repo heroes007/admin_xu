@@ -82,7 +82,6 @@
             {
                 title: '年级',
                 key: 'grade_name',
-                align: 'left',
                 minWidth: 100
             },
             // {

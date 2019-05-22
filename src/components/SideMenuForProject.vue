@@ -99,17 +99,13 @@
         this.activeIndex = this.$route.name;
       },
       handleDelete() {
-        this.$Modal.confirm({
-          title: '提示',
-          content: '删除后将永久删除，确认是否删除',
-          onOk: () => {
+         this.$config.deleteModal(() => {
             postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
               if(res.res_code == 1) {
                 this.$Message.info('删除产品');
                 this.$router.push({ name: 'product-manage' })
               }
             })
-          }
         });
       }
     },
