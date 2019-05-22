@@ -9,7 +9,7 @@
                     <Input v-model="lbData.name" placeholder="请输入广告名称"></Input>
                 </FormItem>
                 <FormItem label="显示位置">
-                    <Input :placeholder="adutplace == '首页轮播' ? '首页轮播' : '课程页轮播'" disabled></Input>
+                    <Input :placeholder="adutplace" disabled></Input>
                 </FormItem>
                 <FormItem prop="state">
                     <template slot="label"><span class="form-label">状态</span></template>
@@ -50,21 +50,24 @@
 
     export default {
         components: {'btn-upload': UploadBtn, screen, Tables, UploadPanel},
-        props: {
-            type: {
+        props:{
+            type:{
+                type: Number,
+                default: 0
+            },
+            show: {
                 type: Boolean,
-                default: false
+                default: false,
+            }
+        },
+        watch: {
+            show(_new){
+                this.showModal = _new
+                if(_new)  this.setAdd(this.titleList[this.type-1], this.type)
             }
         },
         data() {
             return {
-                positionList: [
-                    {label: '点师成金APP首页轮播', value: 'apphome'},
-                    {label: '点师成金APP首页广告', value: 'apphomead'},
-                    {label: '官网首页', value: 'web_home'},
-                    {label: '教资APP首页', value: 'licence'},
-                    {label: '教资官网首页', value: 'web_licence'}
-                ],
                 stateList: [
                     {label: '上线中', value: 1},
                     {label: '已下线', value: 0}
@@ -129,12 +132,14 @@
                     },
                 ],
                 list: [],
-                adutplace: '首页轮播',
+                adutplace: '',
+                position: 0,
                 rules: {
                     name: {required: true, message: '请输入广告名称', trigger: 'blur'},
                     redirect_url: {required: true, message: '请输入跳转页面', trigger: 'blur'},
                     state: {required: true, message: '请选择状态'},
                 },
+                titleList: ['官网首页','官网课程页','移动首页','移动课程页'],
                 tableHeight: null
             }
         },
@@ -150,9 +155,9 @@
         },
         methods: {
             edit(row, index) {
-                this.adutplace = row.position == 1 ? '首页轮播' : '课程页轮播'
+                this.adutplace = this.titleList[row.position-1]
                 this.showModal = true;
-                this.lbData = row;
+                this.lbData = this.$config.copy(row,{});
                 this.modalTitle = '编辑'
                 this.isEdit = true
             },
@@ -171,17 +176,18 @@
                      this.lbData = this.lbData2;
                      this.lbData.img_url = ''
                 })
+                this.$emit('close')
                 this.showModal = false
                 this.$refs.lbForm.resetFields()
             },
             setSubmit() {
-                this.lbData.position = this.type ? 1 : 2;
-                let url = this.isEdit ? '/platform/banner/modifyBanner' : '/platform/banner/addBanner'
+                this.lbData.position = this.isEdit ? this.lbData.position : this.position
+                let url = this.isEdit ? 'platform/banner/modifyBanner' : 'platform/banner/addBanner'
                 postData(url, this.lbData).then((res) => {
                     if (res.res_code == 1) {
                         this.$Message.success(res.msg);
                         this.close()
-                        this.getList()
+                        this.getList(this.lbData.position)
                     }
                 })
             },
@@ -197,17 +203,12 @@
                 this.current = vl;
                 this.getList()
             },
-            setAdd(text) {
+            setAdd(text, n) {
                 this.showModal = true;
                 this.isEdit = false
-                this.adutplace = text;
+                this.adutplace = text + '轮播';
                 this.modalTitle = '添加'
-            },
-            addLb() {
-                this.setAdd('首页轮播')
-            },
-            addNew() {
-                this.setAdd('课程页轮播')
+                this.position = n
             },
             handleDefaultUploadComplete(url) {
                 this.lbData.img_url = url;
@@ -229,9 +230,9 @@
                     })
                 }
             },
-            getList() {
+            getList(pos) {
                 let d = {
-                    position: this.type ? 1 : 2,
+                    position: pos || this.type,
                     page_size: this.pageSize,
                     page_num: this.current,
                 }
@@ -239,11 +240,12 @@
                     this.list = res.data.list
                     if (this.list.length > 0) {
                         this.list.map((t) => {
-                            t.position_name = t.position == 2 ? '课程页轮播' : '首页轮播'
+                            t.position_name = this.titleList[t.position-1]
                             t.state_name = t.state == 1 ? '上线中' : t.state == -1 ? '已下线' : '测试中'
                         })
                     }
                     this.total = res.data.count
+                    this.$forceUpdate()
                 })
             },
         },
@@ -251,7 +253,7 @@
             this.getList()
             this.lbData = this.lbData2
             this.tableHeight = window.innerHeight - 124
-        }
+        },
     }
 </script>
 <style scoped lang="less">

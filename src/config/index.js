@@ -12,6 +12,7 @@ Vue.prototype.$config = config;
 window.$OnLine = new Vue()
 window.$SplitGroupRefresh = new Vue()
 window.$MakeAppointment = new Vue()
+
 Vue.use(LoadingY)
 // sync the router with the vuex store.
 // this registers `store.state.route`

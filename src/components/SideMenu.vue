@@ -276,8 +276,6 @@ import { async, Promise, resolve, reject } from 'q';
     .side-menu {
         padding: 27px 0;
         height: 100%;
-        overflow: hidden;
-        overflow-y: auto;
         .logo {
             margin-bottom: 40px;
         }
@@ -366,8 +364,8 @@ import { async, Promise, resolve, reject } from 'q';
 
         .menu-list {
             height: calc(100% - 240px);
-            // overflow: hidden;
-            // overflow-y: auto;
+            overflow: hidden;
+            overflow-y: auto;
         }
     }
 </style>

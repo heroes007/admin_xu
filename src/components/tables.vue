@@ -124,7 +124,7 @@
         watch: {
             tableData(_new) {
                 this.tableData = _new;
-                this.handleTableData(this.tableData)
+                this.handleTableData(_new)
             },
             column(_new){
                   this.handleColumns(_new)
