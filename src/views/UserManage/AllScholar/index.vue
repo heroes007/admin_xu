@@ -109,7 +109,7 @@
             title: '最近登录时间',
             key: 'last_time',
             align: 'left',
-            minWidth: 130
+            minWidth: 150
             },
             {
                 title: '操作',

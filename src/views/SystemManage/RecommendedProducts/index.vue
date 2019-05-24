@@ -4,24 +4,26 @@
                     btnName="确认" @change-list="changeList"/>
         <screen :types="10" title="首页推荐产品" btnType btnName="添加产品" @handleClick="handleClick" style="background:#ffffff"/>
         <div class="hint">提示：首页最少展示1个产品，最多展示3个产品</div>
-        <div class="content">
-            <div v-for="(item, index) in dataList" :key="index" class="product">
-                <img v-if="JSON.parse(item.url_arr).default.length" class="product-img" :src="JSON.parse(item.url_arr).default[0]" alt="">
-                <video v-else :src="JSON.parse(item.url_arr).video" class="product-img"></video>
-                <div class="product-content">
-                    <div class="product-content-title">{{item.title}}</div>
-                    <div style="position: relative">
-                        <Input v-model="item.front_description" type="textarea" class="product-content-input" placeholder="请输入产品介绍" :maxlength="100" @on-change="changeContent"/>
-                        <div class="font-num">{{item.front_description.length}}/100</div>
-                    </div>
-                    <div class="product-content-tab">
-                        <img :src="upImg" alt="" @click="handleUp(index)">
-                        <img :src="downImg" alt="" @click="handleDown(index)">
-                        <img :src="deleteImg" alt="" @click="handleDelete(index)">
+       <div class="recommended-content">
+            <div class="content">
+                <div v-for="(item, index) in dataList" :key="index" class="product">
+                    <img v-if="JSON.parse(item.url_arr).default.length" class="product-img" :src="JSON.parse(item.url_arr).default[0]" alt="">
+                    <video v-else :src="JSON.parse(item.url_arr).video" class="product-img"></video>
+                    <div class="product-content">
+                        <div class="product-content-title">{{item.title}}</div>
+                        <div style="position: relative">
+                            <Input v-model="item.front_description" type="textarea" class="product-content-input" placeholder="请输入产品介绍" :maxlength="100" @on-change="changeContent"/>
+                            <div class="font-num">{{item.front_description.length}}/100</div>
+                        </div>
+                        <div class="product-content-tab">
+                            <img :src="upImg" alt="" @click="handleUp(index)">
+                            <img :src="downImg" alt="" @click="handleDown(index)">
+                            <img :src="deleteImg" alt="" @click="handleDelete(index)">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+       </div>
         <div v-if="isShow" class="btn">
             <Button type="primary" ghost @click="cancel">取消</Button>
             <Button type="primary" @click="save">保存</Button>
@@ -69,13 +71,14 @@
                 this.modalTitle = '添加产品'
             },
             handleSubmit(val) {
-                postData('product/product/get_detail', {product_id: val.product}).then(res => {
-                    if(res.res_code == 1) {
-                        if(this.dataList.length == 3) this.$Message.info('首页最多展示3个产品，请先删除再添加')
-                        else this.dataList.push(res.data[0])
-                    }
-                })
-
+                if(val.product){
+                    postData('product/product/get_detail', {product_id: val.product}).then(res => {
+                        if(res.res_code == 1) {
+                            if(this.dataList.length == 3) this.$Message.info('首页最多展示3个产品，请先删除再添加')
+                            else this.dataList.push(res.data[0])
+                        }
+                    })
+                }
             },
             changeContent() {
                 this.isShow = true
@@ -147,6 +150,13 @@
 </script>
 
 <style scoped lang="less">
+    .recommended-content{
+      height: calc(100% - 200px);
+      overflow: hidden;
+      overflow-y: auto;
+      position: absolute;
+      width: 100%;
+    }
     .hint{
         height: 40px;
         line-height: 40px;
@@ -158,7 +168,8 @@
         text-align: center;
     }
     .content{
-        height: 720px;
+        position: relative;
+        height: auto;
         margin-top: 20px;
         min-width: 930px;
     }
@@ -207,9 +218,11 @@
         }
     }
     .btn{
+        width: 100%;
         display: flex;
         justify-content: center;
-
+        position: absolute;
+        bottom: 20px;
         /deep/ .ivu-btn{
             width: 150px;
             margin-left: 20px;

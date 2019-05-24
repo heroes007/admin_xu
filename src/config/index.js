@@ -44,10 +44,7 @@ router.beforeEach((to, from, next) => {
                             store.dispatch('set_user_info', d);
                             sessionStorage.setItem('PERSONALDETAILS',JSON.stringify(d))
                             next();
-                        } else {
-                            if (to.name !== 'login') next({ path: '/login' });
-                            else next();
-                        }
+                        } else toLogin()
                     })
                 }else{
                     Message.warning('暂无权限');

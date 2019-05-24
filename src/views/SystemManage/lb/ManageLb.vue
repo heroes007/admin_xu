@@ -111,12 +111,12 @@
                         title: '广告名称',
                         key: 'name',
                         align: 'left',
-                        minWidth: 200
+                        minWidth: 260
                     },
                     {
                         title: '显示位置',
                         key: 'position_name',
-                        minWidth: 100
+                        minWidth: 150
                     },
                     {
                         title: '状态',
@@ -126,7 +126,7 @@
                     {
                         title: '创建人',
                         key: 'user_name',
-                        minWidth: 100
+                        minWidth: 150
                     },
                     {
                         title: '操作',

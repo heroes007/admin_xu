@@ -473,7 +473,9 @@
                             this.$Message.info('请上传封面')
                         } else if(this.formList.length == 3 && this.formList[2].type == 'uploadVideo' && !this.formItem.video_url){
                             this.$Message.info('请上传视频')
-                        } else {
+                        } else if(this.formList.length == 2 && this.formList[1].field == 'product' && !this.formItem.product){
+                            this.$Message.info('该机构下无产品，请重选机构')
+                        }else {
                             if(this.$refs.formInput){
                                 if(this.content) this.handleFormData()
                                 else {

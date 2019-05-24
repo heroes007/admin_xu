@@ -38,6 +38,7 @@
         height: 100%;
         width: 100%;
         margin: 0;
+        min-width: 1280px;
     }
     #app {
         width: 100%;

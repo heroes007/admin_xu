@@ -140,7 +140,7 @@
                 if(c.hasOwnProperty('operationStudentNum'))  return row.student_num ? list : [ list[0], list[1], list[3], list[4] ]
             },
             rowClick(row, rowIndex) {
-                this.show(row, rowIndex, 'row-click')
+                this.show(row, rowIndex, 'row-click', true)
             },
             expand(row,states){
                 this.$emit('expand', row,states)
@@ -186,8 +186,8 @@
                 }
                 this.datas = d3
             },
-            show(row, rowIndex, params) {
-                if (this.seeUrl) {
+            show(row, rowIndex, params, bool) {
+                if (this.seeUrl&&!bool) {
                     postData(this.seeUrl, {id: row.organization_id}).then((res) => {
                         if (res.data) {
                             row = {...row, ...res.data[0]}
@@ -235,7 +235,7 @@
                             if (item.title == 'role_id' && x == 'role_id' && string[x] == 1) {
                                 arr.push(`${item.name}: ${string.realname}`)
                             } else {
-                                str = item.name + ':' + ' ' + (string[x] || string[x] == 0 ? string[x] : '—')
+                                str = item.name + ':' + ' ' + (string[x] === '' || string[x] == null ? '-' : string[x])
                                 arr.push(str)
                             }
                         }

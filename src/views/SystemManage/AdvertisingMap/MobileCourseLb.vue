@@ -1,5 +1,5 @@
 <template>
-    <lb :show="show" :type=3 @close="close" />
+    <lb :show="show" :type=4 @close="close" />
 </template>
 <script>
 import lbMixins from './lbMixins'

@@ -31,7 +31,7 @@
          </div>
          <Divider />
      </div>
-     <div class="personal-detail">
+     <div :class="isMechanism ? 'personal-detail2' : 'personal-detail'">
           <div class="personal-detail-img-list">
             <img class="detail-data1-img" :src="detailData.head_img_url" />
             <img class="detail-data1-img-auth" v-if="detailData.authentication" src="../assets/icons/icon/authentication.png" />
@@ -70,6 +70,11 @@ export default {
         return{
             show: false,
             female,male
+        }
+    },
+    computed: {
+        isMechanism(){
+            return this.detailData&&this.detailData.admin&&this.detailData.admin.length>0&&this.detailData.admin[0].role_id == 2
         }
     },
     watch:{
@@ -180,18 +185,24 @@ export default {
 /deep/ .ivu-divider-horizontal{
     margin: 30px 0 40px 0;
 }
-.personal-detail {
+.flexs{
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
-    justify-content: center;
     position: relative;
-    .personal-detail-text{
-        font-size: 16px;
-        margin-bottom: 10px;
-        .t;
-        .f2;
-    }
+}
+.personal-detail2{
+    .flexs;
+}
+.personal-detail {
+    .flexs;
+    justify-content: center;
+}
+.personal-detail-text{
+    font-size: 16px;
+    margin-bottom: 10px;
+    .t;
+    .f2;
 }
 .detail-data1-img-auth{
     position: absolute;

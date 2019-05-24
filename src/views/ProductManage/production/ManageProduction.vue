@@ -21,9 +21,9 @@
                     <h2 class="product-title">{{t.title}}</h2>
                   </Row>
                   <Row>
-                     <Col span="4" class="al-left cad-btm-price">¥{{t.price}}</Col>
-                     <Col span="4" class="al-left cad-btn-relprice">¥{{t.original_price}}</Col>
-                     <Col span="16" class="al-right cad-btn-people">{{t.join_number}}人报名</Col>
+                     <Col span="7" class="al-left cad-btm-price">¥{{t.price}}</Col>
+                     <Col span="7" class="al-left cad-btn-relprice">¥{{t.original_price}}</Col>
+                     <Col span="10" class="al-right cad-btn-people">{{t.join_number}}人报名</Col>
                   </Row>
                 </div>
             </Col>
@@ -139,7 +139,10 @@
 </script>
 <style lang="less" scoped>
   .lecturer-list{
-      margin: 20px;
+      padding: 20px;
+      height: calc(100% - 120px);
+      overflow: hidden;
+      overflow-y: auto;
   }
   .cards:hover{
     box-shadow: 0 0 2px 2px rgba(117, 124, 157, 0.15)

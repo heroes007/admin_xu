@@ -366,5 +366,14 @@
       position: absolute;
       right: 40px;
     }
-
+    @media screen and (max-width: 1500px) {
+       .select-list{
+        width:150px;
+        margin-left: 15px;
+      }
+      .input{
+        min-width: 200px;
+        width: 230px
+      }
+    }
 </style>
