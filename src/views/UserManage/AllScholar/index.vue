@@ -22,6 +22,7 @@
   import pageList from '../../../components/Page'
   import pageMixin from '../../mixins/pageMixins'
   import  { validatePass, validateUsername3 } from '../validate'
+import { resolve, reject } from 'q';
   export default {
     name: "ManagementList",
     components: { Tables, FormModal, screen, see, pageList },
@@ -153,8 +154,7 @@
         setOrganization(){
              if(this.organizationList){
                 if(this.role_id == 1){
-                    this.getOrganization()
-                    this.formList[1].selectList = this.organizationList
+                    this.getOrganization(2)
                 }else if(this.formList[1].field == 'organization_id') this.formList.splice(1,1);
             }
         },

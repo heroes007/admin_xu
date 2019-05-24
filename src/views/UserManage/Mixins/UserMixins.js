@@ -38,9 +38,10 @@ export default {
           })
         },
         //获取机构
-        getOrganization(){
+        getOrganization(type){
             postData('/components/getOrganization').then((res) => {
                 this.organizationList = res.data
+                if(type == 2)  this.formList[1].selectList = this.organizationList
             })
         },
         // 处理权限
