@@ -49,4 +49,11 @@
         a { text-decoration: none; }
         overflow: hidden;
     }
+    @media screen and (max-width: 1200px) {
+      body {
+         min-width: 1200px;
+         width: 1200px;
+         overflow-x: auto;
+      }
+    }
 </style>
