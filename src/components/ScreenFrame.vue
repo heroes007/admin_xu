@@ -375,5 +375,21 @@
         min-width: 200px;
         width: 230px
       }
+      .btn{
+        right: 20px;
+      }
+    }
+    @media screen and (max-width: 1279px) {
+       .select-list{
+        width:140px;
+        margin-left: 10px;
+      }
+      .input{
+        min-width: 200px;
+        width: 220px
+      }
+      .btn{
+        right: 10px;
+      }
     }
 </style>

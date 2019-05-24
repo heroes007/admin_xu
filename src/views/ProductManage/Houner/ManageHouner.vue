@@ -148,6 +148,7 @@
         overflow: hidden;
         overflow-y: auto;
         align-content: start;
+        min-width: 950px;
     }
     .card-houner-col{
         width: 442px;

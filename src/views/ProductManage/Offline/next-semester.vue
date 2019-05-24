@@ -74,7 +74,7 @@
                     {
                         key: '',
                         title: '开课日期',
-                        minWidth: 200,
+                        minWidth: 240,
                         render: (h, params) => {
                             let open_date = this.$config.formatDate(params.row.start_time);
                             let end_date = this.$config.formatDate(params.row.end_time);
