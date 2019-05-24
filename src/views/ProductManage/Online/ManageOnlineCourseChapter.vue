@@ -338,7 +338,8 @@
                         group_orderby: item.id,
                         section_id: '',
                         i: index,
-                        type: 1
+                        type: 1,
+                        modalTitle: '添加测验'
                         // curriculum_catalog_id: item.id,
                         // curriculum_id: item.curriculum_id,
                         // orderby: item.orderby + 1,
@@ -358,7 +359,8 @@
                         group_orderby: item.id,
                         section_id: '',
                         i: index,
-                        type: 2
+                        type: 2,
+                        modalTitle: '添加案例'
                         // curriculum_catalog_id: item.id,
                         // curriculum_id: item.curriculum_id,
                         // orderby: item.orderby + 1,
@@ -395,13 +397,14 @@
                         ...row,
                         video_edit: true,
                         curriculum_catalog_id: row.id,
-                        curriculum_online_id: parseInt(this.$route.params.id)
+                        curriculum_online_id: parseInt(this.$route.params.id),
                     })
                 } else {
                     this.handleSelModal(ADD_QUESTION, {
                         curriculum_online_id: parseInt(this.$route.params.id),
                         section_id: row.id,
-                        type: row.type
+                        type: row.type,
+                        modalTitle: row.type == 2 ? '编辑案例' : '编辑测验'
                     });
                 }
             },

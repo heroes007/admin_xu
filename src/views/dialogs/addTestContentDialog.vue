@@ -1,5 +1,5 @@
 <template>
-    <Modal :transfer=false :title="payload.type == 2 ? '添加案例' : '添加测验'" v-model="addTestContentDialog" :footer-hide="true"
+    <Modal :transfer=false :title="payload.modalTitle" v-model="addTestContentDialog" :footer-hide="true"
            @on-cancel="handleRemoveModal(remove)" size="auto" :mask-closable="false" width="800">
         <base-input @closedialog="handleClose">
             <Row slot="body">
@@ -419,6 +419,7 @@
             }
         },
         mounted() {
+            console.log(this.payload,'payload');
             this.section_id = this.payload.section_id
             this.formInline2.select_count = 4;
             if (this.section_id) {

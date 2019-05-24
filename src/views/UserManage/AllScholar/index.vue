@@ -154,9 +154,7 @@
              if(this.organizationList){
                 if(this.role_id == 1){
                     this.getOrganization()
-                  this.$nextTick(()=>{
                     this.formList[1].selectList = this.organizationList
-                  })
                 }else if(this.formList[1].field == 'organization_id') this.formList.splice(1,1);
             }
         },

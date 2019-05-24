@@ -2,16 +2,16 @@
     <Row class="advertising-map">
         <Tabs v-model="tabName" @on-click="changeatub" class="tab-name">
             <TabPane label="官网首页" name="home">
-                <HomeLb v-if="lbPane1" ref="HomePageBroadcast" />
+                <HomeLb :show="show1" @close="close(1)" ref="HomePageBroadcast" />
             </TabPane>
             <TabPane label="官网课程页" name="Course">
-                <CourseLb v-if="lbPane2" ref="CoursePageRotation" />
+                <CourseLb :show="show2" @close="close(2)" ref="CoursePageRotation" />
             </TabPane>
             <TabPane label="移动首页" name="mobile-home">
-                <MobileHomeLb v-if="lbPane3"  ref="MobileHomePageBroadcast" :type=3 />
+                <MobileHomeLb :show="show3" @close="close(3)" ref="MobileHomePageBroadcast" />
             </TabPane>
              <TabPane label="移动课程页" name="mobile-Course">
-                <MobileCourseLb v-if="lbPane4"  ref="MobileCoursePageRotation" :type=4 />
+                <MobileCourseLb :show="show4" @close="close(4)" ref="MobileCoursePageRotation" />
             </TabPane>
         </Tabs>
          <Button class="add-advert" type="primary" @click="addatub()">添加广告</Button>
@@ -28,30 +28,33 @@
         components:{ HomeLb, CourseLb, MobileCourseLb, MobileHomeLb },
         data(){
             return{
-                tabName: '',
-                lbPane1: true,
-                lbPane2: true,
-                lbPane3: true,
-                lbPane4: true,
+                tabName: 'home',
+                show1: false,
+                show2: false,
+                show3: false,
+                show4: false,
             }
         },
         methods: {
+            close(i){
+                this['show'+i] = false;
+            }, 
             changeatub(name){
                 sessionStorage.setItem('AdvertisingMap',name)
             },
             addatub(){
                 switch(this.tabName) {
                     case 'home':
-                    this.$refs.HomePageBroadcast.lb();
+                    this.show1 = true
                     break;  
                     case 'Course':
-                    this.$refs.CoursePageRotation.lb();
+                    this.show2 = true
                     break;  
                     case 'mobile-home':
-                    this.$refs.MobileHomePageBroadcast.lb();
+                    this.show3 = true
                     break;  
                     case 'mobile-Course':
-                    this.$refs.MobileCoursePageRotation.lb();
+                    this.show4 = true
                     break;  
                 }
             }

@@ -62,6 +62,7 @@
         },
         watch: {
             show(_new){
+                console.log(_new);
                 this.showModal = _new
                 if(_new)  this.setAdd(this.titleList[this.type-1], this.type)
             }
