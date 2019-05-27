@@ -63,7 +63,7 @@
                 title: '支付方式',
                 minWidth: 100,
                 render: (h, params) => {
-                  let d = params.row.method == 6 ? '支付宝' : params.row.method == 5 ? '微信' :''
+                  let d = params.row.method == 6 ? '支付宝' : (params.row.method == 7 || params.row.method == 5) ? '微信' :''
                     return h('span', d)
                 }
             },
