@@ -1,5 +1,5 @@
 <template>
-    <div class="box">
+    <div ref="NewEditorBox" class="box">
         <div :id="editorId" class="h100"></div>
     </div>
 </template>
@@ -13,6 +13,7 @@
         name: "NewEditor",
         data() {
             return {
+                editorHtml: null,
                 resourse_url: '',
                 img_url: '',
                 host: 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com',
@@ -93,19 +94,74 @@
                         }
                     })
             },
+            selectText(){
+                if(document.Selection){       
+                    //ie浏览器
+                    return document.selection.createRange().text;     	 
+                }else{    
+                    //标准浏览器
+                    return window.getSelection().toString(); 
+                }	 
+            },
+            handleSize(v){
+                if(v.includes('x-small')) return 12
+                else if(v.includes('small')) return 13
+                else if(v.includes('xx-large')) return 32
+                else if(v.includes('x-large')) return 24
+                else if(v.includes('large')) return 18
+                else return 16
+            },
             setEditor(){
                 let vm = this
+                this.editorHtml = this.content;
                 this.editor = new E(`#${this.editorId}`)
-                this.editor.customConfig.menus = ['fontSize', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list']
+                this.editor.customConfig.menus = ['fontSize', 'redo', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list']
                 this.editor.customConfig.customUploadImg = function (files, insert) {
                     vm.handleGetassignKey(files[0], insert)
                 }
+                this.editor.customConfig.pasteTextHandle = function (content) {
+                    // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
+                    return `<div style="font-size: 16px;">${content}</div>`
+                }
                 this.editor.customConfig.showLinkImg = false
                 this.editor.customConfig.onchange = function (html) {
-                    vm.$emit('get-content', html)
+                    vm.editorHtml = html
                 }
+                this.$refs.NewEditorBox.addEventListener('mouseleave', function () {
+                    let text = vm.editorHtml ? vm.editorHtml : vm.content
+                    vm.$emit('get-content',  `<div style="font-size: 16px;">${text}</div>`)
+                })
+                let doc = document.getElementById(this.editorId)
+                let size = 16
+                doc.onmousemove = function(){
+                    let html1 = null
+                    let text = vm.editor.txt.html()
+                    if(document.Selection){       
+                        //ie浏览器
+                        html1 = document.selection.createRange().text;     	 
+                    }else{    
+                        //标准浏览器
+                        html1 = window.getSelection().toString();	 
+                    }	
+                    if(text.includes(html1)){
+                        let t2 = document.querySelectorAll('.w-e-menu')[1];
+                        let d = text.split('</span>')
+                        d.forEach((v,i) => {
+                            if(v.includes(html1)){
+                                if(v.includes('font-size')){
+                                  size = vm.handleSize(v)
+                                  t2.innerHTML = size
+                                }else{
+                                    t2.innerHTML = 16
+                                }                             
+                            }
+                        });
+                    }
+                };  
                 this.editor.customConfig.zIndex = 0
                 this.editor.create()
+                let t2 = document.querySelectorAll('.w-e-menu')[1];
+                t2.innerHTML = size
                 this.editor.txt.html(this.content)
             }
         },
@@ -121,6 +177,7 @@
     }
     .h100{
         height: 100%;
+        font-size: 16px
     }
     /deep/ .w-e-text-container{
         height: calc(100% - 44px) !important;
