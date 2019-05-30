@@ -124,12 +124,12 @@
                     return `<div style="font-size: 16px;">${content}</div>`
                 }
                 this.editor.customConfig.showLinkImg = false
-                this.editor.customConfig.onchange = function (html) {
-                    vm.editorHtml = html
-                }
+                // this.editor.customConfig.onchange = function (html) {
+                //     vm.editorHtml = html
+                // }
                 this.$refs.NewEditorBox.addEventListener('mouseleave', function () {
-                    let text = vm.editorHtml ? vm.editorHtml : vm.content
-                    vm.$emit('get-content',  `<div style="font-size: 16px;">${text}</div>`)
+                    // let text = vm.editorHtml ? vm.editorHtml : vm.content
+                    vm.$emit('get-content',  `<div style="font-size: 16px;">${vm.editor.txt.html()}</div>`)
                 })
                 let doc = document.getElementById(this.editorId)
                 let size = 16
