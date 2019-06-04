@@ -103,13 +103,21 @@
                     return window.getSelection().toString(); 
                 }	 
             },
-            handleSize(v){
-                if(v.includes('x-small')) return 12
-                else if(v.includes('small')) return 13
-                else if(v.includes('xx-large')) return 32
-                else if(v.includes('x-large')) return 24
-                else if(v.includes('large')) return 18
-                else return 16
+            handlePos(v,p2){
+                let p1 = v.indexOf('font-size');
+                if(p2>p1) return true
+                return false
+            },
+            handleSize(v,pos){
+                if(this.handlePos(v,pos)){
+                    if(v.includes('x-small')) return 12
+                    else if(v.includes('small')) return 13
+                    else if(v.includes('xx-large')) return 32
+                    else if(v.includes('x-large')) return 24
+                    else if(v.includes('large')) return 18
+                    else return 16
+                }
+                return 16
             },
             setEditor(){
                 let vm = this
@@ -129,7 +137,7 @@
                 // }
                 this.$refs.NewEditorBox.addEventListener('mouseleave', function () {
                     // let text = vm.editorHtml ? vm.editorHtml : vm.content
-                    vm.$emit('get-content',  `<div style="font-size: 16px;">${vm.editor.txt.html()}</div>`)
+                    vm.$emit('get-content',  vm.editor.txt.html())
                 })
                 let doc = document.getElementById(this.editorId)
                 let size = 16
@@ -146,19 +154,23 @@
                     if(text.includes(html1)){
                         let t2 = document.querySelectorAll('.w-e-menu')[1];
                         let d = text.split('</span>')
+                        let arr = []
                         d.forEach((v,i) => {
                             if(v.includes(html1)){
                                 if(v.includes('font-size')){
-                                  size = vm.handleSize(v)
-                                  t2.innerHTML = size
+                                    arr.push(vm.handleSize(v,v.indexOf(html1)))
                                 }else{
-                                    t2.innerHTML = 16
-                                }                             
+                                    arr.push(16)
+                                }                           
                             }
                         });
+                        if(arr.length==1) t2.innerHTML = arr[0]
+                        else t2.innerHTML = 16
                     }
                 };  
                 this.editor.customConfig.zIndex = 0
+                this. editor.customConfig.colors = ['#000000', '#eeece0', '#1c487f', '#4d80bf', '#c24f4a',
+                    '#8baa4a', '#7b5ba1', '#46acc8', '#f9963b', '#FF0000']
                 this.editor.create()
                 let t2 = document.querySelectorAll('.w-e-menu')[1];
                 t2.innerHTML = size

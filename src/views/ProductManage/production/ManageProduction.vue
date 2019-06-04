@@ -20,11 +20,11 @@
                   <Row>
                     <h2 class="product-title">{{t.title}}</h2>
                   </Row>
-                  <Row>
-                     <Col span="7" class="al-left cad-btm-price">¥{{t.price}}</Col>
-                     <Col span="7" class="al-left cad-btn-relprice">¥{{t.original_price}}</Col>
-                     <Col span="10" class="al-right cad-btn-people">{{t.join_number}}人报名</Col>
-                  </Row>
+                  <div class="product-de">
+                     <span class="al-left cad-btm-price">¥{{t.price}}</span>
+                     <span class="al-left cad-btn-relprice">¥{{t.original_price}}</span>
+                     <span class="al-right cad-btn-people">{{t.join_number}}人报名</span>
+                  </div>
                 </div>
             </Col>
         </Row>
@@ -138,6 +138,17 @@
   };
 </script>
 <style lang="less" scoped>
+  .product-de{
+    text-align: left;
+    position: relative;
+    .cad-btn-relprice{
+      margin-left: 10px;
+    }
+    .cad-btn-people{
+      position: absolute;
+      right: 0;
+    }
+  }
   .lecturer-list{
       padding: 20px;
       height: calc(100% - 120px);
