@@ -140,7 +140,6 @@
                     vm.$emit('get-content',  vm.editor.txt.html())
                 })
                 let doc = document.getElementById(this.editorId)
-                let size = 16
                 doc.onmousemove = function(){
                     let html1 = null
                     let text = vm.editor.txt.html()
@@ -152,7 +151,6 @@
                         html1 = window.getSelection().toString();	 
                     }	
                     if(text.includes(html1)){
-                        let t2 = document.querySelectorAll('.w-e-menu')[1];
                         let d = text.split('span')
                         let arr = []
                         d.forEach((v,i) => {
@@ -185,8 +183,6 @@
                 this. editor.customConfig.colors = ['#000000', '#eeece0', '#1c487f', '#4d80bf', '#c24f4a',
                     '#8baa4a', '#7b5ba1', '#46acc8', '#f9963b', '#FF0000']
                 this.editor.create()
-                let t2 = document.querySelectorAll('.w-e-menu')[1];
-                t2.innerHTML = size
                 this.editor.txt.html(this.content)
             }
         },
