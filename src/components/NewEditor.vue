@@ -105,7 +105,7 @@
             },
             handlePos(v,p2){
                 let p1 = v.indexOf('font-size');
-                if(p2>p1) return true
+                if(p1<p2) return true
                 return false
             },
             handleSize(v,pos){
@@ -153,7 +153,7 @@
                     }	
                     if(text.includes(html1)){
                         let t2 = document.querySelectorAll('.w-e-menu')[1];
-                        let d = text.split('</span>')
+                        let d = text.split('span')
                         let arr = []
                         d.forEach((v,i) => {
                             if(v.includes(html1)){
@@ -164,8 +164,21 @@
                                 }                           
                             }
                         });
-                        if(arr.length==1) t2.innerHTML = arr[0]
-                        else t2.innerHTML = 16
+                        let docs = document.querySelectorAll('.w-e-menu .w-e-droplist .w-e-list')[0]&&document.querySelectorAll('.w-e-menu .w-e-droplist .w-e-list')[0].childNodes
+                        if(docs){
+                            docs.forEach((t) => {
+                                  t.style.color = '#474C63'
+                                  if(arr.length==1){
+                                    if(arr[0] == t.innerText) {
+                                        t.style.color = '#4098FF'
+                                    }
+                                  }else{
+                                      if(t.innerText == 16){
+                                            t.style.color = '#4098FF'
+                                        }
+                                  }
+                            })
+                        }
                     }
                 };  
                 this.editor.customConfig.zIndex = 0

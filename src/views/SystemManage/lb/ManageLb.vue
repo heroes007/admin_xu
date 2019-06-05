@@ -69,7 +69,7 @@
         },
         computed: {
             fileSize(){
-                return this.type == 1 || this.type == 2 ? '1400*360' : '750*120'
+                return this.type == 1 || this.type == 2 ? '1200*390' : '750*240'
             }
         },
         data() {
