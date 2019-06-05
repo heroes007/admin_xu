@@ -123,7 +123,7 @@
                 let vm = this
                 this.editorHtml = this.content;
                 this.editor = new E(`#${this.editorId}`)
-                this.editor.customConfig.menus = ['fontSize', 'redo', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list']
+                this.editor.customConfig.menus = ['fontSize', 'bold', 'underline', 'foreColor', 'image', 'justify', 'list']
                 this.editor.customConfig.customUploadImg = function (files, insert) {
                     vm.handleGetassignKey(files[0], insert)
                 }
