@@ -178,7 +178,7 @@
             }
             postData('user/getStudentList', d).then((res) => {
                   this.list = res.data.list
-                  this.total = res.data.count
+                  this.total = res.data.all_student
                   this.titleTotal = res.data.all_student
                   this.allNum = res.data.count
                   if(this.list.length>0){
