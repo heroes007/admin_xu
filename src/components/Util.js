@@ -134,7 +134,7 @@ export const MenuList = [
     },
     {
         name: 'order',
-        title: '订单管理',
+        title: '订单信息',
         icon: 'md-pricetag',
         list: [
             {
@@ -145,6 +145,10 @@ export const MenuList = [
                 name: 'invoice-info',
                 title: '发票信息',
             },
+            // {
+            //     name: 'certificate-info',
+            //     title: '证书信息',
+            // },
         ]
     },
     {

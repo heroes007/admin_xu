@@ -24,15 +24,15 @@
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem prop="department_id">
-                                <template slot="label"><span class="form-label">科室</span></template>
+                            <FormItem>
+                                <template slot="label"><span class="form-label-taech">科室</span></template>
                                 <Select v-model="form.department_id" placeholder="请选择科室">
                                     <Option v-for="item in detpysList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem prop="grade_id">
-                                <template slot="label"><span class="form-label">年级</span></template>
+                            <FormItem>
+                                <template slot="label"><span class="form-label-taech">年级</span></template>
                                 <Select v-model="form.grade_id" placeholder="请选择年级">
                                     <Option v-for="item in gradesList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
@@ -206,12 +206,12 @@
                     // instructor_id: [
                     //     {required: true, message: '请选择导师'}
                     // ],
-                    department_id: [
-                        {required: true, message: '请选择科室'}
-                    ],
-                    grade_id: [
-                        {required: true, message: '请选择年级'}
-                    ],
+                    // department_id: [
+                    //     {required: true, message: '请选择科室'}
+                    // ],
+                    // grade_id: [
+                    //     {required: true, message: '请选择年级'}
+                    // ],
                     unlock_type: [
                         {required: true, message: '请选择解锁方式'}
                     ],

@@ -23,6 +23,7 @@ const tutorCourse = () => import('../views/tutor/course-management')
 const Curriculum = () => import('../views/tutor/curriculum')
 const OrderManagement = () => import('../views/Order/OrderManagement/index')
 const InvoiceInfo = () => import('../views/Order/InvoiceInfo/index')
+const CertificateInfo = () => import('../views/Order/certificate-info/index')
 const PrivateLetter = () => import('../views/PrivateLetter/index')
 const RecommendedProducts = () => import('../views/SystemManage/RecommendedProducts/index')
 const TutorHead = () => import('../views/tutor/tutor-head')
@@ -97,6 +98,12 @@ const routes = [
         path: 'invoice-info',
         name: 'invoice-info',
         component: InvoiceInfo
+      },
+      //证书信息
+      {
+        path: 'certificate-info',
+        name: 'certificate-info',
+        component: CertificateInfo
       },
       //私信管理
       {
