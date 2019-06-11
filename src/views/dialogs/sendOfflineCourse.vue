@@ -86,6 +86,7 @@
     },
     computed: {
       queryOfflineUserList() {
+        console.log(this.$store.state.offline_curriculum.offline_term_student);
         return this.$store.state.offline_curriculum.offline_term_student
       },
       // pageSize() {

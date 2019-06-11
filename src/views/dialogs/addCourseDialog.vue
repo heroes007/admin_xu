@@ -378,10 +378,10 @@
                     this.teacherList = res.data
                 })
                 postData('components/getDepts').then((res) => {
-                    this.detpysList = res.data
+                    this.detpysList = [{id: 'all',name: '请选择科室'},...res.data]
                 })
                 postData('components/getGrades').then((res) => {
-                    this.gradesList = res.data
+                    this.gradesList = [{id: 'all',name: '请选择年级'},...res.data]
                 })
                 postData('components/getInstructors', {organization_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id}).then(res => {
                     if(res.res_code==1){
