@@ -134,7 +134,7 @@ export const MenuList = [
     },
     {
         name: 'order',
-        title: '订单信息',
+        title: '信息管理',
         icon: 'md-pricetag',
         list: [
             {
