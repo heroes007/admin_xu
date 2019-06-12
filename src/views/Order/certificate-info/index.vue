@@ -1,13 +1,13 @@
 <template>
    <div class="user-manage-main">
-        <ViewInvoice :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
+        <ViewHonour :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close" />
         <screen  select-type1 selectType2 :types="15" :select5="invoiceSelect" :select6="select6" :select2="select2" placehodle="搜索产品名称" @selectChange1="selectChange1" 
         @selectChange2="selectChange2" @selectChange5="selectChange5" @selectChange6="selectChange6" @inputChange="inputChange" />
         <div class="batch">
             <div class="batch-title">选项</div>
             <Button class="batch-read" type="primary" @click="batchDownload" ghost>批量下载</Button>
         </div>
-        <Tables :tabel-height="tableHeight" @operation1="see"   @select-tables="selectTables" @on-select-all="selectTablesAll" :is-selection=true :is-serial=true :column="columns1" :table-data="list" :select-list="invoiceSelectInfo" />
+        <Tables :tabel-height="tableHeight" @operation1="see"   @select-tables="selectTables" @on-select-all="selectTablesAll" :is-selection=true :is-serial=true :column="columns1" :table-data="list" />
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>
@@ -18,11 +18,11 @@
   import postData from 'src/api/postData'
   import pageList from '../../../components/Page'
   import pageMixin from '../../mixins/pageMixins'
-  import ViewInvoice from './ViewInvoice.vue'
+  import ViewHonour from './ViewHonour.vue'
   import invoiceSelectInfo from './const.js'
   export default {
     name: "ManagementList",
-    components: { Tables, screen, pageList, ViewInvoice },
+    components: { Tables, screen, pageList, ViewHonour },
     mixins: [UserMixins, pageMixin],
     data (){
         return{
@@ -37,11 +37,7 @@
             invoiceSelectInfo,
             invoice_state: '',
             select2: [ {id: 'all', title: '全部产品'} ],
-            invoiceSelect:  [ 
-                {id: 'all', title: '全部发票'},
-                {id: 0, title: '电子发票'},
-                {id: 1, title: '纸质发票'},
-            ],
+            invoiceSelect: [{id: 'all', title: '全部证书'}],
             select6: [
                 {id: 'all', title: '全部状态'},
                 {id: 0, title: '未下载'},
@@ -55,35 +51,30 @@
             return [
             {
                 title: '用户ID',
-                key: 'user_username',
+                key: 'username',
                 align: 'left',
                 minWidth: 140
             },
             {
-                title: '开票用户',
-                key: 'user_realname',
-                minWidth: 100
-            },
-            {
                 title: '真实姓名',
-                key: 'prop_name',
+                key: 'realname',
                 align: 'left',
                 minWidth: 100
             },
             {
                 title: '获得证书',
                 align: 'left',
-                key: 'title',
+                key: 'honour_name',
                 minWidth: 150
             },
             {
                 title: '所属课程',
-                key: 'amount',
+                key: 'product_title',
                 minWidth: 100
             },
             {
               title: '提交时间',
-              key: 'create_time',
+              key: 'time',
               align: 'left',
               minWidth: 150
             },
@@ -115,8 +106,8 @@
         download(){
             let arr = []
             this.selectionList.forEach((m)=>{ arr.push(m.id) })
-            let d1 = { invoice_ids: arr, state: 1 }
-            postData('order/invoice/change',d1).then((res)=>{
+            let d1 = { ids: JSON.stringify(arr) }
+            postData('product/changeDownloadState',d1).then((res)=>{
                 if(res.res_code==1){
                     this.getList()
                     let d = this.$config.copy(this.invoiceSelectInfo,[])
@@ -125,6 +116,7 @@
                         t.title = t.name
                     })
                     let titleList = d
+                    this.selectionList.map((t,i)=> t.index=( i+1 ) )
                     this.$config.downExcel(titleList, this.selectionList, '证书信息')
                 }
             })
@@ -140,9 +132,12 @@
             this.selectionList = selection
         },
         see(row,rowIndex){
-            this.detailShow = true;
-            this.tableRowData = row;
-            console.log(row,'rr');
+            postData('product/user_honour_get_detail',{id: row.id}).then((res) => {
+                if(res.res_code==1){
+                  this.detailShow = true;
+                  this.tableRowData = this.$config.setDataInit([res.data])[0];
+                }
+            })
         },
         selectChange1(val){
           this.organization_id = val
@@ -171,17 +166,13 @@
               page_num: this.current,
               organization_id: this.$config.setSelVal(this.organization_id),
               product_id: this.$config.setSelVal(this.product_id),
-              prop: this.$config.setSelVal(this.types),
+              honour_id: this.$config.setSelVal(this.types),
               state: this.$config.setSelVal(this.invoice_state)
             }
-            postData('order/invoice/get_list', d).then((res) => {
+            postData('product/getHonourList', d).then((res) => {
                  if(res.res_code == 1){
-                    this.list = res.data
+                    this.list = res.data.data
                     this.total = res.data.count
-                    this.list.map((t)=>{
-                        t.prop_name = t.prop ? '纸质发票' : '电子发票'
-                        t.type_name = t.type ? '公司' : '个人'
-                    })
                  }
             })
         },
@@ -192,12 +183,24 @@
                     this.select2 = [...this.select2,...res.data]
                 }
             })
+        },
+        getHonour(){
+            let d = { organization_id: this.$config.setSelVal(this.organization_id) }
+            postData('product/honour_pull_down_get_list',d).then((res)=>{
+                if(res.res_code == 1){
+                    if(res.data.length>0){
+                        res.data.map(t => t.title = t.name)
+                    }
+                    this.invoiceSelect = [{id: 'all', title: '全部证书'},...res.data]
+                }
+            })
         }
     },
     mounted() {
         this.tableHeight = window.innerHeight - 176
         this.getProd()
         this.getList()
+        this.getHonour()
     }
   }
 </script>
