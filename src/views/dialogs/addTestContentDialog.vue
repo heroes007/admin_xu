@@ -272,6 +272,7 @@
                 this.isEdit = !this.isEdit;
             },
             editHandler(index, row) {
+                this.formInline2.answerList = JSON.parse(row.content).answerList
                 this.formInline2.video_test_detail_id = row.id;
             },
             deleteHandler(index, row) {
