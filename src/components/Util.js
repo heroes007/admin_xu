@@ -145,10 +145,10 @@ export const MenuList = [
                 name: 'invoice-info',
                 title: '发票信息',
             },
-            {
-                name: 'certificate-info',
-                title: '证书信息',
-            },
+            // {
+            //     name: 'certificate-info',
+            //     title: '证书信息',
+            // },
         ]
     },
     {

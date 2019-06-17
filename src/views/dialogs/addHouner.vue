@@ -23,21 +23,21 @@
                                 <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.detail"></Input>
                             </FormItem>
                             <FormItem label="证书照片" required>
-<!--                                <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig"-->
-<!--                                              types="image/jpg, image/jpeg, image/png"-->
-<!--                                              @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2">-->
-<!--                                    <span slot="file-require"-->
-<!--                                          class="font-hint">*只能上传 jpg/png/jpeg 文件，且图片480*270,大小不超过2M</span>-->
-<!--                                </upload-panel>-->
-                                <Carousel v-if="form.img_url.length">
-                                    <CarouselItem v-for="(item, index) in form.img_url">
-                                        <img style="width: 468px;" :src="item" alt="">
-                                    </CarouselItem>
-                                </Carousel>
-                                <upload-button text="上传" :imgtypes="imgType" bucket="jhyl-static-file"
-                                               @handle-close="handleFileClose"
-                                               @uploadcomplete="uploadcompleteButton" :type="fileType"
-                                               :maxFileSize="[2, 300]"></upload-button>
+                                <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig"
+                                              types="image/jpg, image/jpeg, image/png"
+                                              @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2">
+                                    <span slot="file-require"
+                                          class="font-hint">*只能上传 jpg/png/jpeg 文件，且图片480*270,大小不超过2M</span>
+                                </upload-panel>
+<!--                                <Carousel v-if="form.img_url.length">-->
+<!--                                    <CarouselItem v-for="(item, index) in form.img_url">-->
+<!--                                        <img style="width: 466px;height: 260px;" :src="item" alt="">-->
+<!--                                    </CarouselItem>-->
+<!--                                </Carousel>-->
+<!--                                <upload-button text="上传" :imgtypes="imgType" bucket="jhyl-static-file"-->
+<!--                                               @handle-close="handleFileClose"-->
+<!--                                               @uploadcomplete="uploadcompleteButton" :type="fileType"-->
+<!--                                               :maxFileSize="[2, 300]"></upload-button>-->
                             </FormItem>
                             <FormItem class="btns">
                                 <Button v-if="payload.type==2" type="error" class="next-btn" style="width: 120px;"

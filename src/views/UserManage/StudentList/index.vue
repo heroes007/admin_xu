@@ -114,8 +114,8 @@
                         minWidth: 100
                     },
                     {
-                        title: '最近登录时间',
-                        key: 'last_time',
+                        title: '注册时间',
+                        key: 'create_time',
                         align: 'left',
                         minWidth: 150
                     },
