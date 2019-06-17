@@ -108,7 +108,7 @@
                     {
                         title: '状态',
                         render:(h, params) => {
-                            let d = params.certify_state == 0 ? '未认证' : '已认证'
+                            let d = params.row.certify_state == 1 ? '已认证' : '未认证'
                             return h('span', d)
                         },
                         minWidth: 100
