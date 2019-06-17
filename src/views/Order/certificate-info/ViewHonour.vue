@@ -53,20 +53,6 @@ export default {
         },
         ModalState(_new){
             this.show = _new
-        },
-        showItem(i,t){
-          let d = this.detailData;
-          if(d.prop==0&&i>5) return false
-          else if(d.prop==1) {
-              if(i == 3 || i == 5) return false
-          }
-          return true
-        },
-        showTitle(i){
-            let d = this.detailData
-            if(i == 0) return '发票详情'
-            if(i==d.list.length-6) return '接受方式'
-            return ''
         }
     }
 }

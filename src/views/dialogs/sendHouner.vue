@@ -143,7 +143,7 @@
         var list = [];
         if (this.multipleSelection && this.multipleSelection.length > 0) {
           this.multipleSelection.map(item => {
-            list.push(item.id)
+           if(item.hasOwnProperty('_disabled')&&!item._disabled)  list.push(item.id)
           });
         }
         if (list.length > 0) {
