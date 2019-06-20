@@ -23,21 +23,23 @@
                                 <Input type="textarea" :rows="9" placeholder="请输入内容" v-model="form.detail"></Input>
                             </FormItem>
                             <FormItem label="证书照片" required>
-                                <upload-panel ref="upload_panel" :resourse="form.img_url" :upload-config="uploadConfig"
-                                              types="image/jpg, image/jpeg, image/png"
-                                              @uploadcomplete="handleDefaultUploadComplete" :maxFileSize="2">
-                                    <span slot="file-require"
-                                          class="font-hint">*只能上传 jpg/png/jpeg 文件，且图片480*270,大小不超过2M</span>
-                                </upload-panel>
-<!--                                <Carousel v-if="form.img_url.length">-->
-<!--                                    <CarouselItem v-for="(item, index) in form.img_url">-->
-<!--                                        <img style="width: 466px;height: 260px;" :src="item" alt="">-->
-<!--                                    </CarouselItem>-->
-<!--                                </Carousel>-->
-<!--                                <upload-button text="上传" :imgtypes="imgType" bucket="jhyl-static-file"-->
-<!--                                               @handle-close="handleFileClose"-->
-<!--                                               @uploadcomplete="uploadcompleteButton" :type="fileType"-->
-<!--                                               :maxFileSize="[2, 300]"></upload-button>-->
+                                <div v-if="!form.img_url.length" class="demo-file-key">
+                                    <img src="../../assets/img/img-video.png"/>
+                                    <p>展示图片</p>
+                                </div>
+                                <Carousel v-else autoplay v-model="fileValue">
+                                    <CarouselItem v-for="(item, index) in form.img_url" :key="index" style="position: relative">
+                                        <img @click="deleteImgList(index)" src="../../assets/img/close-icon.png" class="upload-img-main-icon"/>
+                                        <img style="width: 474px;height: 260px;" :src="item" alt="">
+                                    </CarouselItem>
+                                </Carousel>
+                                <div class="upload-btn-flex">
+                                    <div  class="upload-img-text">*可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；</div>
+                                    <upload-button text="上传" :imgtypes="imgType" bucket="jhyl-static-file"
+                                                   @handle-close="handleFileClose" class="upload-img-button"
+                                                   @uploadcomplete="uploadcompleteButton" :type="fileType"
+                                                   :maxFileSize="[2, 300]"></upload-button>
+                                </div>
                             </FormItem>
                             <FormItem class="btns">
                                 <Button v-if="payload.type==2" type="error" class="next-btn" style="width: 120px;"
@@ -114,13 +116,17 @@
                     organization_id: {required: true, message: '请选择所属机构'}
                 },
                 fileType: 'image/png,image/jpg',
-                imgType: 1
+                imgType: 1,
+                fileValue: null
             }
         },
         mounted() {
             if (JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1) this.getOrganization()
             this.$store.commit('set_houner_state', false)
-            if (this.payload.hasOwnProperty('row')) this.form = this.payload.row
+            if (this.payload.hasOwnProperty('row')) {
+                this.form = this.payload.row
+                this.form.img_url = JSON.parse(this.form.img_url)
+            }
             this.form.organization_id = JSON.parse(sessionStorage.getItem('PRODUCTINFO')).organization_id
         },
         computed: {
@@ -219,6 +225,7 @@
                     if (valid) {
                         if (this.form.img_url) {
                             let url = this.payload.hasOwnProperty('row') ? '/product/modify_honour_certificate' : '/product/add_new_honour_certificate';
+                            this.form.img_url = JSON.stringify(this.form.img_url)
                             postData(url, this.form).then((res) => {
                                 this.addCourseDialogVisible = false;
                                 this.$store.commit('set_houner_state', true)
@@ -274,9 +281,13 @@
                 this.$Message.warning('最多上传5张图片');
             },
             uploadcompleteButton(val) {
-                console.log(val, '123');
                 this.form.img_url.push(val.url)
                 console.log(this.form.img_url)
+            },
+            deleteImgList(index) {
+                this.form.img_url.splice(index, 1)
+                this.fileValue = index == 0 ? 0 : index - 1
+                this.$forceUpdate()
             }
         }
     }
@@ -367,5 +378,44 @@
 
     .font-hint {
         color: #F54802;
+    }
+    .demo-file-key {
+        width: 474px;
+        height: 260px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #d7dde4;
+        margin-bottom: 20px;
+    }
+    .upload-img-main-icon{
+        cursor: pointer;
+        color: #fff;
+        .icons;
+    }
+
+    .icons {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        z-index: 20;
+        font-size: 20px;
+        z-index: 9999;
+    }
+    .upload-btn-flex{
+        display: flex;
+
+        .upload-img-text{
+            font-family: PingFangSC-Regular;
+            font-size: 12px;
+            color: #F54802;
+            text-align: justify;
+            line-height: 20px;
+            margin-right: 50px;
+        }
+        .upload-img-button{
+
+        }
     }
 </style>

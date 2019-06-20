@@ -1,14 +1,13 @@
 <template>
-    <div class='manage-production-view'>
-        <screen :btn-type='true' :select-type1="true" :select-type2="true" :types="16" size-title1="培训总数"
-                :size-num1="total" btn-name="添加培训"
-                :select2="selectList2" :select5="select5" @selectChange5="selectChange5" placehodle="搜索产品名称"
-                @selectChange1="selectChange1" @selectChange2="selectChange2" @inputChange="inputChange"
-                @handleClick="handleClick"/>
+    <div class="manage-production-view">
+        <screen :types="17" :select2="select2" :selectType2="true" sizeTitle1="培训总数" :sizeNum1="sizeNum1"
+                :btnType="true" btnName="添加培训"
+                @selectChange2="selectChange2" @handleClick="handleClick"></screen>
+        <detailModal :isShow="isShow" @handleClose="handleClose"/>
         <div class="lecturer-list">
             <Row :gutter="20">
                 <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index">
-                    <div class="manage-production-col cards" @click="handleJump(t)">
+                    <div class="manage-production-col cards">
                         <Row>
                             <Col span="2" class="al-left cad-top-left">
                                 <p>ID:</p>
@@ -32,122 +31,44 @@
                 </Col>
             </Row>
         </div>
-        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
+
 <script>
-    import screen from '../../../components/ScreenFrame'
-    import postData from '../../../api/postData'
-    import pageList from '../../../components/Page'
-    import pageMixin from '../../mixins/pageMixins'
-    import {Dialog} from "../../dialogs";
-    import {ADD_PRODUCTION} from "../../dialogs/types";
-    import {mapState} from 'vuex'
-    import {classification} from './consts'
+    import screen from '../../../../components/ScreenFrame'
+    import detailModal from './detaile-modal'
 
     export default {
-        mixins: [pageMixin, Dialog],
-        components: {screen, pageList},
+        components: {screen, detailModal},
         data() {
             return {
-                curPage: 1,
-                cardList: [],
-                search: '',
-                select5: [{id: 'all', title: '全部状态'}, {id: '3', title: '推荐'}, {id: '2', title: '上架'}, {
-                    id: '-1',
-                    title: '下架'
-                }, {id: '1', title: '测试'}],
-                courseNums: 12,
-                selectList2: classification,
-                organization_id: sessionStorage.getItem('organization_id'),
-                state: '',
-                category_id: 'all'
+                select2: [
+                    {id: 1, title: '1'},
+                    {id: 2, title: '2'},
+                ],
+                sizeNum1: 10,
+                cardList: [{},{},{},{},{}],
+                isShow: false
             }
-        },
-        watch: {
-            productState(_new) {
-                if (_new) this.getList()
-            },
-            editProductState(_new) {
-                if (_new) this.getList()
-            }
-        },
-        computed: {
-            ...mapState({
-                productState: state => state.production.add_product_state,
-                editProductState: state => state.production.edit_product_state
-            }),
-        },
-        beforeDestroy() {
-            this.getList = null;
-            this.handleJump = null;
-            this.handleClick = null;
-            this.selectChange1 = null;
-            this.selectChange2 = null;
-            this.cardList = null;
         },
         methods: {
+            selectChange2(val) {
+                console.log(val);
+            },
+            handleClick() {
+                this.isShow = true
+            },
             handleCardClass(t) {
                 return (t === 2 || t === 3) ? 'card-main-list1' : 'card-main-list0'
             },
-            selectChange1(val) {
-                this.organization_id = val;
-                this.getList()
-            },
-            selectChange5(val) {
-                this.state = val
-                this.getList()
-            },
-            selectChange2(val) {
-                this.category_id = val
-                this.getList()
-            },
-            inputChange(val) {
-                this.search = val;
-                this.getList()
-            },
-            handleClick() {
-                this.handleSelModal(ADD_PRODUCTION);
-            },
-            handleJump(t) {
-                sessionStorage.setItem('PRODUCTINFO', JSON.stringify(t))
-                // let routeData = this.$router.resolve({
-                //   query: '',
-                //   params: '',
-                //   name: "open-product",
-                // });
-                sessionStorage.setItem('onlinePane', 'product1')
-                // window.open(routeData.href, "_blank")
-                this.$router.push({name: "open-product"})
-            },
-            getList() {
-                let organization_id = this.organization_id !== 1 ? this.organization_id : ''
-                // category_id
-                let d = {
-                    organization_id,
-                    state: this.$config.setSelVal(this.state),
-                    search: this.search,
-                    page_size: this.pageSize,
-                    page_num: this.current,
-                    category_id: this.category_id
-                }
-                if (this.category_id == 'all') delete d.category_id
-                postData('product/product/get_list', d).then((res) => {
-                    this.cardList = res.data.data
-                    this.cardList.map((t) => {
-                        t.stateText = this.$config.setProductState(t.state)
-                    })
-                    this.total = res.data.count
-                    this.$store.commit('add_product_states', false)
-                })
+            handleClose() {
+                this.isShow = false
             }
-        },
-        mounted() {
-            this.getList()
         }
-    };
+    }
 </script>
-<style lang="less" scoped>
+
+<style scoped lang="less">
     .product-de {
         text-align: left;
         position: relative;
@@ -223,9 +144,6 @@
             text-align: left;
             margin-left: 20px;
 
-            /deep/ .ivu-input {
-                width: 200px;
-            }
 
             button {
                 background: #3DAAFF;
@@ -334,13 +252,5 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    /deep/ .ivu-page {
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
     }
 </style>

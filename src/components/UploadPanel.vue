@@ -107,6 +107,9 @@
                     }
                     this.resourse_url = val
                 }
+            },
+            resourse_url(val) {
+                if(val && /\.(gif|jpg|jpeg|png|GIF|JPG|PNG)/.test(val)) this.is_show = false
             }
         },
         methods: {
@@ -213,6 +216,7 @@
                 }).then(res => {
                     e.target.value = ''
                     this.resourse_url = url + '/' + this.video_url
+                    console.log(this.resourse_url, 'this.resourse_url ')
                     if (this.type == 'video' && this.uploadConfig.time) {
                         let setTime = setInterval(() => {
                             if(this.$refs.vedioPlayer && this.$refs.vedioPlayer.duration) {

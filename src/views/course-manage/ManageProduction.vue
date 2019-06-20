@@ -44,7 +44,6 @@
   import tableHeadData from './consts'
   import screen from '../../components/ScreenFrame'
 
-
   export default {
     mixins: [Dialog, MPop],
     components: {"header-component": Header, "data-list": BaseList, screen},

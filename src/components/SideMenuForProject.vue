@@ -70,7 +70,12 @@
     },
     methods: {
       goBack(){
-          this.$router.push({ name: 'product-manage' })
+          console.log(this.$route, '1111')
+          if(this.$route.path == '/product/intersection-detail') {
+              this.$router.push({ name: 'production-intersection' })
+          }else{
+              this.$router.push({ name: 'product-manage' })
+          }
       },
       handleCategory(num){
           let text = ''

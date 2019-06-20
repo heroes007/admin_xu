@@ -109,7 +109,7 @@
                         title: '状态',
                         render:(h, params) => {
                             let d = params.row.certify_state == 1 ? '已认证' : '未认证'
-                            return h('span', d)
+                            return h('span', {style: {color: params.row.certify_state == 1 ? '#2EBF07' : '#474C63'}}, d)
                         },
                         minWidth: 100
                     },

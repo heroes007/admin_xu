@@ -3,9 +3,9 @@
         <screen :types="10" selectType2 :select2="selectList2" btnType @selectChange2="selectChange2" title="行业资讯"
                 btnName="创建文章" @handleClick="addNewsHandler" style="background:#ffffff"/>
         <FormModal @from-submit="fromSubmit" :detail-data="tableRow" :show-modal='show' :form-list="formList"
-                   @close="closeModal" :title="modalTitle"
+                   @close="closeModal" :title="modalTitle" :modalWidth="modalWidth" :panelOptions="panelOptions"
                    :upload-btn="false" :rule-validate="rules" :handleFloor="handleFloor" @handle-next="handleNext"
-                   @handle-last="handleLast"></FormModal>
+                   @handle-last="handleLast" @showContent="showContent" @editor-change="editChange"></FormModal>
         <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="lowerShelf" @operation2="edit"
                 @operation3="deletes" :column="columns1" :table-data="list"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
@@ -80,7 +80,7 @@
                     },
                     {type: 'textarea', name: '文章摘要', field: 'description', isShow: 1, maxlength: 100},
                     {type: 'uploadPanel', name: '上传封面', field: 'img_default', isShow: 1},
-                    {type: 'upload',  field: 'uploading', isShow: 2},
+                    {type: 'upload',  field: 'uploading', isShow: 2, showAll: 2},
                 ],
                 modalTitle: '创建文章',
                 tabelHeight: null,
@@ -91,7 +91,12 @@
                     uploading: [],
                 },
                 isAdd: true,
-                handleFloor: 1
+                handleFloor: 1,
+                modalWidth: 760,
+                panelOptions: {
+                    panelWidth: 580,
+                    panelHeight: 310
+                }
             }
         },
         beforeDestroy() {
@@ -189,8 +194,18 @@
                 })
             },
             handleNext() {
+                this.isShow()
                 this.setShow()
                 this.handleFloor = 2
+            },
+            isShow() {
+                this.$nextTick(() => {
+                    if(document.querySelector('.w-e-text').clientHeight < 500) {
+                        this.formList[4].showAll = 0
+                    }else if(document.querySelector('.w-e-text').clientHeight > 500 && this.formList[4].showAll == 0){
+                        this.formList[4].showAll = 2
+                    }
+                })
             },
             handleLast() {
                 this.setShow()
@@ -200,6 +215,12 @@
                 if(this.formList[0].isShow == 2) this.setShow()
                 this.handleFloor = 1
                 this.show = false
+            },
+            showContent(val) {
+                this.formList[4].showAll = val == 1 ? 2 : 1
+            },
+            editChange() {
+                this.isShow()
             }
         },
         mounted() {
@@ -229,6 +250,10 @@
     }
     /deep/ .w-e-text-container{
         height: 700px !important;
+    }
+    /deep/ .w-e-text{
+        overflow: hidden;
+        overflow-y: unset;
     }
     /deep/ .md-cloud-upload{
         margin-top: 100px !important;

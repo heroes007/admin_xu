@@ -11,6 +11,7 @@ export function add_product(param) {
     description: param.description,
     url_arr: param.url_arr,
     category_id: param.category_id,
+    model: param.model,
     duration: 0
   }
   return api.post('product/product/add', d);
@@ -28,6 +29,7 @@ export function update_product(param) {
     description: param.description,
     url_arr: param.url_arr,
     category_id: param.category_id,
+    model: param.model,
     duration: 0
   }
   return api.post('/product/product/change', d);

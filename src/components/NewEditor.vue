@@ -127,14 +127,14 @@
                 this.editor.customConfig.customUploadImg = function (files, insert) {
                     vm.handleGetassignKey(files[0], insert)
                 }
+                this.editor.customConfig.onchange = function (html) {
+                    vm.$emit('editor-change')
+                }
                 this.editor.customConfig.pasteTextHandle = function (content) {
                     // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
                     return `<div style="font-size: 16px;">${content}</div>`
                 }
                 this.editor.customConfig.showLinkImg = false
-                // this.editor.customConfig.onchange = function (html) {
-                //     vm.editorHtml = html
-                // }
                 this.$refs.NewEditorBox.addEventListener('mouseleave', function () {
                     // let text = vm.editorHtml ? vm.editorHtml : vm.content
                     vm.$emit('get-content',  vm.editor.txt.html())
@@ -202,5 +202,7 @@
     }
     /deep/ .w-e-text-container{
         height: calc(100% - 44px) !important;
+        overflow: hidden;
+        /*height: auto !important;*/
     }
 </style>

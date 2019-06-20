@@ -126,6 +126,20 @@ export const MenuList = [
         name: 'product-manage',
         title: '培训管理',
         icon: 'md-school',
+        list: [
+            {
+                name: 'product-manage',
+                title: '产品'
+            },
+            {
+                name: 'production-intersection',
+                title: '产品合集'
+            },
+            {
+                name: 'live-course',
+                title: '直播课'
+            },
+        ]
     },
     {
         name: 'exchange-code',

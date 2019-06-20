@@ -18,7 +18,7 @@
                                 <InputNumber placeholder="0为免费，单位默认（元）" v-model="form.price"></InputNumber>
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="category_id" label="产品分类">
-                                <Select v-model="form.category_id" placeholder="请选择产品分类" >
+                                <Select v-model="form.category_id" placeholder="请选择产品分类">
                                     <Option v-for="item in selectList3" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
@@ -26,6 +26,12 @@
                             <FormItem v-show="nextStep == 0" prop="unlock_type" label="解锁方式">
                                 <Select v-model="form.unlock_type" placeholder="不限/按课程/按章节/按视频">
                                     <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                            <FormItem v-show="nextStep == 0" prop="model" label="模式">
+                                <Select v-model="form.model" placeholder="不限/按课程/按章节/按视频">
+                                    <Option v-for="item in selectList4" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
@@ -52,7 +58,7 @@
                                 <div class="demo-file">
                                     <div v-if="form.imgList.length>0">
                                         <div v-if="form.imgList.length>1">
-                                            <Carousel autoplay v-model="fileValue" loop>
+                                            <Carousel autoplay v-model="fileValue">
                                                 <CarouselItem v-for="(t,i) in form.imgList" :key="i">
                                                     <div class="demo-carousel">
                                                         <img @click="deleteImgList(i)"
@@ -92,8 +98,12 @@
                             </FormItem>
                             <!--可插入输入框-->
                             <FormItem v-show="nextStep == 2" label="" class="upload">
-                                <new-editor style="width: 604px; height: 600px;" @get-content="getContent"
-                                            :editor-id="editorId" :content="content"/>
+                                <new-editor :style="showAll == 1 ? 'height: auto;' : 'height: 600px;'"
+                                            @get-content="getContent" @editor-change="editorChange"
+                                            :editor-id="editorId" :content="content" class="new-editor"/>
+                                <div style="height: 32px;">
+                                    <div v-if="showAll" @click="showContent" class="show-content">{{showAll == 1 ? '收起↑' : '展开↓'}}</div>
+                                </div>
                             </FormItem>
                             <div v-if="nextStep == 2" class="btns">
                                 <Button type='text' class='btn-pre' @click='handlePreStep'>上一步</Button>
@@ -122,7 +132,7 @@
     import iconCopy from '../../assets/icons/icon/photo.png'
     import postData from '../../api/postData';
     import NewEditor from '../../components/NewEditor'
-    import { classification2 } from '../ProductManage/production/consts'
+    import {classification2} from '../ProductManage/production/consts'
 
     export default {
         mixins: [RemoveModal, MPop],
@@ -151,6 +161,7 @@
                 show: false,
                 editorId: 'form-item-new-editer' + Math.floor(Math.random() * 10000 + 1),
                 selectList2: [{id: -1, title: '下架'}, {id: 1, title: '测试'}, {id: 2, title: '上架'}],
+                selectList4: [{id: 1, title: '展示单品'}, {id: 2, title: '展示合集'}, {id: 3, title: '单品合集同时展示'}],
                 form: {
                     unlock_type: '',
                     product_id: '',
@@ -167,7 +178,8 @@
                     video_url: '',
                     organization_id: null,
                     _fn: null,
-                    duration: 0
+                    duration: 0,
+                    model: ''
                 },
                 descriptionHtml: '',
                 nextStep: 0,
@@ -226,10 +238,12 @@
                     original_price: {required: true, message: '请输入原价'},
                     price: {required: true, message: '请输入实际售价'},
                     unlock_type: {required: true, message: '请选择解锁方式'},
+                    model: {required: true, message: '请选择产品模式'},
                     state: {required: true, message: '请选择产品状态'},
                     short_description: {required: true, message: '请输入产品介绍', trigger: 'blur'},
                     category_id: {required: true, message: '请选择产品分类'},
-                }
+                },
+                showAll: 2
             }
         },
         mounted() {
@@ -246,6 +260,7 @@
                 this.form.short_description = d.short_description;
                 this.form.unlock_type = d.unlock_type;
                 this.form.state = d.state;
+                this.form.model = d.model
                 let arrObj = JSON.parse(d.url_arr);
                 this.form.imgList = [...this.form.imgList, ...arrObj.default]
                 this.form.video_url = arrObj.video
@@ -261,6 +276,7 @@
                 vm.handleClose();
                 vm.showPop('保存成功！');
             }
+            this.editorChange()
         },
         computed: {
             ...mapState({
@@ -384,6 +400,18 @@
                                 this.update_production(this.form);
                             } else this.add_production(this.form);
                         } else this.$Message.warning('请上传展示图片或展示视频');
+                    }
+                })
+            },
+            showContent() {
+                this.showAll = this.showAll == 1 ? 2 : 1
+            },
+            editorChange() {
+                this.$nextTick(() => {
+                    if(document.querySelector('.w-e-text').clientHeight < 556) {
+                        this.showAll = 0
+                    }else if(document.querySelector('.w-e-text').clientHeight > 556 && this.showAll == 0){
+                        this.showAll = 2
                     }
                 })
             }
@@ -641,5 +669,27 @@
         position: absolute;
         top: 102px;
         right: 18px;
+    }
+
+    /deep/ .w-e-text {
+        overflow-y: hidden;
+        overflow: hidden;
+        height: auto !important;
+    }
+
+    .show-content {
+        cursor: pointer;
+        text-align: right;
+        float: right;
+        width: 80px;
+
+        &:hover {
+            color: rgb(57, 76, 93);
+        }
+    }
+
+    .new-editor {
+        width: 604px;
+        min-height: 600px !important;
     }
 </style>

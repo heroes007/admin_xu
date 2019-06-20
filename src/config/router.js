@@ -27,6 +27,10 @@ const CertificateInfo = () => import('../views/Order/certificate-info/index')
 const PrivateLetter = () => import('../views/PrivateLetter/index')
 const RecommendedProducts = () => import('../views/SystemManage/RecommendedProducts/index')
 const TutorHead = () => import('../views/tutor/tutor-head')
+const ProductionIntersection = () => import('../views/train-manage/intersection/production-intersection')
+const LiveCourse = () => import('../views/train-manage/live/live-course')
+const IntersectionDetail = () => import('../views/train-manage/intersection/detail')
+
 Vue.use(VueRouter);
 // 页面路由
 const routes = [
@@ -137,13 +141,29 @@ const routes = [
         path:'open-class',
         component: OpenClass
       },
+        //培训管理
       {
         name:'recommended-products',
         path:'recommended-products',
         component: RecommendedProducts
       },
+      {
+        name: 'production-intersection',
+        path: 'production-intersection',
+        component: ProductionIntersection
+      },
+      {
+        name: 'live-course',
+        path: 'live-course',
+        component: LiveCourse
+      },
     ]
   },
+  // {
+  //   name: 'intersection-detail',
+  //   path: '/dashboard/intersection-detail',
+  //   component: IntersectionDetail
+  // },
   {
     path: '/product',
     name: 'main-product',
@@ -170,6 +190,11 @@ const routes = [
         name:'offline-course',
         path:'open-product/offline-course',
         component: nextSemester
+      },
+      {
+        name: 'intersection-detail',
+        path: 'intersection-detail',
+        component: IntersectionDetail
       },
     ]
   },
