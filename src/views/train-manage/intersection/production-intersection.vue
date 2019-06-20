@@ -1,79 +1,134 @@
 <template>
     <div>
-        <screen :types="4" :selectType2="true" :select2="select2" :selectType1="true" :btnType="true" btnName="创建合集" sizeTitle1="合集总数" :sizeNum1="sizeNum1"
-            @selectChange1="selectChange1" @selectChange2="selectChange2" @handleClick="handleClick" ></screen>
+        <screen :types="4" :selectType2="true" :select2="select2" :selectType1="true" :btnType="true" btnName="创建合集" sizeTitle1="合集总数" :sizeNum1="total"
+            @selectChange1="selectChange1" @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick" placehodle="搜索名称"></screen>
         <form-modal :show-modal='show' :detail-data="tableRow" :form-list="formList" :rule-validate='rules' @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" ></form-modal>
-        <div class="content">
-            <Card class="intersection" v-for="(item, index) in list" :key="index" @click.native="handleJump">
+        <div class="content" :style="`height: ${boxHeight}px`">
+            <Card class="intersection" v-for="(item, index) in list" :key="index" @click.native="handleJump(item)">
                 <div class="intersection-card">
-                    <div class="intersection-card-img"></div>
-                    <div class="intersection-card-name">下架</div>
+                    <img class="intersection-card-img" :src="item.img_url" alt="">
+                    <div class="intersection-card-name" :style="productState(item.state)">{{item.state == -1 ? '下架' : item.state == 1 ? '测试' : item.state == 2 ? '上架' : item.state == 3 ? '推荐' : '删除'}}</div>
                 </div>
                 <div class="intersection-content">
-                    <div class="intersection-content-title">合集名称全位技能水平名称全位技能水平</div>
+                    <div class="intersection-content-title">{{item.title}}</div>
                     <div class="intersection-content-course">
-                        <div class="intersection-content-course-money"><span>¥0</span> <span>¥0</span></div>
-                        <div class="intersection-content-course-num">0人报名</div>
+                        <div class="intersection-content-course-money"><div class="original_price">¥{{item.original_price}}</div> <div class="price"><span>¥{{item.price}}<span class="line"></span></span> </div></div>
+                        <div class="intersection-content-course-num">{{item.student_num}}人报名</div>
                     </div>
                 </div>
             </Card>
         </div>
+        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
 <script>
     import screen from '../../../components/ScreenFrame'
     import formModal from '../../../components/FormModal'
+    import pageList from '../../../components/Page'
+    import postData from '../../../api/postData'
+    import pageMixin from '../../mixins/pageMixins'
 
     export default {
-        components: {screen, formModal},
+        components: {screen, formModal, pageList},
+        mixins: [pageMixin],
         data() {
             return {
                 select2:[
-                    {id: 1, title:'1'},
-                    {id: 2, title:'2'},
-                    {id: 3, title:'3'},
+                    {id: 'all', title:'全部'},
+                    {id: -1, title:'下架'},
+                    {id: 2, title:'上架'},
+                    {id: 1, title:'测试'},
+                    {id: 3, title:'推荐'},
                 ],
-                sizeNum1: 10,
-                list: [1,2,3,4,5,6],
+                list: [],
                 show: false,
                 tableRow: {},
                 modalTitle: '创建合集',
                 formList: [
-                    { type: 'input', name: '产品名称',  field: 'realname'},
-                    { type: 'input', name: '所属机构',  field: 'organization' },
-                    { type: 'textarea', name: '产品介绍',  field: 'introduce' },
+                    { type: 'input', name: '产品名称',  field: 'title'},
+                    { type: 'select', name: '所属机构',  field: 'organization_id',
+                        selectList: [], selectField: [ 'id','title' ]},
+                    { type: 'textarea', name: '产品介绍',  field: 'short_description' },
                     { type: 'uploadPanel', name: '展示封面' },
                 ],
                 rules: {
-                    realname: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
-                    organization: [{ required: true, message: '请输入所属机构', trigger: 'blur' } ],
-                    introduce: [{ required: true, message: '请输入产品介绍', trigger: 'blur' } ],
+                    title: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
+                    organization_id: [{ required: true, message: '请输入所属机构'} ],
+                    short_description: [{ required: true, message: '请输入产品介绍', trigger: 'blur' } ],
                 },
+                boxHeight: null,
+                organization_id: '',
+                state: '',
+                search: ''
             }
         },
         methods: {
             selectChange1(val) {
-                console.log(val);
+                this.organization_id = val
+                this.getList()
             },
             selectChange2(val) {
-                console.log(val);
+                this.state = val == 'all' ? '' : val
+                this.getList()
             },
             inputChange(val) {
-                console.log(val);
+                this.search = val
+                this.getList()
             },
             handleClick() {
                 this.show = true
             },
             handleSubmit(val) {
-                console.log(val);
+                val.img_url = val.img_default
+                postData('/product/collection/add',val).then(res => {
+                    if(res.res_code == 1) this.getList()
+                    else this.$Message.info(res.msg)
+                })
             },
             closeModal() {
                 this.show = false
             },
-            handleJump() {
+            handleJump(item) {
+                sessionStorage.setItem('INTERSECTION', JSON.stringify(item))
                 this.$router.push('/product/intersection-detail')
+            },
+            getList() {
+                let data = {
+                    page_size: this.pageSize,
+                    page_num: this.current,
+                    organization_id: this.organization_id,
+                    state: this.state,
+                    search: this.search,
+                }
+                postData('/product/collection/getCollectionList',data).then(res => {
+                    this.list = res.data.data
+                    this.total = res.data.count
+                })
+            },
+            productState(val) {
+                switch (val) {
+                    case -1:
+                        return `background: #888CA3`;
+                        break
+                    case 1:
+                        return `background: #4098FF`;
+                        break
+                    case 2:
+                        return `background: #69C017`;
+                        break
+                    case 3:
+                        return `background: #FF7B3A`;
+                        break
+                }
             }
+        },
+        mounted() {
+            this.boxHeight = window.innerHeight - 130
+            this.getList()
+            postData('components/getOrganization').then(res => {
+                this.formList[1].selectList = res.data
+            })
         }
     }
 </script>
@@ -85,6 +140,7 @@
     .content{
         display: flex;
         flex-wrap: wrap;
+        overflow-y: auto;
     }
     .intersection{
         width: 320px;
@@ -99,7 +155,6 @@
             .intersection-card-img{
                 height: 180px;
                 width: 320px;
-                background-color: #f00;
             }
 
             .intersection-card-name{
@@ -109,7 +164,6 @@
                 color: #fff;
                 width: 50px;
                 height: 20px;
-                background: #888CA3;
                 border-radius: 14.5px;
             }
         }
@@ -139,6 +193,22 @@
                     font-family: PingFangSC-Medium;
                     font-size: 16px;
                     letter-spacing: 0.17px;
+                    display: flex;
+
+                    .original_price{
+                        color: #F54802;
+                    }
+                    .price{
+                        color: #686F92;
+                        margin-left: 10px;
+                    }
+                    .line{
+                        border-bottom: 1px solid #686F92;
+                        width: 100%;
+                        display: inline-block;
+                        position: relative;
+                        top: -60%;
+                    }
                 }
 
                 .intersection-content-course-num{

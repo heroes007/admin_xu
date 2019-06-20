@@ -10,8 +10,7 @@
         <Select v-if="selectSubjects" v-model="valueSelect3" @on-change="selectChange3" class="select-list" placeholder="请选择学科">
             <Option v-for="item in select3" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
-        <div v-if="types ==  17" class="selecg-title">合集状态</div>
-        <Select v-if=" ( types == 4 || types == 16 || types == 5 || types == 10 || types == 11 || types == 12 || types == 14 || types == 15 || types == 17) && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
+        <Select v-if=" ( types == 4 || types == 16 || types == 5 || types == 10 || types == 11 || types == 12 || types == 14 || types == 15) && selectType2" v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Select v-if="types == 15 || types == 16" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
@@ -73,7 +72,7 @@
       //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
       //types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
       //types = 10 下拉框+标题+按钮; types = 12 下拉框+标题;  types=13：返回+标题+下拉框; types = 14: 下拉框*2+搜索框
-      //types = 15 下拉框*4+搜索框； type = 16 下拉框*3+搜索框+按钮； type = 17 下拉框+数量+按钮
+      //types = 15 下拉框*4+搜索框； type = 16 下拉框*3+搜索框+按钮； type = 17 数量+按钮
       types: {
         type: Number,
         required: true,

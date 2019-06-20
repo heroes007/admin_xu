@@ -1,6 +1,6 @@
 <template>
     <div class="manage-production-view">
-        <screen :types="17" :select2="select2" :selectType2="true" sizeTitle1="培训总数" :sizeNum1="sizeNum1"
+        <screen :types="17" :select2="select2" :selectType2="true" sizeTitle1="培训总数" :sizeNum1="total"
                 :btnType="true" btnName="添加培训"
                 @selectChange2="selectChange2" @handleClick="handleClick"></screen>
         <detailModal :isShow="isShow" @handleClose="handleClose"/>
@@ -16,7 +16,10 @@
                                 <p>{{t.id}}</p>
                             </Col>
                             <Col span="13" class="al-right">
-                                <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.stateText}}</div>
+                                <div style="display: flex;">
+                                    <div class="cad-top-right cad-top-right-model">{{t.model == 1 ? '单品' : t.model == 2 ? '合集' : '单品合集'}}</div>
+                                    <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.state == -1 ? '下架' : t.state == 2 ? '上架' : t.state == 1 ? '测试' : t.state == 3 ? '推荐' : '删除'}}</div>
+                                </div>
                             </Col>
                         </Row>
                         <Row>
@@ -25,35 +28,44 @@
                         <div class="product-de">
                             <span class="al-left cad-btm-price">¥{{t.price}}</span>
                             <span class="al-left cad-btn-relprice">¥{{t.original_price}}</span>
-                            <span class="al-right cad-btn-people">{{t.join_number}}人报名</span>
                         </div>
                     </div>
                 </Col>
             </Row>
         </div>
+        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
 
 <script>
     import screen from '../../../../components/ScreenFrame'
     import detailModal from './detaile-modal'
+    import pageList from '../../../../components/Page'
+    import pageMixin from '../../../mixins/pageMixins'
+    import postData from '../../../../api/postData'
 
     export default {
-        components: {screen, detailModal},
+        components: {screen, detailModal, pageList},
+        mixins: [pageMixin],
         data() {
             return {
                 select2: [
-                    {id: 1, title: '1'},
-                    {id: 2, title: '2'},
+                    {id: 'all', title:'全部'},
+                    {id: -1, title:'下架'},
+                    {id: 2, title:'上架'},
+                    {id: 1, title:'测试'},
+                    {id: 3, title:'推荐'},
                 ],
                 sizeNum1: 10,
-                cardList: [{},{},{},{},{}],
-                isShow: false
+                cardList: [],
+                isShow: false,
+                state: ''
             }
         },
         methods: {
             selectChange2(val) {
-                console.log(val);
+                this.state = val == 'all' ? '' : val
+                this.getList()
             },
             handleClick() {
                 this.isShow = true
@@ -63,7 +75,22 @@
             },
             handleClose() {
                 this.isShow = false
+            },
+            getList() {
+                let data = {
+                    collection_id: JSON.parse(sessionStorage.getItem('INTERSECTION')).collection_id,
+                    page_size: this.pageSize,
+                    page_num: this.current,
+                    state: this.state
+                }
+                postData('/product/collection/getCollectionDetail', data).then(res => {
+                    this.total = res.data.count
+                    this.cardList = res.data.products
+                })
             }
+        },
+        mounted() {
+            this.getList()
         }
     }
 </script>
@@ -210,8 +237,10 @@
             letter-spacing: 0;
         }
 
+
         .cad-top-right {
-            width: 50px;
+            padding: 0 10px;
+            width: auto;
             height: 20px;
             float: right;
             font-family: PingFangSC-Medium;
@@ -220,6 +249,16 @@
             letter-spacing: 0;
             text-align: center;
             border-radius: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 50px;
+        }
+
+        .cad-top-right-model{
+            color: #686F92;
+            border: 1px solid #686F92;
+            margin-right: 8px;
         }
 
         .cad-btm-price {

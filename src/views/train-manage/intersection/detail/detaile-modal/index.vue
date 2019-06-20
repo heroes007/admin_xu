@@ -13,7 +13,7 @@
     import tables from '../../../../../components/tables'
     import pageList from  '../../../../../components/Page'
     import pageMixin from '../../../../mixins/pageMixins'
-
+    import postData from '../../../../../api/postData'
 
     export default {
         components: {screen, tables, pageList},
@@ -77,6 +77,19 @@
         methods: {
             handleClose() {
                 this.$emit('handleClose')
+            },
+            getList() {
+                let data = {
+                    organization_id: '',
+                    category_id: '',
+                    add_state: '',
+                    search: '',
+                    page_num: '',
+                    page_size: ''
+                }
+                postData('/product/collection/getProductByCollection', data).then(res => {
+                    console.log(res, 'res')
+                })
             }
         }
     }

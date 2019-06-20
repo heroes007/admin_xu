@@ -1,5 +1,6 @@
 <template>
     <div class='side-menu-for-project'>
+        <form-modal :show-modal='show' :detail-data="tableRow" :form-list="formList" :rule-validate='rules' @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" ></form-modal>
         <Row class='logo' type='flex' justify='center' align='middle'>
             <img class="logo-img" src='../assets/img/logo-white1.jpg'>
             <div class="logo-title">九划医教</div>
@@ -10,7 +11,7 @@
                 <video v-if="detailVideo" :src="detailVideo"></video>
             </div>
             <div class="head-title">{{detail.title}}</div>
-            <div class="head-list">
+            <div class="head-list" v-if="showData">
                 <div>
                     <span class="w60">实际售价:</span><span>{{detail.price}}</span>
                 </div>
@@ -39,148 +40,240 @@
                     <span class="w60">创建时间:</span><span>{{detail.create_time}}</span>
                 </div>
             </div>
+            <div class="head-list" v-else>
+                <div>
+                    <span class="w60">实际售价:</span><span>{{detail.price}}</span>
+                </div>
+                <div>
+                    <span class="w60"><span>原</span><span>价:</span></span><span>{{detail.original_price}}</span>
+                </div>
+                <div>
+                    <span class="w60">报名人数:</span><span>{{detail.student_num}}</span>
+                </div>
+                <div>
+                    <span class="w60">状态:</span><span>{{detail.state == -1 ? '下架' : detail.state == 2 ? '上架' : detail.state == 1 ? '测试' : detail.state == 3 ? '推荐' : '删除'}}</span>
+                </div>
+                <div style="margin-top: 30px;">
+                    <span class="w73">创建用户ID:</span><span>{{detail.user_id}}</span>
+                </div>
+                <div>
+                    <span class="w60">创建时间:</span><span>{{detail.create_time}}</span>
+                </div>
+            </div>
             <div class="head-btn">
-                <Button type="default" @click="goBack" ghost class="btn-content" style="top: 20%;"><Icon class="btn-i" :size="22" type="ios-undo" /> 返回上一页</Button>
+                <Button type="default" @click="goBack" ghost class="btn-content" style="top: 20%;">
+                    <Icon class="btn-i" :size="22" type="ios-undo"/>
+                    返回上一页
+                </Button>
                 <div class="btn-list">
-                    <Button type="default" @click="handleDelete" ghost class="btn-content2" style="top: 20%;">删除</Button>
-                    <Button type="default" @click="edit" ghost class="btn-content3" style="top: 40%;margin-left:10px" >编辑</Button>
+                    <Button type="default" @click="handleDelete" ghost class="btn-content2" style="top: 20%;">删除
+                    </Button>
+                    <Button type="default" @click="edit" ghost class="btn-content3" style="top: 40%;margin-left:10px">
+                        编辑
+                    </Button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-  import api from '../api/modules/config'
-  import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-  import postData from '../api/postData.js'
-  import {Dialog} from "../views/dialogs";
-  import { ADD_PRODUCTION } from "../views/dialogs/types";
-  import {mapState} from 'vuex'
-  import { classification2 } from '../views/ProductManage/production/consts'
-  export default {
-    mixins: [Dialog],
-    data() {
-      return {
-        use_router: true,
-        activeIndex: '',
-        detail: '',
-        detailImg: '',
-        detailVideo: ''
-      }
-    },
-    methods: {
-      goBack(){
-          console.log(this.$route, '1111')
-          if(this.$route.path == '/product/intersection-detail') {
-              this.$router.push({ name: 'production-intersection' })
-          }else{
-              this.$router.push({ name: 'product-manage' })
-          }
-      },
-      handleCategory(num){
-          let text = ''
-          classification2.forEach((t) => {
-              if(t.id == num) text = t.title
-          })
-          return text
-      },
-      getList(){
-        postData('/product/product/get_detail',{product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id} ).then((res) => {
-            this.detail = res.data[0]
-            let d = JSON.parse(this.detail.url_arr);
-            this.detailImg = d.default[0]
-            if(d.default&&!this.detailImg) this.detailVideo = d.video
-        })
-      },
-      edit(){
-          this.handleSelModal(ADD_PRODUCTION,{type: 2,row: this.detail});
-      },
-      openChange(name) {
-      },
-      selectItem(index) {
-        this.$router.push({name: index});
-      },
-      initMenu() {
-        this.activeIndex = this.$route.name;
-      },
-      handleDelete() {
-         this.$config.deleteModal(() => {
-            postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
-              if(res.res_code == 1) {
-                this.$Message.info('删除产品');
-                this.$router.push({ name: 'product-manage' })
-              }
+    import api from '../api/modules/config'
+    import defaultHeader from '../assets/img/side-menu/default-header.jpg'
+    import postData from '../api/postData.js'
+    import {Dialog} from "../views/dialogs";
+    import {ADD_PRODUCTION} from "../views/dialogs/types";
+    import {mapState} from 'vuex'
+    import {classification2} from '../views/ProductManage/production/consts'
+    import formModal from './FormModal'
+
+    export default {
+        components: {formModal},
+        mixins: [Dialog],
+        data() {
+            return {
+                use_router: true,
+                activeIndex: '',
+                detail: '',
+                detailImg: '',
+                detailVideo: '',
+                showData: true,
+                show: false,
+                tableRow: {},
+                formList: [
+                    { type: 'input', name: '产品名称',  field: 'title'},
+                    { type: 'select', name: '所属机构',  field: 'organization_id',
+                        selectList: [], selectField: [ 'id','title' ]},
+                    { type: 'select', name: '状态', field: 'state', selectField: [ 'id','title' ],
+                        selectList: [{id: -1, title: '下架'}, {id: 1, title: '测试'}, {id: 2, title: '上架'}, {id: 3, title: '推荐'}] },
+                    { type: 'input-number', name: '原价', field: 'original_price'},
+                    { type: 'input-number', name: '实际售价', field: 'price'},
+                    { type: 'textarea', name: '产品介绍',  field: 'short_description' },
+                    { type: 'uploadPanel', name: '展示封面' ,field: 'img_url'},
+                ],
+                rules: {
+                    title: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
+                    organization_id: [{ required: true, message: '请输入所属机构', trigger: 'blur' } ],
+                    state: [{ required: true, message: '请选择产品状态', trigger: 'blur' } ],
+                    original_price: [{ required: true, message: '请输入产品原价', trigger: 'blur' } ],
+                    price: [{ required: true, message: '请输入产品实际售价', trigger: 'blur' } ],
+                    short_description: [{ required: true, message: '请输入产品介绍', trigger: 'blur' } ],
+                },
+                modalTitle: '编辑合集',
+            }
+        },
+        methods: {
+            goBack() {
+                if (this.$route.path == '/product/intersection-detail') {
+                    this.$router.push({name: 'production-intersection'})
+                } else {
+                    this.$router.push({name: 'product-manage'})
+                }
+            },
+            handleCategory(num) {
+                let text = ''
+                classification2.forEach((t) => {
+                    if (t.id == num) text = t.title
+                })
+                return text
+            },
+            getList() {
+                if(this.showData) {
+                    postData('/product/product/get_detail', {product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id}).then((res) => {
+                        this.detail = res.data[0]
+                        let d = JSON.parse(this.detail.url_arr);
+                        this.detailImg = d.default[0]
+                        if (d.default && !this.detailImg) this.detailVideo = d.video
+                    })
+                }else{
+                    let data = {
+                        collection_id: JSON.parse(sessionStorage.getItem('INTERSECTION')).collection_id,
+                        page_num: 1,
+                        page_size: 8
+                    }
+                    postData('/product/collection/getCollectionDetail', data).then(res => {
+                        this.detail = res.data.collection_detail
+                        this.detailImg = res.data.collection_detail.img_url
+                    })
+                }
+            },
+            edit() {
+                if(this.showData) {
+                    this.handleSelModal(ADD_PRODUCTION, {type: 2, row: this.detail})
+                }else{
+                    this.show = true
+                    this.tableRow = this.detail
+                }
+            },
+            openChange(name) {
+            },
+            selectItem(index) {
+                this.$router.push({name: index});
+            },
+            initMenu() {
+                this.activeIndex = this.$route.name;
+            },
+            handleDelete() {
+                this.$config.deleteModal(() => {
+                    postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
+                        if (res.res_code == 1) {
+                            this.$Message.info('删除产品');
+                            this.$router.push({name: 'product-manage'})
+                        }
+                    })
+                });
+            },
+            handleClose() {
+                this.isShow = false
+            },
+            handleSubmit() {
+
+            },
+            closeModal() {
+
+            }
+        },
+        watch: {
+            $route() {
+                this.initMenu();
+            },
+            productState(_new) {
+                if (_new) this.getList()
+            }
+        },
+        mounted() {
+            if (this.$route.name == 'intersection-detail') this.showData = false
+            this.getList();
+            this.initMenu();
+            postData('components/getOrganization').then(res => {
+                this.formList[1].selectList = res.data
             })
-        });
-      }
-    },
-    watch: {
-      $route() {
-        this.initMenu();
-      },
-      productState(_new){
-        if(_new) this.getList()
-      }
-    },
-    mounted() {
-      this.getList();
-      this.initMenu();
-    },
-    computed: {
-      ...mapState({productState: state => state.production.edit_product_state}),
-      userInfo() {
-        return this.$store.state.auth.userInfo;
-      },
-      userHeader() {
-        if (!this.userInfo) return defaultHeader;
-        if (this.userInfo.head_img_url) return this.userInfo.head_img_url;
-        else return defaultHeader;
-      }
+        },
+        computed: {
+            ...mapState({productState: state => state.production.edit_product_state}),
+            userInfo() {
+                return this.$store.state.auth.userInfo;
+            },
+            userHeader() {
+                if (!this.userInfo) return defaultHeader;
+                if (this.userInfo.head_img_url) return this.userInfo.head_img_url;
+                else return defaultHeader;
+            }
+        }
     }
-  }
 </script>
 <style lang="less" scoped>
-    .hide{
+    .hide {
         display: -webkit-box;
         white-space: normal;
         -webkit-box-orient: vertical;
         overflow: hidden;
         -webkit-line-clamp: 1;
     }
+
     /deep/ .ivu-menu {
         background-color: #333;
         width: 100% !important;
     }
+
     /deep/ .ivu-menu-item, .ivu-menu-item:hover {
         text-align: left;
         color: #3DAAFF !important;
     }
+
     /deep/ .ivu-menu-vertical.ivu-menu-light:after {
         content: none !important
     }
+
     /deep/ .ivu-menu-item-active {
         background-color: #333 !important;
     }
+
     /deep/ .ivu-menu-item-active:not(.ivu-menu-submenu):after {
         background-color: #333 !important;
     }
+
     .side-menu-for-project {
         padding: 27px 0;
         /*height: 100%;*/
+
         .logo {
             margin-bottom: 40px;
+
             img {
                 width: 120px;
             }
         }
+
         .head-img {
             height: 100px;
             margin-bottom: 18px;
+
             img, video {
                 width: 190px;
                 height: 100px;
             }
         }
+
         .setting {
             position: absolute;
             top: 74px;
@@ -195,6 +288,7 @@
             text-align: center;
             line-height: 26px;
             cursor: pointer;
+
             .hover-glow {
                 width: 34px;
                 height: 34px;
@@ -206,36 +300,44 @@
                 border: 0;
                 display: none;
             }
+
             &:hover {
                 .hover-glow {
                     display: block;
                 }
             }
         }
+
         .user-name {
             font-size: 14px;
             color: #FFFFFF;
             letter-spacing: 0;
             white-space: nowrap;
             padding: 0 35px;
+
             i {
                 color: #3DAAFF;
                 margin-right: 10px;
             }
+
             p {
                 .hide;
             }
+
             margin-bottom: 50px;
         }
     }
+
     .logo {
         margin-bottom: 40px;
     }
+
     .elRow {
         display: flex;
         flex-direction: column;
         padding: 35px;
         height: calc(100% - 100px);
+
         .head-title {
             font-family: PingFangSC-Medium;
             font-size: 16px;
@@ -244,6 +346,7 @@
             text-align: justify;
             line-height: 26px;
         }
+
         .head-list {
             font-family: PingFangSC-Regular;
             font-size: 14px;
@@ -251,76 +354,93 @@
             letter-spacing: 0;
             margin-top: 30px;
             width: 100%;
+
             div {
                 margin-bottom: 10px;
                 display: flex;
             }
         }
     }
-    .w73,.w60{
-       display: flex;
+
+    .w73, .w60 {
+        display: flex;
         justify-content: space-between;
         margin-right: 6px;
     }
+
     .w60 {
         width: 60px;
     }
+
     .w73 {
         width: 76px;
     }
+
     .head-btn {
         position: relative;
         flex: 1;
         width: 190px;
         padding-bottom: 40px;
+
         .btn-content {
             margin-top: 40px;
             background-color: #424242;
             color: #fff;
-            .btn-i{
+
+            .btn-i {
                 position: relative;
                 top: -2px;
             }
-            &:hover{
+
+            &:hover {
                 background-color: #fff;
                 color: #5194f8
             }
         }
-        .btn-list{
+
+        .btn-list {
             display: inline-flex;
             margin-top: 40px;
+
             .btn-content2 {
-              width: 60px;
-              background: #653522;
-              color: #fff;
-               &:hover{
-                  background-color: #e55114;
-               }
+                width: 60px;
+                background: #653522;
+                color: #fff;
+
+                &:hover {
+                    background-color: #e55114;
+                }
             }
+
             .btn-content3 {
-              width: 120px;
-              background: #364d6a;
-              color: #fff;
-              &:hover{
-                 background-color: #5099fa;
-              }
+                width: 120px;
+                background: #364d6a;
+                color: #fff;
+
+                &:hover {
+                    background-color: #5099fa;
+                }
             }
         }
     }
+
     /deep/ .ivu-btn {
         width: 190px;
         height: 40px;
         border: none;
-        &:hover{
+
+        &:hover {
             border: none
         }
     }
-    .category_item{
+
+    .category_item {
         display: inline-flex;
         flex-wrap: nowrap;
     }
-    .category_id{
-         width: calc(100% - 70px);
-         .hide;
+
+    .category_id {
+        width: calc(100% - 70px);
+        .hide;
     }
 </style>
