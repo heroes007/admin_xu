@@ -3,7 +3,7 @@
         <screen :types="17" :select2="select2" :selectType2="true" sizeTitle1="培训总数" :sizeNum1="total"
                 :btnType="true" btnName="添加培训"
                 @selectChange2="selectChange2" @handleClick="handleClick"></screen>
-        <detailModal :isShow="isShow" @handleClose="handleClose"/>
+        <detailModal :isShow="isShow" @handleClose="handleClose" />
         <div class="lecturer-list">
             <Row :gutter="20">
                 <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index">
@@ -59,7 +59,7 @@
                 sizeNum1: 10,
                 cardList: [],
                 isShow: false,
-                state: ''
+                state: '',
             }
         },
         methods: {

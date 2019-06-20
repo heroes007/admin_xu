@@ -1,7 +1,7 @@
 <template>
     <div>
         <Table @on-row-click="rowClick" :columns="columns" :data="datas" ref="tables"
-             @on-expand="expand"  :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
+             @on-expand="expand"  :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-selection-change="onSelectionChange" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
                 <span v-html="row[column.key]"></span>
@@ -255,6 +255,9 @@
             selectAll(selection, row) {
                 this.$emit('on-select-all', selection, row)
             },
+            onSelectionChange(selection) {
+                this.$emit('on-selection-change', selection)
+            }
         },
         mounted() {
             this.handleColumns(this.column, 1)

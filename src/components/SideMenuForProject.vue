@@ -173,14 +173,18 @@
                 this.activeIndex = this.$route.name;
             },
             handleDelete() {
-                this.$config.deleteModal(() => {
-                    postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
-                        if (res.res_code == 1) {
-                            this.$Message.info('删除产品');
-                            this.$router.push({name: 'product-manage'})
-                        }
-                    })
-                });
+                if(this.showData) {
+                    this.$config.deleteModal(() => {
+                        postData('product/product/change_state', {product_id: this.detail.id, state: -2}).then(res => {
+                            if (res.res_code == 1) {
+                                this.$Message.info('删除产品');
+                                this.$router.push({name: 'product-manage'})
+                            }
+                        })
+                    });
+                }else{
+                 this.$Message.info('不准删')
+                }
             },
             handleClose() {
                 this.isShow = false
