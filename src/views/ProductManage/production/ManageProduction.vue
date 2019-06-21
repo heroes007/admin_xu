@@ -91,6 +91,7 @@
                 return (t === 2 || t === 3) ? 'card-main-list1' : 'card-main-list0'
             },
             selectChange1(val) {
+                console.log(val, 'llppp')
                 this.organization_id = val;
                 this.getList()
             },
@@ -121,10 +122,10 @@
                 this.$router.push({name: "open-product"})
             },
             getList() {
-                let organization_id = this.organization_id !== 1 ? this.organization_id : ''
+                // let organization_id = this.organization_id !== 1 ? this.organization_id : ''
                 // category_id
                 let d = {
-                    organization_id,
+                    organization_id: this.organization_id,
                     state: this.$config.setSelVal(this.state),
                     search: this.search,
                     page_size: this.pageSize,

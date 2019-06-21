@@ -104,7 +104,7 @@
                     { type: 'select', name: '所属机构',  field: 'organization_id',
                         selectList: [], selectField: [ 'id','title' ]},
                     { type: 'select', name: '状态', field: 'state', selectField: [ 'id','title' ],
-                        selectList: [{id: -1, title: '下架'}, {id: 1, title: '测试'}, {id: 2, title: '上架'}, {id: 3, title: '推荐'}] },
+                        selectList: [{id: -1, title: '下架'}, {id: 1, title: '测试'}, {id: 2, title: '上架'}] },
                     { type: 'input-number', name: '产品原价', field: 'original_price', disable: true},
                     { type: 'input-number', name: '实际售价', field: 'price'},
                     { type: 'textarea', name: '产品介绍',  field: 'short_description' },

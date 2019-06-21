@@ -16,7 +16,7 @@
                                 <p>{{t.id}}</p>
                             </Col>
                             <Col span="13" class="al-right">
-                                <div style="display: flex;">
+                                <div style="display: flex;justify-content: flex-end">
                                     <div class="cad-top-right cad-top-right-model">{{t.model == 1 ? '单品' : t.model == 2 ? '合集' : '单品合集'}}</div>
                                     <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.state == -1 ? '下架' : t.state == 2 ? '上架' : t.state == 1 ? '测试' : t.state == 3 ? '推荐' : '删除'}}</div>
                                 </div>

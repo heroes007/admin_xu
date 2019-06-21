@@ -1,13 +1,13 @@
 <template>
     <div>
-        <form-modal :show-modal="show" :detail-data="tableRow" @from-submit="handleSubmit" :form-list="formList" @close="closeModal"  :title="modalTitle" :rule-validate="rules"
+        <form-modal :show-modal="show" :detail-data="tableRow" @from-submit="handleSubmit" :form-list="formList" @close="closeModal" :title="modalTitle" :rule-validate="rules"
                     btnName="确认" @change-list="changeList"/>
         <screen :types="10" title="首页推荐产品" btnType btnName="添加产品" @handleClick="handleClick" style="background:#ffffff"/>
         <div class="hint">提示：首页最少展示1个产品，最多展示3个产品</div>
        <div class="recommended-content">
             <div class="content">
                 <div v-for="(item, index) in dataList" :key="index" class="product">
-                    <img v-if="JSON.parse(item.url_arr).default.length" class="product-img" :src="JSON.parse(item.url_arr).default[0]" alt="">
+                    <img v-if="item.img_url ? true : JSON.parse(item.url_arr).default.length" class="product-img" :src="item.img_url ? item.img_url : JSON.parse(item.url_arr).default[0]" alt="">
                     <video v-else :src="JSON.parse(item.url_arr).video" class="product-img"></video>
                     <div class="product-content">
                         <div class="product-content-title">{{item.title}}</div>
@@ -48,11 +48,11 @@
                 modalTitle: '',
                 formList: [
                     {type: 'select', name: '所属机构', field: 'company', selectList: [{id: 1, title: '1'}], selectField: ['id', 'title'], selectChange: true},
-                    {type: 'select', name: '产品名称', field: 'product', selectList: [{id: 1, title: ''}], selectField: ['id', 'title']},
+                    {type: 'select', name: '产品名称', field: 'productIndex', selectList: [{index: 1, title: ''}], selectField: ['index', 'title']},
                 ],
                 rules: {
                     company: [{ required: true, message: '请输入所属机构'} ],
-                    product: [{ required: true, message: '请输入产品名称'} ],
+                    productIndex: [{ required: true, message: '请输入产品名称'} ],
                 },
                 dataList: [],
                 isShow: false,
@@ -71,13 +71,22 @@
                 this.modalTitle = '添加产品'
             },
             handleSubmit(val) {
-                if(val.product){
-                    postData('product/product/get_detail', {product_id: val.product}).then(res => {
-                        if(res.res_code == 1) {
-                            if(this.dataList.length == 3) this.$Message.info('首页最多展示3个产品，请先删除再添加')
-                            else this.dataList.push(res.data[0])
-                        }
-                    })
+                if(val.productIndex){
+                    if(this.formList[1].selectList[val.productIndex].type == "collection") {
+                        postData('product/collection/get_detail', {collection_id: this.formList[1].selectList[val.productIndex].id}).then(res => {
+                            if(res.res_code == 1) {
+                                if(this.dataList.length == 3) this.$Message.info('首页最多展示3个产品，请先删除再添加')
+                                else this.dataList.push(res.data[0])
+                            }
+                        })
+                    }else{
+                        postData('product/product/get_detail', {product_id: this.formList[1].selectList[val.productIndex].id}).then(res => {
+                            if(res.res_code == 1) {
+                                if(this.dataList.length == 3) this.$Message.info('首页最多展示3个产品，请先删除再添加')
+                                else this.dataList.push(res.data[0])
+                            }
+                        })
+                    }
                 }
             },
             changeContent() {
@@ -85,11 +94,16 @@
             },
             closeModal() {
                 this.show = false
-                this.formList[1].selectList = [{id: 1, title: ''}]
+                this.formList[1].selectList = [{index: 1, title: ''}]
             },
             changeList(val) {
                 postData('components/getProductsCollection', {organization_id: val}).then(res => {
-                    if(res.res_code == 1) this.formList[1].selectList = res.data
+                    if(res.res_code == 1) {
+                        res.data.forEach((item, index) => {
+                            item.index = index
+                        })
+                        this.formList[1].selectList = res.data
+                    }
                     else this.$Message.info(res.msg)
                 })
             },

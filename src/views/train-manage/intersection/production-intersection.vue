@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="manage-production-view">
         <screen :types="4" :selectType2="true" :select2="select2" :selectType1="true" :btnType="true" btnName="创建合集" sizeTitle1="合集总数" :sizeNum1="total"
             @selectChange1="selectChange1" @selectChange2="selectChange2" @inputChange="inputChange" @handleClick="handleClick" placehodle="搜索名称"></screen>
         <form-modal :show-modal='show' :detail-data="tableRow" :form-list="formList" :rule-validate='rules' @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" ></form-modal>
@@ -222,5 +222,8 @@
     }
     /deep/ .md-cloud-upload{
         margin-top: 100px !important;
+    }
+    .manage-production-view{
+        background-color: #f0f0f7; 
     }
 </style>

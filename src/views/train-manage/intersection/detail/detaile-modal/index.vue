@@ -45,6 +45,10 @@
                     {
                         title: '状态',
                         key: 'state',
+                        render: (h,param) => {
+                            let d = param.row.state == -1 ? '下架' : param.row.state == 1 ? '测试' : param.row.state == 2 ? '上架' : '未上架'
+                            return h('span', d)
+                        },
                         minWidth: 100
                     },
                     {

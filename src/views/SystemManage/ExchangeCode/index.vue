@@ -103,11 +103,11 @@
                     {type: 'input', name: '兑换码名称', field: 'realname'},
                     {
                         type: 'select', name: '选择机构', field: 'jurisdiction', select_change: true,
-                        selectList: [], selectField: ['id', 'title']
+                        selectList: [], selectField: ['id', 'title'], selectChange: true
                     },
                     {
                         type: 'select', name: '兑换内容', field: 'content', exchange_content: false,
-                        selectList: [], selectField: ['id', 'title']
+                        selectList: [], selectField: ['index', 'title']
                     },
                     {type: 'input-number', name: '兑换数量', field: 'num', disable: false},
                     {
@@ -218,12 +218,15 @@
                 this.tableRow = this.tableRow1
             },
             fromSubmit(val) {
+                console.log(this.formList[2].selectList[val.content], 'val');
                 let d = {
-                    product_id: val.content,
+                    product_id: this.formList[2].selectList[val.content].id,
+                    collection_id: this.formList[2].selectList[val.content].id,
                     title: val.realname,
                     code_count: val.num,
                     organization_id: val.jurisdiction,
                     state: val.isswitch ? 2 : 1,
+                    type: this.formList[2].selectList[val.content].type == "collection" ? 1 : 0,
                     effect_time: this.$config.formatTime(val.effective_time[0]),
                     invalid_time: this.$config.formatTime(val.effective_time[1])
                 }
@@ -255,11 +258,21 @@
             getProducts(val) {
                 if (val) {
                     postData('components/getProductsCollection', {organization_id: val}).then(res => {
-                        if (res.res_code == 1) this.formList[2].selectList = res.data
+                        if (res.res_code == 1) {
+                            res.data.forEach((item, index) => {
+                                item.index = index
+                            })
+                            this.formList[2].selectList = res.data
+                        }
                     })
                 } else {
                     postData('components/getProductsCollection').then(res => {
-                        if (res.res_code == 1) this.formList[2].selectList = res.data
+                        if (res.res_code == 1) {
+                            res.data.forEach((item, index) => {
+                                item.index = index
+                            })
+                            this.formList[2].selectList = res.data
+                        }
                     })
                 }
             },

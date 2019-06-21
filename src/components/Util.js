@@ -135,10 +135,10 @@ export const MenuList = [
                 name: 'production-intersection',
                 title: '产品合集'
             },
-            {
-                name: 'live-course',
-                title: '直播课'
-            },
+            // {
+            //     name: 'live-course',
+            //     title: '直播课'
+            // },
         ]
     },
     {
