@@ -88,7 +88,7 @@
                 this.formList[1].selectList = [{id: 1, title: ''}]
             },
             changeList(val) {
-                postData('components/getProducts', {organization_id: val}).then(res => {
+                postData('components/getProductsCollection', {organization_id: val}).then(res => {
                     if(res.res_code == 1) this.formList[1].selectList = res.data
                     else this.$Message.info(res.msg)
                 })

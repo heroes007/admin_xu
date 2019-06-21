@@ -74,6 +74,7 @@
         },
         methods: {
             handleClose() {
+                this.changeList = []
                 this.$emit('handleClose')
             },
             getList() {
@@ -111,7 +112,10 @@
                     product_arr: this.changeList
                 }
                 postData('/product/collection/addProduct', data).then(res => {
-                    if(res.res_code == 1) this.handleClose()
+                    if(res.res_code == 1) {
+                        this.handleClose()
+                        this.$emit('submit')
+                    }
                 })
             },
             onSelectionChange(val) {

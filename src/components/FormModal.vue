@@ -2,7 +2,7 @@
     <div>
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList"
                          @close="exchangeContentClose" @selectChecked="exchangeContentChecked"/>
-        <Modal :class="modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth"
+        <Modal :class="handleFloor == 2 ? 'modal-class3' : modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth"
                @on-cancel="closeModal" :mask-closable=false
                :footer-hide="true">
             <div v-if="uploadFlie" class="upload-flie">
@@ -130,7 +130,7 @@
                                 :style=" t.small ? 'height: 340px;' : t.showAll == 1 ? 'height: auto' : 'height: 500px;'"
                                 @get-content="getContent" :content="content" editor-id="editorId" @editor-change="editorChange"/>
                         <div style="height: 32px;">
-                            <div v-if="t.showAll" @click="showContent(t.showAll)" class="show-content">{{t.showAll == 1 ? '收起↑' : '展开↓'}}</div>
+                            <div v-if="t.showAll" @click="showContent(t.showAll)" class="show-content">{{t.showAll == 1 ? '收起↑' : '展开全文↓'}}</div>
                         </div>
                         <div style="display: flex">
                             <down-loading :formData="downList"/>
@@ -173,8 +173,7 @@
                 <Button v-if="handleFloor && handleFloor == '1'" class="btn-orange" type="primary"
                         @click="handleSubmit('formValidate')">下一步
                 </Button>
-                <Button v-else class="btn-orange" type="primary" @click="handleSubmit('formValidate')">{{btnName ?
-                    btnName : '保存'}}
+                <Button v-else class="btn-orange" type="primary" @click="handleSubmit('formValidate')">{{btnName ? btnName : '保存'}}
                 </Button>
             </div>
         </Modal>
@@ -192,7 +191,6 @@
     import rubbishIcon from '../assets/img/rubbish.png'
     import NewEditor from './NewEditor'
     import uploadPanel from './UploadPanel'
-
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
@@ -646,6 +644,18 @@
         }
     }
 
+    .modal-class3 {
+        /deep/ .ivu-modal-body {
+            padding: 0 0 30px 0;
+        }
+        /deep/ .w-e-text-container{
+            padding: 0 30px;
+        }
+        /deep/ .w-e-toolbar{
+            padding: 0 30px;
+        }
+    }
+
     /deep/ .ivu-modal-header {
         background: #fff !important;
         padding: 0 !important;
@@ -873,9 +883,13 @@
         width: 60px;
         text-align: center;
         float: right;
+        margin-right: 10px;
 
         &:hover {
             color: rgb(57, 76, 93);
         }
+    }
+    /deep/ .w-e-toolbar{
+        border: none !important;
     }
 </style>

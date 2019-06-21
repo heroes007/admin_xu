@@ -254,11 +254,11 @@
             },
             getProducts(val) {
                 if (val) {
-                    postData('components/getProducts', {organization_id: val}).then(res => {
+                    postData('components/getProductsCollection', {organization_id: val}).then(res => {
                         if (res.res_code == 1) this.formList[2].selectList = res.data
                     })
                 } else {
-                    postData('components/getProducts').then(res => {
+                    postData('components/getProductsCollection').then(res => {
                         if (res.res_code == 1) this.formList[2].selectList = res.data
                     })
                 }

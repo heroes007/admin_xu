@@ -255,7 +255,7 @@
         overflow: hidden;
         overflow-y: unset;
     }
-    /deep/ .md-cloud-upload{
+    /deep/ .md-cloud-upload {
         margin-top: 100px !important;
     }
 </style>

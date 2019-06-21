@@ -1,7 +1,7 @@
 <template>
     <div>
         <Modal :transfer=false :title="!payload? '添加培训' : '编辑培训'" :footer-hide=true :width="654" :mask-closable="false"
-               v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)">
+               v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" :class="nextStep == 2 ? 'modal-class1' : 'modal-class2'">
             <base-input @closedialog="handleClose">
                 <Row slot="body">
                     <Row class="body-top">
@@ -10,42 +10,43 @@
                             <FormItem v-show="nextStep == 0" prop="title" label="产品名称">
                                 <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                             </FormItem>
-                            <FormItem v-show="nextStep == 0" prop="original_price">
-                                <template slot="label"><span class="form-label">原价</span></template>
-                                <InputNumber placeholder="售价必须小于等于定价" v-model="form.original_price"></InputNumber>
-                            </FormItem>
-                            <FormItem v-show="nextStep == 0" prop="price" label="实际售价">
-                                <InputNumber placeholder="0为免费，单位默认（元）" v-model="form.price"></InputNumber>
-                            </FormItem>
-                            <FormItem v-show="nextStep == 0" prop="category_id" label="产品分类">
+                            <FormItem v-show="nextStep == 0" prop="category_id" label="产品分类" class="local-left">
                                 <Select v-model="form.category_id" placeholder="请选择产品分类">
                                     <Option v-for="item in selectList3" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
-                            <FormItem v-show="nextStep == 0" prop="unlock_type" label="解锁方式">
+                            <FormItem v-show="nextStep == 0" prop="unlock_type" label="解锁方式" class="local-right">
                                 <Select v-model="form.unlock_type" placeholder="不限/按课程/按章节/按视频">
                                     <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
-                            <FormItem v-show="nextStep == 0" prop="model" label="模式">
+                            <FormItem v-show="nextStep == 0" prop="model" class="local-left">
+                                <template slot="label"><span class="form-label">模式</span></template>
                                 <Select v-model="form.model" placeholder="不限/按课程/按章节/按视频">
                                     <Option v-for="item in selectList4" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
+                            <!-- organizationList -->
+                            <FormItem v-show="nextStep == 0" prop="state" label="产品状态" class="local-right">
+                                <Select v-model="form.state" placeholder="下架/测试/上架" @on-change="changeState">
+                                    <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                            <FormItem v-show="nextStep == 0" prop="original_price" class="local-left">
+                                <template slot="label"><span class="form-label">原价</span></template>
+                                <InputNumber placeholder="售价必须小于等于定价" v-model="form.original_price"></InputNumber>
+                            </FormItem>
+                            <FormItem v-show="nextStep == 0" prop="price" label="实际售价" class="local-right">
+                                <InputNumber placeholder="0为免费，单位默认（元）" v-model="form.price"></InputNumber>
+                            </FormItem>
                             <FormItem v-show="organizationList&&nextStep == 0" prop="organization_id" label="所属机构">
                                 <Select v-model="form.organization_id" placeholder="请选择所属机构">
                                     <Option v-for="item in organizationList" :value="item.id" :key="item.id">
                                         {{item.title}}
-                                    </Option>
-                                </Select>
-                            </FormItem>
-                            <!-- organizationList -->
-                            <FormItem v-show="nextStep == 0" prop="state" label="产品状态">
-                                <Select v-model="form.state" placeholder="下架/测试/上架" @on-change="changeState">
-                                    <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
@@ -102,7 +103,7 @@
                                             @get-content="getContent" @editor-change="editorChange"
                                             :editor-id="editorId" :content="content" class="new-editor"/>
                                 <div style="height: 32px;">
-                                    <div v-if="showAll" @click="showContent" class="show-content">{{showAll == 1 ? '收起↑' : '展开↓'}}</div>
+                                    <div v-if="showAll" @click="showContent" class="show-content">{{showAll == 1 ? '收起↑' : '展开全文↓'}}</div>
                                 </div>
                             </FormItem>
                             <div v-if="nextStep == 2" class="btns">
@@ -682,6 +683,7 @@
         text-align: right;
         float: right;
         width: 80px;
+        margin-right: 10px;
 
         &:hover {
             color: rgb(57, 76, 93);
@@ -691,5 +693,34 @@
     .new-editor {
         width: 604px;
         min-height: 600px !important;
+    }
+    .local-left{
+        width: 270px;
+        display: inline-block
+    }
+    .local-right{
+        width: 270px;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    .modal-class1{
+        /deep/ .ivu-modal-body {
+            padding: 0 0 30px 0;
+        }
+        /deep/ .w-e-text-container{
+            padding: 0 30px;
+        }
+        /deep/ .w-e-toolbar{
+            padding: 0 30px;
+        }
+        /deep/ .new-editor{
+            width: 100% !important;
+        }
+        /deep/ .w-e-toolbar{
+            border: none !important;
+        }
+    }
+    .modal-class2{
+
     }
 </style>

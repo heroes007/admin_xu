@@ -12,7 +12,7 @@
                 <div class="intersection-content">
                     <div class="intersection-content-title">{{item.title}}</div>
                     <div class="intersection-content-course">
-                        <div class="intersection-content-course-money"><div class="original_price">¥{{item.original_price}}</div> <div class="price"><span>¥{{item.price}}<span class="line"></span></span> </div></div>
+                        <div class="intersection-content-course-money"><div class="original_price">¥{{item.price}}</div> <div class="price"><span>¥{{item.original_price}}<span class="line"></span></span> </div></div>
                         <div class="intersection-content-course-num">{{item.student_num}}人报名</div>
                     </div>
                 </div>

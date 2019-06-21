@@ -105,17 +105,17 @@
                         selectList: [], selectField: [ 'id','title' ]},
                     { type: 'select', name: '状态', field: 'state', selectField: [ 'id','title' ],
                         selectList: [{id: -1, title: '下架'}, {id: 1, title: '测试'}, {id: 2, title: '上架'}, {id: 3, title: '推荐'}] },
-                    { type: 'input-number', name: '原价', field: 'original_price'},
+                    { type: 'input-number', name: '产品原价', field: 'original_price', disable: true},
                     { type: 'input-number', name: '实际售价', field: 'price'},
                     { type: 'textarea', name: '产品介绍',  field: 'short_description' },
                     { type: 'uploadPanel', name: '展示封面' ,field: 'img_url'},
                 ],
                 rules: {
                     title: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
-                    organization_id: [{ required: true, message: '请输入所属机构', trigger: 'blur' } ],
-                    state: [{ required: true, message: '请选择产品状态', trigger: 'blur' } ],
-                    original_price: [{ required: true, message: '请输入产品原价', trigger: 'blur' } ],
-                    price: [{ required: true, message: '请输入产品实际售价', trigger: 'blur' } ],
+                    organization_id: [{ required: true, message: '请输入所属机构' } ],
+                    state: [{ required: true, message: '请选择产品状态'} ],
+                    original_price: [{ required: true, message: '请输入产品原价' } ],
+                    price: [{ required: true, message: '请输入产品实际售价' } ],
                     short_description: [{ required: true, message: '请输入产品介绍', trigger: 'blur' } ],
                 },
                 modalTitle: '编辑合集',
@@ -183,17 +183,31 @@
                         })
                     });
                 }else{
-                 this.$Message.info('不准删')
+                    this.$config.deleteModal(() => {
+                        postData('/product/collection/deleteCollection', {collection_id: JSON.parse(sessionStorage.getItem('INTERSECTION')).collection_id}).then(res => {
+                            if(res.res_code == 1){
+                                this.$Message.info('删除合集');
+                                this.$router.push({name: 'production-intersection'})
+                            }
+                        })
+                    });
                 }
             },
             handleClose() {
                 this.isShow = false
             },
-            handleSubmit() {
-
+            handleSubmit(val) {
+                val.img_url = val.img_default
+                postData('/product/collection/change', val).then(res => {
+                    if(res.res_code == 1) {
+                        this.$Message.success(res.msg)
+                        this.getList()
+                    }
+                    else this.$Message.info(res.msg)
+                })
             },
             closeModal() {
-
+                this.show = false
             }
         },
         watch: {
