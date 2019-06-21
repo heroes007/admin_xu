@@ -892,4 +892,7 @@
     /deep/ .w-e-toolbar{
         border: none !important;
     }
+    /deep/ .md-cloud-upload{
+        margin-top: 100px !important;
+    }
 </style>

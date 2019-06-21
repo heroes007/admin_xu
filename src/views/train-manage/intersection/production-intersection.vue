@@ -8,6 +8,10 @@
                 <div class="intersection-card">
                     <img class="intersection-card-img" :src="item.img_url" alt="">
                     <div class="intersection-card-name" :style="productState(item.state)">{{item.state == -1 ? '下架' : item.state == 1 ? '测试' : item.state == 2 ? '上架' : item.state == 3 ? '推荐' : '删除'}}</div>
+                    <div class="intersection-card-num">
+                        <div class="card-num">{{item.product_num}}</div>
+                        <div class="card-title">课程</div>
+                    </div>
                 </div>
                 <div class="intersection-content">
                     <div class="intersection-content-title">{{item.title}}</div>
@@ -140,12 +144,13 @@
     .content{
         display: flex;
         flex-wrap: wrap;
+        align-content: flex-start;
         overflow-y: auto;
     }
     .intersection{
-        width: 320px;
         height: 273px;
         margin: 15px;
+        background-color: #fff;
 
         .intersection-card{
             height: 180px;
@@ -154,7 +159,7 @@
 
             .intersection-card-img{
                 height: 180px;
-                width: 320px;
+                width: 100%;
             }
 
             .intersection-card-name{
@@ -165,6 +170,29 @@
                 width: 50px;
                 height: 20px;
                 border-radius: 14.5px;
+            }
+
+            .intersection-card-num{
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                width: 50px;
+                height: 47px;
+                background: rgba(51,51,51,.5);
+                border-radius: 2px;
+                color: #fff;
+
+                .card-num{
+                    font-family: PingFangSC-Medium;
+                    font-size: 20px;
+                    line-height: 28px;
+                }
+
+                .card-title{
+                    font-family: PingFangSC-Regular;
+                    font-size: 14px;
+                    line-height: 20px;
+                }
             }
         }
 
@@ -224,6 +252,6 @@
         margin-top: 100px !important;
     }
     .manage-production-view{
-        background-color: #f0f0f7; 
+        background-color: #f0f0f7;
     }
 </style>

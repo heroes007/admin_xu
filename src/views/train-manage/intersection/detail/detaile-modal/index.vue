@@ -17,6 +17,7 @@
     import pageList from  '../../../../../components/Page'
     import pageMixin from '../../../../mixins/pageMixins'
     import postData from '../../../../../api/postData'
+    var loadingInstance = null;
 
     export default {
         components: {screen, tables, pageList},
@@ -107,6 +108,7 @@
                 this.getList()
             },
             submit() {
+                loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
                 let list = []
                 this.selectList.forEach(item => {
                     list .push(item.id)
@@ -119,6 +121,7 @@
                     if(res.res_code == 1) {
                         this.handleClose()
                         this.$emit('submit')
+                        loadingInstance.close()
                     }
                 })
             },
@@ -132,9 +135,8 @@
                         this.changeList.forEach(item2 => {
                             if(item2.id == item.id) item2 = item
                         })
-                    }else{
-                        this.changeList = this.list
                     }
+                    this.changeList = [...this.changeList, ...this.list]
                 })
             }
         },
