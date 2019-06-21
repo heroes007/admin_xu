@@ -99,36 +99,7 @@
                         this.dataList = res.data
                     }
                 }).then(() => {
-npm ERR! code ELIFECYCLE
-npm ERR! errno 1
-npm ERR! medical_education_training_admin@1.0.0 dev: `node build/dev-server.js`
-npm ERR! Exit status 1
-npm ERR!
-npm ERR! Failed at the medical_education_training_admin@1.0.0 dev script.
-npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
-
-npm ERR! A complete log of this run can be found in:
-npm ERR!     /Users/chenjichao/.npm/_logs/2019-06-21T01_57_17_067Z-debug.log
-localhost:medical_education_training_admin chenjichao$ npm run dev
-
-> medical_education_training_admin@1.0.0 dev /Users/chenjichao/Desktop/学格科技/医疗培训/medical_education_training_admin
-> node build/dev-server.js
-
-⠋ 正在开发环境打包...ℹ ｢wdm｣: wait until bundle finished:
-events.js:174
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use 0.0.0.0:8001
-    at Server.setupListenHandle [as _listen2] (net.js:1279:14)
-    at listenInCluster (net.js:1327:12)
-    at doListen (net.js:1460:7)
-    at process._tickCallback (internal/process/next_tick.js:63:19)
-    at Function.Module.runMain (internal/modules/cjs/loader.js:832:11)
-localhost:medical_education_training_adm//////////
-localhost:medical_education_training_admin chenjichao$ git add .
-
-                    this.isLoad = true///////////
+                    this.isLoad = true
                 })
             },
             handleUp(index) {
