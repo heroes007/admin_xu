@@ -82,7 +82,7 @@
                                     <div v-if="form.video_url">
                                         <Icon @click="deleteImgList('video')" class="upload-img-main-icon2"
                                               type="ios-close-circle"/>
-                                        <video width="458" height="260" v-if="form.video_url" :src="form.video_url"
+                                        <video ref="uploadVideo" width="458" height="260" v-if="form.video_url" :src="form.video_url"
                                                controls="controls"/>
                                     </div>
                                     <div class="demo-file-key" v-if="form.imgList.length == 0 && !form.video_url">
@@ -350,6 +350,17 @@
                     } else if (v.maxSizes == 'video') {
                         if (!this.form.video_url) this.form.video_url = v.url
                         this.imgType = 'close'
+                        this.$nextTick(() => {
+                            let uploadVideo = this.$refs.uploadVideo
+                            var canvas = document.createElement("canvas");
+                            canvas.width = "320";
+                            canvas.height = "320";
+                            var ctx = canvas.getContext("2d")
+                            ctx.drawImage(uploadVideo, 0, 0, 320, 320);
+                            var img = document.createElement("img");
+                            let imgsrc = canvas.toDataURL("image/png");
+                            console.log(img, imgsrc, '00000000')
+                        })
                     }
                     //    this.$forceUpdate()
                 } else {

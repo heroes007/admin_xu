@@ -15,7 +15,7 @@
                     <div class="product-content">
                         <div class="product-content-title">{{item.title}}</div>
                         <div style="position: relative">
-                            <Input v-model="item.front_description ? item.front_description: item.short_description" type="textarea" class="product-content-input"
+                            <Input v-model="item.front_description" type="textarea" class="product-content-input"
                                    placeholder="请输入产品介绍" :maxlength="100" @on-change="changeContent"/>
                             <div class="font-num">{{item.front_description.length}}/100</div>
                         </div>
@@ -127,6 +127,9 @@
                 postData('product/product/get_recommend_list').then(res => {
                     if (res.res_code == 1) {
                         this.dataList = res.data
+                        this.dataList.forEach(item => {
+                            item.front_description ? item.front_description : short_description
+                        })
                     }
                 }).then(() => {
                     this.isLoad = true
