@@ -108,7 +108,7 @@
                     { type: 'input-number', name: '产品原价', field: 'original_price', disable: true},
                     { type: 'input-number', name: '实际售价', field: 'price'},
                     { type: 'textarea', name: '产品介绍',  field: 'short_description' },
-                    { type: 'uploadPanel', name: '展示封面' ,field: 'img_url'},
+                    { type: 'uploadPanel', name: '展示封面' ,field: 'img_default'},
                 ],
                 rules: {
                     title: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
@@ -154,6 +154,7 @@
                     }
                     postData('/product/collection/getCollectionDetail', data).then(res => {
                         this.detail = res.data.collection_detail
+                        this.detail.img_default = this.detail.img_url
                         this.detailImg = res.data.collection_detail.img_url
                     })
                 }
