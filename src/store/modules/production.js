@@ -16,6 +16,7 @@ const state = {
   cur_production_id: 0,
   add_product_state: false,
   edit_product_state: false,
+  update_product_state: false,
   stateList: [{id: 3, name: '首页推荐'}, {id: 0, name: '编辑中'}, {id: 1, name: '正常'}, {id: 2, name: '不可购买'}],
   examineTypeList: [{id: 0, name: '笔试和面试'}, {id: 1, name: '只面试'}, {id: 2, name: '只笔试'}, {id: 3, name: '免笔试面试'}],
 }
@@ -50,6 +51,9 @@ const actions = {
       }
     })
   },
+  update_intersection({commit}, param) {
+    commit('update_product_states')
+  }
 }
 // mutations
 const mutations = {
@@ -58,6 +62,9 @@ const mutations = {
   },
   edit_product_states(state,param){
     state.edit_product_state = param
+  },
+  update_product_states(state,param){
+    state.update_product_state = !state.update_product_state
   },
   [types.PRODUCTION_CLEAR](state) {
     state.production_list = [];

@@ -7,7 +7,7 @@
                 <div class="hide-menu-btn" @click="hideMenu">
                     <Icon class="hide-icon" :type="hideIcon"/>
                 </div>
-                <router-view/>
+                <router-view :key="$route.fullPath" />
             </Col>
         </Row>
     </div>

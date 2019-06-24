@@ -7,7 +7,7 @@
         <div class="lecturer-list">
             <Row :gutter="20">
                 <Col span="6" :class="handleCardClass(t.state)" v-for="(t, index) in cardList" :key="index">
-                    <div class="manage-production-col cards">
+                    <div class="manage-production-col cards" @click="handleJump(t)">
                         <Row>
                             <Col span="2" class="al-left cad-top-left">
                                 <p>ID:</p>
@@ -43,6 +43,7 @@
     import pageList from '../../../../components/Page'
     import pageMixin from '../../../mixins/pageMixins'
     import postData from '../../../../api/postData'
+    import {mapActions} from 'vuex'
 
     export default {
         components: {screen, detailModal, pageList},
@@ -63,6 +64,7 @@
             }
         },
         methods: {
+            ...mapActions(['update_intersection']),
             selectChange2(val) {
                 this.state = val == 'all' ? '' : val
                 this.getList()
@@ -89,7 +91,13 @@
                 })
             },
             submitModal() {
+                this.update_intersection()
                 this.getList()
+            },
+            handleJump(val) {
+                sessionStorage.setItem('PRODUCTINFO', JSON.stringify(val))
+                sessionStorage.setItem('onlinePane', 'product1')
+                this.$router.push({name: "open-product"})
             }
         },
         mounted() {
@@ -128,6 +136,7 @@
         background: #fff;
         margin-bottom: 20px;
         padding: 15px;
+        cursor: pointer;
     }
 
     .card-main-list0 {

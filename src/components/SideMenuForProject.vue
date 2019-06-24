@@ -123,11 +123,12 @@
         },
         methods: {
             goBack() {
-                if (this.$route.path == '/product/intersection-detail') {
-                    this.$router.push({name: 'production-intersection'})
-                } else {
-                    this.$router.push({name: 'product-manage'})
-                }
+                // if (this.$route.path == '/product/intersection-detail') {
+                //     this.$router.push({name: 'production-intersection'})
+                // } else {
+                //     this.$router.push({name: 'product-manage'})
+                // }
+                this.$router.go(-1)
             },
             handleCategory(num) {
                 let text = ''
@@ -145,6 +146,7 @@
                         if (d.default && !this.detailImg) this.detailVideo = d.video
                     })
                 }else{
+                    this.detailVideo = ''
                     let data = {
                         collection_id: JSON.parse(sessionStorage.getItem('INTERSECTION')).collection_id,
                         page_num: 1,
@@ -212,14 +214,21 @@
         },
         watch: {
             $route() {
+                if(this.$route.name == 'intersection-detail') this.showData = false
+                else this.showData = true
                 this.initMenu();
+                this.getList();
             },
             productState(_new) {
                 if (_new) this.getList()
+            },
+            updateStates(val) {
+                if(val) this.getList()
             }
         },
         mounted() {
-            if (this.$route.name == 'intersection-detail') this.showData = false
+            if(this.$route.name == 'intersection-detail') this.showData = false
+            else this.showData = true
             this.getList();
             this.initMenu();
             postData('components/getOrganization').then(res => {
@@ -227,7 +236,7 @@
             })
         },
         computed: {
-            ...mapState({productState: state => state.production.edit_product_state}),
+            ...mapState({productState: state => state.production.edit_product_state, updateStates: state => state.production.update_product_state}),
             userInfo() {
                 return this.$store.state.auth.userInfo;
             },
