@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Modal :transfer=false :title="!payload? '添加培训' : '编辑培训'" :footer-hide=true :width="654" :mask-closable="false"
+        <Modal :transfer=false :title="!payload? '添加培训' : '编辑培训'" :footer-hide=true :width="740" :mask-closable="false"
                v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" :class="nextStep == 2 ? 'modal-class1' : 'modal-class2'">
             <base-input @closedialog="handleClose">
                 <Row slot="body">
@@ -10,28 +10,36 @@
                             <FormItem v-show="nextStep == 0" prop="title" label="产品名称">
                                 <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                             </FormItem>
-                            <FormItem v-show="nextStep == 0" prop="category_id" label="产品分类" class="local-left">
+                            <FormItem v-show="organizationList&&nextStep == 0" prop="organization_id" label="所属机构">
+                                <Select v-model="form.organization_id" placeholder="请选择所属机构">
+                                    <Option v-for="item in organizationList" :value="item.id" :key="item.id">
+                                        {{item.title}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                            <FormItem v-show="nextStep == 0" prop="category_id" label="分类" class="local-left">
+                                <template slot="label"><span class="form-label">分类</span></template>
                                 <Select v-model="form.category_id" placeholder="请选择产品分类">
                                     <Option v-for="item in selectList3" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="unlock_type" label="解锁方式" class="local-right">
-                                <Select v-model="form.unlock_type" placeholder="不限/按课程/按章节/按视频">
+                                <Select v-model="form.unlock_type" placeholder="请选择解锁方式">
                                     <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="model" class="local-left">
                                 <template slot="label"><span class="form-label">模式</span></template>
-                                <Select v-model="form.model" placeholder="不限/按课程/按章节/按视频">
+                                <Select v-model="form.model" placeholder="请选择展示模式">
                                     <Option v-for="item in selectList4" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
                             <!-- organizationList -->
                             <FormItem v-show="nextStep == 0" prop="state" label="产品状态" class="local-right">
-                                <Select v-model="form.state" placeholder="下架/测试/上架" @on-change="changeState">
+                                <Select v-model="form.state" placeholder="请选择产品状态" @on-change="changeState">
                                     <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
@@ -42,13 +50,6 @@
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="price" label="实际售价" class="local-right">
                                 <InputNumber placeholder="0为免费，单位默认（元）" v-model="form.price"></InputNumber>
-                            </FormItem>
-                            <FormItem v-show="organizationList&&nextStep == 0" prop="organization_id" label="所属机构">
-                                <Select v-model="form.organization_id" placeholder="请选择所属机构">
-                                    <Option v-for="item in organizationList" :value="item.id" :key="item.id">
-                                        {{item.title}}
-                                    </Option>
-                                </Select>
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="short_description" label="产品介绍">
                                 <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"
@@ -441,7 +442,7 @@
     }
 
     /deep/ .ivu-modal {
-        width: 654px !important
+        /*width: 654px !important*/
     }
 
     /deep/ .upload-panel .img img {
@@ -496,10 +497,11 @@
         .upload-img-text {
             font-family: PingFangSC-Regular;
             font-size: 12px;
-            color: #F54802;
-            text-align: justify;
+            color: #9397AD;
+            letter-spacing: 0.18px;
             line-height: 20px;
-            margin-right: 50px;
+            text-align: left;
+            margin-right: 35px;
         }
     }
 
@@ -632,13 +634,13 @@
     }
 
     .demo-carousel {
-        width: 466px;
-        height: 260px;
+        width: 554px;
+        height: 310px;
     }
 
     .demo-file {
-        width: 468px;
-        height: 260px;
+        width: 554px;
+        height: 310px;
         margin-bottom: 20px;
         border: 1px solid #d7dde4;
 
@@ -648,8 +650,8 @@
     }
 
     .demo-file-key {
-        width: 460px;
-        height: 260px;
+        width: 554px;
+        height: 310px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -673,8 +675,9 @@
     }
 
     /deep/ .w-e-text {
-        overflow-y: hidden;
+        overflow-y: auto;
         overflow: hidden;
+        padding: 0 30px;
         height: auto !important;
     }
 
@@ -695,11 +698,11 @@
         min-height: 600px !important;
     }
     .local-left{
-        width: 270px;
+        width: 310px;
         display: inline-block
     }
     .local-right{
-        width: 270px;
+        width: 310px;
         display: inline-block;
         margin-left: 10px;
     }
@@ -708,7 +711,8 @@
             padding: 0 0 30px 0;
         }
         /deep/ .w-e-text-container{
-            padding: 0 30px;
+            /*padding: 0 30px;*/
+            overflow-y: auto;
         }
         /deep/ .w-e-toolbar{
             padding: 0 30px;

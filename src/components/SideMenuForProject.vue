@@ -51,7 +51,7 @@
                     <span class="w60">报名人数:</span><span>{{detail.student_num}}</span>
                 </div>
                 <div>
-                    <span class="w60">状态:</span><span>{{detail.state == -1 ? '下架' : detail.state == 2 ? '上架' : detail.state == 1 ? '测试' : detail.state == 3 ? '推荐' : '删除'}}</span>
+                    <span class="w60"><span>状</span><span>态:</span></span><span>{{detail.state == -1 ? '下架' : detail.state == 2 ? '上架' : detail.state == 1 ? '测试' : detail.state == 3 ? '推荐' : '删除'}}</span>
                 </div>
                 <div style="margin-top: 30px;">
                     <span class="w73">创建用户ID:</span><span>{{detail.user_id}}</span>
@@ -108,7 +108,7 @@
                     { type: 'input-number', name: '产品原价', field: 'original_price', disable: true},
                     { type: 'input-number', name: '实际售价', field: 'price'},
                     { type: 'textarea', name: '产品介绍',  field: 'short_description' },
-                    { type: 'uploadPanel', name: '展示封面' ,field: 'img_default'},
+                    { type: 'uploadBtn', name: '展示封面' ,field: 'img_url'},
                 ],
                 rules: {
                     title: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
@@ -200,7 +200,6 @@
                 this.isShow = false
             },
             handleSubmit(val) {
-                val.img_url = val.img_default
                 postData('/product/collection/change', val).then(res => {
                     if(res.res_code == 1) {
                         this.$Message.success(res.msg)

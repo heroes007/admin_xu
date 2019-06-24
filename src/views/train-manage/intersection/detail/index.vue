@@ -13,7 +13,7 @@
                                 <p>ID:</p>
                             </Col>
                             <Col span="9" class="al-left cad-top-left">
-                                <p>{{t.id}}</p>
+                                <p style="margin-left: 2px;">{{t.id}}</p>
                             </Col>
                             <Col span="13" class="al-right">
                                 <div style="display: flex;justify-content: flex-end">

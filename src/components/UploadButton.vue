@@ -3,7 +3,7 @@
         <div v-if="imgtypes">
             <Button class="imgtypes-btn" v-if="imgtypes == 'close'" @click="handleClose" >{{text}}</button>
             <div v-else>
-                <Button class="imgtypes-btn" @click='handleStartUploadFile'>{{text}}</button>
+                <Button class="imgtypes-btn" @click='handleStartUploadFile' style="width: 80px;">{{text}}</button>
                 <input type="file" ref="input" class="el-upload__input" @change="handleUploadChange" :accept="type">
             </div>
         </div>

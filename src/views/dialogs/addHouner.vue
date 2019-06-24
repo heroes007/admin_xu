@@ -34,7 +34,7 @@
                                     </CarouselItem>
                                 </Carousel>
                                 <div class="upload-btn-flex">
-                                    <div  class="upload-img-text">*可上传1～5张图片或1个视频；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；</div>
+                                    <div class="upload-img-text">*可上传1～5张图片；图片支持jpg/png格式，建议尺寸768*432px，且大小不超过2M；</div>
                                     <upload-button text="上传" :imgtypes="imgType" bucket="jhyl-static-file"
                                                    @handle-close="handleFileClose" class="upload-img-button"
                                                    @uploadcomplete="uploadcompleteButton" :type="fileType"
@@ -409,7 +409,8 @@
         .upload-img-text{
             font-family: PingFangSC-Regular;
             font-size: 12px;
-            color: #F54802;
+            color: #9397AD;
+            letter-spacing: 0.18px;
             text-align: justify;
             line-height: 20px;
             margin-right: 50px;
@@ -417,5 +418,8 @@
         .upload-img-button{
 
         }
+    }
+    /deep/ .ivu-select-disabled .ivu-select-selection{
+        color: #657180 !important;
     }
 </style>

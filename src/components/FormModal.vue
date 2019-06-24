@@ -36,13 +36,13 @@
                         <Input type="textarea" :maxlength="t.maxlength" :rows="6" v-model="formItem[t.field]"
                                :placeholder="'请输入'+ t.name"></Input>
                         <div v-if="t.maxlength" class="font-num">
-                            {{formItem[t.field]&&formItem[t.field].length}}/{{t.maxlength}}
+                            {{formItem[t.field]&&formItem[t.field].length ? formItem[t.field]&&formItem[t.field].length : '0'}}/{{t.maxlength}}
                         </div>
                     </FormItem>
                     <!-- input-number -->
                     <FormItem v-if="t.type==='input-number'" :prop="t.field">
                         <template slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
-                        <InputNumber :disabled="t.disable" :min='1' v-model="formItem[t.field]"
+                        <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
                                      :placeholder="'请输入'+t.name"></InputNumber>
                     </FormItem>
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
@@ -113,6 +113,31 @@
                                       types="image/gif, image/jpeg, image/png">
                             <span slot="file-require" class="font-hint">*只能上传jpg/png文件，且图片比例为3:2，建议尺寸480*320px</span>
                         </upload-panel>
+                    </FormItem>
+                    <!-- 新上传封面-->
+                    <FormItem  v-if="t.type == 'uploadBtn'" v-show="t.isShow ? t.isShow == 1 : true" ref="upload"
+                               :label="t.name ? t.name : '展示封面'" require>
+                        <div>
+                            <div class="demo-file">
+                                <div v-if="formItem[t.field]" class="demo-carousel">
+                                    <img @click="deleteImgList(0)" src="../assets/img/close-icon.png"
+                                         class="upload-img-main-icon"/>
+                                    <!-- <Icon @click="deleteImgList(0)" class="upload-img-main-icon" type="ios-close-circle" /> -->
+                                    <img class="upload-img-item" :src="formItem[t.field]"/>
+                                </div>
+                                <div class="demo-file-key" v-else>
+                                    <img src="../assets/img/img-video.png"/>
+                                    <p>展示图片或视频</p>
+                                </div>
+                            </div>
+                            <div class="upload-btn-flex">
+                                <p class="upload-img-text">
+                                    *只支持jpg/png图片，建议尺寸768*432px，且大小不超过2M</p>
+                                <upload-btn text="上传" :imgtypes="imgType" bucket="jhyl-static-file"
+                                            @handle-close="handleFileClose" @uploadcomplete="uploadcomplete"
+                                            :type="fileType" :maxFileSize="[2, 300]"/>
+                            </div>
+                        </div>
                     </FormItem>
                     <!-- 上传视频 -->
                     <FormItem v-if="t.type == 'uploadVideo'" ref="upload" label="上传视频" required>
@@ -339,6 +364,8 @@
                 ],
                 color: '',
                 modalText2: '',
+                imgType: 1,
+                fileType: 'image/png,image/jpg'
             }
         },
         watch: {
@@ -613,7 +640,19 @@
             },
             editorChange() {
                 this.$emit('editor-change')
+            },
+            handleFileClose() {
+                this.$Message.warning('最多上传1张图片')
+            },
+            uploadcomplete(val) {
+                this.formItem.img_url = val.url;
+                this.$forceUpdate()
+            },
+            deleteImgList() {
+                this.formItem.img_url = '';
+                this.$forceUpdate()
             }
+
         },
     }
 </script>
@@ -649,7 +688,7 @@
             padding: 0 0 30px 0;
         }
         /deep/ .w-e-text-container{
-            padding: 0 30px;
+            /*padding: 0 30px;*/
         }
         /deep/ .w-e-toolbar{
             padding: 0 30px;
@@ -874,13 +913,14 @@
 
     /deep/ .w-e-text {
         overflow: hidden;
-        overflow-y: hidden;
-        height: auto !important;
+        overflow-y: auto;
+        padding: 0 30px;
+        /*height: auto !important;*/
     }
 
     .show-content {
         cursor: pointer;
-        width: 60px;
+        width: 80px;
         text-align: center;
         float: right;
         margin-right: 10px;
@@ -894,5 +934,52 @@
     }
     /deep/ .md-cloud-upload{
         margin-top: 100px !important;
+    }
+    /deep/ .ivu-input-number-input[disabled]{
+        color: #657180
+    }
+    .demo-file {
+        width: 465px;
+        height: 310px;
+        margin-bottom: 20px;
+        border: 1px solid #d7dde4;
+
+        p {
+            color: #d6dbe2;
+        }
+    }
+    .demo-carousel {
+        width: 465px;
+        height: 310px;
+    }
+    .upload-img-main-icon {
+        color: #fff;
+        position: absolute;
+        right: 0;
+    }
+    .upload-img-item {
+        width: 100%;
+        height: 100%;
+    }
+    .demo-file-key {
+        width: 465px;
+        height: 310px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .upload-btn-flex {
+        display: flex;
+
+        .upload-img-text {
+            font-family: PingFangSC-Regular;
+            font-size: 12px;
+            color: #9397AD;
+            letter-spacing: 0.18px;
+            line-height: 20px;
+            text-align: left;
+            margin-right: 35px;
+        }
     }
 </style>

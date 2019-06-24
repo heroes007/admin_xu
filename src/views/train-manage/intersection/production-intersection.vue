@@ -16,7 +16,7 @@
                 <div class="intersection-content">
                     <div class="intersection-content-title">{{item.title}}</div>
                     <div class="intersection-content-course">
-                        <div class="intersection-content-course-money"><div class="original_price">¥{{item.price}}</div> <div class="price"><span>¥{{item.original_price}}<span class="line"></span></span> </div></div>
+                        <div class="intersection-content-course-money"><div class="original_price">¥{{item.price}}</div> <div class="price"><span>¥{{item.original_price ? item.original_price : '0'}}<span class="line"></span></span> </div></div>
                         <div class="intersection-content-course-num">{{item.student_num}}人报名</div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
         data() {
             return {
                 select2:[
-                    {id: 'all', title:'全部'},
+                    {id: 'all', title:'全部状态'},
                     {id: -1, title:'下架'},
                     {id: 2, title:'上架'},
                     {id: 1, title:'测试'},
@@ -53,8 +53,8 @@
                     { type: 'input', name: '产品名称',  field: 'title'},
                     { type: 'select', name: '所属机构',  field: 'organization_id',
                         selectList: [], selectField: [ 'id','title' ]},
-                    { type: 'textarea', name: '产品介绍',  field: 'short_description' },
-                    { type: 'uploadPanel', name: '展示封面' },
+                    { type: 'textarea', name: '产品介绍',  field: 'short_description', maxlength: 100 },
+                    { type: 'uploadBtn', name: '展示封面' ,field: 'img_url'},
                 ],
                 rules: {
                     title: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
@@ -84,7 +84,6 @@
                 this.show = true
             },
             handleSubmit(val) {
-                val.img_url = val.img_default
                 postData('/product/collection/add',val).then(res => {
                     if(res.res_code == 1) this.getList()
                     else this.$Message.info(res.msg)
