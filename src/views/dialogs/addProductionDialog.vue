@@ -83,7 +83,7 @@
                                         <Icon @click="deleteImgList('video')" class="upload-img-main-icon2"
                                               type="ios-close-circle"/>
                                         <video ref="uploadVideo" width="458" height="260" v-if="form.video_url" :src="form.video_url"
-                                               controls="controls"/>
+                                               controls="controls" @loadeddata='loadVideo' crossOrigin='Anonymous'/>
                                     </div>
                                     <div class="demo-file-key" v-if="form.imgList.length == 0 && !form.video_url">
                                         <img src="../../assets/img/img-video.png"/>
@@ -245,7 +245,8 @@
                     short_description: {required: true, message: '请输入产品介绍', trigger: 'blur'},
                     category_id: {required: true, message: '请选择产品分类'},
                 },
-                showAll: 2
+                showAll: 2,
+                video_img: ''
             }
         },
         mounted() {
@@ -255,7 +256,6 @@
             }
             if (this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2) {
                 let d = this.payload.row
-                console.log(d);
                 this.form.title = d.title;
                 this.form.original_price = d.original_price;
                 this.form.price = d.price;
@@ -350,23 +350,21 @@
                     } else if (v.maxSizes == 'video') {
                         if (!this.form.video_url) this.form.video_url = v.url
                         this.imgType = 'close'
-                        this.$nextTick(() => {
-                            let uploadVideo = this.$refs.uploadVideo
-                            var canvas = document.createElement("canvas");
-                            canvas.width = "320";
-                            canvas.height = "320";
-                            var ctx = canvas.getContext("2d")
-                            ctx.drawImage(uploadVideo, 0, 0, 320, 320);
-                            var img = document.createElement("img");
-                            let imgsrc = canvas.toDataURL("image/png");
-                            console.log(img, imgsrc, '00000000')
-                        })
                     }
                     //    this.$forceUpdate()
                 } else {
                     this.imgType = 'close'
                     this.$Message.warning('最多上传5张图片或1个视频');
                 }
+            },
+            loadVideo() {
+                var v = this.$refs.uploadVideo;
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                canvas.width = '320';
+                canvas.height = '320';
+                ctx.drawImage(v, 0, 0, '320', '320');
+                this.video_img = canvas.toDataURL("image/jpeg", 1);
             },
             handleClose() {
                 this.form.description = '';
@@ -399,7 +397,8 @@
                     if (valid) {
                         let arrObj = {
                             default: this.form.imgList,
-                            video: this.form.video_url
+                            video: this.form.video_url,
+                            video_img: this.video_img
                         }
                         if (this.form.imgList.length > 0 || this.form.video_url) {
                             this.form.state = this.formState;
