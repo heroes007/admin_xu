@@ -4,6 +4,7 @@ import {
   update_product,
   get_product_info
 } from '../../api/modules/tools_product'
+import {Message} from 'iview'
 
 
 const state = {
@@ -31,6 +32,8 @@ const actions = {
         commit('add_product_states',true)
         if (param._fn)
           param._fn();
+      }else{
+        Message.info(res.data.msg)
       }
     })
   },
@@ -48,6 +51,8 @@ const actions = {
         })
         if (param._fn)
           param._fn();
+      }else{
+        Message.info(res.data.msg)
       }
     })
   },
