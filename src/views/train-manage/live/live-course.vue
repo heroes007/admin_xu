@@ -1,10 +1,19 @@
 <template>
-    <div>直播课</div>
+    <div>
+        <div>直播课</div>
+        <Button type="primary" @click="add">创建</Button>
+    </div>
 </template>
 
 <script>
+    import livePost from '../../../api/live/postData'
+
     export default {
-        name: "live-course"
+        methods: {
+            add() {
+                // livePost('/create',{})
+            }
+        }
     }
 </script>
 

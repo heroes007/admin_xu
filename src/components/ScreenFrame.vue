@@ -25,8 +25,7 @@
             <Option v-for="item in select6" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13 && types != 12 && types !== 17"
-               v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange"
-               class="input">
+               v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix"/>
         </Input>
         <!-- <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">

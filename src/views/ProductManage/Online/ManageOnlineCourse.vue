@@ -36,7 +36,7 @@
         computed: {
             dataHeader() {
                 let auth = this.btnType
-                let d = [{text: '查看章节', param: 'editChapter'}, {text: '编辑课程', param: 'editCourse'}, {text: '删除', param: 'deleteCourse'}]
+                let d = [{text: '上移',param: 'moveUp'},{text: '下移', param:  'moveDown'},{text: '查看章节', param: 'editChapter'}, {text: '编辑课程', param: 'editCourse'}, {text: '删除', param: 'deleteCourse'}]
                 let btnList = auth ? d : [{text: '查看章节', param: 'editChapter'}]
                 return [{
                     sort: true,
@@ -69,7 +69,7 @@
                     minWidth: 120
                 }, {
                     label: '操作',
-                    minWidth: 320,
+                    minWidth: 380,
                     align: 'center',
                     groupBtn: btnList
                 }]
@@ -166,19 +166,21 @@
                     modify: 0
                 });
             },
-            moveUpHandler(index) {
-                this.dirty = true;
-                this.$store.dispatch('change_online_curriculum_orderby', {
-                    curriculum_id: this.dataList[index].curriculum_id,
-                    dir: 0
-                });
+            moveUpHandler(index, item) {
+                // this.dirty = true;
+                // this.$store.dispatch('change_online_curriculum_orderby', {
+                //     curriculum_id: this.dataList[index].curriculum_id,
+                //     dir: 0
+                // });
+                console.log(index, item)
             },
-            moveDownHandler(index) {
-                this.dirty = true;
-                this.$store.dispatch('change_online_curriculum_orderby', {
-                    curriculum_id: this.dataList[index].curriculum_id,
-                    dir: 1
-                });
+            moveDownHandler(index, item) {
+                // this.dirty = true;
+                // this.$store.dispatch('change_online_curriculum_orderby', {
+                //     curriculum_id: this.dataList[index].curriculum_id,
+                //     dir: 1
+                // });
+                console.log(index, item)
             },
             resetCurriculumOrder() {
                 this.$store.dispatch('reset_online_curriculum_orderby');
@@ -226,6 +228,9 @@
                     keyword: this.keyword
                 }).then(res => {
                 });
+            },
+            up(item) {
+                console.log(item)
             }
         },
         mounted() {
