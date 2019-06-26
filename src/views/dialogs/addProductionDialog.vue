@@ -8,9 +8,11 @@
                         <Form ref="form" :model="form" :rules="rules" :label-width="fromLabelWidth"
                               class="add-task-form" :class="nextStep == 0 ? 'add-task-form-type': ''">
                             <FormItem v-show="nextStep == 0" prop="title" label="产品名称">
+                                <template slot="label"><span class="form-label">名称</span></template>
                                 <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                             </FormItem>
                             <FormItem v-show="organizationList&&nextStep == 0" prop="organization_id" label="所属机构">
+                                <template slot="label"><span class="form-label">机构</span></template>
                                 <Select v-model="form.organization_id" placeholder="请选择所属机构">
                                     <Option v-for="item in organizationList" :value="item.id" :key="item.id">
                                         {{item.title}}
@@ -39,6 +41,7 @@
                             </FormItem>
                             <!-- organizationList -->
                             <FormItem v-show="nextStep == 0" prop="state" label="产品状态" class="local-right">
+                                <template slot="label"><span style="letter-spacing: 26px">状</span>态</template>
                                 <Select v-model="form.state" placeholder="请选择产品状态" @on-change="changeState">
                                     <Option v-for="item in selectList2" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
@@ -52,11 +55,13 @@
                                 <InputNumber placeholder="0为免费，单位默认（元）" v-model="form.price"></InputNumber>
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="short_description" label="产品介绍">
+                                <template slot="label"><span class="form-label">介绍</span></template>
                                 <Input type="textarea" :rows="6" placeholder="请输入产品介绍" v-model="form.short_description"
                                        :maxlength="100"></Input>
                                 <div class="font-num">{{form.short_description.length}}/100</div>
                             </FormItem>
                             <FormItem label="图片视频" v-if="nextStep == 0" required>
+                                <template slot="label"><span class="form-label">封面</span></template>
                                 <div class="demo-file">
                                     <div v-if="form.imgList.length>0">
                                         <div v-if="form.imgList.length>1">
@@ -278,7 +283,6 @@
                 vm.handleClose();
                 vm.showPop('保存成功！');
             }
-            this.editorChange()
         },
         computed: {
             ...mapState({
@@ -384,6 +388,7 @@
                             this.organizationId = this.form.organization_id
                             this.fromLabelWidth = 0;
                             this.nextStep = 2
+                            this.editorChange()
                         } else this.$Message.warning('请上传展示图片或展示视频');
                     }
                 })
@@ -425,6 +430,7 @@
                     }else if(document.querySelector('.w-e-text').clientHeight > 556 && this.showAll == 0){
                         this.showAll = 2
                     }
+                    console.log(this.showAll, 'this.showAll');
                 })
             }
         }

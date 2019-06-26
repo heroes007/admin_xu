@@ -100,7 +100,7 @@
                 })
             },
             selectChange2(val) {
-                this.add_state =  val
+                this.add_state =  val == 'all' ? '' : val
                 this.getList()
             },
             inputChange(val) {

@@ -54,7 +54,7 @@
                     <span class="w60"><span>状</span><span>态:</span></span><span>{{detail.state == -1 ? '下架' : detail.state == 2 ? '上架' : detail.state == 1 ? '测试' : detail.state == 3 ? '推荐' : '删除'}}</span>
                 </div>
                 <div style="margin-top: 30px;">
-                    <span class="w73">创建用户ID:</span><span>{{detail.user_id}}</span>
+                    <span class="w73">创建用户ID:</span><span>{{detail.username}}</span>
                 </div>
                 <div>
                     <span class="w60">创建时间:</span><span>{{detail.create_time}}</span>

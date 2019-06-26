@@ -7,6 +7,8 @@
                 @moneyStudent="moneyStudent"
                 select2Placeholder="请选择年级" :select2="selectList1"
                 @selectChange1="selectChange1" @selectChange2="selectChange2" @selectChange3="selectChange3"
+                :select5="selectList5" @selectChange5="selectChange5"
+                :select6="selectList6" @selectChange6="selectChange6"
                 @inputChange="inputChange" @handleClick="handleClick"/>
         <Tables :tabel-height="tableHeight" :is-serial=true @row-click="see" @operation1="statistics"
                 @radio-change="radioChange" @table-swtich="swtichChange" :column="columns1" :table-data="list"
@@ -25,7 +27,6 @@
     import pageMixin from '../../mixins/pageMixins'
 
     export default {
-        name: "ManagementList",
         components: {Tables, screen, see, pageList},
         mixins: [seeMixin, UserMixins, pageMixin],
         props: {
@@ -48,6 +49,8 @@
                 radioType: false,
                 titleTotal: null,
                 department_id: null,
+                certify_state: '',
+                pay_state: '',
                 payingStudent: sessionStorage.getItem('organizationId') == 1,
                 selectList1: [
                     {
@@ -64,6 +67,34 @@
                         id: 3,
                         title: '三年级'
                     }],
+                selectList5:[
+                    {
+                        id: 'all',
+                        title: '全部状态'
+                    },
+                    {
+                        id: 0,
+                        title: '未认证'
+                    },
+                    {
+                        id: 1,
+                        title: '已通过'
+                    },
+                ],
+                selectList6:[
+                    {
+                        id: 'all',
+                        title: '全部身份'
+                    },
+                    {
+                        id: 0,
+                        title: '游客'
+                    },
+                    {
+                        id: 1,
+                        title: '学员'
+                    },
+                ],
                 columns1: [
                     {
                         title: '用户ID',
@@ -183,7 +214,8 @@
                     organization_id: this.$config.setSelVal(this.organization_id),
                     department_id: this.$config.setSelVal(this.department_id),
                     grade_id: this.$config.setSelVal(this.grade_id),
-                    pay_state: this.pay_state
+                    pay_state: this.pay_state,
+                    certify_state: this.certify_state
                 }
                 postData('user/getStudentList', d).then((res) => {
                     this.list = res.data.list
@@ -198,6 +230,14 @@
                         })
                     }
                 })
+            },
+            selectChange5(val) {
+                this.certify_state = val == 'all' ? '' : val
+                this.getList()
+            },
+            selectChange6(val) {
+                this.pay_state = val == 'all' ? '' : val
+                this.getList()
             }
         },
         mounted() {

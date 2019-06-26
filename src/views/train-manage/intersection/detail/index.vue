@@ -29,6 +29,7 @@
                             <span class="al-left cad-btm-price">¥{{t.price}}</span>
                             <span class="al-left cad-btn-relprice">¥{{t.original_price}}</span>
                         </div>
+<!--                        <img src="../../../../assets/img/delete-icon.png" alt="" @click.stop="deleteDetail(t)" class="delete-img">-->
                     </div>
                 </Col>
             </Row>
@@ -98,6 +99,9 @@
                 sessionStorage.setItem('PRODUCTINFO', JSON.stringify(val))
                 sessionStorage.setItem('onlinePane', 'product1')
                 this.$router.push({name: "open-product"})
+            },
+            deleteDetail(t) {
+                console.log(t);
             }
         },
         mounted() {
@@ -137,6 +141,12 @@
         margin-bottom: 20px;
         padding: 15px;
         cursor: pointer;
+
+        &:hover{
+            .delete-img{
+                display: inline-block;
+            }
+        }
     }
 
     .card-main-list0 {
@@ -303,5 +313,11 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .delete-img{
+        position: absolute;
+        right:24px;
+        bottom:28px;
+        display: none;
     }
 </style>

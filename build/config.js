@@ -7,7 +7,13 @@ module.exports = {
     },
     dev:{
         publicPath:'/',
-        port: 8001
+        port: 8001,
+        // proxyTable: {
+        //     '/api': {
+        //         target: 'http://api-class.e.vhall.com',
+        //         changeOrange: true
+        //     }
+        // }
     },
     prod:{
         // publicPath:'/',

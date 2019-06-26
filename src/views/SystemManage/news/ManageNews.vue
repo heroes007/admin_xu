@@ -80,7 +80,7 @@
                     },
                     {type: 'textarea', name: '文章摘要', field: 'description', isShow: 1, maxlength: 100},
                     {type: 'uploadPanel', name: '上传封面', field: 'img_default', isShow: 1},
-                    {type: 'upload',  field: 'uploading', isShow: 2, showAll: 2},
+                    {type: 'upload',  field: 'uploading', isShow: 2, showAll: 0},
                 ],
                 modalTitle: '创建文章',
                 tabelHeight: null,
@@ -206,6 +206,7 @@
                         this.formList[4].showAll = 2
                     }
                 })
+                console.log(document.querySelector('.w-e-text').clientHeight, 'document.querySelector(\'.w-e-text\').clientHeight');
             },
             handleLast() {
                 this.setShow()
@@ -254,6 +255,7 @@
     /deep/ .w-e-text{
         overflow: hidden;
         overflow-y: unset;
+        height: auto !important;
     }
     /deep/ .md-cloud-upload {
         margin-top: 100px !important;

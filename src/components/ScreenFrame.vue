@@ -18,10 +18,10 @@
                 v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 15 || types == 16" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
+        <Select v-if="types == 15 || types == 16 || types == 5" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
             <Option v-for="item in select5" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 15" v-model="valueSelect6" @on-change="selectChange6" class="select-list">
+        <Select v-if="types == 15 || types == 5" v-model="valueSelect6" @on-change="selectChange6" class="select-list">
             <Option v-for="item in select6" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13 && types != 12 && types !== 17"

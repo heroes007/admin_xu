@@ -116,7 +116,7 @@
                     </FormItem>
                     <!-- 新上传封面-->
                     <FormItem  v-if="t.type == 'uploadBtn'" v-show="t.isShow ? t.isShow == 1 : true" ref="upload"
-                               :label="t.name ? t.name : '展示封面'" require>
+                               :label="t.name ? t.name : '展示封面'" required>
                         <div>
                             <div class="demo-file">
                                 <div v-if="formItem[t.field]" class="demo-carousel">
@@ -192,7 +192,7 @@
             <p v-if="modalText2" class="modal-text">{{modalText2}}</p>
             <div class="foot-btn">
                 <Button v-if="isAdd" type="primary" ghost class="add-course" @click="addCourse">添加课程</Button>
-                <Button v-if="handleFloor && handleFloor == '2'" class="btn-orange btn-last" type="primary"
+                <Button v-if="handleFloor && handleFloor == '2'" class="btn-pre" type="text"
                         @click="handleLast">上一步
                 </Button>
                 <Button v-if="handleFloor && handleFloor == '1'" class="btn-orange" type="primary"
@@ -542,7 +542,9 @@
                             this.$Message.info('请上传视频')
                         } else if (this.formList.length == 2 && this.formList[1].field == 'product' && !this.formItem.product) {
                             this.$Message.info('该机构下无产品，请重选机构')
-                        } else {
+                        } else if(this.formList.length == 4 && this.formList[3].field == 'img_url' && !this.formItem.img_url){
+                            this.$Message.info('请上传封面')
+                        }else {
                             if (this.$refs.formInput) {
                                 if (this.content) {
                                     this.handleFormData()
@@ -689,6 +691,7 @@
         }
         /deep/ .w-e-text-container{
             /*padding: 0 30px;*/
+            overflow-y: auto;
         }
         /deep/ .w-e-toolbar{
             padding: 0 30px;
@@ -915,7 +918,7 @@
         overflow: hidden;
         overflow-y: auto;
         padding: 0 30px;
-        /*height: auto !important;*/
+        height: auto !important;
     }
 
     .show-content {
@@ -981,5 +984,14 @@
             text-align: left;
             margin-right: 35px;
         }
+    }
+    .btn-pre {
+        color: #474C63;
+        width: 150px;
+        height: 38px;
+        background: #FFFFFF;
+        border: 1px solid #9397AD;
+        border-radius: 4px;
+        margin-right: 10px;
     }
 </style>
