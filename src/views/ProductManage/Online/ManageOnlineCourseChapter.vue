@@ -24,8 +24,8 @@
                                     <Button v-if="btnType" type='text' @click="addVideo(item,index)">添加视频</Button>
                                     <Button v-if="btnType" type='text' @click="addTest(item, index)">添加测验</Button>
                                     <Button v-if="btnType" type='text' @click="addCase(item, index)">添加案例</Button>
-                                    <Button v-if="btnType" type='text' @click="moveUpList(item, index)">上移</Button>
-                                    <Button v-if="btnType" type='text' @click="moveDownList(item, index)">下移</Button>
+<!--                                    <Button v-if="btnType" type='text' @click="moveUpList(item, index)">上移</Button>-->
+<!--                                    <Button v-if="btnType" type='text' @click="moveDownList(item, index)">下移</Button>-->
                                     <Button v-if="btnType" type="text" @click="deleteText(item, index)">删除</Button>
                                 </div>
                             </Row>
@@ -88,8 +88,8 @@
                 let d = {
                     label: '操作', width: 450, groupBtn: [
                         {text: '编辑', param: 'edit'},
-                        {text: '上移', param: 'moveUp'},
-                        {text: '下移', param: 'moveDown'},
+                        // {text: '上移', param: 'moveUp'},
+                        // {text: '下移', param: 'moveDown'},
                         {text: '删除', param: 'delete'}]
                 };
                 let da = [

@@ -21,9 +21,9 @@ var server = new webpackDevServer(compiler, {
     publicPath: webpackConfig.output.publicPath,
     historyApiFallback: true,
     // compress:true,
-    stats: { 
-      colors: true,
-      chunks: false 
+    stats: {
+        colors: true,
+        chunks: false
     }
 });
 
@@ -33,7 +33,7 @@ spinner.start()
 server.listen(port, "0.0.0.0");
 var url = `http://localhost:${port}`;
 
-server.middleware.waitUntilValid(function() {
+server.middleware.waitUntilValid(function () {
     spinner.stop()
     console.log(`> 打包成功，URL地址： ${url}`);
     opn(url);

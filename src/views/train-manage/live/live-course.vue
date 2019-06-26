@@ -11,7 +11,16 @@
     export default {
         methods: {
             add() {
-                // livePost('/create',{})
+                let data = {
+                    subject: '这是一个标题',
+                    desc: '这是一个介绍',
+                    layout: 1,
+                    type: 0
+
+                }
+                livePost('/create',data).then(res => {
+                    console.log(res, 'res');
+                })
             }
         }
     }
