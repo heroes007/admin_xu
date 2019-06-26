@@ -88,8 +88,8 @@
                 let d = {
                     label: '操作', width: 450, groupBtn: [
                         {text: '编辑', param: 'edit'},
-                        // {text: '上移', param: 'moveUp'},
-                        // {text: '下移', param: 'moveDown'},
+                        {text: '上移', param: 'moveUp'},
+                        {text: '下移', param: 'moveDown'},
                         {text: '删除', param: 'delete'}]
                 };
                 let da = [

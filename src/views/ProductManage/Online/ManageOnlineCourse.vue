@@ -36,7 +36,9 @@
         computed: {
             dataHeader() {
                 let auth = this.btnType
-                let d = [{text: '查看章节', param: 'editChapter'}, {text: '编辑课程', param: 'editCourse'}, {text: '删除', param: 'deleteCourse'}]
+                let d = [
+                    // {text: '上移',param: 'moveUp'},{text: '下移', param:  'moveDown'},
+                    {text: '查看章节', param: 'editChapter'}, {text: '编辑课程', param: 'editCourse'}, {text: '删除', param: 'deleteCourse'}]
                 let btnList = auth ? d : [{text: '查看章节', param: 'editChapter'}]
                 return [{
                     sort: true,
