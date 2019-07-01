@@ -55,7 +55,7 @@
                     },
                 ],
                 list: [
-                    {title: '标题', state: '预告', duration: '50分钟', class_time: '2019/01/01', num: '23人'},
+                    {title: '标题', state: '预告', duration: '45分钟', class_time: '2019/01/01', num: '23人'},
                 ],
                 tableHeight: null,
                 tableRow: {},
