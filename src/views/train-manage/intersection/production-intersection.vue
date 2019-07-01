@@ -53,8 +53,8 @@
                     { type: 'input', name: '产品名称',  field: 'title'},
                     { type: 'select', name: '所属机构',  field: 'organization_id',
                         selectList: [], selectField: [ 'id','title' ]},
-                    { type: 'textarea', name: '产品介绍',  field: 'short_description', maxlength: 100 },
-                    { type: 'uploadBtn', name: '展示封面' ,field: 'img_url'},
+                    { type: 'textarea', name: '产品介绍', field: 'short_description', maxlength: 100 },
+                    { type: 'uploadBtn', name: '展示封面', field: 'img_url'},
                 ],
                 rules: {
                     title: [{ required: true, message: '请输入产品名称', trigger: 'blur' } ],
@@ -199,6 +199,10 @@
             margin-top: 15px;
 
             .intersection-content-title{
+                max-width: 300px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 font-family: PingFangSC-Medium;
                 font-size: 18px;
                 color: #474C63;

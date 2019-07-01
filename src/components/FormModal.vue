@@ -19,10 +19,11 @@
             </div>
             <Form ref="formValidate" :model="formItem" :label-width="labelWidths ? labelWidths : 80"
                   :label-position="labelWidths ? 'left' : 'right'" :rules="ruleValidate ? ruleValidate : {}"
-                  :style="styleRule">
-                <div v-for="(t,index) in formList" :key="index">
+                  :style="styleRule" class="form-class">
+                <div v-for="(t,index) in formList" :key="index" style="display: inline">
                     <FormItem v-if="t.type==='input'" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name"
                               :prop="t.field">
+                        <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
                         <Input v-model="formItem[t.field]" :placeholder="'请输入'+t.name"></Input>
                     </FormItem>
                     <FormItem v-if="t.type==='password'" :label="t.name" :prop="t.field">
@@ -33,6 +34,7 @@
                     </FormItem>
                     <FormItem v-if="t.type==='textarea'" v-show="t.isShow ? t.isShow == 1 : true" :label="t.name"
                               :prop="t.field">
+                        <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
                         <Input type="textarea" :maxlength="t.maxlength" :rows="6" v-model="formItem[t.field]"
                                :placeholder="'请输入'+ t.name"></Input>
                         <div v-if="t.maxlength" class="font-num">
@@ -40,8 +42,9 @@
                         </div>
                     </FormItem>
                     <!-- input-number -->
-                    <FormItem v-if="t.type==='input-number'" :prop="t.field">
-                        <template slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
+                    <FormItem v-if="t.type==='input-number'" :prop="t.field" :class="t.class" v-show="t.isShow ? t.isShow == 1 : true">
+                        <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
+                        <template v-else slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
                         <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
                                      :placeholder="'请输入'+t.name"></InputNumber>
                     </FormItem>
@@ -57,7 +60,8 @@
                     </FormItem>
                     <!--下拉框触发change事件-->
                     <FormItem v-else-if="t.type==='select'&&t.selectChange" :prop="t.field" :label="t.name"
-                              :class="t.clas ? t.clas: ''">
+                              :class="t.clas ? t.clas: ''" v-show="t.isShow ? t.isShow == 1 : true">
+                        <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
                                 @on-change="selectChangeList">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
@@ -77,9 +81,18 @@
                     <FormItem v-else-if="t.type==='select'&&t.selectList.length>0"
                               v-show="t.isShow ? t.isShow == 1 : true" :prop="t.field"
                               :class="t.clas ? t.clas: ''">
-                        <template slot="label"><span :class="handleSelectClass(t)">{{t.name}}</span></template>
+                        <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
+                        <template v-else slot="label"><span :class="handleSelectClass(t)">{{t.name}}</span></template>
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
                                 @on-change="selectChange">
+                            <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
+                                {{m[t.selectField[1]]}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    <!--多选框-->
+                    <FormItem v-if="t.type==='multiple'" :prop="t.field" :label="t.name" v-show="t.isShow ? t.isShow == 1 : true">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" multiple @on-change="multipleChange">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
                                 {{m[t.selectField[1]]}}
                             </Option>
@@ -117,6 +130,7 @@
                     <!-- 新上传封面-->
                     <FormItem  v-if="t.type == 'uploadBtn'" v-show="t.isShow ? t.isShow == 1 : true" ref="upload"
                                :label="t.name ? t.name : '展示封面'" required>
+                        <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
                         <div>
                             <div class="demo-file">
                                 <div v-if="formItem[t.field]" class="demo-carousel">
@@ -192,12 +206,8 @@
             <p v-if="modalText2" class="modal-text">{{modalText2}}</p>
             <div class="foot-btn">
                 <Button v-if="isAdd" type="primary" ghost class="add-course" @click="addCourse">添加课程</Button>
-                <Button v-if="handleFloor && handleFloor == '2'" class="btn-pre" type="text"
-                        @click="handleLast">上一步
-                </Button>
-                <Button v-if="handleFloor && handleFloor == '1'" class="btn-orange" type="primary"
-                        @click="handleSubmit('formValidate')">下一步
-                </Button>
+                <Button v-if="handleFloor && handleFloor == '2'" class="btn-pre" type="text" @click="handleLast">上一步</Button>
+                <Button v-if="handleFloor && handleFloor == '1'" class="btn-orange" type="primary" @click="handleSubmit('formValidate')">下一步</Button>
                 <Button v-else class="btn-orange" type="primary" @click="handleSubmit('formValidate')">{{btnName ? btnName : '保存'}}
                 </Button>
             </div>
@@ -398,6 +408,7 @@
             show(val) {
                 if (!val) {
                     if (this.content) this.content = ''
+                    this.$emit('modal-close')
                 } else {
                     if (JSON.stringify(this.detailData) == '{}') {
                         this.$nextTick(() => {
@@ -546,12 +557,12 @@
                             this.$Message.info('请上传封面')
                         }else {
                             if (this.$refs.formInput) {
-                                if (this.content) {
+                                if (this.content && this.content != '<p><br></p>') {
                                     this.handleFormData()
                                 }
                                 else {
-                                    if (this.handleFloor && this.handleFloor == '1') this.handleFormData()
-                                    else this.$Message.info('请输入作业描述')
+                                    if ((this.handleFloor && this.handleFloor == '1') || !this.handleFloor) this.handleFormData()
+                                    else this.$Message.info('请输入内容描述')
                                 }
                             } else {
                                 if (this.styleRule) {
@@ -653,6 +664,9 @@
             deleteImgList() {
                 this.formItem.img_url = '';
                 this.$forceUpdate()
+            },
+            multipleChange(val) {
+                this.$emit('multiple-change', val)
             }
 
         },
@@ -919,6 +933,7 @@
         overflow-y: auto;
         padding: 0 30px;
         height: auto !important;
+        min-height: 100%;
     }
 
     .show-content {
@@ -993,5 +1008,19 @@
         border: 1px solid #9397AD;
         border-radius: 4px;
         margin-right: 10px;
+    }
+    .local-left{
+        width: 265px;
+        display: inline-block;
+    }
+    .local-right{
+        width: 265px;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    .form-class{
+        /deep/ .ivu-modal-wrap{
+            display: inline-block !important;
+        }
     }
 </style>

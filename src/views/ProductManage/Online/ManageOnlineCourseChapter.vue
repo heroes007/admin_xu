@@ -24,8 +24,8 @@
                                     <Button v-if="btnType" type='text' @click="addVideo(item,index)">添加视频</Button>
                                     <Button v-if="btnType" type='text' @click="addTest(item, index)">添加测验</Button>
                                     <Button v-if="btnType" type='text' @click="addCase(item, index)">添加案例</Button>
-<!--                                    <Button v-if="btnType" type='text' @click="moveUpList(item, index)">上移</Button>-->
-<!--                                    <Button v-if="btnType" type='text' @click="moveDownList(item, index)">下移</Button>-->
+                                    <Button v-if="btnType" type='text' @click="moveUpList(item, index)">上移</Button>
+                                    <Button v-if="btnType" type='text' @click="moveDownList(item, index)">下移</Button>
                                     <Button v-if="btnType" type="text" @click="deleteText(item, index)">删除</Button>
                                 </div>
                             </Row>
@@ -411,10 +411,34 @@
                 }
             },
             moveUpList(item, index) {
-                console.log(item, index);
+                let data = {
+                    catalog_id: item.id,
+                    direction: 0
+                }
+                if(index == 0) {
+                    this.$Message.info('无法上移')
+                }else{
+                    postData('/product/curriculum_online_catalog/moveChapter', data).then(res => {
+                        if(res.res_code == 1) {
+                            this.$store.dispatch('change_online_curriculum_orderby', {index, dir: 0});
+                        }
+                    })
+                }
             },
-            moveUDownList(item, index) {
-                console.log(item, index)
+            moveDownList(item, index) {
+                let data = {
+                    catalog_id: item.id,
+                    direction: 1
+                }
+                if(index == this.chapterList.length - 1) {
+                    this.$Message.info('无法下移')
+                }else{
+                    postData('/product/curriculum_online_catalog/moveChapter', data).then(res => {
+                        if(res.res_code == 1) {
+                            this.$store.dispatch('change_online_curriculum_orderby', {index, dir: 1});
+                        }
+                    })
+                }
             },
             getLists() {
                 this.initChapter();

@@ -30,6 +30,7 @@ const TutorHead = () => import('../views/tutor/tutor-head')
 const ProductionIntersection = () => import('../views/train-manage/intersection/production-intersection')
 const LiveCourse = () => import('../views/train-manage/live/live-course')
 const IntersectionDetail = () => import('../views/train-manage/intersection/detail')
+const LiveCheck = () => import('../views/train-manage/live/live-check')
 
 Vue.use(VueRouter);
 // 页面路由
@@ -157,6 +158,11 @@ const routes = [
         path: 'live-course',
         component: LiveCourse
       },
+      {
+        name: 'live-check',
+        path: 'live-check',
+        component: LiveCheck
+      }
     ]
   },
   // {

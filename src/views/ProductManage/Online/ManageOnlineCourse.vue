@@ -23,6 +23,7 @@
     import pageMixin from '../../mixins/pageMixins'
     import pageList from '../../../components/Page'
     import setAuthMixins from '../setAuthMixins'
+    import postData from '../../../api/postData'
 
     export default {
         mixins: [Dialog, pageMixin, setAuthMixins],
@@ -37,7 +38,7 @@
             dataHeader() {
                 let auth = this.btnType
                 let d = [
-                    // {text: '上移',param: 'moveUp'},{text: '下移', param:  'moveDown'},
+                    {text: '上移',param: 'moveUp'},{text: '下移', param:  'moveDown'},
                     {text: '查看章节', param: 'editChapter'}, {text: '编辑课程', param: 'editCourse'}, {text: '删除', param: 'deleteCourse'}]
                 let btnList = auth ? d : [{text: '查看章节', param: 'editChapter'}]
                 return [{
@@ -169,20 +170,30 @@
                 });
             },
             moveUpHandler(index, item) {
-                // this.dirty = true;
-                // this.$store.dispatch('change_online_curriculum_orderby', {
-                //     curriculum_id: this.dataList[index].curriculum_id,
-                //     dir: 0
-                // });
-                console.log(index, item)
+                let data = {
+                    curriculum_online_id: item.id,
+                    direction: 0
+                }
+                if(index == 0) this.$Message.info('无法上移')
+                else{
+                    postData('/product/curriculum_online/move', data).then(res => {
+                        if(res.res_code == 1) this.$store.dispatch('change_online_curriculum_orderby', {index, dir: 0});
+
+                    })
+                }
             },
             moveDownHandler(index, item) {
-                // this.dirty = true;
-                // this.$store.dispatch('change_online_curriculum_orderby', {
-                //     curriculum_id: this.dataList[index].curriculum_id,
-                //     dir: 1
-                // });
-                console.log(index, item)
+                let data = {
+                    curriculum_online_id: item.id,
+                    direction: 1
+                }
+                if(index == this.dataList.length - 1) this.$Message.info('无法下移')
+                else{
+                    postData('/product/curriculum_online/move', data).then(res => {
+                        if(res.res_code == 1) this.$store.dispatch('change_online_curriculum_orderby', {index, dir: 1});
+
+                    })
+                }
             },
             resetCurriculumOrder() {
                 this.$store.dispatch('reset_online_curriculum_orderby');
@@ -228,12 +239,8 @@
                     // project_id: v,
                     page: {page_size: this.pageSize, page_num: this.current},
                     keyword: this.keyword
-                }).then(res => {
-                });
+                }).then(res => {});
             },
-            up(item) {
-                console.log(item)
-            }
         },
         mounted() {
             this.initData();

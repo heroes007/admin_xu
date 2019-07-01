@@ -1,12 +1,12 @@
 <template>
     <div class="screen"
          :style="(types == 4 || types == 8 || types == 9 || types == 12 || types == 16 || types == 17) ? backgroundColor:''">
-        <div v-if="types == 6 || types == 7 || types == 8 || types == 9 || types == 13" class="back"
+        <div v-if="types == 6 || types == 7 || types == 8 || types == 9 || types == 13 || types == 18" class="back"
              @click="handleBack">
             <img class="back-img" src="../assets/icons/icon/back.png" alt="">
             <div class="back-title">返回</div>
         </div>
-        <Select v-if="( types !== 1 && types && types !== 6 && types !== 7 && types !== 9 ) && selectType1 && isSuper"
+        <Select v-if="( types !== 1 && types && types !== 6 && types !== 7 && types !== 9 && types !== 18) && selectType1 && isSuper"
                 v-model="valueSelect1" @on-change="selectChange1" class="select-list" placeholder="请选择机构">
             <Option v-for="(item,i) in select" :value="item.id " :key="i">{{ item.title }}</Option>
         </Select>
@@ -24,7 +24,7 @@
         <Select v-if="types == 15 || types == 5" v-model="valueSelect6" @on-change="selectChange6" class="select-list">
             <Option v-for="item in select6" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13 && types != 12 && types !== 17"
+        <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13 && types != 12 && types !== 17 && types !== 18"
                v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix"/>
         </Input>
@@ -41,7 +41,7 @@
             <span class="all-content">{{sizeTitle2}}</span>
             <span v-if='sizeNum2 >= 0' class="all-num">{{sizeNum2}}</span>
         </div>
-        <div v-if="types == 6 || types == 7 || types == 9 || types == 10 || types == 12 || types == 13" class="title">
+        <div v-if="types == 6 || types == 7 || types == 9 || types == 10 || types == 12 || types == 13 || types == 18" class="title">
             <div>{{title}}</div>
         </div>
         <Select v-if="types == 13" v-model="valueSelect4" @on-change="selectChange2" class="select-list4"
@@ -49,8 +49,9 @@
             <Option v-for="item in select4" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Button v-if="types && types !== 5 && types !== 7 && types !== 9 && btnType" class="btn" type="primary"
-                @click="handleClick">{{btnName}}
+                @click="handleClick" style="right: 145px;">{{btnName}}
         </Button>
+        <Button v-if="types == 18" @click="handleClick2" style="right: 20px; position: absolute; right: 34px;">{{btnName2}}</Button>
         <p class="code_name_text" v-if="types == 8">{{codeName}}</p>
     </div>
 </template>
@@ -82,7 +83,7 @@
             //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
             //types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
             //types = 10 下拉框+标题+按钮; types = 12 下拉框+标题;  types=13：返回+标题+下拉框; types = 14: 下拉框*2+搜索框
-            //types = 15 下拉框*4+搜索框； type = 16 下拉框*3+搜索框+按钮； type = 17 数量+按钮
+            //types = 15 下拉框*4+搜索框； types = 16 下拉框*3+搜索框+按钮； types = 17 数量+按钮 types = 18 返回+题目+按钮*2
             types: {
                 type: Number,
                 required: true,
@@ -139,6 +140,9 @@
                 type: Number
             },
             btnName: {
+                type: String
+            },
+            btnName2: {
                 type: String
             },
             title: {
@@ -222,6 +226,9 @@
             //按钮，click触发事件
             handleClick() {
                 this.$emit('handleClick')
+            },
+            handleClick2() {
+                this.$emit('handleClick2')
             },
             //返回按钮触发事件
             handleBack() {

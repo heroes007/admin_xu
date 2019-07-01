@@ -8,12 +8,15 @@ module.exports = {
     dev:{
         publicPath:'/',
         port: 8001,
-        // proxyTable: {
-        //     '/api': {
-        //         target: 'http://api-class.e.vhall.com',
-        //         changeOrange: true
-        //     }
-        // }
+        proxyTable: {
+            '/api': {
+                target: 'http://192.168.6.68:5520/met/',
+                changeOrange: true,
+                pathRewrite: {
+                    '^/api': '/api',
+                }
+            }
+        }
     },
     prod:{
         // publicPath:'/',

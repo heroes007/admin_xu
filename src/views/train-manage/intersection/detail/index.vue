@@ -17,7 +17,7 @@
                             </Col>
                             <Col span="13" class="al-right">
                                 <div style="display: flex;justify-content: flex-end">
-                                    <div class="cad-top-right cad-top-right-model">{{t.model == 1 ? '单品' : t.model == 2 ? '合集' : '单品合集'}}</div>
+                                    <div class="cad-top-right cad-top-right-model" :style="`minWidth: ${t.model == 3 ? '78px' : ''}`">{{t.model == 1 ? '单品' : t.model == 2 ? '合集' : '单品合集'}}</div>
                                     <div class="cad-top-right" :class="'card-state-color' + t.state">{{t.state == -1 ? '下架' : t.state == 2 ? '上架' : t.state == 1 ? '测试' : t.state == 3 ? '推荐' : '删除'}}</div>
                                 </div>
                             </Col>
@@ -29,7 +29,7 @@
                             <span class="al-left cad-btm-price">¥{{t.price}}</span>
                             <span class="al-left cad-btn-relprice">¥{{t.original_price}}</span>
                         </div>
-<!--                        <img src="../../../../assets/img/delete-icon.png" alt="" @click.stop="deleteDetail(t)" class="delete-img">-->
+                        <!--<img src="../../../../assets/img/delete-icon.png" alt="" @click.stop="deleteDetail(t)" class="delete-img">-->
                     </div>
                 </Col>
             </Row>
@@ -275,6 +275,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             min-width: 50px;
+            line-height: 20px;
         }
 
         .cad-top-right-model{

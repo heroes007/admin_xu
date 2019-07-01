@@ -695,6 +695,7 @@
         overflow: hidden;
         padding: 0 30px;
         height: auto !important;
+        min-height: 100%;
     }
 
     .show-content {

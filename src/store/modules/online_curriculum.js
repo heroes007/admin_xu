@@ -153,10 +153,16 @@ const actions = {
                 dispatch('get_online_curriculum_chapter_list',{curriculum_online_id: params.curriculum_online_id})
             }
         })
+    },
+    moveUpList({commit}, params) {
+        commit(types.ONLINE_MOVE_UP_LIST)
     }
 }
 // mutations
 const mutations = {
+    [types.ONLINE_MOVE_UP_LIST](state, params) {
+        state.online_curriculum_list.splice(params.index, 1, state.online_curriculum_list.splice[params.index])
+    },
     [types.ONLINE_CURRICULUM_LIST_LOADED](state, list) {
         for (var i = 0; i < list.length; i++) {
             list[i].chapterList = [];
@@ -189,30 +195,32 @@ const mutations = {
         state.showChapterLoading = false;
     },
     [types.ONLINE_CURRICULUM_CHANGE_ORDERBY](state, params) {
-        var dir = params.dir;
-        var curriculum_id = params.curriculum_id;
-        var selectItem;
-        for (var i = 0; i < state.online_curriculum_list.length; i++) {
-            if (state.online_curriculum_list[i].curriculum_id === curriculum_id) {
-                if (dir === 0) {
-                    if (i === 0)
-                        return;
-                    else {
-                        selectItem = state.online_curriculum_list.splice(i, 1)[0];
-                        state.online_curriculum_list.splice(i - 1, 0, selectItem);
-                    }
-                }
-                else {
-                    if (i === state.online_curriculum_list.length - 1)
-                        return;
-                    else {
-                        selectItem = state.online_curriculum_list.splice(i, 1)[0];
-                        state.online_curriculum_list.splice(i + 1, 0, selectItem);
-                    }
-                }
-                break;
-            }
-        }
+        if(params.dir == 0) state.online_curriculum_list.splice(params.index, 1, ...state.online_curriculum_list.splice(params.index - 1, 1, state.online_curriculum_list[params.index]))
+        else state.online_curriculum_list.splice(params.index, 1, ...state.online_curriculum_list.splice(params.index + 1, 1, state.online_curriculum_list[params.index]))
+        // var dir = params.dir;
+        // var curriculum_id = params.curriculum_id;
+        // var selectItem;
+        // for (var i = 0; i < state.online_curriculum_list.length; i++) {
+        //     if (state.online_curriculum_list[i].curriculum_id === curriculum_id) {
+        //         if (dir === 0) {
+        //             if (i === 0)
+        //                 return;
+        //             else {
+        //                 selectItem = state.online_curriculum_list.splice(i, 1)[0];
+        //                 state.online_curriculum_list.splice(i - 1, 0, selectItem);
+        //             }
+        //         }
+        //         else {
+        //             if (i === state.online_curriculum_list.length - 1)
+        //                 return;
+        //             else {
+        //                 selectItem = state.online_curriculum_list.splice(i, 1)[0];
+        //                 state.online_curriculum_list.splice(i + 1, 0, selectItem);
+        //             }
+        //         }
+        //         break;
+        //     }
+        // }
     },
     [types.ONLINE_CURRICULUM_RESET_ORDERBY](state) {
         state.online_curriculum_list = state.online_curriculum_old_list.concat();
