@@ -218,7 +218,6 @@
                 this.tableRow = this.tableRow1
             },
             fromSubmit(val) {
-                console.log(this.formList[2].selectList[val.content], 'val');
                 let d = {
                     product_id: this.formList[2].selectList[val.content].id,
                     collection_id: this.formList[2].selectList[val.content].id,

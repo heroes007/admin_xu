@@ -1,37 +1,51 @@
 <template>
     <div class="manage-production-view">
         <screen :types="4" :selectType2="true" :select2="select2" @selectChange2="selectChange2" :btnType="true" @handleClick="handleClick" btnName="新建课程"
-            :placehodle="select2Placeholder" sizeTitle1="课程总数" :sizeNum1="sizeNum1"></screen>
+            :placehodle="select2Placeholder" sizeTitle1="课程总数" :sizeNum1="total" @inputChange="inputChange"></screen>
         <form-modal :show-modal='show' :detail-data="tableRow" :form-list="formList" :rule-validate='rules' @from-submit="handleSubmit" @close="closeModal"
                     :title="modalTitle" @change-list="changeList" :handleFloor="handleFloor" @multiple-change="multipleChange" @handle-next="handleNext"
-                    @handle-last="handleLast" @showContent="showContent" :modal-false="true" @modal-close="modalClose"></form-modal>
+                    @handle-last="handleLast" @showContent="showContent" :modal-false="true" @modal-close="modalClose" @change-list2="changeList2" :multipleList="multipleList">
+            <template slot="multiple" style="display: flex;">
+                <div v-for="(item, index) in multipleList" :key="index" style="display: inline-block;position: relative; background: #F0F0F7;border-radius: 4px;margin-right: 10px;margin-top: 8px;padding: 0 10px;">
+                    <Icon type="md-close" style="width: 10px;height: 10px;position: absolute;right: -3px;top: -5px;" @click="deleteMiltiple(index)"></Icon>
+                    {{item.title}}
+                </div>
+            </template>
+        </form-modal>
         <div class="box">
             <Row :gutter="20">
                 <Col :span="8" v-for="(item, index) in dataList" :key="index" style="padding: 0 10px;margin-bottom: 20px;">
                     <Card class="card">
+                        <Icon type="md-close" class="card-icon" @click="deleteLive(item)"/>
                         <div class="card-type">
-                            <div class="card-type-name">测试</div>
-                            <div class="card-type-num">共3节课 | 已播<span style="color: #4098ff;">0</span>节</div>
+                            <div class="card-type-name">{{item.state == -1 ? '下架' : item.state == 0 ? '未上架' : item.state == 1 ? '测试' : item.state == 2 ? '上架' : item.state == 3 ? '推荐' : '删除'}}</div>
+                            <div class="card-type-num">共{{item.catalog_num}}节课 | 已播<span style="color: #4098ff;">{{item.catalog_finish_num}}</span>节</div>
                         </div>
-                        <div class="card-title">直播课名称直播课名称直播课名称直播</div>
-                        <div class="card-content">课程描述课程描述课程描述课程描述课程描述课程描述课程描述课程描述课程描述课程描。</div>
+                        <div class="card-title">{{item.title}}</div>
+                        <div class="card-content">{{item.short_description}}</div>
                         <div class="card-message">
-                            <div v-if="index%2" class="card-message-price">
-                                <span style="color: #F54802">¥12000</span><span style="color: #686F92;margin-left: 10px;">¥13400</span>
+                            <div v-if="item.model == 2 || item.model == 3" class="card-message-price">
+                                <span style="color: #F54802">¥{{item.price}}</span><span style="color: #686F92;margin-left: 10px;">¥{{item.original_price}}</span>
                             </div>
-                            <div v-else class="card-message-product">
-                                产品：<div style="color: #4098ff;cursor: pointer;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">全科医生岗位技能水平提升全科医生岗位技能水平提升全科医生岗位技能水平提升</div>
+                            <div v-if="item.model == 1" class="card-message-product">
+                                产品：<div style="color: #4098ff;cursor: pointer;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">
+                                <span v-for="(item1, index1) in item.products" :key="index1">{{index1 > 0 ? '、' : ''}}{{item1.product_title}}</span>
+                            </div>
                             </div>
                         </div>
                         <div class="card-handle">
                             <div class="card-handle-left">
-                                <img style="width: 16px;" class="card-handle-img" src="../../../assets/img/live_num.png" alt="">
-                                <span>12人报名</span>
-                                <img style="margin-left: 20px;" class="card-handle-img" src="../../../assets/img/live_editor.jpg" alt="">
-                                <span>1个关联</span>
+                                <span class="card-handle-left" v-if="item.model == 2 || item.model == 3" style="margin-right: 20px;">
+                                    <img style="width: 16px;" class="card-handle-img" src="../../../assets/img/live_num.png" alt="">
+                                    <span>{{item.student_num}}人报名</span>
+                                </span>
+                                <span class="card-handle-left" v-if="item.model == 1 || item.model == 3">
+                                    <img class="card-handle-img" src="../../../assets/img/live_editor.jpg" alt="">
+                                    <span>{{item.product_num}}个关联</span>
+                                </span>
                             </div>
                             <div class="card-handle-right">
-                                <span style="cursor: pointer" @click="check">查看</span><span style="margin-left: 15px; cursor: pointer" @click="editor">编辑</span>
+                                <span style="cursor: pointer" @click="check(item)">查看</span><span style="margin-left: 15px; cursor: pointer" @click="editor(item)">编辑</span>
                             </div>
                         </div>
                     </Card>
@@ -47,6 +61,7 @@
     import pageList from '../../../components/Page'
     import pageMixin from '../../mixins/pageMixins'
     import formModal from '../../../components/FormModal'
+    import postData from '../../../api/postData'
 
     export default {
         components: {screen, pageList, formModal},
@@ -55,54 +70,73 @@
             return {
                 select2: [
                     {id: 'all', title: '全部'},
-                    {id: 1, title: 11},
-                    {id: 2, title: 22}
+                    {id: -1, title: '下架'},
+                    {id: 0, title: '未上架'},
+                    {id: 1, title: '测试'},
+                    {id: 2, title: '上架'},
                 ],
                 select2Placeholder: '搜索课程名称',
                 sizeNum1: 10,
-                dataList: [{},{},{},{},{},{},{},{}],
+                dataList: [],
                 show: false,
                 tableRow: {},
                 formList: [
                     {type: 'input', name: '名称', field: 'title', double: true, isShow: 1},
-                    {type: 'select', name: '机构', field: 'organization', double: true,
-                        selectList: [{id: 1, title: '机构1'}], selectField: ['id', 'title'], isShow: 1},
-                    {type: 'select', name: '销售形式', field: 'pattern', selectChange: true, clas: 'local-left',
+                    {type: 'select', name: '机构', field: 'organization_id', double: true, selectChange: true, changeNum: 2,
+                        selectList: [], selectField: ['id', 'title'], isShow: 1},
+                    {type: 'select', name: '销售形式', field: 'model', selectChange: true, clas: 'local-left',
                         selectList: [{id: 1, title: '产品销售'},{id: 2, title: '单品销售'},{id: 3, title: '双重销售'}], selectField: ['id', 'title'], isShow: 1},
                     {type: 'select', name: '状态', field: 'state', double: true, clas: 'local-right',
-                        selectList: [{id: 1, title: '状态1'}], selectField: ['id', 'title'], isShow: 1},
-                    {type: 'input-number', name: '原价', field: 'price', double: true, class: 'local-left', isShow: 1},
-                    {type: 'input-number', name: '实际原价', field: 'real_price', class: 'local-right', isShow: 1},
-                    {type: 'multiple', name: '绑定产品', field: 'product', isShow: 1,
-                        selectList: [{id: 1, title: '产品1产品1产品1产品1产品1产品1产品1'},{id: 2, title: '产品2产品2产品2产品2产品2产品2产品2产品2'},{id: 3, title: '产品3产品3产品3产品3产品3产品3产品3产品3产品3产品3产品3'}], selectField: ['id', 'title']},
-                    {type: 'textarea', name: '介绍', field: 'introduce', maxlength: 100, double: true, isShow: 1},
+                        selectList: [{id: -1, title: '下架'},{id: 1, title: '测试'},{id: 2, title: '上架'}], selectField: ['id', 'title'], isShow: 1},
+                    {type: 'input-number', name: '原价', field: 'original_price', double: true, class: 'local-left', isShow: 1},
+                    {type: 'input-number', name: '实际原价', field: 'price', class: 'local-right', isShow: 1},
+                    {type: 'multiple', name: '绑定产品', field: 'product_ids', isShow: 1,
+                        selectList: [], selectField: ['id', 'title']},
+                    {type: 'textarea', name: '介绍', field: 'short_description', maxlength: 100, double: true, isShow: 1},
                     {type: 'uploadBtn', name: '封面', field: 'img_url', double: true, isShow: 1},
                     {type: 'upload',  field: 'uploading', isShow: 2, showAll: 0}
                 ],
                 rules: {
                     title: [{ required: true, message: '请输入产品名称', trigger: 'blur' }],
-                    organization: [{ required: true, message: '请选择产品机构' }],
-                    pattern: [{ required: true, message: '请选择产品模式' }],
+                    organization_id: [{ required: true, message: '请选择产品机构' }],
+                    model: [{ required: true, message: '请选择产品模式' }],
                     state: [{ required: true, message: '请选择产品状态' }],
-                    product: [{ required: true, message: '请选择培训产品' }],
+                    product_ids: [{ required: true, message: '请选择培训产品' }],
+                    original_price: [{ required: true, message: '请选择产品原价' }],
                     price: [{ required: true, message: '请选择产品原价' }],
-                    real_price: [{ required: true, message: '请选择产品原价' }],
-                    introduce: [{ required: true, message: '请输入产品介绍', trigger: 'blur'  }],
+                    short_description: [{ required: true, message: '请输入产品介绍', trigger: 'blur'  }],
                 },
                 modalTitle: '',
-                handleFloor: 1
+                handleFloor: 1,
+                search: '',
+                state: '',
+                multipleList: []
             }
         },
         methods: {
             selectChange2(val) {
-                console.log(va);
+                this.state = val == 'all' ? '' : val
+                this.getList()
+            },
+            inputChange(val) {
+                this.search = val
+                this.getList()
             },
             handleClick() {
                 this.modalTitle = '新建课程'
                 this.show = true
             },
             handleSubmit(val) {
-                console.log(val);
+                val.description = val.uploading
+                if(val.isEditor) {
+                    postData('live/change', val).then(res => {
+                        if(res.res_code == 1) this.getList()
+                    })
+                }else{
+                    postData('live/add', val).then(res => {
+                        if(res.res_code == 1) this.getList()
+                    })
+                }
                 this.show = false
             },
             changeList(val) {
@@ -110,7 +144,7 @@
                     case 1:
                         this.formList[4].type = ''
                         this.formList[5].type = ''
-                        this.formList[6].type = 'select'
+                        this.formList[6].type = 'multiple'
                         this.handleFloor = 0
                         break
                     case 2:
@@ -122,13 +156,29 @@
                     case 3:
                         this.formList[4].type = 'input-number'
                         this.formList[5].type = 'input-number'
-                        this.formList[6].type = 'select'
+                        this.formList[6].type = 'multiple'
                         this.handleFloor = 1
                         break
                 }
             },
+            changeList2(val) {
+                if(val) {
+                    postData('components/getProductsByOrganization', {organization_id: val}).then(res => {
+                        if(res.res_code == 1) {
+                            this.formList[6].selectList = res.data
+                        }
+                    })
+                }
+            },
             multipleChange(val) {
-                console.log(val);
+                this.multipleList = []
+                this.formList[6].selectList.forEach(item => {
+                    val.forEach(item1 => {
+                        if(item.id == item1) {
+                            this.multipleList.push(item)
+                        }
+                    })
+                })
             },
             setShow() {
                 this.formList.forEach(item => {
@@ -157,6 +207,7 @@
                 this.formList[9].showAll = val == 1 ? 2 : 1
             },
             closeModal() {
+                this.tableRow = {}
                 // if(this.formList[0].isShow == 2) this.setShow()
                 // this.handleFloor = 1
                 // this.show = false
@@ -167,12 +218,67 @@
                 this.handleFloor = 1
                 this.show = false
             },
-            editor() {
+            editor(val) {
+                this.changeList2(val.organization_id)
+                this.changeList(val.model)
+                this.tableRow = val
+                this.tableRow.uploading = this.tableRow.description
+                this.tableRow.isEditor = true
+                this.modalTitle = '编辑课程'
                 this.show = true
             },
-            check() {
-                this.$router.push('live-check')
-            }
+            check(val) {
+                this.$router.push({path: 'live-check', query: {id: val.live_id, organization_id: val.organization_id}})
+            },
+            deleteLive(val) {
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>确认删除该直播</p>',
+                    onOk: () => {
+                        postData('live/delete', {live_id: val.live_id}).then(res => {
+                            if(res.res_code == 1) {
+                                this.$Message.success(res.msg)
+                                this.getList()
+                            }
+                        })
+                    },
+                });
+            },
+            deleteMiltiple(val) {
+                this.multipleList.splice(val, 1)
+            },
+            getList() {
+                var data = {
+                    page_num: this.current,
+                    page_size: this.pageSize,
+                    search: this.search,
+                    state:  this.state
+                }
+                postData('live/get_list', data).then(res => {
+                    if(res.res_code == 1){
+                        this.dataList = res.data.data
+                        this.total = res.data.count
+                        this.dataList.uploading = this.dataList.description
+                        this.dataList.forEach(item => {
+                            item.product_ids = []
+                            if(item.products && item.products.length) {
+                                item.products.forEach(item1 => {
+                                    item.product_ids.push(item1.product_id)
+                                })
+                            }
+                        })
+                    }
+                })
+            },
+        },
+        mounted() {
+            this.pageSize = 9
+            this.getList()
+            postData('components/getOrganization').then(res => {
+                if(res.res_code == 1) {
+                    this.formList[1].selectList = res.data
+                }
+            })
         }
     }
 </script>
@@ -191,6 +297,22 @@
     .card{
         height: 247px;
         text-align: left;
+
+        .card-icon{
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            right: 6px;
+            top: 10px;
+            cursor: pointer;
+            display: none;
+        }
+
+        &:hover{
+            .card-icon{
+                display: inline-block;
+            }
+        }
 
         .card-type{
             display: flex;
@@ -225,6 +347,7 @@
             margin-top: 20px;
         }
         .card-content{
+            height: 50px;
             font-family: PingFangSC-Regular;
             font-size: 14px;
             color: #686F92;

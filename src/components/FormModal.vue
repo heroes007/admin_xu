@@ -2,7 +2,7 @@
     <div>
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList"
                          @close="exchangeContentClose" @selectChecked="exchangeContentChecked"/>
-        <Modal :class="handleFloor == 2 ? 'modal-class3' : modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth"
+        <Modal :class="modalPadding ? modalPadding : handleFloor == 2 ? 'modal-class3' : modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth"
                @on-cancel="closeModal" :mask-closable=false
                :footer-hide="true">
             <div v-if="uploadFlie" class="upload-flie">
@@ -42,7 +42,7 @@
                         </div>
                     </FormItem>
                     <!-- input-number -->
-                    <FormItem v-if="t.type==='input-number'" :prop="t.field" :class="t.class" v-show="t.isShow ? t.isShow == 1 : true">
+                    <FormItem v-if="t.type==='input-number'" :prop="t.field" :class="t.class ? t.class : t.clas ? t.clas: ''" v-show="t.isShow ? t.isShow == 1 : true">
                         <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
                         <template v-else slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
                         <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
@@ -63,7 +63,7 @@
                               :class="t.clas ? t.clas: ''" v-show="t.isShow ? t.isShow == 1 : true">
                         <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
                         <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
-                                @on-change="selectChangeList">
+                                @on-change="selectChangeList(formItem[t.field], t)">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
                                 {{m[t.selectField[1]]}}
                             </Option>
@@ -91,17 +91,23 @@
                         </Select>
                     </FormItem>
                     <!--多选框-->
-                    <FormItem v-if="t.type==='multiple'" :prop="t.field" :label="t.name" v-show="t.isShow ? t.isShow == 1 : true">
-                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" multiple @on-change="multipleChange">
+                    <FormItem v-if="t.type==='multiple'" :prop="t.field" :label="t.name" v-show="t.isShow ? t.isShow == 1 : true" class="select-multiple">
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" multiple @on-change="multipleChange(formItem[t.field], t.field)">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
                                 {{m[t.selectField[1]]}}
                             </Option>
                         </Select>
+                        <slot name="multiple"></slot>
+<!--                        <div>{{formItem[t.field]}}</div>-->
                     </FormItem>
                     <!-- date datetime -->
                     <FormItem v-if="t.type == 'date'" :label="t.name" :prop="t.field">
                         <DatePicker class="form-item-date" type="date" v-model="formItem[t.field]"
                                     :format="handleDateType(t)" :placeholder="handlePlaceholder(t)"></DatePicker>
+                    </FormItem>
+                    <!-- 选择日期及时间-->
+                    <FormItem v-if="t.type == 'datetime'" :label="t.name" :prop="t.field" :class="t.clas ? t.clas: ''">
+                        <DatePicker class="form-item-datetime" type="datetime" :placeholder="'请选择' + t.name"  v-model="formItem[t.field]"></DatePicker>
                     </FormItem>
                     <!-- switch-datetimerange-->
                     <FormItem class="form-labels" v-if="(t.type==='switch-datetimerange')" :label="t.name"
@@ -175,6 +181,20 @@
                             <down-loading :formData="downList"/>
                             <upload-btn v-if="uploadBtn" text="上传附件" class="upload-img" bucket="jhyl-static-file"
                                         @uploadcomplete="uploadImg" :maxFileSize="300"/>
+                        </div>
+                    </FormItem>
+                    <!--直播布局-->
+                    <FormItem v-if="t.type == 'localLive'" :label="t.name" required>
+                        <div style="display: flex">
+                            <div @click="liveClick(t.field, 1)" class="local-live" :style="`border: 1px solid ${formItem[t.field]  == '1' ? '#4098ff' : '#fff'};`">
+                                <div class="local-live-left">文档 </div>
+                                <div class="local-live-right-top" style="">视频</div>
+                                <div class="local-live-right-bottom"></div>
+                            </div>
+                            <div @click="liveClick(t.field, 3)" class="local-live" :style="`border: 1px solid ${formItem[t.field]  == '3' ? '#4098ff' : '#fff'};margin-left: 20px;`">
+                                <div class="local-live-left">视频</div>
+                                <div class="local-live-right"></div>
+                            </div>
                         </div>
                     </FormItem>
                     <!--数组表单,针对线下课-->
@@ -311,9 +331,15 @@
                 default: function () {
                     return {
                         panelWidth: 465,
-                        panelHeight: 310
+                        panelHeight: 310,
                     }
                 }
+            },
+            modalPadding: {
+                type: String
+            },
+            multipleList: {
+                type: Array
             }
         },
         data() {
@@ -375,7 +401,8 @@
                 color: '',
                 modalText2: '',
                 imgType: 1,
-                fileType: 'image/png,image/jpg'
+                fileType: 'image/png,image/jpg',
+                multipleName: ''
             }
         },
         watch: {
@@ -423,6 +450,13 @@
             formList(_new) {
                 this.formList = _new
             },
+            multipleList(_new) {
+                let arr = []
+                _new.forEach(item => {
+                    arr.push(item.id)
+                })
+                if(this.formItem[this.multipleName].length > _new.length) this.formItem.product_ids = arr
+            }
         },
         methods: {
             handleSelectClass(t) {
@@ -445,8 +479,9 @@
                 // if (val == 'online') this.formList[2].line = 1
                 // else if (val == 'underline') this.formList[2].line = 0
             },
-            selectChangeList(val) {
-                this.$emit('change-list', val)
+            selectChangeList(val, t) {
+                if(t.changeNum) this.$emit(`change-list${t.changeNum}`, val)
+                else this.$emit('change-list', val)
             },
             handleDateType(t) {
                 return t.type.includes('time') ? 'yyyy/MM/dd HH:mm' : 'yyyy/MM/dd'
@@ -519,8 +554,7 @@
                 }
                 (async () => {
                     await this.handleFloor && this.handleFloor == 1 ? this.$emit('handle-next') : this.$emit('from-submit', this.formItem)
-                    await this.handleFloor && this.handleFloor == 1 ? () => {
-                    } : close()
+                    await this.handleFloor && this.handleFloor == 1 ? () => {} : close()
                 })()
             },
             setCourse() {
@@ -555,7 +589,9 @@
                             this.$Message.info('该机构下无产品，请重选机构')
                         } else if(this.formList.length == 4 && this.formList[3].field == 'img_url' && !this.formItem.img_url){
                             this.$Message.info('请上传封面')
-                        }else {
+                        } else if(this.formList.length == 10 && this.formList[8].field == 'img_url' && !this.formItem.img_url){
+                            this.$Message.info('请上传封面')
+                        } else {
                             if (this.$refs.formInput) {
                                 if (this.content && this.content != '<p><br></p>') {
                                     this.handleFormData()
@@ -665,8 +701,13 @@
                 this.formItem.img_url = '';
                 this.$forceUpdate()
             },
-            multipleChange(val) {
+            multipleChange(val, name) {
+                this.multipleName = name
                 this.$emit('multiple-change', val)
+            },
+            liveClick(field, num) {
+                this.formItem[field] = num
+                this.$forceUpdate()
             }
 
         },
@@ -678,6 +719,12 @@
     }
 
     .form-item-date {
+        /deep/ .ivu-btn {
+            display: inline-block !important;
+        }
+    }
+
+    .form-item-datetime {
         /deep/ .ivu-btn {
             display: inline-block !important;
         }
@@ -709,6 +756,12 @@
         }
         /deep/ .w-e-toolbar{
             padding: 0 30px;
+        }
+    }
+
+    .modal-class4 {
+        /deep/ .ivu-modal-body {
+            padding: 10px 50px 40px 50px;
         }
     }
 
@@ -1021,6 +1074,54 @@
     .form-class{
         /deep/ .ivu-modal-wrap{
             display: inline-block !important;
+        }
+    }
+    .local-live{
+        width: 220px;
+        height: 140px;
+        padding: 4px;
+
+        .local-live-left{
+            float: left;
+            background-color:#e8e8e8;
+            width: 160px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+        .local-live-right-top{
+            float: right;
+            background-color:#e8e8e8;
+            width: 46px;
+            height: 40px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+        .local-live-right-bottom{
+            float: right;
+            background-color:#e8e8e8;
+            width: 46px;
+            height: 86px;
+        }
+        .local-live-right{
+            float: right;
+            width:46px;
+            height: 130px;
+            background-color:#e8e8e8;
+        }
+    }
+    /deep/ .ivu-tag-checked{
+        display: none;
+    }
+    /deep/ .ivu-select-multiple .ivu-select-selection{
+        height: 36px;
+    }
+    .select-multiple{
+        /deep/ .ivu-form-item-content{
+            display: block;
         }
     }
 </style>
