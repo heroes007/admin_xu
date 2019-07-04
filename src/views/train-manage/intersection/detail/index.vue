@@ -106,7 +106,7 @@
                     content: '<p>确认删除该直播</p>',
                     onOk: () => {
                         postData('product/collection/deleteProductFromCollection', {product_id: t.id, collection_id: JSON.parse(sessionStorage.getItem('INTERSECTION')).collection_id}).then(res => {
-                            console.log(res);
+                            if(res.res_code == 1) this.getList()
                         })
                     },
                 });

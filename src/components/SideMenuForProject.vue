@@ -218,6 +218,8 @@
                 else this.showData = true
                 this.initMenu();
                 this.getList();
+                this.showDelete = this.$route.query.detail
+                this.$forceUpdate()
             },
             productState(_new) {
                 if (_new) this.getList()
@@ -234,7 +236,6 @@
             postData('components/getOrganization').then(res => {
                 this.formList[1].selectList = res.data
             })
-            this.showDelete = this.$route.query.detail
         },
         computed: {
             ...mapState({productState: state => state.production.edit_product_state, updateStates: state => state.production.update_product_state}),
