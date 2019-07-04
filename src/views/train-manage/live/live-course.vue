@@ -228,7 +228,7 @@
                 this.show = true
             },
             check(val) {
-                this.$router.push({path: 'live-check', query: {id: val.live_id, organization_id: val.organization_id}})
+                this.$router.push({path: 'live-check', query: {id: val.live_id, organization_id: val.organization_id, title: val.title}})
             },
             deleteLive(val) {
                 this.$Modal.confirm({

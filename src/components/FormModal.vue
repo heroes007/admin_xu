@@ -184,7 +184,7 @@
                         </div>
                     </FormItem>
                     <!--直播布局-->
-                    <FormItem v-if="t.type == 'localLive'" :label="t.name" required>
+                    <FormItem v-if="t.type == 'localLive'" :label="t.name" required class="select-multiple">
                         <div style="display: flex">
                             <div @click="liveClick(t.field, 1)" class="local-live" :style="`border: 1px solid ${formItem[t.field]  == '1' ? '#4098ff' : '#fff'};`">
                                 <div class="local-live-left">文档 </div>
@@ -196,6 +196,7 @@
                                 <div class="local-live-right"></div>
                             </div>
                         </div>
+                        <div class="live-hint">* 课程创建成功，不得修改直播布局</div>
                     </FormItem>
                     <!--数组表单,针对线下课-->
                     <div v-if="(t.type === 'array')" class="offline-course" v-for="(it, ins) in t.list" :key="ins">
@@ -706,8 +707,12 @@
                 this.$emit('multiple-change', val)
             },
             liveClick(field, num) {
-                this.formItem[field] = num
-                this.$forceUpdate()
+                if(this.detailData.layout) {
+                    this.$Message.info('无法修改布局')
+                }else{
+                    this.formItem[field] = num
+                    this.$forceUpdate()
+                }
             }
 
         },
@@ -1080,6 +1085,7 @@
         width: 220px;
         height: 140px;
         padding: 4px;
+        cursor: pointer;
 
         .local-live-left{
             float: left;
@@ -1123,5 +1129,12 @@
         /deep/ .ivu-form-item-content{
             display: block;
         }
+    }
+    .live-hint{
+        font-family: PingFangSC-Regular;
+        font-size: 14px;
+        color: #F54802;
+        letter-spacing: 0.25px;
+        margin-top: 5px;
     }
 </style>

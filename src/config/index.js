@@ -19,7 +19,9 @@ Vue.use(LoadingY)
 sync(store, router)
 router.beforeEach((to, from, next) => {
     let toLogin = () => {
-      if (to.name == 'login') next();
+      if (to.name == 'login') {
+          next();
+      }
       else {
           sessionStorage.clear();
           next({path: '/login'});
@@ -27,8 +29,12 @@ router.beforeEach((to, from, next) => {
     }
     if(sessionStorage.getItem('token') && to.name === 'login') {
         let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
-        if(roleId != 4)  next({name: 'user-manage'})
-        else  next({name: 'tutor-course'})
+        if(roleId != 4)  {
+            next({name: 'user-manage'})
+        }
+        else  {
+            next({name: 'tutor-course'})
+        }
     }else if (store.state.auth.userInfo || to.name === 'login') {
         next();
     } else {

@@ -29,7 +29,7 @@
                             <span class="al-left cad-btm-price">¥{{t.price}}</span>
                             <span class="al-left cad-btn-relprice">¥{{t.original_price}}</span>
                         </div>
-                        <!--<img src="../../../../assets/img/delete-icon.png" alt="" @click.stop="deleteDetail(t)" class="delete-img">-->
+                        <img src="../../../../assets/img/delete-icon.png" alt="" @click.stop="deleteDetail(t)" class="delete-img">
                     </div>
                 </Col>
             </Row>
@@ -98,10 +98,18 @@
             handleJump(val) {
                 sessionStorage.setItem('PRODUCTINFO', JSON.stringify(val))
                 sessionStorage.setItem('onlinePane', 'product1')
-                this.$router.push({name: "open-product"})
+                this.$router.push({name: "open-product", query: {detail: 1}})
             },
             deleteDetail(t) {
-                console.log(t);
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>确认删除该直播</p>',
+                    onOk: () => {
+                        postData('product/collection/deleteProductFromCollection', {product_id: t.id, collection_id: JSON.parse(sessionStorage.getItem('INTERSECTION')).collection_id}).then(res => {
+                            console.log(res);
+                        })
+                    },
+                });
             }
         },
         mounted() {

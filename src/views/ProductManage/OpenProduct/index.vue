@@ -1,67 +1,73 @@
 <template>
-    <div >
+    <div>
         <Tabs @on-click="tabs" v-model="online">
             <TabPane label="线上自学" v-if="item1" name="product1">
-                <online />
+                <online/>
+            </TabPane>
+            <TabPane label="线上集中" v-if="item6" name="product6">
+                <online-live/>
             </TabPane>
             <TabPane label="线下集中" v-if="item2" name="product2">
-                <offline />
+                <offline/>
             </TabPane>
             <TabPane label="作业" v-if="item3" name="product3">
-                <task />
+                <task/>
             </TabPane>
             <TabPane label="资料" v-if="item4" name="product4">
-                <course />
+                <course/>
             </TabPane>
             <TabPane label="证书" v-if="item5" name="product5">
-                <houner />
+                <houner/>
             </TabPane>
         </Tabs>
     </div>
 </template>
 
 <script>
-  import online from '../Online/ManageOnlineCourse'
-  import offline from '../Offline/ManageOfflineList'
-  import task from '../Task/ManageTask'
-  import course from '../Course/ManageCourseDownloadData'
-  import houner from '../Houner/ManageHouner'
+    import online from '../Online/ManageOnlineCourse'
+    import offline from '../Offline/ManageOfflineList'
+    import task from '../Task/ManageTask'
+    import course from '../Course/ManageCourseDownloadData'
+    import houner from '../Houner/ManageHouner'
+    import onlineLive from '../online-live'
 
-  export default {
-    name: "OpenProduct",
-    components: { online, offline, task, course, houner},
-    data(){
-      return{
-          online: '',
-          item1: false,
-          item2: false,
-          item3: false,
-          item4: false,
-          item5: false
-      }
-    },
-    methods:{
-        tabs(name){
-            this.online = name
-            sessionStorage.setItem('onlinePane', name)
+    export default {
+        name: "OpenProduct",
+        components: {online, offline, task, course, houner, onlineLive},
+        data() {
+            return {
+                online: '',
+                item1: false,
+                item2: false,
+                item3: false,
+                item4: false,
+                item5: false,
+                item6: false
+            }
         },
-        setAuth(){
-            if(sessionStorage.getItem('PERSONALDETAILS')){
-               this.item1 = true;
-               this.item2 = true;
-               this.item3 = true;
-               this.item4 = true;
-               this.item5 = true;
+        methods: {
+            tabs(name) {
+                this.online = name
+                sessionStorage.setItem('onlinePane', name)
+            },
+            setAuth() {
+                if (sessionStorage.getItem('PERSONALDETAILS')) {
+                    this.item1 = true;
+                    this.item2 = true;
+                    this.item3 = true;
+                    this.item4 = true;
+                    this.item5 = true;
+                    this.item6 = true;
+                }
+            }
+        },
+        mounted() {
+            this.setAuth()
+            if (sessionStorage.getItem('onlinePane')) {
+                this.online = sessionStorage.getItem('onlinePane')
             }
         }
-    },
-    mounted(){
-        this.setAuth()
-        if(sessionStorage.getItem('onlinePane')){
-            this.online = sessionStorage.getItem('onlinePane')
-        }
     }
-  }
 </script>
 
 <style scoped lang="less">

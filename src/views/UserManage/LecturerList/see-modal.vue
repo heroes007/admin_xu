@@ -124,7 +124,7 @@
                     this.list = res.data.list
                     if(this.list.length>0){
                         this.list.map((t) => {
-                            t.online_name = t.online == 'offline' ? '线下课程' : '线上课程'
+                            t.online_name = t.online == 'offline' ? '线下集中' : t.online == 'online' ?  '线上课程' : '线上集中'
                         })
                     }
                 })

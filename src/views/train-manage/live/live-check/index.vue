@@ -1,6 +1,6 @@
 <template>
     <div>
-        <screen :types="18" title="直播课名称" btn-name="创建直播" btn-name2="微吼直播" :btnType="true" @handleBack="handleBack" @handleClick="handleClick"
+        <screen :types="18" :title="title" btn-name="创建直播" btn-name2="直播平台" :btnType="true" @handleBack="handleBack" @handleClick="handleClick"
             @handleClick2="handleClick2"/>
         <form-modal  :detail-data="tableRow" @from-submit="formSubmit" :show-modal='show' :form-list="formList"
                      @close="closeModal" :title="modalTitle" :rule-validate="rules" modalPadding="modal-class4"/>
@@ -41,7 +41,7 @@
                         }
                     },
                     {
-                        title: '直播时常',
+                        title: '直播时长',
                         key: 'duration',
                         minWidth: 100,
                         render: (h, params) => {
@@ -94,7 +94,8 @@
                 },
                 isShow: false,
                 liveTitle: '',
-                liveList: []
+                liveList: [],
+                title: ''
             }
         },
         methods: {
@@ -120,7 +121,7 @@
                 this.tableRow = {}
             },
             handleClick2() {
-                this.liveTitle = '微吼直播'
+                this.liveTitle = '直播平台'
                 postData('live/catalog/get_acc').then(res => {
                     this.liveList = [
                         {title: '直播平台', a: res.data.add}, {title: '登录账号',  content: res.data.acc}, {title: '登录密码',  content: res.data.pwd}
@@ -134,9 +135,8 @@
             operation1(val) {
                 postData('live/catalog/get_pwd', {live_catalog_id: val.live_catalog_id}).then(res => {
                     this.liveList = [
-                        {title: '学员登录', a: res.data.view_url},
+                        {title: '直播地址', a: res.data.view_url},
                         {title: '学员口令',  content: res.data.student_pwd},
-                        {title: '角色登录', a: res.data.view_url},
                         {title: '讲师口令',  content: res.data.teacher_pwd},
                         {title: '嘉宾口令',  content: res.data.guest_pwd},
                         {title: '助理口令',  content: res.data.assistant_pwd},
@@ -217,6 +217,7 @@
             this.tableHeight = window.innerHeight - 130
             this.getList()
             this.getDataList()
+            this.title = this.$route.query.title
         }
     }
 </script>

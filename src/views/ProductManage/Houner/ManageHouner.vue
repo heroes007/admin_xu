@@ -5,6 +5,7 @@
                 btn-name="添加证书"
                 @inputChange="inputChange" @handleClick="addOfflineSemesterHandler" :btn-type="btnType"/>
         <div class="card-houner" ref="box">
+            <div v-if="!cardList1.length" class="hint-none">暂无内容</div>
             <Card class="card-houner-col" v-for="(item, index) in cardList1" :key="index">
                 <div class="card-houner-img">
                     <img class="houner-image" :src="item.image_url" alt="">
@@ -229,5 +230,13 @@
         padding: 15px;
         width: 100%;
         display: flex;
+    }
+    .hint-none{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px
     }
 </style>

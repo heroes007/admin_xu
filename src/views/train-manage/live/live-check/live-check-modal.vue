@@ -1,7 +1,7 @@
 <template>
     <div>
         <Modal v-model="show" :mask-closable="false" :footer-hide="true" @on-cancel="handleClose" :title="title" width="720">
-            <div v-for="(item, index) in liveList" :key="index" class="box" :style="item.title == '学员口令' ? 'border-bottom: 1px solid #ccc; padding-bottom: 26px;' : ''">
+            <div v-for="(item, index) in liveList" :key="index" class="box" :style="item.title == '学员口令1' ? 'border-bottom: 1px solid #ccc; padding-bottom: 26px;' : ''">
                 <div class="box-title">{{item.title}}</div>
                 <div class="box-content" v-if="item.a"><a :href="item.a" target="_Blank">{{item.a}}</a></div>
                 <div class="box-content" v-else>{{item.content}}</div>
@@ -27,7 +27,7 @@
             },
             liveList: {
                 type: Array
-            }
+            },
         },
         watch: {
             isShow(val) {

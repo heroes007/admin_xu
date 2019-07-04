@@ -66,9 +66,8 @@
                     返回上一页
                 </Button>
                 <div class="btn-list">
-                    <Button type="default" @click="handleDelete" ghost class="btn-content2" style="top: 20%;">删除
-                    </Button>
-                    <Button type="default" @click="edit" ghost class="btn-content3" style="top: 40%;margin-left:10px">
+                    <Button v-if="!showDelete" type="default" @click="handleDelete" ghost class="btn-content2" style="top: 20%;">删除</Button>
+                    <Button type="default" @click="edit" ghost class="btn-content3" :style="showDelete ? 'width: 190px; margin: 0' : 'width: 120px'">
                         编辑
                     </Button>
                 </div>
@@ -119,6 +118,7 @@
                     short_description: [{ required: true, message: '请输入产品介绍', trigger: 'blur' } ],
                 },
                 modalTitle: '编辑合集',
+                showDelete: false
             }
         },
         methods: {
@@ -234,6 +234,7 @@
             postData('components/getOrganization').then(res => {
                 this.formList[1].selectList = res.data
             })
+            this.showDelete = this.$route.query.detail
         },
         computed: {
             ...mapState({productState: state => state.production.edit_product_state, updateStates: state => state.production.update_product_state}),
@@ -443,6 +444,8 @@
                 width: 120px;
                 background: #364d6a;
                 color: #fff;
+                top: 40%;
+                margin-left:10px;
 
                 &:hover {
                     background-color: #5099fa;
