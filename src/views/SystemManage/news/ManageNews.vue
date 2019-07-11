@@ -206,7 +206,6 @@
                         this.formList[4].showAll = 2
                     }
                 })
-                console.log(document.querySelector('.w-e-text').clientHeight, 'document.querySelector(\'.w-e-text\').clientHeight');
             },
             handleLast() {
                 this.setShow()

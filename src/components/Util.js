@@ -143,21 +143,21 @@ export const MenuList = [
     },
     {
         name: 'exchange-code',
-        title: '兑换码',
+        title: '兑换码管理',
         icon: 'md-clipboard',
     },
     {
         name: 'order',
-        title: '信息管理',
+        title: '统计管理',
         icon: 'md-pricetag',
         list: [
             {
                 name: 'order-management',
-                title: '支付订单',
+                title: '课程订单',
             },
             {
                 name: 'invoice-info',
-                title: '发票信息',
+                title: '发票列表',
             },
             // {
             //     name: 'certificate-info',

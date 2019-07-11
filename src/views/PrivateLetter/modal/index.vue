@@ -129,7 +129,7 @@
                 this.getProducts()
             },
             selectChange2(val) {
-                val == 'all' ? this.product_id = '' : this.product_id = val
+                this.product_id = val == 'all' ? '' : val
                 this.getList()
             },
             inputChange(val) {
@@ -146,15 +146,17 @@
                 }
                 postData('pmsg/getStudents', data).then(res => {
                     if(res.res_code == 1) {
-                        for(var i = 0; i < Math.ceil(res.data.count/10); i++) {
-                            this.studentList.push([])
+                        if(!this.studentList.length) {
+                            for(var i = 0; i < Math.ceil(res.data.count/10); i++) {
+                                this.studentList.push([])
+                            }
                         }
                         this.total = res.data.count
                         res.data.list.forEach((item, index) => {
-                            item.index = index
+                            item.option = index
                             item.page = this.current
                             this.studentList[this.current - 1].forEach(item1 => {
-                                if(item1.index == index) {
+                                if(item1.option == index) {
                                     item._checked = true
                                 }
                             })
@@ -176,7 +178,7 @@
                 this.studentList[this.current - 1] = selection
                 this.setChangeList()
             },
-            selectAllTable(selection, row) {
+            selectAllTable(selection) {
                 this.studentList[this.current - 1] = selection
                 this.setChangeList()
             },
@@ -188,7 +190,7 @@
                     }
                 })
                 this.studentList[item.page - 1].splice(num, 1)
-                this.selectIndex = item.index
+                this.selectIndex = item.option
                 if(item.page == this.current) {
                     this.deleteList = !this.deleteList
                 }

@@ -5,10 +5,10 @@
         <screen btnType :types="4" size-title1="兑换码总数" placehodle="搜索兑换码" :size-num1="total" btn-name="添加兑换码"
                 :select1="selectList" :selectType1="true" select2Placeholder="选择状态" :select2="selectList2"
                 size-title2="付费学员" :size-num2="14" @selectChange1="selectChange1" @inputChange="inputChange"
-                @handleClick="handleClick" @selectChange2="selectChange2"/>
+                @handleClick="handleClick" @selectChange2="selectChange2" :selectType2="true"/>
         <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="useRecords" @operation2="edit"
-                @operation3="batchDownload" @table-swtich="swtichChange" :column="columns1"
-                :table-data="list"/>
+                @downTable="batchDownload" @table-swtich="swtichChange" :column="columns1"
+                :table-data="list"  @operation4="deleteCode"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -48,7 +48,7 @@
                         title: '兑换码名称',
                         key: 'title',
                         align: 'left',
-                        minWidth: 120
+                        minWidth: 140
                     },
                     // {
                     //     title: '类型',
@@ -59,15 +59,21 @@
                         title: '兑换产品',
                         key: 'product_name',
                         align: 'left',
-                        minWidth: 120
+                        minWidth: 140
                     },
                     {
-                        title: '数量',
+                        title: '所属机构',
+                        key: 'organization_name',
+                        align: 'left',
+                        minWidth: 140
+                    },
+                    {
+                        title: '生成数量',
                         key: 'code_count',
                         minWidth: 100
                     },
                     {
-                        title: '已使用',
+                        title: '已兑换',
                         key: 'surplus_count',
                         minWidth: 120
                     },
@@ -75,13 +81,25 @@
                         title: '生效时间',
                         key: 'effect_time',
                         align: 'left',
-                        minWidth: 160
+                        minWidth: 130
                     },
                     {
                         title: '失效时间',
                         key: 'invalid_time',
                         align: 'left',
-                        minWidth: 160
+                        minWidth: 130
+                    },
+                    {
+                        title: '创建ID',
+                        key: 'username',
+                        align: 'left',
+                        minWidth: 130
+                    },
+                    {
+                        title: '创建时间',
+                        key: 'create_time',
+                        align: 'left',
+                        minWidth: 130
                     },
                     {
                         title: '状态',
@@ -96,7 +114,7 @@
                         align: 'left',
                         slot: 'operation',
                         operation_state: true,
-                        operation: [['查看', 'operation1'], ['编辑', 'operation2'], ['下载', 'operation3']]
+                        operation: [['查看', 'operation1'], ['编辑', 'operation2'], ['下载', 'downTable'], ['删除', 'operation4']]
                     }],
                 list: [],
                 formList: [
@@ -126,9 +144,10 @@
                     effective_time: []
                 },
                 selectList2: [
-                    {id: '', title: '全部'},
-                    {id: 0, title: '已失效'},
-                    {id: 3, title: '生效中'},
+                    {id: 'all', title: '全部'},
+                    {id: 0, title: '未生效'},
+                    {id: 2, title: '已生效'},
+                    {id: -1, title: '已失效'},
                 ]
             }
         },
@@ -144,20 +163,23 @@
         },
         methods: {
             batchDownload(row, rowIndex) {
-                postData('code/getCodeHistory', {code_id: row.id, page_size: 20, page_num: 1}).then(res => {
-                    res.data.list.forEach(item => {
-                        item.product_name = row.product_name
-                        item.organization_name = row.organization_name
-                        item.is_state = item.use_state == 0 ? '未使用' : '已使用'
-                    })
-                    let titleList = [
-                        {title: '兑换码', key: 'code'},
-                        {title: '兑换码产品名称', key: 'product_name'},
-                        {title: '所属机构', key: 'organization_name'},
-                        {title: '是否使用', key: 'is_state'}
-                    ]
-                    this.$config.downExcel(titleList, res.data.list)
-                })
+                // postData('code/getCodeHistory', {code_id: row.id, page_size: 20, page_num: 1}).then(res => {
+                //     res.data.list.forEach(item => {
+                //         item.product_name = row.product_name
+                //         item.organization_name = row.organization_name
+                //         item.is_state = item.use_state == 0 ? '未使用' : '已使用'
+                //     })
+                //     let titleList = [
+                //         {title: '兑换码', key: 'code'},
+                //         {title: '兑换产品', key: 'product_name'},
+                //         {title: '所属机构', key: 'organization_name'},
+                //         {title: '使用状态', key: 'is_state'},
+                //         {title: '用户姓名', key: 'realname'},
+                //         {title: '用户ID', key: 'user_id'},
+                //         {title: '有效状态', key: 'state_name'},
+                //     ]
+                //     this.$config.downExcel(titleList, res.data.list, row.title)
+                // })
             },
             useRecords(row, rowIndex) {
                 this.$router.replace({path: `/dashboard/${row.id}/usage-record/`})
@@ -204,7 +226,7 @@
                 this.getList()
             },
             selectChange2(val) {
-                this.state = val
+                this.state = val == 'all' ? '' : val
                 this.getList()
             },
             inputChange(val) {
@@ -277,6 +299,20 @@
             },
             changeList(val) {
                 this.getProducts(val)
+            },
+            deleteCode(val) {
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>确认删除该兑换码</p>',
+                    onOk: () => {
+                        postData('code/removeCode', {redeem_code_id: val.id}).then(res => {
+                            if(res.res_code == 1) {
+                                this.$Message.success(res.msg)
+                                this.getList()
+                            }
+                        })
+                    },
+                });
             },
             getList() {
                 let d = {

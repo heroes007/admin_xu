@@ -7,44 +7,44 @@
                 <Row class="body-top" v-if="dialogIndex==1">
                     <Form class="add-course-form" :label-position="labelPosition" :label-width="80"
                           :rules="ruleValidate" ref="form" :model="form">
-                        <Col>
+<!--                        <Col>-->
                             <FormItem label="课程名称" prop="title">
                                 <Input v-model="form.title" placeholder="请输入课程名称"></Input>
                             </FormItem>
-                            <FormItem label="课程讲师" prop="teacher_id">
+                            <FormItem label="课程讲师" prop="teacher_id" class="local-left">
                                 <Select v-model="form.teacher_id" placeholder="请选择讲师">
                                     <Option v-for="item in teacherList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem >
+                            <FormItem class="local-right">
                                 <template slot="label"><span class="form-label-taech">导师</span></template>
                                 <Select v-model="form.instructor_id" placeholder="请选择导师">
                                     <Option v-for="item in tutorList" :key="item.id" :label="item.realname"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem>
+                            <FormItem class="local-left">
                                 <template slot="label"><span class="form-label-taech">科室</span></template>
                                 <Select v-model="form.department_id" placeholder="请选择科室">
                                     <Option v-for="item in detpysList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem>
+                            <FormItem class="local-right">
                                 <template slot="label"><span class="form-label-taech">年级</span></template>
                                 <Select v-model="form.grade_id" placeholder="请选择年级">
                                     <Option v-for="item in gradesList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="解锁方式" prop="unlock_type">
+                            <FormItem label="解锁方式" prop="unlock_type" class="local-left">
                                 <Select v-model="form.unlock_type" placeholder="请选择解锁方式">
                                     <Option v-for="item in clearList" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
                                 </Select>
                             </FormItem>
-                            <FormItem label="课程状态" prop="state">
+                            <FormItem label="课程状态" prop="state" class="local-right">
                                 <Select v-model="form.state" placeholder="请选择课程状态">
                                     <Option v-for="item in query_state_list" :key="item.id" :label="item.name"
                                             :value="item.id"></Option>
@@ -63,7 +63,7 @@
                             <FormItem class="btns">
                                 <Button type="primary" class="next-btn" @click="handleSubmit">保存</Button>
                             </FormItem>
-                        </Col>
+<!--                        </Col>-->
                     </Form>
                 </Row>
                 <Row v-if="dialogIndex==2">
@@ -510,5 +510,14 @@
         position: absolute;
         top: 122px;
         right: 18px;
+    }
+    .local-left{
+        width: 270px;
+        display: inline-block
+    }
+    .local-right{
+        width: 270px;
+        display: inline-block;
+        margin-left: 10px;
     }
 </style>

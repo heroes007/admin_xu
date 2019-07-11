@@ -4,8 +4,8 @@
             <div v-if="!dataList.length" class="hint-none">暂无内容</div>
             <Row :gutter="20">
                 <Col :span="8" v-for="(item, index) in dataList" :key="index" style="padding: 0 10px;margin-bottom: 20px;">
-                    <Card class="card" @click.native="check(item)">
-                        <Icon type="md-close" class="card-icon" @click="deleteLive(item)"/>
+                    <Card class="card">
+<!--                        <Icon type="md-close" class="card-icon" @click="deleteLive(item)"/>-->
                         <div class="card-type">
                             <div class="card-type-name">{{item.state == -1 ? '下架' : item.state == 0 ? '未上架' : item.state == 1 ? '测试' : item.state == 2 ? '上架' : item.state == 3 ? '推荐' : '删除'}}</div>
                             <div class="card-type-num">共{{item.catalog_num}}节课 | 已播<span style="color: #4098ff;">{{item.catalog_finish_num}}</span>节</div>
@@ -20,6 +20,23 @@
                                 产品：<div style="color: #4098ff;cursor: pointer;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">
                                 <span v-for="(item1, index1) in item.products" :key="index1">{{index1 > 0 ? '、' : ''}}{{item1.product_title}}</span>
                             </div>
+                            </div>
+                        </div>
+                        <div class="card-handle">
+                            <div class="card-handle-left">
+                                <span class="card-handle-left" v-if="item.model == 2 || item.model == 3" style="margin-right: 20px;">
+                                    <img style="width: 16px;" class="card-handle-img" src="../../../assets/img/live_num.png" alt="">
+                                    <span>{{item.student_num}}人报名</span>
+                                </span>
+                                <span class="card-handle-left" v-if="item.model == 1 || item.model == 3">
+                                    <img class="card-handle-img" src="../../../assets/img/live_editor.jpg" alt="">
+                                    <span>{{item.product_num}}个关联</span>
+                                </span>
+                            </div>
+                            <div class="card-handle-right">
+                                <span style="cursor: pointer" @click="check(item)">查看</span>
+                                <span style="margin-left: 15px; cursor: pointer" @click="editor(item)">编辑</span>
+                                <span style="margin-left: 15px; cursor: pointer" @click="deleteLive(item)">删除</span>
                             </div>
                         </div>
                     </Card>
@@ -47,6 +64,20 @@
         methods: {
             check(val) {
                 this.$router.push({path: '/dashboard/live-check', query: {id: val.live_id, organization_id: val.organization_id, title: val.title}})
+            },
+            deleteLive(val) {
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>确认删除该直播课</p>',
+                    onOk: () => {
+                        postData('live/deleteLiveByProduct', {live_id: val.live_id, product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id}).then(res => {
+                            if(res.res_code == 1) {
+                                this.$Message.success(res.msg)
+                                this.getList()
+                            }
+                        })
+                    },
+                });
             },
             getList() {
                 let data = {

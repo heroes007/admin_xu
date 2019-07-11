@@ -1,21 +1,17 @@
 <template>
     <div class="user-manage-main">
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close"/>
-        <screen select-subjects :paying-student="payingStudent" :radio-type="radioType" :select-type1="selectType1"
-                :select-type2="selectType2" :types="5"
-                :size-title1="title1" :size-num1="allNum+ (titleTotal ? '/'+titleTotal : '')"
-                @moneyStudent="moneyStudent"
-                select2Placeholder="请选择年级" :select2="selectList1"
-                @selectChange1="selectChange1" @selectChange2="selectChange2" @selectChange3="selectChange3"
-                :select5="selectList5" @selectChange5="selectChange5"
-                :select6="selectList6" @selectChange6="selectChange6"
-                @inputChange="inputChange" @handleClick="handleClick"/>
+        <screen :paying-student="payingStudent" :radio-type="radioType" :select-type1="selectType1"
+                :types="5" :size-title1="title1" :size-num1="allNum+ (titleTotal ? '/'+titleTotal : '')"
+                @moneyStudent="moneyStudent" @selectChange1="selectChange1" @inputChange="inputChange"
+                @handleClick="handleClick" @dataPickerChange="dataPickerChange" @dataPickerOk="dataPickerOk" @dataPickerClear="dataPickerClear"/>
         <Tables :tabel-height="tableHeight" :is-serial=true @row-click="see" @operation1="statistics"
                 @radio-change="radioChange" @table-swtich="swtichChange" :column="columns1" :table-data="list"
-                :select-list="student"/>
+                :select-list="student" @tableSelect="tableSelect"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
+
 <script>
     import Tables from '../../../components/tables.vue'
     import screen from '../../../components/ScreenFrame'
@@ -52,49 +48,8 @@
                 certify_state: '',
                 pay_state: '',
                 payingStudent: sessionStorage.getItem('organizationId') == 1,
-                selectList1: [
-                    {
-                        id: 'all',
-                        title: '全部年级'
-                    },
-                    {
-                        id: 1,
-                        title: '一年级'
-                    }, {
-                        id: 2,
-                        title: '二年级'
-                    }, {
-                        id: 3,
-                        title: '三年级'
-                    }],
-                selectList5:[
-                    {
-                        id: 'all',
-                        title: '全部状态'
-                    },
-                    {
-                        id: 0,
-                        title: '未认证'
-                    },
-                    {
-                        id: 1,
-                        title: '已通过'
-                    },
-                ],
-                selectList6:[
-                    {
-                        id: 'all',
-                        title: '全部身份'
-                    },
-                    {
-                        id: 0,
-                        title: '游客'
-                    },
-                    {
-                        id: 1,
-                        title: '学员'
-                    },
-                ],
+                sex: '',
+                data_picker: ['',''],
                 columns1: [
                     {
                         title: '用户ID',
@@ -108,18 +63,53 @@
                     }, {
                         title: '性别',
                         slot: 'sex',
-                        minWidth: 100
+                        minWidth: 100,
+                        filters: [
+                            {
+                                label: '男',
+                                value: 1
+                            },
+                            {
+                                label: '女',
+                                value: 0
+                            }
+                        ],
+                        filterRemote (value) {
+                            this.$emit('tableSelect', 'sex', value)
+                        },
+                        filterMultiple: false,
                     },
                     {
                         title: '学科',
                         key: 'department_name',
                         align: 'left',
-                        minWidth: 100
+                        minWidth: 100,
+                        filters: [],
+                        filterRemote (value) {
+                            this.$emit('tableSelect' ,'department_id' , value)
+                        },
+                        filterMultiple: false,
                     },
                     {
                         title: '年级',
                         key: 'grade_name',
-                        minWidth: 100
+                        minWidth: 100,
+                        filters: [
+                            {
+                                value: 1,
+                                label: '一年级'
+                            }, {
+                                value: 2,
+                                label: '二年级'
+                            }, {
+                                value: 3,
+                                label: '三年级'
+                            },
+                        ],
+                        filterRemote (value) {
+                            this.$emit('tableSelect', 'grade_id', value)
+                        },
+                        filterMultiple: false,
                     },
                     // {
                     //     title: '所属机构',
@@ -134,7 +124,21 @@
                             let d = params.row.pay_state ? '学员' : '游客'
                             // {style: {color: params.row.pay_state ? '#2EBF07' :'#F54802'}},
                             return h('span', d)
-                        }
+                        },
+                        filters: [
+                            {
+                                label: '游客',
+                                value: 0
+                            },
+                            {
+                                label: '学员',
+                                value: 1
+                            }
+                        ],
+                        filterRemote (value) {
+                            this.$emit('tableSelect' , 'pay_state', value)
+                        },
+                        filterMultiple: false,
                     },
                     {
                         title: '状态',
@@ -142,7 +146,21 @@
                             let d = params.row.certify_state == 1 ? '已认证' : '未认证'
                             return h('span', {style: {color: params.row.certify_state == 1 ? '#2EBF07' : '#474C63'}}, d)
                         },
-                        minWidth: 100
+                        minWidth: 100,
+                        filters: [
+                            {
+                                label: '未认证',
+                                value: 0
+                            },
+                            {
+                                label: '已认证',
+                                value: 1
+                            }
+                        ],
+                        filterRemote (value) {
+                            this.$emit('tableSelect', 'certify_state', value)
+                        },
+                        filterMultiple: false,
                     },
                     {
                         title: '注册时间',
@@ -211,23 +229,27 @@
                     keyword: this.keyword,
                     page_size: this.pageSize,
                     page_num: this.current,
-                    organization_id: this.$config.setSelVal(this.organization_id),
-                    department_id: this.$config.setSelVal(this.department_id),
-                    grade_id: this.$config.setSelVal(this.grade_id),
-                    pay_state: this.pay_state,
-                    certify_state: this.certify_state
+                    organization_id: this.$config.setSelVal(this.organization_id) == null ? '' : this.$config.setSelVal(this.organization_id),
+                    department_id: this.$config.setSelVal(this.department_id) == null ? '' : this.$config.setSelVal(this.department_id),
+                    grade_id: this.$config.setSelVal(this.grade_id) == null ? '' : this.$config.setSelVal(this.grade_id),
+                    pay_state: this.pay_state == null ? '' : this.pay_state,
+                    certify_state: this.certify_state == null ? '' : this.certify_state,
+                    sex: this.sex == null ? '' : this.sex,
+                    data_picker: this.data_picker[0] == '' ? '' :this.data_picker
                 }
                 postData('user/getStudentList', d).then((res) => {
-                    this.list = res.data.list
-                    this.total = res.data.all_student
-                    this.titleTotal = res.data.all_student
-                    this.allNum = res.data.count
-                    if (this.list.length > 0) {
-                        this.list.map((t) => {
-                            t.states = t.pay_state
-                            if (!t.department_id) t.department_name = null
-                            if (!t.grade_id) t.grade_name = null
-                        })
+                    if(res.res_code == 1) {
+                        this.list = res.data.list
+                        this.total = res.data.all_student
+                        this.titleTotal = res.data.all_student
+                        this.allNum = res.data.count
+                        if (this.list.length > 0) {
+                            this.list.map((t) => {
+                                t.states = t.pay_state
+                                if (!t.department_id) t.department_name = null
+                                if (!t.grade_id) t.grade_name = null
+                            })
+                        }
                     }
                 })
             },
@@ -238,13 +260,33 @@
             selectChange6(val) {
                 this.pay_state = val == 'all' ? '' : val
                 this.getList()
-            }
+            },
+            tableSelect(type, val) {
+                this[type] = val[0];
+                this.getList()
+            },
+            dataPickerChange(val) {
+                this.data_picker  = val
+            },
+            dataPickerOk(){
+                this.getList()
+            },
+            dataPickerClear() {
+                this.data_picker  = ['', '']
+                this.getList()
+            },
         },
         mounted() {
             this.getList()
+            postData('/components/getDepts').then(res => {
+                res.data.forEach(item => {
+                    this.columns1[4].filters.push({value: item.id, label: item.name})
+                })
+            })
             if (this.permissionItem4) this.handleAuth(this.permissionItem4)
         }
     }
 </script>
-<style scoped>
+<style scoped lang="less">
+
 </style>

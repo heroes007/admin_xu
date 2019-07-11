@@ -103,7 +103,7 @@
             deleteDetail(t) {
                 this.$Modal.confirm({
                     title: '提示',
-                    content: '<p>确认删除该直播</p>',
+                    content: '<p>确认删除该产品</p>',
                     onOk: () => {
                         postData('product/collection/deleteProductFromCollection', {product_id: t.id, collection_id: JSON.parse(sessionStorage.getItem('INTERSECTION')).collection_id}).then(res => {
                             if(res.res_code == 1) this.getList()

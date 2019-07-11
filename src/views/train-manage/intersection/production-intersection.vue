@@ -40,10 +40,10 @@
             return {
                 select2:[
                     {id: 'all', title:'全部状态'},
-                    {id: -1, title:'下架'},
                     {id: 2, title:'上架'},
+                    {id: -1, title:'下架'},
                     {id: 1, title:'测试'},
-                    {id: 3, title:'推荐'},
+                    // {id: 3, title:'推荐'},
                 ],
                 list: [],
                 show: false,

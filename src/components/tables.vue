@@ -1,7 +1,9 @@
 <template>
     <div>
-        <Table @on-row-click="rowClick" :columns="columns" :data="datas" ref="tables"
-             @on-expand="expand"  :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll" @on-selection-change="onSelectionChange" @on-select-all-cancel="selectAllCancel" @on-select-cancel="selectCancel">
+        <Table @on-row-click="rowClick" :columns="columns" :data="datas" ref="tables" class="tables"
+               @on-expand="expand" :height="tabelHeight" @on-select="selectTables" @on-select-all="selectAll"
+               @on-selection-change="onSelectionChange" @on-select-all-cancel="selectAllCancel"
+               @on-select-cancel="selectCancel">
             <!-- content-html -->
             <template slot-scope="{ column, row, index }" slot="content-html">
                 <span v-html="row[column.key]"></span>
@@ -26,14 +28,26 @@
                         </span>
                     </span>
                 </span>
-                <span v-else v-for="(t,i) in row.stateInform ? row.state == 1 ? column.operation.slice(0,1).concat(column.operation.slice(2,3)) : column.operation.slice(1,3) : column.operation" :key="i">
+                <span v-else-if="column.isShowBtn" v-show="Boolean(row.use_state)">
+                    <span v-for="(t,i) in column.operation" :key="i">
+                        <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                            <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+                                {{handleBtnText(t,row,column)}}
+                            </Button>
+                        </span>
+                    </span>
+                </span>
+                <span v-else
+                      v-for="(t,i) in row.stateInform ? row.state == 1 ? column.operation.slice(0,2).concat(column.operation.slice(3,4)) : column.operation.slice(2,4) : column.operation"
+                      :key="i">
                     <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
                         <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
                             {{handleBtnText(t,row,column)}}
                         </Button>
                     </span>
                 </span>
-                <Switch :class="column.isShow ? '' : 'operation_btn_show'" v-if="column.isSwitch && handleBtnShow(column,row)"
+                <Switch :class="column.isShow ? '' : 'operation_btn_show'"
+                        v-if="column.isSwitch && handleBtnShow(column,row) && !Boolean(row.use_state)"
                         v-model="row[column.switchKey]" size="large" @on-change="change(row)">
                     <span slot="open">{{column.switchList[0]}}</span>
                     <span slot="close">{{column.switchList[1]}}</span>
@@ -126,33 +140,33 @@
                 this.tableData = _new;
                 this.handleTableData(_new)
             },
-            column(_new){
-                  this.handleColumns(_new)
+            column(_new) {
+                this.handleColumns(_new)
             },
             deleteData() {
                 this.$refs.tables.objData[this.selectIndex]._isChecked = false;
             }
         },
         methods: {
-            handleOperation(c, row){
+            handleOperation(c, row) {
                 let list = c.operation
-                if(c.hasOwnProperty('operationLower'))  return row.state == -1 ? [list[0],list[3]] : list
-                if(c.hasOwnProperty('operationStudentNum'))  return row.student_num ? list : [ list[0], list[1], list[3], list[4] ]
+                if (c.hasOwnProperty('operationLower')) return row.state == -1 ? [list[0], list[3]] : list
+                if (c.hasOwnProperty('operationStudentNum')) return row.student_num ? list : [list[0], list[1], list[3], list[4]]
             },
             rowClick(row, rowIndex) {
                 this.show(row, rowIndex, 'row-click', true)
             },
-            expand(row,states){
-                this.$emit('expand', row,states)
+            expand(row, states) {
+                this.$emit('expand', row, states)
             },
             //operationLast为true操作展示第一个，false展示最后一个
             handleBtnShowClass(c, r, t) {
                 if (!c.hasOwnProperty('operation_btn_hide')) {
-                    if (c.hasOwnProperty('operationLast')&&c.operationLast){
-                        if (c.operation[c.operation.length-1][0] == t[0]) return 'operation_btn_see'
-                    }else if (c.isInform){
-                        if(c.operation[0][0] == t[0] || c.operation[1][0] == t[0]) return 'operation_btn_see'
-                    } else if(c.operation[0][0] == t[0]) return 'operation_btn_see'
+                    if (c.hasOwnProperty('operationLast') && c.operationLast) {
+                        if (c.operation[c.operation.length - 1][0] == t[0]) return 'operation_btn_see'
+                    } else if (c.isInform) {
+                        if (c.operation[0][0] == t[0] || c.operation[2][0] == t[0]) return 'operation_btn_see'
+                    } else if (c.operation[0][0] == t[0]) return 'operation_btn_see'
                     if (!r.operation_btn_show) return 'operation_btn_show'
                     return ''
                 }
@@ -187,7 +201,31 @@
                 this.datas = d3
             },
             show(row, rowIndex, params, bool) {
-                if (this.seeUrl&&!bool) {
+                if(params === 'downTable') {
+                    postData('code/getCodeHistory', {code_id: row.id, page_size: 20, page_num: 1}).then(res => {
+                        res.data.list.forEach(item => {
+                            item.product_name = row.product_name
+                            item.organization_name = row.organization_name
+                            item.is_state = item.use_state == 0 ? '未使用' : '已使用'
+                            item.state_name = item.state == -1 ? '已失效' : '生效中'
+                        })
+                        let titleList = [
+                            {title: '兑换码', key: 'code'},
+                            {title: '兑换产品', key: 'product_name'},
+                            {title: '所属机构', key: 'organization_name'},
+                            {title: '使用状态', key: 'is_state'},
+                            {title: '用户姓名', key: 'realname'},
+                            {title: '用户ID', key: 'user_id'},
+                            {title: '有效状态', key: 'state_name'},
+                        ]
+                        this.$refs.tables.exportCsv({
+                            filename: row.title,
+                            columns: titleList,
+                            data: res.data.list
+                        });
+                    })
+                }
+                if (this.seeUrl && !bool) {
                     postData(this.seeUrl, {id: row.organization_id}).then((res) => {
                         if (res.data) {
                             row = {...row, ...res.data[0]}
@@ -201,9 +239,9 @@
                     this.$emit(params, row, rowIndex)
                 }
             },
-            handleColumns(c,type) {
-                if(c&&c.length>0){
-                    if(type){
+            handleColumns(c, type) {
+                if (c && c.length > 0) {
+                    if (type) {
                         if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 70})
                         if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'right'})
                         if (this.isSelectionRight) c.push({type: 'selection', width: 100, align: 'center'})
@@ -257,7 +295,7 @@
             },
             onSelectionChange(selection) {
                 this.$emit('on-selection-change', selection)
-            }
+            },
         },
         mounted() {
             this.handleColumns(this.column, 1)
@@ -468,6 +506,7 @@
     /deep/ .ivu-table-row:hover {
         .operation_btn_show {
             display: inline-block;
+
             .ivu-btn-text {
                 margin-left: -5px;
             }

@@ -16,7 +16,7 @@
             <Row :gutter="20">
                 <Col :span="8" v-for="(item, index) in dataList" :key="index" style="padding: 0 10px;margin-bottom: 20px;">
                     <Card class="card">
-                        <Icon type="md-close" class="card-icon" @click="deleteLive(item)"/>
+<!--                        <Icon type="md-close" class="card-icon" @click="deleteLive(item)" size="18"/>-->
                         <div class="card-type">
                             <div class="card-type-name">{{item.state == -1 ? '下架' : item.state == 0 ? '未上架' : item.state == 1 ? '测试' : item.state == 2 ? '上架' : item.state == 3 ? '推荐' : '删除'}}</div>
                             <div class="card-type-num">共{{item.catalog_num}}节课 | 已播<span style="color: #4098ff;">{{item.catalog_finish_num}}</span>节</div>
@@ -45,7 +45,9 @@
                                 </span>
                             </div>
                             <div class="card-handle-right">
-                                <span style="cursor: pointer" @click="check(item)">查看</span><span style="margin-left: 15px; cursor: pointer" @click="editor(item)">编辑</span>
+                                <span style="cursor: pointer" @click="check(item)">查看</span>
+                                <span style="margin-left: 15px; cursor: pointer" @click="editor(item)">编辑</span>
+                                <span style="margin-left: 15px; cursor: pointer" @click="deleteLive(item)">删除</span>
                             </div>
                         </div>
                     </Card>
@@ -70,10 +72,10 @@
             return {
                 select2: [
                     {id: 'all', title: '全部'},
-                    {id: -1, title: '下架'},
-                    {id: 0, title: '未上架'},
-                    {id: 1, title: '测试'},
                     {id: 2, title: '上架'},
+                    {id: -1, title: '下架'},
+                    // {id: 0, title: '未上架'},
+                    {id: 1, title: '测试'},
                 ],
                 select2Placeholder: '搜索课程名称',
                 sizeNum1: 10,
@@ -233,7 +235,7 @@
             deleteLive(val) {
                 this.$Modal.confirm({
                     title: '提示',
-                    content: '<p>确认删除该直播</p>',
+                    content: '<p>确认删除该直播课</p>',
                     onOk: () => {
                         postData('live/delete', {live_id: val.live_id}).then(res => {
                             if(res.res_code == 1) {
@@ -299,13 +301,11 @@
         text-align: left;
 
         .card-icon{
-            width: 24px;
-            height: 24px;
             position: absolute;
-            right: 6px;
+            right: 10px;
             top: 10px;
             cursor: pointer;
-            display: none;
+            display: inline-block;
         }
 
         &:hover{

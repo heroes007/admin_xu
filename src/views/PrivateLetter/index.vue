@@ -3,7 +3,7 @@
         <private-modal :is-show="show" :title="title" :state="state" @handle-close="handleClose" @handle-submit="handleSubmit" :creat="creat" :message="message" :modal-width="modalWidth"
         :person-message="personMessage" @submit="submit"/>
         <screen :types="10" title="学员私信" btnType btnName="添加私信" @handleClick="handleClick" style="background:#ffffff"/>
-        <tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tableHeight" @operation1="check"/>
+        <tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tableHeight" @operation0="check"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -29,10 +29,21 @@
                 state: 1,
                 columns1: [
                     {title: '私信内容', key: 'content', minWidth: 200, align: 'left'},
+                    {title: '状态', key: 'state', minWidth: 100, align: 'left'},
                     {title: '收信学员', key: 'students_num', minWidth: 100},
-                    {title: '发送时间', key: 'send_time', minWidth: 100},
+                    {title: '发送时间', key: 'send_time', minWidth: 130},
                     {title: '创建人', key: 'realname', minWidth: 100},
-                    {title: '操作', minWidth: 100, slot: 'operation', operation_btn_hide: true, operation: [['查看','operation1']]}
+                    {
+                        title: '操作',
+                        minWidth: 260,
+                        slot: 'operation',
+                        align: 'left',
+                        operation_btn_hide: true,
+                        operation: [['查看', 'operation0']],
+                        // operationLast: false,
+                        // isInform: true,
+                        // operation: [['查看', 'operation0'], ['撤回', 'operation1'], ['编辑', 'operation2'], ['删除', 'operation3']]
+                    }
                 ],
                 list: [],
                 tableHeight: null,
@@ -78,6 +89,7 @@
                 postData('pmsg/getPMsgList', data).then(res => {
                     if(res.res_code == 1){
                         res.data.list.forEach(item => {
+                            item.stateInform = item.state == 1 ? '已发送' : '已撤回'
                             item.students_num = item.students.length + '人'
                         })
                         this.total = res.data.count

@@ -2,7 +2,7 @@
     <div>
         <ExchangeContent title="兑换内容" :show-modal="exchangeContentShow" :list="exchangeContentList"
                          @close="exchangeContentClose" @selectChecked="exchangeContentChecked"/>
-        <Modal :class="modalPadding ? modalPadding : handleFloor == 2 ? 'modal-class3' : modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth"
+        <Modal :class="flowY ? 'flowY' : modalPadding ? modalPadding : handleFloor == 2 ? 'modal-class3' : modalBody ? 'modal-class2' : 'modal-class'" v-model="show" :title="title" :width="modalWidth"
                @on-cancel="closeModal" :mask-closable=false
                :footer-hide="true">
             <div v-if="uploadFlie" class="upload-flie">
@@ -341,6 +341,10 @@
             },
             multipleList: {
                 type: Array
+            },
+            flowY: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -754,6 +758,19 @@
     .modal-class3 {
         /deep/ .ivu-modal-body {
             padding: 0 0 30px 0;
+        }
+        /deep/ .w-e-text-container{
+            /*padding: 0 30px;*/
+            overflow-y: auto;
+        }
+        /deep/ .w-e-toolbar{
+            padding: 0 30px;
+        }
+    }
+
+    .flowY{
+        /deep/ .ivu-modal-body {
+            padding: 30px ;
         }
         /deep/ .w-e-text-container{
             /*padding: 0 30px;*/

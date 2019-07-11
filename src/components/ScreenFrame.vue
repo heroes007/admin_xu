@@ -14,32 +14,38 @@
                 placeholder="请选择学科">
             <Option v-for="item in select3" :value="item.id" :key="item.id">{{ item.name }}</Option>
         </Select>
-        <Select v-if=" ( types == 4 || types == 16 || types == 5 || types == 10 || types == 11 || types == 12 || types == 14 || types == 15) && selectType2"
+        <Select v-if=" ( types == 4 || types == 16 || types == 10 || types == 11 || types == 12 || types == 14 || types == 15) && selectType2"
                 v-model="valueSelect2" @on-change="selectChange2" class="select-list" :placeholder="select2Placeholder">
             <Option v-for="item in select2" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 15 || types == 16 || types == 5" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
+        <Select v-if="types == 15 || types == 16" v-model="valueSelect5" @on-change="selectChange5" class="select-list">
             <Option v-for="item in select5" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
-        <Select v-if="types == 15 || types == 5" v-model="valueSelect6" @on-change="selectChange6" class="select-list">
+        <Select v-if="types == 15" v-model="valueSelect6" @on-change="selectChange6" class="select-list">
             <Option v-for="item in select6" :value="item.id" :key="item.id">{{ item.title }}</Option>
         </Select>
         <Input v-if="types && types !== 6 && types !== 7 && types !== 9 && types != 10 && types != 13 && types != 12 && types !== 17 && types !== 18"
                v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix"/>
         </Input>
+        <DatePicker v-if="types == 5 || types == 19" type="datetimerange" format="yyyy-MM-dd HH:mm" placeholder="请选择时间范围"  class="screen-data-picker"
+                    @on-change="dataPickerChange" @on-ok="dataPickerOk" @on-clear="dataPickerClear"></DatePicker>
         <!-- <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
             <span class="money-student-content">付费学员</span>
         </div> -->
+        <div v-if="types == 19" class="all-size">
+            <span class="all-content">{{sizeTitle0}}</span>
+            <span v-if='sizeNum0 >= 0' class="all-num">{{sizeNum0}}</span>
+        </div>
         <div v-if="types && types !== 6 && types !== 7 || types == 11" class="all-size">
             <span class="all-content">{{sizeTitle1}}</span>
             <span v-if="typeof sizeNum1 == 'number'" class="all-num">{{sizeNum1}}</span>
             <span v-else class="all-num" v-html="handleSizeNum(sizeNum1)"></span>
         </div>
-        <div v-if="types ==3 || types ==5 || types ==8 && isSuper && sizeTitle2" class="money-size">
+        <div v-if="types ==3 || types == 5 || types ==8 || types == 19  && isSuper && sizeTitle2" :class="types == 19 ? 'all-size' : 'money-size'">
             <span class="all-content">{{sizeTitle2}}</span>
-            <span v-if='sizeNum2 >= 0' class="all-num">{{sizeNum2}}</span>
+            <span v-if='sizeNum2 != 0' class="all-num">{{sizeNum2}}</span>
         </div>
         <div v-if="types == 6 || types == 7 || types == 9 || types == 10 || types == 12 || types == 13 || types == 18" class="title">
             <div>{{title}}</div>
@@ -83,7 +89,7 @@
             //types=1：搜索框+数量+按钮； types=2：下拉框+搜索框+数量+按钮； types=3：下拉框+搜索框+数量*2+按钮； types=4：下拉框*2+搜索框+数量+按钮；
             //types=5：下拉框*2+搜索框+付费学员+数量*2； types=6：返回+标题+按钮； types=7：返回+标题； types=8 兑换码--使用记录
             //types = 10 下拉框+标题+按钮; types = 12 下拉框+标题;  types=13：返回+标题+下拉框; types = 14: 下拉框*2+搜索框
-            //types = 15 下拉框*4+搜索框； types = 16 下拉框*3+搜索框+按钮； types = 17 数量+按钮 types = 18 返回+题目+按钮*2
+            //types = 15 下拉框*4+搜索框； types = 16 下拉框*3+搜索框+按钮； types = 17 数量+按钮 types = 18 返回+题目+按钮*2； types = 19 课程订单
             types: {
                 type: Number,
                 required: true,
@@ -136,7 +142,11 @@
             sizeTitle2: {
                 type: String
             },
-            sizeNum2: {
+            sizeNum2: [Number, String],
+            sizeTitle0: {
+                type: String
+            },
+            sizeNum0: {
                 type: Number
             },
             btnName: {
@@ -241,6 +251,15 @@
                         this.valueSelect3 = this.select3[0].id
                     })
                 })
+            },
+            dataPickerChange(val) {
+                this.$emit('dataPickerChange', val)
+            },
+            dataPickerOk() {
+                this.$emit('dataPickerOk')
+            },
+            dataPickerClear() {
+                this.$emit('dataPickerClear')
             }
         }
     }
@@ -443,5 +462,13 @@
         color: #474C63;
         letter-spacing: 0.22px;
         margin-left: 20px;
+    }
+    .screen-data-picker{
+        width: 300px !important;
+        margin-left: 10px !important;
+
+        /deep/ .ivu-btn{
+            display: inline-block !important;
+        }
     }
 </style>

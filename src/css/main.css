@@ -167,6 +167,9 @@ textarea.ivu-input{
 .form-label{
   letter-spacing: 14px;
 }
+.ivu-poptip-body-content{
+    max-height: 300px !important;
+}
 /* .ivu-table-row-highlight td, tr.ivu-table-row-highlight.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td{
   background: #fff !important;
 }
