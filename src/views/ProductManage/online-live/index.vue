@@ -107,11 +107,13 @@
         padding: 20px;
         height: calc(100% - 62px);
         overflow: hidden;
-        overflow-y: auto;
+        /*overflow-y: auto;*/
+        min-width: 1060px;
     }
     .card{
         height: 247px;
         text-align: left;
+        /*min-width: 300px;*/
 
         .card-icon{
             width: 24px;

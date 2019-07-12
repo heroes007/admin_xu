@@ -250,7 +250,7 @@
                     content: this.inputData,
                     student_ids: []
                 }
-                this.changeList.forEach(item => {
+                this.studentList.forEach(item => {
                     data.student_ids.push(item.id)
                 })
                 postData('pmsg/addPMsg', data).then(res => {

@@ -127,6 +127,16 @@
             handleClick() {
                 this.modalTitle = '新建课程'
                 this.show = true
+                this.tableRow = {
+                    title: '',
+                    organization_id: '',
+                    model:'',
+                    state: '',
+                    product_ids: [],
+                    original_price: 0,
+                    price: 0,
+                    short_description: '',
+                }
             },
             handleSubmit(val) {
                 val.description = val.uploading
@@ -295,6 +305,7 @@
         height: calc(100% - 120px);
         overflow: hidden;
         /*overflow-y: auto;*/
+        min-width: 1060px;
     }
     .card{
         height: 247px;

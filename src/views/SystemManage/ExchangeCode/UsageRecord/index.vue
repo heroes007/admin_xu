@@ -3,7 +3,7 @@
         <SendCode title="发送兑换码" :show-modal="codeShow" :list="codeList" @close="codeClose"
                   @selectChecked="codeChecked"/>
         <see :detail-data="tableRowData" title="查看信息" :show-modal='detailShow' @close="close"/>
-        <screen :types="8" size-title1="兑换码总数" :code-name="codeName" placehodle="搜索兑换码" :size-num1="total"
+        <screen :types="8" size-title1="兑换码总数" code-name="" placehodle="搜索兑换码" :size-num1="total"
                 :select1="selectList"
                 size-title2="已使用" :size-num2="use_count" @handleBack="handleBack" @selectChange1="selectChange1"
                 @inputChange="inputChange"/>
@@ -57,8 +57,8 @@
                     },
                     {
                         title: '用户ID',
-                        key: 'user_id',
-                        minWidth: 100
+                        key: 'username',
+                        minWidth: 130
                     },
                     // {
                     //     title: '发送时间',

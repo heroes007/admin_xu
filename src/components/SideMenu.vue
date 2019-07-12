@@ -89,7 +89,7 @@ import { async, Promise, resolve, reject } from 'q';
         },
         methods: {
             personalData() {
-                this.$router.push({path: 'personal-data'})
+                this.$router.push({path: '/dashboard/personal-data'})
             },
             openChange(name) {
                 sessionStorage.setItem('menuOpenName', JSON.stringify(name));

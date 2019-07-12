@@ -39,11 +39,11 @@
                         minWidth: 260,
                         slot: 'operation',
                         align: 'left',
-                        operation_btn_hide: true,
-                        operation: [['查看', 'operation0']],
-                        // operationLast: false,
-                        // isInform: true,
-                        // operation: [['查看', 'operation0'], ['撤回', 'operation1'], ['编辑', 'operation2'], ['删除', 'operation3']]
+                        // operation_btn_hide: true,
+                        // operation: [['查看', 'operation0']],
+                        operationLast: false,
+                        isInform: true,
+                        operation: [['查看', 'operation0'], ['撤回', 'operation1'], ['编辑', 'operation2'], ['删除', 'operation3']]
                     }
                 ],
                 list: [],
