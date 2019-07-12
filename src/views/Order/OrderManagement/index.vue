@@ -35,9 +35,9 @@
                 pay_state: '',
                 data_picker: ['',''],
                 method: '',
-                orderNum: 20,
-                payOrder: '80/100',
-                price: 20
+                orderNum: '',
+                payOrder: '',
+                price: ''
             }
         },
         computed: {
@@ -116,7 +116,7 @@
                             },
                         ],
                         filterRemote (value) {
-                            this.$emit('tableSelect', 'method ', value)
+                            this.$emit('tableSelect', 'method', value)
                         },
                         filterMultiple: false,
                     },
@@ -202,11 +202,14 @@
                     if (res.res_code == 1) {
                         this.list = res.data.list
                         this.total = res.data.count
+                        this.orderNum = res.data.redeem_code_length
+                        this.payOrder = res.data.pay_order_length + '/' + res.data.order_length
+                        this.price = res.data.amount
                     }
                 })
             },
             tableSelect(type, val) {
-                this[type] = val[0];
+                this[type] = val[0]
                 this.getList()
             },
             dataPickerChange(val) {

@@ -1,22 +1,26 @@
 <template>
-    <Modal v-model="show" :title="title" :mask-closable="false" :footer-hide="true" @on-cancel="cancelModal" :width="modalWidth" :styles="{top: state == 1 ? '10%' : '2%', minHeight: '400px'}">
+    <Modal v-model="show" :title="title" :mask-closable="false" :footer-hide="true" @on-cancel="cancelModal"
+           :width="modalWidth" :styles="{top: state == 1 ? '10%' : '2%', minHeight: '400px'}">
         <div v-if="creat">
-            <Input v-model="inputData" v-show="state == 1" class="input-textarea" type="textarea" placeholder="请输入私信内容"/>
+            <Input v-model="inputData" v-show="state == 1" class="input-textarea" type="textarea"
+                   placeholder="请输入私信内容"/>
             <div v-show="state == 2">
-                <screen :types="14" :selectType1="true" :selectType2="true" :valueSelect2="valueSelect2" :placehodle="placehodle" :select2Placeholder="select2Placeholder" :select2="select2"
+                <screen :types="14" :selectType1="true" :selectType2="true" :valueSelect2="valueSelect2"
+                        :placehodle="placehodle" :select2Placeholder="select2Placeholder" :select2="select2"
                         @inputChange="inputChange" @selectChange1="selectChange1" @selectChange2="selectChange2"/>
                 <Row style="height: 650px;">
                     <Col :span="14">
-                        <tables :column="columns1" :table-data="list" :select-index="selectIndex" :delete-data="deleteList" :tabel-height="tableHeight" @select-tables="selectTable"
+                        <tables :column="columns1" :table-data="list" :select-index="selectIndex"
+                                :delete-data="deleteList" :tabel-height="tableHeight" @select-tables="selectTable"
                                 @on-select-all="selectAllTable"/>
                         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
                     </Col>
                     <Col :span="10" style="height: 619px;border: 1px solid #f0f0f7;">
                         <div class="select-student">已选学员</div>
-                        <div v-if="selectList.length == 0" class="none-student">暂未选择学员</div>
+                        <div v-if="studentList.length == 0" class="none-student">暂未选择学员</div>
                         <div v-else style="height: 560px;">
                             <div style="height: 480px; overflow-y: auto">
-                                <div class="change-student" v-for="(item, index) in changeList">
+                                <div class="change-student" v-for="(item, index) in studentList">
                                     <div class="change-name">{{item.realname}}</div>
                                     <div class="change-num">{{item.username}}</div>
                                     <img class="change-img" @click="deleteStudent(item, index)" :src="deleteImg" alt="">
@@ -108,10 +112,24 @@
             personMessage: {
                 type: Object,
             },
+            isEditor: {
+                type: Boolean
+            },
+            dataRow: {
+                type: Object
+            }
         },
         watch: {
             isShow(val) {
                 this.show = val
+                if(val && this.isEditor) {
+                    this.inputData = this.dataRow.content
+                    this.studentList = this.dataRow.students
+                    this.getList()
+                }else{
+                    this.inputData = ''
+                    this.studentList = []
+                }
             }
         },
         methods: {
@@ -120,7 +138,7 @@
                 this.$emit('handle-close')
             },
             handleSubmit() {
-                if(this.inputData) this.$emit('handle-submit', this.state)
+                if (this.inputData) this.$emit('handle-submit', this.state)
                 else this.$Message.info('请输入私信内容')
             },
             selectChange1(val) {
@@ -145,18 +163,16 @@
                     keyword: this.keyword
                 }
                 postData('pmsg/getStudents', data).then(res => {
-                    if(res.res_code == 1) {
-                        if(!this.studentList.length) {
-                            for(var i = 0; i < Math.ceil(res.data.count/10); i++) {
-                                this.studentList.push([])
-                            }
-                        }
+                    if (res.res_code == 1) {
+                        // if (!this.studentList.length) {
+                        //     for (var i = 0; i < Math.ceil(res.data.count / 10); i++) {
+                        //         this.studentList.push([])
+                        //     }
+                        // }
                         this.total = res.data.count
-                        res.data.list.forEach((item, index) => {
-                            item.option = index
-                            item.page = this.current
-                            this.studentList[this.current - 1].forEach(item1 => {
-                                if(item1.option == index) {
+                        res.data.list.map((item, index) => {
+                            this.studentList.forEach(item1 => {
+                                if (item1.id == item.id) {
                                     item._checked = true
                                 }
                             })
@@ -169,32 +185,60 @@
             setChangeList() {
                 this.changeList = []
                 this.studentList.forEach(item => {
-                    if(item.length > 0) {
+                    if (item.length > 0) {
                         this.changeList = this.changeList.concat(item)
                     }
                 })
             },
             selectTable(selection, row) {
-                this.studentList[this.current - 1] = selection
-                this.setChangeList()
+                this.newSetList(selection, row)
+                // this.studentList[this.current - 1] = selection
+                // this.setChangeList()
             },
             selectAllTable(selection) {
-                this.studentList[this.current - 1] = selection
-                this.setChangeList()
+                this.newSetList(selection)
+                // this.studentList[this.current - 1] = selection
+                // this.setChangeList()
             },
-            deleteStudent(item, index) {
-                let num = null
-                this.studentList[item.page - 1].forEach((item1, index1) => {
-                    if(item1.id == item.id) {
-                        num = index1
+            newSetList(list, row) {
+                this.list.map((item, index) => {
+                    item.isChecked = false
+                    list.map(item1 => {
+                        if(item.id == item1.id) item.isChecked = true
+                    })
+                })
+                this.list.forEach((item, index) => {
+                    if (item.isChecked === true){
+                        let state = true
+                        if(!this.studentList.length) this.studentList.push(item)
+                        this.studentList.forEach((item1, index1) => {
+                            if (item1.id == item.id) state = false
+                        })
+                        if(state) this.studentList.push(item)
+                    }else{
+                        this.studentList.forEach((item1, index1) => {
+                            if (item1.id == item.id) this.studentList.splice(index1, 1)
+                        })
                     }
                 })
-                this.studentList[item.page - 1].splice(num, 1)
-                this.selectIndex = item.option
-                if(item.page == this.current) {
-                    this.deleteList = !this.deleteList
-                }
-                this.setChangeList()
+            },
+            deleteStudent(item, index) {
+                this.studentList.splice(index, 1)
+                this.list.map(item1 => {
+                    if(item.id == item1.id) item1._checked = false
+                })
+                // let num = null
+                // this.studentList[item.page - 1].forEach((item1, index1) => {
+                //     if (item1.id == item.id) {
+                //         num = index1
+                //     }
+                // })
+                // this.studentList[item.page - 1].splice(num, 1)
+                // this.selectIndex = item.option
+                // if (item.page == this.current) {
+                //     this.deleteList = !this.deleteList
+                // }
+                // this.setChangeList()
             },
             getProducts() {
                 postData('components/getProducts', {organization_id: this.organization_id}).then(res => {
@@ -210,7 +254,7 @@
                     data.student_ids.push(item.id)
                 })
                 postData('pmsg/addPMsg', data).then(res => {
-                    if(res.res_code == 1) {
+                    if (res.res_code == 1) {
                         this.show = false
                         this.$Message.success(res.msg)
                         this.inputData = ''
@@ -228,26 +272,29 @@
 </script>
 
 <style scoped lang="less">
-    .input-textarea{
+    .input-textarea {
         resize: none;
         padding: 10px;
         margin: 18px;
         width: calc(100% - 32px);
 
-        /deep/ textarea.ivu-input{
+        /deep/ textarea.ivu-input {
             height: 400px;
             padding: 10px;
         }
     }
-    /deep/ .ivu-btn{
+
+    /deep/ .ivu-btn {
         width: 150px;
         height: 38px;
     }
-    /deep/ .ivu-modal-content{
+
+    /deep/ .ivu-modal-content {
         min-height: 400px;
         overflow-y: auto;
     }
-    .message{
+
+    .message {
         font-family: PingFangSC-Regular;
         font-size: 16px;
         color: #474C63;
@@ -258,13 +305,15 @@
         border-bottom: 1px solid #F0F0F7;
         margin-bottom: 20px;
     }
-    .message-num{
+
+    .message-num {
         font-family: PingFangSC-Regular;
         font-size: 18px;
         color: #474C63;
         letter-spacing: 0.22px;
     }
-    .message-box{
+
+    .message-box {
         display: flex;
         flex-wrap: wrap;
         align-content: start;
@@ -273,17 +322,19 @@
         height: 400px;
         overflow-y: auto;
     }
-    .message-info{
+
+    .message-info {
         text-align: center;
         margin-right: 15px;
         margin-bottom: 15px;
 
-        .info-img{
+        .info-img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
         }
-        .info-name{
+
+        .info-name {
             font-family: PingFangSC-Regular;
             font-size: 16px;
             color: #474C63;
@@ -294,10 +345,12 @@
             white-space: nowrap;
         }
     }
-    .btn{
+
+    .btn {
         margin: 20px auto;
     }
-    /deep/ .ivu-page{
+
+    /deep/ .ivu-page {
         height: 89px;
         display: flex;
         align-items: center;
@@ -306,7 +359,8 @@
         border-left: 1px solid #F0F0F7;
         border-bottom: 1px solid #F0F0F7;
     }
-    .select-student{
+
+    .select-student {
         height: 50px;
         display: flex;
         align-items: center;
@@ -316,7 +370,8 @@
         font-size: 16px;
         color: #474C63;
     }
-    .none-student{
+
+    .none-student {
         height: calc(100% - 50px);
         display: flex;
         align-items: center;
@@ -326,20 +381,22 @@
         color: #9397AD;
         border: 1px solid #F0F0F7;
     }
-    .change-student{
+
+    .change-student {
         display: flex;
         align-items: center;
         height: 48px;
         border-bottom: 1px solid #f0f0f7;
         justify-content: space-around;
 
-        &:hover{
-            .change-img{
+        &:hover {
+            .change-img {
                 opacity: 1;
             }
         }
     }
-    .change-name{
+
+    .change-name {
         width: 120px;
         text-align: center;
         overflow: hidden;
@@ -349,7 +406,8 @@
         color: #474C63;
         letter-spacing: 0;
     }
-    .change-num{
+
+    .change-num {
         width: 120px;
         text-align: center;
         overflow: hidden;
@@ -359,23 +417,28 @@
         color: #474C63;
         letter-spacing: 0;
     }
-    .change-img{
+
+    .change-img {
         width: 17.5px;
         height: 17.5px;
         opacity: 0;
         cursor: pointer;
     }
-    /deep/ .ivu-table:before{
+
+    /deep/ .ivu-table:before {
         width: 0;
     }
-    /deep/ .ivu-table:after{
+
+    /deep/ .ivu-table:after {
         width: 0;
     }
-    /deep/ .ivu-table-wrapper{
+
+    /deep/ .ivu-table-wrapper {
         border-left: 1px solid #f0f0f7 !important;
         border-bottom: none !important;
     }
-    /deep/ .ivu-modal-body{
+
+    /deep/ .ivu-modal-body {
         padding: 32px;
     }
 </style>

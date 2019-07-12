@@ -91,7 +91,7 @@
                     {type: 'select', name: '状态', field: 'state', double: true, clas: 'local-right',
                         selectList: [{id: -1, title: '下架'},{id: 1, title: '测试'},{id: 2, title: '上架'}], selectField: ['id', 'title'], isShow: 1},
                     {type: 'input-number', name: '原价', field: 'original_price', double: true, class: 'local-left', isShow: 1},
-                    {type: 'input-number', name: '实际原价', field: 'price', class: 'local-right', isShow: 1},
+                    {type: 'input-number', name: '实际售价', field: 'price', class: 'local-right', isShow: 1},
                     {type: 'multiple', name: '绑定产品', field: 'product_ids', isShow: 1,
                         selectList: [], selectField: ['id', 'title']},
                     {type: 'textarea', name: '介绍', field: 'short_description', maxlength: 100, double: true, isShow: 1},

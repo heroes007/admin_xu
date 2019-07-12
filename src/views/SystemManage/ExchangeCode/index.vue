@@ -243,11 +243,12 @@
                 let d = {
                     product_id: this.formList[2].selectList[val.content].id,
                     collection_id: this.formList[2].selectList[val.content].id,
+                    live_id : this.formList[2].selectList[val.content].id,
                     title: val.realname,
                     code_count: val.num,
                     organization_id: val.jurisdiction,
                     state: val.isswitch ? 2 : 1,
-                    type: this.formList[2].selectList[val.content].type == "collection" ? 1 : 0,
+                    type: this.formList[2].selectList[val.content].type == "collection" ? 1 : this.formList[2].selectList[val.content].type == "product" ? 0 : 2 ,
                     effect_time: this.$config.formatTime(val.effective_time[0]),
                     invalid_time: this.$config.formatTime(val.effective_time[1])
                 }

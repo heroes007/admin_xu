@@ -78,7 +78,7 @@
                     {type: 'input', name: '名称', field: 'title', double: true},
                     {type: 'textarea', name: '介绍', field: 'short_description', double: true, maxlength:  100},
                     {type: 'datetime',  name: '上课时间', field: 'start_time', clas: 'local-left'},
-                    {type: 'input-number', name: '课程时长', field: 'duration', clas: 'local-right'},
+                    {type: 'input-number', name: '课程时长', field: 'duration', clas: 'local-right', isMin: true},
                     {type: 'select', name: '讲师', field: 'teacher_id', selectChange: true, clas: 'local-left', double: true,
                         selectList: [], selectField: ['id', 'name']},
                     {type: 'select', name: '导师', field: 'instructor_id', selectChange: true, clas: 'local-right', double: true,

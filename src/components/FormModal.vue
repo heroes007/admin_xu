@@ -47,6 +47,7 @@
                         <template v-else slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
                         <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
                                      :placeholder="'请输入'+t.name"></InputNumber>
+                        <div v-if="t.isMin" style="display: inline-block;position: absolute;left: 130px;top: 3px;">分钟</div>
                     </FormItem>
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
                     <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name"
@@ -107,7 +108,7 @@
                     </FormItem>
                     <!-- 选择日期及时间-->
                     <FormItem v-if="t.type == 'datetime'" :label="t.name" :prop="t.field" :class="t.clas ? t.clas: ''">
-                        <DatePicker class="form-item-datetime" type="datetime" :placeholder="'请选择' + t.name"  v-model="formItem[t.field]"></DatePicker>
+                        <DatePicker class="form-item-datetime" type="datetime" format="yyyy/MM/dd HH:mm" :placeholder="'请选择' + t.name"  v-model="formItem[t.field]"></DatePicker>
                     </FormItem>
                     <!-- switch-datetimerange-->
                     <FormItem class="form-labels" v-if="(t.type==='switch-datetimerange')" :label="t.name"
@@ -596,7 +597,9 @@
                             this.$Message.info('请上传封面')
                         } else if(this.formList.length == 10 && this.formList[8].field == 'img_url' && !this.formItem.img_url){
                             this.$Message.info('请上传封面')
-                        } else {
+                        } else if(this.formList.length == 7 && this.formList[2].field == 'start_time' && this.formItem.start_time.getTime() < new Date().getTime()){
+                            this.$Message.info('开始时间不能小于当前时间')
+                        }else{
                             if (this.$refs.formInput) {
                                 if (this.content && this.content != '<p><br></p>') {
                                     this.handleFormData()

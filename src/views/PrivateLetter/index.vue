@@ -1,9 +1,10 @@
 <template>
     <div>
         <private-modal :is-show="show" :title="title" :state="state" @handle-close="handleClose" @handle-submit="handleSubmit" :creat="creat" :message="message" :modal-width="modalWidth"
-        :person-message="personMessage" @submit="submit"/>
+        :person-message="personMessage" @submit="submit" :isEditor="isEditor" :dataRow="dataRow"/>
         <screen :types="10" title="学员私信" btnType btnName="添加私信" @handleClick="handleClick" style="background:#ffffff"/>
-        <tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tableHeight" @operation0="check"/>
+        <tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tableHeight" @operation0="check" @operation1="operation1"
+            @operation2="operation2" @operation3="operation3"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>
@@ -26,7 +27,7 @@
                 show: false,
                 creat: true,
                 title: '',
-                state: 1,
+                state: null,
                 columns1: [
                     {title: '私信内容', key: 'content', minWidth: 200, align: 'left'},
                     {title: '状态', key: 'state', minWidth: 100, align: 'left'},
@@ -49,11 +50,14 @@
                 tableHeight: null,
                 message: '',
                 modalWidth: 800,
-                personMessage: {}
+                personMessage: {},
+                isEditor: false,
+                dataRow: {}
             }
         },
         methods: {
             handleClick() {
+                this.isEditor = false
                 this.state = 1
                 this.title = '添加私信'
                 this.modalWidth = 900
@@ -80,6 +84,27 @@
                 postData('pmsg/getPMsgDetail', {msg_id: val.id}).then(res => {
                     this.personMessage = res.data
                 })
+            },
+            operation1(val) {
+                this.isEditor = true
+                this.dataRow = val
+                this.state = 1
+                this.title = '添加私信'
+                this.modalWidth = 900
+                this.show = true
+                this.creat = true
+            },
+            operation2(val) {
+                this.isEditor = true
+                this.dataRow = val
+                this.state = 1
+                this.title = '添加私信'
+                this.modalWidth = 900
+                this.show = true
+                this.creat = true
+            },
+            operation3(val) {
+
             },
             getList() {
                 var data = {
