@@ -30,7 +30,16 @@
                 state: null,
                 columns1: [
                     {title: '私信内容', key: 'content', minWidth: 200, align: 'left'},
-                    {title: '状态', key: 'state', minWidth: 100, align: 'left'},
+                    {
+                        title: '状态',
+                        key: 'state',
+                        minWidth: 100,
+                        align: 'left',
+                        render: (h, params) => {
+                            let d = params.row.state == 1 ? '已发送' : params.row.state == -1 ? '已撤回' : '未发送'
+                            return h('span', d)
+                        }
+                    },
                     {title: '收信学员', key: 'students_num', minWidth: 100},
                     {title: '发送时间', key: 'send_time', minWidth: 130},
                     {title: '创建人', key: 'realname', minWidth: 100},
@@ -86,13 +95,12 @@
                 })
             },
             operation1(val) {
-                this.isEditor = true
-                this.dataRow = val
-                this.state = 1
-                this.title = '添加私信'
-                this.modalWidth = 900
-                this.show = true
-                this.creat = true
+                postData('pmsg/withdrawPMsg', {id: val.id}).then(res => {
+                    if(res.res_code == 1) {
+                        this.$Message.success(res.msg)
+                        this.getList()
+                    }
+                })
             },
             operation2(val) {
                 this.isEditor = true
@@ -104,7 +112,18 @@
                 this.creat = true
             },
             operation3(val) {
-
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '<p>确认删除该私信</p>',
+                    onOk: () => {
+                        postData('pmsg/deletePMsg', {id: val.id}).then(res => {
+                            if(res.res_code == 1) {
+                                this.$Message.success(res.msg)
+                                this.getList()
+                            }
+                        })
+                    },
+                });
             },
             getList() {
                 var data = {

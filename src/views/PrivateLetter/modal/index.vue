@@ -117,7 +117,7 @@
             },
             dataRow: {
                 type: Object
-            }
+            },
         },
         watch: {
             isShow(val) {
@@ -253,15 +253,28 @@
                 this.studentList.forEach(item => {
                     data.student_ids.push(item.id)
                 })
-                postData('pmsg/addPMsg', data).then(res => {
-                    if (res.res_code == 1) {
-                        this.show = false
-                        this.$Message.success(res.msg)
-                        this.inputData = ''
-                        this.changeList = []
-                        this.$emit('submit')
-                    }
-                })
+                if(this.isEditor) {
+                    postData('pmsg/modifyPMsg', {id: this.dataRow.id, ...data}).then(res => {
+                        if (res.res_code == 1) {
+                            this.show = false
+                            this.$Message.success(res.msg)
+                            this.inputData = ''
+                            this.changeList = []
+                            this.$emit('submit')
+                        }
+                    })
+                }
+                else{
+                    postData('pmsg/addPMsg', data).then(res => {
+                        if (res.res_code == 1) {
+                            this.show = false
+                            this.$Message.success(res.msg)
+                            this.inputData = ''
+                            this.changeList = []
+                            this.$emit('submit')
+                        }
+                    })
+                }
             }
         },
         mounted() {

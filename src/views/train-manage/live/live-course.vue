@@ -305,7 +305,7 @@
         height: calc(100% - 120px);
         overflow: hidden;
         /*overflow-y: auto;*/
-        min-width: 1060px;
+        min-width: 1100px;
     }
     .card{
         height: 247px;

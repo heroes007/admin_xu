@@ -35,9 +35,9 @@
                 pay_state: '',
                 data_picker: ['',''],
                 method: '',
-                orderNum: '',
-                payOrder: '',
-                price: ''
+                orderNum: null,
+                payOrder: null,
+                price: null
             }
         },
         computed: {
