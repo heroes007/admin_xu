@@ -139,6 +139,12 @@
                 }
             },
             handleSubmit(val) {
+                if(val.model == 1) {
+                    delete val.original_price
+                    delete val.price
+                }else if(val.model == 2) {
+                    delete val.product_ids
+                }
                 val.description = val.uploading
                 if(val.isEditor) {
                     postData('live/change', val).then(res => {
@@ -234,6 +240,8 @@
                 this.changeList2(val.organization_id)
                 this.changeList(val.model)
                 this.tableRow = val
+                this.tableRow.original_price = 0
+                this.tableRow.price = 0
                 this.tableRow.uploading = this.tableRow.description
                 this.tableRow.isEditor = true
                 this.modalTitle = '编辑课程'
