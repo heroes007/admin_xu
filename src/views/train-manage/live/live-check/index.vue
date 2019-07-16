@@ -95,7 +95,8 @@
                 isShow: false,
                 liveTitle: '',
                 liveList: [],
-                title: ''
+                title: '',
+                loadingInstance: null
             }
         },
         methods: {
@@ -200,12 +201,14 @@
                 })
             },
             getList() {
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
                 let data = {
                     page_num: this.current,
                     page_size: this.pageSize,
                     live_id: parseInt(this.$route.query.id)
                 }
                 postData('live/catalog/get_list', data).then(res => {
+                    this.loadingInstance.close()
                     if(res.res_code == 1) {
                         this.list = res.data.data
                         this.total = res.data.count

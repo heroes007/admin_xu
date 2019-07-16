@@ -112,7 +112,8 @@
                 handleFloor: 1,
                 search: '',
                 state: '',
-                multipleList: []
+                multipleList: [],
+                loadingInstance: null
             }
         },
         methods: {
@@ -268,6 +269,7 @@
                 this.multipleList.splice(val, 1)
             },
             getList() {
+                this.loadingInstance = this.$LoadingY({message: "加载中，请稍后", show: true})
                 var data = {
                     page_num: this.current,
                     page_size: this.pageSize,
@@ -275,6 +277,7 @@
                     state:  this.state
                 }
                 postData('live/get_list', data).then(res => {
+                    this.loadingInstance.close()
                     if(res.res_code == 1){
                         this.dataList = res.data.data
                         this.total = res.data.count
