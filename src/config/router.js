@@ -204,6 +204,11 @@ const routes = [
         path: 'intersection-detail',
         component: IntersectionDetail
       },
+      {
+        name: 'live-check',
+        path: 'live-check',
+        component: LiveCheck
+      }
     ]
   },
   {

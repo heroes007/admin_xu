@@ -1,5 +1,15 @@
 <template>
     <div style="height: 100%;">
+        <form-modal :show-modal='show' :detail-data="tableRow" :form-list="formList" :rule-validate='rules' @from-submit="handleSubmit" @close="closeModal"
+                    :title="modalTitle" @change-list="changeList" :handleFloor="handleFloor" @multiple-change="multipleChange" @handle-next="handleNext"
+                    @handle-last="handleLast" @showContent="showContent" :modal-false="true" @modal-close="modalClose" @change-list2="changeList2" :multipleList="multipleList">
+            <template slot="multiple" style="display: flex;">
+                <div v-for="(item, index) in multipleList" :key="index" style="display: inline-block;position: relative; background: #F0F0F7;border-radius: 4px;margin-right: 10px;margin-top: 8px;padding: 0 10px;">
+                    <Icon type="md-close" style="width: 10px;height: 10px;position: absolute;right: -3px;top: -5px;" @click="deleteMiltiple(index)"></Icon>
+                    {{item.title}}
+                </div>
+            </template>
+        </form-modal>
         <div class="box">
             <div v-if="!dataList.length" class="hint-none">暂无内容</div>
             <Row :gutter="20">
@@ -48,29 +58,203 @@
 </template>
 
 <script>
+    import screen from '../../../components/ScreenFrame'
     import pageList from '../../../components/Page'
     import pageMixin from '../../mixins/pageMixins'
+    import formModal from '../../../components/FormModal'
     import postData from '../../../api/postData'
 
     export default {
-        components: {pageList},
+        components: {screen, pageList, formModal},
         mixins: [pageMixin],
         data() {
             return {
-                boxHeight: null,
-                dataList: []
+                select2: [
+                    {id: 'all', title: '全部'},
+                    {id: 2, title: '上架'},
+                    {id: -1, title: '下架'},
+                    // {id: 0, title: '未上架'},
+                    {id: 1, title: '测试'},
+                ],
+                select2Placeholder: '搜索课程名称',
+                sizeNum1: 10,
+                dataList: [],
+                show: false,
+                tableRow: {},
+                formList: [
+                    {type: 'input', name: '名称', field: 'title', double: true, isShow: 1},
+                    {type: 'select', name: '机构', field: 'organization_id', double: true, selectChange: true, changeNum: 2,
+                        selectList: [], selectField: ['id', 'title'], isShow: 1},
+                    {type: 'select', name: '销售形式', field: 'model', selectChange: true, clas: 'local-left',
+                        selectList: [{id: 1, title: '产品销售'},{id: 2, title: '单品销售'},{id: 3, title: '双重销售'}], selectField: ['id', 'title'], isShow: 1},
+                    {type: 'select', name: '状态', field: 'state', double: true, clas: 'local-right',
+                        selectList: [{id: -1, title: '下架'},{id: 1, title: '测试'},{id: 2, title: '上架'}], selectField: ['id', 'title'], isShow: 1},
+                    {type: 'input-number', name: '原价', field: 'original_price', double: true, class: 'local-left', isShow: 1},
+                    {type: 'input-number', name: '实际售价', field: 'price', class: 'local-right', isShow: 1},
+                    {type: 'multiple', name: '绑定产品', field: 'product_ids', isShow: 1,
+                        selectList: [], selectField: ['id', 'title']},
+                    {type: 'textarea', name: '介绍', field: 'short_description', maxlength: 100, double: true, isShow: 1},
+                    {type: 'uploadBtn', name: '封面', field: 'img_url', double: true, isShow: 1},
+                    {type: 'upload',  field: 'uploading', isShow: 2, showAll: 0}
+                ],
+                rules: {
+                    title: [{ required: true, message: '请输入产品名称', trigger: 'blur' }],
+                    organization_id: [{ required: true, message: '请选择产品机构' }],
+                    model: [{ required: true, message: '请选择产品模式' }],
+                    state: [{ required: true, message: '请选择产品状态' }],
+                    product_ids: [{ required: true, message: '请选择培训产品' }],
+                    original_price: [{ required: true, message: '请选择产品原价' }],
+                    price: [{ required: true, message: '请选择产品原价' }],
+                    short_description: [{ required: true, message: '请输入产品介绍', trigger: 'blur'  }],
+                },
+                modalTitle: '',
+                handleFloor: 1,
+                search: '',
+                state: '',
+                multipleList: []
             }
         },
         methods: {
+            selectChange2(val) {
+                this.state = val == 'all' ? '' : val
+                this.getList()
+            },
+            inputChange(val) {
+                this.search = val
+                this.getList()
+            },
+            handleClick() {
+                this.modalTitle = '新建课程'
+                this.show = true
+                this.tableRow = {
+                    title: '',
+                    organization_id: '',
+                    model:'',
+                    state: '',
+                    product_ids: [],
+                    original_price: 0,
+                    price: 0,
+                    short_description: '',
+                }
+            },
+            handleSubmit(val) {
+                if(val.model == 1) {
+                    delete val.original_price
+                    delete val.price
+                }else if(val.model == 2) {
+                    delete val.product_ids
+                }
+                val.description = val.uploading
+                if(val.isEditor) {
+                    postData('live/change', val).then(res => {
+                        if(res.res_code == 1) this.getList()
+                    })
+                }else{
+                    postData('live/add', val).then(res => {
+                        if(res.res_code == 1) this.getList()
+                    })
+                }
+                this.show = false
+            },
+            changeList(val) {
+                switch (val) {
+                    case 1:
+                        this.formList[4].type = ''
+                        this.formList[5].type = ''
+                        this.formList[6].type = 'multiple'
+                        this.handleFloor = 0
+                        break
+                    case 2:
+                        this.formList[4].type = 'input-number'
+                        this.formList[5].type = 'input-number'
+                        this.formList[6].type = ''
+                        this.handleFloor = 1
+                        break
+                    case 3:
+                        this.formList[4].type = 'input-number'
+                        this.formList[5].type = 'input-number'
+                        this.formList[6].type = 'multiple'
+                        this.handleFloor = 1
+                        break
+                }
+            },
+            changeList2(val) {
+                if(val) {
+                    postData('components/getProductsByOrganization', {organization_id: val}).then(res => {
+                        if(res.res_code == 1) {
+                            this.formList[6].selectList = res.data
+                        }
+                    })
+                }
+            },
+            multipleChange(val) {
+                this.multipleList = []
+                this.formList[6].selectList.forEach(item => {
+                    val.forEach(item1 => {
+                        if(item.id == item1) {
+                            this.multipleList.push(item)
+                        }
+                    })
+                })
+            },
+            setShow() {
+                this.formList.forEach(item => {
+                    item.isShow == 1 ? item.isShow = 2 : item.isShow = 1
+                })
+            },
+            isShow() {
+                this.$nextTick(() => {
+                    if(document.querySelector('.w-e-text').clientHeight < 500) {
+                        this.formList[9].showAll = 0
+                    }else if(document.querySelector('.w-e-text').clientHeight > 500 && this.formList[9].showAll == 0){
+                        this.formList[9].showAll = 2
+                    }
+                })
+            },
+            handleNext() {
+                this.isShow()
+                this.setShow()
+                this.handleFloor = 2
+            },
+            handleLast() {
+                this.setShow()
+                this.handleFloor = 1
+            },
+            showContent(val) {
+                this.formList[9].showAll = val == 1 ? 2 : 1
+            },
+            closeModal() {
+                this.tableRow = {}
+                // if(this.formList[0].isShow == 2) this.setShow()
+                // this.handleFloor = 1
+                // this.show = false
+                // console.log(this.handleFloor)
+            },
+            modalClose() {
+                if(this.formList[0].isShow == 2) this.setShow()
+                this.handleFloor = 1
+                this.show = false
+            },
+            editor(val) {
+                this.changeList2(val.organization_id)
+                this.changeList(val.model)
+                this.tableRow = val
+                this.tableRow.original_price = 0
+                this.tableRow.price = 0
+                this.tableRow.uploading = this.tableRow.description
+                this.tableRow.isEditor = true
+                this.modalTitle = '编辑课程'
+                this.show = true
+            },
             check(val) {
-                this.$router.push({path: '/dashboard/live-check', query: {id: val.live_id, organization_id: val.organization_id, title: val.title}})
+                this.$router.push({path: 'live-check', query: {id: val.live_id, organization_id: val.organization_id, title: val.title}})
             },
             deleteLive(val) {
                 this.$Modal.confirm({
                     title: '提示',
                     content: '<p>确认删除该直播课</p>',
                     onOk: () => {
-                        postData('live/deleteLiveByProduct', {live_id: val.live_id, product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id}).then(res => {
+                        postData('live/delete', {live_id: val.live_id}).then(res => {
                             if(res.res_code == 1) {
                                 this.$Message.success(res.msg)
                                 this.getList()
@@ -79,28 +263,45 @@
                     },
                 });
             },
+            deleteMiltiple(val) {
+                this.multipleList.splice(val, 1)
+            },
             getList() {
-                let data = {
-                    page_size: this.pageSize,
+                var data = {
                     page_num: this.current,
-                    product_id: JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id,
-                    search: '',
-                    state: ''
+                    page_size: this.pageSize,
+                    search: this.search,
+                    state:  this.state
                 }
-                postData('live/getLivesByProduct', data).then(res => {
-                    if(res.res_code == 1) {
+                postData('live/get_list', data).then(res => {
+                    if(res.res_code == 1){
                         this.dataList = res.data.data
                         this.total = res.data.count
+                        this.dataList.uploading = this.dataList.description
+                        this.dataList.forEach(item => {
+                            item.product_ids = []
+                            if(item.products && item.products.length) {
+                                item.products.forEach(item1 => {
+                                    item.product_ids.push(item1.product_id)
+                                })
+                            }
+                        })
                     }
                 })
-            }
+            },
         },
         mounted() {
-            this.boxHeight = window.innerHeight - 130
+            this.pageSize = 9
             this.getList()
+            postData('components/getOrganization').then(res => {
+                if(res.res_code == 1) {
+                    this.formList[1].selectList = res.data
+                }
+            })
         }
     }
 </script>
+
 
 <style scoped lang="less">
     .box{
