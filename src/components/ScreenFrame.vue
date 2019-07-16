@@ -28,7 +28,7 @@
                v-model="valueInput" :placeholder="placehodle ? placehodle : placehodleInput" @on-change="inputChange" class="input">
             <Icon type="md-search" slot="prefix"/>
         </Input>
-        <DatePicker v-if="types == 5 || types == 19" type="datetimerange" format="yyyy-MM-dd HH:mm" placeholder="请选择时间范围"  class="screen-data-picker"
+        <DatePicker v-if="types == 5 || types == 19" type="datetimerange" format="yyyy-MM-dd HH:mm" :placeholder="dataPlaceholder"  class="screen-data-picker"
                     @on-change="dataPickerChange" @on-ok="dataPickerOk" @on-clear="dataPickerClear"></DatePicker>
         <!-- <div v-if="types == 5 && radioType && isSuper && payingStudent" class="money-student" @click="moneyStudent">
             <Icon :color="iconColor" size="20" type="md-radio-button-on" />
@@ -43,7 +43,7 @@
             <span v-if="typeof sizeNum1 == 'number'" class="all-num">{{sizeNum1}}</span>
             <span v-else class="all-num" v-html="handleSizeNum(sizeNum1)"></span>
         </div>
-        <div v-if="types ==3 || types == 5 || types ==8 || types == 19  && isSuper && sizeTitle2" :class="types == 19 ? 'all-size' : 'money-size'">
+        <div v-if="(types ==3 || types == 5 || types ==8 || types == 19)  && isSuper && sizeTitle2" :class="types == 19 ? 'all-size' : 'money-size'">
             <span class="all-content">{{sizeTitle2}}</span>
             <span v-if='sizeNum2 != 0' class="all-num">{{sizeNum2}}</span>
         </div>
@@ -169,6 +169,10 @@
                 type: String,
                 default: '请选择'
             },
+            dataPlaceholder: {
+                type: String,
+                default: '请选择时间范围'
+            }
         },
         mounted() {
             // if(this.select1 && this.select1.length) this.valueSelect1 = this.select1[0].value

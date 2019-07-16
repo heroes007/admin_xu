@@ -61,6 +61,9 @@
                 </div>
             </div>
             <div class="head-btn">
+<!--                <Button type="default" @click="handleGrade" ghost class="btn-content" style="top: 20%;" v-if="$route.name == 'open-product'">-->
+<!--                    课程评分-->
+<!--                </Button>-->
                 <Button type="default" @click="goBack" ghost class="btn-content" style="top: 20%;">
                     <Icon class="btn-i" :size="22" type="ios-undo"/>
                     返回上一页
@@ -199,6 +202,10 @@
             },
             handleClose() {
                 this.isShow = false
+            },
+            handleGrade() {
+                window.open('/product/product-grade','_blank')
+                // this.$router.replace('/product/product-grade')
             },
             handleSubmit(val) {
                 postData('/product/collection/change', val).then(res => {

@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div @click="handleBack" style="position: absolute;display: flex;top: 20px;left: 20px;cursor: pointer;z-index: 1">
+            <img class="back-img" src="../../../assets/icons/icon/back.png" alt="">
+            <div class="back-title">返回</div>
+        </div>
         <Tabs @on-click="tabs" v-model="online">
             <TabPane label="线上自学" v-if="item1" name="product1">
                 <online/>
@@ -59,6 +63,9 @@
                     this.item5 = true;
                     this.item6 = true;
                 }
+            },
+            handleBack() {
+                this.$router.go(-1)
             }
         },
         mounted() {
@@ -71,5 +78,16 @@
 </script>
 
 <style scoped lang="less">
+    .back-img {
+        width: 23px;
+        height: 19px;
+    }
 
+    .back-title {
+        margin-left: 10px;
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #474C63;
+        letter-spacing: 0;
+    }
 </style>

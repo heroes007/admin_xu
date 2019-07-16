@@ -46,8 +46,8 @@
                         <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
                         <template v-else slot="label"><span :class="handleClass(t)">{{t.name}}</span></template>
                         <InputNumber :disabled="t.disable" :min='0' v-model="formItem[t.field]"
-                                     :placeholder="'请输入'+t.name"></InputNumber>
-                        <div v-if="t.isMin" style="display: inline-block;position: absolute;left: 130px;top: 3px;">分钟</div>
+                                     :placeholder="'请输入'+t.name" ref="minuteInput"></InputNumber>
+                        <div v-if="t.isMin" style="display: inline-block;position: absolute;left: 130px;top: 3px;cursor: text" @click="minuteInput">分钟</div>
                     </FormItem>
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
                     <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name"
@@ -720,8 +720,12 @@
                     this.formItem[field] = num
                     this.$forceUpdate()
                 }
+            },
+            minuteInput() {
+                // console.log(this.$refs.minuteInput);
+                // this.$refs.minuteInput[0].focus()
+                if(document.querySelectorAll('.ivu-input-number-input').length == 1) document.querySelectorAll('.ivu-input-number-input')[0].focus()
             }
-
         },
     }
 </script>

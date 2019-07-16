@@ -13,7 +13,7 @@
             </template>
         </form-modal>
         <div class="box">
-            <Row :gutter="20">
+            <Row :gutter="20" style="min-width: 1100px">
                 <Col :span="8" v-for="(item, index) in dataList" :key="index" style="padding: 0 10px;margin-bottom: 20px;">
                     <Card class="card">
 <!--                        <Icon type="md-close" class="card-icon" @click="deleteLive(item)" size="18"/>-->
@@ -307,13 +307,15 @@
     .manage-production-view{
         background-color: #f0f0f7;
         height: 100%;
+        /*overflow-x: auto;*/
     }
     .box{
         padding: 20px;
         height: calc(100% - 120px);
         overflow: hidden;
-        /*overflow-y: auto;*/
-        min-width: 1100px;
+        overflow-y: auto;
+        /*min-width: 1100px;*/
+        overflow-x: auto;
     }
     .card{
         height: 247px;

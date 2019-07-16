@@ -31,6 +31,8 @@ const ProductionIntersection = () => import('../views/train-manage/intersection/
 const LiveCourse = () => import('../views/train-manage/live/live-course')
 const IntersectionDetail = () => import('../views/train-manage/intersection/detail')
 const LiveCheck = () => import('../views/train-manage/live/live-check')
+const ProductGrade = () => import('../views/grade/product-grade')
+const StudentGrade = () => import('../views/grade/student-grade')
 
 Vue.use(VueRouter);
 // 页面路由
@@ -203,6 +205,16 @@ const routes = [
         component: IntersectionDetail
       },
     ]
+  },
+  {
+    name: 'product-grade',
+    path: '/product/product-grade',
+    component: ProductGrade
+  },
+  {
+    name: 'student-grade',
+    path: '/product/student-grade',
+    component: StudentGrade
   },
   {
     path: '/login',
