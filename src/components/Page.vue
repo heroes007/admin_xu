@@ -1,5 +1,5 @@
 <template>
-    <Page :current="current" :total="total" :page-size="pageSize" @on-change="onChange"></Page>
+    <Page v-if="total>pageSize" :current="current" :total="total" :page-size="pageSize" @on-change="onChange"></Page>
 </template>
 
 <script>

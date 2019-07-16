@@ -119,9 +119,12 @@
                 $elem: o('<span style="font-size: large;">18</span>'),
                 value: "4"
             }, {
+                $elem: o('<span style="font-size: 20px">20</span>'),
+                value: 5
+            }, {
                 $elem: o('<span style="font-size: x-large;">24</span>'),
-                value: "5"
-            }, {$elem: o('<span style="font-size: xx-large;">32</span>'), value: "6"}],
+                value: "6"
+            }, {$elem: o('<span style="font-size: xx-large;">32</span>'), value: "7"}],
             onClick: function (e) {
                 t._command(e)
             }

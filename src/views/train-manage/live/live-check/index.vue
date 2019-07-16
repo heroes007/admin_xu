@@ -35,7 +35,7 @@
                     {
                         title: '状态',
                         key: 'type',
-                        minWidth: 80,
+                        minWidth: 100,
                         render: (h, params) => {
                             return h('span', params.row.type == 1 ? '直播中' : params.row.type == 2 ? '预告' : params.row.type == 3 ? '回放' : params.row.type == 4 ? '转播' : '已下课')
                         }
