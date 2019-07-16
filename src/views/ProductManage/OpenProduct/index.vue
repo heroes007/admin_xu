@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div @click="handleBack" style="position: absolute;display: flex;top: 20px;left: 20px;cursor: pointer;z-index: 1">
-            <img class="back-img" src="../../../assets/icons/icon/back.png" alt="">
-            <div class="back-title">返回</div>
-        </div>
+<!--        <div @click="handleBack" style="position: absolute;display: flex;top: 20px;left: 20px;cursor: pointer;z-index: 1">-->
+<!--            <img class="back-img" src="../../../assets/icons/icon/back.png" alt="">-->
+<!--            <div class="back-title">返回</div>-->
+<!--        </div>-->
         <Tabs @on-click="tabs" v-model="online">
             <TabPane label="线上自学" v-if="item1" name="product1">
                 <online/>
