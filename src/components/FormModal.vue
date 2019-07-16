@@ -187,12 +187,12 @@
                     <!--直播布局-->
                     <FormItem v-if="t.type == 'localLive'" :label="t.name" required class="select-multiple">
                         <div style="display: flex">
-                            <div @click="liveClick(t.field, 1)" class="local-live" :style="`border: 1px solid ${formItem[t.field]  == '1' ? '#4098ff' : '#fff'};`">
+                            <div @click="liveClick(t.field, 3)" class="local-live" :style="`border: 1px solid ${formItem[t.field]  == '1' ? '#4098ff' : '#fff'};`">
                                 <div class="local-live-left">文档 </div>
                                 <div class="local-live-right-top" style="">视频</div>
                                 <div class="local-live-right-bottom"></div>
                             </div>
-                            <div @click="liveClick(t.field, 3)" class="local-live" :style="`border: 1px solid ${formItem[t.field]  == '3' ? '#4098ff' : '#fff'};margin-left: 20px;`">
+                            <div @click="liveClick(t.field, 1)" class="local-live" :style="`border: 1px solid ${formItem[t.field]  == '3' ? '#4098ff' : '#fff'};margin-left: 20px;`">
                                 <div class="local-live-left">视频</div>
                                 <div class="local-live-right"></div>
                             </div>
