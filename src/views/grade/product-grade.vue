@@ -47,7 +47,7 @@
                 </div>
             </Col>
         </Row>
-        <Row class="total">
+        <Row class="total" :style="`minHeight: ${lastHeight}px; background: #fff; height: auto`">
             <Col>
                 <div style="background-color: #fff;width: 100%;height: 100%;">
                     <div class="total-course">
@@ -55,7 +55,7 @@
                             <div class="total-course-title-content">学员评分</div>
                         </div>
                         <tables :is-serial=true :column="columns3" :table-data="list3" @operation="check"></tables>
-                        <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+                        <page-list style="margin-bottom: 10px;" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
                     </div>
                 </div>
             </Col>
@@ -95,8 +95,8 @@
                     {title: '总体满意度', veryGood: 3, well: 3, ordinary:10, bad:0}
                 ],
                 columns3: [
-                    {title: '姓名', key: 'realname', align: 'left', minWidth: 120},
-                    {title: '账号', key: 'realname', align: 'left', minWidth: 140},
+                    {title: '姓名', key: 'realname', align: 'left', minWidth: 110},
+                    {title: '账号', key: 'realname', align: 'left', minWidth: 130},
                     {title: '学习进度', key: 'realname', minWidth: 100},
                     {title: '已评课程', key: 'realname', minWidth: 100},
                     {title: '线上课', key: 'realname', minWidth: 90},
@@ -106,20 +106,25 @@
                     {title: '满意度', key: 'realname', minWidth: 90},
                     {
                         title: '操作',
-                        minWidth: 100,
+                        minWidth: 138,
                         slot: 'operation',
                         align: 'center',
                         operation_btn_hide: true,
                         operation: [['查看详情', 'operation']],
                     }
                 ],
-                list3: [{realname: '张三'}],
+                list3: [{realname: '张三'},{realname: '张三'},{realname: '张三'},{realname: '张三'},{realname: '张三'},{realname: '张三'},{realname: '张三'},{realname: '张三'},{realname: '张三'}],
                 selectCourse: null,
                 courseList: [
                     {value: '1', label: '第一节课'},
                     {value: '2', label: '第一节课'},
                     {value: '3', label: '第一节课'},
-                ]
+                ],
+            }
+        },
+        computed: {
+            lastHeight() {
+                return window.innerHeight - 630
             }
         },
         methods: {
@@ -153,7 +158,8 @@
     .content{
         background-color: #f0f0f7;
         padding: 20px 30px;
-        min-height: 100%;
+        height: 100%;
+        overflow-y: auto;
     }
     .title{
         background-color:#fff;
@@ -225,6 +231,7 @@
         }
 
         .total-course{
+            margin-bottom: 50px;
             margin-right: 5px;
             background-color: #fff;
             width: 100%;

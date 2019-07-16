@@ -1,5 +1,15 @@
 <template>
     <div class="box">
+        <Modal v-model="show" :mask-closable="false" :footer-hide="true" @on-cancel="handleClose" title="查看评价">
+            <div class="modal-content">
+                线上课程安排合理性
+                线上课程安排合理性
+                线上课程安排合理性
+                线上课程安排合理性
+                线上课程安排合理性
+                线上课程安排合理性
+            </div>
+        </Modal>
         <div class="message">
             <div class="message-left">
                 <img class="message-left-img" src="../../assets/img/grade_all.jpg" alt="">
@@ -21,13 +31,13 @@
                 <tables :column="columns1" :table-data="list1" ></tables>
             </div>
         </div>
-        <div class="total" style="height: 200px;">
+        <div class="total" :style="`height: ${lastHeight}px;`">
             <div class="total-course">
                 <div class="total-course-title">
                     <div class="total-course-title-content">课程评分</div>
                 </div>
-                <tables :is-serial=true :column="columns2" :table-data="list2" ></tables>
-                <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+                <tables :is-serial=true :column="columns2" :table-data="list2" @operation="operation"></tables>
+                <page-list style="margin-bottom: 10px;" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
             </div>
         </div>
     </div>
@@ -43,6 +53,7 @@
         mixins: [pageMixin],
         data() {
             return{
+                show: false,
                 columns1: [
                     {title: '培训进度', key: 'veryGood', minWidth: 100,},
                     {title: '线上课安排合理性', key: 'veryGood', minWidth: 170},
@@ -69,18 +80,32 @@
                         minWidth: 90,
                         slot: 'operation',
                         align: 'center',
-                        operation_btn_hide: true,
-                        operation: [['查看', 'operation']],
+                        isAppraise: true,
+                        operation: [['查看', 'operation'], ['未评', 'operation1']],
                     },
                     {title: '评价时间', key: 'time', minWidth: 170},
                 ],
                 list2: [
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00'},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00'},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00'},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00'},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00'},
+                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 1},
+                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 1},
+                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 1},
+                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 0},
+                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 0},
+                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 0},
                 ],
+            }
+        },
+        computed: {
+            lastHeight() {
+                return window.innerHeight - 420
+            }
+        },
+        methods: {
+            handleClose() {
+                this.show = false
+            },
+            operation() {
+                this.show = true
             }
         },
         mounted() {
@@ -96,10 +121,21 @@
     /deep/ .ivu-table:after{
         display: none;
     }
+    /deep/ .ivu-modal-body{
+        padding: 30px;
+    }
     .box{
         background-color:#f0f0f7;
         padding: 20px 30px;
         min-height: 100%;
+    }
+    .modal-content{
+        font-family: PingFangSC-Regular;
+        font-size: 16px;
+        color: #474C63;
+        letter-spacing: 0;
+        line-height: 28px;
+        min-height: 300px;
     }
     .message{
         display: flex;

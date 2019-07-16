@@ -37,6 +37,13 @@
                         </span>
                     </span>
                 </span>
+                <span v-else-if="column.isAppraise">
+                    <span v-for="(t,i) in row.state == 1 ? column.operation.slice(0, 1) : column.operation.slice(1, 2)" :key="i" :class="row.state !== 1 ? 'colorGray' : ''">
+                        <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+                            {{handleBtnText(t,row,column)}}
+                        </Button>
+                    </span>
+                </span>
                 <span v-else
                       v-for="(t,i) in row.stateInform ? row.state == 1 ? column.operation.slice(0,2).concat(column.operation.slice(3,4)) : column.operation.slice(2,4) : column.operation"
                       :key="i">
@@ -408,6 +415,14 @@
     /deep/ .ivu-btn {
         color: #4098FF;
     }
+
+    .colorGray{
+        /deep/ .ivu-btn {
+            color: #1B1B1B;
+            cursor: auto;
+        }
+    }
+
 
     /deep/ .ivu-btn-text:focus {
         box-shadow: none
