@@ -128,11 +128,31 @@
                     {title: '账号', key: 'username', align: 'left', minWidth: 130},
                     {title: '学习进度', key: 'progress', minWidth: 100},
                     {title: '已评课程', key: 'finish_score_num', minWidth: 100},
-                    {title: '线上课', key: 'score_1', minWidth: 90},
-                    {title: '线下课', key: 'score_2', minWidth: 90},
-                    {title: '是否有帮助', key: 'score_3', minWidth: 120},
-                    {title: '课件质量', key: 'score_4', minWidth: 100},
-                    {title: '满意度', key: 'score_5', minWidth: 90},
+                    {title: '线上课', key: 'score_1', minWidth: 90,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_1))
+                        }
+                    },
+                    {title: '线下课', key: 'score_2', minWidth: 90,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_2))
+                        }
+                    },
+                    {title: '是否有帮助', key: 'score_3', minWidth: 120,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_3))
+                        }
+                    },
+                    {title: '课件质量', key: 'score_4', minWidth: 100,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_4))
+                        }
+                    },
+                    {title: '满意度', key: 'score_5', minWidth: 90,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_5))
+                        }
+                    },
                     {
                         title: '操作',
                         minWidth: 138,

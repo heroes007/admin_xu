@@ -181,6 +181,21 @@ export default {
         a.download = name + ".xls";
         a.click()
     },
+    //修评价字段
+    scoreData(v) {
+        switch (v) {
+            case 100:
+                return '非常好'
+            case 75:
+                return '良好'
+            case 25:
+                return '一般'
+            case 0:
+                return '差'
+                break
+        }
+        return v
+    },
     //阿拉伯数字转换为简写汉字
     ArabiaToSimplifiedChinese(Num) {
         for (let i = Num.length - 1; i >= 0; i--) {

@@ -41,20 +41,6 @@
     import pageList from '../../components/Page'
     import pageMixin from '../mixins/pageMixins'
     import postData from '../../api/postData'
-    function scoreDta(v) {
-        switch (v) {
-            case 100:
-                return '非常好'
-            case 75:
-                return '良好'
-            case 25:
-                return '一般'
-            case 0:
-                return '差'
-            break
-        }
-        return v
-    }
 
     export default {
         components: {tables, pageList},
@@ -63,41 +49,39 @@
             return{
                 show: false,
                 columns1: [
-                    {title: '培训进度', key: 'veryGood', minWidth: 100,},
-                    {title: '线上课安排合理性', key: 'veryGood', minWidth: 170},
-                    {title: '线下课安排合理性', key: 'well', minWidth: 170},
-                    {title: '培训对工作是否有帮助', key: 'ordinary', minWidth: 200},
-                    {title: '课件质量', key: 'bad', minWidth: 100},
-                    {title: '总体满意度', key: 'bad', minWidth: 120},
-                    {title: '其他建议', key: 'bad', minWidth: 100},
-                    {title: '评价时间', key: 'bad', minWidth: 170},
+                    {title: '培训进度', key: 'progress', minWidth: 100,},
+                    {title: '线上课安排合理性', key: 'score_1', minWidth: 170},
+                    {title: '线下课安排合理性', key: 'score_2', minWidth: 170},
+                    {title: '培训对工作是否有帮助', key: 'score_3', minWidth: 200},
+                    {title: '课件质量', key: 'score_4', minWidth: 100},
+                    {title: '总体满意度', key: 'score_5', minWidth: 120},
+                    {title: '其他建议', key: 'comment', minWidth: 100},
+                    {title: '评价时间', key: 'comment_time', minWidth: 170},
                 ],
-                list1: [
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0},
-                ],
+                list1: [],
                 columns2: [
                     {title: '课程名称', key: 'title', minWidth: 170, align: 'left'},
                     {title: '学习进度', key: 'progress', minWidth: 100},
                     {title: '老师仪表', key: 'score_1', minWidth: 100,
                         render: (h, params)=>{
-                            return h('span', scoreDta(params.row.score_1))
+                            return h('span', this.$config.scoreData(params.row.score_1))
                         }
                     },
                     {title: '内容真实性', key: 'score_2', minWidth: 120,
                         render: (h, params)=>{
-                            return h('span', scoreDta(params.row.score_2))
+                            return h('span', this.$config.scoreData(params.row.score_2))
                         }},
                     {title: '知识前沿性', key: 'score_3', minWidth: 120,
                         render: (h, params)=>{
-                            return h('span', scoreDta(params.row.score_3))
+                            return h('span', this.$config.scoreData(params.row.score_3))
                         }},
                     {title: '课件质量', key: 'score_4', minWidth: 100,
                         render: (h, params)=>{
-                            return h('span', scoreDta(params.row.score_4))
+                            return h('span', this.$config.scoreData(params.row.score_4))
                         }},
                     {title: '满意度', key: 'score_5', minWidth: 90,
                         render: (h, params)=>{
-                            return h('span', scoreDta(params.row.score_5))
+                            return h('span', this.$config.scoreData(params.row.score_5))
                         }},
                     {
                         title: '操作',
@@ -139,6 +123,7 @@
                         this.total = res.data.count
                         this.list2 = res.data.list
                         this.studentScore = res.data.studentScore
+                        this.list1 = [res.data.studentScore]
                         this.list2.map(item => {
                             item.state = item.is_comment
                         })
