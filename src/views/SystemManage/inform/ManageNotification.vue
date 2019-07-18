@@ -6,7 +6,7 @@
                    btnName="确认发送" :flowY="true"></FormModal>
         <screen :types="10" title="全站通知" btnType btnName="添加通知" @handleClick="createNotificationHandler"
                 style="background:#ffffff"/>
-        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="recallHandler" @operation2="editHandler"
+        <Tables :tabel-height="tableHeight" :is-serial="pageDataCount" @operation1="recallHandler" @operation2="editHandler"
                 @operation3="deleteHandler"
                 :column="columns1" :table-data="list" @operation0="checkHandler"/>
         <page-list class="pages" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>

@@ -3,7 +3,7 @@
         <private-modal :is-show="show" :title="title" :state="state" @handle-close="handleClose" @handle-submit="handleSubmit" :creat="creat" :message="message" :modal-width="modalWidth"
         :person-message="personMessage" @submit="submit" :isEditor="isEditor" :dataRow="dataRow"/>
         <screen :types="10" title="学员私信" btnType btnName="添加私信" @handleClick="handleClick" style="background:#ffffff"/>
-        <tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tableHeight" @operation0="check" @operation1="operation1"
+        <tables :is-serial="pageDataCount" :column="columns1" :table-data="list" :tabel-height="tableHeight" @operation0="check" @operation1="operation1"
             @operation2="operation2" @operation3="operation3"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>

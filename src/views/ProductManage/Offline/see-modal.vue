@@ -2,7 +2,7 @@
     <Modal v-model="showModal" :title="'预约学员（'+total+'）'" :width="960" @on-cancel="closeModal" :mask-closable=false
            :footer-hide="true" :styles="{top: '6%'}">
         <div class="title-bg grey-medium1">{{details.title}}</div>
-        <Tables class="tables" :is-serial=true :column="columns1" :table-data="list" :tabel-height="tabelHeight"></Tables>
+        <Tables class="tables" :is-serial="pageDataCount" :column="columns1" :table-data="list" :tabel-height="tabelHeight"></Tables>
     </Modal>
 </template>
 
@@ -25,6 +25,7 @@
             return {
                 showModal: false,
                 list:[],
+                pageDataCount: {},
                 total: '',
                 tabelHeight: 480,
                 columns1:[

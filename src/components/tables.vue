@@ -37,6 +37,7 @@
                         </span>
                     </span>
                 </span>
+<!--                state为true展示按钮一，否则按钮二-->
                 <span v-else-if="column.isAppraise">
                     <span v-for="(t,i) in row.state == 1 ? column.operation.slice(0, 1) : column.operation.slice(1, 2)" :key="i" :class="row.state !== 1 ? 'colorGray' : ''">
                         <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
@@ -111,8 +112,8 @@
             },
             // isSerial -->  序号
             isSerial: {
-                type: Boolean,
-                default: false
+                type: Object,
+                // default: false
             },
             // 选项
             isSelection: {
@@ -140,7 +141,7 @@
             },
             deleteData: {
                 type: Boolean
-            }
+            },
         },
         watch: {
             tableData(_new) {
@@ -198,7 +199,7 @@
                 if (d.length > 0) {
                     d3 = this.$config.setDataInit(d)
                     d3.map((t, k) => {
-                        if (this.isSerial) t.serial_number = this.$config.addZero(k + 1)
+                        if (this.isSerial && this.isSerial.isSerial) t.serial_number = this.isSerial.current > 1 && this.isSerial.pageSize ? this.$config.addZero((this.isSerial.current - 1)*this.isSerial.pageSize + (k + 1)) : this.$config.addZero(k + 1)
                         if (t.hasOwnProperty('slot')) {
                             if (t.operation.length > 0) this.btnList = t.operation
                         }
@@ -249,7 +250,7 @@
             handleColumns(c, type) {
                 if (c && c.length > 0) {
                     if (type) {
-                        if (this.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 70})
+                        if (this.isSerial && this.isSerial.isSerial) c.unshift({title: '序号', key: 'serial_number', minWidth: 70})
                         if (this.isSelection) c.unshift({type: 'selection', width: 60, align: 'right'})
                         if (this.isSelectionRight) c.push({type: 'selection', width: 100, align: 'center'})
                     }

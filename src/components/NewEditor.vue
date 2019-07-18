@@ -119,7 +119,7 @@
                 }
                 return 16
             },
-            setEditor(){
+            setEditor: function () {
                 let vm = this
                 this.editorHtml = this.content;
                 this.editor = new E(`#${this.editorId}`)
@@ -130,57 +130,66 @@
                 this.editor.customConfig.onchange = function (html) {
                     vm.$emit('editor-change')
                 }
+                // this.editor.customConfig.pasteFilterStyle = true
                 this.editor.customConfig.pasteTextHandle = function (content) {
                     // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
-                    return `<div style="font-size: 16px;">${content}</div>`
+                    // return `<div style="font-size: 16px;">${content}</div>`
+                    if (content == '' && !content) return ''
+                    var str = content
+                    str = str.replace(/<xml>[\s\S]*?<\/xml>/ig, '')
+                    str = str.replace(/<style>[\s\S]*?<\/style>/ig, '')
+                    str = str.replace(/<\/?[^>]*>/g, '')
+                    str = str.replace(/[ | ]*\n/g, '\n')
+                    str = str.replace(/&nbsp;/ig, '')
+                    return `<div style="font-size: 16px;">${str}</div>`
                 }
                 this.editor.customConfig.showLinkImg = false
                 this.$refs.NewEditorBox.addEventListener('mouseleave', function () {
                     // let text = vm.editorHtml ? vm.editorHtml : vm.content
-                    vm.$emit('get-content',  vm.editor.txt.html())
+                    vm.$emit('get-content', vm.editor.txt.html())
                 })
                 let doc = document.getElementById(this.editorId)
-                doc.onmousemove = function(){
+                doc.onmousemove = function () {
                     let html1 = null
                     let text = vm.editor.txt.html()
-                    if(document.Selection){       
+                    if (document.Selection) {
                         //ie浏览器
-                        html1 = document.selection.createRange().text;     	 
-                    }else{    
+                        html1 = document.selection.createRange().text;
+                    } else {
                         //标准浏览器
-                        html1 = window.getSelection().toString();	 
-                    }	
-                    if(text.includes(html1)){
+                        html1 = window.getSelection().toString();
+                    }
+                    if (text.includes(html1)) {
                         let d = text.split('span')
                         let arr = []
-                        d.forEach((v,i) => {
-                            if(v.includes(html1)){
-                                if(v.includes('font-size')){
-                                    arr.push(vm.handleSize(v,v.indexOf(html1)))
-                                }else{
+                        d.forEach((v, i) => {
+                            if (v.includes(html1)) {
+                                if (v.includes('font-size')) {
+                                    arr.push(vm.handleSize(v, v.indexOf(html1)))
+                                } else {
                                     arr.push(16)
-                                }                           
+                                }
                             }
                         });
-                        let docs = document.querySelectorAll('.w-e-menu .w-e-droplist .w-e-list')[0]&&document.querySelectorAll('.w-e-menu .w-e-droplist .w-e-list')[0].childNodes
-                        if(docs){
+                        let docs = document.querySelectorAll('.w-e-menu .w-e-droplist .w-e-list')[0] && document.querySelectorAll('.w-e-menu .w-e-droplist .w-e-list')[0].childNodes
+                        if (docs) {
                             docs.forEach((t) => {
-                                  t.style.color = '#474C63'
-                                  if(arr.length==1){
-                                    if(arr[0] == t.innerText) {
+                                t.style.color = '#474C63'
+                                if (arr.length == 1) {
+                                    if (arr[0] == t.innerText) {
                                         t.style.color = '#4098FF'
                                     }
-                                  }else{
-                                      if(t.innerText == 16){
-                                            t.style.color = '#4098FF'
-                                        }
-                                  }
+                                } else {
+                                    if (t.innerText == 16) {
+                                        t.style.color = '#4098FF'
+                                    }
+                                }
                             })
                         }
                     }
-                };  
+                };
                 this.editor.customConfig.zIndex = 0
-                this. editor.customConfig.colors = ['#000000', '#eeece0', '#1c487f', '#4d80bf', '#c24f4a',
+                this.editor.customConfig.colors = ['#000000', '#eeece0', '#1c487f', '#4d80bf', '#c24f4a',
                     '#8baa4a', '#7b5ba1', '#46acc8', '#f9963b', '#FF0000']
                 this.editor.create()
                 this.editor.txt.html(this.content)
@@ -203,6 +212,10 @@
     /deep/ .w-e-text-container{
         height: calc(100% - 44px) !important;
         overflow: hidden;
+        position: initial;
         /*height: auto !important;*/
+    }
+    /deep/ .w-e-panel-container{
+        top: 42px;
     }
 </style>

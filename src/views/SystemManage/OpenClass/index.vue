@@ -2,7 +2,7 @@
    <div>
         <div class="open-head grey-regular1">首页公开课<Button class="head-btn" type="primary" @click="handleClick">添加课程</Button></div>
         <FormModal :modal-false="true" :detail-data="tableRow" :show-modal='show' :form-list="formList" @from-submit="handleSubmit" @close="closeModal" :title="modalTitle" :rule-validate='rules'/>
-        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="edit" @operation2="moveUpward" @operation3="MoveDown" @operation4="deletes"  :column="columns1" :table-data="list" />
+        <Tables :tabel-height="tableHeight" :is-serial="pageDataCount" @operation1="edit" @operation2="moveUpward" @operation3="MoveDown" @operation4="deletes"  :column="columns1" :table-data="list" />
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>

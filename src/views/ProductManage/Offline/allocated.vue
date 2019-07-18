@@ -4,7 +4,7 @@
         <div class="title-bg grey-medium1">{{details.title}} 
             <span >预约{{termData.student_num}}人</span>
         </div>
-        <Tables class="tables" :is-serial=true :column="columns1" :table-data="list" @expand="expand" :tabel-height="576"></Tables>
+        <Tables class="tables" :is-serial="pageDataCount" :column="columns1" :table-data="list" @expand="expand" :tabel-height="576"></Tables>
     </Modal>
 </template>
 
@@ -28,6 +28,9 @@
             return {
                 showModal: false,
                 list:[],
+                pageDataCount: {
+
+                },
                 states: false,
                 total: '',
                 termData: {},

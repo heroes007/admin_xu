@@ -204,7 +204,7 @@
                 this.isShow = false
             },
             handleGrade() {
-                window.open('/product/product-grade','_blank')
+                window.open(`/product/product-grade?id=${JSON.parse(sessionStorage.getItem('PRODUCTINFO')).id}&&title=${JSON.parse(sessionStorage.getItem('PRODUCTINFO')).title}`,'_blank')
                 // this.$router.replace('/product/product-grade')
             },
             handleSubmit(val) {

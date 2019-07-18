@@ -5,7 +5,7 @@
         <form-modal  :detail-data="tableRow" @from-submit="formSubmit" :show-modal='show' :form-list="formList"
                      @close="closeModal" :title="modalTitle" :rule-validate="rules" modalPadding="modal-class4"/>
         <live-modal :is-show="isShow" @close-modal="closeLiveModal" :title="liveTitle" :live-list="liveList"></live-modal>
-        <tables :tabel-height="tableHeight" :column="columns1" :table-data="list" :is-serial=true @operation1="operation1" @operation2="operation2"
+        <tables :tabel-height="tableHeight" :column="columns1" :table-data="list" :is-serial="pageDataCount" @operation1="operation1" @operation2="operation2"
                 @operation3="operation3" @operation4="operation4" @operation5="operation5"></tables>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>

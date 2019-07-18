@@ -3,7 +3,7 @@
         <SeeModal :show="seeModal" :details="details" @close-modal="closeModal1" />
         <allocated :show="allocatedModal" :details="allocateddetails" @close-modal="closeModal2" />
         <screen :btn-type="btnType" :types="6" :title="title" btnName="添加学期" @handleBack="handleBack" @handleClick="addOfflineSemesterHandler"/>
-        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="editOfflineSemester" @operation2="see" @operation3="allocated" @operation4="sendOfflineCourseHandler" @operation5="deleteOfflineSemester" :column="columns1" :table-data="dataList" />
+        <Tables :tabel-height="tableHeight" :is-serial="pageDataCount" @operation1="editOfflineSemester" @operation2="see" @operation3="allocated" @operation4="sendOfflineCourseHandler" @operation5="deleteOfflineSemester" :column="columns1" :table-data="dataList" />
         <Page :current="page_num" :total="page_conut" :page-size="pageSize" @on-change="pageList"></Page>
     </div>
 </template>
@@ -20,6 +20,7 @@
     import setAuthMixins from '../setAuthMixins'
     import SeeModal from "./see-modal.vue";
     import allocated from './allocated.vue'
+
     export default {
         mixins: [Dialog, setAuthMixins],
         components: { 'save-order': SaveOrder, screen, SeeModal, Tables, allocated},
@@ -45,7 +46,7 @@
                 details: {},
                 term_row: null,
                 tableHeight: null,
-                termData: {}
+                termData: {},
             }
         },
         computed: {
@@ -53,6 +54,13 @@
                 offline_curriculum_detail1: state => state.offline_curriculum.offline_curriculum_detail,
                 page_conut: state => state.offline_curriculum.page_conut,
             }),
+            pageDataCount() {
+                return {
+                    isSerial: true,
+                    current: this.page_num,
+                    pageSize: this.pageSize,
+                }
+            },
             dataList() {
                 return this.$store.state.offline_curriculum.offline_term_list;
             },

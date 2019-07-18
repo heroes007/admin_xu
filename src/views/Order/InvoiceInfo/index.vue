@@ -7,7 +7,7 @@
             <div class="batch-title">选项</div>
             <Button class="batch-read" type="primary" @click="batchDownload" ghost>批量下载</Button>
         </div>
-        <Tables :tabel-height="tableHeight" @operation1="see"   @select-tables="selectTables" @on-select-all="selectTablesAll" :is-selection=true :is-serial=true :column="columns1" :table-data="list" :select-list="invoiceSelectInfo" />
+        <Tables :tabel-height="tableHeight" @operation1="see"   @select-tables="selectTables" @on-select-all="selectTablesAll" :is-selection=true :is-serial="pageDataCount" :column="columns1" :table-data="list" :select-list="invoiceSelectInfo" />
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
    </div>
 </template>

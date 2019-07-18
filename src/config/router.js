@@ -205,7 +205,7 @@ const routes = [
         component: IntersectionDetail
       },
       {
-        name: 'live-check',
+        name: 'live-check-product',
         path: 'live-check',
         component: LiveCheck
       }

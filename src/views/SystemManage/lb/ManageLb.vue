@@ -33,7 +33,7 @@
                 </Row>
             </Form>
         </Modal>
-        <Tables :tabel-height="tableHeight" :is-serial=true @operation1="edit" @operation2="deletes"
+        <Tables :tabel-height="tableHeight" :is-serial="pageDataCount" @operation1="edit" @operation2="deletes"
                 :column="columns1" :table-data="list" @operation3="moveUp" @operation4="moveDown"/>
         <Row class='pager' type='flex' justify='end' align='middle'>
             <Page @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>

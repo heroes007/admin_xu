@@ -6,7 +6,7 @@
                    @close="closeModal" :title="modalTitle" :modalWidth="modalWidth" :panelOptions="panelOptions"
                    :upload-btn="false" :rule-validate="rules" :handleFloor="handleFloor" @handle-next="handleNext"
                    @handle-last="handleLast" @showContent="showContent" @editor-change="editChange"></FormModal>
-        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="lowerShelf" @operation2="edit"
+        <Tables :tabel-height="tabelHeight" :is-serial="pageDataCount" @operation1="lowerShelf" @operation2="edit"
                 @operation3="deletes" :column="columns1" :table-data="list"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>

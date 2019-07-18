@@ -3,7 +3,7 @@ export default {
     return {
       current: 1,
       total: null,
-      pageSize: 16
+      pageSize: 16,
     }
   },
   methods: {
@@ -14,6 +14,15 @@ export default {
       }else{
         this.current = val
         this.getList()
+      }
+    }
+  },
+  computed: {
+    pageDataCount() {
+      return {
+        current: this.current,
+        pageSize: this.pageSize,
+        isSerial: true
       }
     }
   }

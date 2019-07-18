@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <Tables :is-serial=true :column="columns1" :table-data="list" :tabel-height="tabelHeight" @row-click="rowClick"></Tables>
+        <Tables :is-serial="pageDataCount" :column="columns1" :table-data="list" :tabel-height="tabelHeight" @row-click="rowClick"></Tables>
         <Page :current="current" :total="total" :page-size="pageSize" @page-list="pageList"></Page>
     </Modal>
 </template>

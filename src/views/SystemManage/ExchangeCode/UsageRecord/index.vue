@@ -7,7 +7,7 @@
                 :select1="selectList"
                 size-title2="已使用" :size-num2="use_count" @handleBack="handleBack" @selectChange1="selectChange1"
                 @inputChange="inputChange"/>
-        <Tables :tabel-height="tabelHeight" :is-serial="true" :column="columns1" :table-data="list"
+        <Tables :tabel-height="tabelHeight" :is-serial="pageDataCount" :column="columns1" :table-data="list"
                 @table-swtich="tableSwtich" @operation1="operation1" :select-list="record"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>

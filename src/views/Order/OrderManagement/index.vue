@@ -4,7 +4,7 @@
                 @selectChange1="selectChange1" @selectChange2="selectChange2" @inputChange="inputChange"
                 sizeTitle1="支付订单" :sizeNum1="payOrder" sizeTitle0="兑换订单" :sizeNum0="orderNum" sizeTitle2="支付总额" :sizeNum2='price'
                 @dataPickerChange="dataPickerChange" @dataPickerOk="dataPickerOk" @dataPickerClear="dataPickerClear"/>
-        <Tables :tabel-height="tableHeight" :is-serial=true :column="columns1" :table-data="list" @tableSelect="tableSelect"/>
+        <Tables :tabel-height="tableHeight" :is-serial="pageDataCount" :column="columns1" :table-data="list" @tableSelect="tableSelect"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
     </div>
 </template>

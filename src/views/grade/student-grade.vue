@@ -1,26 +1,19 @@
 <template>
     <div class="box">
         <Modal v-model="show" :mask-closable="false" :footer-hide="true" @on-cancel="handleClose" title="查看评价">
-            <div class="modal-content">
-                线上课程安排合理性
-                线上课程安排合理性
-                线上课程安排合理性
-                线上课程安排合理性
-                线上课程安排合理性
-                线上课程安排合理性
-            </div>
+            <div class="modal-content">{{content}}</div>
         </Modal>
         <div class="message">
             <div class="message-left">
-                <img class="message-left-img" src="../../assets/img/grade_all.jpg" alt="">
+                <img class="message-left-img" :src="studentScore.head_img_url" alt="">
                 <div>
-                    <div class="message-left-name">name</div>
-                    <div class="message-left-tel">111</div>
+                    <div class="message-left-name">{{studentScore.realname}}</div>
+                    <div class="message-left-tel">{{studentScore.username}}</div>
                 </div>
             </div>
             <div class="message-right">
-                <div class="message-right-percent">20%</div>
-                <div class="message-right-title">全科骨干培训全科骨干培训</div>
+                <div class="message-right-percent">{{studentScore.progress}}</div>
+                <div class="message-right-title">{{studentScore.product_title}}</div>
             </div>
         </div>
         <div class="total" style="height: 200px;">
@@ -36,7 +29,7 @@
                 <div class="total-course-title">
                     <div class="total-course-title-content">课程评分</div>
                 </div>
-                <tables :is-serial=true :column="columns2" :table-data="list2" @operation="operation"></tables>
+                <tables :is-serial="pageDataCount" :column="columns2" :table-data="list2" @operation="operation"></tables>
                 <page-list style="margin-bottom: 10px;" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
             </div>
         </div>
@@ -47,6 +40,21 @@
     import tables from '../../components/tables'
     import pageList from '../../components/Page'
     import pageMixin from '../mixins/pageMixins'
+    import postData from '../../api/postData'
+    function scoreDta(v) {
+        switch (v) {
+            case 100:
+                return '非常好'
+            case 75:
+                return '良好'
+            case 25:
+                return '一般'
+            case 0:
+                return '差'
+            break
+        }
+        return v
+    }
 
     export default {
         components: {tables, pageList},
@@ -69,12 +77,28 @@
                 ],
                 columns2: [
                     {title: '课程名称', key: 'title', minWidth: 170, align: 'left'},
-                    {title: '学习进度', key: 'veryGood', minWidth: 100},
-                    {title: '老师仪表', key: 'well', minWidth: 100},
-                    {title: '内容真实性', key: 'ordinary', minWidth: 120},
-                    {title: '知识前沿性', key: 'bad', minWidth: 120},
-                    {title: '课件质量', key: 'bad', minWidth: 100},
-                    {title: '满意度', key: 'bad', minWidth: 90},
+                    {title: '学习进度', key: 'progress', minWidth: 100},
+                    {title: '老师仪表', key: 'score_1', minWidth: 100,
+                        render: (h, params)=>{
+                            return h('span', scoreDta(params.row.score_1))
+                        }
+                    },
+                    {title: '内容真实性', key: 'score_2', minWidth: 120,
+                        render: (h, params)=>{
+                            return h('span', scoreDta(params.row.score_2))
+                        }},
+                    {title: '知识前沿性', key: 'score_3', minWidth: 120,
+                        render: (h, params)=>{
+                            return h('span', scoreDta(params.row.score_3))
+                        }},
+                    {title: '课件质量', key: 'score_4', minWidth: 100,
+                        render: (h, params)=>{
+                            return h('span', scoreDta(params.row.score_4))
+                        }},
+                    {title: '满意度', key: 'score_5', minWidth: 90,
+                        render: (h, params)=>{
+                            return h('span', scoreDta(params.row.score_5))
+                        }},
                     {
                         title: '操作',
                         minWidth: 90,
@@ -83,16 +107,11 @@
                         isAppraise: true,
                         operation: [['查看', 'operation'], ['未评', 'operation1']],
                     },
-                    {title: '评价时间', key: 'time', minWidth: 170},
+                    {title: '评价时间', key: 'comment_time', minWidth: 170},
                 ],
-                list2: [
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 1},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 1},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 1},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 0},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 0},
-                    {title: '线上课程安排合理性', veryGood: 3, well: 3, ordinary:10, bad:0, time: '2019/01/01 12:00', state: 0},
-                ],
+                list2: [],
+                content: '',
+                studentScore: ''
             }
         },
         computed: {
@@ -104,12 +123,32 @@
             handleClose() {
                 this.show = false
             },
-            operation() {
+            operation(item) {
                 this.show = true
+                this.content = item.comment
+            },
+            getList() {
+                let data = {
+                    page_size: this.pageSize,
+                    page_num: this.current,
+                    product_id: Number(this.$route.query.product_id),
+                    student_id: Number(this.$route.query.student_id)
+                }
+                postData('product/product/getStudentProductScore', data).then(res => {
+                    if(res.res_code == 1) {
+                        this.total = res.data.count
+                        this.list2 = res.data.list
+                        this.studentScore = res.data.studentScore
+                        this.list2.map(item => {
+                            item.state = item.is_comment
+                        })
+                    }
+                })
             }
         },
         mounted() {
-            console.log(this.$route.query)
+            this.pageSize = 10
+            this.getList()
         }
     }
 </script>
@@ -136,6 +175,9 @@
         letter-spacing: 0;
         line-height: 28px;
         min-height: 300px;
+        max-height: 600px;
+        overflow: hidden;
+        overflow-y: auto;
     }
     .message{
         display: flex;

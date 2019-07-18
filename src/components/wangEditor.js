@@ -1107,7 +1107,6 @@
             function e(e) {
                 t.selection.saveRange(), t.menus.changeActive()
             }
-
             var t = this.editor, n = t.$textElem;
             n.on("keyup", e), n.on("mousedown", function (t) {
                 n.on("mouseleave", e)

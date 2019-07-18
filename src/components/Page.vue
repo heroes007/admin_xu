@@ -3,24 +3,24 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      current: {
-        type: Number
-      },
-      total: {
-        type: Number
-      },
-      pageSize: {
-        type: Number
-      }
-    },
-    methods: {
-      onChange(val){
-        this.$emit('page-list', val)
-      }
+    export default {
+        props: {
+            current: {
+                type: Number
+            },
+            total: {
+                type: Number
+            },
+            pageSize: {
+                type: Number
+            }
+        },
+        methods: {
+            onChange(val) {
+                this.$emit('page-list', val)
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

@@ -6,7 +6,7 @@
                 :select1="selectList" :selectType1="true" select2Placeholder="选择状态" :select2="selectList2"
                 size-title2="付费学员" :size-num2="14" @selectChange1="selectChange1" @inputChange="inputChange"
                 @handleClick="handleClick" @selectChange2="selectChange2" :selectType2="true"/>
-        <Tables :tabel-height="tabelHeight" :is-serial=true @operation1="useRecords" @operation2="edit"
+        <Tables :tabel-height="tabelHeight" :is-serial="pageDataCount" @operation1="useRecords" @operation2="edit"
                 @downTable="batchDownload" @table-swtich="swtichChange" :column="columns1"
                 :table-data="list"  @operation4="deleteCode"/>
         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
