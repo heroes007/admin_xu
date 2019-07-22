@@ -278,6 +278,9 @@
             letter-spacing: 0;
             text-align: justify;
             margin: 30px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .title-time{
