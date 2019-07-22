@@ -242,7 +242,7 @@
                 }
                 postData('product/product/getOnlineScore', data).then(res => {
                     this.courseList = res.data.list
-                    this.courseShowList = [this.courseList[0]]
+                    this.courseShowList = this.courseList.length ? [this.courseList[0]] : []
                 })
             }
         },
