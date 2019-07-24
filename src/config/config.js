@@ -188,9 +188,9 @@ export default {
                 return '非常好'
             case 75:
                 return '良好'
-            case 25:
+            case 50:
                 return '一般'
-            case 0:
+            case 25:
                 return '差'
                 break
         }

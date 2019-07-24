@@ -50,11 +50,31 @@
                 show: false,
                 columns1: [
                     {title: '培训进度', key: 'progress', minWidth: 100,},
-                    {title: '线上课安排合理性', key: 'score_1', minWidth: 170},
-                    {title: '线下课安排合理性', key: 'score_2', minWidth: 170},
-                    {title: '培训对工作是否有帮助', key: 'score_3', minWidth: 200},
-                    {title: '课件质量', key: 'score_4', minWidth: 100},
-                    {title: '总体满意度', key: 'score_5', minWidth: 120},
+                    {title: '线上课安排合理性', key: 'score_1', minWidth: 170,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_1))
+                        }
+                    },
+                    {title: '线下课安排合理性', key: 'score_2', minWidth: 170,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_2))
+                        }
+                    },
+                    {title: '培训对工作是否有帮助', key: 'score_3', minWidth: 200,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_3))
+                        }
+                    },
+                    {title: '课件质量', key: 'score_4', minWidth: 100,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_4))
+                        }
+                    },
+                    {title: '总体满意度', key: 'score_5', minWidth: 120,
+                        render: (h, params)=>{
+                            return h('span', this.$config.scoreData(params.row.score_5))
+                        }
+                    },
                     {title: '其他建议', key: 'comment', minWidth: 100},
                     {title: '评价时间', key: 'comment_time', minWidth: 170},
                 ],

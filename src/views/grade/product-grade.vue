@@ -34,8 +34,8 @@
                     <div class="total-course">
                         <div class="total-course-title" style="justify-content: space-between">
                             <div class="total-course-title-content">课程评分</div>
-                            <div v-if="courseShow" class="course-title">{{item.title}}</div>
                             <div class="total-course-title-operation">
+                                <div v-if="courseShow" class="course-title">{{item.title}}</div>
                                 <Select v-if="!courseShow" v-model="selectCourse" style="width:200px;" @on-change="courseChange">
                                     <Option v-for="(item, index) in courseList" :value="index" :key="index">{{ item.title }}</Option>
                                 </Select>
@@ -222,7 +222,7 @@
                         this.datePicker = this.datePicker[1] ? this.datePicker : [new Date(res.data.first_time), new Date()]
                         this.options3 = {
                             disabledDate (date) {
-                                return date && date.valueOf() < new Date(res.data.first_time).getTime();
+                                return date && date.valueOf() < new Date(res.data.first_time).getTime() - 86400000 || date.valueOf() > new Date().getTime();
                             }
                         }
                         this.total = res.data.count
