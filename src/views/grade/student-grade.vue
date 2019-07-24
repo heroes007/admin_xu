@@ -24,7 +24,7 @@
                 <tables :column="columns1" :table-data="list1" ></tables>
             </div>
         </div>
-        <div class="total" :style="`height: ${lastHeight}px;`">
+        <div class="total" :style="`min-height: ${lastHeight}px;`">
             <div class="total-course">
                 <div class="total-course-title">
                     <div class="total-course-title-content">课程评分</div>
@@ -151,7 +151,8 @@
     .box{
         background-color:#f0f0f7;
         padding: 20px 30px;
-        min-height: 100%;
+        height: 100%;
+        overflow-y: auto;
     }
     .modal-content{
         font-family: PingFangSC-Regular;

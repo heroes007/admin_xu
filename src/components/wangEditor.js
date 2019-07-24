@@ -1003,6 +1003,7 @@
                 }]
             }], r = new f(this, {width: 300, tabs: A});
             r.show(), this.panel = r
+            //a
         }, _createInsertPanel: function () {
             var e = this.editor, t = e.uploadImg, n = e.config, i = c("up-trigger"), A = c("up-file"),
                 r = c("link-url"), a = c("link-btn"), s = [{

@@ -14,7 +14,7 @@ export function create_category(params) {
         title:params.realname,
         type:params.jurisdiction,
         item_id:params.binding_course,
-        description:params.uploading,
+        description:params.description,
         attachment_url:JSON.stringify(params.downList)
     });
 }

@@ -307,6 +307,13 @@
 </script>
 
 <style scoped lang="less">
+    /deep/ .ivu-page{
+        z-index: 1;
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
     .manage-production-view{
         background-color: #f0f0f7;
         height: 100%;
@@ -314,7 +321,7 @@
     }
     .box{
         padding: 20px;
-        height: calc(100% - 120px);
+        height: calc(100% - 66px);
         overflow: hidden;
         overflow-y: auto;
         /*min-width: 1100px;*/

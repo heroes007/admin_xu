@@ -184,6 +184,45 @@
                                         @uploadcomplete="uploadImg" :maxFileSize="300"/>
                         </div>
                     </FormItem>
+                    <!--添加作业描述-->
+                    <FormItem v-if="(t.type === 'describe')" :label="t.name">
+<!--                        <div>-->
+<!--                            <div contenteditable="true" class="form-describe" :style="t.small ? 'height: 340px' : 'height: 500px;' "></div>-->
+<!--                            <div style="display: flex">-->
+<!--                                <down-loading :formData="downList"/>-->
+<!--                                <upload-btn v-if="uploadBtn" text="上传附件" class="upload-img" bucket="jhyl-static-file"-->
+<!--                                            @uploadcomplete="uploadImg" :maxFileSize="300"/>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div>
+                            <div class="form-message" ref="inputStyle" contentEditable="true" v-html="formItem[t.field]" required></div>
+                            <div ref="divStyle" style="display: flex;margin-top: 15px;">
+                                <Dropdown trigger="click" @on-click="handleDrop">
+                                    <a href="javascript:void(0)"><img :src="iconFont" alt="" class="up-img" @mouseover="overImg"></a >
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem v-for="(item, index) in fontList" :name="item.size" :key="index">{{item.name}}</DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                                <Dropdown trigger="click" @on-click="handleDrop1">
+                                    <a href="javascript:void(0)"><img :src="iconColor" alt="" class="up-img"></a >
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem v-for="(item, index) in colorList" :name="item.color" :key="index">
+                                            <span class="drop-box" :style="{backgroundColor: item.color}"/>
+                                            <span>{{item.name}}</span>
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                                <upload-btn bucket="jhyl-static-file" :iconType="iconCopy" @uploadcomplete="addImg" type="image/jpeg"/>
+                            </div>
+                            <div style="display: flex">
+                                <down-loading :formData="downList"/>
+                                <upload-btn v-if="uploadBtn" text="上传附件" class="upload-img" bucket="jhyl-static-file"
+                                            @uploadcomplete="uploadImg" :maxFileSize="300"/>
+                            </div>
+                        </div>
+
+
+                    </FormItem>
                     <!--直播布局-->
                     <FormItem v-if="t.type == 'localLive'" :label="t.name" required class="select-multiple">
                         <div style="display: flex">
@@ -580,9 +619,10 @@
             },
             handleSubmit(name) {
                 let d = this.$refs.inputStyle && this.$refs.inputStyle[0].innerText || this.imgUrl
+                if(this.$refs.inputStyle) this.formItem.description = d
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        if (this.formList.length === 3 && this.formList[2].type === 'upload' && !d) this.$Message.warning('请输入文章正文');
+                        if (this.formList.length === 4 && this.formList[3].type === 'describe' && !d) this.$Message.warning('请输入作业描述');
                         else if (this.uploadFlie && !this.img_url) this.$Message.warning('请上传头像');
                         else if (this.formList.length > 4 && this.formList[4].type === 'switch-datetimerange') {
                             if (!this.formItem.isswitch && !this.formItem.effective_time[0]) this.$Message.info('请选择有效时间');
@@ -1160,5 +1200,10 @@
         color: #F54802;
         letter-spacing: 0.25px;
         margin-top: 5px;
+    }
+    .form-describe{
+        border: 1px solid #d7dde4;
+        width: 465px;
+        border-radius: 4px;
     }
 </style>

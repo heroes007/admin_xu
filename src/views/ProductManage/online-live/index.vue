@@ -254,7 +254,7 @@
                     title: '提示',
                     content: '<p>确认删除该直播课</p>',
                     onOk: () => {
-                        postData('live/delete', {live_id: val.live_id}).then(res => {
+                        postData('live/deleteLiveByProduct', {live_id: val.live_id, product_id: JSON.parse(sessionStorage.getItem("PRODUCTINFO")).id}).then(res => {
                             if(res.res_code == 1) {
                                 this.$Message.success(res.msg)
                                 this.getList()
@@ -305,9 +305,16 @@
 
 
 <style scoped lang="less">
+    /deep/ .ivu-page{
+        z-index: 1;
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
     .box{
         padding: 20px;
-        height: calc(100% - 62px);
+        height: 100%;
         overflow: hidden;
         overflow-y: auto;
         min-width: 1060px;

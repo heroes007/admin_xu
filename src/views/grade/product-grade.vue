@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <Row class="title">
-            <Col span="12">
+            <Col span="14">
                 <div class="title-content">
                     {{$route.query.title}}
                 </div>
@@ -11,7 +11,7 @@
                                 separator="至" @on-clear="dateClaer" @on-change="dateChange"></DatePicker>
                 </div>
             </Col>
-            <Col span="12" style="height: 100%;">
+            <Col span="10" style="height: 100%;">
                 <div class="statistics-box">
                     <div v-for="(item, index) in statistics" :key="index" style="margin: 0 25px;">
                         <div class="statistics-value">{{item.value}}</div>
@@ -340,7 +340,7 @@
         }
 
         .total-course{
-            margin-bottom: 50px;
+            margin-bottom: 10px;
             margin-right: 5px;
             background-color: #fff;
             width: 100%;
@@ -387,5 +387,8 @@
                 }
             }
         }
+    }
+    /deep/ .ivu-page{
+        margin: 20px 0 !important;
     }
 </style>

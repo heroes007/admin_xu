@@ -66,7 +66,7 @@
                         type: 'select', name: '绑定课程', field: 'binding_course', disable: false,
                         selectList: [], selectField: ['id', 'title'], change: true, line: 1
                     },
-                    {type: 'upload', name: '作业描述', field: 'uploading', small: true}
+                    {type: 'describe', name: '作业描述', field: 'uploading', small: true}
                 ],
                 rules: {
                     realname: [{required: true, message: '请输入作业名称', trigger: 'blur'}],
