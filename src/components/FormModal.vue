@@ -809,6 +809,7 @@
         /deep/ .w-e-text-container{
             /*padding: 0 30px;*/
             overflow-y: auto;
+            position: relative;
         }
         /deep/ .w-e-toolbar{
             padding: 0 30px;
@@ -822,6 +823,8 @@
         /deep/ .w-e-text-container{
             /*padding: 0 30px;*/
             overflow-y: auto;
+            position: relative;
+
         }
         /deep/ .w-e-toolbar{
             padding: 0 30px;
