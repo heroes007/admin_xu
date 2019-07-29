@@ -33,6 +33,7 @@ const IntersectionDetail = () => import('../views/train-manage/intersection/deta
 const LiveCheck = () => import('../views/train-manage/live/live-check')
 const ProductGrade = () => import('../views/grade/product-grade')
 const StudentGrade = () => import('../views/grade/student-grade')
+const AddLb = () => import('../views/SystemManage/lb/add-lb')
 
 Vue.use(VueRouter);
 // 页面路由
@@ -128,6 +129,11 @@ const routes = [
         name:'advertising-map',
         path:'advertising-map',
         component:AdvertisingMap
+      },
+      {
+        name:'add-advertising-map',
+        path:'add-advertising-map',
+        component:AddLb
       },
       {
         name: 'manage-news',

@@ -36,7 +36,8 @@
         <Tables :tabel-height="tableHeight" :is-serial="pageDataCount" @operation1="edit" @operation2="deletes"
                 :column="columns1" :table-data="list" @operation3="moveUp" @operation4="moveDown"/>
         <Row class='pager' type='flex' justify='end' align='middle'>
-            <Page @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>
+<!--            <Page @on-change="handleCurrentChange" :current="current" :page-size="pageSize" :total="total"></Page>-->
+            <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
         </Row>
     </div>
 </template>
@@ -47,9 +48,12 @@
     import Tables from '../../../components/tables.vue'
     import postData from '../../../api/postData.js'
     import UploadPanel from '../../../components/UploadPanel'
+    import pageList from '../../../components/Page'
+    import pageMixin from '../../mixins/pageMixins.js'
 
     export default {
-        components: {'btn-upload': UploadBtn, screen, Tables, UploadPanel},
+        mixins: [pageMixin],
+        components: {'btn-upload': UploadBtn, screen, Tables, UploadPanel, pageList},
         props:{
             type:{
                 type: Number,
@@ -111,7 +115,7 @@
                         title: '广告名称',
                         key: 'name',
                         align: 'left',
-                        minWidth: 260
+                        minWidth: 240
                     },
                     {
                         title: '显示位置',
@@ -121,7 +125,7 @@
                     {
                         title: '状态',
                         key: 'state_name',
-                        minWidth: 100
+                        minWidth: 120
                     },
                     {
                         title: '创建人',
@@ -130,7 +134,7 @@
                     },
                     {
                         title: '操作',
-                        width: 420,
+                        minWidth: 280,
                         slot: 'operation',
                         operation_state: true,
                         operation: [['编辑', 'operation1'], ['删除', 'operation2'], ['上移', 'operation3'], ['下移', 'operation4']],

@@ -14,7 +14,8 @@
                 <MobileCourseLb :show="show4" @close="close(4)" ref="MobileCoursePageRotation" />
             </TabPane>
         </Tabs>
-         <Button class="add-advert" type="primary" @click="addatub()">添加广告</Button>
+        <Button class="add-advert" type="primary" @click="addatub()">添加广告</Button>
+        <Button class="add-advert" style="left: 0;" type="primary" @click="addLb">添加广告1</Button>
     </Row>
 </template>
 <script>
@@ -38,7 +39,7 @@
         methods: {
             close(i){
                 this['show'+i] = false;
-            }, 
+            },
             changeatub(name){
                 sessionStorage.setItem('AdvertisingMap',name)
             },
@@ -46,17 +47,20 @@
                 switch(this.tabName) {
                     case 'home':
                     this.show1 = true
-                    break;  
+                    break;
                     case 'Course':
                     this.show2 = true
-                    break;  
+                    break;
                     case 'mobile-home':
                     this.show3 = true
-                    break;  
+                    break;
                     case 'mobile-Course':
                     this.show4 = true
-                    break;  
+                    break;
                 }
+            },
+            addLb(){
+                this.$router.push('add-advertising-map')
             }
         },
         mounted(){
