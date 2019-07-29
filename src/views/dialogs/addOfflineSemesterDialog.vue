@@ -192,7 +192,6 @@
       }
     },
     mounted(){
-      console.log(this.payload);
       if(this.payload.type == 1){
         this.$refs.myForm1.resetFields()
         this.form1.offlineCurriculums = this.payload.offlineCurriculums

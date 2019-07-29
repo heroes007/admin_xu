@@ -127,7 +127,6 @@
       postData('product/homework/mark_get_list',{
             student_homework_id: this.payload.row.id
         }).then(res => {
-            console.log(res,'home')
             this.studata.teacherTail = res.data
         })
         this.downList = JSON.parse(this.payload.row.attachment_url)

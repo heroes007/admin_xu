@@ -1,7 +1,7 @@
 <template>
    <div class="user-manage-main">
         <ViewInvoice :detail-data="tableRowData" title="查看发票" :show-modal='detailShow' @close="close" />
-        <screen  select-type1 selectType2 :types="15" :select5="invoiceSelect" :select6="select6" :select2="select2" placehodle="搜索产品名称" @selectChange1="selectChange1" 
+        <screen  select-type1 selectType2 :types="15" :select5="invoiceSelect" :select6="select6" :select2="select2" placehodle="搜索产品名称" @selectChange1="selectChange1"
         @selectChange2="selectChange2" @selectChange5="selectChange5" @selectChange6="selectChange6" @inputChange="inputChange" />
         <div class="batch">
             <div class="batch-title">选项</div>
@@ -37,7 +37,7 @@
             invoiceSelectInfo,
             invoice_state: '',
             select2: [ {id: 'all', title: '全部产品'} ],
-            invoiceSelect:  [ 
+            invoiceSelect:  [
                 {id: 'all', title: '全部发票'},
                 {id: 0, title: '电子发票'},
                 {id: 1, title: '纸质发票'},
@@ -148,7 +148,6 @@
         see(row,rowIndex){
             this.detailShow = true;
             this.tableRowData = row;
-            console.log(row,'rr');
         },
         selectChange1(val){
           this.organization_id = val

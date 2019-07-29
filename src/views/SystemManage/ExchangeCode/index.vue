@@ -221,7 +221,6 @@
                 console.log(row);
             },
             selectChange1(val) {
-                console.log(val)
                 this.organization_id = val
                 this.getList()
             },

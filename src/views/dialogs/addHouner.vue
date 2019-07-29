@@ -282,7 +282,6 @@
             },
             uploadcompleteButton(val) {
                 this.form.img_url.push(val.url)
-                console.log(this.form.img_url)
             },
             deleteImgList(index) {
                 this.form.img_url.splice(index, 1)

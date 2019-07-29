@@ -264,7 +264,7 @@
     function D(e) {
         this.editor = e;
         var t = c("w-e-img");
-        this.$elem = o('<div class="w-e-menu" id="' + t + '"><i class="w-e-icon-image"></i></div>'), e.imgMenuId = t, this.type = "panel", this._active = !1
+        this.$elem = o('<div class="w-e-menu" id="' + t + '"><input type="file" class="upload-input"><i class="w-e-icon-image"></i></div>'), e.imgMenuId = t, this.type = "click", this._active = !1
     }
 
     function _(e) {

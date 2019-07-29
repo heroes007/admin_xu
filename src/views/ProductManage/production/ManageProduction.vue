@@ -91,7 +91,6 @@
                 return (t === 2 || t === 3) ? 'card-main-list1' : 'card-main-list0'
             },
             selectChange1(val) {
-                console.log(val, 'llppp')
                 this.organization_id = val;
                 this.getList()
             },

@@ -430,7 +430,6 @@
                     }else if(document.querySelector('.w-e-text').clientHeight > 556 && this.showAll == 0){
                         this.showAll = 2
                     }
-                    console.log(this.showAll, 'this.showAll');
                 })
             }
         }

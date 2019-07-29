@@ -420,7 +420,6 @@
             }
         },
         mounted() {
-            console.log(this.payload,'payload');
             this.section_id = this.payload.section_id
             this.formInline2.select_count = 4;
             if (this.section_id) {

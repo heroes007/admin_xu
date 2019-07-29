@@ -80,6 +80,7 @@
                     },
                     {type: 'textarea', name: '文章摘要', field: 'description', isShow: 1, maxlength: 100},
                     {type: 'uploadPanel', name: '上传封面', field: 'img_default', isShow: 1},
+                    // {type: 'editors', name: '编辑器', field: 'editors'},
                     {type: 'upload',  field: 'uploading', isShow: 2, showAll: 0},
                 ],
                 modalTitle: '创建文章',
@@ -154,7 +155,6 @@
                 })
             },
             edit(row, rowIndex) {
-                console.log(row);
                 this.isAdd = false
                 this.modalTitle = '编辑文章'
                 this.tableRow = row

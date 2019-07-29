@@ -174,7 +174,6 @@
                 })
             },
             addOfflineSemesterHandler() {
-                console.log(this.subjectList);
                 this.handleSelModal(types.ADD_OFFLINE_SEMESTER, { type: 1, page_size: this.pageSize,
                 page_num: this.page_num, offlineCurriculums: this.subjectList})
             },
