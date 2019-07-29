@@ -158,7 +158,6 @@
                     direction: 0
                 }
                 postData('live/catalog/move', data).then(res => {
-                    console.log(res);
                     if(res.res_code == 1) {
                         this.$Message.success(res.msg)
                         this.getList()
@@ -183,7 +182,6 @@
                     content: '<p>确认删除该直播</p>',
                     onOk: () => {
                         postData('live/catalog/delete', {live_catalog_id: val.live_catalog_id}).then(res => {
-                            console.log(res);
                             if(res.res_code == 1) {
                                 this.$Message.success(res.msg)
                                 this.getList()

@@ -216,7 +216,6 @@
                 }).then(res => {
                     e.target.value = ''
                     this.resourse_url = url + '/' + this.video_url
-                    console.log(this.resourse_url, 'this.resourse_url ')
                     if (this.type == 'video' && this.uploadConfig.time) {
                         let setTime = setInterval(() => {
                             if(this.$refs.vedioPlayer && this.$refs.vedioPlayer.duration) {

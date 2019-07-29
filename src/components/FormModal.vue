@@ -247,11 +247,13 @@
     import iconCopy from '../assets/icons/icon/photo.png'
     import rubbishIcon from '../assets/img/rubbish.png'
     import NewEditor from './NewEditor'
+    import 'quill/dist/quill.core.css';
+    import 'quill/dist/quill.snow.css';
+    import 'quill/dist/quill.bubble.css';
     import uploadPanel from './UploadPanel'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
-    export default {
-        components: {ExchangeContent, uploadBtn, downLoading, NewEditor, uploadPanel},
+    export default {components: {ExchangeContent, uploadBtn, downLoading, NewEditor, uploadPanel},
         props: {
             labelWidths: {
                 type: Number,
@@ -346,7 +348,7 @@
             flowY: {
                 type: Boolean,
                 default: false
-            }
+            },
         },
         data() {
             return {
@@ -408,7 +410,47 @@
                 modalText2: '',
                 imgType: 1,
                 fileType: 'image/png,image/jpg',
-                multipleName: ''
+                multipleName: '',
+                richEditor: {
+                    modules: {
+                        toolbar: [
+                            ["bold", "italic", "underline", "strike"],
+                            // ["blockquote", "code-block"],
+                            [{
+                                list: "ordered"
+                            }, {
+                                list: "bullet"
+                            }],
+                            // [{ script: "sub" }, { script: "super" }],
+                            [{
+                                indent: "-1"
+                            }, {
+                                indent: "+1"
+                            }],
+                            // [{ direction: "rtl" }],
+                            [{
+                                size: ["small", false, "large", "huge"]
+                            }],
+                            // [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                            // [{ font: [] }],
+                            [{
+                                color: []
+                            }, {
+                                background: []
+                            }],
+                            [{
+                                align: []
+                            }],
+                            ["clean"],
+                            // ["link", "image", "video"]
+                            ["image"]
+                        ]
+                    },
+                    placeholder: "请输入详情信息...",
+                    theme: "snow"
+                },
+                articleImgUploading: false,
+                editors: ''
             }
         },
         watch: {
@@ -725,7 +767,55 @@
                 // console.log(this.$refs.minuteInput);
                 // this.$refs.minuteInput[0].focus()
                 if(document.querySelectorAll('.ivu-input-number-input').length == 1) document.querySelectorAll('.ivu-input-number-input')[0].focus()
-            }
+            },
+            ArticleImgUpload(file) {//详情图标上传
+                if (file.size > 1024 * 1024) {
+                    this.$Message.warning("请选择小于1M的图片！");
+                    return;
+                }
+                var date = new Date();
+                date = date.toGMTString();
+                let config = {
+                    content_type: file.type,
+                    date: date,
+                    bucket: "tlw-web-static-file",
+                    dir: "tl-book/article_img",
+                    filename: file.name,
+                    type: "POST"
+                };
+                this.articleImgUploading = true;
+                getOssSign(config).then(sign_data => {
+                    if (sign_data.res_code == 1) {
+                        const formData = new FormData();
+                        formData.append("key", sign_data.msg.filename);
+                        formData.append("OSSAccessKeyId", sign_data.msg.accessKeyID);
+                        formData.append("success_action_status", "200");
+                        formData.append("signature", sign_data.msg.sign);
+                        formData.append("policy", sign_data.msg.policyBase64);
+                        formData.append("file", file);
+                        uploadToAliyun(ossSFileHost.oss, formData)
+                            .then(res => {
+                                if (res.status == 200) {
+                                    let tmpImgUrl = ossSFileHost.cdn + sign_data.msg.filename;
+                                    let addRange = this.editor.getSelection();
+                                    this.editor.insertEmbed(
+                                        addRange !== null ? addRange.index : 0,
+                                        "image",
+                                        tmpImgUrl
+                                    );
+                                } else {
+                                    this.$Message.warning(JSON.stringify(res))
+                                }
+                                this.articleImgUploading = false;
+                            })
+                            .catch(err => {
+                                this.articleImgUploading = false;
+                                this.$Message.warning(JSON.stringify(err))
+                            });
+                    }
+                });
+                return false;
+            },
         },
     }
 </script>

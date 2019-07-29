@@ -119,7 +119,7 @@
                         res.data.forEach((item, index) => {
                             item.index = index
                         })
-                        this.formList[1].selectList = res.data
+                        this.formList[1].selectList = res.data.length ? res.data : [{}]
                     } else this.$Message.info(res.msg)
                 })
             },

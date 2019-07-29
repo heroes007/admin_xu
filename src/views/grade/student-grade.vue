@@ -100,7 +100,7 @@
                             return h('span', scoreDta(params.row.score_5))
                         }},
                     {
-                        title: '操作',
+                        title: '其他建议',
                         minWidth: 90,
                         slot: 'operation',
                         align: 'center',
