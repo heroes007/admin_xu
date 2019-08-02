@@ -10,8 +10,8 @@
         </Row>
         <!-- <vue-cropper v-show="isCropper && !is_show" ref='cropper' :guides="true" :view-mode="2" :drag-mode="crop" :auto-crop-area="1" :min-container-width="250" :min-container-height="180" :background="true" :rotatable="true" :src="this.imgSrc" alt="Source Image" :imgStyle="{width: '100%', height: '200px' }">
     </vue-cropper> -->
-        <Row class="img" v-if="type=='image'&&!is_show">
-            <img :src="resourse_url" alt=""/>
+        <Row class="upload-img" v-if="type=='image'&&!is_show">
+            <img class="" :src="resourse_url" alt=""/>
             <input type="file" accept="*" style="font-size: 1.2em; padding: 10px 0;" @change="handleChangeMedia"/>
         </Row>
         <span style="display: none">{{resourse_url}}</span>
@@ -33,7 +33,6 @@
 <script>
     import {get_sign} from '../api/modules/ali_oss'
     import axios from 'axios'
-    import {get_video_source} from '../api/modules/tools_video'
     const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
 
     export default {
@@ -69,6 +68,10 @@
             types: {
                 type: String,
                 default: '*'
+            },
+            uploadTitle: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -228,7 +231,7 @@
                         name: this.file_name,
                         url: this.resourse_url
                     });
-                    this.$emit('uploadcomplete', this.resourse_url);
+                    this.$emit('uploadcomplete', this.resourse_url, this.uploadTitle);
                     if (this.fullscreenLoading) this.fullscreenLoading.close()
                 });
             },
@@ -288,7 +291,7 @@
             margin-top: 10px;
         }
 
-        .img {
+        .upload-img {
             width: 100%;
             height: 100%;
             display: flex;

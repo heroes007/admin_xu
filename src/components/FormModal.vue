@@ -52,7 +52,7 @@
                     <!-- 处理兑换码 -- 兑换内容 exchange_content -->
                     <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name"
                               :prop="t.field">
-                        <Select class="exchange-content-select" v-model="formItem[t.field]"
+                        <Select class="exchange-content-select" v-model="formItem[t.field]" :disabled="t.disable"
                                 @on-open-change="exchangeContentOpen" :placeholder="'请选择'+t.name">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
                                 {{m[t.selectField[1]]}}

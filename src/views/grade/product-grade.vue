@@ -1,78 +1,87 @@
 <template>
-    <div class="content">
-        <Row class="title">
-            <Col span="14">
-                <div class="title-content">
-                    {{$route.query.title}}
-                </div>
-                <div class="title-time">
-                    <div class="title-time-name">统计时间</div>
-                    <DatePicker v-model="datePicker" class="title-time-data" type="daterange" :options="options3" placeholder="" format="yyyy/MM/dd"
-                                separator="至" @on-clear="dateClaer" @on-change="dateChange"></DatePicker>
-                </div>
-            </Col>
-            <Col span="10" style="height: 100%;">
-                <div class="statistics-box">
-                    <div v-for="(item, index) in statistics" :key="index" style="margin: 0 25px;">
-                        <div class="statistics-value">{{item.value}}</div>
-                        <div class="statistics-title">{{item.title}}</div>
+    <div>
+        <div class="head">
+            <div class="head-logo" @click="handleBack">
+                <img class="head-logo-img" src="../../assets/img/logo-white1.jpg" alt="">
+                <div class="head-logo-title">九划医教</div>
+            </div>
+            <img class="head-img" :src="headImg" alt="">
+        </div>
+        <div class="content">
+            <Row class="title">
+                <Col span="14">
+                    <div class="title-content">
+                        {{$route.query.title}}
                     </div>
-                </div>
-            </Col>
-        </Row>
-        <Row :gutter="10" class="total">
-            <Col span="12" style="height: 400px;margin-bottom: 10px;">
-                <div class="total-course">
-                    <div class="total-course-title">
-                        <div class="total-course-title-content">培训评分</div>
+                    <div class="title-time">
+                        <div class="title-time-name">统计时间</div>
+                        <DatePicker v-model="datePicker" class="title-time-data" type="daterange" :options="options3" placeholder="" format="yyyy/MM/dd"
+                                    separator="至" @on-clear="dateClaer" @on-change="dateChange"></DatePicker>
                     </div>
-                    <tables :column="columns1" :table-data="list1" ></tables>
-                </div>
-            </Col>
-            <Col span="12" style="height: 400px;margin-bottom: 10px;" v-for="(item,index) in courseShowList" :key="index">
-                <div class="total-right">
-                    <div class="total-course">
-                        <div class="total-course-title" style="justify-content: space-between">
-                            <div class="total-course-title-content">课程评分</div>
-                            <div class="total-course-title-operation">
-                                <div v-if="courseShow" class="course-title">{{item.title}}</div>
-                                <Select v-if="!courseShow" v-model="selectCourse" style="width:200px;" @on-change="courseChange">
-                                    <Option v-for="(item, index) in courseList" :value="index" :key="index">{{ item.title }}</Option>
-                                </Select>
-                                <img v-if="!courseShow" v-show="courseList.length > 1" src="../../assets/img/grade_all.jpg" alt="" class="total-course-img" @click="showAll">
-                                <img v-show="index == 0" v-else src="../../assets/img/grade_pack.jpg" alt="" class="total-course-img" @click="packAll">
-                            </div>
-                        </div>
-                        <tables :column="columns2" :table-data="courseAddList(item.onlineScoreList)"></tables>
-                    </div>
-                </div>
-            </Col>
-            <Col span="12" style="height: 400px;margin-bottom: 10px;" v-show="!(courseShowList.length%2)">
-                <div class="total-right">
-                    <div class="total-course">
-                        <div class="total-course-title" style="justify-content: space-between;">
-                            <div class="total-course-title-content">课程评分</div>
-                        </div>
-                        <div style="height: 340px;display: flex;align-items: center;justify-content: center">
-                            暂无数据
+                </Col>
+                <Col span="10" style="height: 100%;">
+                    <div class="statistics-box">
+                        <div v-for="(item, index) in statistics" :key="index" style="margin: 0 25px;">
+                            <div class="statistics-value">{{item.value}}</div>
+                            <div class="statistics-title">{{item.title}}</div>
                         </div>
                     </div>
-                </div>
-            </Col>
-        </Row>
-        <Row class="total" :style="`minHeight: ${lastHeight}px; background: #fff; height: auto; marginTop: 0`">
-            <Col>
-                <div style="background-color: #fff;width: 100%;height: 100%;">
+                </Col>
+            </Row>
+            <Row :gutter="10" class="total">
+                <Col span="12" style="height: 400px;margin-bottom: 10px;">
                     <div class="total-course">
                         <div class="total-course-title">
-                            <div class="total-course-title-content">学员评分</div>
+                            <div class="total-course-title-content">培训评分</div>
                         </div>
-                        <tables :is-serial="pageDataCount" :column="columns3" :table-data="list3" @operation="check"></tables>
-                        <page-list style="margin-bottom: 10px;" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+                        <tables :column="columns1" :table-data="list1" ></tables>
                     </div>
-                </div>
-            </Col>
-        </Row>
+                </Col>
+                <Col span="12" style="height: 400px;margin-bottom: 10px;" v-for="(item,index) in courseShowList" :key="index">
+                    <div class="total-right">
+                        <div class="total-course">
+                            <div class="total-course-title" style="justify-content: space-between">
+                                <div class="total-course-title-content">课程评分</div>
+                                <div class="total-course-title-operation">
+                                    <div v-if="courseShow" class="course-title">{{item.title}}</div>
+                                    <Select v-if="!courseShow" v-model="selectCourse" style="width:200px;" @on-change="courseChange">
+                                        <Option v-for="(item, index) in courseList" :value="index" :key="index">{{ item.title }}</Option>
+                                    </Select>
+                                    <img v-if="!courseShow" v-show="courseList.length > 1" src="../../assets/img/grade_all.jpg" alt="" class="total-course-img" @click="showAll">
+                                    <img v-show="index == 0" v-else src="../../assets/img/grade_pack.jpg" alt="" class="total-course-img" @click="packAll">
+                                </div>
+                            </div>
+                            <tables :column="columns2" :table-data="courseAddList(item.onlineScoreList)"></tables>
+                        </div>
+                    </div>
+                </Col>
+                <Col span="12" style="height: 400px;margin-bottom: 10px;" v-show="!(courseShowList.length%2)">
+                    <div class="total-right">
+                        <div class="total-course">
+                            <div class="total-course-title" style="justify-content: space-between;">
+                                <div class="total-course-title-content">课程评分</div>
+                            </div>
+                            <div style="height: 340px;display: flex;align-items: center;justify-content: center">
+                                暂无数据
+                            </div>
+                        </div>
+                    </div>
+                </Col>
+            </Row>
+            <Row class="total" :style="`minHeight: ${lastHeight}px; background: #fff; height: auto; marginTop: 0`">
+                <Col>
+                    <div style="background-color: #fff;width: 100%;height: 100%;">
+                        <div class="total-course">
+                            <div class="total-course-title">
+                                <div class="total-course-title-content">学员评分</div>
+                            </div>
+                            <tables :is-serial="pageDataCount" :column="columns3" :table-data="list3" @operation="check"></tables>
+                            <page-list style="margin-bottom: 10px;" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+                        </div>
+                    </div>
+                </Col>
+            </Row>
+        </div>
     </div>
 </template>
 
@@ -88,6 +97,7 @@
         mixins: [pageMixin],
         data() {
             return{
+                headImg: JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).head_img_url,
                 options3: {
                     disabledDate (date) {
                         return false;
@@ -177,6 +187,9 @@
             }
         },
         methods: {
+            handleBack() {
+                this.$router.push('/dashboard/user-manage')
+            },
             dateClaer() {
                 this.datePicker = ['', '']
             },
@@ -260,6 +273,40 @@
     }
     /deep/ .ivu-table:after{
         display: none;
+    }
+    .head{
+        height: 60px;
+        background-color:#333;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .head-logo{
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 30px;
+            cursor: pointer;
+
+            .head-logo-img{
+                width: 40px;
+                height: 40px;
+            }
+
+            .head-logo-title{
+                color: #fff;
+                font-size: 18px;
+                margin-left: 10px;
+            }
+        }
+
+        .head-img{
+            height: 44px;
+            width: 44px;
+            position: absolute;
+            right: 30px;
+            border-radius: 100%
+        }
     }
     .content{
         background-color: #f0f0f7;

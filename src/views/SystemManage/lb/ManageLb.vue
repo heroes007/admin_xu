@@ -77,6 +77,7 @@
         },
         data() {
             return {
+                tabName: 'home',
                 stateList: [
                     {label: '上线中', value: 1},
                     {label: '已下线', value: 0}
@@ -164,12 +165,14 @@
         },
         methods: {
             edit(row, index) {
-                this.adutplace = this.titleList[row.position-1]
-                this.showModal = true;
-                this.lbData = this.$config.copy(row,{});
-                this.modalTitle = '编辑'
-                this.isEdit = true
-                this.type = row.position
+                // this.adutplace = this.titleList[row.position-1]
+                // this.showModal = true;
+                // this.lbData = this.$config.copy(row,{});
+                // this.modalTitle = '编辑'
+                // this.isEdit = true
+                // this.type = row.position
+                sessionStorage.setItem('AdvertisingData', JSON.stringify(row))
+                this.$router.push({path: 'add-advertising-map'})
             },
             deletes(row, index) {
                 this.$config.deleteModal(() => {
@@ -263,6 +266,7 @@
             this.getList()
             this.lbData = this.lbData2
             this.tableHeight = window.innerHeight - 124
+            if(sessionStorage.getItem('AdvertisingMap')) this.tabName = sessionStorage.getItem('AdvertisingMap')
         },
     }
 </script>

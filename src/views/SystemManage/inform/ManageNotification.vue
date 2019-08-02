@@ -161,6 +161,7 @@
         mounted() {
             this.getList()
             this.tableHeight = window.innerHeight - 130
+            document.querySelector('.wang-editor-show').style.display = 'none'
         }
     }
 </script>

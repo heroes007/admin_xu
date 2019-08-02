@@ -7,15 +7,14 @@
             <TabPane label="官网课程页" name="Course">
                 <CourseLb :show="show2" @close="close(2)" ref="CoursePageRotation" />
             </TabPane>
-            <TabPane label="移动首页" name="mobile-home">
-                <MobileHomeLb :show="show3" @close="close(3)" ref="MobileHomePageBroadcast" />
-            </TabPane>
-             <TabPane label="移动课程页" name="mobile-Course">
-                <MobileCourseLb :show="show4" @close="close(4)" ref="MobileCoursePageRotation" />
-            </TabPane>
+<!--            <TabPane label="移动首页" name="mobile-home">-->
+<!--                <MobileHomeLb :show="show3" @close="close(3)" ref="MobileHomePageBroadcast" />-->
+<!--            </TabPane>-->
+<!--             <TabPane label="移动课程页" name="mobile-Course">-->
+<!--                <MobileCourseLb :show="show4" @close="close(4)" ref="MobileCoursePageRotation" />-->
+<!--            </TabPane>-->
         </Tabs>
-        <Button class="add-advert" type="primary" @click="addatub()">添加广告</Button>
-        <Button class="add-advert" style="left: 0;" type="primary" @click="addLb">添加广告1</Button>
+        <Button class="add-advert" type="primary" @click="addLb">添加广告</Button>
     </Row>
 </template>
 <script>
@@ -60,7 +59,8 @@
                 }
             },
             addLb(){
-                this.$router.push('add-advertising-map')
+                sessionStorage.setItem('AdvertisingData', '')
+                this.$router.push({path: 'add-advertising-map'})
             }
         },
         mounted(){

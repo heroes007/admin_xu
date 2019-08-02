@@ -105,7 +105,7 @@
 
     function h(e) {
         var t = this;
-        this.editor = e, this.$elem = o('<div class="w-e-menu"><i class="w-e-icon-text-heigh"></i></div>'), this.type = "droplist", this._active = !1, this.droplist = new d(this, {
+        this.editor = e, this.$elem = o('<div class="w-e-menu wang-editor-show"><i class="w-e-icon-text-heigh"></i></div>'), this.type = "droplist", this._active = !1, this.droplist = new d(this, {
             width: 160,
             $title: o("<p>字号</p>"),
             type: "list",

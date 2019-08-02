@@ -1,36 +1,45 @@
 <template>
-    <div class="box">
-        <Modal v-model="show" :mask-closable="false" :footer-hide="true" @on-cancel="handleClose" title="查看评价">
-            <div class="modal-content">{{content}}</div>
-        </Modal>
-        <div class="message">
-            <div class="message-left">
-                <img class="message-left-img" :src="studentScore.head_img_url" alt="">
-                <div>
-                    <div class="message-left-name">{{studentScore.realname}}</div>
-                    <div class="message-left-tel">{{studentScore.username}}</div>
-                </div>
+    <div>
+        <div class="head">
+            <div class="head-logo" @click="handleBack">
+                <img class="head-logo-img" src="../../assets/img/logo-white1.jpg" alt="">
+                <div class="head-logo-title">九划医教</div>
             </div>
-            <div class="message-right">
-                <div class="message-right-percent">{{studentScore.progress}}</div>
-                <div class="message-right-title">{{studentScore.product_title}}</div>
-            </div>
+            <img class="head-img" :src="headImg" alt="">
         </div>
-        <div class="total" style="height: 200px;">
-            <div class="total-course">
-                <div class="total-course-title">
-                    <div class="total-course-title-content">培训评分</div>
+        <div class="box">
+            <Modal v-model="show" :mask-closable="false" :footer-hide="true" @on-cancel="handleClose" title="查看评价">
+                <div class="modal-content">{{content}}</div>
+            </Modal>
+            <div class="message">
+                <div class="message-left">
+                    <img class="message-left-img" :src="studentScore.head_img_url" alt="">
+                    <div>
+                        <div class="message-left-name">{{studentScore.realname}}</div>
+                        <div class="message-left-tel">{{studentScore.username}}</div>
+                    </div>
                 </div>
-                <tables :column="columns1" :table-data="list1" ></tables>
+                <div class="message-right">
+                    <div class="message-right-percent">{{studentScore.progress}}</div>
+                    <div class="message-right-title">{{studentScore.product_title}}</div>
+                </div>
             </div>
-        </div>
-        <div class="total" :style="`min-height: ${lastHeight}px;`">
-            <div class="total-course">
-                <div class="total-course-title">
-                    <div class="total-course-title-content">课程评分</div>
+            <div class="total" style="height: 200px;">
+                <div class="total-course">
+                    <div class="total-course-title">
+                        <div class="total-course-title-content">培训评分</div>
+                    </div>
+                    <tables :column="columns1" :table-data="list1" @operation="operation"></tables>
                 </div>
-                <tables :is-serial="pageDataCount" :column="columns2" :table-data="list2" @operation="operation"></tables>
-                <page-list style="margin-bottom: 10px;" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+            </div>
+            <div class="total" :style="`min-height: ${lastHeight}px;`">
+                <div class="total-course">
+                    <div class="total-course-title">
+                        <div class="total-course-title-content">课程评分</div>
+                    </div>
+                    <tables :is-serial="pageDataCount" :column="columns2" :table-data="list2" @operation="operation"></tables>
+                    <page-list style="margin-bottom: 10px;" :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+                </div>
             </div>
         </div>
     </div>
@@ -47,6 +56,7 @@
         mixins: [pageMixin],
         data() {
             return{
+                headImg: JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).head_img_url,
                 show: false,
                 columns1: [
                     {title: '培训进度', key: 'progress', minWidth: 100,},
@@ -75,7 +85,15 @@
                             return h('span', this.$config.scoreData(params.row.score_5))
                         }
                     },
-                    {title: '其他建议', key: 'comment', minWidth: 100},
+                    {
+                        title: '其他建议',
+                        minWidth: 100,
+                        slot: 'operation',
+                        align: 'center',
+                        isAppraise: true,
+                        operation: [['查看', 'operation'], ['-', 'operation1']],
+                    },
+                    // {title: '其他建议', key: 'comment', minWidth: 100},
                     {title: '评价时间', key: 'comment_time', minWidth: 170},
                 ],
                 list1: [],
@@ -105,11 +123,11 @@
                         }},
                     {
                         title: '其他建议',
-                        minWidth: 90,
+                        minWidth: 100,
                         slot: 'operation',
                         align: 'center',
                         isAppraise: true,
-                        operation: [['查看', 'operation'], ['未评', 'operation1']],
+                        operation: [['查看', 'operation'], ['-', 'operation1']],
                     },
                     {title: '评价时间', key: 'comment_time', minWidth: 170},
                 ],
@@ -124,6 +142,9 @@
             }
         },
         methods: {
+            handleBack() {
+                this.$router.push('/dashboard/user-manage')
+            },
             handleClose() {
                 this.show = false
             },
@@ -143,6 +164,7 @@
                         this.total = res.data.count
                         this.list2 = res.data.list
                         this.studentScore = res.data.studentScore
+                        res.data.studentScore.state = res.data.studentScore.is_comment
                         this.list1 = [res.data.studentScore]
                         this.list2.map(item => {
                             item.state = item.is_comment
@@ -167,6 +189,40 @@
     }
     /deep/ .ivu-modal-body{
         padding: 30px;
+    }
+    .head{
+        height: 60px;
+        background-color:#333;
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .head-logo{
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 30px;
+            cursor: pointer;
+
+            .head-logo-img{
+                width: 40px;
+                height: 40px;
+            }
+
+            .head-logo-title{
+                color: #fff;
+                font-size: 18px;
+                margin-left: 10px;
+            }
+        }
+
+        .head-img{
+            height: 44px;
+            width: 44px;
+            position: absolute;
+            right: 30px;
+            border-radius: 100%
+        }
     }
     .box{
         background-color:#f0f0f7;

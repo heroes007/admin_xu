@@ -120,11 +120,11 @@
                 formList: [
                     {type: 'input', name: '兑换码名称', field: 'realname'},
                     {
-                        type: 'select', name: '选择机构', field: 'jurisdiction', select_change: true,
+                        type: 'select', name: '选择机构', field: 'jurisdiction', select_change: true, disable: false,
                         selectList: [], selectField: ['id', 'title'], selectChange: true
                     },
                     {
-                        type: 'select', name: '兑换内容', field: 'content', exchange_content: false,
+                        type: 'select', name: '兑换内容', field: 'content', exchange_content: false, disable: false,
                         selectList: [], selectField: ['index', 'title']
                     },
                     {type: 'input-number', name: '兑换数量', field: 'num', disable: false},
@@ -192,6 +192,8 @@
                 postData('code/getCodeDetail', {code_id: row.id}).then(res => {
                     if(res.res_code == 1) {
                         this.modalTitle = '修改兑换码'
+                        this.formList[1].disable = true
+                        this.formList[2].disable = true
                         this.formList[3].disable = true
                         this.show = true
                         let effct = this.$config.formatTime(new Date(res.data[0].effect_time))
@@ -235,6 +237,8 @@
             handleClick() {
                 this.modalTitle = '添加兑换码'
                 this.show = true
+                this.formList[1].disable = false
+                this.formList[2].disable = false
                 this.formList[3].disable = false
                 this.tableRow = this.tableRow1
             },
