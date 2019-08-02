@@ -131,6 +131,15 @@
                 postData('components/getOrganization').then(res => {
                     if(res.res_code == 1) this.organizationList = res.data
                 })
+                if(this.formLb.target == 5) {
+                    postData('components/getOthersPage').then(res => {
+                        if(res.res_code == 1) this.htmlList = res.data
+                    })
+                }else if(this.formLb.target == 4){
+                    postData('platform/news/getNewsListAdmin',{page_size: 500, page_num: 1}).then(res => {
+                        if(res.res_code == 1) this.htmlList = res.data.list
+                    })
+                }
             },
             organizationChange(val) {
                 if(val){
