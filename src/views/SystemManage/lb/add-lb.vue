@@ -33,7 +33,7 @@
                         <div class="lb-upload-title">{{item.title}}</div>
                         <upload-panel :uploadTitle="item.name" :panelOptions="panelOptions" @uploadcomplete="uploadcomplete" :maxFileSize="2"
                                       types="image/gif, image/jpeg, image/png" :resourse="formLb[item.name]"/>
-                        <div class="lb-upload-hint">*建议尺寸390*1200px，且大小不超过2M的图片</div>
+                        <div class="lb-upload-hint">{{local ? item.hint_home : item.hint_course}}</div>
                     </Col>
                 </Row>
                 <Button type="primary" class="lb-btn" @click="submit">保存</Button>
@@ -51,6 +51,7 @@
         components: {screen, uploadPanel},
         data() {
             return {
+                local: 1,
                 title: '',
                 idAdd: true,
                 formLb: {
@@ -72,10 +73,10 @@
                     panelHeight: '150'
                 },
                 uploadList: [
-                    {title: 'web广告图', id: 1, name: 'web_img_url'},
-                    {title: 'web背景图', id: 2, name: 'web_background_img_url'},
-                    {title: 'app/web广告图', id: 3, name: 'mobile_img_url'},
-                    {title: 'app背景图', id: 4, name: 'mobile_background_img_url'},
+                    {title: 'web广告图', id: 1, name: 'web_img_url', hint_home: '*建议尺寸390*1200px，且大小不超过2M的图片', hint_course: '*建议尺寸390*3000px，且大小不超过2M的图片'},
+                    {title: 'web背景图', id: 2, name: 'web_background_img_url', hint_home: '*建议尺寸390*2000px，且大小不超过2M的图片'},
+                    {title: 'app/web广告图', id: 3, name: 'mobile_img_url', hint_home: '*建议尺寸320*690px，且大小不超过2M的图片', hint_course: '*建议尺寸320*690px，且大小不超过2M的图片'},
+                    {title: 'app背景图', id: 4, name: 'mobile_background_img_url', hint_home: '*建议尺寸400*750px，且大小不超过2M的图片'},
                 ],
                 jumpList: [
                     {title: '课程', id: 1},
@@ -178,6 +179,7 @@
             },
         },
         mounted() {
+            this.local = sessionStorage.getItem('AdvertisingMap') == 'home' ?   true :  false
             this.getInit()
         }
     }
@@ -263,6 +265,9 @@
         font-size: 12px;
         color: #9397AD;
         letter-spacing: 0.18px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .lb-btn{
         width: 200px;
