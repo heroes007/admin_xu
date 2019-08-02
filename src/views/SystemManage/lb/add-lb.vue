@@ -139,6 +139,17 @@
                     })
                 }
             },
+            submitLb(data) {
+                if(this.isAdd) {
+                    postData('platform/banner/addBanner', data).then(res => {
+                        if(res.res_code == 1) this.$router.push('advertising-map')
+                    })
+                }else {
+                    postData('platform/banner/modifyBanner', data).then(res => {
+                        if(res.res_code == 1) this.$router.push('advertising-map')
+                    })
+                }
+            },
             submit() {
                 this.$refs.formValidate.validate((valid) => {
                     if(valid) {
@@ -147,18 +158,22 @@
                         data.default_redirect_url = data.target == 5 ? data.router_url : ''
                         data.redirect_url = data.target == 6 ? data.router_url : ''
                         data.position = sessionStorage.getItem('AdvertisingMap') == 'home' ? 1 : 2
-                        if(this.isAdd) {
-                            postData('platform/banner/addBanner', data).then(res => {
-                                if(res.res_code == 1) this.$router.push('advertising-map')
-                            })
-                        }else {
-                            postData('platform/banner/modifyBanner', data).then(res => {
-                                if(res.res_code == 1) this.$router.push('advertising-map')
-                            })
+                        if(data.position == 2){
+                            if(data.web_img_url && data.mobile_img_url) {
+                                data.web_background_img_url = ''
+                                data.mobile_background_img_url = ''
+                                this.submitLb(data)
+                            }else{
+                                this.$Message.info('请上传图片')
+                            }
+                        }else{
+                            if(data.web_img_url && data.mobile_img_url && data.web_background_img_url && data.mobile_background_img_url) {
+                                this.submitLb(data)
+                            }else{
+                                this.$Message.info('请上传图片')
+                            }
                         }
-                        this.$Message.success('保存成功')
                     }
-                    else this.$Message.info('保存失败')
                 })
             },
         },
