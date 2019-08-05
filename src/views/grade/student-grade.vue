@@ -164,10 +164,10 @@
                         this.total = res.data.count
                         this.list2 = res.data.list
                         this.studentScore = res.data.studentScore
-                        res.data.studentScore.state = res.data.studentScore.is_comment
+                        res.data.studentScore.state = res.data.studentScore.is_comment ? 1 : 0
                         this.list1 = [res.data.studentScore]
                         this.list2.map(item => {
-                            item.state = item.is_comment
+                            item.state = item.is_comment ? 1 : 0
                         })
                     }
                 })
