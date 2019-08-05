@@ -1299,4 +1299,7 @@
         width: 465px;
         border-radius: 4px;
     }
+    /deep/ .ivu-select-disabled /deep/ .ivu-select-selection{
+        color: #657180;
+    }
 </style>

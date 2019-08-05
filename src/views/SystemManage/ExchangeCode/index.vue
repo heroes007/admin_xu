@@ -125,7 +125,7 @@
                     },
                     {
                         type: 'select', name: '兑换内容', field: 'content', exchange_content: false, disable: false,
-                        selectList: [], selectField: ['index', 'title']
+                        selectList: [], selectField: ['id', 'title']
                     },
                     {type: 'input-number', name: '兑换数量', field: 'num', disable: false},
                     {
@@ -198,16 +198,18 @@
                         this.show = true
                         let effct = this.$config.formatTime(new Date(res.data[0].effect_time))
                         let invalid = this.$config.formatTime(new Date(res.data[0].invalid_time))
+                        this.getProducts(res.data[0].organization_id)
                         this.tableRow = {
                             id: res.data[0].id,
-                            content: res.data[0].product_id,
                             realname: res.data[0].title,
                             num: res.data[0].code_count,
                             jurisdiction: res.data[0].organization_id,
+                            content: res.data[0].product_id,
                             state: res.data[0].state ,
                             effect_time: res.data[0].effect_time,
                             invalid_time: res.data[0].invalid_time,
                             effective_time: [this.$config.formatTime(new Date(res.data[0].effect_time)), this.$config.formatTime(new Date(res.data[0].invalid_time))],
+                            isswitch: res.data[0].effect_time ? false : true,
                             isEdit: true
                         }
                     }
@@ -244,7 +246,7 @@
             },
             fromSubmit(val) {
                 let d = {
-                    product_id: this.formList[2].selectList[val.content].id,
+                    product_id: val.content,
                     collection_id: this.formList[2].selectList[val.content].id,
                     live_id : this.formList[2].selectList[val.content].id,
                     title: val.realname,
@@ -284,18 +286,12 @@
                 if (val) {
                     postData('components/getProductsCollection', {organization_id: val}).then(res => {
                         if (res.res_code == 1) {
-                            res.data.forEach((item, index) => {
-                                item.index = index
-                            })
                             this.formList[2].selectList = res.data
                         }
                     })
                 } else {
                     postData('components/getProductsCollection').then(res => {
                         if (res.res_code == 1) {
-                            res.data.forEach((item, index) => {
-                                item.index = index
-                            })
                             this.formList[2].selectList = res.data
                         }
                     })
