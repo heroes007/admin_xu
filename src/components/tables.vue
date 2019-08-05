@@ -45,6 +45,16 @@
                         </Button>
                     </span>
                 </span>
+<!--                自定义展示按钮位置-->
+                <span v-else-if="column.localList">
+                    <span v-for="(t,i) in row.localState ? column.operation : spliceList(column.operation, column.localList)" :key="i">
+                        <span v-if="handleBtnShow(column,row,t)" :class="handleBtnShowClass(column,row,t)">
+                            <Button type="text" size="small" style="margin-right: 5px" @click="show(row,index,t[1])">
+                                {{handleBtnText(t,row,column)}}
+                            </Button>
+                        </span>
+                    </span>
+                </span>
                 <span v-else
                       v-for="(t,i) in row.stateInform ? row.state == 1 ? column.operation.slice(0,2).concat(column.operation.slice(3,4)) : column.operation.slice(2,4) : column.operation"
                       :key="i">
@@ -156,6 +166,13 @@
             }
         },
         methods: {
+            spliceList(list, data) {
+                let newList = []
+                data.forEach((item, index) => {
+                    newList.push(list[index])
+                })
+                return newList
+            },
             handleOperation(c, row) {
                 let list = c.operation
                 if (c.hasOwnProperty('operationLower')) return row.state == -1 ? [list[0], list[3]] : list

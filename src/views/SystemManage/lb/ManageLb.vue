@@ -50,6 +50,7 @@
     import UploadPanel from '../../../components/UploadPanel'
     import pageList from '../../../components/Page'
     import pageMixin from '../../mixins/pageMixins.js'
+    import moment from 'moment'
 
     export default {
         mixins: [pageMixin],
@@ -134,9 +135,18 @@
                         minWidth: 150
                     },
                     {
+                        title: '创建时间',
+                        key: 'create_time',
+                        minWidth: 180,
+                        render: (h, params)=>{
+                            return h('span', moment(params.row.create_time).format('YYYY-MM-DD'))
+                        }
+                    },
+                    {
                         title: '操作',
                         minWidth: 280,
                         slot: 'operation',
+                        localList: [0, 1],
                         operation_state: true,
                         operation: [['编辑', 'operation1'], ['删除', 'operation2'], ['上移', 'operation3'], ['下移', 'operation4']],
                     },
@@ -255,6 +265,7 @@
                         this.list.map((t) => {
                             t.position_name = this.titleList[t.position-1]
                             t.state_name = t.state == 1 ? '上线中' : t.state == -1 ? '已下线' : '测试中'
+                            t.localState = t.state == -1 ? false : true
                         })
                     }
                     this.total = res.data.count
