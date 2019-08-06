@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 100%;">
         <div class="head">
             <div class="head-logo" @click="handleBack">
                 <img class="head-logo-img" src="../../assets/img/logo-white1.jpg" alt="">
