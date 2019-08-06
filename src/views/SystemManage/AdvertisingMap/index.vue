@@ -50,12 +50,12 @@
                     case 'Course':
                     this.show2 = true
                     break;
-                    case 'mobile-home':
-                    this.show3 = true
-                    break;
-                    case 'mobile-Course':
-                    this.show4 = true
-                    break;
+                    // case 'mobile-home':
+                    // this.show3 = true
+                    // break;
+                    // case 'mobile-Course':
+                    // this.show4 = true
+                    // break;
                 }
             },
             addLb(){
@@ -64,6 +64,7 @@
             }
         },
         mounted(){
+            sessionStorage.setItem('AdvertisingMap', 'home')
             if(sessionStorage.getItem('AdvertisingMap')) this.tabName = sessionStorage.getItem('AdvertisingMap')
         }
     }
