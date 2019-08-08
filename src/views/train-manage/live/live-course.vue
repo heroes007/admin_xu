@@ -113,7 +113,8 @@
                 search: '',
                 state: '',
                 multipleList: [],
-                loadingInstance: null
+                loadingInstance: null,
+                organization_id: +sessionStorage.getItem('organizationId'),
             }
         },
         methods: {
@@ -130,7 +131,7 @@
                 this.show = true
                 this.tableRow = {
                     title: '',
-                    organization_id: sessionStorage.getItem('organizationId'),
+                    organization_id: this.organization_id,
                     model:'',
                     state: '',
                     product_ids: [],
@@ -150,6 +151,7 @@
                 if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) {
                     val.organization_id = this.organization_id
                 }
+                console.log(val, this.organization_id);
                 if(val.isEditor) {
                     postData('live/change', val).then(res => {
                         if(res.res_code == 1) this.getList()
@@ -280,7 +282,8 @@
                     page_num: this.current,
                     page_size: this.pageSize,
                     search: this.search,
-                    state:  this.state
+                    state:  this.state,
+                    organization_id: this.organization_id
                 }
                 postData('live/get_list', data).then(res => {
                     this.loadingInstance.close()
@@ -310,6 +313,11 @@
                 })
             }else{
                 this.formList[1].type = ''
+                postData('components/getProductsByOrganization', {organization_id: this.organization_id}).then(res => {
+                    if(res.res_code == 1) {
+                        this.formList[6].selectList = res.data
+                    }
+                })
             }
             this.pageSize = 9
             this.getList()
