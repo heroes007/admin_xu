@@ -130,7 +130,7 @@
                 this.show = true
                 this.tableRow = {
                     title: '',
-                    organization_id: '',
+                    organization_id: sessionStorage.getItem('organizationId'),
                     model:'',
                     state: '',
                     product_ids: [],
@@ -147,6 +147,9 @@
                     delete val.product_ids
                 }
                 val.description = val.uploading
+                if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) {
+                    val.organization_id = this.organization_id
+                }
                 if(val.isEditor) {
                     postData('live/change', val).then(res => {
                         if(res.res_code == 1) this.getList()
@@ -159,23 +162,26 @@
                 this.show = false
             },
             changeList(val) {
+                let n
+                if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1) n = 4
+                else n = 4
                 switch (val) {
                     case 1:
-                        this.formList[4].type = ''
-                        this.formList[5].type = ''
-                        this.formList[6].type = 'multiple'
+                        this.formList[n].type = ''
+                        this.formList[n + 1].type = ''
+                        this.formList[n + 2].type = 'multiple'
                         this.handleFloor = 0
                         break
                     case 2:
-                        this.formList[4].type = 'input-number'
-                        this.formList[5].type = 'input-number'
-                        this.formList[6].type = ''
+                        this.formList[n].type = 'input-number'
+                        this.formList[n + 1].type = 'input-number'
+                        this.formList[n + 2].type = ''
                         this.handleFloor = 1
                         break
                     case 3:
-                        this.formList[4].type = 'input-number'
-                        this.formList[5].type = 'input-number'
-                        this.formList[6].type = 'multiple'
+                        this.formList[n].type = 'input-number'
+                        this.formList[n + 1].type = 'input-number'
+                        this.formList[n + 2].type = 'multiple'
                         this.handleFloor = 1
                         break
                 }
@@ -295,13 +301,18 @@
             },
         },
         mounted() {
+            if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1) {
+                this.organization_id = ''
+                postData('components/getOrganization').then(res => {
+                    if(res.res_code == 1) {
+                        this.formList[1].selectList = res.data
+                    }
+                })
+            }else{
+                this.formList[1].type = ''
+            }
             this.pageSize = 9
             this.getList()
-            postData('components/getOrganization').then(res => {
-                if(res.res_code == 1) {
-                    this.formList[1].selectList = res.data
-                }
-            })
         }
     }
 </script>

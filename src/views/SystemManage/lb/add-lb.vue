@@ -73,9 +73,9 @@
                     panelHeight: '150'
                 },
                 uploadList: [
-                    {title: 'web广告图', id: 1, name: 'web_img_url', hint_home: '*建议尺寸390*1200px，且大小不超过2M的图片', hint_course: '*建议尺寸390*3000px，且大小不超过2M的图片'},
+                    {title: 'web广告图', id: 1, name: 'web_img_url', hint_home: '*建议尺寸390*1200px，且大小不超过2M的图片', hint_course: '*建议尺寸390*1200px，且大小不超过2M的图片'},
                     {title: 'web背景图', id: 2, name: 'web_background_img_url', hint_home: '*建议尺寸390*2000px，且大小不超过2M的图片'},
-                    {title: 'app/web广告图', id: 3, name: 'mobile_img_url', hint_home: '*建议尺寸320*690px，且大小不超过2M的图片', hint_course: '*建议尺寸320*690px，且大小不超过2M的图片'},
+                    {title: 'app/wap广告图', id: 3, name: 'mobile_img_url', hint_home: '*建议尺寸320*690px，且大小不超过2M的图片', hint_course: '*建议尺寸320*690px，且大小不超过2M的图片'},
                     {title: 'app背景图', id: 4, name: 'mobile_background_img_url', hint_home: '*建议尺寸400*750px，且大小不超过2M的图片'},
                 ],
                 jumpList: [

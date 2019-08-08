@@ -62,7 +62,7 @@
                     short_description: [{ required: true, message: '请输入产品介绍', trigger: 'blur' } ],
                 },
                 boxHeight: null,
-                organization_id: '',
+                organization_id: +sessionStorage.getItem('organizationId'),
                 state: '',
                 search: ''
             }
@@ -84,6 +84,9 @@
                 this.show = true
             },
             handleSubmit(val) {
+                if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) {
+                    val.organization_id = this.organization_id
+                }
                 postData('/product/collection/add',val).then(res => {
                     if(res.res_code == 1) this.getList()
                     else this.$Message.info(res.msg)
@@ -127,11 +130,16 @@
             }
         },
         mounted() {
-            this.boxHeight = window.innerHeight - 130
+            if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1) {
+                this.organization_id = ''
+                postData('components/getOrganization').then(res => {
+                    this.formList[1].selectList = res.data
+                })
+            }else{
+
+            }
+            this.boxHeight = this.total>this.pageSize ? window.innerHeight - 130 : window.innerHeight - 66
             this.getList()
-            postData('components/getOrganization').then(res => {
-                this.formList[1].selectList = res.data
-            })
         }
     }
 </script>

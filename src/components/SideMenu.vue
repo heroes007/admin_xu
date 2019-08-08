@@ -140,7 +140,7 @@ import { async, Promise, resolve, reject } from 'q';
                             }
                             let p2 = () => { if(num == 5) this.menuList.push(MenuList[4]) }
                             let p3 = () => {
-                                if(num == 4) {
+                                if(roleId == 1 && num == 4) {
                                     if(roleId != 1){
                                         MenuList[5].list.splice(1,1)
                                         MenuList[5].list.splice(1,1)
@@ -156,6 +156,8 @@ import { async, Promise, resolve, reject } from 'q';
                         });
                     }
                 }
+                console.log(this.menuList);
+                // sessionStorage.getItem('')
             },
             getName() {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
@@ -181,7 +183,7 @@ import { async, Promise, resolve, reject } from 'q';
           }).then(() => {
               this.setMenuActive()
           })
-          this.getName()          
+          this.getName()
         }
     }
 </script>
