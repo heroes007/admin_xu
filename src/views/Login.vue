@@ -65,7 +65,7 @@
                     } else {
                         this.$Message.warning(res.data.msg);
                         this.isLogining = false;
-                    }    
+                    }
                 });
             },
             setUser({name,pass}){
@@ -128,7 +128,7 @@
                 position: relative;
                 height: 38px;
                 img {
-                    height: 38px;
+                    /*height: 38px;*/
                     width: 38px;
                     float: left;
                 }
