@@ -9,15 +9,15 @@
         <div class="recommended-content">
             <div class="content">
                 <div v-for="(item, index) in dataList" :key="index" class="product">
-                    <img v-if="item.img_url ? true : JSON.parse(item.url_arr).default.length" class="product-img"
+                    <img v-if="item.img_url ? true : item.url_arr ? JSON.parse(item.url_arr).default.length : false" class="product-img"
                          :src="item.img_url ? item.img_url : JSON.parse(item.url_arr).default[0]" alt="">
                     <video v-else :src="JSON.parse(item.url_arr).video" class="product-img"></video>
                     <div class="product-content">
                         <div class="product-content-title">{{item.title}}</div>
                         <div style="position: relative">
-                            <Input v-model="item.front_description" type="textarea" class="product-content-input"
+                            <Input v-model="item.front_description ? item.front_description : item.short_description" type="textarea" class="product-content-input"
                                    placeholder="请输入产品介绍" :maxlength="100" @on-change="changeContent"/>
-                            <div class="font-num">{{item.front_description.length}}/100</div>
+                            <div class="font-num">{{item.front_description ? item.front_description.length : item.short_description.length}}/100</div>
                         </div>
                         <div class="product-content-tab">
                             <img :src="upImg" alt="" @click="handleUp(index)">
@@ -84,8 +84,11 @@
         },
         methods: {
             handleClick() {
-                this.show = true
-                this.modalTitle = '添加产品'
+                if(this.dataList.length == 3) this.$Message.info("最多展示3个产品")
+                else{
+                    this.show = true
+                    this.modalTitle = '添加产品'
+                }
             },
             handleSubmit(val) {
                 if (val.productIndex == 0 || val.productIndex) {
@@ -96,8 +99,15 @@
                                 else this.dataList.push(res.data[0])
                             }
                         })
-                    } else {
+                    } else if(this.formList[1].selectList[val.productIndex].type == "product"){
                         postData('product/product/get_detail', {product_id: this.formList[1].selectList[val.productIndex].id}).then(res => {
+                            if (res.res_code == 1) {
+                                if (this.dataList.length == 3) this.$Message.info('首页最多展示3个产品，请先删除再添加')
+                                else this.dataList.push(res.data[0])
+                            }
+                        })
+                    }else{
+                        postData('live/get_detail', {live_id: this.formList[1].selectList[val.productIndex].id}).then(res => {
                             if (res.res_code == 1) {
                                 if (this.dataList.length == 3) this.$Message.info('首页最多展示3个产品，请先删除再添加')
                                 else this.dataList.push(res.data[0])
@@ -144,7 +154,8 @@
                 else this.dataList[index] = this.dataList.splice(index + 1, 1, this.dataList[index])[0]
             },
             handleDelete(index) {
-                this.dataList.splice(index, 1)
+                if(this.dataList.length == 1) this.$Message.info("至少展示一个产品")
+                else this.dataList.splice(index, 1)
             },
             cancel() {
                 this.isShow = false
