@@ -43,7 +43,8 @@
             <div class="personal">
                 <div class="personal-main">
                     <upload-panel class="upload-head-img2" :resourse="formValidate2.img_url"
-                                  :upload-config="uploadConfig" @uploadcomplete="uploadcomplete2" :maxFileSize="2">
+                                  :upload-config="uploadConfig" @uploadcomplete="uploadcomplete2" :maxFileSize="2"
+                                  :panelOptions="panelOptions">
                     </upload-panel>
                     <Form ref="formValidate2" class="personal-form" :model="formValidate2" :rules="ruleValidate2"
                           :label-width="80">
@@ -184,7 +185,7 @@
         border-radius: 100px;
     }
 
-    .upload-head-img{
+    .upload-head-img, .upload-head-img2{
         width: 150px;
         height: 150px;
         border-radius: 100%;

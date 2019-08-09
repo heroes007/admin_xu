@@ -11,7 +11,7 @@
                                 <template slot="label"><span class="form-label">名称</span></template>
                                 <Input v-model="form.title" placeholder="请输入产品名称"></Input>
                             </FormItem>
-                            <FormItem v-show="organizationList&&nextStep == 0" prop="organization_id" label="所属机构">
+                            <FormItem v-if="organizationList&&nextStep == 0" prop="organization_id" label="所属机构">
                                 <template slot="label"><span class="form-label">机构</span></template>
                                 <Select v-model="form.organization_id" placeholder="请选择所属机构">
                                     <Option v-for="item in organizationList" :value="item.id" :key="item.id">
@@ -255,8 +255,10 @@
             }
         },
         mounted() {
-            this.organizationList = null
-            if (JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1) {
+            if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) {
+                this.organizationId = +JSON.parse(sessionStorage.getItem('organizationId'))
+            } else {
+                this.organizationList = null
                 this.getOrganization()
             }
             if (this.payload && this.payload.hasOwnProperty('type') && this.payload.type == 2) {
@@ -385,7 +387,7 @@
                         if (this.form.imgList.length > 0 || this.form.video_url) {
                             this.formState = this.form.state
                             this.formCategory = this.form.category_id
-                            this.organizationId = this.form.organization_id
+                            this.organizationId = this.form.organization_id ? this.form.organization_id : this.organizationId
                             this.fromLabelWidth = 0;
                             this.nextStep = 2
                             this.editorChange()
@@ -415,7 +417,9 @@
                             this.form.original_price = Number.isInteger(this.form.original_price) ? this.form.original_price : +(Number(this.form.original_price).toFixed(2))
                             if (this.payload) {
                                 this.update_production(this.form);
-                            } else this.add_production(this.form);
+                            } else {
+                                this.add_production(this.form);
+                            }
                         } else this.$Message.warning('请上传展示图片或展示视频');
                     }
                 })

@@ -224,6 +224,7 @@
             }
         },
         mounted() {
+            if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) this.organization_id = +JSON.parse(sessionStorage.getItem('organizationId'))
             this.tableHeight = window.innerHeight - 116
             this.getList()
         }

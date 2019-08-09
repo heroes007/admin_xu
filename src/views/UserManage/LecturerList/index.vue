@@ -195,7 +195,7 @@
             position: absolute;
             right: 0;
             width: 35px;
-            height: 110px;
+            height: 108px;
             background-color: #fff;
             // background: #9397AD;
             border-top-right-radius: 8px;
@@ -215,7 +215,7 @@
     }
     .lecturer-list {
         overflow: hidden;
-        overflow-y: auto; 
+        overflow-y: auto;
         padding: 20px;
     }
     /deep/ .ivu-col-span-6 {

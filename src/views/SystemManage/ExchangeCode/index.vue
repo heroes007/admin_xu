@@ -247,17 +247,17 @@
             fromSubmit(val) {
                 let d = {
                     product_id: val.content,
-                    collection_id: this.formList[2].selectList[val.content].id,
-                    live_id : this.formList[2].selectList[val.content].id,
+                    collection_id: this.getContentId(this.formList[2].selectList, val.content, 'id'),
+                    live_id : this.getContentId(this.formList[2].selectList, val.content, 'id'),
                     title: val.realname,
                     code_count: val.num,
                     organization_id: val.jurisdiction,
                     state: val.isswitch ? 2 : 1,
-                    type: this.formList[2].selectList[val.content].type == "collection" ? 1 : this.formList[2].selectList[val.content].type == "product" ? 0 : 2 ,
+                    type: this.getContentId(this.formList[2].selectList, val.content, 'type') == "collection" ? 1 : this.getContentId(this.formList[2].selectList, val.content, 'type') == "product" ? 0 : 2 ,
                     effect_time: this.$config.formatTime(val.effective_time[0]),
                     invalid_time: this.$config.formatTime(val.effective_time[1])
                 }
-                if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) d.organization_id = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).organization_id
+                if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) d.organization_id = this.organization_id
                 if(val.isEdit) {
                     postData('code/modifyCode', {...d, ...{id: val.id}}).then(res => {
                         if(res.res_code == 1) {
@@ -273,6 +273,15 @@
                         }
                     })
                 }
+            },
+            getContentId(list, id, type) {
+                let data
+                list.forEach(item => {
+                    if(item.id == id) {
+                        data = item[type]
+                    }
+                })
+                return data
             },
             closeModal() {
                 this.show = false
@@ -337,7 +346,8 @@
             if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id == 1)  this.getProducts()
             else {
                 this.organization_id = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).organization_id
-                this.getProducts(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).organization_id)
+                this.getProducts(this.organization_id)
+                this.formList[1].type = ''
             }
             this.getList()
             this.tableRow = this.tableRow1

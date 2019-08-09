@@ -57,9 +57,9 @@
 <script>
     import api from '../api/modules/config'
     import defaultHeader from '../assets/img/side-menu/default-header.jpg'
-    import { MenuList, MenuToturList, cleanHtmlLabel } from './Util'
+    import {MenuList, MenuToturList, cleanHtmlLabel} from './Util'
     import postData from '../api/postData'
-import { async, Promise, resolve, reject } from 'q';
+    import {async, Promise, resolve, reject} from 'q';
 
     export default {
         data() {
@@ -110,13 +110,13 @@ import { async, Promise, resolve, reject } from 'q';
                     }
                 });
             },
-            setMenuActive(){
+            setMenuActive() {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
-                let menuActive = roleId !=4 ? ( sessionStorage.getItem('menuActiveIndex') ? sessionStorage.getItem('menuActiveIndex') : 'user-manage' ) : 'tutor-course'
+                let menuActive = roleId != 4 ? (sessionStorage.getItem('menuActiveIndex') ? sessionStorage.getItem('menuActiveIndex') : 'user-manage') : 'tutor-course'
                 this.activeIndex = menuActive
-                if(sessionStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(sessionStorage.getItem('menuOpenName'))
-                if(this.$route.name ==='user-manage') this.activeIndex =  roleId !=4 ? 'user-manage' : 'tutor-course'
-                if(this.$refs.side_menu){
+                if (sessionStorage.getItem('menuOpenName')) this.menuOpenName = JSON.parse(sessionStorage.getItem('menuOpenName'))
+                if (this.$route.name === 'user-manage') this.activeIndex = roleId != 4 ? 'user-manage' : 'tutor-course'
+                if (this.$refs.side_menu) {
                     this.$nextTick(() => {
                         this.$refs.side_menu.updateOpened();
                         this.$refs.side_menu.updateActiveName();
@@ -125,7 +125,7 @@ import { async, Promise, resolve, reject } from 'q';
             },
             handleMenuList() {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
-                if(roleId == 4) this.menuList = MenuToturList
+                if (roleId == 4) this.menuList = MenuToturList
                 else if (sessionStorage.getItem('PERMISSIONS')) {
                     let d = Base64.decode(sessionStorage.getItem('PERMISSIONS'));
                     let d1 = JSON.parse(d.slice(4))
@@ -133,22 +133,24 @@ import { async, Promise, resolve, reject } from 'q';
                         d1.forEach(t => {
                             let num = +t.permission_code.slice(0, 2)
                             let p1 = () => {
-                                if(num != 4&&num != 5){
-                                if(num == 6) this.menuList.push(MenuList[3])
-                                else this.menuList.push(MenuList[num - 1])
+                                if (num != 4 && num != 5) {
+                                    if (num == 6) this.menuList.push(MenuList[3])
+                                    else this.menuList.push(MenuList[num - 1])
                                 }
                             }
-                            let p2 = () => { if(num == 5) this.menuList.push(MenuList[4]) }
+                            let p2 = () => {
+                                if (num == 5) this.menuList.push(MenuList[4])
+                            }
                             let p3 = () => {
-                                if(roleId == 1 && num == 4) {
-                                    if(roleId != 1){
-                                        MenuList[5].list.splice(1,1)
-                                        MenuList[5].list.splice(1,1)
+                                if (num == 4) {
+                                    if (roleId != 1) {
+                                        MenuList[5].list.splice(1, 1)
+                                        MenuList[5].list.splice(1, 1)
                                     }
                                     this.menuList.push(MenuList[5])
                                 }
                             }
-                            (async() => {
+                            (async () => {
                                 await p1()
                                 await p2()
                                 await p3()
@@ -157,7 +159,6 @@ import { async, Promise, resolve, reject } from 'q';
                     }
                 }
                 console.log(this.menuList);
-                // sessionStorage.getItem('')
             },
             getName() {
                 let roleId = JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id;
@@ -177,13 +178,13 @@ import { async, Promise, resolve, reject } from 'q';
             }
         },
         mounted() {
-         new Promise((resolve,reject) => {
-              this.handleMenuList()
-              resolve()
-          }).then(() => {
-              this.setMenuActive()
-          })
-          this.getName()
+            new Promise((resolve, reject) => {
+                this.handleMenuList()
+                resolve()
+            }).then(() => {
+                this.setMenuActive()
+            })
+            this.getName()
         }
     }
 </script>
@@ -278,6 +279,7 @@ import { async, Promise, resolve, reject } from 'q';
     .side-menu {
         padding: 27px 0;
         height: 100%;
+
         .logo {
             margin-bottom: 40px;
         }

@@ -14,6 +14,7 @@
                                 :delete-data="deleteList" :tabel-height="tableHeight" @select-tables="selectTable"
                                 @on-select-all="selectAllTable"/>
                         <page-list :current="current" :total="total" :page-size="pageSize" @page-list="pageList"/>
+                        <div v-if="total<pageSize || total==pageSize" class="page-border"></div>
                     </Col>
                     <Col :span="10" style="height: 619px;border: 1px solid #f0f0f7;">
                         <div class="select-student">已选学员</div>
@@ -278,6 +279,7 @@
             }
         },
         mounted() {
+            if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) this.organization_id = +JSON.parse(sessionStorage.getItem('organizationId'))
             this.pageSize = 10
             this.getList()
         }
@@ -453,5 +455,10 @@
 
     /deep/ .ivu-modal-body {
         padding: 32px;
+    }
+    .page-border{
+        height: 89px;
+        border-bottom: 1px solid #f0f0f7;
+        border-left: 1px solid #f0f0f7;
     }
 </style>

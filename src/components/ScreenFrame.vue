@@ -82,7 +82,8 @@
                 isSuper: false,
                 select: [{id: 'all', title: '全部机构'}],
                 subjectsSelect3: [{id: 'all', name: '全部学科'}],
-                select3: []
+                select3: [],
+                canRun: true
             }
         },
         props: {
@@ -235,7 +236,10 @@
             },
             //输入事件，change触发，返回model
             inputChange() {
-                this.$emit('inputChange', this.valueInput)
+                clearTimeout(this.canRun)
+                this.canRun = setTimeout(() => {
+                    this.$emit('inputChange', this.valueInput)
+                },500)
             },
             //按钮，click触发事件
             handleClick() {
