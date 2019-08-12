@@ -1,7 +1,8 @@
 <template>
     <div>
         <Modal :transfer=false :title="!payload? '添加培训' : '编辑培训'" :footer-hide=true :width="740" :mask-closable="false"
-               v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)" :class="nextStep == 2 ? 'modal-class1' : 'modal-class2'">
+               v-model="addProductionDialog" @on-cancel="handleRemoveModal(remove)"
+               :class="nextStep == 2 ? 'modal-class1' : 'modal-class2'">
             <base-input @closedialog="handleClose">
                 <Row slot="body">
                     <Row class="body-top">
@@ -21,20 +22,20 @@
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="category_id" label="分类" class="local-left">
                                 <template slot="label"><span class="form-label">分类</span></template>
-                                <Select v-model="form.category_id" placeholder="请选择产品分类">
+                                <Select v-model="form.category_id" placeholder="请选择产品分类" @on-change="changeCategory">
                                     <Option v-for="item in selectList3" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="unlock_type" label="解锁方式" class="local-right">
-                                <Select v-model="form.unlock_type" placeholder="请选择解锁方式">
+                                <Select v-model="form.unlock_type" placeholder="请选择解锁方式" @on-change="changeUnlok">
                                     <Option v-for="item in selectList1" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
                             </FormItem>
                             <FormItem v-show="nextStep == 0" prop="model" class="local-left">
                                 <template slot="label"><span class="form-label">模式</span></template>
-                                <Select v-model="form.model" placeholder="请选择展示模式">
+                                <Select v-model="form.model" placeholder="请选择产品模式" @on-change="changeModel">
                                     <Option v-for="item in selectList4" :value="item.id" :key="item.id">{{item.title}}
                                     </Option>
                                 </Select>
@@ -87,7 +88,8 @@
                                     <div v-if="form.video_url">
                                         <Icon @click="deleteImgList('video')" class="upload-img-main-icon2"
                                               type="ios-close-circle"/>
-                                        <video ref="uploadVideo" width="458" height="260" v-if="form.video_url" :src="form.video_url"
+                                        <video ref="uploadVideo" width="458" height="260" v-if="form.video_url"
+                                               :src="form.video_url"
                                                controls="controls" @loadeddata='loadVideo' crossOrigin='Anonymous'/>
                                     </div>
                                     <div class="demo-file-key" v-if="form.imgList.length == 0 && !form.video_url">
@@ -109,7 +111,9 @@
                                             @get-content="getContent" @editor-change="editorChange"
                                             :editor-id="editorId" :content="content" class="new-editor"/>
                                 <div style="height: 32px;">
-                                    <div v-if="showAll" @click="showContent" class="show-content">{{showAll == 1 ? '收起↑' : '展开全文↓'}}</div>
+                                    <div v-if="showAll" @click="showContent" class="show-content">{{showAll == 1 ? '收起↑'
+                                        : '展开全文↓'}}
+                                    </div>
                                 </div>
                             </FormItem>
                             <div v-if="nextStep == 2" class="btns">
@@ -156,6 +160,8 @@
                 content: '',
                 addProductionDialog: true,
                 unlock_type: '',
+                category_id: '',
+                model: '',
                 states: '',
                 fileValue: null,
                 imgType: 1,
@@ -170,7 +176,7 @@
                 selectList2: [{id: -1, title: '下架'}, {id: 1, title: '测试'}, {id: 2, title: '上架'}],
                 selectList4: [{id: 1, title: '展示单品'}, {id: 2, title: '展示合集'}, {id: 3, title: '单品合集同时展示'}],
                 form: {
-                    unlock_type: '',
+                    unlock_type: null,
                     product_id: '',
                     state: null,
                     title: '',
@@ -186,7 +192,7 @@
                     organization_id: null,
                     _fn: null,
                     duration: 0,
-                    model: ''
+                    model: null
                 },
                 descriptionHtml: '',
                 nextStep: 0,
@@ -255,7 +261,7 @@
             }
         },
         mounted() {
-            if(JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) {
+            if (JSON.parse(sessionStorage.getItem('PERSONALDETAILS')).role_id !== 1) {
                 this.organizationId = +JSON.parse(sessionStorage.getItem('organizationId'))
             } else {
                 this.organizationList = null
@@ -277,6 +283,11 @@
                 this.form.organization_id = d.organization_id
                 this.form.category_id = d.category_id
                 this.content = d.description
+
+                this.unlock_type = d.unlock_type;
+                this.model = d.model;
+                this.category_id = d.category_id
+
                 // this.descriptionHtml = d.description.replace('class="form-message"','')
                 // this.form.organization_id = this.organization_id
             }
@@ -302,6 +313,18 @@
             ...mapActions(['add_production', 'update_production', 'change_certificate_list']),
             getContent(val) {
                 this.content = val
+            },
+            changeCategory(v) {
+                if(v || v===0) {
+                    this.category_id = v
+                    console.log(this.category_id);
+                }
+            },
+            changeUnlok(v) {
+                if(v || v===0) this.unlock_type = v
+            },
+            changeModel(v) {
+                if(v || v===0) this.model = v
             },
             changeState(v) {
                 this.form.state = v
@@ -378,28 +401,39 @@
             },
             handleNextStep(name) {
                 this.$refs[name].validate((valid) => {
-                    if (Number(this.form.price) > Number(this.form.original_price)) {
-                        this.$Modal.info({
-                            title: '提示',
-                            content: '实际售价不能高于原价！'
-                        });
-                    } else {
-                        if (this.form.imgList.length > 0 || this.form.video_url) {
-                            this.formState = this.form.state
-                            this.formCategory = this.form.category_id
-                            this.organizationId = this.form.organization_id ? this.form.organization_id : this.organizationId
-                            this.fromLabelWidth = 0;
-                            this.nextStep = 2
-                            this.editorChange()
-                        } else this.$Message.warning('请上传展示图片或展示视频');
+                    if (valid) {
+                        if (Number(this.form.price) > Number(this.form.original_price)) {
+                            this.$Modal.info({
+                                title: '提示',
+                                content: '实际售价不能高于原价！'
+                            });
+                        } else {
+                            if (this.form.imgList.length > 0 || this.form.video_url) {
+                                this.formState = this.form.state
+                                this.formCategory = this.form.category_id
+                                this.organizationId = this.form.organization_id ? this.form.organization_id : this.organizationId
+                                this.fromLabelWidth = 0;
+                                this.nextStep = 2
+                                this.editorChange()
+                                this.form.model = this.model
+                                this.form.category_id = this.category_id
+                                this.form.unlock_type = this.unlock_type
+                            } else this.$Message.warning('请上传展示图片或展示视频');
+                        }
                     }
                 })
             },
             handlePreStep() {
+                this.form.model = this.model
+                this.form.category_id = this.category_id
+                this.form.unlock_type = this.unlock_type
                 this.fromLabelWidth = 86
                 this.nextStep = 0
             },
             handleSubmit(name) {
+                this.form.model = this.model
+                this.form.category_id = this.category_id
+                this.form.unlock_type = this.unlock_type
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         let arrObj = {
@@ -421,6 +455,8 @@
                                 this.add_production(this.form);
                             }
                         } else this.$Message.warning('请上传展示图片或展示视频');
+                    } else {
+                        console.log(this.form);
                     }
                 })
             },
@@ -429,9 +465,9 @@
             },
             editorChange() {
                 this.$nextTick(() => {
-                    if(document.querySelector('.w-e-text').clientHeight < 556) {
+                    if (document.querySelector('.w-e-text').clientHeight < 556) {
                         this.showAll = 0
-                    }else if(document.querySelector('.w-e-text').clientHeight > 556 && this.showAll == 0){
+                    } else if (document.querySelector('.w-e-text').clientHeight > 556 && this.showAll == 0) {
                         this.showAll = 2
                     }
                 })
@@ -718,35 +754,43 @@
         width: 604px;
         min-height: 600px !important;
     }
-    .local-left{
+
+    .local-left {
         width: 310px;
         display: inline-block
     }
-    .local-right{
+
+    .local-right {
         width: 310px;
         display: inline-block;
         margin-left: 10px;
     }
-    .modal-class1{
+
+    .modal-class1 {
         /deep/ .ivu-modal-body {
             padding: 0 0 30px 0;
         }
-        /deep/ .w-e-text-container{
+
+        /deep/ .w-e-text-container {
             /*padding: 0 30px;*/
             overflow-y: auto;
             position: relative
         }
-        /deep/ .w-e-toolbar{
+
+        /deep/ .w-e-toolbar {
             padding: 0 30px;
         }
-        /deep/ .new-editor{
+
+        /deep/ .new-editor {
             width: 100% !important;
         }
-        /deep/ .w-e-toolbar{
+
+        /deep/ .w-e-toolbar {
             border: none !important;
         }
     }
-    .modal-class2{
+
+    .modal-class2 {
 
     }
 </style>
