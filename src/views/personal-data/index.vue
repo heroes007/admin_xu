@@ -13,14 +13,14 @@
                             <template slot="label">真实姓名</template>
                             <Input v-model="formValidate.realname" placeholder="请输入真实姓名"></Input>
                         </FormItem>
-                        <FormItem prop="sex">
+                        <FormItem>
                             <template slot="label"><span class="form-label">性别</span></template>
                             <Select v-model="formValidate.sex" placeholder="请选择性别">
                                 <Option :value="0">女</Option>
                                 <Option :value="1">男</Option>
                             </Select>
                         </FormItem>
-                        <FormItem prop="phone">
+                        <FormItem>
                             <template slot="label"><span class="form-label2">手机号</span></template>
                             <Input v-model="formValidate.phone" placeholder="请输入手机号"></Input>
                         </FormItem>
@@ -85,8 +85,8 @@
                 ruleValidate: {
                     realname: {required: true, message: '请输入真实姓名', trigger: 'blur'},
                     sex: {required: true, message: '请选择性别'},
-                    phone: {required: true, validator: phone},
-                    password: {required: true, validator: validatePass}
+                    phone: {required: true, message: '请输入手机号'},
+                    password: {required: true, message: '请输入密码'}
                 },
                 ruleValidate2: {
                     description: {required: true, message: '请输入机构介绍', trigger: 'blur'}
@@ -163,6 +163,9 @@
     }
 </script>
 <style lang="less" scoped>
+    /deep/ .upload-img{
+        border: none !important;
+    }
     /deep/ .ivu-tabs-tabpane {
         box-shadow: 0 0 15px 0 rgba(117, 124, 157, 0.10);
     }
