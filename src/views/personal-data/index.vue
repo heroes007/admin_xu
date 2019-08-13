@@ -114,9 +114,13 @@
         },
         methods: {
             handleSubmit(name) {
-                let d = {...this.formValidate, from: 'web'}
-                if (d.password == this.pass) delete d.password
-                this.preservation(name, d, 'user/modifyUser')
+                if(!(/^1[3456789]\d{9}$/.test(this.formValidate.phone))){
+                    this.$Message.info('手机号格式不正确')
+                }else{
+                    let d = {...this.formValidate, from: 'web'}
+                    if (d.password == this.pass) delete d.password
+                    this.preservation(name, d, 'user/modifyUser')
+                }
             },
             preservation(name, d, url) {
                 this.$refs[name].validate((valid) => {
