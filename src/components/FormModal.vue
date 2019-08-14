@@ -49,12 +49,25 @@
                                      :placeholder="'请输入'+t.name" ref="minuteInput"></InputNumber>
                         <div v-if="t.isMin" style="display: inline-block;position: absolute;left: 130px;top: 3px;cursor: text" @click="minuteInput">分钟</div>
                     </FormItem>
-                    <!-- 处理兑换码 -- 兑换内容 exchange_content -->
+                    <!-- 处理兑换码 -- 兑换内容 exchange_content （老） -->
                     <FormItem v-if="t.type==='select'&&t.selectList.length>0&&t.exchange_content" :label="t.name"
                               :prop="t.field">
                         <Select class="exchange-content-select" v-model="formItem[t.field]" :disabled="t.disable"
                                 @on-open-change="exchangeContentOpen" :placeholder="'请选择'+t.name">
                             <Option v-for="(m,i) in t.selectList" :key="i" :value="m[t.selectField[0]]">
+                                {{m[t.selectField[1]]}}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    <!-- 处理兑换码 -- 兑换内容 exchange_content （新） -->
+                    <FormItem v-else-if="t.type==='select'&&t.selectList.length>0&&t.new_exchange_content"
+                              v-show="t.isShow ? t.isShow == 1 : true" :prop="t.field"
+                              :class="t.clas ? t.clas: ''">
+                        <template v-if="t.double" slot="label"><span style="letter-spacing: 26px">{{t.name[0]}}</span>{{t.name[1]}}</template>
+                        <template v-else slot="label"><span :class="handleSelectClass(t)">{{t.name}}</span></template>
+                        <Select v-model="formItem[t.field]" :placeholder="'请选择'+t.name" :disabled="t.disable"
+                                @on-change="selectChange">
+                            <Option v-for="(m,i) in t.selectList" :key="i" :value="i">
                                 {{m[t.selectField[1]]}}
                             </Option>
                         </Select>
@@ -290,7 +303,7 @@
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
     import uploadPanel from './UploadPanel'
-    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
+    const ossHost = 'http://sfile.9mededu.com';
 
     export default {components: {ExchangeContent, uploadBtn, downLoading, NewEditor, uploadPanel},
         props: {

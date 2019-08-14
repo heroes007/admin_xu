@@ -28,7 +28,7 @@
         data() {
             return {
                 show: false,
-                tabelHeight: null,
+                // tabelHeight: null,
                 modalTitle: '',
                 tableRow: {},
                 keyword:'',
@@ -124,7 +124,7 @@
                         selectList: [], selectField: ['id', 'title'], selectChange: true
                     },
                     {
-                        type: 'select', name: '兑换内容', field: 'content', exchange_content: false, disable: false,
+                        type: 'select', name: '兑换内容', field: 'content', new_exchange_content: true, disable: false,
                         selectList: [], selectField: ['id', 'title']
                     },
                     {type: 'input-number', name: '兑换数量', field: 'num', disable: false},
@@ -161,6 +161,11 @@
             this.getOrganization = null;
             this.list = null;
         },
+        computed: {
+            tabelHeight() {
+                return window.innerHeight - 116
+            }
+        },
         methods: {
             batchDownload(row, rowIndex) {
                 // postData('code/getCodeHistory', {code_id: row.id, page_size: 20, page_num: 1}).then(res => {
@@ -189,31 +194,65 @@
                 console.log(row, rowIndex, 'immediateFailure');
             },
             edit(row, rowIndex) {
-                postData('code/getCodeDetail', {code_id: row.id}).then(res => {
-                    if(res.res_code == 1) {
-                        this.modalTitle = '修改兑换码'
-                        this.formList[1].disable = true
-                        this.formList[2].disable = true
-                        this.formList[3].disable = true
-                        this.show = true
-                        let effct = this.$config.formatTime(new Date(res.data[0].effect_time))
-                        let invalid = this.$config.formatTime(new Date(res.data[0].invalid_time))
-                        this.getProducts(res.data[0].organization_id)
-                        this.tableRow = {
-                            id: res.data[0].id,
-                            realname: res.data[0].title,
-                            num: res.data[0].code_count,
-                            jurisdiction: res.data[0].organization_id,
-                            content: res.data[0].product_id,
-                            state: res.data[0].state ,
-                            effect_time: res.data[0].effect_time,
-                            invalid_time: res.data[0].invalid_time,
-                            effective_time: [this.$config.formatTime(new Date(res.data[0].effect_time)), this.$config.formatTime(new Date(res.data[0].invalid_time))],
-                            isswitch: res.data[0].effect_time ? false : true,
-                            isEdit: true
+                postData('code/getCodeDetail', {code_id: row.id}).then(reslove => {
+                    let val, id = reslove.data[0].type == 0 ? reslove.data[0].product_id : reslove.data[0].type == 1 ? reslove.data[0].collection_id : reslove.data[0].live_id
+
+                    postData('components/getProductsCollection', {organization_id: reslove.data[0].organization_id}).then(res => {
+                        if (res.res_code == 1) {
+                            this.formList[2].selectList = res.data.length ? res.data : [{}]
+                            this.formList[2].selectList.forEach((item, index) => {
+                                if(id == item.id && reslove.data[0].type == this.editType(item.type)) {
+                                    val = index
+                                }
+                            })
+                            reslove.value = val
+                            return reslove
                         }
-                    }
+                    }).then(res => {
+                        if(res.res_code == 1) {
+                            this.modalTitle = '修改兑换码'
+                            this.formList[1].disable = true
+                            this.formList[2].disable = true
+                            this.formList[3].disable = true
+                            this.show = true
+                            let effct = this.$config.formatTime(new Date(res.data[0].effect_time))
+                            let invalid = this.$config.formatTime(new Date(res.data[0].invalid_time))
+                            this.getProducts(res.data[0].organization_id)
+                            this.tableRow = {
+                                id: res.data[0].id,
+                                realname: res.data[0].title,
+                                num: res.data[0].code_count,
+                                jurisdiction: res.data[0].organization_id,
+                                // content: res.data[0].product_id,
+                                content: res.value,
+                                state: res.data[0].state ,
+                                effect_time: res.data[0].effect_time,
+                                invalid_time: res.data[0].invalid_time,
+                                effective_time: [this.$config.formatTime(new Date(res.data[0].effect_time)), this.$config.formatTime(new Date(res.data[0].invalid_time))],
+                                isswitch: res.data[0].effect_time ? false : true,
+                                isEdit: true
+                            }
+                        }
+                    })
                 })
+            },
+            editContent(content) {
+                let val, id = content.type == 0 ? content.product_id : content.type == 1 ? content.collection_id : content.live_id
+
+                postData('components/getProductsCollection', {organization_id: content.organization_id}).then(res => {
+                    if (res.res_code == 1) {
+                        this.formList[2].selectList = res.data.length ? res.data : [{}]
+                    }
+                }).then(() => {
+                    this.formList[2].selectList.forEach((item, index) => {
+                        if(id == item.id && content.type == this.editType(item.type)) {
+                            val = index
+                        }
+                    })
+                })
+            },
+            editType(type) {
+                return type == 'product' ? 0 : type == 'collection' ? 1 : 2
             },
             check(){
 
@@ -246,13 +285,13 @@
             },
             fromSubmit(val) {
                 let d = {
-                    product_id: val.content,
+                    product_id: this.getContentId(this.formList[2].selectList, val.content, 'id'),
                     collection_id: this.getContentId(this.formList[2].selectList, val.content, 'id'),
                     live_id : this.getContentId(this.formList[2].selectList, val.content, 'id'),
                     title: val.realname,
                     code_count: val.num,
                     organization_id: val.jurisdiction,
-                    state: val.isswitch ? 2 : 1,
+                    state: val.isswitch ? 1 : 0,
                     type: this.getContentId(this.formList[2].selectList, val.content, 'type') == "collection" ? 1 : this.getContentId(this.formList[2].selectList, val.content, 'type') == "product" ? 0 : 2 ,
                     effect_time: this.$config.formatTime(val.effective_time[0]),
                     invalid_time: this.$config.formatTime(val.effective_time[1])
@@ -275,9 +314,9 @@
                 }
             },
             getContentId(list, id, type) {
-                let data
-                list.forEach(item => {
-                    if(item.id == id) {
+                var data
+                list.forEach((item, index) => {
+                    if(index == id) {
                         data = item[type]
                     }
                 })
@@ -295,13 +334,13 @@
                 if (val) {
                     postData('components/getProductsCollection', {organization_id: val}).then(res => {
                         if (res.res_code == 1) {
-                            this.formList[2].selectList = res.data
+                            this.formList[2].selectList = res.data.length ? res.data : [{}]
                         }
                     })
                 } else {
                     postData('components/getProductsCollection').then(res => {
                         if (res.res_code == 1) {
-                            this.formList[2].selectList = res.data
+                            this.formList[2].selectList = res.data.length ? res.data : [{}]
                         }
                     })
                 }
@@ -351,7 +390,7 @@
             }
             this.getList()
             this.tableRow = this.tableRow1
-            this.tabelHeight = window.innerHeight - 116
+            // this.tabelHeight = window.innerHeight - 116
         }
     }
 </script>

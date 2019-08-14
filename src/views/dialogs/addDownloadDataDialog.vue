@@ -99,7 +99,8 @@ export default {
             typeList: [
               {state: 'online', title: '线上资料'},
               {state: 'underline', title: '线下资料'},
-            ]
+            ],
+            canRun: true
         }
     },
     methods: {
@@ -146,7 +147,16 @@ export default {
         saveHandler(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    if(this.form.url_name) this.handleSubmit()
+                    if(this.form.url_name) {
+                        if(this.canRun) {
+                            this.canRun = false
+                            this.handleSubmit()
+                            setTimeout(() => {
+                                this.canRun = true
+                            },500)
+                        }
+                        // this.handleSubmit()
+                    }
                     else  this.$Message.warning('请上传附件');
                 }
             })

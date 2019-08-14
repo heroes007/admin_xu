@@ -33,7 +33,7 @@
 <script>
     import {get_sign} from '../api/modules/ali_oss'
     import axios from 'axios'
-    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
+    const ossHost = 'http://sfile.9mededu.com';
 
     export default {
         props: {

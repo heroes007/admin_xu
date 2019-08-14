@@ -3,7 +3,7 @@
         <div class="login-view" :style="loginViewStyl">
             <div class="login-left"></div>
             <div class='login-right'>
-                <div class='logo'><img class="logo-img" src='http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com/wenda/20190327113914.ico'> <span>九划医教</span></div>
+                <div class='logo'><img class="logo-img" src='http://sfile.9mededu.com/wenda/20190327113914.ico'> <span>九划医教</span></div>
                 <h1 class="login-title">九划医教后台管理系统</h1>
                 <div class='data-input'>
                     <div class="elRow">

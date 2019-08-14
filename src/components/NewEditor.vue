@@ -9,7 +9,7 @@
     import E from './wangEditor'
     import {get_sign} from '../api/modules/ali_oss'
 
-    const ossHost = 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com';
+    const ossHost = 'http://sfile.9mededu.com';
     export default {
         name: "NewEditor",
         data() {
@@ -17,7 +17,7 @@
                 editorHtml: null,
                 resourse_url: '',
                 img_url: '',
-                host: 'http://jhyl-static-file.oss-cn-hangzhou.aliyuncs.com',
+                host: 'http://sfile.9mededu.com',
                 uploadConfig: {
                     bucket: 'jhyl-static-file',
                     dir: 'user_task',

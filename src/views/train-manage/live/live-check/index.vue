@@ -105,6 +105,15 @@
             },
             handleClick() {
                 this.modalTitle = '新建课程'
+                this.tableRow = {
+                    title: '',
+                    short_description: '',
+                    start_time: '',
+                    duration: 0,
+                    teacher_id: '',
+                    instructor_id: '',
+                    layout: 3
+                }
                 this.show = true
             },
             formSubmit(val) {
