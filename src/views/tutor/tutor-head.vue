@@ -2,7 +2,7 @@
 <div>
     <screen :types="13" :selectType2="true" @selectChange2="selectChange2" :select4="selectList" :title="title" @handleBack="handleBack"/>
     <router-view :key="$route.fullPath"/>
-</div>  
+</div>
 </template>
 
 <script>
@@ -45,11 +45,11 @@
         },
     },
     mounted() {
-        $MakeAppointment.$on('MakeAppointment', (n) => { 
+        $MakeAppointment.$on('MakeAppointment', (n) => {
             if(n) this.title = this.types.title + '（' + n + '）'
         } )
         this.title = this.types.title
-        if(!this.types.homework_count) this.selectList = []
+        // if(!this.types.homework_count) this.selectList = []
         if(this.types.curriculum_type == 'offline_concentrate') this.selectList.push({id: 3, title: '课程'})
     }
   }

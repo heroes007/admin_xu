@@ -51,7 +51,7 @@
                 { id: 'online_self', title: '线上自学' },
                 // { id: 'online_concentrate', title: '线上集中'},
                 { id: 'offline_concentrate', title: '线下集中' },
-            ],                
+            ],
             list: [],
             urlType: false
         }
@@ -74,11 +74,13 @@
                 homework_count: t.homework_count
             }
             if(t.hasOwnProperty('homework_count')&&t.homework_count || t.curriculum_type=='offline_concentrate'&&t.no_score_count){
-                if(type) this.urlType = true 
+                if(type) this.urlType = true
                 if(this.urlType&&type) this.$router.push({path: '/tutor/'+url, query: data})
                 else if(!type&&!this.urlType) this.$router.push({path: '/tutor/'+url, query: data})
             }else if(t.curriculum_type=='offline_concentrate'&&!t.homework_count){
                 this.$router.push({path: '/tutor/curriculum', query: data})
+            }else{
+                this.$router.push({path: '/tutor/job-list', query: data})
             }
         },
         getList(d){
