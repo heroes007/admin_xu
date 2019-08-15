@@ -139,7 +139,11 @@
                 this.$emit('handle-close')
             },
             handleSubmit() {
-                if (this.inputData) this.$emit('handle-submit', this.state)
+                if (this.inputData) {
+                    this.$emit('handle-submit', this.state)
+                    this.getList()
+
+                }
                 else this.$Message.info('请输入私信内容')
             },
             selectChange1(val) {
@@ -224,10 +228,10 @@
                 })
             },
             deleteStudent(item, index) {
-                this.studentList.splice(index, 1)
                 this.list.map(item1 => {
                     if(item.id == item1.id) item1._checked = false
                 })
+                this.studentList.splice(index, 1)
                 // let num = null
                 // this.studentList[item.page - 1].forEach((item1, index1) => {
                 //     if (item1.id == item.id) {
